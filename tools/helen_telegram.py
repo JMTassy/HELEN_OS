@@ -278,6 +278,146 @@ def cmd_done(chat_id: int, args: str) -> str:
     return f"Done. \"{found['action']}\"\n{gap_str}"
 
 
+# ─── Video Generation (/video) ─────────────────────────────────────────────────
+
+def cmd_video(chat_id: int, topic: str) -> None:
+    """Generate a short video on <topic> with Zephyr narration and send to Telegram."""
+    send_text(chat_id, f"Generating video: \"{topic}\"...")
+
+    # 1. Generate voiceover
+    if not GEMINI_KEY:
+        send_text(chat_id, "No GEMINI_API_KEY — cannot generate voice.")
+        return
+    try:
+        env = os.environ.copy()
+        env["GEMINI_API_KEY"] = GEMINI_KEY
+        with tempfile.TemporaryDirectory() as tmp:
+            r = subprocess.run(
+                [str(VENV_PYTHON), str(HELEN_TTS), "--output-dir", tmp, topic],
+                capture_output=True, text=True, timeout=30, env=env, cwd=str(ROOT)
+            )
+            wav_path = None
+            for line in r.stdout.split("\n"):
+                if line.startswith("Audio:"):
+                    wav_path = line.split("Audio:")[-1].strip()
+                    break
+            if not wav_path or not os.path.exists(wav_path):
+                send_text(chat_id, "TTS failed.")
+                return
+
+            # 2. Generate frames with Pillow
+            from PIL import Image, ImageDraw, ImageFont
+            import math
+
+            W, H = 1080, 1920
+            FPS = 30
+            dur_r = subprocess.run(
+                ["ffprobe", "-i", wav_path, "-show_entries", "format=duration", "-v", "quiet", "-of", "csv=p=0"],
+                capture_output=True, text=True
+            )
+            dur = float(dur_r.stdout.strip()) + 1.0
+            total_frames = int(dur * FPS)
+
+            try:
+                fn_big = ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", 64)
+                fn_med = ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", 36)
+                fn_sm = ImageFont.truetype("/System/Library/Fonts/Menlo.ttc", 20)
+            except Exception:
+                fn_big = fn_med = fn_sm = ImageFont.load_default()
+
+            frames_dir = os.path.join(tmp, "frames")
+            os.makedirs(frames_dir)
+
+            # Word-wrap the topic for display
+            words = topic.split()
+            lines_display = []
+            cur = ""
+            for w in words:
+                test = f"{cur} {w}".strip()
+                if len(test) > 28 and cur:
+                    lines_display.append(cur)
+                    cur = w
+                else:
+                    cur = test
+            if cur:
+                lines_display.append(cur)
+
+            for fi in range(total_frames):
+                t = fi / FPS
+                img = Image.new("RGB", (W, H), (6, 8, 18))
+                draw = ImageDraw.Draw(img)
+
+                # Breathing glow
+                pulse = 0.3 + 0.2 * math.sin(t * 1.5)
+                for r in range(200, 0, -10):
+                    op = int(pulse * 40 * (1 - r / 200))
+                    c = (int(34 * op / 255), int(211 * op / 255), int(238 * op / 255))
+                    draw.ellipse([W//2-r, 500-r, W//2+r, 500+r], fill=c)
+
+                # HELEN title
+                a = min(1.0, t / 1.5)
+                bbox = draw.textbbox((0, 0), "HELEN", font=fn_big)
+                tw = bbox[2] - bbox[0]
+                draw.text(((W-tw)//2, 380), "HELEN", fill=(int(201*a), int(169*a), int(97*a)), font=fn_big)
+
+                # Topic text
+                a2 = min(1.0, max(0, (t - 1.5) / 1.0))
+                for i, line in enumerate(lines_display):
+                    bbox = draw.textbbox((0, 0), line, font=fn_med)
+                    tw = bbox[2] - bbox[0]
+                    y = 700 + i * 50
+                    draw.text(((W-tw)//2, y), line, fill=(int(226*a2), int(232*a2), int(240*a2)), font=fn_med)
+
+                # Footer
+                a3 = min(1.0, max(0, (t - 3) / 0.8))
+                footer = "Voice: Zephyr  |  HELEN OS"
+                bbox = draw.textbbox((0, 0), footer, font=fn_sm)
+                tw = bbox[2] - bbox[0]
+                draw.text(((W-tw)//2, 1800), footer, fill=(int(100*a3), int(116*a3), int(139*a3)), font=fn_sm)
+
+                # Floating particles
+                for pi in range(15):
+                    px = (80 + pi * 73 + int(t * 10 * (1 + pi % 3))) % W
+                    py = (200 + pi * 127 - int(t * 15 * (1 + pi % 2))) % H
+                    ps = 1 + (pi % 2)
+                    pc = (201, 169, 97) if pi % 3 == 0 else (34, 211, 238)
+                    pa = max(0, min(255, int(100 * math.sin(t * 0.5 + pi))))
+                    draw.ellipse([px-ps, py-ps, px+ps, py+ps], fill=(*pc, pa))
+
+                img.save(f"{frames_dir}/frame_{fi:05d}.png")
+
+            # 3. Mux frames + audio → MP4
+            mp4_path = os.path.join(tmp, "helen_video.mp4")
+            subprocess.run([
+                "ffmpeg", "-y",
+                "-framerate", str(FPS),
+                "-i", f"{frames_dir}/frame_%05d.png",
+                "-i", wav_path,
+                "-c:v", "libx264", "-preset", "fast", "-crf", "23", "-pix_fmt", "yuv420p",
+                "-c:a", "aac", "-b:a", "128k",
+                "-shortest", mp4_path
+            ], capture_output=True, timeout=120)
+
+            if not os.path.exists(mp4_path):
+                send_text(chat_id, "Video encoding failed.")
+                return
+
+            # 4. Send to Telegram
+            result = tg_api("sendVideo",
+                chat_id=chat_id,
+                video=mp4_path,
+                caption=f"HELEN — {topic[:100]}"
+            )
+            if result.get("ok"):
+                print(f"  [VIDEO] sent msg_id={result['result']['message_id']}")
+            else:
+                send_text(chat_id, f"Video send failed: {result.get('description', '?')}")
+
+    except Exception as e:
+        send_text(chat_id, f"Video error: {e}")
+        print(f"  [VIDEO ERROR] {e}")
+
+
 # ─── Message Handler ──────────────────────────────────────────────────────────
 
 def handle_message(msg: dict):
@@ -289,6 +429,11 @@ def handle_message(msg: dict):
         return
 
     print(f"  [{user}] {text}")
+
+    # Command routing — video
+    if text.startswith("/video "):
+        cmd_video(chat_id, text[7:].strip())
+        return
 
     # Command routing — accountability engine
     if text.startswith("/commit "):
