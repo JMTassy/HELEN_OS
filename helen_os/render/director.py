@@ -1,280 +1,302 @@
 """
-HELEN Render — Director Layer.
+HELEN Director Layer — DIRECTOR_PLAN_V1 + HTML_COMPOSITION_V1
 
-Sits between ExecutionArtifactV1 and the renderer.
-This is where creativity lives. Not in the renderer.
+The Director sits between Execution and Render:
+  Execution Artifact → DIRECTOR_PLAN_V1 → HTML_COMPOSITION_V1 → Renderer → Video
 
-Chain:
-  ExecutionArtifactV1
-  → direct(artifact, style) → DirectorPlanV1      ← here
-  → compile_video_spec(artifact, plan)
-  → render
+The Director decides:
+  - Shot sequence (wide → close → abstract)
+  - Emotion curve (calm → tension → release → silence)
+  - Camera moves (push_in, drift, handheld)
+  - Text motion (blur_reveal, word_by_word, slide)
+  - Transitions (crossfade, blur_cross, fade_black, hard_cut)
+  - Sound design (music style, SFX cues)
+  - Voice direction (emotional prompting for TTS)
 
-Invariants:
-  D1: same artifact + style → same plan (deterministic)
-  D2: authority=False always
-  D3: plan carries source_receipt_hash (bound to governed source)
-  D4: plan_hash = sha256(canonical(plan without plan_hash field))
+The Director does NOT render. It produces a plan. The renderer is dumb.
 
-HELEN Visual DNA (constitutional):
-  colors:  deep blue / gold / black
-  motion:  slow, intentional
-  camera:  always moving slightly
-  light:   volumetric, dust particles
-  pacing:  breath-driven
-  editing: rhythm variation, silence moments, asymmetry
+HyperFrames insight: Video = deterministic HTML composition.
+HELEN insight: Video = receipted knowledge → directed emotion → HTML → frames.
 """
 from __future__ import annotations
 
+import hashlib
+import json
 from dataclasses import dataclass, field
-from typing import List, Optional
-
-from .contracts import canonical_json, sha256_hex
-from .models import ExecutionArtifactV1, Tone, Persona
+from typing import Any, Dict, List, Optional
 
 
-# ── Vocabulary ─────────────────────────────────────────────────────────────────
+# ─── HELEN Visual DNA ─────────────────────────────────────────────────────────
 
-ShotType   = str   # "wide" | "close" | "medium" | "extreme_close" | "aerial"
-CameraMove = str   # "slow_push_in" | "pull_back" | "handheld_micro" | "orbit" | "drift" | "static"
-EmotionBeat = str  # "calm" | "tension" | "rise" | "release" | "silence" | "float"
+VISUAL_DNA = {
+    "palette": {
+        "ink": "#06080e", "gold": "#c9a961", "cyan": "#22d3ee",
+        "violet": "#783cb4", "rose": "#c86482", "red": "#e84855",
+        "white": "#e6e6f0", "dim": "#504666",
+    },
+    "motion": "slow, intentional, breath-driven",
+    "rules_never": ["constant speed", "same shot length", "static center text"],
+    "rules_always": ["rhythm variation", "silence moments", "asymmetry"],
+}
 
 
-# ── Shot ───────────────────────────────────────────────────────────────────────
+# ─── Emotion Profiles (voice direction) ───────────────────────────────────────
 
-@dataclass(frozen=True)
+EMOTIONS = {
+    "calm": "(speaking slowly and gently, with quiet awareness)",
+    "vulnerable": "(voice trembling slightly, honest, almost fragile)",
+    "powerful": "(speaking with quiet authority, each word deliberate and weighted)",
+    "intimate": "(whispering, as if sharing a secret only you should hear)",
+    "ascending": "(starting quiet, building in conviction with each sentence)",
+    "breaking": "(aware, precise, slightly fragile — someone who understands too much but speaks gently)",
+    "warm": "(with a gentle smile in the voice, unhurried)",
+}
+
+
+# ─── Camera Moves ─────────────────────────────────────────────────────────────
+
+CAMERAS = {
+    "slow_push_in": "transform: scale(1) → scale(1.12); 8s ease-in-out",
+    "slow_pull_out": "transform: scale(1.12) → scale(1); 8s ease-in-out",
+    "drift_right": "transform: translateX(0) → translateX(-3%); scale(1.05→1.08)",
+    "drift_left": "transform: translateX(0) → translateX(3%); scale(1.05→1.08)",
+    "handheld_micro": "transform: subtle random translate; scale(1.03→1.06)",
+    "static_breathe": "transform: scale(1) → scale(1.02); 12s sine",
+    "zoom_through": "transform: scale(1) → scale(1.4); 3s power2.in",
+}
+
+
+# ─── Text Motion ──────────────────────────────────────────────────────────────
+
+TEXT_MOTIONS = {
+    "fade": "opacity: 0→1; 1s",
+    "slide_up": "translateY(25px)→0 + opacity; 0.6s",
+    "slide_left": "translateX(40px)→0 + opacity; 0.7s",
+    "scale_in": "scale(0.7)→1 + opacity; 0.8s",
+    "blur_reveal": "filter: blur(8px)→0 + opacity; 1s",
+    "typewriter": "clip per character; 0.06s/char",
+    "word_by_word": "opacity per word; 0.3s/word",
+}
+
+
+# ─── Transitions ──────────────────────────────────────────────────────────────
+
+TRANSITIONS = {
+    "crossfade": {"css": "opacity cross", "duration": 2.5},
+    "blur_cross": {"css": "filter:blur + opacity cross", "duration": 2.0},
+    "zoom_through": {"css": "scale(1.4) + opacity", "duration": 1.5},
+    "hard_cut": {"css": "instant", "duration": 0},
+    "fade_black": {"css": "opacity→0, hold, opacity→1", "duration": 3.0},
+}
+
+
+# ─── Shot & Plan ──────────────────────────────────────────────────────────────
+
+@dataclass
 class Shot:
-    type:         ShotType
-    camera:       CameraMove
-    duration:     int            # seconds
-    visual:       str            # scene description for renderer
-    text_overlay: Optional[str]  # None = no text
-    fx:           List[str]      = field(default_factory=list)  # per-shot FX
+    shot_type: str = "medium"
+    camera: str = "slow_push_in"
+    duration: float = 8.0
+    emotion: str = "calm"
+    visual_prompt: str = ""
+    text: str = ""
+    text_motion: str = "fade"
+    text_position: str = "bottom"
+    text_delay: float = 1.0
+    transition_in: str = "crossfade"
+    silence_after: float = 0
+    color_accent: str = "gold"
+    generate_video: bool = False  # True = use xAI/Veo for motion clip
 
 
-# ── Sound ──────────────────────────────────────────────────────────────────────
+@dataclass
+class DirectorPlan:
+    plan_id: str
+    title: str
+    tempo: str = "slow_build"
+    emotion_curve: List[str] = field(default_factory=list)
+    shots: List[Shot] = field(default_factory=list)
+    voice_profile: str = "intimate"
+    music: str = "ambient_pad_low"
+    sfx: List[str] = field(default_factory=lambda: ["breath", "wind_soft"])
 
-@dataclass(frozen=True)
-class SoundDesign:
-    music:     str         # "ambient_pad_low" | "temple_drone" | "breath_pulse" | "none"
-    fx:        List[str]   # ["breath", "wind_soft", "particles", "low_rumble"]
-    mix_notes: str = ""    # director notes for audio mix
+    def total_duration(self) -> float:
+        return sum(s.duration + s.silence_after for s in self.shots)
 
+    def voice_prefix(self) -> str:
+        return EMOTIONS.get(self.voice_profile, EMOTIONS["calm"])
 
-# ── Voice directive ────────────────────────────────────────────────────────────
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "type": "DIRECTOR_PLAN_V1",
+            "plan_id": self.plan_id,
+            "title": self.title,
+            "tempo": self.tempo,
+            "emotion_curve": self.emotion_curve,
+            "voice_profile": self.voice_profile,
+            "voice_prefix": self.voice_prefix(),
+            "music": self.music,
+            "sfx": self.sfx,
+            "total_duration": self.total_duration(),
+            "shot_count": len(self.shots),
+            "shots": [s.__dict__ for s in self.shots],
+        }
 
-@dataclass(frozen=True)
-class VoiceDirective:
-    """
-    Directed voice acting parameters — not TTS config.
-    These are performance instructions, not technical settings.
-    """
-    state:          str   # "controlled_vulnerability" | "oracle_calm" | "witness_precise"
-    energy_curve:   List[str]   # ["low", "rising", "collapse"] or ["steady", "break"]
-    breath:         str   # "audible" | "subtle" | "none"
-    tempo:          str   # "irregular" | "breath_driven" | "steady"
-    first_lines:    str   # delivery instruction: "almost whisper"
-    mid_section:    str   # "tension, slightly faster"
-    final_line:     str   # "slower, heavier, almost breaking"
-    delivery_notes: str = ""  # free-form director note
+    def to_html_composition(self) -> str:
+        """Convert plan to HyperFrames-style HTML composition."""
+        scenes_html = []
+        t = 0
+        for i, shot in enumerate(self.shots):
+            cam = CAMERAS.get(shot.camera, "")
+            motion = TEXT_MOTIONS.get(shot.text_motion, "")
+            color = VISUAL_DNA["palette"].get(shot.color_accent, "#c9a961")
+            transition = TRANSITIONS.get(shot.transition_in, {})
 
+            scene = f'''
+    <div class="scene" id="s{i}"
+         data-start="{t:.1f}" data-duration="{shot.duration:.1f}"
+         data-camera="{shot.camera}" data-emotion="{shot.emotion}"
+         data-transition="{shot.transition_in}">
+      <div class="scene-bg" style="background-image:url('assets/scene_{i}.png')"></div>
+      <div class="scene-overlay"></div>'''
 
-# ── DirectorPlanV1 ─────────────────────────────────────────────────────────────
+            if shot.text:
+                scene += f'''
+      <div class="text-block {shot.text_position}" data-motion="{shot.text_motion}"
+           data-delay="{shot.text_delay}" style="color:{color}">
+        {shot.text}
+      </div>'''
 
-@dataclass(frozen=True)
-class DirectorPlanV1:
-    """
-    The creative decision layer.
-    Generated deterministically from (artifact, style).
-    Bound to source artifact via receipt chain.
-    """
-    plan_id:             str
-    source_artifact_id:  str
-    source_receipt_hash: str
+            scene += f'''
+    </div>'''
 
-    # Creative substance
-    style:         str            # "meditation" | "oracle" | "witness" | "declaration"
-    tempo:         str            # "slow_build" | "pulse" | "breath_driven" | "tension_release"
-    emotion_curve: List[EmotionBeat]
-    shots:         List[Shot]
-    sound:         SoundDesign
-    voice:         VoiceDirective
+            if shot.silence_after > 0:
+                scene += f'''
+    <div class="black" data-start="{t + shot.duration:.1f}" data-duration="{shot.silence_after:.1f}"></div>'''
 
-    plan_hash:  str       # sha256 of plan body (D4)
-    authority:  bool = False   # D2: always False
+            scenes_html.append(scene)
+            t += shot.duration + shot.silence_after
 
-    def __post_init__(self) -> None:
-        if self.authority:
-            raise ValueError("DirectorPlanV1.authority must be False")
-
-    def total_duration(self) -> int:
-        return sum(s.duration for s in self.shots)
-
-
-# ── Style presets ──────────────────────────────────────────────────────────────
-
-_STYLES: dict = {
-    "meditation": {
-        "tempo":         "slow_build",
-        "emotion_curve": ["calm", "tension", "release", "silence"],
-        "sound": SoundDesign(
-            music="ambient_pad_low",
-            fx=["breath", "wind_soft", "particles"],
-            mix_notes="pads underneath, breath audible in gaps",
-        ),
-        "voice": VoiceDirective(
-            state="controlled_vulnerability",
-            energy_curve=["low", "rising", "collapse"],
-            breath="audible",
-            tempo="irregular",
-            first_lines="almost whisper — aware, precise",
-            mid_section="tension, slightly faster, weight building",
-            final_line="slower, heavier, almost breaking — then silence",
-            delivery_notes="like someone who understands too much but speaks gently",
-        ),
-    },
-    "oracle": {
-        "tempo":         "tension_release",
-        "emotion_curve": ["float", "rise", "tension", "release"],
-        "sound": SoundDesign(
-            music="temple_drone",
-            fx=["low_rumble", "particles", "tone_strike"],
-            mix_notes="drone builds under speech, strike on key lines",
-        ),
-        "voice": VoiceDirective(
-            state="oracle_calm",
-            energy_curve=["steady", "rise", "break"],
-            breath="subtle",
-            tempo="breath_driven",
-            first_lines="even, measured — weight without urgency",
-            mid_section="precision increases, pauses widen",
-            final_line="single syllable drop into silence",
-            delivery_notes="authority without claiming it — let the words carry",
-        ),
-    },
-    "witness": {
-        "tempo":         "pulse",
-        "emotion_curve": ["calm", "float", "silence"],
-        "sound": SoundDesign(
-            music="none",
-            fx=["breath", "room_tone"],
-            mix_notes="near silence — only breath and room",
-        ),
-        "voice": VoiceDirective(
-            state="witness_precise",
-            energy_curve=["low", "steady"],
-            breath="audible",
-            tempo="irregular",
-            first_lines="neutral, present — not performing",
-            mid_section="same register, no arc",
-            final_line="shorter. quieter.",
-            delivery_notes="receipted language — this happened, not this means",
-        ),
-    },
-    "declaration": {
-        "tempo":         "pulse",
-        "emotion_curve": ["rise", "tension", "release", "float"],
-        "sound": SoundDesign(
-            music="breath_pulse",
-            fx=["low_bass", "particles", "wind_soft"],
-            mix_notes="bass bed, pulse on rhythm, fade at end",
-        ),
-        "voice": VoiceDirective(
-            state="controlled_vulnerability",
-            energy_curve=["rising", "peak", "soft_land"],
-            breath="subtle",
-            tempo="breath_driven",
-            first_lines="quiet weight — not announcing",
-            mid_section="opening, expanding — not shouting",
-            final_line="land softly — the declaration does not need volume",
-            delivery_notes="conviction through restraint",
-        ),
-    },
-}
+        html = f'''<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{self.title}</title>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    html, body {{ margin:0; width:1080px; height:1920px; background:#06080e; overflow:hidden; }}
+    .scene {{ position:absolute; inset:0; opacity:0; }}
+    .scene-bg {{ position:absolute; inset:-60px; width:calc(100% + 120px); height:calc(100% + 120px);
+                 background-size:cover; background-position:center; }}
+    .scene-overlay {{ position:absolute; inset:0;
+                      background:linear-gradient(to bottom, transparent 50%, rgba(6,8,14,0.8) 100%); }}
+    .text-block {{ position:absolute; width:100%; text-align:center; padding:0 60px; box-sizing:border-box;
+                   font-family:'Helvetica Neue',sans-serif; font-size:28px; line-height:1.6; opacity:0; }}
+    .text-block.bottom {{ bottom:15%; }}
+    .text-block.center {{ top:50%; transform:translateY(-50%); }}
+    .text-block.top {{ top:15%; }}
+    .black {{ position:absolute; inset:0; background:#000; }}
+  </style>
+</head>
+<body>
+  <div id="root" data-composition-id="{self.plan_id}"
+       data-width="1080" data-height="1920" data-start="0" data-duration="{t:.1f}">
+{"".join(scenes_html)}
+    <audio data-start="0" data-duration="{t:.1f}" data-volume="1">
+      <source src="voiceover.wav" type="audio/wav" />
+    </audio>
+  </div>
+</body>
+</html>'''
+        return html
 
 
-# ── Shot generation ────────────────────────────────────────────────────────────
+# ─── Auto-Direct: Script → Plan ──────────────────────────────────────────────
 
-_SHOT_TEMPLATES: dict = {
-    "meditation": [
-        Shot("wide",  "slow_push_in",     6, "dark room, single candle, gold dust particles drifting", "Sit with me"),
-        Shot("close", "handheld_micro",   4, "hands, breath visible, soft amber light",                None),
-        Shot("wide",  "drift",            5, "deep blue space, slow particle field",                   None),
-        Shot("close", "static",           4, "face partially lit, breathing",                          None),
-        Shot("aerial","pull_back",        6, "dissolve to black, one particle remaining",              None),
-    ],
-    "oracle": [
-        Shot("extreme_close", "static",       3, "eye, gold iris, unfocused depth",                        None),
-        Shot("wide",          "orbit",        5, "dark chamber, volumetric light column, dust",            "The record stands."),
-        Shot("medium",        "slow_push_in", 4, "figure, back lit, silhouette against blue light",        None),
-        Shot("close",         "drift",        5, "hands open, particles rising upward",                    None),
-        Shot("wide",          "pull_back",    4, "chamber empties, light narrows to point",                None),
-    ],
-    "witness": [
-        Shot("medium", "static",       5, "empty desk, one object, side light",       "This happened."),
-        Shot("close",  "drift",        4, "object detail — receipt, hash, timestamp",  None),
-        Shot("wide",   "slow_push_in", 5, "room context — window, no face",           None),
-        Shot("medium", "static",       4, "back to object, slightly closer",           None),
-    ],
-    "declaration": [
-        Shot("wide",          "slow_push_in", 5, "horizon line, deep blue, particles rising", None),
-        Shot("medium",        "orbit",        4, "figure standing, back to camera",            "We built this."),
-        Shot("close",         "handheld_micro", 4, "face, eyes forward, no performance",       None),
-        Shot("extreme_close", "drift",        3, "lips, breath",                               None),
-        Shot("wide",          "pull_back",    6, "return to horizon, figure small",            None),
-    ],
-}
+def direct(title: str, script: str, voice_profile: str = "intimate",
+           tempo: str = "slow_build") -> DirectorPlan:
+    """Transform raw script into a directed shot sequence."""
+    plan_id = f"dp_{hashlib.sha256(script.encode()).hexdigest()[:12]}"
 
+    paragraphs = [p.strip() for p in script.split("\n") if p.strip()]
+    if not paragraphs:
+        paragraphs = [script]
 
-# ── Director function (D1: deterministic) ─────────────────────────────────────
+    def detect_emotion(text):
+        lower = text.lower()
+        if any(w in lower for w in ["tremble", "fragile", "don't know"]): return "vulnerable"
+        if any(w in lower for w in ["never", "always", "every", "proof"]): return "powerful"
+        if any(w in lower for w in ["secret", "whisper", "between"]): return "intimate"
+        if any(w in lower for w in ["rising", "building", "growing"]): return "ascending"
+        if any(w in lower for w in ["break", "collapse", "silence"]): return "breaking"
+        return "calm"
 
-def direct(
-    artifact: ExecutionArtifactV1,
-    style:    str = "meditation",
-) -> DirectorPlanV1:
-    """
-    Deterministic director: same artifact + style → same plan (D1).
-    No randomness. No ambient reads. Pure function of inputs.
-    """
-    if style not in _STYLES:
-        style = _tone_to_style(artifact.tone)
+    n = len(paragraphs)
+    cameras = ["slow_push_in", "drift_right", "handheld_micro", "slow_pull_out", "drift_left", "static_breathe"]
+    motions = ["fade", "slide_up", "blur_reveal", "scale_in", "word_by_word", "slide_left"]
+    colors = ["gold", "cyan", "violet", "rose", "gold", "cyan"]
+    transitions = ["fade_black", "crossfade", "blur_cross", "crossfade", "fade_black"]
 
-    preset  = _STYLES[style]
-    shots   = _SHOT_TEMPLATES.get(style, _SHOT_TEMPLATES["meditation"])
+    shots = []
+    for i, para in enumerate(paragraphs):
+        progress = i / max(1, n - 1)
+        emotion = detect_emotion(para)
+        words = len(para.split())
+        dur = max(5, min(15, words * 0.5))
+        if i == 0: dur += 2
+        if i == n - 1: dur += 3
 
-    plan_id = sha256_hex(f"{artifact.artifact_id}:{style}")[:16]
+        silence = 0
+        if emotion == "breaking": silence = 1.5
+        elif i == n - 1: silence = 2.0
+        elif i % 3 == 2: silence = 0.8
 
-    # Build the body for hashing (without plan_hash itself)
-    body = {
-        "plan_id":             plan_id,
-        "source_artifact_id":  artifact.artifact_id,
-        "source_receipt_hash": artifact.receipt_hash,
-        "style":               style,
-        "tempo":               preset["tempo"],
-        "emotion_curve":       preset["emotion_curve"],
-    }
-    plan_hash = sha256_hex(canonical_json(body))
+        shot_type = "wide" if i == 0 else ("extreme_close" if i == n-1 else ("close" if progress > 0.5 else "medium"))
 
-    return DirectorPlanV1(
-        plan_id=             plan_id,
-        source_artifact_id=  artifact.artifact_id,
-        source_receipt_hash= artifact.receipt_hash,
-        style=               style,
-        tempo=               preset["tempo"],
-        emotion_curve=       preset["emotion_curve"],
-        shots=               shots,
-        sound=               preset["sound"],
-        voice=               preset["voice"],
-        plan_hash=           "sha256:" + plan_hash,
-        authority=           False,
+        shots.append(Shot(
+            shot_type=shot_type,
+            camera=cameras[i % len(cameras)],
+            duration=dur,
+            emotion=emotion,
+            visual_prompt=para[:200],
+            text=para,
+            text_motion=motions[i % len(motions)],
+            text_delay=1.5 if i == 0 else 0.8,
+            transition_in=transitions[i % len(transitions)],
+            silence_after=silence,
+            color_accent=colors[i % len(colors)],
+            generate_video=(i == 0 or i == n - 1),  # motion clips for opening and closing
+        ))
+
+    plan = DirectorPlan(
+        plan_id=plan_id,
+        title=title,
+        tempo=tempo,
+        emotion_curve=[s.emotion for s in shots],
+        shots=shots,
+        voice_profile=voice_profile,
+        music="ambient_pad_low" if tempo == "slow_build" else "tension_build",
     )
+    return plan
 
 
-def _tone_to_style(tone: Tone) -> str:
-    return {
-        "calm":       "meditation",
-        "reflective": "witness",
-        "precise":    "oracle",
-        "serious":    "declaration",
-        "warm":       "meditation",
-    }.get(tone, "meditation")
+# ─── 10 Cinematic Templates ──────────────────────────────────────────────────
+
+TEMPLATES = {
+    "meditation":    {"voice": "intimate",  "tempo": "slow_build", "music": "ambient_pad_low"},
+    "revelation":    {"voice": "ascending", "tempo": "crescendo",  "music": "tension_to_release"},
+    "confession":    {"voice": "vulnerable","tempo": "slow_build", "music": "piano_sparse"},
+    "manifesto":     {"voice": "powerful",  "tempo": "pulse",      "music": "drums_distant"},
+    "origin_story":  {"voice": "intimate",  "tempo": "slow_build", "music": "ambient_evolving"},
+    "contradiction": {"voice": "breaking",  "tempo": "pulse",      "music": "dissonance_resolve"},
+    "witness":       {"voice": "calm",      "tempo": "slow_build", "music": "drone_low"},
+    "future":        {"voice": "ascending", "tempo": "crescendo",  "music": "synth_hopeful"},
+    "elegy":         {"voice": "vulnerable","tempo": "slow_build", "music": "strings_sparse"},
+    "clarity":       {"voice": "intimate",  "tempo": "slow_build", "music": "glass_harmonics"},
+}
+
+def from_template(template: str, title: str, script: str) -> DirectorPlan:
+    t = TEMPLATES.get(template, TEMPLATES["meditation"])
+    plan = direct(title, script, voice_profile=t["voice"], tempo=t["tempo"])
+    plan.music = t["music"]
+    return plan
