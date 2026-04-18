@@ -63,6 +63,7 @@ class KnowledgeUnit:
     source_file: str
     hash: str
     chunk_index: int = 0
+    source_id: str = ""  # "plugins" | "apple_notes" | "helen_os"
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -72,6 +73,7 @@ class KnowledgeUnit:
             "source_file": self.source_file,
             "hash": self.hash,
             "chunk_index": self.chunk_index,
+            "source_id": self.source_id,
         }
 
 
@@ -220,8 +222,14 @@ class KnowledgeEngine:
 
     # ── Ingest ────────────────────────────────────────────────────────────────
 
-    def ingest_corpus(self, source_path: str, max_files: int = 500) -> int:
-        """Ingest files into knowledge units. Returns count of new units."""
+    def ingest_corpus(self, source_path: str, max_files: int = 500, source_id: str = "") -> int:
+        """Ingest files into knowledge units. Returns count of new units.
+
+        Args:
+            source_path: directory or file to ingest
+            max_files: cap on files to process
+            source_id: corpus boundary tag (e.g. "plugins", "apple_notes", "helen_os")
+        """
         src = Path(source_path).expanduser()
         existing_hashes = {u.hash for u in self.units.values()}
         files: List[Path] = []
@@ -251,13 +259,18 @@ class KnowledgeEngine:
                     continue
 
                 unit_id = f"{f.stem}_{i:03d}"
+                # Add source tag
+                unit_tags = tags[:]
+                if source_id:
+                    unit_tags.append(f"src_{source_id}")
                 unit = KnowledgeUnit(
                     id=unit_id,
-                    tags=tags,
+                    tags=unit_tags,
                     content=chunk[:3000],
                     source_file=str(f),
                     hash=h,
                     chunk_index=i,
+                    source_id=source_id,
                 )
                 self.units[unit_id] = unit
                 self.tag_graph.add_unit(unit_id, tags)
@@ -273,18 +286,26 @@ class KnowledgeEngine:
         self,
         query: str,
         tags: Optional[List[str]] = None,
+        sources: Optional[List[str]] = None,
         k: int = 5,
         mode: str = "keyword",
     ) -> List[KnowledgeUnit]:
         """
-        Typed retrieval with tag filtering and receipt logging.
+        Typed retrieval with tag filtering, source boundaries, and receipt logging.
 
-        Modes:
-          - "keyword": simple text match (fast, no API)
-          - "tag": return units matching ALL specified tags
-          - "hybrid": keyword + tag boost
+        Args:
+            query: search text
+            tags: filter by these tags (units must have at least one)
+            sources: filter by corpus source (e.g. ["plugins", "apple_notes"])
+            k: max results
+            mode: "keyword" (fast), "tag" (tag-only), "hybrid" (keyword + tag boost)
         """
         candidates = list(self.units.values())
+
+        # Source filter
+        if sources:
+            source_set = {s.lower() for s in sources}
+            candidates = [u for u in candidates if u.source_id in source_set]
 
         # Tag filter
         if tags:
@@ -331,12 +352,57 @@ class KnowledgeEngine:
 
     # ── Stats ─────────────────────────────────────────────────────────────────
 
+    # ── Compare (cross-source) ──────────────────────────────────────────────
+
+    def compare(self, query: str, source_a: str, source_b: str, k: int = 3) -> Dict[str, Any]:
+        """
+        Compare what two corpus sources say about the same topic.
+
+        Returns results from each source side by side.
+        This is the killer demo: structured self-comparison across knowledge surfaces.
+        """
+        results_a = self.retrieve(query, sources=[source_a], k=k)
+        results_b = self.retrieve(query, sources=[source_b], k=k)
+
+        comparison = {
+            "query": query,
+            "source_a": {"id": source_a, "results": [{"id": u.id, "preview": u.content[:200], "file": u.source_file.split("/")[-1]} for u in results_a]},
+            "source_b": {"id": source_b, "results": [{"id": u.id, "preview": u.content[:200], "file": u.source_file.split("/")[-1]} for u in results_b]},
+            "overlap_tags": [],
+        }
+
+        # Find tag overlap between the two result sets
+        tags_a = set()
+        for u in results_a:
+            tags_a.update(u.tags)
+        tags_b = set()
+        for u in results_b:
+            tags_b.update(u.tags)
+        comparison["overlap_tags"] = sorted(tags_a & tags_b - {"src_" + source_a, "src_" + source_b})
+
+        # Log receipted comparison
+        self._log_access(AccessReceipt(
+            query=f"COMPARE:{query}",
+            tags_filter=[source_a, source_b],
+            result_ids=[u.id for u in results_a + results_b],
+            result_hashes=[u.hash for u in results_a + results_b],
+            mode="compare",
+        ))
+
+        return comparison
+
+    # ── Stats ─────────────────────────────────────────────────────────────────
+
     def stats(self) -> Dict[str, Any]:
+        source_counts = defaultdict(int)
+        for u in self.units.values():
+            source_counts[u.source_id or "unknown"] += 1
         return {
             "total_units": len(self.units),
             "total_tags": len(self.tag_graph.tag_frequency),
             "top_tags": sorted(self.tag_graph.tag_frequency.items(), key=lambda x: -x[1])[:15],
             "files_indexed": len(set(u.source_file for u in self.units.values())),
+            "sources": dict(source_counts),
         }
 
     def tag_map(self) -> Dict[str, int]:
