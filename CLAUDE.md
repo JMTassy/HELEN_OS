@@ -80,7 +80,7 @@ AUTORESEARCH operates under PULL-mode:
 
 ## Test Suite
 
-- 426 tests passing, 0 failing
+- 432 tests passing (4 pre-existing SEAM-001 failures)
 - 0 warnings
 - K8 PASS (k8=+1.000)
 - LEGORACLE replay gate: 12 tests (fixture integrity + determinism + frozen output + mutation detection)
