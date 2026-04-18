@@ -40,7 +40,7 @@ def test_raw_log_rejected():
       File "task.py", line 1, in <module>
     """
 
-    registry = SchemaRegistry()
+    registry = SchemaRegistry(schema_dir=Path(__file__).parent / "schemas")
 
     # Attempt to validate raw log as FAILURE_REPORT_V1
     is_valid, errors = registry.validate_artifact(
@@ -75,7 +75,7 @@ def test_structured_failure_accepted():
         },
     }
 
-    registry = SchemaRegistry()
+    registry = SchemaRegistry(schema_dir=Path(__file__).parent / "schemas")
     is_valid, errors = registry.validate_artifact(
         failure_report,
         "FAILURE_REPORT_V1"
@@ -105,7 +105,7 @@ def test_failure_without_schema_version_rejected():
         "exit_code": 1,
     }
 
-    registry = SchemaRegistry()
+    registry = SchemaRegistry(schema_dir=Path(__file__).parent / "schemas")
     is_valid, errors = registry.validate_artifact(
         incomplete_failure,
         "FAILURE_REPORT_V1"
@@ -145,7 +145,7 @@ def test_failure_with_verdicts_rejected():
     }
 
     # E14: validate via constitutional schema (additionalProperties: false rejects verdict/decision)
-    registry = SchemaRegistry()
+    registry = SchemaRegistry(schema_dir=Path(__file__).parent / "schemas")
     is_valid, errors = registry.validate_artifact(failure_with_verdict, "FAILURE_REPORT_V1")
     assert not is_valid, "Failure with verdict fields was not rejected by schema"
     assert any("verdict" in e or "decision" in e for e in errors), f"Expected verdict/decision rejection, got: {errors}"
@@ -168,7 +168,7 @@ def test_only_failure_report_schema_accepted_by_evoskill():
         "2024-03-11 ERROR: ...",
     ]
 
-    registry = SchemaRegistry()
+    registry = SchemaRegistry(schema_dir=Path(__file__).parent / "schemas")
 
     for invalid_input in invalid_inputs:
         is_valid, errors = registry.validate_artifact(

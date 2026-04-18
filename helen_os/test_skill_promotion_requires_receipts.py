@@ -41,7 +41,7 @@ def test_promotion_packet_without_eval_receipts_rejected():
         "created_at_ns": 1700000000000000000,
     }
 
-    registry = SchemaRegistry()
+    registry = SchemaRegistry(schema_dir=Path(__file__).parent / "schemas")
     is_valid, errors = registry.validate_artifact(
         packet_no_evals,
         "SKILL_PROMOTION_PACKET_V1"
@@ -83,7 +83,7 @@ def test_promotion_packet_with_invalid_receipt_ref_format_rejected():
         "created_at_ns": 1700000000000000000,
     }
 
-    registry = SchemaRegistry()
+    registry = SchemaRegistry(schema_dir=Path(__file__).parent / "schemas")
     is_valid, errors = registry.validate_artifact(
         packet_bad_refs,
         "SKILL_PROMOTION_PACKET_V1"
@@ -154,7 +154,7 @@ def test_valid_promotion_packet_with_all_receipts_accepted():
         ],
     }
 
-    registry = SchemaRegistry()
+    registry = SchemaRegistry(schema_dir=Path(__file__).parent / "schemas")
     is_valid, errors = registry.validate_artifact(
         valid_packet,
         "SKILL_PROMOTION_PACKET_V1"
