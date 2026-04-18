@@ -1,0 +1,146 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "receipt_payload.v1.schema.json",
+  "title": "RECEIPT_PAYLOAD_V1",
+  "description": "Payload schema for RECEIPT ledger events. RECEIPT binds to a prior VERDICT via triple binding: (verdict_id, ref_verdict_payload_hash_hex, ref_verdict_cum_hash_hex). NO RECEIPT = NO SHIP rule enforced by validate_receipt_linkage.py.",
+  "type": "object",
+  "required": [
+    "schema",
+    "receipt_kind",
+    "receipt_id",
+    "refs",
+    "recomputed",
+    "mirrors",
+    "attestations"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "RECEIPT_PAYLOAD_V1",
+      "description": "Schema version discriminator. MUST be exactly 'RECEIPT_PAYLOAD_V1'."
+    },
+    "receipt_kind": {
+      "type": "string",
+      "enum": ["SHIP", "ABORT", "CHECKPOINT", "SEAL"],
+      "description": "Receipt category: SHIP (delivery confirmed), ABORT (termination confirmed), CHECKPOINT (intermediate proof), SEAL (closure proof)."
+    },
+    "receipt_id": {
+      "type": "string",
+      "pattern": "^R-[0-9A-Z_-]{1,64}$",
+      "description": "Unique receipt identifier. Deterministic, never wall-clock derived. Example: R-000001."
+    },
+    "refs": {
+      "type": "object",
+      "required": [
+        "verdict_id",
+        "ref_verdict_payload_hash_hex",
+        "ref_verdict_cum_hash_hex",
+        "verdict_ledger_length",
+        "receipt_ledger_length",
+        "receipt_cum_hash_hex"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "verdict_id": {
+          "type": "string",
+          "pattern": "^V-[0-9A-Z_-]{1,64}$",
+          "description": "verdict_id from the VERDICT event this receipt binds to."
+        },
+        "ref_verdict_payload_hash_hex": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "MUST equal the payload_hash of the VERDICT ledger event. First leg of triple binding."
+        },
+        "ref_verdict_cum_hash_hex": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "MUST equal the cum_hash of the VERDICT ledger event. Second leg of triple binding."
+        },
+        "verdict_ledger_length": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "seq+1 of the VERDICT event (number of events in ledger at verdict time)."
+        },
+        "receipt_ledger_length": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "seq+1 of this RECEIPT event (number of events at receipt time). Must be > verdict_ledger_length."
+        },
+        "receipt_cum_hash_hex": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "cum_hash of this RECEIPT ledger event (HELEN_CUM_V1 scheme). Third leg of triple binding — anchors receipt in the chain."
+        }
+      },
+      "description": "Cryptographic references that bind this receipt to its VERDICT and anchor both in the ledger."
+    },
+    "recomputed": {
+      "type": "object",
+      "required": ["verdict_payload_hash_hex"],
+      "additionalProperties": false,
+      "properties": {
+        "verdict_payload_hash_hex": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "SHA256(Canon(verdict_payload)) recomputed by the receipt issuer at receipt-write time. MUST equal refs.ref_verdict_payload_hash_hex."
+        },
+        "verdict_cum_hash_hex": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Recomputed HELEN_CUM_V1 cum_hash for the verdict event. MUST equal refs.ref_verdict_cum_hash_hex if provided."
+        }
+      },
+      "description": "Values recomputed by the receipt issuer to prove active verification (not copy-paste)."
+    },
+    "mirrors": {
+      "type": "object",
+      "required": ["outcome"],
+      "additionalProperties": false,
+      "properties": {
+        "outcome": {
+          "type": "string",
+          "enum": ["DELIVER", "HOLD", "ABORT"],
+          "description": "Mirrors decision.outcome from the VERDICT payload. Must match."
+        },
+        "verdict_kind": {
+          "type": "string",
+          "enum": ["PASS", "WARN", "BLOCK", "SHIP", "ABORT"],
+          "description": "Mirrors verdict_kind from the VERDICT payload. Must match."
+        },
+        "subject_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Mirrors subject.subject_id from the VERDICT payload."
+        }
+      },
+      "description": "Key fields mirrored from the VERDICT payload. Redundant but enables validation without full ledger scan."
+    },
+    "attestations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["attested_by", "attestation_code"],
+        "additionalProperties": true,
+        "properties": {
+          "attested_by": {
+            "type": "string",
+            "enum": ["HELEN", "MAYOR", "CHRONOS", "INTEGRATOR"],
+            "description": "Actor providing the attestation."
+          },
+          "attestation_code": {
+            "type": "string",
+            "pattern": "^[A-Z0-9_]{3,64}$",
+            "description": "Attestation code from reason_codes registry."
+          },
+          "attestation_hash_hex": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "description": "Optional SHA256 of attestation artifact."
+          }
+        }
+      },
+      "description": "List of actor attestations. MAYOR attestation required for SHIP receipts."
+    }
+  }
+}

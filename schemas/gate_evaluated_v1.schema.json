@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://helen-os.canonical/schemas/gate_evaluated_v1.schema.json",
+  "title": "GateEvaluated v1",
+  "description": "MAYOR's final verdict. Sovereign output that may result in ledger mutation.",
+  "type": "object",
+  "required": [
+    "verdict_id",
+    "packet_ref",
+    "verdict",
+    "verdict_hash_hex",
+    "receipts",
+    "timestamp"
+  ],
+  "properties": {
+    "verdict_id": {
+      "type": "string",
+      "pattern": "^V-[a-f0-9]{8}$",
+      "description": "Unique identifier for this verdict"
+    },
+    "packet_ref": {
+      "type": "string",
+      "pattern": "^MP-[a-f0-9]{8}$",
+      "description": "References the MayorPacket that was evaluated"
+    },
+    "verdict": {
+      "type": "string",
+      "enum": ["PASS", "FAIL", "DEFER"],
+      "description": "Verdict of arbitration"
+    },
+    "verdict_hash_hex": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "SHA-256(canonical_json(quest_id, quest_type, gates, next_quest_seed))"
+    },
+    "next_quest_seed": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "SHA-256(quest_id | sorted_receipts | gates+metrics_hash) for next cycle"
+    },
+    "receipts": {
+      "type": "array",
+      "description": "Array of Receipt objects",
+      "items": {
+        "type": "object",
+        "required": [
+          "receipt_id",
+          "receipt_hash",
+          "gate_id"
+        ],
+        "properties": {
+          "receipt_id": {
+            "type": "string",
+            "pattern": "^RCP-[a-f0-9]{8}$"
+          },
+          "receipt_hash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "description": "The actual receipt hash from gate evaluation"
+          },
+          "gate_id": {
+            "type": "string",
+            "description": "Which gate produced this receipt"
+          }
+        }
+      }
+    },
+    "governor_note": {
+      "type": "string",
+      "description": "Optional narrative note from MAYOR (signed)"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO8601 timestamp of verdict"
+    }
+  },
+  "additionalProperties": false
+}

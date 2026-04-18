@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "helen://schemas/SKILL_PROMOTION_PACKET_V1",
+  "title": "SKILL_PROMOTION_PACKET_V1",
+  "description": "Formal request to promote a skill mutation. Contains hashes, receipts, and rollback targets—never raw code. Read-only for HELEN. EvoSkill proposes; only HELEN mutates the active library.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "packet_id",
+    "schema_version",
+    "skill_proposal_id",
+    "parent_skill_id",
+    "parent_skill_version",
+    "skill_folder_hash",
+    "skill_diff_hash",
+    "eval_receipt_refs",
+    "transfer_receipt_refs",
+    "capability_manifest_hash",
+    "rollback_target",
+    "promotion_request",
+    "created_at_ns"
+  ],
+  "properties": {
+    "packet_id": {
+      "type": "string",
+      "pattern": "^PROMO-[A-Za-z0-9]{16,}$",
+      "description": "Unique promotion packet identifier"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "SKILL_PROMOTION_PACKET_V1"
+    },
+    "skill_proposal_id": {
+      "type": "string",
+      "description": "Originating skill proposal identifier"
+    },
+    "parent_skill_id": {
+      "type": "string",
+      "description": "Parent skill being replaced or extended"
+    },
+    "parent_skill_version": {
+      "type": "string",
+      "description": "Parent skill version"
+    },
+    "skill_folder_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "description": "SHA-256 of candidate skill folder (code + metadata)"
+    },
+    "skill_diff_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "description": "SHA-256 of skill diff (changes from parent)"
+    },
+    "eval_receipt_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      },
+      "description": "References to evaluation receipts (required)"
+    },
+    "transfer_receipt_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "References to transfer test receipts (optional, for domain+ scope)"
+    },
+    "capability_manifest_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "description": "SHA-256 of declared capability manifest"
+    },
+    "rollback_target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["skill_id", "version", "manifest_hash"],
+      "properties": {
+        "skill_id": {
+          "type": "string",
+          "description": "Skill to revert to if rollback is needed"
+        },
+        "version": {
+          "type": "string",
+          "description": "Version of rollback target"
+        },
+        "manifest_hash": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$",
+          "description": "SHA-256 of rollback target manifest"
+        }
+      }
+    },
+    "promotion_request": {
+      "type": "string",
+      "enum": ["NEW", "EDIT", "MERGE", "DEPRECATE"],
+      "description": "Type of promotion request"
+    },
+    "created_at_ns": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Creation timestamp in nanoseconds"
+    }
+  }
+}

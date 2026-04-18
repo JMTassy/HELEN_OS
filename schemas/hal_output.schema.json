@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hal_output.schema.json",
+  "type": "object",
+  "required": ["verdict", "reasons", "required_fixes", "certificates", "refs", "mutations"],
+  "properties": {
+    "verdict": { "type": "string", "enum": ["PASS", "WARN", "BLOCK"] },
+    "reasons": { "type": "array", "items": { "type": "string" } },
+    "required_fixes": { "type": "array", "items": { "type": "string" } },
+    "certificates": { "type": "array", "items": { "type": "string" } },
+    "refs": {
+      "type": "object",
+      "required": ["run_id", "kernel_hash", "policy_hash", "ledger_cum_hash"],
+      "properties": {
+        "run_id": { "type": "string", "minLength": 1 },
+        "kernel_hash": { "type": "string", "minLength": 8 },
+        "policy_hash": { "type": "string", "minLength": 8 },
+        "ledger_cum_hash": { "type": "string", "minLength": 8 }
+      },
+      "additionalProperties": true
+    },
+    "mutations": {
+      "type": "array",
+      "items": { "type": "object" }
+    }
+  },
+  "additionalProperties": false
+}

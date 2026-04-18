@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://helen-os.canonical/schemas/mayor_packet_v1.schema.json",
+  "title": "MayorPacket v1",
+  "description": "HELEN's complete submission to MAYOR. Bundles all Tier A artifacts with routing receipts.",
+  "type": "object",
+  "required": [
+    "packet_id",
+    "evidence_bundle_ref",
+    "issue_list_ref",
+    "task_list_ref",
+    "gate_report_ref",
+    "routing_receipt_hash",
+    "submitted_at",
+    "packet_hash"
+  ],
+  "properties": {
+    "packet_id": {
+      "type": "string",
+      "pattern": "^MP-[a-f0-9]{8}$",
+      "description": "Unique identifier for this packet"
+    },
+    "evidence_bundle_ref": {
+      "type": "string",
+      "pattern": "^EB-[a-f0-9]{8}$",
+      "description": "References EvidenceBundle"
+    },
+    "issue_list_ref": {
+      "type": "string",
+      "pattern": "^IL-[a-f0-9]{8}$",
+      "description": "References IssueList"
+    },
+    "task_list_ref": {
+      "type": "string",
+      "pattern": "^TL-[a-f0-9]{8}$",
+      "description": "References TaskList"
+    },
+    "gate_report_ref": {
+      "type": "string",
+      "pattern": "^GR-[a-f0-9]{8}$",
+      "description": "References GateReport"
+    },
+    "routing_receipt_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "SHA-256 of the routing receipt from L2→L3a"
+    },
+    "submitted_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO8601 timestamp of submission"
+    },
+    "helen_proposal": {
+      "type": "string",
+      "description": "Optional narrative proposal text (CORE mode only)"
+    },
+    "packet_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "SHA-256 of RFC 8785 canonical JSON of this packet"
+    }
+  },
+  "additionalProperties": false
+}

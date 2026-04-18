@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "street1_event.v1.schema.json",
+  "title": "Street1 Event (NDJSON line)",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "run_id",
+    "t",
+    "type"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "enum": ["STREET1_EVENT_V1"]
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "t": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "OBS",
+        "BND",
+        "CHK",
+        "END",
+        "ERR"
+      ]
+    },
+    "sub_type": {
+      "type": "string"
+    },
+    "actor": {
+      "type": "string"
+    },
+    "ts": {
+      "type": "string"
+    },
+    "n": {
+      "type": "integer"
+    },
+    "seed": {
+      "type": "integer"
+    },
+    "msg_type": {
+      "type": "string"
+    },
+    "npc_id": {
+      "type": ["string", "null"]
+    },
+    "npc1": {
+      "type": "string"
+    },
+    "npc2": {
+      "type": "string"
+    },
+    "facts": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "text": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "positions": {
+      "type": "object"
+    },
+    "payload": {
+      "type": "object"
+    },
+    "prev_hash": {
+      "type": ["string", "null"]
+    },
+    "_sha": {
+      "type": "string"
+    },
+    "detail": {
+      "type": "string"
+    },
+    "outcome": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "total_ticks": {
+      "type": "integer"
+    },
+    "total_lines": {
+      "type": "integer"
+    }
+  }
+}
