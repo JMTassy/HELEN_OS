@@ -33,6 +33,11 @@ from typing import Any, Dict, List
 from .contracts import canonical_json, sha256_hex
 from .director import DirectorPlanV1, Shot
 from .models import ExecutionArtifactV1
+from .presets import (
+    camera_gsap, transition_gsap, text_gsap,
+    emotion_filter, receipt_seal_gsap,
+    wrap_words, wrap_chars, load_presets_js,
+)
 
 
 # ── Asset ──────────────────────────────────────────────────────────────────────
@@ -76,68 +81,70 @@ class HTMLCompositionV1:
             raise ValueError("HTMLCompositionV1.authority must be False")
 
 
-# ── Camera move → GSAP config ──────────────────────────────────────────────────
-
-_CAMERA_GSAP: Dict[str, Dict[str, Any]] = {
-    "slow_push_in":    {"scale": "1.08", "x": "0",    "y": "0",   "duration_factor": 1.0},
-    "pull_back":       {"scale": "0.94", "x": "0",    "y": "0",   "duration_factor": 1.0},
-    "handheld_micro":  {"scale": "1.00", "x": "4px",  "y": "3px", "duration_factor": 0.3},
-    "orbit":           {"scale": "1.04", "x": "12px", "y": "0",   "duration_factor": 1.0},
-    "drift":           {"scale": "1.02", "x": "6px",  "y": "4px", "duration_factor": 1.0},
-    "static":          {"scale": "1.00", "x": "0",    "y": "0",   "duration_factor": 0.0},
-}
-
-
-def _camera_css(move: CameraMove, duration: int) -> str:
-    cfg = _CAMERA_GSAP.get(move, _CAMERA_GSAP["drift"])
-    factor = cfg["duration_factor"]
-    dur = round(duration * factor, 1) if factor else 0
-    if dur == 0:
-        return ""
-    return (
-        f"transform: scale({cfg['scale']}) translate({cfg['x']}, {cfg['y']}); "
-        f"transition: transform {dur}s ease-in-out;"
-    )
+# camera_gsap, transition_gsap, text_gsap are imported from presets.py
 
 
 # ── Shot → HTML block ──────────────────────────────────────────────────────────
 
-def _shot_to_div(shot: Shot, start: int, z_index: int) -> str:
-    # Support both old Shot (visual, text_overlay) and new Shot (visual_prompt, text)
+def _shot_to_div(shot: Shot, start: int, z_index: int) -> tuple:
+    """Returns (html_div, gsap_js_block) for the shot."""
+    # Compat: support both Shot field naming conventions
     visual    = getattr(shot, "visual", None) or getattr(shot, "visual_prompt", "")
-    text_ovly = getattr(shot, "text_overlay", None) or getattr(shot, "text", None)
-    duration  = int(getattr(shot, "duration", 8))
+    text_ovly = getattr(shot, "text_overlay", None) or getattr(shot, "text", None) or ""
+    duration  = float(getattr(shot, "duration", 8))
     shot_type = getattr(shot, "type", None) or getattr(shot, "shot_type", "medium")
-    fx_list   = getattr(shot, "fx", []) or []
-    emotion   = getattr(shot, "emotion", "")
+    emotion   = getattr(shot, "emotion", "calm")
+    text_motion = getattr(shot, "text_motion", "fade")
+    text_delay  = float(getattr(shot, "text_delay", 1.0))
+    transition  = getattr(shot, "transition_in", "crossfade")
 
-    cam_css   = _camera_css(shot.camera, duration)
     visual_id = sha256_hex(visual)[:8]
+    shot_id   = f"shot_{z_index}"
+    em_filter = emotion_filter(emotion)
+
+    # Text: wrap for word-by-word or typewriter if needed
+    text_html = text_ovly
+    if text_motion == "word_by_word":
+        text_html = wrap_words(text_ovly)
+    elif text_motion == "typewriter":
+        text_html = wrap_chars(text_ovly)
 
     overlay = ""
-    if text_ovly:
+    if text_html.strip():
         overlay = f"""
-        <div class="text-overlay" data-start="{start}" data-duration="{duration}">
-          <span class="overlay-text">{text_ovly}</span>
+        <div class="text-overlay" id="txt_{shot_id}"
+             data-start="{start}" data-duration="{int(duration)}">
+          <span class="overlay-text">{text_html}</span>
         </div>"""
 
-    fx_classes = " ".join(f"fx-{f}" for f in fx_list)
-
-    return f"""
-    <div class="shot shot-{shot_type} {fx_classes}"
+    div = f"""
+    <div class="shot shot-{shot_type}" id="{shot_id}"
          data-start="{start}"
-         data-duration="{duration}"
+         data-duration="{int(duration)}"
          data-camera="{shot.camera}"
          data-visual="{visual_id}"
          data-emotion="{emotion}"
-         style="z-index:{z_index}; {cam_css}"
+         data-transition="{transition}"
+         style="z-index:{z_index};"
          title="{visual[:80]}">
-      <div class="shot-inner">
-        <div class="visual-layer visual-{visual_id}"></div>
+      <div class="shot-inner" id="inner_{shot_id}">
+        <div class="visual-layer visual-{visual_id}"
+             style="filter: {em_filter};"></div>
         <div class="particle-layer"></div>
         {overlay.strip()}
       </div>
     </div>"""
+
+    # GSAP JS for this shot
+    js = camera_gsap(shot.camera, el=f"document.getElementById('inner_{shot_id}')",
+                     duration=duration, start=start)
+    if text_html.strip():
+        js += text_gsap(text_motion,
+                        el=f"document.getElementById('txt_{shot_id}')",
+                        delay=start + text_delay,
+                        uid=shot_id)
+
+    return div, js
 
 
 # ── Sound → HTML ───────────────────────────────────────────────────────────────
@@ -367,46 +374,41 @@ html, body {{
 </div>
 
 <script>
-// HELEN GSAP timeline — driven by data-start / data-duration attributes
+// ── HELEN Cinematic Presets (inlined) ─────────────────────────────────────────
+{presets_js}
+</script>
+<script>
+// HELEN GSAP master timeline — seekable by renderer
 (function() {{
-  const tl = gsap.timeline({{ paused: true }});
-  const shots = document.querySelectorAll('.shot');
-  const overlays = document.querySelectorAll('.text-overlay');
+  // ── Master timeline (single seekable surface) ─────────────────────────────
+  const masterTL = gsap.timeline({{ paused: true }});
+  window.__timelines = [masterTL];
+  window.__seek      = (t) => masterTL.seek(t, false);
 
-  // Fade shots in/out per timing
-  shots.forEach(el => {{
-    const start    = parseFloat(el.dataset.start);
-    const duration = parseFloat(el.dataset.duration);
-    const camera   = el.dataset.camera || 'drift';
-
-    tl.to(el, {{ opacity: 1, duration: 0.8, ease: "power2.inOut" }}, start);
-    tl.to(el, {{ opacity: 0, duration: 0.6, ease: "power1.in" }}, start + duration - 0.6);
+  // ── Structural: shot visibility on timeline ───────────────────────────────
+  gsap.set('.shot', {{ opacity: 0 }});
+  document.querySelectorAll('.shot').forEach(el => {{
+    const t0  = parseFloat(el.dataset.start);
+    const dur = parseFloat(el.dataset.duration);
+    masterTL.to(el, {{ opacity: 1, duration: 0.7, ease: 'power2.inOut' }}, t0);
+    masterTL.to(el, {{ opacity: 0, duration: 0.5, ease: 'power1.in'    }}, t0 + dur - 0.5);
   }});
 
-  // Text overlays
-  overlays.forEach(el => {{
-    const start    = parseFloat(el.dataset.start);
-    const duration = parseFloat(el.dataset.duration);
-    tl.to(el, {{ opacity: 1, y: "-8px", duration: 1.2, ease: "power2.out" }}, start + 0.4);
-    tl.to(el, {{ opacity: 0, duration: 0.8, ease: "power1.in" }}, start + duration - 0.8);
-  }});
+  // ── Per-shot camera + text + transitions ──────────────────────────────────
+  {shots_gsap_js}
 
-  // Receipt seal fades in at end
-  tl.to('#receipt-seal', {{ opacity: 1, duration: 2 }}, {total_duration} - 4);
+  // ── Receipt seal ──────────────────────────────────────────────────────────
+  gsap.set('#receipt-seal', {{ opacity: 0, y: 8 }});
+  {receipt_seal_js}
 
-  // Expose for renderer
-  window.__helenTimeline = tl;
-  window.__helenDuration = {total_duration};
-  window.__helenFPS      = {fps};
+  // ── Renderer contract ─────────────────────────────────────────────────────
+  window.__ready    = true;      // renderer waits for this
+  window.__duration = {total_duration};
+  window.__fps      = {fps};
 
-  // Auto-play when renderer signals ready
-  document.addEventListener('helen:render-start', () => tl.play());
-  // HyperFrames hook
-  if (window.__hyperframes) {{
-    window.__hyperframes.onReady(() => tl.play());
-  }} else {{
-    tl.play();  // dev preview
-  }}
+  // ── Dev preview: auto-play ────────────────────────────────────────────────
+  document.addEventListener('helen:render-start', () => masterTL.play());
+  if (document.readyState !== 'loading') masterTL.play();
 }})();
 </script>
 
@@ -429,17 +431,40 @@ def director_to_html(
     composition_id = sha256_hex(f"{plan.plan_id}:{artifact.artifact_id}")[:16]
 
     # Build shot HTML with cumulative timing
-    shots_html_parts = []
-    cursor = 0
+    shot_divs, shot_js_blocks = [], []
+    cursor = 0.0
     for i, shot in enumerate(plan.shots):
-        shots_html_parts.append(_shot_to_div(shot, start=int(cursor), z_index=10 + i))
-        cursor += float(getattr(shot, "duration", 8)) + float(getattr(shot, "silence_after", 0))
+        dur     = float(getattr(shot, "duration", 8))
+        silence = float(getattr(shot, "silence_after", 0))
+        div, js = _shot_to_div(shot, start=int(cursor), z_index=10 + i)
+        shot_divs.append(div)
+        shot_js_blocks.append(js)
 
-    total_duration = cursor
-    shots_html     = "\n  ".join(shots_html_parts)
-    sound_html     = _sound_to_html(plan.sound, composition_id)
-    voice_comment  = _voice_to_comment(plan.voice)
-    body_class     = _emotion_to_body_class(plan.emotion_curve)
+        # Transition to next shot
+        if i < len(plan.shots) - 1:
+            trans_name   = getattr(shot, "transition_in", "crossfade")
+            trans_dur    = 1.8
+            trans_start  = cursor + dur - trans_dur   # overlap start (absolute)
+            shot_id_curr = f"shot_{10 + i}"
+            shot_id_next = f"shot_{10 + i + 1}"
+            shot_js_blocks.append(
+                transition_gsap(trans_name,
+                                el_out=f"document.getElementById('{shot_id_curr}')",
+                                el_in=f"document.getElementById('{shot_id_next}')",
+                                duration=trans_dur,
+                                start=trans_start)
+            )
+
+        cursor += dur + silence
+
+    total_duration   = cursor
+    shots_html       = "\n  ".join(shot_divs)
+    shots_gsap_js    = "\n      ".join(shot_js_blocks)
+    receipt_seal_js  = receipt_seal_gsap(total_duration)
+    sound_html       = _sound_to_html(plan.sound, composition_id)
+    voice_comment    = _voice_to_comment(plan.voice)
+    body_class       = _emotion_to_body_class(plan.emotion_curve)
+    presets_js       = load_presets_js()
 
     script_json = canonical_json({
         "content":   artifact.content,
@@ -456,14 +481,17 @@ def director_to_html(
         plan_id=plan.plan_id,
         plan_hash=plan.plan_hash,
         width=width, height=height, fps=fps,
-        total_duration=total_duration,
-        particle_duration=total_duration + 8,
+        total_duration=int(total_duration),
+        particle_duration=int(total_duration) + 8,
         particle_delay=round(total_duration / 2),
         body_class=body_class,
         shots_html=shots_html,
+        shots_gsap_js=shots_gsap_js,
+        receipt_seal_js=receipt_seal_js,
         sound_html=sound_html,
         voice_comment=voice_comment,
         script_json=script_json,
+        presets_js=presets_js,
     )
 
     assets = [

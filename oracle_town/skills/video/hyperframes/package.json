@@ -1,0 +1,12 @@
+{
+  "name": "helen-hyperframes",
+  "version": "2.0.0",
+  "description": "HELEN cinematic renderer — HTML composition → MP4",
+  "main": "renderer.js",
+  "scripts": {
+    "render": "node renderer.js"
+  },
+  "dependencies": {
+    "puppeteer": "^22.0.0"
+  }
+}

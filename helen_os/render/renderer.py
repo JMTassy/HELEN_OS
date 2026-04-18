@@ -30,8 +30,12 @@ from .contracts import canonical_json, sha256_hex
 
 RenderMode = Literal["stub", "hyperframes"]
 
-HYPERFRAMES_BIN = os.getenv("HYPERFRAMES_BIN", "npx")
-OUTPUT_DIR      = Path("artifacts/render")
+_THIS_DIR        = Path(__file__).parent
+RENDERER_JS      = Path(os.getenv(
+    "HELEN_RENDERER_JS",
+    str(_THIS_DIR.parent.parent / "oracle_town/skills/video/hyperframes/renderer.js"),
+))
+OUTPUT_DIR       = Path("artifacts/render")
 
 
 def render_composition(
@@ -93,7 +97,7 @@ def _render_hyperframes(comp: HTMLCompositionV1, output_dir: Path) -> dict:
 
     try:
         cmd = [
-            HYPERFRAMES_BIN, "hyperframes", "render",
+            "node", str(RENDERER_JS),
             "--input",    html_path,
             "--output",   str(output_path),
             "--width",    str(comp.width),
@@ -105,16 +109,22 @@ def _render_hyperframes(comp: HTMLCompositionV1, output_dir: Path) -> dict:
             cmd,
             capture_output=True,
             text=True,
-            timeout=300,
+            timeout=600,
         )
         if result.returncode != 0:
             raise RuntimeError(
-                f"HyperFrames render failed:\n{result.stderr}"
+                f"HELEN renderer failed:\n{result.stderr}\n{result.stdout}"
             )
 
-        # Hash the output file for receipt binding
-        output_bytes = output_path.read_bytes()
-        file_hash    = "sha256:" + sha256_hex(output_bytes.decode("latin-1"))
+        # Parse the JSON receipt from stdout
+        import json as _json
+        receipt_line = next(
+            (l for l in result.stdout.splitlines() if l.strip().startswith("{")),
+            None,
+        )
+        if receipt_line:
+            receipt_data = _json.loads(receipt_line)
+            file_hash = receipt_data.get("hash", "sha256:unknown")
 
         return {
             "mime_type":    "video/mp4",
