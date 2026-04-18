@@ -1,0 +1,9 @@
+{
+  "date": "{{DATE}}",
+  "topic": "{{TOPIC}}",
+  "meditation_text": "{{MEDITATION_TEXT}}",
+  "run_hash": "{{RUN_HASH}}",
+  "commit_sha": "{{COMMIT_SHA}}",
+  "commit_repo": "{{COMMIT_REPO}}",
+  "authority": "NONE"
+}

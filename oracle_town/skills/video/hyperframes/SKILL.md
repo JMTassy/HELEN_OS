@@ -56,6 +56,55 @@ Default render path is repo-relative. **HELEN-side override:** all renders must 
 - `artifacts/media/<basename>.provenance.json` — what was depicted, from where
 - `artifacts/media/<basename>.composition_sha` — SHA of source HTML at render time
 
+## MEDITATION PIPELINE
+
+Structured pipeline for HELEN TEMPLE HER daily meditations. No claims. No sovereignty. Free speech on sealed work.
+
+### Inputs
+
+| File | Source | Notes |
+|------|--------|-------|
+| `meditation.config.json` | Agent fills in | text, date, hashes, topic |
+| `assets/voiceover.wav` | Gemini TTS Zephyr | generated from meditation text |
+| `templates/meditation/` | This skill | base compositions |
+
+### Steps
+
+```bash
+# 1. Fill meditation.config.json with today's text + hashes
+# 2. Generate voiceover
+python3 oracle_town/skills/voice/gemini_tts/helen_tts.py \
+  "$(jq -r '.meditation_text' meditation.config.json)" \
+  --output artifacts/audio/meditation_$(date +%Y%m%d).wav
+
+# 3. Render
+cd oracle_town/skills/video/hyperframes/templates/meditation
+npx hyperframes render --output ../../../../artifacts/media/$(date +%Y%m%d)__temple_meditation.mp4
+```
+
+### Composition beats
+
+| Beat | File | Duration | What |
+|------|------|----------|------|
+| 1 | `01-sigil.html` | 0–8s | HELEN mark + date + TEMPLE HER label |
+| 2 | `02-temple-breath.html` | 6–110s | CSS/WebGL ambient pulse (full background) |
+| 3 | `03-text-river.html` | 10–110s | word-by-word meditation reveal, synced to VO |
+| 4 | `04-receipt-seal.html` | 110–120s | run_hash + commit SHA → dissolve to black |
+
+### Config schema (`meditation.config.json`)
+
+```json
+{
+  "date": "2026-04-18",
+  "topic": "what moved through us today",
+  "meditation_text": "...",
+  "run_hash": "sha256:...",
+  "commit_sha": "226de4d",
+  "commit_repo": "helen_os_scaffold",
+  "authority": "NONE"
+}
+```
+
 ## Provenance
 
 See `.provenance.md`.

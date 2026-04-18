@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 1920px; height: 1080px;
+      overflow: hidden;
+      background: transparent;
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+    }
+
+    .stage {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 1100px;
+      text-align: center;
+    }
+
+    /* Each paragraph is its own block */
+    .para {
+      margin-bottom: 52px;
+      opacity: 0;
+    }
+
+    /* Words within a paragraph */
+    .word {
+      display: inline-block;
+      color: #f5f0e8;
+      font-size: 32px;
+      line-height: 1.7;
+      letter-spacing: 0.01em;
+      opacity: 0;
+      margin: 0 5px;
+      filter: blur(6px);
+    }
+
+    /* Emphasis words — picked up by generate script via *asterisk* */
+    .word.em {
+      color: #c8964c;
+      font-style: italic;
+    }
+
+    /* The "active" word — subtly brighter while being spoken */
+    .word.active {
+      color: #fff;
+      text-shadow: 0 0 18px rgba(200,150,76,0.5);
+    }
+
+    /* Section divider */
+    .divider {
+      width: 60px; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(200,150,76,0.4), transparent);
+      margin: 32px auto 48px;
+      opacity: 0;
+    }
+
+    /* Top label */
+    .label {
+      position: absolute;
+      top: 60px; left: 50%;
+      transform: translateX(-50%);
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      color: rgba(200,150,76,0.35);
+      text-transform: uppercase;
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="label">authority : none &nbsp;·&nbsp; free speech &nbsp;·&nbsp; no claim</div>
+  <div class="stage" id="stage"></div>
+
+  <script>
+    // ── Meditation text ──────────────────────────────────────────────────────
+    // Injected by generate_meditation.py. Falls back to placeholder.
+    const RAW_TEXT = window.__MEDITATION_TEXT__ || `{{MEDITATION_TEXT}}`;
+
+    // Total composition duration in seconds (matches index.html data-duration)
+    const TOTAL_DURATION = 96;
+
+    // ── Parse text into paragraphs + words ───────────────────────────────────
+    const paragraphs = RAW_TEXT
+      .split(/\n\n+/)
+      .map(p => p.trim())
+      .filter(Boolean);
+
+    const stage = document.getElementById('stage');
+    const allWordEls = [];
+
+    paragraphs.forEach((para, pi) => {
+      const paraEl = document.createElement('div');
+      paraEl.className = 'para';
+
+      // Words — *word* syntax → emphasis
+      const tokens = para.split(/\s+/);
+      tokens.forEach(tok => {
+        const isEm = tok.startsWith('*') && tok.endsWith('*');
+        const text = tok.replace(/\*/g, '');
+        const span = document.createElement('span');
+        span.className = 'word' + (isEm ? ' em' : '');
+        span.textContent = text + ' ';
+        paraEl.appendChild(span);
+        allWordEls.push(span);
+      });
+
+      stage.appendChild(paraEl);
+
+      // Divider between paragraphs (not after last)
+      if (pi < paragraphs.length - 1) {
+        const div = document.createElement('div');
+        div.className = 'divider';
+        stage.appendChild(div);
+      }
+    });
+
+    // ── Build GSAP timeline ──────────────────────────────────────────────────
+    const tl = gsap.timeline();
+
+    // Label fade in
+    tl.to('.label', { opacity: 1, duration: 2, ease: 'power2.out' }, 0);
+
+    // Distribute words evenly across TOTAL_DURATION
+    // Each word: reveal (blur→0, opacity 0→1) then dim slightly
+    const wordCount  = allWordEls.length;
+    const timePerWord = (TOTAL_DURATION - 4) / wordCount; // leave 4s padding
+
+    // Fade in paragraphs as we reach them
+    const paraEls = document.querySelectorAll('.para');
+    let currentParaIdx = -1;
+
+    allWordEls.forEach((el, i) => {
+      const t = 1 + i * timePerWord;
+
+      // Reveal paragraph container when we hit its first word
+      const paraEl = el.closest('.para');
+      const paraIdx = Array.from(paraEls).indexOf(paraEl);
+      if (paraIdx !== currentParaIdx) {
+        currentParaIdx = paraIdx;
+        tl.to(paraEl, { opacity: 1, duration: 1.2, ease: 'power2.out' }, t - 0.5);
+
+        // Also reveal divider after previous para
+        const dividers = document.querySelectorAll('.divider');
+        if (paraIdx > 0 && dividers[paraIdx - 1]) {
+          tl.to(dividers[paraIdx - 1], { opacity: 1, duration: 1, ease: 'power2.out' }, t - 0.8);
+        }
+      }
+
+      // Word reveal: blur clears, opacity rises
+      tl.fromTo(el,
+        { opacity: 0, filter: 'blur(8px)', y: 4 },
+        { opacity: 0.85, filter: 'blur(0px)', y: 0, duration: 0.6, ease: 'power2.out' },
+        t
+      );
+
+      // Active pulse on current word
+      tl.to(el, { opacity: 1, className: '+=active', duration: 0.05 }, t);
+      tl.to(el, { opacity: 0.7, className: '-=active', duration: timePerWord * 0.8 }, t + 0.3);
+    });
+
+    // Fade everything out near end
+    tl.to(stage,  { opacity: 0, duration: 3, ease: 'power2.in' }, TOTAL_DURATION - 3.5);
+    tl.to('.label', { opacity: 0, duration: 2, ease: 'power2.in' }, TOTAL_DURATION - 3);
+  </script>
+</body>
+</html>

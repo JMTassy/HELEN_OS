@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 1920px; height: 1080px;
+      overflow: hidden;
+      background: #08080f;
+    }
+    canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+    /* Vignette overlay — keeps text readable */
+    .vignette {
+      position: absolute; inset: 0;
+      background: radial-gradient(
+        ellipse 80% 70% at 50% 50%,
+        transparent 40%,
+        rgba(8,8,15,0.85) 100%
+      );
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="c"></canvas>
+  <div class="vignette"></div>
+
+  <script>
+    const canvas = document.getElementById('c');
+    const gl = canvas.getContext('webgl');
+    canvas.width  = 1920;
+    canvas.height = 1080;
+
+    // ── Vertex shader ────────────────────────────────────────────────────────
+    const VS = `
+      attribute vec2 a_pos;
+      void main() { gl_Position = vec4(a_pos, 0.0, 1.0); }
+    `;
+
+    // ── Fragment shader — slow organic pulse ─────────────────────────────────
+    // Two layered simplex-like noise fields, amber + deep purple.
+    // Slow (period ~20s) so it reads as breath, not animation.
+    const FS = `
+      precision highp float;
+      uniform float u_time;
+      uniform vec2  u_res;
+
+      // Hash + smooth noise
+      float hash(vec2 p) {
+        p = fract(p * vec2(234.34, 435.345));
+        p += dot(p, p + 34.23);
+        return fract(p.x * p.y);
+      }
+      float noise(vec2 p) {
+        vec2 i = floor(p), f = fract(p);
+        f = f * f * (3.0 - 2.0 * f);
+        return mix(
+          mix(hash(i), hash(i + vec2(1,0)), f.x),
+          mix(hash(i + vec2(0,1)), hash(i + vec2(1,1)), f.x),
+          f.y
+        );
+      }
+      float fbm(vec2 p) {
+        float v = 0.0, a = 0.5;
+        for (int i = 0; i < 5; i++) {
+          v += a * noise(p);
+          p = p * 2.1 + vec2(1.7, 9.2);
+          a *= 0.5;
+        }
+        return v;
+      }
+
+      void main() {
+        vec2 uv = gl_FragCoord.xy / u_res;
+        uv.y = 1.0 - uv.y;
+
+        // Slow drift
+        float t = u_time * 0.04;
+        vec2 q = vec2(fbm(uv + t), fbm(uv + vec2(1.0)));
+        vec2 r = vec2(fbm(uv + q + vec2(1.7, 9.2) + 0.15 * t),
+                      fbm(uv + q + vec2(8.3, 2.8) + 0.126 * t));
+        float f = fbm(uv + r);
+
+        // Colour: deep space → amber warmth
+        vec3 deep   = vec3(0.06, 0.04, 0.12);   // deep purple
+        vec3 warm   = vec3(0.55, 0.32, 0.08);   // amber
+        vec3 glow   = vec3(0.90, 0.70, 0.30);   // bright amber
+        vec3 col = mix(deep, warm, clamp(f * f * 4.0, 0.0, 1.0));
+        col = mix(col, glow,  clamp(length(q)  * 0.4, 0.0, 1.0));
+
+        // Vignette (reinforces CSS vignette)
+        float vig = 1.0 - smoothstep(0.4, 1.2, length(uv - 0.5) * 1.6);
+        col *= vig;
+
+        // Pulse — slow breath ~12s period
+        float pulse = 0.82 + 0.18 * sin(u_time * 0.52);
+        col *= pulse;
+
+        gl_FragColor = vec4(col * 0.45, 1.0); // keep dim — text sits on top
+      }
+    `;
+
+    // ── Compile ──────────────────────────────────────────────────────────────
+    function shader(type, src) {
+      const s = gl.createShader(type);
+      gl.shaderSource(s, src); gl.compileShader(s);
+      return s;
+    }
+    const prog = gl.createProgram();
+    gl.attachShader(prog, shader(gl.VERTEX_SHADER,   VS));
+    gl.attachShader(prog, shader(gl.FRAGMENT_SHADER, FS));
+    gl.linkProgram(prog); gl.useProgram(prog);
+
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER,
+      new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+    const loc = gl.getAttribLocation(prog, 'a_pos');
+    gl.enableVertexAttribArray(loc);
+    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+    const uTime = gl.getUniformLocation(prog, 'u_time');
+    const uRes  = gl.getUniformLocation(prog, 'u_res');
+    gl.uniform2f(uRes, 1920, 1080);
+    gl.viewport(0, 0, 1920, 1080);
+
+    // ── Render loop ──────────────────────────────────────────────────────────
+    let start = null;
+    function frame(ts) {
+      if (!start) start = ts;
+      gl.uniform1f(uTime, (ts - start) / 1000);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  </script>
+</body>
+</html>

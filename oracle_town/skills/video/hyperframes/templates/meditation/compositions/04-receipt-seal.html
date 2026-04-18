@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 1920px; height: 1080px;
+      overflow: hidden;
+      background: transparent;
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .law {
+      font-size: 10px;
+      letter-spacing: 0.45em;
+      color: rgba(200,150,76,0.5);
+      text-transform: uppercase;
+      opacity: 0;
+    }
+
+    .rule {
+      width: 200px; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(200,150,76,0.3), transparent);
+      opacity: 0;
+    }
+
+    .hash-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      opacity: 0;
+    }
+
+    .hash-label {
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      color: rgba(122,154,176,0.6);
+      text-transform: uppercase;
+    }
+
+    .hash-value {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: rgba(122,154,176,0.85);
+      word-break: break-all;
+      max-width: 700px;
+      text-align: center;
+    }
+
+    .commit-block {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      opacity: 0;
+    }
+
+    .commit-label {
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      color: rgba(200,150,76,0.4);
+      text-transform: uppercase;
+    }
+
+    .commit-sha {
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      color: rgba(200,150,76,0.7);
+    }
+
+    .authority-line {
+      font-size: 9px;
+      letter-spacing: 0.4em;
+      color: rgba(245,240,232,0.2);
+      text-transform: uppercase;
+      opacity: 0;
+      margin-top: 8px;
+    }
+
+    /* Full black overlay — fades in at the very end */
+    .blackout {
+      position: absolute;
+      inset: 0;
+      background: #000;
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="law">no receipt — no claim</div>
+  <div class="rule"></div>
+
+  <div class="hash-block">
+    <div class="hash-label">autoresearch run</div>
+    <div class="hash-value" id="run-hash">{{RUN_HASH}}</div>
+  </div>
+
+  <div class="rule"></div>
+
+  <div class="commit-block">
+    <div class="commit-label">commit</div>
+    <div class="commit-sha" id="commit-sha">{{COMMIT_SHA}}</div>
+    <div class="commit-label" id="commit-repo">{{COMMIT_REPO}}</div>
+  </div>
+
+  <div class="authority-line">authority : none &nbsp;·&nbsp; non-sovereign &nbsp;·&nbsp; receipted</div>
+
+  <div class="blackout" id="blackout"></div>
+
+  <script>
+    const tl = gsap.timeline({ delay: 0.3 });
+
+    tl.to('.law',           { opacity: 1, duration: 1.5, ease: 'power2.out' }, 0)
+      .to('.rule',          { opacity: 1, scaleX: 1, duration: 1.2, ease: 'power2.inOut', stagger: 0.3 }, 0.5)
+      .to('.hash-block',    { opacity: 1, y: 0, duration: 1.2, ease: 'power2.out' }, 1.0)
+      .to('.commit-block',  { opacity: 1, y: 0, duration: 1, ease: 'power2.out' }, 1.8)
+      .to('.authority-line',{ opacity: 1, duration: 1, ease: 'power2.out' }, 2.5)
+      // Hold for reading (3.5s), then fade to black
+      .to('#blackout',      { opacity: 1, duration: 2.5, ease: 'power2.in' }, 5.5);
+
+    // Populate from window vars injected by generate script
+    if (window.__RUN_HASH__)     document.getElementById('run-hash').textContent    = window.__RUN_HASH__;
+    if (window.__COMMIT_SHA__)   document.getElementById('commit-sha').textContent  = window.__COMMIT_SHA__;
+    if (window.__COMMIT_REPO__)  document.getElementById('commit-repo').textContent = window.__COMMIT_REPO__;
+  </script>
+</body>
+</html>
