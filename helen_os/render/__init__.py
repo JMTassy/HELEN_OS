@@ -15,6 +15,12 @@ Law:
   - No hidden prompts, no independent reasoning, no tool calls
   - authority: False always — rendering ≠ truth
 """
-from helen_os.render.video import RenderRequest, RenderResult, render_video
+from helen_os.render.video import (
+    RenderRequest, RenderScript, ScriptSegment,
+    RenderReceipt, render_video, assemble_from_ledger, new_render_id,
+)
 
-__all__ = ["RenderRequest", "RenderResult", "render_video"]
+__all__ = [
+    "RenderRequest", "RenderScript", "ScriptSegment",
+    "RenderReceipt", "render_video", "assemble_from_ledger", "new_render_id",
+]
