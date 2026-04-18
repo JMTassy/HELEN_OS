@@ -9,3 +9,6 @@ node_modules/
 .DS_Store
 helen_os/knowledge/index.json
 helen_os/knowledge/embeddings/
+helen_os/knowledge/corpus.json
+helen_os/knowledge/tag_graph.json
+helen_os/knowledge/access_log.ndjson

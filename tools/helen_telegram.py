@@ -466,12 +466,36 @@ def handle_message(msg: dict):
         print(f"  [DONE] {reply.split(chr(10))[0]}")
         return
 
-    # Default: free text through kernel
-    her_text, verdict = helen_say(text)
+    # Knowledge retrieval — search user's corpus for relevant context
+    knowledge_context = ""
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(ROOT))
+        from helen_os.knowledge.engine import KnowledgeEngine
+        engine = KnowledgeEngine()
+        # Extract tags from the message (if user uses #tags)
+        user_tags = [m.lower() for m in re.findall(r'#([A-Za-z]\w+)', text)]
+        results = engine.retrieve(text, tags=user_tags if user_tags else None, k=3)
+        if results:
+            parts = []
+            for r in results:
+                parts.append(f"[{r.source_file.split('/')[-1]}] {r.content[:200]}")
+            knowledge_context = "\n".join(parts)
+            print(f"  [knowledge] {len(results)} results, tags={user_tags}")
+    except Exception as e:
+        print(f"  [knowledge] {e}")
+
+    # Default: free text through kernel (with knowledge context appended)
+    msg_with_context = text
+    if knowledge_context:
+        msg_with_context = f"{text}\n\n[HELEN knowledge context from your corpus:]\n{knowledge_context}"
+    her_text, verdict = helen_say(msg_with_context)
     print(f"  [HELEN {verdict}] {her_text[:80]}")
 
     # Send text response immediately
     reply = f"[HAL {verdict}]\n{her_text}"
+    if knowledge_context:
+        reply += f"\n\n📚 Sources: {', '.join(r.source_file.split('/')[-1] for r in results)}"
     send_text(chat_id, reply)
 
     # Generate and send voice (async-ish)
