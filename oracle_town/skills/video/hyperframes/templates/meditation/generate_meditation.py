@@ -3,7 +3,7 @@
 generate_meditation.py — HELEN TEMPLE HER video generator.
 
 Reads meditation.config.json, injects values into composition HTML templates,
-calls Gemini TTS (Zephyr) for voiceover, then renders via npx hyperframes.
+calls HELEN OS voice engine for voiceover, then renders via npx hyperframes.
 
 Usage:
     python3 generate_meditation.py                    # uses meditation.config.json
@@ -90,7 +90,7 @@ def inject_html(src: Path, dest: Path, cfg: dict) -> None:
 
 
 def generate_voiceover(text: str, output_path: Path) -> Path | None:
-    """Call Gemini TTS (Zephyr) to generate voiceover WAV."""
+    """Call HELEN OS voice engine to generate voiceover WAV."""
     if not TTS_SCRIPT.exists():
         print(f"[WARN] TTS script not found at {TTS_SCRIPT} — skipping voiceover")
         return None
@@ -170,7 +170,7 @@ def main() -> int:
 
     # ── Voiceover ────────────────────────────────────────────────────────────
     AUDIO_DIR.mkdir(parents=True, exist_ok=True)
-    vo_filename = f"{date_slug}__{topic_slug}.zephyr.wav"
+    vo_filename = f"{date_slug}__{topic_slug}.wav"
     vo_path = AUDIO_DIR / vo_filename
     assets_dir = build_dir / "assets"
     assets_dir.mkdir(exist_ok=True)
