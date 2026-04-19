@@ -1,0 +1,58 @@
+1080px, 9:16, 24fps, 5s
+
+[SHOT]
+Full shot — camera locked on tripod, zero movement, zero drift.
+35mm anamorphic lens, f/2.4. No rack focus. No zoom.
+
+[SUBJECT]
+The woman from the reference image, identity preserved exactly:
+red-orange wavy hair with blue teardrop hair clip, blue-gray eyes,
+freckles on nose and cheeks, fine features.
+She stands centered at the threshold of a massive ancient Egyptian
+limestone archway, wearing a dark near-black linen robe that falls
+to the floor. White linen blindfold band tied across her eyes.
+Hands clasped loosely at waist. Head bowed 10 degrees forward.
+A second robed figure stands 30cm behind and to her right,
+darker robe, one hand resting on her left shoulder.
+
+[ACTION]
+[0s-5s] Both figures completely motionless.
+Only motion: torch flames flicker irregularly,
+very low mist drifts 2cm/sec across the stone floor at ankle height.
+
+[ENVIRONMENT]
+Ancient Egyptian mystery-school underground chamber.
+Massive limestone block archway — dressed stone columns
+with shallow bas-relief hieroglyph cartouches.
+Stone floor continues into total darkness beyond the threshold.
+Ceiling not visible. Space feels ancient, subterranean, immense.
+
+[LIGHTING]
+Two iron-cage torches mounted on inner column faces at 160cm height.
+Left torch: 3200K amber, warm fill on left side of figure and column.
+Right torch: symmetric warm fill on right side.
+No overhead light. No cool tones. No ambient fill between figures.
+Blacks crushed deep. Pure amber-to-black contrast throughout.
+
+[ATMOSPHERE]
+Very low ground mist at ankle height drifting slowly leftward,
+visible only in torch spill zones.
+
+[STYLE]
+Photographic film still. Shot on 35mm film. Anamorphic lens flare
+if any — subtle, natural. Visible grain, ISO 3200 simulation.
+Stone texture: rough hewn limestone with chisel marks.
+Fabric: coarse linen weave visible at close range.
+Natural imperfections throughout. No artificial smoothness.
+
+[CONSTRAINTS]
+Character face, hair colour, freckles, and hair clip must remain
+identical to reference image throughout all 5 seconds.
+Archway geometry must not shift or morph.
+Both figures must hold their exact positions throughout.
+
+[NEGATIVE]
+No 3D render. No CGI. No digital art. No anime style.
+No game engine lighting. No plastic textures. No smooth AI skin.
+No camera movement. No zoom. No figure movement. No supernatural glow.
+No blue-violet tones. No text. No extra figures.
