@@ -39,6 +39,46 @@ unreviewed agent output.
   when the file did not exist on disk. Future peer messages are to be
   verified against the filesystem before being trusted.
 
+### 2026-04-19 creative/governance session cluster
+
+Eight commits landed on `main` between 19:38 and 23:11 (CEST) by one or more
+Claude Code sessions that were not the session holding this document at the
+time. All touched **non-sovereign paths** (permitted under CLAUDE.md):
+`oracle_town/skills/**`, `tests/**`, `DOCTRINE_ADMISSION_PROTOCOL_V1.md`,
+`HELEN_PRIMER.md`, `HELEN_DESIGN.md`.
+
+| Commit | Time (CEST) | Content | Path class |
+|--------|-------------|---------|------------|
+| `e9407a7` | 19:38 | Add HELEN_PRIMER.md | non-sovereign root doc |
+| `e1b32ca` | 19:39 | Add HELEN_DESIGN.md | non-sovereign root doc |
+| `b68bac9` | 20:00 | DOCTRINE_ADMISSION_PROTOCOL_V1 gate draft | non-sovereign root doc |
+| `4503725` | 20:20 | §4 gate test fixtures + harness | `tests/` non-sovereign |
+| `7edfae1` | 20:45 | Fixture V006 simplification | `tests/` non-sovereign |
+| `f62a4fc` | 21:37 | SESSION_RECAP.md add | non-sovereign root |
+| `541d0b3` | 21:45 | Revert SESSION_RECAP.md | non-sovereign root |
+| `84f6bdf` | 23:11 | HELEN_VIDEO_PROMPT_V1 + voice branding fix | `oracle_town/skills/**` |
+
+**Process gap**: none of these commits was accompanied by a `helen_say.py`
+receipt or a formal K2/Rule 3 cross-session review. Content is technically
+sound and all paths are permitted; process was not followed.
+
+**SESSION_RECAP add/revert** (`f62a4fc` → `541d0b3`): the add was made during
+an operator "recap all and commit" instruction; the revert was applied by a
+peer session that ruled the file should stay untracked. Net effect: no
+SESSION_RECAP.md on disk. The revert is correct per prior operator ruling;
+both commits are logged here for provenance.
+
+**Remediation status**: logged here. Post-hoc receipt via `helen_say.py`
+pending operator authorisation (requires kernel daemon running). No sovereign
+paths were touched by any of these sessions.
+
+**Cross-session causal ambiguity note**: the 2026-04-19 session cluster
+involves multiple Claude Code context windows acting on the same SOT.
+Downstream sessions may not be able to see tool-call receipts produced
+by upstream sessions. Any future dispute about whether a delivery happened
+must be resolved against the upstream session's tool-call stream, not
+a downstream session's absence of evidence.
+
 ---
 
 ## Sovereign paths — forbidden to all peers
