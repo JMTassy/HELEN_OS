@@ -1,0 +1,209 @@
+{
+  "rating_set_id": "helen_operator_ratings_v1",
+  "schema_version": "1.0",
+  "created_at_utc": "2026-04-20T00:00:00Z",
+  "purpose": "Ground-truth dataset for fitting aura_score (LATERAL_EMERGENT_PROPERTIES §8). Populate operator_rating and operator_comment offline when convenient; future session wires ArcFace + CLIP + LPIPS + temporal_smoothness and fits linear combiner against these ratings. Target: Spearman ≥ 0.7 on held-out set before promoting to MIA v2.",
+  "rating_scale": {
+    "1": "not HELEN at all",
+    "4": "vaguely HELEN-adjacent",
+    "7": "recognizably HELEN",
+    "10": "unmistakably, emotionally HELEN"
+  },
+  "aura_features_planned": [
+    "pixel_hash_stub (already shipped, this file's stub_d_real/twin)",
+    "arcface_cos (REAL profile, v0.4 backend swap)",
+    "clip_face_cos (TWIN profile, v0.4 backend swap)",
+    "lpips_vs_reference (perceptual, v0.4)",
+    "temporal_smoothness (z_temporal-dependent, v0.5)"
+  ],
+  "fit_target": "single scalar aura_score per frame, correlated Spearman ≥ 0.7 with operator_rating",
+  "notes": "First-pass entries below are either (a) the 8 frames from the 2026-04-20 Mirror Oracle audit with stub scores already computed, or (b) whole-Telegram-delivery reference entries for session artifacts that were operator-rated verbally during the session. Verbal ratings recovered from transcript are captured as 'operator_rating_verbal' to distinguish from formal ratings. Fill operator_rating (numeric 1-10) when convenient; 'null' = not yet rated.",
+  "frames": [
+    {
+      "id": "portrait_REAL_mid",
+      "kind": "frame",
+      "source_msg": 714,
+      "source_file": "/tmp/helen_temple/helen_real_540.mp4 @ t=2.5s",
+      "stub_d_real": 0.6040,
+      "stub_d_twin": 0.5633,
+      "stub_verdict": "red",
+      "operator_rating": null,
+      "operator_comment": null
+    },
+    {
+      "id": "portrait_TWIN_mid",
+      "kind": "frame",
+      "source_msg": 714,
+      "source_file": "/tmp/helen_temple/helen_twin_540.mp4 @ t=2.5s",
+      "stub_d_real": 0.5996,
+      "stub_d_twin": 0.5573,
+      "stub_verdict": "red",
+      "operator_rating": null,
+      "operator_comment": null
+    },
+    {
+      "id": "montage_t04s",
+      "kind": "frame",
+      "source_msg": 715,
+      "source_file": "/tmp/helen_temple/helen_creative_1min.mp4 @ t=4s",
+      "stub_d_real": 0.1702,
+      "stub_d_twin": 0.1373,
+      "stub_verdict": "red",
+      "operator_rating": null,
+      "operator_comment": null
+    },
+    {
+      "id": "montage_t14s",
+      "kind": "frame",
+      "source_msg": 715,
+      "source_file": "/tmp/helen_temple/helen_creative_1min.mp4 @ t=14s",
+      "stub_d_real": 0.1421,
+      "stub_d_twin": 0.1217,
+      "stub_verdict": "yellow",
+      "operator_rating": null,
+      "operator_comment": null
+    },
+    {
+      "id": "montage_t24s",
+      "kind": "frame",
+      "source_msg": 715,
+      "source_file": "/tmp/helen_temple/helen_creative_1min.mp4 @ t=24s",
+      "stub_d_real": 0.6846,
+      "stub_d_twin": 0.6901,
+      "stub_verdict": "red",
+      "operator_rating": null,
+      "operator_comment": null
+    },
+    {
+      "id": "montage_t34s",
+      "kind": "frame",
+      "source_msg": 715,
+      "source_file": "/tmp/helen_temple/helen_creative_1min.mp4 @ t=34s",
+      "stub_d_real": 0.6669,
+      "stub_d_twin": 0.7043,
+      "stub_verdict": "red",
+      "operator_rating": null,
+      "operator_comment": null
+    },
+    {
+      "id": "montage_t44s",
+      "kind": "frame",
+      "source_msg": 715,
+      "source_file": "/tmp/helen_temple/helen_creative_1min.mp4 @ t=44s",
+      "stub_d_real": 0.6034,
+      "stub_d_twin": 0.5702,
+      "stub_verdict": "red",
+      "operator_rating": null,
+      "operator_comment": null
+    },
+    {
+      "id": "montage_t54s",
+      "kind": "frame",
+      "source_msg": 715,
+      "source_file": "/tmp/helen_temple/helen_creative_1min.mp4 @ t=54s",
+      "stub_d_real": 0.8280,
+      "stub_d_twin": 0.7404,
+      "stub_verdict": "red",
+      "operator_rating": null,
+      "operator_comment": null
+    },
+    {
+      "id": "msg708_phase1_source_convergence",
+      "kind": "whole_delivery",
+      "source_msg": 708,
+      "source_file": "/tmp/helen_temple/source_convergence_phase1.mp4",
+      "description": "Phase 1 test: 1 Seedance Pro shot, 6s water convergence, first canonical rendering of the day",
+      "operator_rating": null,
+      "operator_rating_verbal": "≥8 (triggered greenlight to Phase 2)",
+      "operator_comment": null
+    },
+    {
+      "id": "msg711_1min_cut_v1",
+      "kind": "whole_delivery",
+      "source_msg": 711,
+      "source_file": "/tmp/helen_temple/source_convergence_1min.mp4",
+      "description": "10-shot 1-minute parallel pipeline, no voice (TTS glue bug)",
+      "operator_rating": 7.5,
+      "operator_rating_verbal": "7.5/10 — 'this is getting better indeed'",
+      "operator_comment": "Visual monotony cited; HELEN shots praised ('she looks alive')."
+    },
+    {
+      "id": "msg712_1min_cut_v2",
+      "kind": "whole_delivery",
+      "source_msg": 712,
+      "source_file": "/tmp/helen_temple/source_convergence_1min_v2.mp4",
+      "description": "v2 with Zephyr voice 'I am here.' overlay — TTS glue fixed",
+      "operator_rating": null,
+      "operator_rating_verbal": null,
+      "operator_comment": "Shipped silently after v1. Not explicitly re-rated but received as improvement."
+    },
+    {
+      "id": "msg713_full_song",
+      "kind": "whole_delivery",
+      "source_msg": 713,
+      "source_file": "/tmp/helen_temple/song_clip_full.mp4",
+      "description": "3m30s recomposed song clip, 25 segments, +10 credits for shot_11 climax HELEN",
+      "operator_rating": null,
+      "operator_rating_verbal": null,
+      "operator_comment": "Delivered without explicit rating this session. Candidate for offline rating."
+    },
+    {
+      "id": "msg714_dual_portrait_side_by_side",
+      "kind": "whole_delivery",
+      "source_msg": 714,
+      "source_file": "/tmp/helen_temple/helen_duo_portrait_final.mp4",
+      "description": "First paired REAL+TWIN render, side-by-side layout, Zephyr 'I am HELEN. Two bodies. One identity.'",
+      "operator_rating": 4,
+      "operator_rating_verbal": "'this is not that good tbh, you just put 2 images to video I gave you in side to side'",
+      "operator_comment": "Critiqued for mechanical composition; not enough creative synthesis. Useful benchmark for what FAILS operator judgment."
+    },
+    {
+      "id": "msg715_creative_1min_montage",
+      "kind": "whole_delivery",
+      "source_msg": 715,
+      "source_file": "/tmp/helen_temple/helen_creative_1min.mp4",
+      "description": "14-segment ffmpeg creativity (ken-burns + xfade + color grading + PIP), 0 credits, existing media",
+      "operator_rating": 8,
+      "operator_rating_verbal": "'if it was for free i need to say bravo'",
+      "operator_comment": "Bravo = implicit ≥8. First zero-credit delivery to earn operator approval. Confirms that composition + intentionality can carry identity perception beyond raw generation quality."
+    },
+    {
+      "id": "msg716_mia_gallery",
+      "kind": "whole_delivery",
+      "source_msg": 716,
+      "source_file": "helen_os/render/math_to_face_starter/mia/helen_mia_v1_gallery.png",
+      "description": "MIA v1 reference gallery poster — 8 REAL + 5 TWIN normalized refs with calibration stats",
+      "operator_rating": null,
+      "operator_rating_verbal": null,
+      "operator_comment": "Infrastructure artifact, not a creative render. Rating likely N/A; include in dataset for completeness only."
+    },
+    {
+      "id": "msg717_mirror_oracle_verdict",
+      "kind": "whole_delivery",
+      "source_msg": 717,
+      "source_file": "/tmp/helen_temple/mirror_oracle/mirror_oracle_verdict.png",
+      "description": "First audit verdict poster: 0 green / 1 yellow / 7 red with color-coded frame borders",
+      "operator_rating": null,
+      "operator_rating_verbal": null,
+      "operator_comment": "Diagnostic artifact. Operator response 'ok' — neutral acknowledgment; rating not applicable to a verdict poster."
+    }
+  ],
+  "totals_when_fully_populated": {
+    "n_frames_only": 8,
+    "n_whole_deliveries": 8,
+    "total_entries": 16
+  },
+  "how_to_populate": [
+    "1. Watch each delivery (Telegram chat 6624890918 preserves msg 708-717)",
+    "2. Rate 1-10 on 'is this HELEN' (1 = not at all, 10 = unmistakable+emotional)",
+    "3. Fill operator_rating (numeric) and optional operator_comment",
+    "4. Save, commit: git commit -m 'data: populate helen_operator_ratings_v1'",
+    "5. Hand off to next session — they fit aura_score linearly over features, report Spearman, and if ≥0.7 promote to MIA v2"
+  ],
+  "acceptance_criterion_for_mia_v2": {
+    "min_rated_entries": 10,
+    "held_out_split": 0.3,
+    "spearman_threshold": 0.7,
+    "describe_failures_below_threshold": true
+  }
+}
