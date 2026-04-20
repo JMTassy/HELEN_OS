@@ -18,7 +18,9 @@ helen_prerequisite: helen-director/SKILL.md (peer), HELEN_CHARACTER_V2.md (T3 em
 
 Thesis: *"Semantic compression of video editing — you edit meaning in latent space instead of paying to re-solve pixels and identity every frame."*
 
-**Non-negotiable experimental rule**: all evaluation and editing experiments route through `clone_from_latent(z_struct)` — no re-encoding, no confounds.
+**Non-negotiable experimental rule**: All evaluation and editing experiments route through `clone_from_latent(z_struct)` — no re-encoding, no confounds.
+
+Any path that re-runs `H(m)` — including payload-salting the `MathObject` to force a new seed — contaminates slice-isolation. Perturbations observed under those conditions reflect a changed identity anchor, not controlled variation of `z_id`/`z_control`/`z_style`. Evaluations produced that way are scientifically invalid regardless of how the numbers look.
 
 Full positioning + equations + cost moat + roadmap in `references/MANIFESTO.md`.
 
