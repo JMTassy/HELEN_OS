@@ -54,6 +54,22 @@ Any claim *"this frame shows HELEN"* is falsifiable by a deterministic gate, not
 
 **Persistent emotional identity under cheap transformation.**
 
+### Lateral emergent properties (amplify the primary)
+
+Beyond the primary contract, the architecture produces a family of lateral emergent properties at scale. Flagship:
+
+- **Character Gravity** ⭐ — HELEN behaves as a persistent attractor in latent-video space; wide stylistic/emotional transformations are pulled back toward canonical HELEN-ness. She stops being a character and becomes a gravitational basin.
+
+Top-5 ranked (full catalog in `references/LATERAL_EMERGENT_PROPERTIES.md`):
+
+1. **Character Gravity** — persistent attractor in latent-video space
+2. **Identity Thermostat** — tunable drift tolerance (cold / warm / hot)
+3. **Emotion per Credit** — art direction as a quantified optimization target
+4. **Plural Canon Stability** — one governed identity supports many canonicals (photoreal / anime / poster / childlike / older / ritual / corporate)
+5. **Aura Engineering** — presence separable from identity (weak HELEN vs strong HELEN both passing gates)
+
+Plus 5 more: Diagnostic Aesthetics, Reversible Mythology, Identity Elasticity Map, Narrative Inertia, Character-as-Compiler.
+
 Once the compiler is wired, the system delivers four guarantees that normally come separately:
 
 1. **Identity preservation** across frames and renderers — HELEN stays HELEN.
