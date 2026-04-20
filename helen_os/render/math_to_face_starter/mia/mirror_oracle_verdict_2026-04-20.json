@@ -1,0 +1,100 @@
+{
+  "mia_id": "mia_helen_dual_v1",
+  "audited_at_utc": "2026-04-20T18:00:51.589503Z",
+  "sources": [
+    "msg714 (dual portrait)",
+    "msg715 (creative montage)"
+  ],
+  "totals": {
+    "green": 0,
+    "yellow": 1,
+    "red": 7,
+    "n": 8
+  },
+  "thresholds": {
+    "tau_real": 0.12772248914214854,
+    "tau_twin": 0.1271638932693838
+  },
+  "frames": [
+    {
+      "path": "/tmp/helen_temple/mirror_oracle/portrait_REAL_mid.png",
+      "d_real": 0.6039746451022232,
+      "d_twin": 0.5632505736415431,
+      "pass_real": false,
+      "pass_twin": false,
+      "verdict": "red",
+      "label": "portrait_REAL_mid",
+      "source_msg": "msg714"
+    },
+    {
+      "path": "/tmp/helen_temple/mirror_oracle/portrait_TWIN_mid.png",
+      "d_real": 0.5996498419615802,
+      "d_twin": 0.5573366381093123,
+      "pass_real": false,
+      "pass_twin": false,
+      "verdict": "red",
+      "label": "portrait_TWIN_mid",
+      "source_msg": "msg714"
+    },
+    {
+      "path": "/tmp/helen_temple/mirror_oracle/montage_t04s.png",
+      "d_real": 0.17023878802328962,
+      "d_twin": 0.1372656040629201,
+      "pass_real": false,
+      "pass_twin": false,
+      "verdict": "red",
+      "label": "montage_t04s",
+      "source_msg": "msg715"
+    },
+    {
+      "path": "/tmp/helen_temple/mirror_oracle/montage_t14s.png",
+      "d_real": 0.14208500613522668,
+      "d_twin": 0.12172039396517842,
+      "pass_real": false,
+      "pass_twin": true,
+      "verdict": "yellow",
+      "label": "montage_t14s",
+      "source_msg": "msg715"
+    },
+    {
+      "path": "/tmp/helen_temple/mirror_oracle/montage_t24s.png",
+      "d_real": 0.6845655910114798,
+      "d_twin": 0.6900672880156223,
+      "pass_real": false,
+      "pass_twin": false,
+      "verdict": "red",
+      "label": "montage_t24s",
+      "source_msg": "msg715"
+    },
+    {
+      "path": "/tmp/helen_temple/mirror_oracle/montage_t34s.png",
+      "d_real": 0.6668663286697836,
+      "d_twin": 0.7043085737027465,
+      "pass_real": false,
+      "pass_twin": false,
+      "verdict": "red",
+      "label": "montage_t34s",
+      "source_msg": "msg715"
+    },
+    {
+      "path": "/tmp/helen_temple/mirror_oracle/montage_t44s.png",
+      "d_real": 0.603371050891781,
+      "d_twin": 0.5701951870919182,
+      "pass_real": false,
+      "pass_twin": false,
+      "verdict": "red",
+      "label": "montage_t44s",
+      "source_msg": "msg715"
+    },
+    {
+      "path": "/tmp/helen_temple/mirror_oracle/montage_t54s.png",
+      "d_real": 0.8280139041670577,
+      "d_twin": 0.7403507453942415,
+      "pass_real": false,
+      "pass_twin": false,
+      "verdict": "red",
+      "label": "montage_t54s",
+      "source_msg": "msg715"
+    }
+  ]
+}
