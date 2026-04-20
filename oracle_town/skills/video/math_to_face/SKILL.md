@@ -386,3 +386,87 @@ Failures are data. The test isn't "pass everywhere" — it's "produce a calibrat
 - [ ] Manifest logging infrastructure (JSON append-only + model-version registry)
 
 This test is explicitly **NOT** a session-scope deliverable. It's a multi-week integration milestone that validates the whole stack end-to-end once Phase 4 + Phase 5 are complete.
+
+---
+
+## 14. Dual-canonical HELEN — REAL + TWIN
+
+Doctrine extension shipped 2026-04-20 (operator direction): HELEN has **two canonical render profiles sharing one math identity**. Enables paired rendering (HELEN and her digital twin in the same scene).
+
+### 14.1 Architecture contract
+
+```
+ONE shared math identity  :  helen_math_id  (invariant, shared by both)
+TWO render profiles       :
+    Profile A (REAL)  : photorealistic HELEN      → ArcFace anchor
+    Profile B (TWIN)  : manga/anime HELEN         → anime-face / CLIP-face anchor
+ONE paired render operator:  (I_real, I_twin) = (G_real(R_real(z,c)), G_manga(R_manga(z,c)))
+                              where z = H(m) and c are scene conditions
+```
+
+**Key invariant**: both profiles come from the same `z = H(m)`. That's what makes them "the same person" across modalities — not matching prompts, but matching latent anchor.
+
+Python scaffold: `HelenDualIdentity` dataclass + `paired_render()` function in `helen_os/render/math_to_face.py`.
+
+### 14.2 HelenDualIdentity components
+
+| Field | Purpose |
+|---|---|
+| `shared_math_id` | e.g. `"HELEN/v1"` — the invariant both profiles must agree on |
+| `real: HelenIdentity` | full MIA for the photorealistic profile (μ_e, Σ_e via ArcFace) |
+| `twin: HelenIdentity` | full MIA for the manga/anime profile (μ_e, Σ_e via anime-face or CLIP) |
+| `paired_scene_templates` | named reusable scenes like `"HELEN_OS_METAVERSE_DUO"`, `"CONTROL_ROOM_DIALOGUE"` |
+
+### 14.3 Paired identity gates
+
+Both profiles gate independently. Paired render is ACCEPTED only if **both pass their own anchor**:
+
+```
+real_pass = passes_identity_gate(I_real, dual.real, arcface_real_model)
+twin_pass = passes_identity_gate(I_twin, dual.twin, arcface_twin_model)
+accepted  = real_pass AND twin_pass
+```
+
+- `arcface_real_model` — ArcFace ResNet50 or equivalent photoreal face embedder
+- `arcface_twin_model` — anime-face embedder (e.g., ANIMEFACE models) OR CLIP-face proxy for stylized identity
+
+### 14.4 Use-case commands the assistant supports
+
+Once wired, the assistant handles:
+- `"Generate HELEN + twin in scene X"` → paired_render with scene template
+- `"9 moods for both, same timeline"` → matrix over emotion axis, paired per cell
+- `"Switch control: twin speaks, real reacts"` → two-character dialogue with coupled expressions per frame
+- `"Cross-modal continuity check"` → run gates on both profiles, assert co-pass rate ≥ threshold
+
+### 14.5 Paired scene template — `HELEN_OS_METAVERSE_DUO`
+
+Reference prompt saved at `references/DUO_POSTER_PROMPT.md`. Summary:
+
+- **Setting**: neon cyber corridor / metaverse control room, holographic circuitry, teal + purple glow
+- **Left**: HELEN_REAL — photorealistic, white fitted "HELEN" tank, orange/blue shorts
+- **Right**: HELEN_TWIN — anime/manga version, black "HELEN OS" hoodie, matching hair+eyes+freckles
+- **Center**: large holographic android silhouette with "HELEN OS" chest text
+- **Bottom**: caption strip "inside HELEN OS METAVERSE"
+- **Critical**: identity pairing must be obvious — same person in two render modes
+
+### 14.6 Extension to the One-Year-of-HELEN test (§13)
+
+The video test protocol extends naturally to dual-canonical. Each frame becomes a pair:
+
+```
+for t in 1..T:
+    (I_real_t, I_twin_t) = paired_render(m_t, c_t, dual, ...)
+    frame_accepted = (identity_real_pass AND identity_twin_pass
+                      AND temporal_real_pass AND temporal_twin_pass
+                      AND emotion_pass AND hair_pass)
+```
+
+Both profiles subject to their own temporal consistency gate. Optionally add a **cross-modal identity coherence gate**: does HELEN_REAL at time t look like "the same person" as HELEN_TWIN at time t under cross-embedding? This is the hardest gate and unlocks true dual-canonical.
+
+### 14.7 Budget implications
+
+Paired render doubles Higgsfield credit cost per frame (one real + one twin) — if using helen-director rental for prototyping. For the sovereign math_to_face pipeline, cost is two G forward passes (local compute). Test suites using §13 protocol with dual-canonical should expect 2× the frame budget.
+
+### 14.8 Status
+
+DOCTRINE (scaffold). `HelenDualIdentity` + `paired_render()` interfaces landed 2026-04-20. Backends (G_real, G_manga, anime-face embedder) pending Phase 4 wiring. First validation target: single paired-render still image (the duo poster) before extending to video.

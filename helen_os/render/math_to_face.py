@@ -259,6 +259,84 @@ class HelenIdentity:
         return self.mu_e.unsqueeze(0) if self.mu_e.dim() == 1 else self.mu_e
 
 
+@dataclass
+class HelenDualIdentity:
+    """Dual-canonical HELEN — one shared math identity, two render profiles.
+
+    Supports paired rendering where the SAME underlying math state produces
+    both HELEN_REAL (photorealistic) and HELEN_TWIN (manga/anime) versions
+    of the same person across modalities.
+
+    See SKILL.md §14 for the full doctrine.
+    """
+    # Shared invariant — the math-space identity. Both renderers must agree on this.
+    shared_math_id: str = "HELEN/v1"
+
+    # Two render profiles, each with its own MIA
+    real: Optional[HelenIdentity] = None   # photorealistic profile (ArcFace anchor)
+    twin: Optional[HelenIdentity] = None   # manga/anime profile (anime-face anchor)
+
+    # Optional paired scene templates for scripted paired renders
+    paired_scene_templates: list = field(default_factory=list)
+    # e.g., ["HELEN_OS_METAVERSE_DUO", "CONTROL_ROOM_DIALOGUE"]
+
+    def validate(self) -> None:
+        """Require both profiles and matching shared_math_id."""
+        if self.real is None or self.twin is None:
+            raise ValueError("HelenDualIdentity requires both real and twin profiles")
+        if self.real.id != self.shared_math_id and self.twin.id != self.shared_math_id:
+            # At least one profile's id should match the shared anchor
+            raise ValueError(
+                f"shared_math_id={self.shared_math_id} doesn't match either profile "
+                f"(real={self.real.id}, twin={self.twin.id})"
+            )
+
+
+def paired_render(
+    math_vec: "Tensor",
+    scene_conditions: dict,
+    dual: HelenDualIdentity,
+    score_net: "nn.Module",
+    cfg: "SDEConfig",
+    G_real: "Callable",
+    G_manga: "Callable",
+) -> Tuple["Tensor", "Tensor"]:
+    """Paired render: (I_real, I_twin) = (G_real(R_real(z,c)), G_manga(R_manga(z,c)))
+
+    Both share the same latent z = H(m) and scene conditions c; only the
+    refinement + generator backends differ. This is what makes them "the
+    same person" across modalities.
+
+    STUB: requires G_real + G_manga wired + per-profile refinement policies.
+    """
+    raise NotImplementedError(
+        "Wire two generators (G_real, G_manga) and profile-specific refinement:\n"
+        "  z = helen_math_to_latent(math_vec, dual.real)  # or twin\n"
+        "  zT_real, _ = forward_sde(z, cfg)\n"
+        "  z_real = reverse_sde(zT_real, cfg, score_net_real)\n"
+        "  I_real = G_real(z_real)\n"
+        "  (similar for twin)\n"
+        "Then run identity gates per profile: passes_identity_gate(I_real, dual.real, ...)\n"
+        "                                     passes_identity_gate(I_twin, dual.twin, ...)"
+    )
+
+
+def paired_identity_gates_pass(
+    I_real: "Tensor",
+    I_twin: "Tensor",
+    dual: HelenDualIdentity,
+    arcface_real: "Callable",
+    arcface_twin: "Callable",
+) -> Tuple[bool, bool]:
+    """Run identity gate on each profile independently.
+
+    Returns (real_pass, twin_pass). Paired render is accepted only when both pass.
+    """
+    real_pass = passes_identity_gate(I_real, dual.real, arcface_real)
+    twin_pass = passes_identity_gate(I_twin, dual.twin, arcface_twin)
+    return real_pass, twin_pass
+
+
 def identity_distance_mahalanobis(
     face_img: "Tensor", helen: HelenIdentity, arcface_model: "Callable"
 ) -> "Tensor":
