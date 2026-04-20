@@ -60,15 +60,27 @@ Beyond the primary contract, the architecture produces a family of lateral emerg
 
 - **Character Gravity** ⭐ — HELEN behaves as a persistent attractor in latent-video space; wide stylistic/emotional transformations are pulled back toward canonical HELEN-ness. She stops being a character and becomes a gravitational basin.
 
-Top-5 ranked (full catalog in `references/LATERAL_EMERGENT_PROPERTIES.md`):
+### Locked 5-property doctrine stack (one per category)
 
-1. **Character Gravity** — persistent attractor in latent-video space
-2. **Identity Thermostat** — tunable drift tolerance (cold / warm / hot)
-3. **Emotion per Credit** — art direction as a quantified optimization target
-4. **Plural Canon Stability** — one governed identity supports many canonicals (photoreal / anime / poster / childlike / older / ritual / corporate)
-5. **Aura Engineering** — presence separable from identity (weak HELEN vs strong HELEN both passing gates)
+| Layer | Property |
+|---|---|
+| Core emergent | **Persistent emotional identity under cheap transformation** |
+| Deep systems | **Character Gravity** — HELEN is a persistent attractor in latent-video space |
+| Economic | **Emotion per Credit** — art direction as a quantified optimization target |
+| Diagnostic | **Identity Elasticity Map** — the computable shape of HELEN's deformation envelope |
+| Aesthetic | **Aura Engineering** — presence separable from identity (weak HELEN vs strong HELEN) |
 
-Plus 5 more: Diagnostic Aesthetics, Reversible Mythology, Identity Elasticity Map, Narrative Inertia, Character-as-Compiler.
+### First to productize
+
+**Twin Mirror Lie Detector** — cross-style adversarial verification (green / yellow / red per frame). QA becomes math. Smallest script, biggest product impact. Ship first in v0.4.
+
+### Third-eye insight
+
+> *The gate is not only a verifier. It is a sculptor of the character's freedom manifold.* Calibration is an act of creative authorship — the person who tunes τ decides what HELEN can become.
+
+Full 14-property catalog in `references/LATERAL_EMERGENT_PROPERTIES.md` (+ 9 more: Identity Thermostat, Diagnostic Aesthetics, Reversible Mythology, Plural Canon Stability, Narrative Inertia, Character-as-Compiler, Identity Checksum, Budget Autopilot, Style Orthogonality).
+
+One-page execution board with metrics/artifacts/scripts/acceptance criteria per property: `references/EMERGENT_SPEC_TABLE.md`.
 
 Once the compiler is wired, the system delivers four guarantees that normally come separately:
 

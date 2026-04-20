@@ -238,6 +238,139 @@ The other five (Diagnostic Aesthetics, Reversible Mythology, Identity Elasticity
 
 ---
 
+---
+
+## 11. Twin Mirror Lie Detector ⭐ (most valuable to productize first)
+
+**Intuition**: Because REAL + TWIN are two independent renderers with independent gates, you get **cross-style adversarial verification for free**. If BOTH modalities pass their own gates, the edit is "true identity." If only one passes, the renderer that passed while the other failed is **lying** — hallucinating identity in a style-specific way.
+
+**Equation sketch**:
+```
+Given paired render (I_real, I_twin) of latent z:
+  both_pass  = real_gate(I_real) ∧ twin_gate(I_twin)    →  TRUE IDENTITY (green ✅)
+  one_pass   = real_gate XOR twin_gate                   →  RENDERER LYING (yellow ⚠)
+  none_pass  = ¬real_gate ∧ ¬twin_gate                   →  IDENTITY DRIFT (red ❌)
+
+Mirror attribution:
+  if real_pass ∧ ¬twin_pass  →  G_twin is hallucinating (adapter / generator drift in twin lane)
+  if ¬real_pass ∧ twin_pass  →  G_real is hallucinating
+```
+
+**Product value**: **QA becomes math.** Near-zero human review for catching identity drift. A built-in "Mirror Oracle" UI: green / yellow / red per frame. Commercial ready — this is the first shipping deliverable in the whole system.
+
+**Experimental test**: Generate N=100 paired renders with known-good latents and N=100 with deliberately perturbed `z_id`. Verify that (a) correct-latent pairs produce green at ≥95% rate, (b) perturbed pairs produce red at ≥90% rate, (c) single-renderer drift (simulated by swapping one adapter's weights) produces yellow at ≥90% rate. Three-class confusion matrix is the product QA.
+
+---
+
+## 12. Identity as Checksum (Face Checksum)
+
+**Intuition**: The gate effectively turns HELEN's identity into a **cryptographic checksum**. Arbitrary edits are allowed, but only those that preserve the checksum ship. "HELEN has a face checksum and the video editor is a strict compiler."
+
+**Equation sketch**:
+```
+checksum(I) = (ArcFace(I), anime_embed(I))
+passes(I)   = D_id_real(I) ≤ τ_id_real  ∧  D_id_twin(I) ≤ τ_id_twin
+
+Editor contract:
+  commit(edit) iff passes(editor(I_prev, edit))
+  rollback(edit) otherwise
+```
+
+**Product value**: HELEN behaves like a **persistent character** rather than an image generator. QA is no longer subjective — identity either validates or it doesn't. Reproducible, machine-checkable, git-blameable.
+
+**Experimental test**: Treat the MIA as a compiled artifact with its own SHA. Every generated frame ships with its identity-gate metrics. Build a "git commit"-style workflow: proposed frame is staged → checksum validates → commit succeeds / rejects. Measure what fraction of human-rated "HELEN" frames pass the checksum and vice versa.
+
+---
+
+## 13. Budget Autopilot (Self-tuning Compute Thermostat)
+
+**Intuition**: Gate pass-rate is a signal; use it as a control variable. High pass-rate → take bigger Δz steps (faster, fewer renders). Low pass-rate → smaller steps, different renderer, different mood sequence. The system minimizes cost automatically while respecting identity constraints.
+
+**Equation sketch**:
+```
+Policy:
+  pass_rate_window = mean(gate_passed over last K frames)
+  Δz_step_size    = step_base · min(1.0, pass_rate_window / target_rate)
+
+Cost minimization:
+  minimize  E[ cost_per_frame ]
+  s.t.      E[ gate_passed ] ≥ target_rate
+
+Renderer selection:
+  prefer the renderer with higher (pass_rate / credit_cost) this session
+```
+
+**Product value**: "HELEN becomes a cheapness demon that refuses expensive frames." Operator sets target pass-rate + budget ceiling; system does the optimization. Directly translates into pricing advantage — every competitor renders blind, HELEN renders adaptive.
+
+**Experimental test**: Fix target pass-rate (e.g. 95%) and budget ceiling. Run 100 edit trajectories with autopilot ON vs OFF. Measure mean credits per accepted frame. Autopilot should show ≥30% cost reduction for equivalent pass-rate.
+
+---
+
+## 14. Style Orthogonality Stress Test
+
+**Intuition**: Typed slices make disentanglement **empirically measurable** without fancy theory — just sweeps + gates. The claim "z_id is independent of z_style" becomes a number, not a hope.
+
+**Equation sketch**:
+```
+Define disentanglement matrix D:
+  D[i][j] = d_gate(I(z with Δz_i applied) ) − d_gate(I(z baseline))
+           for i in {id, control, style, temporal}
+           for j in {identity_gate, mood_gate, style_gate}
+
+Expected (healthy architecture):
+  D[id][identity]   ≫ D[id][mood]      ≈ D[id][style]       (id perturbation → only identity gate moves)
+  D[control][mood]  ≫ D[control][identity] ≈ D[control][style]
+  D[style][style]   ≫ D[style][identity]   ≈ D[style][mood]
+
+Orthogonality score = 1 − max_{i≠j} |D[i][j]| / D[i][i]
+```
+
+**Product value**: Regression metric across model versions. "Did we just accidentally tangle hairstyle with identity?" becomes a number you check in CI. "We can measure whether a hairstyle accidentally changes a soul."
+
+**Experimental test**: Automated — `scripts/sweep_latent_slices.py` output already produces the raw data. Post-process into the disentanglement matrix. Run per model-version; diff; alert on regressions.
+
+---
+
+## Taxonomy (5 categories locked)
+
+The 14 lateral emergent properties fall into five clean categories:
+
+| Category | Properties |
+|---|---|
+| **Stability** | Character Gravity, Identity Thermostat |
+| **Economic** | Emotion per Credit, Budget Autopilot |
+| **Diagnostic** | Diagnostic Aesthetics, Identity Elasticity Map, Style Orthogonality, Twin Mirror Lie Detector, Identity Checksum |
+| **Brand / Canon** | Plural Canon Stability, Aura Engineering |
+| **Platform / Narrative** | Character-as-Compiler, Reversible Mythology, Narrative Inertia |
+
+---
+
+## Locked 5-property doctrine stack (canonical hierarchy)
+
+One property per category at the top, forming the authoritative hierarchy for positioning:
+
+| Layer | Property | Why this one |
+|---|---|---|
+| **Core emergent** | Persistent emotional identity under cheap transformation | the primary contract (from MANIFESTO.md) |
+| **Deep systems** | Character Gravity | deepest systems-level invariant |
+| **Economic** | Emotion per Credit | direct product / pricing advantage |
+| **Diagnostic** | Identity Elasticity Map | shippable early via v0.3.1 sweep |
+| **Aesthetic** | Aura Engineering | brand-level "presence" beyond gate pass |
+
+And one **first-to-productize** pick from the full catalog:
+
+> **Twin Mirror Lie Detector** — ship this first. Green / yellow / red per frame, QA as math, minimal human review. Maps directly to a shippable "Mirror Oracle" UI.
+
+---
+
+## The "third eye" insight
+
+> **The gate is not only a verifier. It is a sculptor of the character's freedom manifold.**
+
+Every calibrated gate pair `(τ_real, τ_twin)` carves a specific shape in latent space — the acceptance region `𝒦`. Changing the thresholds doesn't just tighten / loosen acceptance; it **re-shapes the manifold of allowed HELEN**. Style sweeps, mood offsets, and narrative arcs all navigate inside this manifold. So calibration is not a QA step — it's an act of creative authorship. The person who tunes τ decides what HELEN can become.
+
+---
+
 ## Integration with existing doctrine
 
 These lateral properties do not replace the primary canon. They **amplify** it:
