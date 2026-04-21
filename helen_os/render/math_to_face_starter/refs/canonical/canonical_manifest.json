@@ -1,0 +1,106 @@
+{
+  "schema": "canonical_manifest_v1",
+  "dest_root": "helen_os/render/math_to_face_starter/refs/canonical",
+  "n_assets": 11,
+  "assets": [
+    {
+      "canonical": "helen_cinematic_manga_00.png",
+      "theme": "cinematic",
+      "descriptor": "manga",
+      "provenance": "operator_desktop_2026-04-21",
+      "src_sha16": "5be7ab2d4ef56e06",
+      "dest_sha16": "5be7ab2d4ef56e06",
+      "promoted_at_unix": 1776763643
+    },
+    {
+      "canonical": "helen_conquest_adcopy_00.png",
+      "theme": "conquest",
+      "descriptor": "adcopy",
+      "provenance": "operator_desktop_2026-04-21",
+      "src_sha16": "805dc1c200ea64e7",
+      "dest_sha16": "805dc1c200ea64e7",
+      "promoted_at_unix": 1776763643
+    },
+    {
+      "canonical": "helen_cyberpunk_00.png",
+      "theme": "cyberpunk",
+      "descriptor": null,
+      "provenance": "operator_desktop_2026-04-21",
+      "src_sha16": "0f032d81d021a1ba",
+      "dest_sha16": "20b55147562767a8",
+      "promoted_at_unix": 1776763643
+    },
+    {
+      "canonical": "helen_dossier_official_00.png",
+      "theme": "dossier",
+      "descriptor": "official",
+      "provenance": "operator_desktop_2026-04-21",
+      "src_sha16": "2806ae89be104961",
+      "dest_sha16": "527fc226eb4950a0",
+      "promoted_at_unix": 1776763643
+    },
+    {
+      "canonical": "helen_emotions_00.png",
+      "theme": "emotions",
+      "descriptor": null,
+      "provenance": "operator_desktop_2026-04-21",
+      "src_sha16": "866cdda5496f2d5d",
+      "dest_sha16": "866cdda5496f2d5d",
+      "promoted_at_unix": 1776763643
+    },
+    {
+      "canonical": "helen_emotions_joy_00.png",
+      "theme": "emotions",
+      "descriptor": "joy",
+      "provenance": "operator_desktop_2026-04-21",
+      "src_sha16": "2b7097c94afac65a",
+      "dest_sha16": "c75d770a3c9a5ab7",
+      "promoted_at_unix": 1776763643
+    },
+    {
+      "canonical": "helen_emotions_vulnerability_00.png",
+      "theme": "emotions",
+      "descriptor": "vulnerability",
+      "provenance": "operator_desktop_2026-04-21",
+      "src_sha16": "ba919d0adebd4d81",
+      "dest_sha16": "5cca30084acbf9f1",
+      "promoted_at_unix": 1776763643
+    },
+    {
+      "canonical": "helen_full_body_00.png",
+      "theme": "full_body",
+      "descriptor": null,
+      "provenance": "operator_desktop_2026-04-21",
+      "src_sha16": "3f310b812888bfbd",
+      "dest_sha16": "e3cfe9c1dd855a40",
+      "promoted_at_unix": 1776763643
+    },
+    {
+      "canonical": "helen_metaverse_00.png",
+      "theme": "metaverse",
+      "descriptor": null,
+      "provenance": "operator_desktop_2026-04-21",
+      "src_sha16": "2bef8a00a37f1018",
+      "dest_sha16": "2bef8a00a37f1018",
+      "promoted_at_unix": 1776763643
+    },
+    {
+      "canonical": "helen_metaverse_twin_00.png",
+      "theme": "metaverse",
+      "descriptor": "twin",
+      "provenance": "operator_desktop_2026-04-21",
+      "src_sha16": "38139d17a3df5603",
+      "dest_sha16": "38139d17a3df5603",
+      "promoted_at_unix": 1776763643
+    },
+    {
+      "canonical": "helen_metaverse_twin_01.png",
+      "theme": "metaverse",
+      "descriptor": "twin",
+      "provenance": "operator_desktop_2026-04-21",
+      "src_sha16": "ae9426276a5343a7",
+      "dest_sha16": "ae9426276a5343a7",
+      "promoted_at_unix": 1776763643
+    }
+  ]
+}

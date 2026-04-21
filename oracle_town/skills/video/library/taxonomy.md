@@ -70,6 +70,18 @@ Semantic collections (curated, operator-authored):
 - `dossier` — hero / press / poster-tier renders
 - `hands` / `profile` / `back` — body-part isolates
 
+Era / epoch themes (HELEN as space-time traveller — operator doctrine 2026-04-21):
+- `cyberpunk` — near-future neon / dystopian layer
+- `medieval` — sword-age, pre-Renaissance
+- `renaissance` — 14-17c European classical
+- `modern` — 20c-present contemporary
+- `ww2` — 1939-1945 specific layer
+- `french_revolution` — 1789-1799 specific layer
+- `pyramids` — ancient Egypt / monumental antiquity
+- (list open — HELEN traverses all layers; add themes as they become real production targets)
+
+**Thesis (operator 2026-04-21):** HELEN is not era-bound. She inhabits a canonical identity (per HELEN_CANONICAL_V1) AND can manifest across historical strata. The era axis tracks which temporal layer a given asset captures. Identity invariants (copper hair, blue eyes, narrow face, expressive aura) hold across all eras — era is style/context, not identity drift.
+
 ### Examples
 
 ```
