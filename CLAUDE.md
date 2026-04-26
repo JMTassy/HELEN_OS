@@ -6,6 +6,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 HELEN OS is a five-layer constitutional AI companion with an append-only governance kernel. The system is built on a single invariant: **NO RECEIPT = NO CLAIM**.
 
+## Repository Identity
+
+- **Canonical GitHub repo:** `https://github.com/JMTassy/helen-conquest.git`
+- **Legacy alias:** `https://github.com/JMTassy/HELEN_OS.git` — kept by GitHub as a redirect; pushes/fetches to this URL are server-side rewritten to `helen-conquest`. Treat it as historical, not authoritative.
+- **Local working tree:** `~/Documents/GitHub/helen_os_v1` may remain unchanged. The on-disk path is independent of the GitHub repo name.
+
 ## Architecture Layers
 
 ### Layer 1: Constitutional Membrane
