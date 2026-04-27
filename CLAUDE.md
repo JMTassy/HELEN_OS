@@ -38,18 +38,22 @@ Treat them as independent packages. Imports do not cross.
 - `helen_os/executor/` — bounded executor (non-sovereign: runs tasks, emits envelopes, no verdicts)
 - `helen_os/autonomy/` — autoresearch step/batch, skill discovery
 - `helen_os/evolution/` — failure bridge (typed failures only)
+- `helen_os/knowledge/` — corpus + embeddings + classified patterns + `symbolic_sources/`; T4/T6 floors enforce source-provenance and intensity for symbolic ingestion
 
 ### Layer 4: Skills + Tools
 - `oracle_town/skills/` — map generator, meteo, claim workflow, conquest integration, ledger reader
 - `oracle_town/skills/feynman/` — peer_review, intent_action_audit, session_notes (fused 2026-04-16)
 - `oracle_town/skills/voice/gemini_tts/` — Zephyr voice, Gemini 2.5 Flash TTS (LIVE)
 - `oracle_town/skills/video/hyperframes/` — HyperFrames video renderer (DECLARED)
+- `oracle_town/skills/video/helen-director/` — Montage Engine + STORYBOARD_V1 + ASSET_ENGINE_V1 + 30s candidate runner; parallel Seedance pipeline
+- `oracle_town/skills/video/library/` — curated frame asset pool (refs/canonical/, era axis)
 - `tools/helen_telegram.py` — two-way Telegram bot with voice
 - `tools/helen_simple_ui.py` — web UI at localhost:5001 with voice
 
 ### Layer 5: TEMPLE Exploration
 - Non-sovereign generative layer
 - `helen_dialog/` — dialog engine, HER/AL moment detection
+- `temple/subsandbox/` — AURA grimoire + raw symbolic terminal samples; never sovereign, never auto-promoted
 
 ## Governance Artifacts
 
@@ -114,7 +118,7 @@ Commands:
 - K8 target: PASS (k8=+1.000)
 - LEGORACLE replay gate: fixture integrity + determinism + frozen output + mutation detection
 
-**Caveat**: `Makefile:5` hardcodes `PYTHONPATH` to an operator-specific path outside the repo (`/Users/jean-marietassy/Desktop/JMT CONSULTING - Releve 24`). If tests can't import a module, that's the first place to look.
+**PYTHONPATH**: `Makefile` sets `PYTHONPATH := $(CURDIR)` (commit `5b98a3d`, repo-relative). No operator-specific path — `make test` is portable.
 
 ## Running HELEN
 
@@ -181,16 +185,19 @@ Multiple chat entry points exist; they are **not interchangeable**.
 
 - `town/ledger_v1.ndjson` may show as dirty in `git status` due to live kernel daemon writes. Do not stash, do not commit, do not edit — sovereign firewall path.
 
-## Current State (2026-04-20)
+## Current State (2026-04-27)
 
 - **AUTORESEARCH**: E11 LEGORACLE + E12 replay gate shipped. Two parallel sessions diverged; **reconciliation required before E13**. The `AUTORESEARCH_CONTRACT_V1.json` may read SEALED but operational continuation is contested — do not resume E13 without reconciling.
+- **Knowledge corpus**: T4 (source-provenance floor) + T6 (intensity floor) landed for symbolic-knowledge ingestion. Symbolic sources collected in `helen_os/knowledge/symbolic_sources/` (DRAFT classifications).
 - **SKILL_REGISTRY_V1**: 75 skills audited (51 canonical, 3 legacy, 3 duplicate, 18 external)
 - **Voice**: Zephyr (Gemini TTS) — LIVE
-- **Video**: HyperFrames — DECLARED (npm allowlist pending); new `helen-director` skill + Montage Engine + `STORYBOARD_V1` + `ASSET_ENGINE_V1` shipped (see recent commits)
+- **Video**: HyperFrames — DECLARED (npm allowlist pending); `helen-director` skill + Montage Engine + `STORYBOARD_V1` + `ASSET_ENGINE_V1` + 30s candidate runner shipped. `video/library/` promotes 11 hero stills to `refs/canonical/` with locked era axis (cyberpunk / medieval / renaissance / modern / ww2 / french_revolution / pyramids).
 - **HELEN character**: `HELEN_CHARACTER_V2` + `HELEN_DESIGN.md` + `HELEN_PRIMER.md` shipped — character-consistency method validated
+- **TEMPLE/AURA**: First raw terminal sample captured (`temple/subsandbox/aura/`); grimoire path now exists. Non-sovereign, never auto-promoted.
 - **Telegram**: Two-way bot with voice — LIVE (not daemonized)
 - **Schema Authority**: Governance decision SHIPPED (Actions 1-5 partial, 6-9 open)
 - **Doctrine Admission**: `DOCTRINE_ADMISSION_PROTOCOL_V1` gate — DRAFT; §4 fixtures + harness landed
+- **Experiments**: minimal MVP terminal kernel landed in `experiments/` (NON_SOVEREIGN, NO_SHIP — sandbox only)
 
 ## Open Frontiers
 
