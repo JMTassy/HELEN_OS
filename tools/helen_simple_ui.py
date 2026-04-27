@@ -7,11 +7,62 @@ import os, sys, json, subprocess, urllib.parse, base64
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
 
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LEDGER_PATH = os.path.join(os.getcwd(), "town", "ledger_v1.ndjson")
 HELEN_SAY_SCRIPT = os.path.join(os.path.dirname(__file__), "helen_say.py")
 HELEN_TTS_SCRIPT = os.path.join(os.path.dirname(__file__), "..", "oracle_town", "skills", "voice", "gemini_tts", "helen_tts.py")
 VENV_PYTHON = os.path.join(os.getcwd(), ".venv", "bin", "python")
 GEMINI_KEY = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY") or ""
+
+# Gate registry: maps mockup gate label -> (relpath, status when file exists)
+# Status values: "ACTIVE" (wired and load-bearing), "TESTS_ONLY" (enforced by tests but no runtime gate),
+# "NOT_WIRED" (referenced in design but no implementation). Honest by construction.
+GATE_REGISTRY = [
+    ("POLICY_GATE",    "helen_os/governance/legoracle_gate_poc.py", "ACTIVE"),
+    ("LEGORACLE",      "legoracle_v13rc.py",                        "ACTIVE"),
+    ("REDUCER",        "helen_chain_receipt_v2.py",                 "ACTIVE"),
+    ("MAYOR",          "oracle_town/kernel/mayor.py",               "ACTIVE"),
+    ("GHOST_CLOSURE",  "helen_os/tests/test_no_ghost_closures.py",  "TESTS_ONLY"),
+    ("LANGUAGE_FW",    None,                                         "NOT_WIRED"),
+    ("DESIRE_FW",      None,                                         "NOT_WIRED"),
+]
+
+
+def _gate_status():
+    out = []
+    for name, relpath, declared in GATE_REGISTRY:
+        if relpath is None:
+            out.append({"name": name, "status": declared})
+            continue
+        present = os.path.isfile(os.path.join(REPO_ROOT, relpath))
+        out.append({"name": name, "status": declared if present else "MISSING"})
+    return out
+
+
+def _ledger_status():
+    """Read tail of ledger to extract height, last event, last cum_hash. No full integrity check."""
+    if not os.path.isfile(LEDGER_PATH):
+        return {"height": None, "events": 0, "last_event": None, "cum_hash": None}
+    try:
+        size = os.path.getsize(LEDGER_PATH)
+        # Read last 4KB to get the last full line
+        with open(LEDGER_PATH, "rb") as f:
+            f.seek(max(0, size - 4096))
+            tail = f.read().decode("utf-8", errors="ignore")
+        lines = [ln for ln in tail.strip().split("\n") if ln.strip()]
+        last = json.loads(lines[-1]) if lines else {}
+        # Count events cheaply by scanning newlines
+        with open(LEDGER_PATH, "rb") as f:
+            events = sum(1 for _ in f)
+        cum = last.get("cum_hash") or ""
+        return {
+            "height": last.get("seq"),
+            "events": events,
+            "last_event": last.get("type"),
+            "cum_hash": cum[:12] if cum else None,
+        }
+    except Exception as e:
+        return {"height": None, "events": 0, "last_event": None, "cum_hash": None, "error": str(e)}
 
 HTML = """<!DOCTYPE html>
 <html>
@@ -39,6 +90,25 @@ HTML = """<!DOCTYPE html>
         button { background: #238636; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
         button:hover { background: #2ea043; }
         button:disabled { background: #21262d; color: #484f58; cursor: wait; }
+
+        /* Constitutional state strip — honest reflection of kernel/gate/ledger state */
+        #ledger-bar { background: #0a0d12; border-top: 1px solid #21262d; padding: 6px 16px; display: flex; gap: 16px; font-size: 11px; color: #7d8590; font-family: ui-monospace, monospace; }
+        #ledger-bar .k { color: #484f58; }
+        #ledger-bar .v { color: #c9d1d9; }
+        #ledger-bar .canon-noship { color: #f85149; }
+        #ledger-bar .canon-ship { color: #3fb950; }
+
+        #gate-strip { background: #0a0d12; border-top: 1px solid #21262d; padding: 8px 16px; display: flex; gap: 14px; font-size: 10px; font-family: ui-monospace, monospace; flex-wrap: wrap; }
+        #gate-strip .gate { display: flex; align-items: center; gap: 6px; }
+        #gate-strip .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+        #gate-strip .gate.active .dot { background: #3fb950; box-shadow: 0 0 6px #3fb950; }
+        #gate-strip .gate.tests_only .dot { background: #d29922; }
+        #gate-strip .gate.not_wired .dot { background: #484f58; }
+        #gate-strip .gate.missing .dot { background: #f85149; }
+        #gate-strip .gate.active .label { color: #c9d1d9; }
+        #gate-strip .gate.tests_only .label { color: #d29922; }
+        #gate-strip .gate.not_wired .label { color: #484f58; }
+        #gate-strip .gate.missing .label { color: #f85149; }
     </style>
 </head>
 <body>
@@ -51,6 +121,16 @@ HTML = """<!DOCTYPE html>
         <input id="msg" placeholder="Type a message..." autocomplete="off">
         <button id="btn" onclick="send()">Send</button>
     </div>
+    <div id="ledger-bar">
+        <span><span class="k">AUTHORITY:</span> <span class="v" id="auth">—</span></span>
+        <span><span class="k">CANON:</span> <span id="canon" class="v">—</span></span>
+        <span><span class="k">MODE:</span> <span class="v" id="mode">—</span></span>
+        <span><span class="k">LEDGER HEIGHT:</span> <span class="v" id="height">—</span></span>
+        <span><span class="k">EVENTS:</span> <span class="v" id="events">—</span></span>
+        <span><span class="k">LAST:</span> <span class="v" id="last-event">—</span></span>
+        <span><span class="k">CUM_HASH:</span> <span class="v" id="cum-hash">—</span></span>
+    </div>
+    <div id="gate-strip"></div>
     <script>
         const dial = document.getElementById("dialogue");
         const inp = document.getElementById("msg");
@@ -150,6 +230,35 @@ HTML = """<!DOCTYPE html>
         fetch("/api/voice-status").then(r => r.json()).then(d => {
             voiceStatus.textContent = d.enabled ? "voice: Zephyr" : "voice: off (no API key)";
         });
+
+        // Constitutional state poller — refresh ledger ticker + gate strip
+        function refreshState() {
+            fetch("/api/state").then(r => r.json()).then(s => {
+                document.getElementById("auth").textContent = s.authority || "—";
+                const canonEl = document.getElementById("canon");
+                canonEl.textContent = s.canon || "—";
+                canonEl.className = "v " + (s.canon === "NO_SHIP" ? "canon-noship" : "canon-ship");
+                document.getElementById("mode").textContent = s.mode || "—";
+                const L = s.ledger || {};
+                document.getElementById("height").textContent = L.height ?? "—";
+                document.getElementById("events").textContent = L.events ?? "—";
+                document.getElementById("last-event").textContent = L.last_event || "—";
+                document.getElementById("cum-hash").textContent = L.cum_hash || "—";
+
+                const strip = document.getElementById("gate-strip");
+                strip.innerHTML = "";
+                (s.gates || []).forEach(g => {
+                    const cls = g.status.toLowerCase();
+                    const el = document.createElement("span");
+                    el.className = "gate " + cls;
+                    el.title = g.name + ": " + g.status;
+                    el.innerHTML = '<span class="dot"></span><span class="label">' + g.name + '</span>';
+                    strip.appendChild(el);
+                });
+            }).catch(() => {});
+        }
+        refreshState();
+        setInterval(refreshState, 3000);
     </script>
 </body>
 </html>"""
@@ -166,6 +275,17 @@ class Handler(BaseHTTPRequestHandler):
             self.send_header("Content-type", "application/json")
             self.end_headers()
             self.wfile.write(json.dumps({"enabled": bool(GEMINI_KEY)}).encode())
+        elif self.path == "/api/state":
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+            self.wfile.write(json.dumps({
+                "authority": "NON_SOVEREIGN",
+                "canon": "NO_SHIP",
+                "mode": "WITNESS",
+                "gates": _gate_status(),
+                "ledger": _ledger_status(),
+            }).encode())
         else:
             self.send_response(404)
             self.end_headers()
