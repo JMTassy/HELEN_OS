@@ -86,6 +86,7 @@ AUTORESEARCH operates under PULL-mode:
 - **Bounded tranches** — HAL gate + tranche sub-receipt + MAYOR re-rank between tranches
 - **7-field receipt per epoch**: carry-forward state, hypothesis, experiment, metric, failure mode, keep/reject rule, upgrade path
 - **Halt discipline** — tranche seals before next opens
+- **E13 is gated** — do not open the next tranche until the E11/E12 reconciliation in *Current State* lands. `AUTORESEARCH_CONTRACT_V1.json` may read SEALED, but operational continuation is contested.
 
 ## Schema Authority
 
@@ -164,7 +165,27 @@ bash tools/kernel_guard.sh
 ```
 
 ### Packaging note
-`pyproject.toml` declares the project as `oracle-town` v1.0.0 with `dependencies = []` — it is not the dependency source of truth. Use `requirements.txt` / `requirements-ci.txt` when installing.
+`pyproject.toml` declares the project as `oracle-town` v1.0.0 with `dependencies = []` — it is not the dependency source of truth. Use `requirements.txt` locally; CI installs from `requirements-ci.txt`.
+
+## CI Workflows
+
+Four workflows in `.github/workflows/` run on push/PR. Know which gate lives where before chasing a red build:
+
+| Workflow | Entry point | Enforces |
+|---|---|---|
+| `ci.yml` | `python3 ci_run_checks.py` (after `doc-index` job) | Oracle Town verification + strict determinism (200 iterations); also lints K-rho receipts when `artifacts/rho_*` are present |
+| `kernel_guard.yml` | `tools/kernel_guard.sh` + property tests | RULE 1-3 (no direct ledger writes outside kernel boundary), P1-P7 property tests, hash-chain validation, Coq typecheck of `formal/LedgerKernel.v` |
+| `determinism-gates.yml` | `scripts/preflight_nondeterminism_check.sh`, `scripts/verify_marketing_street_determinism.sh`, `npx tsx conformance_runner.ts coupling_gate.vectors.json` | Path-scoped to `marketing_street.cjs`, `coupling_gate.ts`, `conformance_runner.ts`, vectors. Generates `PROOF_BUNDLE_<DATE>.md` on merge to main. |
+| `payload_meta.yml` | acceptance gate + float-ban check | Payload/Meta acceptance gate |
+
+**Editing this file?** `ci.yml` has a `doc-index` job that regenerates `scratchpad/CLAUDE_MD_LINE_INDEX.txt` and `scratchpad/CLAUDE_MD_SECTIONS_BY_LENGTH.txt` and fails on `git diff --exit-code`. After any change to `CLAUDE.md`, run:
+
+```bash
+python3 scratchpad/generate_claude_index.py
+git add scratchpad/CLAUDE_MD_LINE_INDEX.txt scratchpad/CLAUDE_MD_SECTIONS_BY_LENGTH.txt
+```
+
+Otherwise CI red-fails before any other job runs.
 
 ## Chat Surfaces
 
@@ -178,6 +199,7 @@ Multiple chat entry points exist; they are **not interchangeable**.
 | `tools/helen_telegram.py` | tools | yes | yes | Two-way Telegram with voice |
 | `tools/helen_simple_ui.py` | tools | yes | yes | Web UI on `localhost:5001` |
 | `helen_dialog_server.py` + `helen_dialog/` | repo root | yes | engine-managed | TEMPLE dialog engine, HER/AL moment detection |
+| `helen_ui_server.js` (Node) | repo root | n/a | n/a | Separate Node UI on port 3333; wired up in `.claude/launch.json`. Distinct from `helen_simple_ui.py` (5001). |
 
 **`--ledger :memory:` gotcha** — when the configured ledger is a sealed sovereign file (e.g. `storage/ledger_epoch*_work.ndjson`), `helen talk --reply` writes the receipt **before** the LLM call and crashes with `LNSA_ERROR: Sovereign ledger is SEALED. No further mutations allowed.` Pass `--ledger :memory:` for ephemeral chat or `--ledger storage/chat_dev.ndjson` for persistent dev. See `HELEN_CHAT_MODES.md`.
 
