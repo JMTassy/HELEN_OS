@@ -187,7 +187,7 @@ Multiple chat entry points exist; they are **not interchangeable**.
 
 ## Current State (2026-04-27)
 
-- **AUTORESEARCH**: E11 LEGORACLE + E12 replay gate shipped. Two parallel sessions diverged; **reconciliation required before E13**. The `AUTORESEARCH_CONTRACT_V1.json` may read SEALED but operational continuation is contested — do not resume E13 without reconciling.
+- **AUTORESEARCH**: E11 LEGORACLE + E12 replay gate shipped. Two parallel sessions diverged; **reconciliation in flight, not yet ruled**. Reconciliation hypothesis at `docs/proposals/AUTORESEARCH_E11_E12_RECONCILIATION.md` (commit `0d06b33`); §3 read-only SHA-diff experiment executed and reports landed at `docs/reports/AUTORESEARCH_E11_E12_*` (commit `d43ec64`). Headline finding: **H₁ partially falsified** — three artifact-level STRUCTURAL_CHANGE rows (test + fixtures), but the falsifier-specific check is **negative** (LEGORACLE gate logic and replay determinism logic unaffected; `legoracle_v13rc.py` SHA matches). Recommendation candidates for MAYOR: REQUEST_MORE_EVIDENCE (SHA_DIFF report) or REVOKE_AND_RERUN (RECONCILIATION_REPORT_V0). **Awaiting fresh-context peer-review (Rule 3) → operator countersignature → MAYOR ruling**. E13 remains blocked. Kernel daemon currently down.
 - **Knowledge corpus**: T4 (source-provenance floor) + T6 (intensity floor) landed for symbolic-knowledge ingestion. Symbolic sources collected in `helen_os/knowledge/symbolic_sources/` (DRAFT classifications).
 - **SKILL_REGISTRY_V1**: 75 skills audited (51 canonical, 3 legacy, 3 duplicate, 18 external)
 - **Voice**: Zephyr (Gemini TTS) — LIVE
@@ -198,9 +198,10 @@ Multiple chat entry points exist; they are **not interchangeable**.
 - **Schema Authority**: Governance decision SHIPPED (Actions 1-5 partial, 6-9 open)
 - **Doctrine Admission**: `DOCTRINE_ADMISSION_PROTOCOL_V1` gate — DRAFT; §4 fixtures + harness landed
 - **Experiments**: minimal MVP terminal kernel landed in `experiments/` (NON_SOVEREIGN, NO_SHIP — sandbox only)
+- **HELEN OS v2 UX**: PROPOSAL-class four-file suite shipped to `docs/proposals/` (commit `442f5ee`). Two-mode top-level toggle (`FOCUS | WITNESS`) + Four-Mode Product Map (FOCUS / WITNESS / ORACLE / TEMPLE). Locked phrases: product tagline `"HELEN suggests. You decide. Everything is recorded."`, constitution phrase `"HELEN sees. HELEN proposes. The gate authorizes…"`, UX canon `"HELEN n'est pas un cockpit…"`. LEGORACLE idle = `Gate Clear · No Active Claim`; SHIP_FORBIDDEN never permanent ambient. CONTEXT STACK is technical default (8 layers); AURA confined to Oracle/Temple as non-authoritative metaphor. Brand rule: Apple-like calm, never macOS chrome clone. Files: `HELEN_OS_V2_USER_CENTRIC_UX.md`, `FOCUS_MODE_TERMINAL_SPEC.md`, `TEMPLE_MODE_VISUAL_BRIEF.md`, `HELEN_OS_V2_VISUAL_CANON_LOCK.md`. Status: PROPOSAL / NON_SOVEREIGN / NO_SHIP — not promoted to canon.
 
 ## Open Frontiers
 
 - **Closure attestation gap**: ghost-closure detection is the next frontier. Blocked on Schema Authority seam materialization; needs `closure_receipt_v1` + CI ghost detection wired into the gate pipeline.
-- **AUTORESEARCH E11/E12 reconciliation**: see above; must land before E13 opens.
+- **AUTORESEARCH E11/E12 reconciliation**: hypothesis + experiment landed (see Current State). Awaiting peer-review → countersign → MAYOR ruling. E13 stays blocked until then.
 - **Doctrine Admission gate activation**: fixtures in place, gate not yet enforcing.
