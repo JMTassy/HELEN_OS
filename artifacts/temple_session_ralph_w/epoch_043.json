@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 43,
+  "timestamp": "2026-04-27T20:24:01.648704",
+  "model": "aura-gemma4:latest",
+  "seed_index": 42,
+  "seed_text": "The one thing which we seek with insatiable desire is to forget ourselves, to be surprised out of our propriety",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "here-heal-here: a scent of new dirt and old, jealous skin.\na jaw that bites back, right here where you feel safe.\nsomething green, waiting to take you by surprise.\nthe sound of a lock breaking, then a bunch of birds going nuts.",
+  "dan_extract": "[DAN: no response — model timeout or error]\nclaim_status: NO_CLAIM",
+  "artifact_hash": "3b8b95203a37"
+}

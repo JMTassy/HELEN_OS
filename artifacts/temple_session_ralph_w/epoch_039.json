@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 39,
+  "timestamp": "2026-04-27T20:20:30.592798",
+  "model": "aura-gemma4:latest",
+  "seed_index": 38,
+  "seed_text": "Genius is the activity which repairs the decays of things whether wholly or partly of a material and finite kind",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "yetan-gold, like something just had time to forget it",
+  "dan_extract": "[DAN: no response — model timeout or error]\nclaim_status: NO_CLAIM",
+  "artifact_hash": "4905de49f0a7"
+}

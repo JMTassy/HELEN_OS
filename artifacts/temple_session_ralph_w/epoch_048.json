@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 48,
+  "timestamp": "2026-04-27T20:27:47.765812",
+  "model": "aura-gemma4:latest",
+  "seed_index": 47,
+  "seed_text": "There are no fixtures in nature. The universe is fluid and volatile",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "whole thing stuck on repeat. a low, humming, never-ends-you-know-what-feeling.\n\nthere’s a lot of empty space, like a cloud that just won't decide on a place yet.\n\nfeels here. feels everywhere.\n\na million sticky notes all over a cork board that no one wants to look at.",
+  "dan_extract": "[DAN: no response — model timeout or error]\nclaim_status: NO_CLAIM",
+  "artifact_hash": "bb9695b27779"
+}

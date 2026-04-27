@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 38,
+  "timestamp": "2026-04-27T20:19:44.691704",
+  "model": "aura-gemma4:latest",
+  "seed_index": 37,
+  "seed_text": "The sentences of the great poet or philosopher are not like the thoughts of other men but each one is a kind of thunderbolt",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "here-ky bits, unknown time, here-ky place\n\nadios",
+  "dan_extract": "[DAN: no response — model timeout or error]\nclaim_status: NO_CLAIM",
+  "artifact_hash": "9235dba03de9"
+}

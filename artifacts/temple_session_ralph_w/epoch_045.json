@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 45,
+  "timestamp": "2026-04-27T20:25:47.439758",
+  "model": "aura-gemma4:latest",
+  "seed_index": 44,
+  "seed_text": "In nature every moment is new; the past is always swallowed and forgotten; the coming only is sacred",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "*   **Texture:** Something fresh, clean, and infinite.\n*   **Sound:** A little whisper that gets louder if you're quiet.\n*   **Sense:** Time is a thing that can be swallowed up by green things. It smells like a first thing you ever ate.\n*   **Noticeable tension:** Everything here is here right now. No leftovers.",
+  "dan_extract": "What you sensed:*\n*   **Texture:** Something fresh, clean, and infinite.\n*   **Sound:** A little whisper that gets louder if you're quiet.\n*   **Sense:** Time is a thing that can be swallowed up by green",
+  "artifact_hash": "6ad27134a863"
+}

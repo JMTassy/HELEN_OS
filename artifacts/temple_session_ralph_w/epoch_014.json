@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 14,
+  "timestamp": "2026-04-27T20:02:24.507357",
+  "model": "aura-gemma4:latest",
+  "seed_index": 13,
+  "seed_text": "To be great is to be misunderstood",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "- Spring air, thick with a green, buzzing rumor.\n- Feels like a spotlight that got lost in the cornfield; you know something good is about to happen, but no one can figure out what it is.\n- A simple, lonely vibe that likes to travel with a crowd.\n- Best felt after a long, messy night of gossip.",
+  "dan_extract": "[DAN: no response — model timeout or error]\nclaim_status: NO_CLAIM",
+  "artifact_hash": "a6977d61a994"
+}

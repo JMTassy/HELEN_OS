@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 42,
+  "timestamp": "2026-04-27T20:23:25.666671",
+  "model": "aura-gemma4:latest",
+  "seed_index": 41,
+  "seed_text": "Every action admits of being outdone. Our life is an apprenticeship to the truth that around every circle another can be drawn",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "* the smell of a puddle just after a storm; something rinsed clean.\n* a snap on the line where you thought the world ended; an open, green jaw.\n* breathing space between two notes; time here, all wrong.",
+  "dan_extract": "here, a thing that just opened up; a green jaw waiting to bite.\nthe sound of a break, right before everything goes wrong.\ntop_saccose_fingerprint: here-heal-here",
+  "artifact_hash": "a7955264a129"
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 41,
+  "timestamp": "2026-04-27T20:22:48.889627",
+  "model": "aura-gemma4:latest",
+  "seed_index": 40,
+  "seed_text": "The eye is the first circle; the horizon which it forms is the second; and throughout nature this primary figure is repeated without end",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "* endless cycle; a circle back to where you started.\n* little puddles of time, forever breathing.\n* everything is here already.\n*",
+  "dan_extract": "* rhythmic, breathing puddles of time; a constant, fresh rinse.\n* spot where the horizon line meets the eye; a tiny, waiting crack.",
+  "artifact_hash": "a22c8c3a4c69"
+}

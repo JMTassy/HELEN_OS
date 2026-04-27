@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 35,
+  "timestamp": "2026-04-27T20:17:20.797520",
+  "model": "aura-gemma4:latest",
+  "seed_index": 34,
+  "seed_text": "There is one mind common to all individual men. Every man is an inlet to the same and to all of the same",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "- smell of petrichor after a long drought\n- elastic stretch between two strangers' lives\n- a humming frequency that gets louder if you count the seams\n- something always falling apart, then snaps back together\n- a gold leaf texture, easily chipped",
+  "dan_extract": "here, a dull ache behind a popped bubble; an endless, sticky pull.\n\n1. ONE structural motif — a gold, breathable mesh that covers everything\n2. ONE tension or pressure point — a humming sound right before the power goes out\n\nhere, a dull ache behind a popped bubble.\nclaim_status: NO_CLAIM",
+  "artifact_hash": "4c41ca626c20"
+}

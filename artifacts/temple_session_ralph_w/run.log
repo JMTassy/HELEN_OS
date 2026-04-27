@@ -1,0 +1,162 @@
+[TEMPLE] Checking model aura-gemma4:latest ...
+[TEMPLE] Model confirmed: aura-gemma4:latest
+[TEMPLE] Prompt format: gemma4-native <turn|>
+[TEMPLE] Session 9dc180539d8d | epochs 1–100 | model aura-gemma4:latest
+[TEMPLE] Frame: Ralph Waldo Emerson — Over-Soul · Self-Reliance · Transcendentalism
+[TEMPLE] Authority: NONE | Canon: NO_SHIP | Claim status: NO_CLAIM
+
+[E001] seed: The Over-Soul is that unity which makes the diversity of man...
+  [AURA] ✓ 231 chars
+  [DAN]  ✓ 91 chars
+[E002] seed: Within man is the soul of the whole; the wise silence; the u...
+  [AURA] ✓ 86 chars
+  [DAN]  ⚠ timeout/error
+[E003] seed: The soul knows only the soul; the web of events is the flowi...
+  [AURA] ✓ 16 chars
+  [DAN]  ✓ 156 chars
+[E004] seed: We live in succession, in division, in parts, in particles. ...
+  [AURA] ✓ 212 chars
+  [DAN]  ✓ 134 chars
+[E005] seed: The Supreme Critic on all the errors of the past and present...
+  [AURA] ✓ 86 chars
+  [DAN]  ⚠ timeout/error
+[E006] seed: All goes to show that the soul in man is not an organ but an...
+  [AURA] ✓ 333 chars
+  [DAN]  ✓ 181 chars
+[E007] seed: The soul is not an organ but the ground of being from which ...
+  [AURA] ✓ 62 chars
+  [DAN]  ⚠ timeout/error
+[E008] seed: In the hours of insight we come to rest in the Over-Soul as ...
+  [AURA] ✓ 154 chars
+  [DAN]  ⚠ timeout/error
+[E009] seed: The whole universe is animated by the One Soul diffused thro...
+  [AURA] ✓ 287 chars
+  [DAN]  ⚠ timeout/error
+[E010] seed: When we have broken our god of tradition and ceased from our...
+  [AURA] ✓ 243 chars
+  [DAN]  ⚠ timeout/error
+[E011] seed: Trust thyself: every heart vibrates to that iron string
+  [AURA] ✓ 507 chars
+  [DAN]  ⚠ timeout/error
+[E012] seed: Whoso would be a man must be a nonconformist
+  [AURA] ✓ 179 chars
+  [DAN]  ⚠ timeout/error
+[E013] seed: A foolish consistency is the hobgoblin of little minds adore...
+  [AURA] ✓ 201 chars
+  [DAN]  ⚠ timeout/error
+[E014] seed: To be great is to be misunderstood
+  [AURA] ✓ 295 chars
+  [DAN]  ⚠ timeout/error
+[E015] seed: Society everywhere is in conspiracy against the manhood of e...
+  [AURA] ✓ 74 chars
+  [DAN]  ✓ 124 chars
+[E016] seed: Nothing is at last sacred but the integrity of your own mind
+  [AURA] ✓ 138 chars
+  [DAN]  ✓ 121 chars
+[E017] seed: Insist on yourself; never imitate
+  [AURA] ✓ 61 chars
+  [DAN]  ⚠ timeout/error
+[E018] seed: What I must do is all that concerns me, not what the people ...
+  [AURA] ✓ 216 chars
+  [DAN]  ⚠ timeout/error
+[E019] seed: The power which resides in him is new in nature and none but...
+  [AURA] ✓ 129 chars
+  [DAN]  ✓ 118 chars
+[E020] seed: A man should learn to detect and watch that gleam of light w...
+  [AURA] ✓ 101 chars
+  [DAN]  ✓ 43 chars
+[E021] seed: In the woods we return to reason and faith. Standing on the ...
+  [AURA] ✓ 113 chars
+  [DAN]  ✓ 303 chars
+[E022] seed: Nature always wears the colors of the spirit
+  [AURA] ✓ 105 chars
+  [DAN]  ⚠ timeout/error
+[E023] seed: The lover of nature is he whose inward and outward senses ar...
+  [AURA] ✓ 85 chars
+  [DAN]  ✓ 158 chars
+[E024] seed: To the body and mind which have been cramped by noxious work...
+  [AURA] ✓ 71 chars
+  [DAN]  ✓ 286 chars
+[E025] seed: In the tranquil landscape, and especially in the distant lin...
+  [AURA] ✓ 44 chars
+  [DAN]  ✓ 205 chars
+[E026] seed: The world is emblematic. Parts of speech are metaphors, beca...
+  [AURA] ✓ 218 chars
+  [DAN]  ⚠ timeout/error
+[E027] seed: Nature is the symbol of spirit. Every natural fact is a symb...
+  [AURA] ✓ 163 chars
+  [DAN]  ✓ 115 chars
+[E028] seed: The universe is the externalization of the soul
+  [AURA] ✓ 182 chars
+  [DAN]  ✓ 183 chars
+[E029] seed: Nature is loved by what is best in us
+  [AURA] ✓ 17 chars
+  [DAN]  ⚠ timeout/error
+[E030] seed: Every spirit builds itself a house, and beyond its house a w...
+  [AURA] ✓ 43 chars
+  [DAN]  ⚠ timeout/error
+[E031] seed: The intellect that sees the interval partakes of it and the ...
+  [AURA] ✓ 164 chars
+  [DAN]  ⚠ timeout/error
+[E032] seed: God offers to every mind its choice between truth and repose...
+  [AURA] ✓ 209 chars
+  [DAN]  ⚠ timeout/error
+[E033] seed: The man of genius inspires us with a boundless confidence in...
+  [AURA] ✓ 5 chars
+  [DAN]  ⚠ timeout/error
+[E034] seed: Every mind is a new classification
+  [AURA] ✓ 167 chars
+  [DAN]  ⚠ timeout/error
+[E035] seed: There is one mind common to all individual men. Every man is...
+  [AURA] ✓ 247 chars
+  [DAN]  ✓ 289 chars
+[E036] seed: The thought of genius is spontaneous; but the power of pictu...
+  [AURA] ✓ 359 chars
+  [DAN]  ✓ 16 chars
+[E037] seed: In every work of genius we recognize our own rejected though...
+  [AURA] ✓ 181 chars
+  [DAN]  ⚠ timeout/error
+[E038] seed: The sentences of the great poet or philosopher are not like ...
+  [AURA] ✓ 48 chars
+  [DAN]  ⚠ timeout/error
+[E039] seed: Genius is the activity which repairs the decays of things wh...
+  [AURA] ✓ 53 chars
+  [DAN]  ⚠ timeout/error
+[E040] seed: A new degree of culture would instantly revolutionize the en...
+  [AURA] ⚠ timeout/error
+  [DAN]  ⚠ timeout/error
+[E041] seed: The eye is the first circle; the horizon which it forms is t...
+  [AURA] ✓ 129 chars
+  [DAN]  ✓ 131 chars
+[E042] seed: Every action admits of being outdone. Our life is an apprent...
+  [AURA] ✓ 202 chars
+  [DAN]  ✓ 161 chars
+[E043] seed: The one thing which we seek with insatiable desire is to for...
+  [AURA] ✓ 227 chars
+  [DAN]  ⚠ timeout/error
+[E044] seed: The life of man is a self-evolving circle which from a ring ...
+  [AURA] ✓ 192 chars
+  [DAN]  ⚠ timeout/error
+[E045] seed: In nature every moment is new; the past is always swallowed ...
+  [AURA] ✓ 313 chars
+  [DAN]  ✓ 203 chars
+[E046] seed: Nothing great was ever achieved without enthusiasm
+  [AURA] ✓ 270 chars
+  [DAN]  ✓ 435 chars
+[E047] seed: The way of life is wonderful: it is by abandonment
+  [AURA] ✓ 185 chars
+  [DAN]  ⚠ timeout/error
+[E048] seed: There are no fixtures in nature. The universe is fluid and v...
+  [AURA] ✓ 268 chars
+  [DAN]  ⚠ timeout/error
+[E049] seed: Forever wells up the impulse of choosing and acting in the s...
+  [AURA] ✓ 151 chars
+  [DAN]  ⚠ timeout/error
+[E050] seed: System also creates clubroom and fellowship and so creates t...
+  [AURA] ✓ 74 chars
+  [DAN]  ⚠ timeout/error
+[E051] seed: Every excess causes a defect; every defect an excess
+  [AURA] ✓ 233 chars
+  [DAN]  ⚠ timeout/error
+[E052] seed: The soul is not twin-born but the only begotten, and though ...
+  [AURA] ✓ 147 chars

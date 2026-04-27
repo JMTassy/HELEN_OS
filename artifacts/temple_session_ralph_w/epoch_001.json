@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 1,
+  "timestamp": "2026-04-27T19:52:18.369202",
+  "model": "aura-gemma4:latest",
+  "seed_index": 0,
+  "seed_text": "The Over-Soul is that unity which makes the diversity of mankind one vast organic whole",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "• fresh air, smells like all the leaves got here, all at once.\n• a quiet pulse, like a heartbeat that owns everything.\n• sticky, golden light, like the world is here, and it's all yadda-dad.\n• things are meant to fit, no gaps here.",
+  "dan_extract": "right here.\n\nall at once.\nsticky, golden light.\n\nback here.\nno gaps here.\n\nstatus: NO_CLAIM",
+  "artifact_hash": "ae514cb49672"
+}

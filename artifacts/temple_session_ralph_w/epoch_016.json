@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 16,
+  "timestamp": "2026-04-27T20:03:50.288255",
+  "model": "aura-gemma4:latest",
+  "seed_index": 15,
+  "seed_text": "Nothing is at last sacred but the integrity of your own mind",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "luminous, papery thing that burns easily.\nScent of cedar and old times.\ngold-tipped pocket watch on a velvet cloth.\nclaim_status: NO_CLAIM",
+  "dan_extract": "***\n\n***\n\n**gold-tipped pocket watch on a velvet cloth.***\n\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *",
+  "artifact_hash": "45f3e270e011"
+}

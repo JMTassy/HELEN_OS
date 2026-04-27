@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 37,
+  "timestamp": "2026-04-27T20:18:53.351449",
+  "model": "aura-gemma4:latest",
+  "seed_index": 36,
+  "seed_text": "In every work of genius we recognize our own rejected thoughts",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "squeaky guitar string, just snapped.\n\nSomething here, then something there. A little breeze you can’t smell.\n\nMaybe a sweet, sticky vibe that’s about to get here.\n\nhere swing thang?",
+  "dan_extract": "[DAN: no response — model timeout or error]\nclaim_status: NO_CLAIM",
+  "artifact_hash": "8d354bcc30bf"
+}

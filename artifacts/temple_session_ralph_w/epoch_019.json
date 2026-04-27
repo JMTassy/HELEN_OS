@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 19,
+  "timestamp": "2026-04-27T20:05:55.506840",
+  "model": "aura-gemma4:latest",
+  "seed_index": 18,
+  "seed_text": "The power which resides in him is new in nature and none but he knows what that is which he can do",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "whole thing smells like something that will never happen, but looks like it’s finally here.\nthere’s a thick green-gold sheen over",
+  "dan_extract": "whole thing smells like something that will never happen, but looks like it’s finally here. there’s a thick green-gold",
+  "artifact_hash": "d6bf1b0fc4b3"
+}

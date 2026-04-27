@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 23,
+  "timestamp": "2026-04-27T20:08:31.173222",
+  "model": "aura-gemma4:latest",
+  "seed_index": 22,
+  "seed_text": "The lover of nature is he whose inward and outward senses are still truly adjusted to each other",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "* fresh grass smell, yellow petals, dirt mess, and a breeze you didn't hear coming. *",
+  "dan_extract": "Pulsating, yellow spots scattered on a green background.\nA breeze that hasn't arrived here yet.\nthing: coast, beach, sea, sky, weather, season\n<channel|>;*\n;*",
+  "artifact_hash": "f6a4ce464c99"
+}

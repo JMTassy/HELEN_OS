@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 13,
+  "timestamp": "2026-04-27T20:01:38.949165",
+  "model": "aura-gemma4:latest",
+  "seed_index": 12,
+  "seed_text": "A foolish consistency is the hobgoblin of little minds adored by little statesmen and philosophers and divines",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "* little, endless stretches of gold-green unknown.*\n\n* a breeze that smells like leather and somewhere else.*\n\n* a hint of magic on the horizon.*\n\n* something that will grow if you just leave it here.*",
+  "dan_extract": "[DAN: no response — model timeout or error]\nclaim_status: NO_CLAIM",
+  "artifact_hash": "1cc24fa53925"
+}

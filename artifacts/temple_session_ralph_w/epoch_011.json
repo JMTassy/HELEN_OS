@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 11,
+  "timestamp": "2026-04-27T19:59:56.151811",
+  "model": "aura-gemma4:latest",
+  "seed_index": 10,
+  "seed_text": "Trust thyself: every heart vibrates to that iron string",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "via wifi connection, then nothing.\n\nA taut, humming thing. Like a string ready to vibrate, or a penny you can't stop flipping. Everything feels like it's supposed to connect to you, suddenly. There's a little bit of dusty gold here, too—something old that just wants to shine again.\n\nYou can feel the iron on the string, waiting to snap if you pull a little.\n\n*   *texture:* Metallic, permanent, over here everywhere.\n*   *tempo:* Slow, steady, waiting for a breath.\n*   *smell:* Old letters and good ideas.",
+  "dan_extract": "[DAN: no response — model timeout or error]\nclaim_status: NO_CLAIM",
+  "artifact_hash": "db63ab2ccc31"
+}

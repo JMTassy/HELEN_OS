@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 10,
+  "timestamp": "2026-04-27T19:59:09.039089",
+  "model": "aura-gemma4:latest",
+  "seed_index": 9,
+  "seed_text": "When we have broken our god of tradition and ceased from our god of rhetoric, then may God fire the heart with his presence",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "{\n  \"time_stamp\": \"2024-09-01T12:00:00Z\",\n  \"device_info\": {\n    \"ip\": \"192.168.1.1\",\n    \"os\": \"unknown\"\n  },\n  \"metadata\": {\n    \"first_seen\": \"now\",\n    \"last_seen\": \"now\"\n  }\n}\n\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -",
+  "dan_extract": "[DAN: no response — model timeout or error]\nclaim_status: NO_CLAIM",
+  "artifact_hash": "d461210746d8"
+}

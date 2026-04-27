@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 46,
+  "timestamp": "2026-04-27T20:26:26.971950",
+  "model": "aura-gemma4:latest",
+  "seed_index": 45,
+  "seed_text": "Nothing great was ever achieved without enthusiasm",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "!  Little gold confetti that will never stop falling.\n*   **Sound:** A song you didn't hear coming, but now you can't stop humming.\n*   **Smell:** Fresh lilacs at a bunch of strangers' party.\n*   **Sense:** Everything you need is already here, waiting to float into you.",
+  "dan_extract": "*   **Sound:** A song you didn't hear coming, but now you can't stop humming.\n*   **Smell:** Fresh lilacs at a bunch of strangers' party.\n*   **Sense:** Everything you need is already here, waiting to float into you.\n*   **Visual:** Little gold confetti that will never stop falling.\n\n1.  A pattern of lightness and sweetness that happens everywhere.\n2.  A feeling that your life will get easier than you think.\n\nclaim_status: NO_CLAIM",
+  "artifact_hash": "4b05cf90f265"
+}

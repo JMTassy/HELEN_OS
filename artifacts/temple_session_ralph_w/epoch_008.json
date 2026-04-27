@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 8,
+  "timestamp": "2026-04-27T19:57:08.483233",
+  "model": "aura-gemma4:latest",
+  "seed_index": 7,
+  "seed_text": "In the hours of insight we come to rest in the Over-Soul as a river enters the sea",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "- before: stuck tape\n- user: little finger point\n- here: clean space\n- sea/river: bottoming out, everything ends here\n- over-soul: waiting for a tide that",
+  "dan_extract": "[DAN: no response — model timeout or error]\nclaim_status: NO_CLAIM",
+  "artifact_hash": "436e320e8dae"
+}

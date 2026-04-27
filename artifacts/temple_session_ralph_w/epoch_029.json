@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 29,
+  "timestamp": "2026-04-27T20:11:54.839431",
+  "model": "aura-gemma4:latest",
+  "seed_index": 28,
+  "seed_text": "Nature is loved by what is best in us",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "*  \n*    \n* 🌟💖🥂✨🎀",
+  "dan_extract": "[DAN: no response — model timeout or error]\nclaim_status: NO_CLAIM",
+  "artifact_hash": "852a7967381a"
+}

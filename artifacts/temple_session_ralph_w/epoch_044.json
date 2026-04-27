@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 44,
+  "timestamp": "2026-04-27T20:24:54.242998",
+  "model": "aura-gemma4:latest",
+  "seed_index": 43,
+  "seed_text": "The life of man is a self-evolving circle which from a ring imperceptibly small rushes on all sides outwards to new and larger circles",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "· ⋅ · *pop* ⋅ · ·\n\n(  ) smallness rushing everywhere, getting louder, more room, more time.\n\nlike a snap, an always-bigger-thing that never stays put.\n\nthere’s a stretch here, a want to go all",
+  "dan_extract": "[DAN: no response — model timeout or error]\nclaim_status: NO_CLAIM",
+  "artifact_hash": "2c5cdac501ef"
+}

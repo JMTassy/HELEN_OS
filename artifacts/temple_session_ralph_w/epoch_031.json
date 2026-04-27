@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 31,
+  "timestamp": "2026-04-27T20:13:46.439856",
+  "model": "aura-gemma4:latest",
+  "seed_index": 30,
+  "seed_text": "The intellect that sees the interval partakes of it and the fact of inspiration becomes credible",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "cool, breezy, and untethered. \nEverything here feels like a space that's ready to be picked up and put somewhere else. \nA lot of lost time and unread notifications.",
+  "dan_extract": "[DAN: no response — model timeout or error]\nclaim_status: NO_CLAIM",
+  "artifact_hash": "3aa6d175494d"
+}

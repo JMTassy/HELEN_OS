@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 6,
+  "timestamp": "2026-04-27T19:55:55.421807",
+  "model": "aura-gemma4:latest",
+  "seed_index": 5,
+  "seed_text": "All goes to show that the soul in man is not an organ but animates and exercises all organs",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "- Spring air on a plucked string.\n- A feeling of there being more to you than what you can see.\n- Low, humming pressure that gets easier to live with.\n- Things feel connected; like you’re all one thing, breathing together.\n- An untraceable, gentle tug that moves you with no ladder.\n- Time has a lot more of you in it than you think.",
+  "dan_extract": "nontethered, all-inclusive flow; a sudden, lasting pull you can't follow.\nA feeling of infinite, all-there-is-time-with-you-to-waste-with-nothing-here-but-you-and-time.\n\nmore-than-a",
+  "artifact_hash": "87e8dd7690fd"
+}

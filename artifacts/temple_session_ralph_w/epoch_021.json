@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 21,
+  "timestamp": "2026-04-27T20:07:06.892206",
+  "model": "aura-gemma4:latest",
+  "seed_index": 20,
+  "seed_text": "In the woods we return to reason and faith. Standing on the bare ground — my head bathed by the blithe air",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "here's a feeling of nothing on the breeze, a soft green skin, a place where thoughts are still sticky with honey.",
+  "dan_extract": "restoring here's a feeling of nothing on the breeze, a soft green skin, a place where thoughts are still sticky with honey.\n\n1.  soft, clinging texture\n2.  unknown source of breeze tension\n\nhere's a feeling of nothing on the breeze, a soft green skin, a place where thoughts are still sticky with honey.",
+  "artifact_hash": "1bf607860f7b"
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 27,
+  "timestamp": "2026-04-27T20:10:31.003857",
+  "model": "aura-gemma4:latest",
+  "seed_index": 26,
+  "seed_text": "Nature is the symbol of spirit. Every natural fact is a symbol of some spiritual fact",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "green moss and things you can’t name.\na breeze carrying a memory of forever.\neverything means everything else.\nthere’s a pulse here.\na little voice, a lot of soul.",
+  "dan_extract": "here, a feeling of endless time going nowhere.\na rhythm of life that gets louder and louder.\nclaim_status: NO_CLAIM",
+  "artifact_hash": "3dc75f12e125"
+}

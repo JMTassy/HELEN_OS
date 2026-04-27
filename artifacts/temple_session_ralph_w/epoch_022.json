@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 22,
+  "timestamp": "2026-04-27T20:07:43.333321",
+  "model": "aura-gemma4:latest",
+  "seed_index": 21,
+  "seed_text": "Nature always wears the colors of the spirit",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "green dusting powder\nsoft, fresh smell of things that might grow\nunknown, thick breeze\nsticky, sweet skin",
+  "dan_extract": "[DAN: no response — model timeout or error]\nclaim_status: NO_CLAIM",
+  "artifact_hash": "8e1c1d0ca7f9"
+}

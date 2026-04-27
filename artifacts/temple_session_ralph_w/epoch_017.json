@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 17,
+  "timestamp": "2026-04-27T20:04:20.233702",
+  "model": "aura-gemma4:latest",
+  "seed_index": 16,
+  "seed_text": "Insist on yourself; never imitate",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *",
+  "dan_extract": "[DAN: no response — model timeout or error]\nclaim_status: NO_CLAIM",
+  "artifact_hash": "f9d828dd057a"
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 24,
+  "timestamp": "2026-04-27T20:08:48.494191",
+  "model": "aura-gemma4:latest",
+  "seed_index": 23,
+  "seed_text": "To the body and mind which have been cramped by noxious work or company, nature is medicinal and restores their tone",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "breeze, sea, sky, coast, yellow spots, green background, endless space.",
+  "dan_extract": "pothole, gold, leaf, yellow, grass, dirt, coast, spots, sky, space, breeze, sea, life, death, heaven, earth, blue, green, yellow.\n\n1.  *Pattern:* Everything is spotty and has been here forever.\n2.  *tension:* A million tiny, yellow, sticky spots that go nowhere.\n\nclaim_status: NO_CLAIM",
+  "artifact_hash": "3493a658c92b"
+}

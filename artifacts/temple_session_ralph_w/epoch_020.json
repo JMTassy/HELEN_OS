@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 20,
+  "timestamp": "2026-04-27T20:06:22.496918",
+  "model": "aura-gemma4:latest",
+  "seed_index": 19,
+  "seed_text": "A man should learn to detect and watch that gleam of light which flashes across his mind from within",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "here's hairs on your chest, a little bubble wrap glow, and a yellow-green tint that smells like here.",
+  "dan_extract": "here's hairs on your chest, a little bubble",
+  "artifact_hash": "4544677aaf37"
+}

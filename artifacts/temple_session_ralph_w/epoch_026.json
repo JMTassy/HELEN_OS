@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 26,
+  "timestamp": "2026-04-27T20:09:41.499465",
+  "model": "aura-gemma4:latest",
+  "seed_index": 25,
+  "seed_text": "The world is emblematic. Parts of speech are metaphors, because the whole of nature is a metaphor of the human mind",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "*   Gold spots bleed into the blue, like a wing that gets ripped apart.\n*   everything is hanging over a lasting, green-green rhythm.\n*   there is a pull you can't find anywhere else.\n*   a little breeze, then nothing.",
+  "dan_extract": "[DAN: no response — model timeout or error]\nclaim_status: NO_CLAIM",
+  "artifact_hash": "c30aac201001"
+}

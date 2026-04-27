@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 5,
+  "timestamp": "2026-04-27T19:55:05.475240",
+  "model": "aura-gemma4:latest",
+  "seed_index": 4,
+  "seed_text": "The Supreme Critic on all the errors of the past and present is the Soul",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "here's})}{--*}\n\n(gold-threaded edges, silk-burn smell, beat of a wing, life-force ivy)",
+  "dan_extract": "[DAN: no response — model timeout or error]\nclaim_status: NO_CLAIM",
+  "artifact_hash": "694996230d1d"
+}

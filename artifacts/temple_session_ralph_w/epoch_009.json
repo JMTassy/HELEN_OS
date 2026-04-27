@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 9,
+  "timestamp": "2026-04-27T19:58:17.651245",
+  "model": "aura-gemma4:latest",
+  "seed_index": 8,
+  "seed_text": "The whole universe is animated by the One Soul diffused through all",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "sunk vinyl and gold leaf.\n\nA low, constant hum that gets louder if you split it up. Like every little thing is breathing the same color air.\n\nThere's a no-here-is-here kind of texture to it. No edges, just a big, all-over-snuggly-sweater feel.\n\nBlood everywhere, but it's all good blood.",
+  "dan_extract": "[DAN: no response — model timeout or error]\nclaim_status: NO_CLAIM",
+  "artifact_hash": "13d377250f56"
+}

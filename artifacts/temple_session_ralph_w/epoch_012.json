@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 12,
+  "timestamp": "2026-04-27T20:00:46.001705",
+  "model": "aura-gemma4:latest",
+  "seed_index": 11,
+  "seed_text": "Whoso would be a man must be a nonconformist",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "- coin, chance, choice.\n- low pressure, easy breeze.\n- nothing here, and everything is here.\n- a pop of color, a little bit of haze.\n- time snaps back, no memory of what was here.",
+  "dan_extract": "[DAN: no response — model timeout or error]\nclaim_status: NO_CLAIM",
+  "artifact_hash": "446d9d3be1ed"
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 36,
+  "timestamp": "2026-04-27T20:17:55.065007",
+  "model": "aura-gemma4:latest",
+  "seed_index": 35,
+  "seed_text": "The thought of genius is spontaneous; but the power of picture or expression in the most enriched and flowing nature implies a mixture of will",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "here, an endless, sticky pull, just like a popped bubble you can't leave alone.\n\n*   **Texture:** A breathable, gold-spun mesh that seems to hang over everything like a pretty spiderweb.\n*   **Tension:** A sound you can’t place—like a million little bees humming right next to your ear.\n*   **Feeling:** Something is following you, always there, but you can’t",
+  "dan_extract": "here swing thang",
+  "artifact_hash": "c413d75aad52"
+}

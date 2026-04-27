@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 32,
+  "timestamp": "2026-04-27T20:14:39.976003",
+  "model": "aura-gemma4:latest",
+  "seed_index": 31,
+  "seed_text": "God offers to every mind its choice between truth and repose. Take which you please — you can never have both",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "cool, clean, effortless.\n\n* A waiting feeling, like a string about to break.\n* Two sides of a coin, always falling.\n* Something is here, but nothing has shown up yet.\n* The scent of old paper and green things.",
+  "dan_extract": "[DAN: no response — model timeout or error]\nclaim_status: NO_CLAIM",
+  "artifact_hash": "169ff1a90cc7"
+}

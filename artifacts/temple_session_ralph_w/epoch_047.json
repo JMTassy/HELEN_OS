@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 47,
+  "timestamp": "2026-04-27T20:26:51.039248",
+  "model": "aura-gemma4:latest",
+  "seed_index": 46,
+  "seed_text": "The way of life is wonderful: it is by abandonment",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "*   **Sound:** A laugh track that picks up where you left off.\n*   **Smell:** Old leather and sweet cigarettes.\n*   **Sense:** That feeling of just having enough time to decide nothing.",
+  "dan_extract": "[DAN: no response — model timeout or error]\nclaim_status: NO_CLAIM",
+  "artifact_hash": "8e2a4e81d622"
+}

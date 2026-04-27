@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 25,
+  "timestamp": "2026-04-27T20:09:06.726946",
+  "model": "aura-gemma4:latest",
+  "seed_index": 24,
+  "seed_text": "In the tranquil landscape, and especially in the distant line of the horizon, man beholds somewhat as beautiful as his own nature",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "gold spots, breeze, sea, life, death, earth.",
+  "dan_extract": "breeze and sea have a repeating, lasting rhythm that gets smaller and smaller over time.\nthere is a spot where the gold spots seem to bleed into the breeze, pulling everything apart.\nclaim_status: NO_CLAIM",
+  "artifact_hash": "f27f3e8676e9"
+}

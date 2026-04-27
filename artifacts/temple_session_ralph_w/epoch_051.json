@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 51,
+  "timestamp": "2026-04-27T20:31:03.985446",
+  "model": "aura-gemma4:latest",
+  "seed_index": 50,
+  "seed_text": "Every excess causes a defect; every defect an excess",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "• space •\n^\n\n(A draft you didn't hear, a smell just out of season.)\n\n* Tension between what you have and what you think you want.\n* A rhythm that repeats if you just let it.\n* Something is missing, but all the colors are still there.",
+  "dan_extract": "[DAN: no response — model timeout or error]\nclaim_status: NO_CLAIM",
+  "artifact_hash": "fa201957d18b"
+}

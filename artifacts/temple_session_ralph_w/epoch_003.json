@@ -1,0 +1,16 @@
+{
+  "schema": "TEMPLE_EPOCH_ARTIFACT_V1",
+  "authority": "NONE",
+  "canon": "NO_SHIP",
+  "claim_status": "NO_CLAIM",
+  "session_id": "9dc180539d8d",
+  "epoch": 3,
+  "timestamp": "2026-04-27T19:53:35.061937",
+  "model": "aura-gemma4:latest",
+  "seed_index": 2,
+  "seed_text": "The soul knows only the soul; the web of events is the flowing robe in which she is clothed",
+  "thematic_frame": "Ralph Waldo Emerson — Over-Soul, Self-Reliance, Transcendentalism",
+  "aura_sensing": "yourselves-here-",
+  "dan_extract": "here-yourselves-web-flow\n\n1. A sticky, breathing current that follows the edge of things.\n2. A trapped, high-pitched hum that lives just beneath the surface",
+  "artifact_hash": "4bd1868c7212"
+}
