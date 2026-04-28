@@ -27,12 +27,57 @@ from pathlib import Path
 
 _parser = argparse.ArgumentParser(description="HELEN render pilot v2")
 _parser.add_argument(
-    "--rating",
+    "--pipeline-score",
     type=int,
     default=None,
-    help="Operator rating 1-10 (skips interactive prompt). Stored in render_receipt.json.",
+    help="Pipeline score 1-10: did the rails work correctly (seed→model→delivery→receipt)? Required non-interactive.",
+)
+_parser.add_argument(
+    "--output-score",
+    type=int,
+    default=None,
+    help="Output score 1-10: is the video actually cinematic HELEN performance? Required non-interactive.",
+)
+_parser.add_argument(
+    "--operator-decision",
+    choices=["KEEP", "REJECT"],
+    default=None,
+    help="Operator decision (KEEP or REJECT). Required non-interactive. Decision is independent of scores: KEEP requires both scores, REJECT can stand even with high scores when the clip is not canon-worthy.",
+)
+_parser.add_argument(
+    "--failure-class",
+    type=str,
+    default=None,
+    help="Optional failure class label when REJECT (free string, e.g. IDENTITY_DRIFT, MOTION_TOO_MUCH, OUTPUT_WEAK). Null on KEEP unless explicitly set.",
 )
 _ARGS = _parser.parse_args()
+
+
+def _check_score(name: str, value: int | None) -> None:
+    if value is not None and not (1 <= value <= 10):
+        raise RuntimeError(
+            f"NO_RATING = INVALID_RENDER_RECEIPT — --{name} {value} out of range 1-10"
+        )
+
+
+# Fail-fast: NO_RATING = INVALID_RENDER_RECEIPT. Validate before spending Higgsfield credits.
+_check_score("pipeline-score", _ARGS.pipeline_score)
+_check_score("output-score", _ARGS.output_score)
+_missing = [
+    flag
+    for flag, val in (
+        ("--pipeline-score", _ARGS.pipeline_score),
+        ("--output-score", _ARGS.output_score),
+        ("--operator-decision", _ARGS.operator_decision),
+    )
+    if val is None
+]
+if _missing and not sys.stdin.isatty():
+    raise RuntimeError(
+        "NO_RATING = INVALID_RENDER_RECEIPT — non-interactive run requires "
+        + " AND ".join(_missing)
+        + " (scores 1-10, decision KEEP|REJECT)"
+    )
 
 
 def _sha256_file(p: Path) -> str:
@@ -229,9 +274,17 @@ duration = tg_data["result"].get("video", {}).get("duration", "?")
 print(f"      ✓ telegram msg_id={msg_id} duration={duration}s")
 
 # ── Render receipt (NON_SOVEREIGN, sidecar — never touches town/ledger_v1.ndjson) ──
+# Schema v3 (HAL-mandated, MERGE SCHEMAS): three independent signals
+#   operator_decision : KEEP | REJECT  — the binding judgment
+#   pipeline_score    : 1-10           — did the rails work
+#   output_score      : 1-10           — is the clip canon-worthy
+# Plus optional failure_class for REJECTs. The decision is independent of the
+# scores: a clip can have pipeline=10/output=5 and still be REJECT, which solves
+# the inflation problem (machine worked, film not good enough).
 receipt_path = OUT / "render_receipt.json"
 receipt = {
     "authority_status": "NON_SOVEREIGN_RENDER_RECEIPT",
+    "schema_version": 3,  # v1 = single operator_rating; v2 = pipeline_rating+output_rating; v3 = +operator_decision +failure_class
     "generated_at": time.strftime("%Y-%m-%dT%H:%M:%S%z") or time.strftime("%Y-%m-%dT%H:%M:%S"),
     "seed_path": str(SEED_PATH),
     "seed_sha256": _sha256_file(SEED_PATH),
@@ -248,36 +301,88 @@ receipt = {
     "output_duration_seconds": duration,
     "telegram_chat_id": CHAT_ID,
     "telegram_msg_id": msg_id,
-    "operator_rating": None,
+    "operator_decision": None,  # filled below before disk write
+    "pipeline_score": None,     # filled below before disk write
+    "output_score": None,       # filled below before disk write
+    "failure_class": None,      # optional; populated on REJECT or when operator passes --failure-class
 }
-receipt_path.write_text(json.dumps(receipt, indent=2))
-print(f"      ✓ receipt (rating pending) → {receipt_path}")
 
-# ── Operator rating capture (block on TTY, accept --rating flag, else leave null) ──
-operator_rating: int | None = None
-if _ARGS.rating is not None:
-    if 1 <= _ARGS.rating <= 10:
-        operator_rating = _ARGS.rating
-        print(f"      ✓ rating from --rating flag: {operator_rating}/10")
-    else:
-        print(f"      ⚠ --rating {_ARGS.rating} out of range 1-10, leaving null")
-elif sys.stdin.isatty():
-    try:
-        raw = input("Operator rating (1-10, blank to skip): ").strip()
-        if raw:
+# ── Operator capture (mandatory; NO_RATING = INVALID_RENDER_RECEIPT) ──
+# Receipt is NOT written to disk until decision + both scores are bound.
+
+def _capture_score(flag_value: int | None, axis_name: str, prompt: str) -> int:
+    if flag_value is not None:
+        print(f"      ✓ {axis_name} from flag: {flag_value}/10")
+        return flag_value  # already validated 1-10 at parse time
+    if sys.stdin.isatty():
+        try:
+            raw = input(prompt).strip()
             n = int(raw)
-            if 1 <= n <= 10:
-                operator_rating = n
-            else:
-                print(f"      ⚠ rating {n} out of range 1-10, leaving null")
-    except (ValueError, EOFError, KeyboardInterrupt):
-        print("      ⚠ rating input invalid or interrupted, leaving null")
-else:
-    print("      (non-interactive: --rating flag not provided; rating left null — patch later)")
+            if not (1 <= n <= 10):
+                raise ValueError(f"{axis_name} {n} out of range 1-10")
+            return n
+        except (ValueError, EOFError, KeyboardInterrupt) as e:
+            raise RuntimeError(
+                f"NO_RATING = INVALID_RENDER_RECEIPT — interactive {axis_name} capture failed: {e}"
+            )
+    raise RuntimeError(
+        f"NO_RATING = INVALID_RENDER_RECEIPT — non-interactive run requires --{axis_name.replace('_', '-')} 1-10"
+    )
 
-receipt["operator_rating"] = operator_rating
+
+def _capture_decision(flag_value: str | None) -> str:
+    if flag_value is not None:
+        print(f"      ✓ operator_decision from flag: {flag_value}")
+        return flag_value  # argparse already constrained to {KEEP, REJECT}
+    if sys.stdin.isatty():
+        try:
+            raw = input("Operator decision (KEEP or REJECT): ").strip().upper()
+            if raw not in ("KEEP", "REJECT"):
+                raise ValueError(f"operator_decision {raw!r} not in {{KEEP, REJECT}}")
+            return raw
+        except (ValueError, EOFError, KeyboardInterrupt) as e:
+            raise RuntimeError(
+                f"NO_RATING = INVALID_RENDER_RECEIPT — interactive operator_decision capture failed: {e}"
+            )
+    raise RuntimeError(
+        "NO_RATING = INVALID_RENDER_RECEIPT — non-interactive run requires --operator-decision KEEP|REJECT"
+    )
+
+
+def _capture_failure_class(flag_value: str | None, decision: str) -> str | None:
+    if flag_value:
+        return flag_value
+    if decision == "REJECT" and sys.stdin.isatty():
+        try:
+            raw = input("Failure class (free string, blank = unspecified): ").strip()
+            return raw or None
+        except (EOFError, KeyboardInterrupt):
+            return None
+    return None
+
+
+operator_decision = _capture_decision(_ARGS.operator_decision)
+pipeline_score = _capture_score(
+    _ARGS.pipeline_score,
+    "pipeline_score",
+    "Pipeline score (1-10, did rails work correctly?): ",
+)
+output_score = _capture_score(
+    _ARGS.output_score,
+    "output_score",
+    "Output score (1-10, is video cinematic HELEN performance?): ",
+)
+failure_class = _capture_failure_class(_ARGS.failure_class, operator_decision)
+
+receipt["operator_decision"] = operator_decision
+receipt["pipeline_score"] = pipeline_score
+receipt["output_score"] = output_score
+receipt["failure_class"] = failure_class
 receipt_path.write_text(json.dumps(receipt, indent=2))
-print(f"      ✓ receipt finalized → {receipt_path} (rating={operator_rating})")
+print(
+    f"      ✓ receipt finalized → {receipt_path} "
+    f"(decision={operator_decision}, pipeline={pipeline_score}, output={output_score}, failure_class={failure_class})"
+)
 
 print()
 print("=== HELEN RENDER PILOT v2 — RESULT ===")
