@@ -1,20 +1,25 @@
 """Admissibility Gate — receipt-required filter between Ralph and delivery.
 
 Rules (in order):
-  1. No receipt            → REJECT
-  2. Missing required fields → REJECT
-  3. visual_coherence < 0.6  → REJECT  (if present)
-  4. temporal_alignment < threshold → REJECT  (if present)
-  5. Unknown/absent metrics  → PENDING  (not enough evidence to admit)
-  6. All checks pass         → ACCEPT
+  1. No receipt                     → REJECT
+  2. Missing required fields         → REJECT
+  3. Receipt binding mismatch        → REJECT  (pipeline_hash ≠ sha256(content_hash+salt))
+  4. visual_coherence < 0.6         → REJECT  (if present)
+  5. temporal_alignment < threshold → REJECT  (if present)
+  6. Unknown/absent metrics         → PENDING  (not enough evidence to admit)
+  7. All checks pass                → ACCEPT
 
 No fake metrics. An absent metric is never treated as passing.
 PENDING means "insufficient evidence" — not deliverable until re-evaluated.
+
+Receipt binding (rule 3) upgrades the gate from policy filter to verifiable
+admission system: ACCEPT ⟹ cryptographic binding between content and pipeline.
 
 Ralph cannot call deliver(). Only ACCEPTED ledger entries reach delivery.
 """
 from __future__ import annotations
 
+import hashlib
 from dataclasses import dataclass
 from typing import Literal
 
@@ -22,8 +27,23 @@ Decision = Literal["ACCEPT", "REJECT", "PENDING"]
 
 VISUAL_COHERENCE_MIN = 0.6
 TEMPORAL_ALIGNMENT_MIN = 0.5
+PIPELINE_SALT = "helen_video_v1"
 
 REQUIRED_RECEIPT_FIELDS = {"content_hash", "pipeline_hash"}
+
+
+def _sha256(s: str) -> str:
+    return hashlib.sha256(s.encode()).hexdigest()
+
+
+def verify_receipt_binding(receipt: dict, salt: str = PIPELINE_SALT) -> bool:
+    """Check that pipeline_hash is cryptographically bound to content_hash.
+
+    Binding: pipeline_hash == sha256(content_hash + salt)
+    A receipt where these are independent strings fails this check.
+    """
+    expected = _sha256(receipt["content_hash"] + salt)
+    return receipt["pipeline_hash"] == expected
 
 
 @dataclass(frozen=True)
@@ -57,6 +77,13 @@ def evaluate(candidate: dict, receipt: dict | None) -> GateVerdict:
         return GateVerdict(
             decision="REJECT",
             reason=f"receipt missing required fields: {sorted(missing)}",
+            receipt=receipt,
+        )
+
+    if not verify_receipt_binding(receipt):
+        return GateVerdict(
+            decision="REJECT",
+            reason="receipt binding mismatch: pipeline_hash not derived from content_hash",
             receipt=receipt,
         )
 

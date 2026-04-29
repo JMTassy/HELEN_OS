@@ -6,22 +6,32 @@ Confirms:
   3. ACCEPTED requires receipt (no receipt → REJECT)
   4. Ledger is append-only (verify_chain, no deletion)
 """
-import inspect
+import hashlib
 import pytest
 
-from helen_video.admissibility_gate import evaluate, VISUAL_COHERENCE_MIN
+from helen_video.admissibility_gate import (
+    evaluate, verify_receipt_binding, VISUAL_COHERENCE_MIN, PIPELINE_SALT,
+)
 from helen_video.ralph_generator import generate_candidate, extract_receipt
 from helen_video.video_ledger import VideoLedger
 
 
-_GOOD_RECEIPT = {
-    "content_hash": "abc123",
-    "pipeline_hash": "def456",
-    "state_hash": "ghi789",
-    "model_signature": "kling-v1",
-    "visual_coherence": 0.85,
-    "temporal_alignment": 0.75,
-}
+def _bound_receipt(content_hash: str = "abc123", **overrides) -> dict:
+    """Build a receipt with a valid cryptographic binding."""
+    pipeline_hash = hashlib.sha256((content_hash + PIPELINE_SALT).encode()).hexdigest()
+    base = {
+        "content_hash": content_hash,
+        "pipeline_hash": pipeline_hash,
+        "state_hash": "ghi789",
+        "model_signature": "kling-v1",
+        "visual_coherence": 0.85,
+        "temporal_alignment": 0.75,
+    }
+    base.update(overrides)
+    return base
+
+
+_GOOD_RECEIPT = _bound_receipt()
 
 
 # ── Invariant 1: Ralph cannot ship ────────────────────────────────────────────
@@ -113,6 +123,19 @@ def test_partial_metrics_is_pending():
 def test_full_good_receipt_is_accepted():
     verdict = evaluate({}, _GOOD_RECEIPT)
     assert verdict.decision == "ACCEPT"
+
+
+# ── Receipt binding ────────────────────────────────────────────────────────────
+
+def test_valid_binding_passes():
+    assert verify_receipt_binding(_GOOD_RECEIPT) is True
+
+
+def test_forged_pipeline_hash_is_rejected():
+    forged = {**_GOOD_RECEIPT, "pipeline_hash": "arbitrary_string"}
+    verdict = evaluate({}, forged)
+    assert verdict.decision == "REJECT"
+    assert "binding" in verdict.reason
 
 
 # ── Invariant 4: Ledger is append-only ────────────────────────────────────────
