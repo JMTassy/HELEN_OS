@@ -4,10 +4,11 @@ Rules (in order):
   1. No receipt                     → REJECT
   2. Missing required fields         → REJECT
   3. Receipt binding mismatch        → REJECT  (pipeline_hash ≠ sha256(content_hash+salt))
-  4. visual_coherence < 0.6         → REJECT  (if present)
-  5. temporal_alignment < threshold → REJECT  (if present)
-  6. Unknown/absent metrics         → PENDING  (not enough evidence to admit)
-  7. All checks pass                → ACCEPT
+  4. Continuity score < 0.6         → REJECT  (if prev_clip supplied)
+  5. visual_coherence < 0.6         → REJECT  (if present)
+  6. temporal_alignment < threshold → REJECT  (if present)
+  7. Unknown/absent metrics         → PENDING  (not enough evidence to admit)
+  8. All checks pass                → ACCEPT
 
 No fake metrics. An absent metric is never treated as passing.
 PENDING means "insufficient evidence" — not deliverable until re-evaluated.
@@ -22,6 +23,10 @@ from __future__ import annotations
 import hashlib
 from dataclasses import dataclass
 from typing import Literal
+
+from helen_video.continuity_engine import continuity_score
+
+CONTINUITY_MIN = 0.6
 
 Decision = Literal["ACCEPT", "REJECT", "PENDING"]
 
@@ -53,14 +58,18 @@ class GateVerdict:
     receipt: dict | None
 
 
-def evaluate(candidate: dict, receipt: dict | None) -> GateVerdict:
+def evaluate(
+    candidate: dict,
+    receipt: dict | None,
+    prev_clip: dict | None = None,
+) -> GateVerdict:
     """Evaluate a Ralph candidate against its receipt.
 
     Args:
-        candidate: dict produced by ralph_generator (ignored for gate logic
-                   except to extract video_id for traceability).
-        receipt:   dict extracted from the candidate's provenance chain.
-                   None → immediate REJECT.
+        candidate:  dict produced by ralph_generator.
+        receipt:    Provenance receipt. None → immediate REJECT.
+        prev_clip:  Optional preceding clip dict. When supplied, continuity
+                    score < 0.6 → REJECT (coherence filter V1).
 
     Returns:
         GateVerdict with decision, human-readable reason, and the receipt.
@@ -86,6 +95,15 @@ def evaluate(candidate: dict, receipt: dict | None) -> GateVerdict:
             reason="receipt binding mismatch: pipeline_hash not derived from content_hash",
             receipt=receipt,
         )
+
+    if prev_clip is not None:
+        cs = continuity_score(prev_clip, candidate)
+        if cs < CONTINUITY_MIN:
+            return GateVerdict(
+                decision="REJECT",
+                reason=f"continuity score {cs:.3f} < threshold {CONTINUITY_MIN}",
+                receipt=receipt,
+            )
 
     vc = receipt.get("visual_coherence")
     ta = receipt.get("temporal_alignment")
