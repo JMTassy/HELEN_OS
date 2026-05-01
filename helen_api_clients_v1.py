@@ -99,6 +99,29 @@ class BaseAPIClient(ABC):
 # OLLAMA CLIENT (Local)
 # ============================================================================
 
+_HELEN_SYSTEM_PROMPT_PATH = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "prompts",
+    "HELEN_SYSTEM_PROMPT_V1.md",
+)
+_helen_system_prompt_cache: Optional[str] = None
+
+
+def load_helen_system_prompt() -> Optional[str]:
+    """Load HELEN OS system prompt from disk (cached). Returns None if absent."""
+    global _helen_system_prompt_cache
+    if _helen_system_prompt_cache is not None:
+        return _helen_system_prompt_cache
+    try:
+        with open(_HELEN_SYSTEM_PROMPT_PATH, "r", encoding="utf-8") as f:
+            _helen_system_prompt_cache = f.read().strip()
+            logger.info(f"HELEN system prompt loaded ({len(_helen_system_prompt_cache)} chars)")
+            return _helen_system_prompt_cache
+    except FileNotFoundError:
+        logger.warning(f"HELEN system prompt not found at {_HELEN_SYSTEM_PROMPT_PATH}; running without system context")
+        return None
+
+
 class OllamaClient(BaseAPIClient):
     """Local Ollama API client"""
 
@@ -107,6 +130,7 @@ class OllamaClient(BaseAPIClient):
         self.base_url = base_url
         self.model = model
         self.endpoint = f"{base_url}/api/generate"
+        self.system_prompt = load_helen_system_prompt()
 
     async def query_async(
         self,
@@ -126,6 +150,8 @@ class OllamaClient(BaseAPIClient):
                     "num_predict": max_tokens,
                 },
             }
+            if self.system_prompt:
+                payload["system"] = self.system_prompt
 
             try:
                 async with session.post(self.endpoint, json=payload) as resp:
@@ -165,6 +191,8 @@ class OllamaClient(BaseAPIClient):
                     "num_predict": max_tokens,
                 },
             }
+            if self.system_prompt:
+                payload["system"] = self.system_prompt
 
             try:
                 async with session.post(self.endpoint, json=payload) as resp:
@@ -189,7 +217,7 @@ class OllamaClient(BaseAPIClient):
         temperature: float = 0.7,
     ) -> Iterator[str]:
         """Stream Ollama response synchronously"""
-        with httpx.stream("POST", self.endpoint, json={
+        payload = {
             "model": self.model,
             "prompt": prompt,
             "stream": True,
@@ -197,7 +225,10 @@ class OllamaClient(BaseAPIClient):
                 "temperature": temperature,
                 "num_predict": max_tokens,
             },
-        }) as resp:
+        }
+        if self.system_prompt:
+            payload["system"] = self.system_prompt
+        with httpx.stream("POST", self.endpoint, json=payload) as resp:
             for line in resp.iter_lines():
                 if line:
                     data = json.loads(line)
