@@ -28,7 +28,7 @@ HERE = Path(__file__).resolve().parent
 if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
 
-from backend_heygen import render_one_shot, DEFAULT_AVATAR_ID, DEFAULT_VOICE_ID  # noqa: E402
+from backend_heygen import render_one_shot, resume_render, DEFAULT_AVATAR_ID, DEFAULT_VOICE_ID  # noqa: E402
 from telegram_delivery import send_video  # noqa: E402
 
 
@@ -37,7 +37,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description="HeyGen one-shot -> Telegram delivery"
     )
-    parser.add_argument("--text", required=True, help="Text the avatar will speak")
+    parser.add_argument("--text", default=None, help="Text the avatar will speak (required unless --resume)")
     parser.add_argument("--task-id", default=None)
     parser.add_argument("--avatar", default=DEFAULT_AVATAR_ID)
     parser.add_argument("--voice", default=DEFAULT_VOICE_ID)
@@ -50,6 +50,12 @@ def main() -> int:
              "(overrides --avatar; uses HeyGen talking_photo)",
     )
     parser.add_argument(
+        "--resume",
+        default=None,
+        help="HeyGen video_id to resume polling/download from (skips upload+generate). "
+             "Use this if a previous run timed out mid-poll.",
+    )
+    parser.add_argument(
         "--caption",
         default=None,
         help="Telegram caption (default: derived from --text)",
@@ -58,21 +64,29 @@ def main() -> int:
 
     task_id = args.task_id or f"helen_{int(time.time())}"
 
-    print(f"=== STAGE 1/2: HeyGen render (task_id={task_id}) ===", flush=True)
-    heygen_receipt = render_one_shot(
-        text=args.text,
-        task_id=task_id,
-        avatar_id=args.avatar,
-        voice_id=args.voice,
-        dimension={"width": args.width, "height": args.height},
-        photo=args.photo,
-    )
+    if args.resume:
+        print(f"=== STAGE 1/2 (RESUME): HeyGen video_id={args.resume} ===", flush=True)
+        heygen_receipt = resume_render(args.resume, task_id=task_id)
+    else:
+        if not args.text:
+            print("error: --text is required (unless --resume).", file=sys.stderr)
+            return 2
+        print(f"=== STAGE 1/2: HeyGen render (task_id={task_id}) ===", flush=True)
+        heygen_receipt = render_one_shot(
+            text=args.text,
+            task_id=task_id,
+            avatar_id=args.avatar,
+            voice_id=args.voice,
+            dimension={"width": args.width, "height": args.height},
+            photo=args.photo,
+        )
     if heygen_receipt.get("status") != "completed":
         print("[run] HeyGen render failed; skipping Telegram delivery.", flush=True)
         return 1
 
     mp4_path = Path(heygen_receipt["mp4_path"])
-    caption = args.caption or f'"{args.text}" — HELEN'
+    text_for_caption = args.text or "HELEN — resumed render"
+    caption = args.caption or f'"{text_for_caption}" — HELEN'
 
     print(f"\n=== STAGE 2/2: Telegram delivery ===", flush=True)
     tg_receipt = send_video(mp4_path, caption=caption, task_id=task_id)

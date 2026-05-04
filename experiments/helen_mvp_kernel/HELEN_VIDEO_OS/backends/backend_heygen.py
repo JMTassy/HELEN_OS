@@ -174,16 +174,27 @@ def generate_video(
 def poll_status(
     video_id: str,
     poll_interval_s: float = 10.0,
-    max_wait_s: float = 600.0,
+    max_wait_s: float = 1200.0,
+    request_timeout_s: float = 60.0,
 ) -> Dict[str, Any]:
-    """Poll until status is completed/failed. Returns the final status payload."""
+    """Poll until status is completed/failed. Returns the final status payload.
+
+    Robust to transient ReadTimeouts: skips and retries next interval.
+    """
     headers = {"X-Api-Key": _api_key(), "Accept": "application/json"}
     deadline = time.time() + max_wait_s
+    transient_errors = 0
     while time.time() < deadline:
-        with httpx.Client(timeout=30.0) as client:
-            r = client.get(STATUS_URL, headers=headers, params={"video_id": video_id})
-            r.raise_for_status()
-            payload = r.json().get("data", {})
+        try:
+            with httpx.Client(timeout=request_timeout_s) as client:
+                r = client.get(STATUS_URL, headers=headers, params={"video_id": video_id})
+                r.raise_for_status()
+                payload = r.json().get("data", {})
+        except (httpx.ReadTimeout, httpx.ConnectTimeout, httpx.RemoteProtocolError) as e:
+            transient_errors += 1
+            print(f"  [{int(time.time())%1000:03d}s] transient error #{transient_errors}: {type(e).__name__}; retrying", flush=True)
+            time.sleep(poll_interval_s)
+            continue
         status = payload.get("status")
         print(f"  [{int(time.time())%1000:03d}s] status={status}", flush=True)
         if status in ("completed", "failed"):
@@ -291,6 +302,65 @@ def render_one_shot(
     receipt_path = out_dir / "HEYGEN_CALL_RECEIPT_V1.json"
     receipt_path.write_text(canonical_json(receipt) + "\n", encoding="utf-8")
     print(f"[heygen] OK. mp4: {mp4_path} ({len(mp4_bytes)} bytes, {mp4_sha256[:24]}...)", flush=True)
+    print(f"[heygen] receipt: {receipt_path}", flush=True)
+    return receipt
+
+
+def resume_render(video_id: str, task_id: str) -> Dict[str, Any]:
+    """Resume after a failed/timeout poll. Skips upload+generate; polls,
+    downloads, emits receipt for an existing HeyGen video_id."""
+    out_dir = SUBSANDBOX_HEYGEN / task_id
+    out_dir.mkdir(parents=True, exist_ok=True)
+    started = now_utc_iso()
+
+    print(f"[heygen] resume polling video_id={video_id}", flush=True)
+    status_payload = poll_status(video_id)
+
+    if status_payload.get("status") != "completed":
+        receipt = {
+            "schema": "HEYGEN_CALL_RECEIPT_V1",
+            "task_id": task_id,
+            "video_id": video_id,
+            "status": "failed",
+            "resumed": True,
+            "error": status_payload.get("error") or status_payload,
+            "started_utc": started,
+            "completed_utc": now_utc_iso(),
+            "scope": "TEMPLE_SUBSANDBOX",
+            "sovereign_admitted": False,
+        }
+        receipt_path = out_dir / "HEYGEN_CALL_RECEIPT_V1.json"
+        receipt_path.write_text(canonical_json(receipt) + "\n", encoding="utf-8")
+        print(f"[heygen] FAILED on resume. receipt: {receipt_path}", flush=True)
+        return receipt
+
+    video_url = status_payload.get("video_url")
+    if not video_url:
+        raise RuntimeError(f"completed but no video_url: {status_payload}")
+
+    mp4_path = out_dir / "render.mp4"
+    print(f"[heygen] downloading mp4 -> {mp4_path}", flush=True)
+    mp4_bytes = download_mp4(video_url, mp4_path)
+    mp4_sha256 = sha256_bytes(mp4_bytes)
+
+    receipt = {
+        "schema": "HEYGEN_CALL_RECEIPT_V1",
+        "task_id": task_id,
+        "video_id": video_id,
+        "status": "completed",
+        "resumed": True,
+        "video_url": video_url,
+        "mp4_path": str(mp4_path),
+        "mp4_sha256": mp4_sha256,
+        "mp4_bytes": len(mp4_bytes),
+        "started_utc": started,
+        "completed_utc": now_utc_iso(),
+        "scope": "TEMPLE_SUBSANDBOX",
+        "sovereign_admitted": False,
+    }
+    receipt_path = out_dir / "HEYGEN_CALL_RECEIPT_V1.json"
+    receipt_path.write_text(canonical_json(receipt) + "\n", encoding="utf-8")
+    print(f"[heygen] OK (resumed). mp4: {mp4_path} ({len(mp4_bytes)} bytes, {mp4_sha256[:24]}...)", flush=True)
     print(f"[heygen] receipt: {receipt_path}", flush=True)
     return receipt
 
