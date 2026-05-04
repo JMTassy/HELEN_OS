@@ -44,6 +44,12 @@ def main() -> int:
     parser.add_argument("--width", type=int, default=720)
     parser.add_argument("--height", type=int, default=1280)
     parser.add_argument(
+        "--photo",
+        default=None,
+        help="Local path or http(s) URL to a HELEN reference photo "
+             "(overrides --avatar; uses HeyGen talking_photo)",
+    )
+    parser.add_argument(
         "--caption",
         default=None,
         help="Telegram caption (default: derived from --text)",
@@ -59,6 +65,7 @@ def main() -> int:
         avatar_id=args.avatar,
         voice_id=args.voice,
         dimension={"width": args.width, "height": args.height},
+        photo=args.photo,
     )
     if heygen_receipt.get("status") != "completed":
         print("[run] HeyGen render failed; skipping Telegram delivery.", flush=True)

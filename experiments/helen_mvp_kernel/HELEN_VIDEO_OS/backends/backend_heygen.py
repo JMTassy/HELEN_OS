@@ -80,23 +80,73 @@ def _api_key() -> str:
     return key
 
 
+def upload_talking_photo(
+    image_source: str,
+    timeout_s: float = 60.0,
+) -> str:
+    """Upload a photo to HeyGen, return talking_photo_id.
+
+    image_source: local path (existing file) OR http(s) URL.
+    """
+    headers = {"X-Api-Key": _api_key()}
+
+    if image_source.startswith("http://") or image_source.startswith("https://"):
+        print(f"[heygen] fetching photo from URL: {image_source}", flush=True)
+        with httpx.Client(timeout=timeout_s, follow_redirects=True) as client:
+            r = client.get(image_source)
+            r.raise_for_status()
+            image_bytes = r.content
+            content_type = r.headers.get("content-type", "image/jpeg").split(";")[0]
+    else:
+        p = Path(image_source).expanduser()
+        if not p.exists():
+            raise FileNotFoundError(image_source)
+        image_bytes = p.read_bytes()
+        ext = p.suffix.lower().lstrip(".")
+        content_type = f"image/{'jpeg' if ext == 'jpg' else ext or 'jpeg'}"
+
+    print(f"[heygen] upload_talking_photo bytes={len(image_bytes)} type={content_type}", flush=True)
+    headers["Content-Type"] = content_type
+    with httpx.Client(timeout=timeout_s) as client:
+        r = client.post(UPLOAD_URL, headers=headers, content=image_bytes)
+        r.raise_for_status()
+        data = r.json()
+    tp_id = (data.get("data") or {}).get("talking_photo_id")
+    if not tp_id:
+        raise RuntimeError(f"HeyGen upload response missing talking_photo_id: {data}")
+    print(f"[heygen] talking_photo_id={tp_id}", flush=True)
+    return tp_id
+
+
 def generate_video(
     text: str,
     avatar_id: str = DEFAULT_AVATAR_ID,
     voice_id: str = DEFAULT_VOICE_ID,
     dimension: Optional[Dict[str, int]] = None,
     timeout_s: float = 30.0,
+    talking_photo_id: Optional[str] = None,
 ) -> str:
-    """Submit a generation request. Returns video_id."""
+    """Submit a generation request. Returns video_id.
+
+    If talking_photo_id is provided, uses talking_photo character type
+    instead of stock avatar — HELEN's actual face speaks.
+    """
     dimension = dimension or DEFAULT_DIMENSION
+    if talking_photo_id:
+        character = {
+            "type": "talking_photo",
+            "talking_photo_id": talking_photo_id,
+        }
+    else:
+        character = {
+            "type": "avatar",
+            "avatar_id": avatar_id,
+            "avatar_style": "normal",
+        }
     body = {
         "video_inputs": [
             {
-                "character": {
-                    "type": "avatar",
-                    "avatar_id": avatar_id,
-                    "avatar_style": "normal",
-                },
+                "character": character,
                 "voice": {
                     "type": "text",
                     "input_text": text,
@@ -158,23 +208,40 @@ def render_one_shot(
     avatar_id: str = DEFAULT_AVATAR_ID,
     voice_id: str = DEFAULT_VOICE_ID,
     dimension: Optional[Dict[str, int]] = None,
+    photo: Optional[str] = None,
 ) -> Dict[str, Any]:
-    """End-to-end: submit -> poll -> download -> emit receipt. Returns the receipt."""
+    """End-to-end: submit -> poll -> download -> emit receipt. Returns the receipt.
+
+    If `photo` is provided (local path or http(s) URL), uploads to HeyGen
+    as a talking_photo and uses that face instead of the stock avatar.
+    """
     dimension = dimension or DEFAULT_DIMENSION
     out_dir = SUBSANDBOX_HEYGEN / task_id
     out_dir.mkdir(parents=True, exist_ok=True)
     started = now_utc_iso()
 
+    talking_photo_id: Optional[str] = None
+    if photo:
+        talking_photo_id = upload_talking_photo(photo)
+
     request_body = {
         "text": text,
-        "avatar_id": avatar_id,
+        "avatar_id": avatar_id if not talking_photo_id else None,
+        "talking_photo_id": talking_photo_id,
         "voice_id": voice_id,
         "dimension": dimension,
+        "photo_source": photo if photo else None,
     }
     request_hash = sha256_obj(request_body)
 
-    print(f"[heygen] generate: text={text!r}, avatar={avatar_id}, dim={dimension}", flush=True)
-    video_id = generate_video(text, avatar_id, voice_id, dimension)
+    if talking_photo_id:
+        print(f"[heygen] generate: text={text!r}, talking_photo_id={talking_photo_id}, dim={dimension}", flush=True)
+    else:
+        print(f"[heygen] generate: text={text!r}, avatar={avatar_id}, dim={dimension}", flush=True)
+    video_id = generate_video(
+        text, avatar_id, voice_id, dimension,
+        talking_photo_id=talking_photo_id,
+    )
     print(f"[heygen] video_id={video_id}", flush=True)
 
     status_payload = poll_status(video_id)
@@ -237,6 +304,12 @@ def main() -> int:
     parser.add_argument("--voice", default=DEFAULT_VOICE_ID)
     parser.add_argument("--width", type=int, default=DEFAULT_DIMENSION["width"])
     parser.add_argument("--height", type=int, default=DEFAULT_DIMENSION["height"])
+    parser.add_argument(
+        "--photo",
+        default=None,
+        help="Local path or http(s) URL to a HELEN reference photo. "
+             "When provided, overrides --avatar and uses talking_photo.",
+    )
     args = parser.parse_args()
 
     task_id = args.task_id or f"heygen_test_{int(time.time())}"
@@ -246,6 +319,7 @@ def main() -> int:
         avatar_id=args.avatar,
         voice_id=args.voice,
         dimension={"width": args.width, "height": args.height},
+        photo=args.photo,
     )
     return 0 if receipt.get("status") == "completed" else 1
 
