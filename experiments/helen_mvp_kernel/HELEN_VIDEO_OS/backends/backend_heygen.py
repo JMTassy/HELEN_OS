@@ -33,6 +33,7 @@ SUBSANDBOX_HEYGEN = REPO_ROOT / "temple" / "subsandbox" / "director" / "heygen"
 API_BASE = "https://api.heygen.com"
 GENERATE_URL = f"{API_BASE}/v2/video/generate"
 STATUS_URL = f"{API_BASE}/v1/video_status.get"
+UPLOAD_URL = "https://upload.heygen.com/v1/talking_photo"
 
 # HeyGen public default avatar + voice (English female) — free-tier friendly
 DEFAULT_AVATAR_ID = "Daisy-inskirt-20220818"
