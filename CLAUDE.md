@@ -68,6 +68,27 @@ If a task appears to require an off-limits write, stop and report — route thro
 - `helen_dialog/` — dialog engine, HER/AL moment detection
 - `temple/subsandbox/` — AURA grimoire + raw symbolic terminal samples; never sovereign, never auto-promoted
 
+### Layer 6: HELEN_DAN_RALPH_V0 (Bounded Execution Loop)
+- `scripts/ralph/ralph.sh` — epoch runner: Temple→Mayor→Ralph→DAN→HAL→Reducer→Ledger; one epoch = one story
+  - **heredoc-in-subshell rule**: never `$(cmd <<PYEOF)`; write Python to `/tmp/` file, invoke via `$VENV /tmp/file.py arg`
+- `oracle_town/skills/ops/dan_goblin/` — DAN_GOBLIN runtime
+  - `prd.json` — story backlog (HD-001 done, HD-002/HD-003 todo)
+  - `receipts/` — GREEN/FAILED per-story receipts; `reducer_decision` field is null — DAN never writes it
+  - `scratch/` — ephemeral; gitignored
+- `schemas/helen_dan/prd.schema.json` + `receipt.schema.json` — DAN schemas (in root `schemas/`, not yet migrated to `helen_os/schemas/`)
+- `docs/proposals/HELEN_DAN_RALPH_V0.md` — core doctrine; `docs/proposals/DAN_GOBLIN.md` — operating card
+- **GOBLIN MODE** (`docs/proposals/HELEN_DAN_GOBLIN_RECALL_MODE_V0_1.md`): creative recovery dialect; UNDERWARREN_SAFE; NON_SOVEREIGN; "feral but kind, strange but useful"; THE HEAP MAY SPEAK, THE LEDGER MUST VERIFY
+
+### WUL Packet Validator (P1 compile-time)
+- `src/wul_packet_validator.py` — validates WUL inter-agent packets before any action layer; **fails closed**
+  - 3 tiers: ACK (`ROLE·WUL`), PRODUCTION (8 fields), KERNEL_ADJACENT (10 fields)
+  - `PERM::WRITE_SOVEREIGN` unconditionally rejected at any tier
+  - KERNEL_ADJACENT: CONF ≥ 0.85 or `HIGH`, ⌬ (`\u23ac`) mandatory in WUL, `ESCALATE::OPERATOR` required
+  - Unknown ROLE/INTENT/IMPACT/DIALECT → warning only (forward-compatible), not error
+- `tests/test_wul_packet_validator.py` — 29 tests, all green; run: `.venv/bin/pytest tests/test_wul_packet_validator.py -v`
+- `docs/specs/WUL_PACKET_SPEC_V0_1.md` — formal spec
+- `docs/proposals/TEMPLE_TRANSMUTATION_REQUEST_WUL_P1_VALIDATOR_V1.json` — bridge artifact from TEMPLE_200_WUL; `authority: NONE`, `bridge_status: PENDING_MAYOR_REVIEW`
+
 ## Governance Artifacts
 
 ### `GOVERNANCE/CLOSURES/`
@@ -199,7 +220,7 @@ Multiple chat entry points exist; they are **not interchangeable**.
 - `town/ledger_v1.ndjson` may show as dirty in `git status` due to live kernel daemon writes. Do not stash, do not commit, do not edit — sovereign firewall path.
 - `artifacts/k8_*.json`, `artifacts/k8_trace.ndjson`, `artifacts/k_tau_*.json` are live gate-trace outputs and routinely show dirty after lint runs. They are not stash-eligible; let the gate scripts manage them.
 
-## Current State (2026-04-27)
+## Current State (2026-05-06)
 
 - **AUTORESEARCH**: E11 LEGORACLE + E12 replay gate shipped. Two parallel sessions diverged; **reconciliation in flight, not yet ruled**. Reconciliation hypothesis at `docs/proposals/AUTORESEARCH_E11_E12_RECONCILIATION.md` (commit `0d06b33`); §3 read-only SHA-diff experiment executed and reports landed at `docs/reports/AUTORESEARCH_E11_E12_*` (commit `d43ec64`). Headline finding: **H₁ partially falsified** — three artifact-level STRUCTURAL_CHANGE rows (test + fixtures), but the falsifier-specific check is **negative** (LEGORACLE gate logic and replay determinism logic unaffected; `legoracle_v13rc.py` SHA matches). Recommendation candidates for MAYOR: REQUEST_MORE_EVIDENCE (SHA_DIFF report) or REVOKE_AND_RERUN (RECONCILIATION_REPORT_V0). **Awaiting fresh-context peer-review (Rule 3) → operator countersignature → MAYOR ruling**. E13 remains blocked. Kernel daemon currently down.
 - **Knowledge corpus**: T4 (source-provenance floor) + T6 (intensity floor) landed for symbolic-knowledge ingestion. Symbolic sources collected in `helen_os/knowledge/symbolic_sources/` (DRAFT classifications).
@@ -208,6 +229,9 @@ Multiple chat entry points exist; they are **not interchangeable**.
 - **Video**: HyperFrames — DECLARED (npm allowlist pending); `helen-director` skill + Montage Engine + `STORYBOARD_V1` + `ASSET_ENGINE_V1` + 30s candidate runner shipped. `video/library/` promotes 11 hero stills to `refs/canonical/` with locked era axis (cyberpunk / medieval / renaissance / modern / ww2 / french_revolution / pyramids).
 - **HELEN character**: `HELEN_CHARACTER_V2` + `HELEN_DESIGN.md` + `HELEN_PRIMER.md` shipped — character-consistency method validated
 - **TEMPLE/AURA**: First raw terminal sample captured (`temple/subsandbox/aura/`); grimoire path now exists. Non-sovereign, never auto-promoted.
+- **HELEN_DAN_RALPH_V0**: Epoch runner live (`scripts/ralph/ralph.sh`). HD-001 GREEN (commit `d8adb50`). HD-002 (complexity_extractor → aura_score.py) and HD-003 (failure-memory consultation) are next.
+- **WUL Packet Validator**: P1 shipped. `src/wul_packet_validator.py` + `tests/test_wul_packet_validator.py` (29/29 green). Spec at `docs/specs/WUL_PACKET_SPEC_V0_1.md`. Transmutation request pending MAYOR review.
+- **GOBLIN MODE**: Proposal shipped to `docs/proposals/HELEN_DAN_GOBLIN_RECALL_MODE_V0_1.md`. NON_SOVEREIGN, NO_SHIP, UNDERWARREN_SAFE.
 - **Telegram**: Two-way bot with voice — LIVE (not daemonized)
 - **Schema Authority**: Governance decision SHIPPED (Actions 1-5 partial, 6-9 open)
 - **Doctrine Admission**: `DOCTRINE_ADMISSION_PROTOCOL_V1` gate — DRAFT; §4 fixtures + harness landed
