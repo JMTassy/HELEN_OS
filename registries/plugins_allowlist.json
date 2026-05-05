@@ -1,9 +1,10 @@
 {
   "$schema_id": "PLUGINS_ALLOWLIST_V1",
   "description": "Registry of allowed plugins (tools). Only receipt-bound outputs are admissible. NO RECEIPT = NO CLAIM.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "frozen_at": "2026-02-23T00:00:00Z",
-  "policy": "Each plugin must emit a plugin_receipt.schema.json-conformant receipt. Plugins not listed here cannot write to the ledger.",
+  "vocabulary_note": "F-002 axis C (2026-05-02): renamed 'allowed_writers' to 'allowed_receipt_emitters'. The old name was ambiguous (could mean ledger writers OR plugin emitters); the new name is precise — these actors are allowed to emit plugin receipts under the plugin's identity. Auditors that read this registry must accept both names during the migration window (graceful fallback).",
+  "policy": "Each plugin must emit a plugin_receipt.schema.json-conformant receipt. Plugins not listed here cannot emit receipts. Only actors named in allowed_receipt_emitters may emit receipts under that plugin's plugin_id.",
   "tier_0_core_plugins": {
     "description": "Core integrity plugins. Always active. Cannot be disabled.",
     "plugins": {
@@ -13,7 +14,7 @@
         "script": "tools/validate_hash_chain.py",
         "version": "1.0.0",
         "tier": 0,
-        "allowed_writers": ["HELEN", "MAYOR"],
+        "allowed_receipt_emitters": ["HELEN", "MAYOR"],
         "capabilities": ["read_ledger"],
         "receipt_required": true
       },
@@ -23,7 +24,7 @@
         "script": "tools/validate_verdict_payload.py",
         "version": "1.0.0",
         "tier": 0,
-        "allowed_writers": ["HELEN", "MAYOR"],
+        "allowed_receipt_emitters": ["HELEN", "MAYOR"],
         "capabilities": ["read_ledger"],
         "receipt_required": true
       },
@@ -33,7 +34,7 @@
         "script": "tools/validate_receipt_linkage.py",
         "version": "2.1.0",
         "tier": 0,
-        "allowed_writers": ["MAYOR"],
+        "allowed_receipt_emitters": ["MAYOR"],
         "capabilities": ["read_ledger"],
         "receipt_required": true
       },
@@ -43,7 +44,7 @@
         "script": "tools/validate_seal_v1.py",
         "version": "1.0.0",
         "tier": 0,
-        "allowed_writers": ["MAYOR"],
+        "allowed_receipt_emitters": ["MAYOR"],
         "capabilities": ["read_ledger", "read_registry"],
         "receipt_required": true
       },
@@ -53,7 +54,7 @@
         "script": "tools/validate_turn_schema.py",
         "version": "1.0.0",
         "tier": 0,
-        "allowed_writers": ["HELEN", "MAYOR"],
+        "allowed_receipt_emitters": ["HELEN", "MAYOR"],
         "capabilities": ["read_ledger"],
         "receipt_required": false,
         "note": "Legacy validator. Use validate_verdict_payload.py for new VERDICT events."
@@ -64,7 +65,7 @@
         "script": "tools/test_meta_invariance.py",
         "version": "1.0.0",
         "tier": 0,
-        "allowed_writers": ["HELEN", "MAYOR"],
+        "allowed_receipt_emitters": ["HELEN", "MAYOR"],
         "capabilities": ["read_ledger"],
         "receipt_required": false
       }
@@ -79,7 +80,7 @@
         "script": "scripts/helen_rho_lint.py",
         "version": "1.0.0",
         "tier": 1,
-        "allowed_writers": ["HELEN", "MAYOR"],
+        "allowed_receipt_emitters": ["HELEN", "MAYOR"],
         "capabilities": ["read_artifacts"],
         "receipt_required": true
       },
@@ -89,7 +90,7 @@
         "script": "scripts/helen_k_tau_lint.py",
         "version": "1.0.0",
         "tier": 1,
-        "allowed_writers": ["HELEN", "MAYOR"],
+        "allowed_receipt_emitters": ["HELEN", "MAYOR"],
         "capabilities": ["read_artifacts", "read_working_tree"],
         "receipt_required": true
       }
