@@ -36,7 +36,6 @@ import argparse
 import hashlib
 import json
 import re
-import time
 from pathlib import Path
 from typing import Any
 
@@ -185,7 +184,11 @@ def build_artifacts(epoch_id: str, logdir: Path) -> dict[str, Any]:
             "focused_tests": "focused_tests.txt",
             "full_tests": "full_tests.txt",
         },
-        "generated_at_unix": int(time.time()),
+        # F-001 (closed 2026-05-02): wall-clock time was previously embedded
+        # here as `generated_at_unix`, which violated CWL v1.0.1 §2 and made
+        # `failure_cluster_ref` non-deterministic across runs with identical
+        # inputs. Time information for the epoch is carried out-of-band via
+        # the logdir name (epoch_id). The hashed core stays content-only.
     }
 
     candidate_fix = {

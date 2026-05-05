@@ -440,7 +440,7 @@ but with gap), **OPEN** (no mitigation today).
 | T-CRIT-003 | **PARTIAL** | `tools/kernel_guard.sh` greps source for direct ledger writes | Add runtime enforcement (file-system permissions / fanotify); add property test that proves only `tools/ndjson_writer.py` opens the ledger for write |
 | T-CRIT-004 | **PARTIAL** | `kernel/canonical_json.py` declared single source of truth | Build cross-implementation conformance test using fixed test vectors (`spec/CWL_TEST_VECTORS_V1.json` per CWL recap §17) |
 | T-HIGH-005 | **PROTECTED** | `validate_receipt_linkage.py` leg-0 (this session, commit `5bae6a5`): recomputes verdict envelope payload_hash from payload via `canon_json_bytes` | None |
-| T-HIGH-006 | **OPEN** | (none today; finding is empirical) | Operator signal: drop `generated_at_unix` from FAILURE_CLUSTER_V1 (Option A) OR move to non-hashed metadata wrapper (Option B). Audit other artifacts for the same pattern |
+| T-HIGH-006 | **PROTECTED** | Option A executed 2026-05-02: `generated_at_unix` removed from `FAILURE_CLUSTER_V1`; `import time` removed from emitter; epoch_id (logdir name) carries time information out-of-band. Verified empirically — same inputs across two runs produce byte-identical `failure_cluster_ref` + `review_packet` hashes. See `tools/ralph_emit_artifacts.py` lines 35-41 + 184-191 + the "F-001 (closed 2026-05-02)" comment. | Future audit: scan other artifact emitters for the same pattern (`time.time()`, `datetime.now()`, etc. inside any field that becomes part of a hashed core). |
 | T-HIGH-007 | **PROTECTED** | `validate_receipt_linkage.py` `NO_RECEIPT_NO_SHIP` enforcement | None |
 | T-HIGH-008 | **PROTECTED** | `validate_receipt_linkage.py` raises on dangling receipt | None |
 | T-HIGH-009 | **OPEN** | (none today; documented in trace) | Operator signal Path A / B / C / A-min; runs `tools/generate_authority_matrix.py` only after resolution |
@@ -496,10 +496,16 @@ A claim of "HELEN is hardened" without these five conditions met is
 
 ## 8. Open Findings (this session, empirical)
 
-- **F-001:** RALPH emitter wall-clock determinism violation
-  (T-HIGH-006). Empirically confirmed across two runs with identical
-  inputs producing different `failure_cluster_ref` hashes. Fix is
-  one-line; awaits Option A vs B.
+- ~~**F-001:** RALPH emitter wall-clock determinism violation~~
+  **CLOSED 2026-05-02.** Option A executed: `generated_at_unix` removed
+  from `FAILURE_CLUSTER_V1`; emitter no longer imports `time`. Re-test
+  with identical inputs across a 2-second interval produced byte-identical
+  hashes (`failure_cluster_ref` and `review_packet` SHA256 both stable).
+  T-HIGH-006 reclassified PROTECTED. The bug RALPH was designed to avoid,
+  which appeared in RALPH's own emitter, is now fixed by RALPH's own
+  discipline. The shadow named in `E001_RALPH_RECEIPT_GOBLIN.md` `face.shadow`
+  ("Putting wall-clock into the hashed core") was real; the doctrine
+  worked.
 - **F-002:** Authority registry / kernel drift (T-HIGH-009).
   Documented in `docs/traces/RALPH_LOOP_TRACE_STEP_C_GOVERNANCE_VM.md`
   U1. Awaits Path A / B / C / A-min.
@@ -527,7 +533,8 @@ A claim of "HELEN is hardened" without these five conditions met is
 - `tools/validate_receipt_linkage.py` — three-leg + leg-0 envelope binding
 - `tools/accept_payload_meta.sh` — six-gate acceptance composition
 - `tools/helen_verify.sh` — five-gate verification (this session)
-- `tools/ralph_emit_artifacts.py` — typed evidence emitter (with F-001 open finding)
+- `tools/ralph_emit_artifacts.py` — typed evidence emitter (F-001 closed 2026-05-02)
+- `spec/HELEN_OPERATIONAL_DISCIPLINE_V1.md` — operator-side discipline (Tree Hygiene, Shell Input, Roots, Disclosure Ladder)
 - `docs/traces/RALPH_LOOP_TRACE_STEP_C_GOVERNANCE_VM.md` — implementation trace with U1-U8 units
 
 ---
