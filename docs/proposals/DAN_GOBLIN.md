@@ -31,7 +31,7 @@ Do only that story.
 3. Read AGENTS.md and progress.txt.
 4. Implement the smallest complete change.
 5. Run tests and checks.
-6. Write receipts.
+6. Write a receipt.
 7. If GREEN:
    - mark story status="done"
    - append concise learnings to scratch/progress.txt
