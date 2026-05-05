@@ -1,9 +1,31 @@
 {
   "$schema_id": "ACTOR_REGISTRY_V1",
-  "description": "Authority matrix: maps each Actor to allowed EventTypes. Mirrors LedgerKernel.v authority_ok_event_b. FROZEN — changes require kernel amendment.",
-  "version": "1.0.0",
+  "description": "Authority matrix: maps each Actor to its allow-listed EventTypes. NON-SOVEREIGN dialogue/governance registry. DIVERGES from formal/LedgerKernel.v — see kernel_divergence below. Reconciliation pending.",
+  "version": "1.2.0",
   "frozen_at": "2026-02-23T00:00:00Z",
-  "note": "Source of truth is formal/LedgerKernel.v. This registry must match the Coq predicate exactly.",
+  "last_amended_at": "2026-05-02T00:00:00Z",
+  "kernel_divergence": {
+    "status": "ACKNOWLEDGED_OPEN",
+    "headline": "This registry does NOT mirror formal/LedgerKernel.v authority_ok_event_b.",
+    "axes": {
+      "actor_count": "kernel has 3 actors (HELEN, MAYOR, CHRONOS); registry has 6 (adds USER, BUILDER, INTEGRATOR for the dialogue/governance layer)",
+      "event_type_count": "kernel enumerates 10 event types; registry enumerates 9 (different vocabulary intersection)",
+      "policy_shape": "kernel uses a deny-list predicate (authority_ok_event_b returns false for forbidden combinations); registry uses an allow-list (each actor lists allowed_event_types)",
+      "domain": "kernel governs ledger-append authority structurally; registry governs dialogue-layer routing — they are NOT the same authority surface despite naming overlap"
+    },
+    "previous_claim_was_false": "v1.0.0 header read 'Mirrors LedgerKernel.v authority_ok_event_b' and 'must match the Coq predicate exactly'. Both claims were false. F-002 axis B (2026-05-02) removed the false claim without yet reconciling the underlying drift — honesty before reconciliation (AUDIT_HONESTY doctrine, HELEN_OPERATIONAL_DISCIPLINE_V1 §5).",
+    "reconciliation_paths_open": {
+      "path_A": "truncate this registry to the kernel's 3 actors / 10 events / deny-list shape — loses dialogue-layer expressiveness",
+      "path_B": "extend kernel + re-prove theorems to cover registry's 6 actors — substantial proof work, requires kernel amendment",
+      "path_C": "formal KERNEL_AMENDMENT_V1 artifact that bridges the two domains explicitly — separates ledger-authority from dialogue-routing in the type system"
+    },
+    "do_not_cite_as_proof_of": [
+      "kernel-registry equivalence",
+      "registry as authoritative for ledger-append checks",
+      "dialogue actors as having ledger authority"
+    ]
+  },
+  "auditor": "tools/audit_authority.py reads this file to validate plugin emitter actors. The auditor does NOT close axis B; it operates on this registry's allow-list shape only. See AXIS_B_CAVEAT in its output.",
   "actors": {
     "USER": {
       "description": "Human initiator — can only query, cannot write assertions or claims",
