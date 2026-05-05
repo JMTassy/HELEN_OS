@@ -14,3 +14,20 @@ helen_os/knowledge/embeddings/
 helen_os/knowledge/corpus.json
 helen_os/knowledge/tag_graph.json
 helen_os/knowledge/access_log.ndjson
+
+# F-005: runtime artifacts (separate from source context)
+# helen_talk.py / helen_cli.py generate these on every session.
+# Do NOT commit — they are operator-local state, not source-of-truth.
+storage/
+helen_os_scaffold/storage/
+memory/helen.db
+memory/helen.db-journal
+memory/memory.ndjson
+helen_os_scaffold/memory/helen.db
+helen_os_scaffold/memory/memory.ndjson
+*.command.log
+
+# WSL/Windows interop noise
+*.Identifier
+[Dd]esktop.ini
+$RECYCLE.BIN/
