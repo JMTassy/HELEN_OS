@@ -21,7 +21,7 @@ import os
 import platform
 import subprocess
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 from pathlib import Path
 
@@ -78,7 +78,10 @@ def compute_env_hash() -> str:
 
 
 def now_iso() -> str:
-    return datetime.utcnow().isoformat() + "Z"
+    # F-006: utcnow() is deprecated in Python 3.12+ and emits naive datetimes
+    # (no tzinfo). Use timezone-aware UTC explicitly. Format keeps the trailing
+    # "Z" suffix for ISO-8601 / ledger compatibility.
+    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
 def make_payload(user_text: str) -> Dict[str, Any]:
@@ -304,6 +307,17 @@ def main() -> int:
             continue
 
         if user_text in ("/exit", "/quit"):
+            return 0
+
+        # F-007: paste-safe exit parser. If a paste accidentally appends
+        # "/exit" or "/quit" at end of input (common shell-input misroute,
+        # see HELEN_OPERATIONAL_DISCIPLINE_V1 §2 SHELL_INPUT_DISCIPLINE),
+        # honor the signal but report what was ignored. Without this, the
+        # operator gets stuck because the exact-match above never fires.
+        if user_text.endswith("/exit") or user_text.endswith("/quit"):
+            ignored = user_text[:user_text.rfind("/")].rstrip()
+            print(f"⚠️  exit signal at end of input; honoring it (ignored: '{ignored}')")
+            print("bye")
             return 0
 
         if user_text == "/verify":
