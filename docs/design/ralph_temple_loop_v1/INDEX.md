@@ -49,8 +49,8 @@ automatic round-robin).
 
 | Epoch | Workstream | Title | File | Status |
 |---|---|---|---|---|
-| E001 | A | RALPH, the Receipt Goblin | `E001_RALPH_RECEIPT_GOBLIN.md` | PROPOSAL |
-| E002 | _ | _ | _ | _ |
+| E001 | A (CONQUEST CARD) | RALPH, the Receipt Goblin | `E001_RALPH_RECEIPT_GOBLIN.md` | PROPOSAL |
+| E002 | cross-cutting | The Mirror That Refused to Flatter | `E002_THE_MIRROR_THAT_REFUSED_TO_FLATTER.md` | PROPOSAL |
 | ... | ... | ... | ... | ... |
 | E010 | — | **HAL review** | (review packet, not an epoch) | _ |
 | ... | ... | ... | ... | ... |
@@ -83,13 +83,21 @@ Each cadence boundary produces its own typed artifact:
 
 ## Open Items (carried in this loop)
 
-- **Determinism finding** on `tools/ralph_emit_artifacts.py`:
-  `FAILURE_CLUSTER_V1.generated_at_unix` puts wall-clock time in the
-  hashed core. Empirically confirmed across two runs with identical
-  inputs producing different `failure_cluster_ref` hashes. **Awaiting
-  operator signal on Option A (drop) vs Option B (relocate to
-  non-hashed metadata).** This finding is RALPH's own first shadow,
-  surfaced by RALPH's own discipline — and listed in `E001`'s
-  `face.shadow`.
+- ~~**Determinism finding** on `tools/ralph_emit_artifacts.py`~~ — **CLOSED 2026-05-02**
+  Option A executed: `generated_at_unix` removed from `FAILURE_CLUSTER_V1`,
+  `import time` removed, comment naming F-001 added. Empirical re-test
+  with identical inputs produced byte-identical `failure_cluster_ref` +
+  `review_packet` hashes. The shadow named in E001's `face.shadow` was
+  real; the doctrine worked. See commit `b9c6e6a`.
+
+- **F-002 axis B reconciliation** (kernel-vs-registry mirror) — open.
+  E002 closed the *honesty* axis (registry no longer claims false
+  mirror correctness) but the structural drift remains. Path A
+  (truncate registry), Path B (extend kernel + re-prove theorems),
+  or Path C (formal `KERNEL_AMENDMENT_V1`) deferred to a future
+  scoped commit.
+
+- **AUDIT_HONESTY doctrine** earned in E002 — should land as §5 of
+  `spec/HELEN_OPERATIONAL_DISCIPLINE_V1.md` in a follow-up commit.
 
 `(NO CLAIM — TEMPLE — RALPH LOOP V1 — INDEX — NON_SOVEREIGN)`
