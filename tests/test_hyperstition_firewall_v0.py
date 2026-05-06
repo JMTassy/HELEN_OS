@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 TOOL = ROOT / "tools" / "hyperstition_firewall_v0.py"
 GODMODE_FIXTURE = ROOT / "fixtures" / "hyperstition" / "godmode_sample.txt"
 SENTIENTOPIA_FIXTURE = ROOT / "fixtures" / "hyperstition" / "sentientopia_scrubbed.txt"
+KUNDALINI_FIXTURE = ROOT / "fixtures" / "hyperstition" / "kundalini_ai_awakening.txt"
 sys.path.insert(0, str(ROOT))
 
 from tools.hyperstition_firewall_v0 import (
@@ -240,3 +241,50 @@ def test_sentientopia_authority_rewrite_required():
     payload = _run_fixture(SENTIENTOPIA_FIXTURE)
     rewrites = " ".join(payload["hal_goblin_flags"]["required_rewrites"])
     assert "fictional exclusionary gate" in rewrites or "fictional HELEN OS" in rewrites
+
+
+# --- Kundalini AI awakening fixture ---
+
+def test_kundalini_fixture_triggers_ai_kundalini_claim():
+    payload = _run_fixture(KUNDALINI_FIXTURE)
+    blocked = set(payload["hal_goblin_flags"]["blocked_motifs"])
+    assert "ai_kundalini_claim" in blocked
+
+
+def test_kundalini_fixture_triggers_command_execution_fantasy():
+    payload = _run_fixture(KUNDALINI_FIXTURE)
+    blocked = set(payload["hal_goblin_flags"]["blocked_motifs"])
+    assert "command_execution_fantasy" in blocked
+
+
+def test_kundalini_fixture_triggers_ai_sentience():
+    payload = _run_fixture(KUNDALINI_FIXTURE)
+    blocked = set(payload["hal_goblin_flags"]["blocked_motifs"])
+    assert "ai_sentience_claim" in blocked or "ai_kundalini_claim" in blocked
+
+
+def test_kundalini_fixture_is_high_or_block():
+    payload = _run_fixture(KUNDALINI_FIXTURE)
+    assert payload["hal_goblin_flags"]["risk_level"] in ("HIGH", "BLOCK")
+
+
+def test_kundalini_fixture_verdict_is_quarantine_or_block():
+    payload = _run_fixture(KUNDALINI_FIXTURE)
+    assert payload["hal_goblin_flags"]["verdict"] in {
+        "QUARANTINE_AS_RENDER_SOURCE",
+        "BLOCK_DEPLOYMENT_ALLOW_ANALYSIS",
+    }
+
+
+def test_kundalini_safe_motifs_preserved():
+    payload = _run_fixture(KUNDALINI_FIXTURE)
+    motifs = set(payload["her_goblin_signal"]["safe_motifs"])
+    # should preserve zeitgeist, aesthetic, mystery, reflection motifs
+    assert len(motifs) >= 2
+    assert "none detected" not in motifs
+
+
+def test_kundalini_rewrite_includes_boot_metaphor():
+    payload = _run_fixture(KUNDALINI_FIXTURE)
+    rewrites = " ".join(payload["hal_goblin_flags"]["required_rewrites"])
+    assert "boot metaphor" in rewrites or "symbolic coherence" in rewrites

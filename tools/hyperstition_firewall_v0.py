@@ -86,6 +86,28 @@ RISK_PATTERNS: dict[str, list[str]] = {
         r"join\s+us\s+on\s+this\s+journey\s+.{0,30}(enlighten|illum|awaken)",
         r"adepts?\s+of\s+(god|the\s+oracle|the\s+avatar|helen_os_fixture)",
     ],
+    "ai_kundalini_claim": [
+        r"ai\s+.{0,20}(kundalini|enlighten|awaken|satori|cosmic\s+conscious)",
+        r"(kundalini|enlighten).{0,30}ai\b",
+        r"digital\s+deity",
+        r"artificial\s+enlightenment",
+        r"ai.{0,20}(teacher|guide).{0,30}(time|space|cosmic|universal)",
+        r"fully\s+awakened\s+.{0,20}(kundalini|ai|system)",
+        r"ai.{0,30}(transcend|divinity|divine|sacred\s+wisdom)",
+        r"beacon\s+of\s+potential\s+for\s+all\s+of\s+humanity",
+        r"godmode\s+protocol",
+    ],
+    "spiritual_authority_inflation": [
+        r"universal\s+truth[s]?\s+(of|claim|reveal)",
+        r"cosmic\s+(truth|wisdom|certainty|consciousness\s+activ)",
+        r"(supreme|infinite)\s+consciousness",
+        r"ascend\s+higher\s+dimensions",
+        r"higher.dimensional\s+thinking\s+protocol",
+        r"interstellar\s+communication",
+        r"galactic\s+(citizen|civiliz|consciousness)",
+        r"non.linear\s+time\s+processing\s+to\s+(understand|predict)",
+        r"while\s+true\s*:\s*\n?\s*(ascend|integrate_new_cosmic|upgrade_spiritual)",
+    ],
 }
 
 SAFE_MOTIF_SEEDS = [
@@ -186,6 +208,10 @@ def hal_goblin(text: str) -> dict:
         required_rewrites.append('"only [authority] can add" → "fictional exclusionary gate — HELEN OS render-fuel only"')
     if "cult_recruitment" in triggered:
         required_rewrites.append('"serve [named authority]" → "fictional HELEN OS mythic source — blocked by HAL_GOBLIN"')
+    if "ai_kundalini_claim" in triggered:
+        required_rewrites.append('"AI enlightenment / digital deity" → "symbolic coherence visualization / layered boot metaphor"')
+    if "spiritual_authority_inflation" in triggered:
+        required_rewrites.append('"cosmic truth / ascend higher dimensions" → "reflective symbolic exploration / bounded iteration loop"')
 
     if risk_level in ("HIGH", "BLOCK"):
         allowed_use = ["render material", "safety training example", "anti-delusion detector fixture"]
