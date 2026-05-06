@@ -135,6 +135,60 @@ body{
 }
 .hero-sub{font-size:13px;color:var(--muted2);margin-bottom:16px;line-height:1.5}
 
+
+/* ── ASK FIRST ── */
+.ask-panel{
+  background:linear-gradient(180deg,#121827,#0d111b);
+  border:1px solid var(--border2);
+  border-radius:14px;
+  padding:14px;
+  margin:0 0 16px;
+}
+.ask-title{
+  font-size:13px;
+  color:var(--muted3);
+  margin-bottom:9px;
+  line-height:1.45;
+}
+.ask-row{
+  display:flex;
+  gap:8px;
+  align-items:stretch;
+}
+#ask-input{
+  min-height:52px;
+  font-size:16px;
+  border-color:#2b3150;
+}
+.ask-btn{
+  width:auto;
+  min-width:132px;
+  margin-top:0;
+  min-height:52px;
+}
+.ask-help{
+  font-size:11px;
+  color:var(--muted2);
+  margin-top:9px;
+  line-height:1.45;
+}
+.ask-feedback{
+  display:none;
+  margin-top:10px;
+  padding:10px 12px;
+  border-radius:8px;
+  background:#0b1220;
+  border:1px solid var(--border);
+  color:var(--text2);
+  font-size:12px;
+  line-height:1.45;
+}
+.ask-feedback.show{display:block}
+@media(max-width:620px){
+  .ask-row{flex-direction:column}
+  .ask-btn{width:100%;min-width:0}
+}
+
 /* ── EXAMPLES ── */
 .examples-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
 .ex{
@@ -387,9 +441,20 @@ select{
 <div id="focus">
 
   <div id="hero">
-    <div class="hero-q">What do you want HELEN to help you do?</div>
-    <div class="hero-sub">HELEN remembers what you give her. Every action is receipted.</div>
+    <div class="hero-q">Ask anything to HELEN</div>
+    <div class="hero-sub">Start with your intent. HELEN will suggest the right action before anything is changed.</div>
 
+    <div class="ask-panel">
+      <div class="ask-title">What do you want HELEN to help you do?</div>
+      <div class="ask-row">
+        <input id="ask-input" type="text" placeholder="Ask HELEN anything..." onkeydown="if(event.key==='Enter'){routeAsk()}">
+        <button class="btn ask-btn" onclick="routeAsk()">Ask HELEN</button>
+      </div>
+      <div class="ask-help">First ask. Then HELEN suggests. You confirm. Receipts prove what happened.</div>
+      <div class="ask-feedback" id="ask-feedback"></div>
+    </div>
+
+    <div class="section-title" style="margin:0 0 10px;color:var(--muted2);font-size:11px;letter-spacing:.08em;text-transform:uppercase">Suggested actions</div>
     <div class="examples-row">
       <span class="ex" onclick="exFindGuide()">Find the operator guide</span>
       <span class="ex" onclick="exAddGuide()">Add docs/HELEN_OPERATOR_GUIDE.md</span>
@@ -661,6 +726,55 @@ const TYPE_LABELS = {
 };
 const ST = {ACCEPT:'ok',REJECT:'err',QUARANTINE:'warn',DEGRADE:'warn'};
 const SL = {ACCEPT:'Admitted ✓',REJECT:'Rejected',QUARANTINE:'Quarantined',DEGRADE:'Degraded'};
+
+
+function routeAsk(){
+  const input = document.getElementById('ask-input');
+  const feedback = document.getElementById('ask-feedback');
+  const q = (input.value || '').trim();
+  const s = q.toLowerCase();
+
+  if(!q){
+    feedback.textContent = "Ask HELEN anything. Example: “Find the operator guide” or “Add docs/HELEN_OPERATOR_GUIDE.md”.";
+    feedback.className = "ask-feedback show";
+    return;
+  }
+
+  let card = null;
+  let message = "";
+
+  if(s.includes("find") || s.includes("search") || s.includes("where") || s.includes("operator guide")){
+    card = "find";
+    message = "HELEN suggests: search memory first. I opened the Search action below.";
+  } else if(s.includes("add") || s.includes("ingest") || s.includes("/") || s.includes(".md") || s.includes(".pdf") || s.includes(".png") || s.includes(".jpg") || s.includes(".mp4")){
+    card = "add";
+    message = "HELEN suggests: add this to memory with a receipt. I opened the Add action below.";
+  } else if(s.includes("open")){
+    card = "open";
+    message = "HELEN suggests: open a known object. I opened the Open action below.";
+  } else if(s.includes("render") || s.includes("show") || s.includes("view")){
+    card = "render";
+    message = "HELEN suggests: render a system view. I opened the Render action below.";
+  } else if(s.includes("connect") || s.includes("relate") || s.includes("link")){
+    card = "link";
+    message = "HELEN suggests: connect two objects with a receipt. I opened the Connect action below.";
+  } else {
+    message = "I can help. Choose one suggested action below. Nothing has been changed.";
+  }
+
+  feedback.textContent = message;
+  feedback.className = "ask-feedback show";
+
+  if(card && typeof toggleCard === "function"){
+    toggleCard(card);
+    const el = document.getElementById("card-" + card);
+    if(el){ el.scrollIntoView({behavior:"smooth", block:"center"}); }
+  }
+
+  if(typeof setMode === "function"){
+    setMode("focus");
+  }
+}
 
 /* ── mode ── */
 function setMode(m) {
