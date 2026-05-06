@@ -39,3 +39,13 @@ def test_run_pwd_returns_output():
     result = run_readonly("pwd")
     assert result.returncode == 0
     assert result.stdout.strip()
+
+def test_dashboard_path_not_rejected_for_sh_substring():
+    assert validate_readonly_command("sed -n 1,20p tools/helen_semantic_dashboard.py") == [
+        "sed", "-n", "1,20p", "tools/helen_semantic_dashboard.py"
+    ]
+
+
+def test_sh_command_still_rejected():
+    with pytest.raises(ReadOnlyExecutionRejected):
+        validate_readonly_command("sh script.sh")

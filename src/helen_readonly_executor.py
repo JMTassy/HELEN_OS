@@ -12,6 +12,8 @@ Mutation: forbidden
 
 from __future__ import annotations
 
+import shlex
+import shlex
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
@@ -41,32 +43,48 @@ _ALLOWED_PREFIXES = {
     "sed",
 }
 
-_FORBIDDEN_TOKENS = {
+_FORBIDDEN_HEADS = {
     "rm", "mv", "cp", "chmod", "chown", "sudo", "su",
-    "git add", "git commit", "git push", "git reset", "git checkout",
     "curl", "wget", "python", "bash", "sh", "zsh", "npm", "npx",
-    ">", ">>", "|", "&&", ";",
 }
 
+_FORBIDDEN_GIT_SUBCOMMANDS = {
+    "add", "commit", "push", "reset", "checkout", "merge", "rebase",
+}
 
-def _reject_if_dangerous(raw: str) -> None:
-    lowered = raw.lower()
-    for token in _FORBIDDEN_TOKENS:
-        if token in lowered:
-            raise ReadOnlyExecutionRejected(f"Forbidden token: {token}")
+_FORBIDDEN_SHELL_TOKENS = {">", ">>", "|", "&&", ";"}
 
 
 def _split(raw: str) -> list[str]:
-    # intentionally simple: no shell=True, no pipes, no redirects
-    return raw.strip().split()
+    # shell-like parsing, but execution remains shell=False
+    try:
+        return shlex.split(raw)
+    except ValueError as exc:
+        raise ReadOnlyExecutionRejected(f"Invalid command syntax: {exc}") from exc
+
+
+def _reject_if_dangerous(parts: list[str]) -> None:
+    if not parts:
+        raise ReadOnlyExecutionRejected("Empty command")
+
+    head = parts[0].lower()
+    if head in _FORBIDDEN_HEADS:
+        raise ReadOnlyExecutionRejected(f"Forbidden command: {head}")
+
+    if head == "git" and len(parts) > 1 and parts[1].lower() in _FORBIDDEN_GIT_SUBCOMMANDS:
+        raise ReadOnlyExecutionRejected(f"Forbidden git subcommand: {parts[1]}")
+
+    for part in parts:
+        if part in _FORBIDDEN_SHELL_TOKENS:
+            raise ReadOnlyExecutionRejected(f"Forbidden shell token: {part}")
 
 
 def validate_readonly_command(raw: str) -> list[str]:
     if not raw or not raw.strip():
         raise ReadOnlyExecutionRejected("Empty command")
 
-    _reject_if_dangerous(raw)
     parts = _split(raw)
+    _reject_if_dangerous(parts)
 
     if tuple(parts) in _ALLOWED_EXACT:
         return parts
