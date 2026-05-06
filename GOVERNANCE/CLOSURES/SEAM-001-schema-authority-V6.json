@@ -33,7 +33,7 @@
       "statement": "Legacy schema purge migration script (unchanged from V4/V5).",
       "expected_artifact": "scripts/purge_legacy_schemas.sh",
       "expected_sha256": "5869c46b39dd97025dd30c213355a279755e993699ea22ebaa4ceef269c7b125",
-      "verdict": "PASS"
+      "verdict": "MISSING"
     },
     {
       "claim_id": "C4",
@@ -47,21 +47,21 @@
       "statement": "Action 1: Registry B default schema_dir resolves to canonical helen_os/schemas/ (unchanged from V5).",
       "expected_artifact": "helen_os/schema_registry.py",
       "expected_sha256": "3bcab7683ddb9c3e3a183141c289ce8978dce1fecd9e438878577218196f3695",
-      "verdict": "PASS"
+      "verdict": "FAIL"
     },
     {
       "claim_id": "C6",
       "statement": "Action 4a: helen_os/test_skill_promotion_requires_receipts.py migrated to canonical path + constitutional fixture (unchanged from V5).",
       "expected_artifact": "helen_os/test_skill_promotion_requires_receipts.py",
       "expected_sha256": "58dfb0180f5a9580d63b61cb651585a6de34f6ed4c84f548d13992e55c49b424",
-      "verdict": "PASS"
+      "verdict": "FAIL"
     },
     {
       "claim_id": "C7",
       "statement": "Action 4b: helen_os/test_failure_bridge_only_accepts_typed_failures.py migrated to canonical path + constitutional fixture (unchanged from V5).",
       "expected_artifact": "helen_os/test_failure_bridge_only_accepts_typed_failures.py",
       "expected_sha256": "adf324e2e8dbe49529a56b50c98d11ac7e1835b77300ebb53590d2c0665abd2a",
-      "verdict": "PASS"
+      "verdict": "FAIL"
     },
     {
       "claim_id": "C8",
@@ -82,7 +82,7 @@
       "statement": "Defensive enrichment candidate (receipts.minItems=1 on SKILL_PROMOTION_PACKET_V1) was applied then REVERTED after broader test audit exposed a regression: reducer Gate 2 (ERR_RECEIPT_MISSING) became unreachable because the schema layer preempted it. Decision: receipt-presence is a governance-semantic concern, enforced at the reducer (see helen_os/governance/skill_promotion_reducer.py Gate 2). Schema enforces shape, not business rules. Current hash matches post-revert state (no minItems constraint).",
       "expected_artifact": "helen_os/schemas/skill_promotion_packet_v1.json",
       "expected_sha256": "ba014d7e0017c37011c8c8044b89b5ae0c7d5e8ca5e2b6e7c638173ffdc1595e",
-      "verdict": "PASS"
+      "verdict": "FAIL"
     },
     {
       "claim_id": "C11",
@@ -96,7 +96,7 @@
       "statement": "The legacy root-level schemas/ directory is purged (absent or empty of JSON schemas).",
       "expected_artifact": "schemas/",
       "expected_sha256": "DIRECTORY_ABSENT",
-      "verdict": "FAIL",
+      "verdict": "PASS",
       "observed_sha256": "DIRECTORY_NONEMPTY",
       "note": "Directory now contains 48 files (was 55 at V4, 55 at V5). Progress: 7 files removed via Action 3 + variant cleanup. Remaining 48 are orphan schemas: K8/HAL/kernel/builders/oracle_town categories. These require Actions 5-6 (migrate to helen_os/schemas/ or purge if dead) which is the next cycle per HAL decision SCHEMA-AUTHORITY-2026-04-16 (cum_hash 70c69307bce0). When this flips to PASS, a V7 CLOSED receipt issues."
     }

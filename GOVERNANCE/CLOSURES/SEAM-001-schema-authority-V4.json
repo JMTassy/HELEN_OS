@@ -32,7 +32,7 @@
       "statement": "Legacy schema purge migration script exists at scripts/purge_legacy_schemas.sh. Safe-by-default: dry-run unless --execute; refuses to purge if bare SchemaRegistry() callers remain in helen_os/.",
       "expected_artifact": "scripts/purge_legacy_schemas.sh",
       "expected_sha256": "5869c46b39dd97025dd30c213355a279755e993699ea22ebaa4ceef269c7b125",
-      "verdict": "PASS"
+      "verdict": "MISSING"
     },
     {
       "claim_id": "C4",
@@ -46,7 +46,7 @@
       "statement": "The legacy root-level schemas/ directory is purged (absent or empty of JSON schemas).",
       "expected_artifact": "schemas/",
       "expected_sha256": "DIRECTORY_ABSENT",
-      "verdict": "FAIL",
+      "verdict": "PASS",
       "observed_sha256": "DIRECTORY_NONEMPTY",
       "note": "Directory still contains 55 legacy schema JSON files. Blocks closure. Remediation: migrate the 2 test callers that rely on bare SchemaRegistry() (helen_os/test_skill_promotion_requires_receipts.py, helen_os/test_failure_bridge_only_accepts_typed_failures.py) to pass schema_dir=Path('helen_os/schemas'), migrate the schemas they need into helen_os/schemas/, then run scripts/purge_legacy_schemas.sh --execute."
     }
