@@ -20,3 +20,10 @@ artifacts/*.wav
 artifacts/*.png
 artifacts/*.json
 helen_os/helen_memory.db
+# HELEN runtime lint artifacts
+artifacts/k8_manifest.json
+artifacts/k8_summary.json
+artifacts/k8_trace.ndjson
+artifacts/k_tau_manifest.json
+artifacts/k_tau_summary.json
+artifacts/k_tau_trace.ndjson
