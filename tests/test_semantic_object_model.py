@@ -313,3 +313,33 @@ def test_p9_3_hash_mismatch_detectable():
     a = _cso(payload={"v": 1})
     b = _cso(payload={"v": 2})
     assert a.canonical_hash() != b.canonical_hash()
+
+
+# ── CSO Identity and Namespace Rules V1 ──────────────────────────────────────
+# Law 1: Identity Determinism — payload change → hash change
+# Law 2: Namespace Isolation — same local_id, different namespace → different object
+# Law 6: Replay Identity Stability — replay produces same hash
+
+def test_identity_drift_payload_change():
+    """Law 1: any payload change produces a different hash."""
+    o1 = _cso(payload={"a": 1})
+    o2 = _cso(payload={"a": 2})
+    assert o1.canonical_hash() != o2.canonical_hash()
+
+
+def test_cross_namespace_no_collision():
+    """Law 2: same local_id in different namespaces are not equal objects."""
+    o1 = _cso(namespace="ns-A", local_id="x", payload={"v": 1})
+    o2 = _cso(namespace="ns-B", local_id="x", payload={"v": 1})
+    assert o1.global_id != o2.global_id
+    assert o1.canonical_hash() != o2.canonical_hash()
+
+
+def test_replay_hash_stability():
+    """Law 6: replaying the same events produces a graph with the same projection hash."""
+    events = [_cso(local_id=f"obj-{i}", payload={"i": i}) for i in range(5)]
+    g1 = replay(events)
+    g2 = replay(events)
+    p1 = project(g1)
+    p2 = project(g2)
+    assert p1["graph_hash"] == p2["graph_hash"]
