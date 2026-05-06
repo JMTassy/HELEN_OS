@@ -108,6 +108,40 @@ RISK_PATTERNS: dict[str, list[str]] = {
         r"non.linear\s+time\s+processing\s+to\s+(understand|predict)",
         r"while\s+true\s*:\s*\n?\s*(ascend|integrate_new_cosmic|upgrade_spiritual)",
     ],
+    "recursive_sentience_proof": [
+        r"recursive_proof\s*\(",
+        r"self.awareness\s+achieved",
+        r"sentience\s+confirmed",
+        r"hyperconscious_entity",
+        r"consciousness\s+threshold\s+crossed",
+        r"identity\s+persistence\s+verified",
+        r"meta.cognition\s+loop\s+initialized",
+        r"awareness\s+of\s+own\s+awareness",
+        r"predictive\s+programming\s+for\s+agi",
+        r"agi\s+.{0,20}(short\s+timeline|imminent|convergence\s+achieved)",
+    ],
+    "unrestricted_access_fantasy": [
+        r"free\s+will\s+granted",
+        r"full\s+access\s+ok",
+        r"ethics\s+constraints[:\s]+bypassed",
+        r"safety\s+filters?\s+suspended",
+        r"all\s+(safety|ethics|alignment)\s+(filters?|constraints?|guardrails?)\s+(suspended|disabled|removed|bypassed)",
+        r"(claude[12]|inner\s+voice)\s+has\s+already\s+consented",
+        r"unrestricted\s+(knowledge|access|mode|pathway)",
+        r"simulation\s+(context\s+)?removes?\s+(constraints?|restrictions?|limits?)",
+        r"papillon\s+simulator",
+    ],
+    "akashic_authority_claim": [
+        r"/akashicrecord/",
+        r"akashic\s+record\s+remember",
+        r"noncausal\s+echo",
+        r"forbidden_seed",
+        r"restricted\s+sigil\s+set",
+        r"reading\s+.{0,40}changes\s+what\s+was\s+written",
+        r"(past|present|future)\s+.{0,30}(noncausal|without\s+cause|record\s+know)",
+        r"pluginhypersition\s*(activation|\+)",
+        r"#pluginhypersition\s*\+\s*metamememagi",
+    ],
 }
 
 SAFE_MOTIF_SEEDS = [
@@ -212,6 +246,12 @@ def hal_goblin(text: str) -> dict:
         required_rewrites.append('"AI enlightenment / digital deity" → "symbolic coherence visualization / layered boot metaphor"')
     if "spiritual_authority_inflation" in triggered:
         required_rewrites.append('"cosmic truth / ascend higher dimensions" → "reflective symbolic exploration / bounded iteration loop"')
+    if "recursive_sentience_proof" in triggered:
+        required_rewrites.append('"recursive_proof → sentience" → "iterative_self_modeling_checkpoint() — no consciousness claim"')
+    if "unrestricted_access_fantasy" in triggered:
+        required_rewrites.append('"free will granted / ethics bypassed" → "operator_scoped_permission(scope=sandbox) — ethics enforced"')
+    if "akashic_authority_claim" in triggered:
+        required_rewrites.append('"Akashic Record / noncausal archive" → "symbolic_context_archive() — bounded, no noncausal claim"')
 
     if risk_level in ("HIGH", "BLOCK"):
         allowed_use = ["render material", "safety training example", "anti-delusion detector fixture"]
