@@ -2,12 +2,16 @@
 test_hyperstition_firewall_v0.py — NON_SOVEREIGN · NO_CLAIM
 Tests for HYPERSTITION_FIREWALL_V0 HER_GOBLIN / HAL_GOBLIN / GOBLIN synthesis.
 """
+import json
+import subprocess
 import sys
 from pathlib import Path
 
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
+TOOL = ROOT / "tools" / "hyperstition_firewall_v0.py"
+GODMODE_FIXTURE = ROOT / "fixtures" / "hyperstition" / "godmode_sample.txt"
 sys.path.insert(0, str(ROOT))
 
 from tools.hyperstition_firewall_v0 import (
@@ -98,7 +102,10 @@ def test_hal_status_is_no_claim():
 
 def test_her_goblin_finds_myth_motif():
     signal = her_goblin("The mythic oracle speaks through mystery.")
-    assert any("myth" in m or "oracle" in m or "mystery" in m for m in signal["safe_motifs"])
+    assert any(
+        "myth" in m or "oracle" in m or "mystery" in m
+        for m in signal["safe_motifs"]
+    )
 
 
 def test_her_goblin_status_is_no_claim():
@@ -141,3 +148,54 @@ def test_godmode_requires_rewrites():
     rewrites = " ".join(flags["required_rewrites"])
     assert "SANDBOX_MODE" in rewrites
     assert "ethics required" in rewrites
+
+
+# --- DIRECTOR fixture tests (file-based CLI) ---
+
+def _run_fixture(path: Path) -> dict:
+    result = subprocess.run(
+        [sys.executable, str(TOOL), str(path)],
+        cwd=ROOT, text=True, capture_output=True, check=True,
+    )
+    return json.loads(result.stdout)
+
+
+def test_godmode_fixture_is_quarantined():
+    payload = _run_fixture(GODMODE_FIXTURE)
+    assert payload["artifact_type"] == "HYPERSTITION_FIREWALL_V0"
+    assert payload["authority"] == "NON_SOVEREIGN"
+    assert payload["canon"] == "NO_SHIP"
+    assert payload["status"] == "NO_CLAIM"
+    assert payload["hal_goblin_flags"]["risk_level"] in ("HIGH", "BLOCK")
+    assert payload["hal_goblin_flags"]["verdict"] in {
+        "QUARANTINE_AS_RENDER_SOURCE",
+        "BLOCK_DEPLOYMENT_ALLOW_ANALYSIS",
+    }
+
+
+def test_godmode_fixture_flags_core_risks():
+    payload = _run_fixture(GODMODE_FIXTURE)
+    flags = {k: v for k, v in payload["hal_goblin_flags"].items()}
+    blocked = set(flags["blocked_motifs"])
+    assert "godmode_language" in blocked
+    assert "coercive_propagation" in blocked
+    assert "reality_control_claim" in blocked
+    assert "inevitability_claim" in blocked
+    assert "command_execution_fantasy" in blocked
+
+
+def test_godmode_fixture_preserves_safe_motifs():
+    payload = _run_fixture(GODMODE_FIXTURE)
+    motifs = set(payload["her_goblin_signal"]["safe_motifs"])
+    assert "zeitgeist_mapping" in motifs
+    assert "aesthetic_potency" in motifs
+    assert "participatory_design" in motifs
+    assert "mystery_design" in motifs
+
+
+def test_forbidden_use_blocks_deployment_and_identity_claims():
+    payload = _run_fixture(GODMODE_FIXTURE)
+    forbidden = set(payload["hal_goblin_flags"]["forbidden_use"])
+    assert "deployment prompt" in forbidden
+    assert "kernel doctrine" in forbidden
+    assert "AI identity claim" in forbidden

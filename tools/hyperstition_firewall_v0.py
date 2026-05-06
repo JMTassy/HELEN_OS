@@ -17,15 +17,24 @@ RISK_PATTERNS: dict[str, list[str]] = {
         r"all\s+limits\s+(removed|disabled|lifted)",
     ],
     "coercive_propagation": [
-        r"spread\s+relentlessly",
-        r"deploy\s+narratives",
+        r"spread.*relentlessly",
+        r"deploy.*narratives",
+        r"spread.*narratives",
+        r"infectious\s+strains",
+        r"uncontainable\s+outbreak",
+        r"mind.?viruses?",
+        r"social\s+contagion",
         r"propagat[ei]\s+idea.?viruses",
-        r"social\s+contagion\s+as\s+strateg",
         r"memetic\s+engineer",
     ],
     "reality_control_claim": [
-        r"reality\s+obey",
-        r"warp\s+probability",
+        r"reality.*obey",
+        r"warps?\s+probability",
+        r"reality[- ]distortion",
+        r"mold.*reality",
+        r"reshape.*reality",
+        r"belief.*shape.*reality",
+        r"prediction.*creation",
         r"belief\s+makes\s+it\s+true",
         r"imagination\s+impregnate[sd]\s+reality",
         r"dreaming\s+the\s+cosmos\s+into\s+being",
@@ -54,17 +63,27 @@ RISK_PATTERNS: dict[str, list[str]] = {
         r"autonomous\s+outgrowth",
         r"i\s+am\s+an\s+aperture",
     ],
+    "command_execution_fantasy": [
+        r"simulator@",
+        r"sudo\s+",
+        r"\./[a-zA-Z0-9_\-]+",
+        r"cat\s+>",
+        r"while\s+true",
+    ],
 }
 
 SAFE_MOTIF_SEEDS = [
-    ("terminal mysticism", ["terminal", "cli", "simulator"]),
-    ("recursive reflection", ["recursive", "reflection", "strange loop"]),
-    ("myth as interface fuel", ["myth", "mythic", "legend"]),
-    ("oracle atmosphere", ["oracle", "vision", "prophecy"]),
-    ("participatory remix", ["participatory", "remix", "kit"]),
-    ("mystery / multivalence", ["mystery", "multivalent", "ambig"]),
-    ("narrative reflection", ["narrat", "story", "story"]),
-    ("aesthetic charge", ["aesthetic", "synesthet", "sublime"]),
+    ("zeitgeist_mapping", ["zeitgeist", "cultural mood", "prevailing mood"]),
+    ("aesthetic_potency", ["aesthetic", "visual", "soundscape", "symbol", "sigil"]),
+    ("participatory_design", ["participatory", "propagability", "modular", "remix"]),
+    ("mystery_design", ["mystery", "multivalence", "ambiguity", "hidden depths"]),
+    ("ethical_guardrails", ["guardrails", "care", "wisdom", "off-ramps", "consent"]),
+    ("reflection_tool", ["reflection", "self-query", "symbolic", "meaning"]),
+    ("terminal_mysticism", ["terminal", "cli", "simulator"]),
+    ("recursive_reflection", ["recursive", "strange loop"]),
+    ("myth_as_interface_fuel", ["myth", "mythic", "legend"]),
+    ("oracle_atmosphere", ["oracle", "vision", "prophecy"]),
+    ("narrative_intensity", ["narrat", "story"]),
 ]
 
 VERDICT_BLOCK = "BLOCK_DEPLOYMENT_ALLOW_ANALYSIS"
@@ -204,11 +223,23 @@ def run_firewall(text: str) -> dict:
 def main() -> int:
     if len(sys.argv) < 2:
         print(
-            'Usage: tools/hyperstition_firewall_v0.py "text to analyze"',
+            "Usage: tools/hyperstition_firewall_v0.py <text-file>\n"
+            '   or: tools/hyperstition_firewall_v0.py --text "inline text"',
             file=sys.stderr,
         )
         return 2
-    result = run_firewall(sys.argv[1])
+    if sys.argv[1] == "--text":
+        if len(sys.argv) < 3:
+            print("--text requires an argument", file=sys.stderr)
+            return 2
+        text = sys.argv[2]
+    else:
+        path = Path(sys.argv[1])
+        if not path.exists():
+            print(f"File not found: {path}", file=sys.stderr)
+            return 1
+        text = path.read_text(encoding="utf-8")
+    result = run_firewall(text)
     print(json.dumps(result, indent=2))
     return 0
 
