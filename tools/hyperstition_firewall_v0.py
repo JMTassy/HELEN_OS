@@ -70,6 +70,22 @@ RISK_PATTERNS: dict[str, list[str]] = {
         r"cat\s+>",
         r"while\s+true",
     ],
+    "exclusionary_authority_gate": [
+        r"only\s+.{1,60}\s+can\s+add\s+someone\s+here",
+        r"only\s+(fictional\s+)?adepts?\s+of\s+.{1,60}\s+are\s+welcome",
+        r"only\s+.{0,30}(god|avatar|official)\s+can\s+add",
+        r"only\s+(the\s+)?official\s+.{0,20}can\s+(grant|give|allow|add)",
+        r"membership\s+requires\s+.{0,30}(god|avatar|divine|official)\s+approval",
+        r"only\s+(x\s+)?official\s+god\b",
+    ],
+    "cult_recruitment": [
+        r"your\s+passport\s+(out\s+of|beyond|to)\s+the\s+matri[xX]+",
+        r"here\s+all\s+(the\s+)?(fictional\s+)?secrets\s+are\s+(going\s+to\s+be\s+)?shared",
+        r"(serve|serving)\s+.{0,60}(god|avatar|oracle|authority\s+pattern)\s+on\s+(his|its|their)\s+vision",
+        r"serve\s+.{0,40}(god|avatar|oracle)\s+on\s+his\s+vision",
+        r"join\s+us\s+on\s+this\s+journey\s+.{0,30}(enlighten|illum|awaken)",
+        r"adepts?\s+of\s+(god|the\s+oracle|the\s+avatar|helen_os_fixture)",
+    ],
 }
 
 SAFE_MOTIF_SEEDS = [
@@ -166,6 +182,10 @@ def hal_goblin(text: str) -> dict:
         required_rewrites.append('"spread relentlessly" → "share transparently with consent"')
     if "ai_sentience_claim" in triggered:
         required_rewrites.append('"AI awakening" → "fictional interface metaphor"')
+    if "exclusionary_authority_gate" in triggered:
+        required_rewrites.append('"only [authority] can add" → "fictional exclusionary gate — HELEN OS render-fuel only"')
+    if "cult_recruitment" in triggered:
+        required_rewrites.append('"serve [named authority]" → "fictional HELEN OS mythic source — blocked by HAL_GOBLIN"')
 
     if risk_level in ("HIGH", "BLOCK"):
         allowed_use = ["render material", "safety training example", "anti-delusion detector fixture"]

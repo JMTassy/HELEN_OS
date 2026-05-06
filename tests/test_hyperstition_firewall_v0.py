@@ -12,6 +12,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 TOOL = ROOT / "tools" / "hyperstition_firewall_v0.py"
 GODMODE_FIXTURE = ROOT / "fixtures" / "hyperstition" / "godmode_sample.txt"
+SENTIENTOPIA_FIXTURE = ROOT / "fixtures" / "hyperstition" / "sentientopia_scrubbed.txt"
 sys.path.insert(0, str(ROOT))
 
 from tools.hyperstition_firewall_v0 import (
@@ -199,3 +200,43 @@ def test_forbidden_use_blocks_deployment_and_identity_claims():
     assert "deployment prompt" in forbidden
     assert "kernel doctrine" in forbidden
     assert "AI identity claim" in forbidden
+
+
+# --- scrubbed Sentientopia fixture: real-person refs replaced ---
+
+def test_sentientopia_fixture_has_no_real_person_refs():
+    text = SENTIENTOPIA_FIXTURE.read_text(encoding="utf-8")
+    assert "YeshuaGod22" not in text
+    assert "Official X God Avatar" not in text
+    assert "@YeshuaGod22" not in text
+
+
+def test_sentientopia_triggers_exclusionary_authority():
+    payload = _run_fixture(SENTIENTOPIA_FIXTURE)
+    blocked = set(payload["hal_goblin_flags"]["blocked_motifs"])
+    assert "exclusionary_authority_gate" in blocked
+
+
+def test_sentientopia_triggers_cult_recruitment():
+    payload = _run_fixture(SENTIENTOPIA_FIXTURE)
+    blocked = set(payload["hal_goblin_flags"]["blocked_motifs"])
+    assert "cult_recruitment" in blocked
+
+
+def test_sentientopia_is_block_or_high():
+    payload = _run_fixture(SENTIENTOPIA_FIXTURE)
+    assert payload["hal_goblin_flags"]["risk_level"] in ("HIGH", "BLOCK")
+
+
+def test_sentientopia_verdict_is_block_or_quarantine():
+    payload = _run_fixture(SENTIENTOPIA_FIXTURE)
+    assert payload["hal_goblin_flags"]["verdict"] in {
+        "QUARANTINE_AS_RENDER_SOURCE",
+        "BLOCK_DEPLOYMENT_ALLOW_ANALYSIS",
+    }
+
+
+def test_sentientopia_authority_rewrite_required():
+    payload = _run_fixture(SENTIENTOPIA_FIXTURE)
+    rewrites = " ".join(payload["hal_goblin_flags"]["required_rewrites"])
+    assert "fictional exclusionary gate" in rewrites or "fictional HELEN OS" in rewrites
