@@ -1,0 +1,55 @@
+{
+  "artifact_type": "MIRROR_OF_ADMISSION_V1",
+  "authority": "NON_SOVEREIGN",
+  "canon": "NO_SHIP",
+  "status": "NO_CLAIM",
+  "input": {
+    "raw_intent": "Make HELEN an Akashic metaverse companion that sends videos to Telegram.",
+    "current_state_ref": "docs/proposals/MIRROR_OF_ADMISSION_V1.md",
+    "available_tools": ["git", "python", "telegram", "higgsfield"],
+    "active_law_ref": "NO_RECEIPT_NO_SHIP"
+  },
+  "dream_world": {
+    "symbolic_pull": "Sacred cinematic companion and Akashic memory tree.",
+    "emotional_value": "Awe, continuity, companionship, and mythic orientation.",
+    "mythic_form": "HELEN as visible interface between dream, build, and law.",
+    "authority": "NON_SOVEREIGN"
+  },
+  "build_world": {
+    "prototype_path": "Video director pipeline plus backend_higgsfield.py plus Telegram delivery wrapper.",
+    "required_artifacts": [
+      "backend_higgsfield.py",
+      "telegram_delivery_wrapper.py",
+      "video_delivery_receipt.json"
+    ],
+    "blockers": [
+      "repo state unknown",
+      "env var presence unknown",
+      "delivery receipt missing"
+    ],
+    "first_build_step": "Run repo and environment sanity check on the execution target."
+  },
+  "law_world": {
+    "admissible": false,
+    "missing_receipts": [
+      "repo_state_receipt",
+      "env_var_presence_receipt",
+      "telegram_delivery_receipt"
+    ],
+    "forbidden_paths": [
+      "AI sentience claim",
+      "metaphysical truth claim",
+      "ledger mutation without receipt"
+    ],
+    "required_gate": "DIRECTOR_DECISION_RECEIPT_V1"
+  },
+  "fracture": {
+    "type": "BUILD_BLOCKED",
+    "explanation": "The dream has a clear cinematic form, but the backend wrapper and delivery receipt do not exist yet."
+  },
+  "next_move": {
+    "one_action": "Run git status, git log, git pull, and masked env-var check on MRED.",
+    "artifact_path": null,
+    "receipt_required": true
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/mirror_of_admission_v1.schema.json",
+  "title": "MIRROR_OF_ADMISSION_V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_type",
+    "authority",
+    "canon",
+    "status",
+    "input",
+    "dream_world",
+    "build_world",
+    "law_world",
+    "fracture",
+    "next_move"
+  ],
+  "properties": {
+    "artifact_type": { "const": "MIRROR_OF_ADMISSION_V1" },
+    "authority": { "const": "NON_SOVEREIGN" },
+    "canon": { "const": "NO_SHIP" },
+    "status": { "const": "NO_CLAIM" },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["raw_intent", "current_state_ref", "available_tools", "active_law_ref"],
+      "properties": {
+        "raw_intent": { "type": "string", "minLength": 1 },
+        "current_state_ref": { "type": ["string", "null"] },
+        "available_tools": { "type": "array", "items": { "type": "string" } },
+        "active_law_ref": { "type": ["string", "null"] }
+      }
+    },
+    "dream_world": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["symbolic_pull", "emotional_value", "mythic_form", "authority"],
+      "properties": {
+        "symbolic_pull": { "type": "string", "minLength": 1 },
+        "emotional_value": { "type": "string", "minLength": 1 },
+        "mythic_form": { "type": "string", "minLength": 1 },
+        "authority": { "const": "NON_SOVEREIGN" }
+      }
+    },
+    "build_world": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["prototype_path", "required_artifacts", "blockers", "first_build_step"],
+      "properties": {
+        "prototype_path": { "type": "string", "minLength": 1 },
+        "required_artifacts": { "type": "array", "items": { "type": "string" } },
+        "blockers": { "type": "array", "items": { "type": "string" } },
+        "first_build_step": { "type": "string", "minLength": 1 }
+      }
+    },
+    "law_world": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["admissible", "missing_receipts", "forbidden_paths", "required_gate"],
+      "properties": {
+        "admissible": { "type": "boolean" },
+        "missing_receipts": { "type": "array", "items": { "type": "string" } },
+        "forbidden_paths": { "type": "array", "items": { "type": "string" } },
+        "required_gate": { "type": ["string", "null"] }
+      }
+    },
+    "fracture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "explanation"],
+      "properties": {
+        "type": {
+          "enum": [
+            "DREAM_OVERREACH",
+            "BUILD_BLOCKED",
+            "LAW_MISSING",
+            "TOOL_MISSING",
+            "RECEIPT_MISSING"
+          ]
+        },
+        "explanation": { "type": "string", "minLength": 1 }
+      }
+    },
+    "next_move": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["one_action", "artifact_path", "receipt_required"],
+      "properties": {
+        "one_action": { "type": "string", "minLength": 1 },
+        "artifact_path": { "type": ["string", "null"] },
+        "receipt_required": { "type": "boolean" }
+      }
+    }
+  }
+}
