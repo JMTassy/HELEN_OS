@@ -21,6 +21,9 @@ artifacts/*.png
 artifacts/*.json
 artifacts/*.ndjson
 helen_os/helen_memory.db
+# Generated Mirror artifacts (test outputs)
+fixtures/mirror_of_admission/generated_stub.json
+
 # HELEN runtime lint artifacts
 artifacts/k8_manifest.json
 artifacts/k8_summary.json
