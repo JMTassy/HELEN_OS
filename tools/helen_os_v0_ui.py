@@ -1,87 +1,101 @@
 #!/usr/bin/env python3
 """
 helen_os_v0_ui.py — NON_SOVEREIGN · NO_CLAIM
-HELEN OS V0 — governed AI-native interface.
-Focus Mode: intent → proposal → HAL gate → confirm → execute → receipt.
-Witness Mode: full timeline proof.
-Port: 5003
+HELEN OS V0 — receipt-bound governed execution prototype.
+Focus Mode: intent → HER proposal → HAL gate → confirm → action → receipt.
+Witness Mode: full proof timeline + ledger tail.
+Port: 5003  |  Local-only — no external APIs.
 """
+import hashlib
 import json
 import os
 import re
 import subprocess
 import sys
 import time
-import urllib.error
-import urllib.parse
-import urllib.request
-from datetime import datetime
+from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT        = Path(__file__).resolve().parent.parent
 VENV_PYTHON = str(ROOT / ".venv" / "bin" / "python")
-HELEN_SAY = str(ROOT / "tools" / "helen_say.py")
+HELEN_SAY   = str(ROOT / "tools" / "helen_say.py")
 LEDGER_PATH = ROOT / "town" / "ledger_v1.ndjson"
-FIREWALL_TOOL = str(ROOT / "tools" / "hyperstition_firewall_v0.py")
-PORT = int(os.environ.get("HELEN_V0_PORT", 5003))
+PORT        = int(os.environ.get("HELEN_V0_PORT", 5003))
 
-GEMINI_KEY = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY") or ""
-GEMINI_MODEL = os.environ.get("HELEN_GEMINI_MODEL", "gemini-2.5-flash")
-GEMINI_ENDPOINT = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent"
+GEMINI_KEY      = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY") or ""
+GEMINI_MODEL    = os.environ.get("HELEN_GEMINI_MODEL", "gemini-2.5-flash")
+GEMINI_ENDPOINT = (
+    f"https://generativelanguage.googleapis.com/v1beta/models/"
+    f"{GEMINI_MODEL}:generateContent"
+)
 
-# ── Bounded action registry ────────────────────────────────────────────────────
-ALLOWED_ACTIONS = {
-    "web_search": {
-        "label": "Web Search",
-        "description": "Search the web for information",
-        "icon": "🔍",
-        "param": "query",
+# ── 3 local bounded actions ───────────────────────────────────────────────────
+
+ACTIONS = {
+    "create_receipt": {
+        "label": "Create Receipt",
+        "icon": "📋",
+        "desc": "Record an event into the HELEN ledger with a payload hash.",
     },
-    "open_url": {
-        "label": "Open URL",
-        "description": "Open a URL in the browser",
-        "icon": "🌐",
-        "param": "url",
+    "scan_receipts": {
+        "label": "Scan Receipts",
+        "icon": "🔎",
+        "desc": "Read the last N entries from the append-only ledger.",
     },
-    "read_file": {
-        "label": "Read File",
-        "description": "Read a file from the project",
-        "icon": "📄",
-        "param": "path",
-    },
-    "run_firewall": {
-        "label": "Hyperstition Firewall",
-        "description": "Run symbolic content through HAL_GOBLIN filter",
-        "icon": "🛡",
-        "param": "text",
-    },
-    "write_note": {
-        "label": "Write Note",
-        "description": "Save a note to artifacts/notes/",
-        "icon": "📝",
-        "param": "content",
+    "show_status": {
+        "label": "Show Status",
+        "icon": "📡",
+        "desc": "Report kernel state: ledger entry count, HEAD commit, branch.",
     },
 }
 
+# ── Local keyword router (works without any API key) ─────────────────────────
 
-# ── LLM helpers ───────────────────────────────────────────────────────────────
-PROPOSAL_SYSTEM = (
-    "You are HELEN's proposal engine. Given the user's intent, you must:\n"
-    "1. Identify which single bounded action best serves the intent.\n"
-    "2. Propose a specific action with precise parameters.\n"
-    "3. Explain why in one sentence.\n"
-    "4. Assess HAL risk (LOW/MEDIUM/HIGH).\n\n"
-    "Allowed actions: web_search, open_url, read_file, run_firewall, write_note.\n\n"
-    "Return ONLY valid JSON — no markdown, no prose:\n"
+def _local_propose(intent: str) -> dict:
+    lo = intent.lower()
+    if any(w in lo for w in ["receipt", "record", "save", "remember", "note", "log", "create", "write"]):
+        action, risk, risk_reason = "create_receipt", "LOW", "Writes only to local ledger — append-only, no side effects."
+        param_label, param_value = "message", intent[:200]
+        rationale = "Your intent asks to record or save — create_receipt is the minimal bounded write."
+    elif any(w in lo for w in ["scan", "search", "find", "list", "read", "check receipts", "history", "past", "ledger"]):
+        action, risk, risk_reason = "scan_receipts", "LOW", "Read-only ledger scan — no mutations."
+        param_label, param_value = "count", "10"
+        rationale = "Your intent asks to inspect past events — scan_receipts reads the append-only ledger."
+    else:
+        action, risk, risk_reason = "show_status", "LOW", "Read-only status report — no mutations."
+        param_label, param_value = "scope", "full"
+        rationale = "Default: show the current kernel state so you can see what HELEN knows."
+
+    return {
+        "summary": f"{ACTIONS[action]['label']}: {intent[:80]}",
+        "action": action,
+        "param_label": param_label,
+        "param_value": param_value,
+        "rationale": rationale,
+        "hal_risk": risk,
+        "hal_reason": risk_reason,
+        "source": "local",
+    }
+
+
+# ── Gemini proposal (used when GEMINI_API_KEY is set) ────────────────────────
+
+_PROPOSAL_SYSTEM = (
+    "You are HELEN's proposal engine. Given the user's intent, propose ONE of these actions:\n"
+    "  create_receipt — record an event in the local ledger\n"
+    "  scan_receipts  — read recent entries from the local ledger\n"
+    "  show_status    — report kernel state (ledger count, git HEAD, branch)\n\n"
+    "All actions are local-only. No external APIs.\n\n"
+    "Return ONLY valid JSON (no markdown fences):\n"
     "{\n"
-    '  "summary": "<one-sentence proposal>",\n'
-    '  "action": "<action_key>",\n'
+    '  "summary": "<one sentence describing what you propose>",\n'
+    '  "action": "create_receipt|scan_receipts|show_status",\n'
     '  "param_label": "<what the param represents>",\n'
-    '  "param_value": "<the specific value>",\n'
-    '  "rationale": "<why this action serves the intent>",\n'
-    '  "hal_risk": "LOW" | "MEDIUM" | "HIGH",\n'
-    '  "hal_reason": "<why this risk level>"\n'
+    '  "param_value": "<specific value>",\n'
+    '  "rationale": "<one sentence why>",\n'
+    '  "hal_risk": "LOW",\n'
+    '  "hal_reason": "All actions are local read/write — bounded by design."\n'
     "}"
 )
 
@@ -92,11 +106,12 @@ def _strip_fences(text: str) -> str:
 
 def call_gemini_proposal(intent: str) -> dict:
     if not GEMINI_KEY:
-        return _fallback_proposal(intent)
+        return _local_propose(intent)
+    import urllib.request, urllib.error
     payload = {
         "contents": [{"role": "user", "parts": [{"text": f"User intent: {intent}"}]}],
-        "systemInstruction": {"parts": [{"text": PROPOSAL_SYSTEM}]},
-        "generationConfig": {"maxOutputTokens": 512, "temperature": 0.3},
+        "systemInstruction": {"parts": [{"text": _PROPOSAL_SYSTEM}]},
+        "generationConfig": {"maxOutputTokens": 400, "temperature": 0.2},
     }
     req = urllib.request.Request(
         f"{GEMINI_ENDPOINT}?key={GEMINI_KEY}",
@@ -105,421 +120,360 @@ def call_gemini_proposal(intent: str) -> dict:
         method="POST",
     )
     try:
-        with urllib.request.urlopen(req, timeout=10) as r:
+        import urllib.request as _ur
+        with _ur.urlopen(req, timeout=10) as r:
             data = json.load(r)
         raw = data["candidates"][0]["content"]["parts"][0]["text"]
-        return json.loads(_strip_fences(raw))
+        result = json.loads(_strip_fences(raw))
+        result["source"] = "gemini"
+        if result.get("action") not in ACTIONS:
+            raise ValueError("unknown action")
+        return result
     except Exception:
-        return _fallback_proposal(intent)
+        fb = _local_propose(intent)
+        fb["source"] = "local_fallback"
+        return fb
 
 
-def _fallback_proposal(intent: str) -> dict:
-    return {
-        "summary": f"Search the web for: {intent[:60]}",
-        "action": "web_search",
-        "param_label": "query",
-        "param_value": intent[:120],
-        "rationale": "Web search is the default bounded action for open-ended queries.",
-        "hal_risk": "LOW",
-        "hal_reason": "Web search is read-only and bounded.",
-    }
+# ── Bounded action executors ──────────────────────────────────────────────────
+
+def _payload_hash(msg: str) -> str:
+    return hashlib.sha256(msg.encode()).hexdigest()[:24]
 
 
-# ── Bounded execution ─────────────────────────────────────────────────────────
-def execute_action(action: str, param_value: str) -> dict:
-    ts = datetime.utcnow().isoformat()
-    try:
-        if action == "web_search":
-            q = urllib.parse.quote_plus(param_value[:200])
-            result_text = f"Search executed: https://duckduckgo.com/?q={q}"
-            detail = f"DuckDuckGo search URL generated for: {param_value[:100]}"
-        elif action == "open_url":
-            if not param_value.startswith(("http://", "https://")):
-                return {"ok": False, "error": "URL must start with http:// or https://", "ts": ts}
-            subprocess.Popen(["open", param_value])
-            result_text = f"Opened: {param_value}"
-            detail = "Browser launched via system open."
-        elif action == "read_file":
-            p = ROOT / param_value.lstrip("/")
-            if not p.resolve().is_relative_to(ROOT):
-                return {"ok": False, "error": "Path outside project root — blocked.", "ts": ts}
-            if not p.exists():
-                return {"ok": False, "error": f"File not found: {param_value}", "ts": ts}
-            content = p.read_text(encoding="utf-8", errors="replace")[:2000]
-            result_text = f"Read {p.name} ({len(content)} chars)"
-            detail = content
-        elif action == "run_firewall":
-            import tempfile
-            with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False, encoding="utf-8") as f:
-                f.write(param_value)
-                tmp = f.name
-            try:
-                out = subprocess.check_output(
-                    [VENV_PYTHON, FIREWALL_TOOL, tmp], text=True, timeout=15
-                )
-                fw = json.loads(out)
-                risk = fw.get("hal_goblin_flags", {}).get("risk_level", "?")
-                verdict = fw.get("hal_goblin_flags", {}).get("verdict", "?")
-                result_text = f"Firewall: risk={risk} verdict={verdict}"
-                detail = json.dumps(fw.get("hal_goblin_flags", {}), indent=2)
-            finally:
-                Path(tmp).unlink(missing_ok=True)
-        elif action == "write_note":
-            notes_dir = ROOT / "artifacts" / "notes"
-            notes_dir.mkdir(parents=True, exist_ok=True)
-            fname = notes_dir / f"note_{int(time.time())}.txt"
-            fname.write_text(param_value, encoding="utf-8")
-            result_text = f"Note saved: {fname.name}"
-            detail = param_value[:500]
-        else:
-            return {"ok": False, "error": f"Unknown action: {action}", "ts": ts}
-
-        return {"ok": True, "result": result_text, "detail": detail, "ts": ts}
-
-    except subprocess.TimeoutExpired:
-        return {"ok": False, "error": "Action timed out.", "ts": ts}
-    except Exception as e:
-        return {"ok": False, "error": str(e), "ts": ts}
-
-
-def emit_receipt(msg: str) -> dict:
+def exec_create_receipt(param_value: str) -> dict:
+    """Write a ledger entry via helen_say.py."""
+    msg = param_value.strip() or "HELEN_OS_V0 manual receipt"
     try:
         out = subprocess.check_output(
             [VENV_PYTHON, HELEN_SAY, msg, "--op", "receipt"],
-            cwd=str(ROOT), text=True, timeout=15, stderr=subprocess.PIPE
+            cwd=str(ROOT), text=True, timeout=15, stderr=subprocess.PIPE,
         )
         rx = re.search(r"R-\d{8}-\d{4}", out)
-        return {"ok": True, "receipt_id": rx.group() if rx else "R-?", "raw": out.strip()}
+        receipt_id = rx.group() if rx else "R-?"
+        gate_match = re.search(r"Gate=(\S+)", out)
+        gate = gate_match.group(1) if gate_match else "?"
+        return {
+            "ok": True,
+            "result": f"Receipt created: {receipt_id}",
+            "detail": f"gate={gate}\npayload_hash={_payload_hash(msg)}\nmessage={msg[:200]}",
+            "receipt_id": receipt_id,
+        }
+    except subprocess.TimeoutExpired:
+        return {"ok": False, "result": "Timeout", "detail": "helen_say.py did not respond in 15s."}
     except Exception as e:
-        return {"ok": False, "error": str(e), "receipt_id": None}
+        return {"ok": False, "result": "Error", "detail": str(e)}
 
 
-def read_ledger_tail(n: int = 8) -> list:
+def exec_scan_receipts(param_value: str) -> dict:
+    """Read last N ledger entries."""
+    try:
+        n = max(1, min(int(param_value) if param_value.isdigit() else 10, 50))
+    except Exception:
+        n = 10
     if not LEDGER_PATH.exists():
-        return []
+        return {"ok": False, "result": "Ledger not found", "detail": str(LEDGER_PATH)}
     try:
         lines = LEDGER_PATH.read_text(encoding="utf-8", errors="replace").splitlines()
         entries = []
-        for ln in reversed(lines[-50:]):
+        for ln in reversed(lines):
             if not ln.strip():
                 continue
             try:
                 e = json.loads(ln)
                 entries.append({
+                    "op": e.get("op", "—"),
                     "ts": e.get("ts", ""),
-                    "op": e.get("op", ""),
-                    "hash": e.get("payload_hash", "")[:12],
-                    "cum": e.get("cum_hash", "")[:12],
+                    "payload_hash": e.get("payload_hash", "")[:20],
+                    "cum_hash": e.get("cum_hash", "")[:20],
                 })
             except Exception:
                 pass
             if len(entries) >= n:
                 break
-        return entries
-    except Exception:
+        detail_lines = [
+            f"[{e['ts'][:19]}] op={e['op']} hash={e['payload_hash']}"
+            for e in entries
+        ]
+        return {
+            "ok": True,
+            "result": f"Scanned {len(entries)} ledger entries",
+            "detail": "\n".join(detail_lines) or "(empty)",
+            "entries": entries,
+        }
+    except Exception as ex:
+        return {"ok": False, "result": "Scan error", "detail": str(ex)}
+
+
+def exec_show_status(param_value: str) -> dict:
+    """Report local kernel state."""
+    try:
+        ledger_count = 0
+        if LEDGER_PATH.exists():
+            ledger_count = sum(1 for ln in LEDGER_PATH.read_text().splitlines() if ln.strip())
+        try:
+            head = subprocess.check_output(
+                ["git", "rev-parse", "--short", "HEAD"], cwd=str(ROOT), text=True, timeout=5
+            ).strip()
+            branch = subprocess.check_output(
+                ["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=str(ROOT), text=True, timeout=5
+            ).strip()
+            ahead = subprocess.check_output(
+                ["git", "rev-list", "--count", "origin/main..HEAD"], cwd=str(ROOT), text=True, timeout=5
+            ).strip()
+        except Exception:
+            head, branch, ahead = "?", "?", "?"
+        detail = (
+            f"branch       : {branch}\n"
+            f"HEAD         : {head}\n"
+            f"ahead_origin : {ahead}\n"
+            f"ledger_entries: {ledger_count}\n"
+            f"ledger_path  : {LEDGER_PATH.name}\n"
+            f"kernel_status: NON_SOVEREIGN\n"
+            f"timestamp    : {datetime.now(timezone.utc).isoformat()}Z"
+        )
+        return {
+            "ok": True,
+            "result": f"Status: branch={branch} HEAD={head} ledger={ledger_count} entries",
+            "detail": detail,
+        }
+    except Exception as ex:
+        return {"ok": False, "result": "Status error", "detail": str(ex)}
+
+
+_EXECUTORS = {
+    "create_receipt": exec_create_receipt,
+    "scan_receipts": exec_scan_receipts,
+    "show_status": exec_show_status,
+}
+
+
+def execute_action(action: str, param_value: str) -> dict:
+    fn = _EXECUTORS.get(action)
+    if not fn:
+        return {"ok": False, "result": f"Unknown action: {action}", "detail": ""}
+    result = fn(param_value)
+    result["ts"] = datetime.now(timezone.utc).isoformat()
+    # Receipt for non-create_receipt actions (create_receipt already receipts itself)
+    if action != "create_receipt":
+        try:
+            msg = f"HELEN_OS_V0 action={action} result={'OK' if result['ok'] else 'ERR'}: {result['result'][:120]}"
+            out = subprocess.check_output(
+                [VENV_PYTHON, HELEN_SAY, msg, "--op", "receipt"],
+                cwd=str(ROOT), text=True, timeout=15, stderr=subprocess.PIPE,
+            )
+            rx = re.search(r"R-\d{8}-\d{4}", out)
+            result["receipt_id"] = rx.group() if rx else "R-?"
+        except Exception as e:
+            result["receipt_id"] = None
+            result["receipt_error"] = str(e)
+    return result
+
+
+def read_ledger_tail(n: int = 12) -> list:
+    if not LEDGER_PATH.exists():
         return []
+    entries = []
+    try:
+        lines = LEDGER_PATH.read_text(encoding="utf-8", errors="replace").splitlines()
+        for ln in reversed(lines[-100:]):
+            if not ln.strip():
+                continue
+            try:
+                e = json.loads(ln)
+                entries.append({
+                    "ts": e.get("ts", "")[:19],
+                    "op": e.get("op", "—"),
+                    "hash": e.get("payload_hash", "")[:14],
+                    "cum": e.get("cum_hash", "")[:14],
+                })
+            except Exception:
+                pass
+            if len(entries) >= n:
+                break
+    except Exception:
+        pass
+    return entries
 
 
-# ── HTML ─────────────────────────────────────────────────────────────────────
+# ── HTML/CSS/JS ───────────────────────────────────────────────────────────────
 HTML = r"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>HELEN OS V0</title>
+<title>HELEN OS · V0</title>
 <style>
-  :root {
-    --bg: #0a0a0f;
-    --bg-panel: #0f0f1a;
-    --bg-card: #13131f;
-    --border: #1e1e2e;
-    --border-active: #3a3a5c;
-    --gold: #c8a84b;
-    --gold-dim: rgba(200,168,75,0.15);
-    --green: #4caf82;
-    --green-dim: rgba(76,175,130,0.12);
-    --red: #e05c5c;
-    --red-dim: rgba(224,92,92,0.12);
-    --blue: #5b8def;
-    --blue-dim: rgba(91,141,239,0.12);
-    --text: #d0d0e0;
-    --text-dim: #7a7a9a;
-    --text-faint: #3a3a5a;
-    --mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', monospace;
-    --radius: 6px;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--mono);
-    font-size: 13px;
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
+:root{
+  --bg:#08080f;--bg2:#0d0d18;--bg3:#111122;
+  --border:#1a1a2e;--border2:#252540;
+  --gold:#c8a84b;--gold-a:rgba(200,168,75,.14);--gold-b:rgba(200,168,75,.22);
+  --green:#4caf82;--green-a:rgba(76,175,130,.12);
+  --red:#e05c5c;--red-a:rgba(224,92,92,.12);
+  --blue:#5b8def;--blue-a:rgba(91,141,239,.12);
+  --amber:#f0a030;--amber-a:rgba(240,160,48,.1);
+  --text:#c8c8d8;--dim:#6a6a8a;--faint:#2a2a42;
+  --mono:'JetBrains Mono','Fira Code','SF Mono',monospace;
+  --r:6px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--text);font-family:var(--mono);font-size:13px;display:flex;flex-direction:column}
 
-  /* ── Top bar ── */
-  #topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px;
-    border-bottom: 1px solid var(--border);
-    background: var(--bg-panel);
-    flex-shrink: 0;
-    height: 48px;
-  }
-  .brand { color: var(--gold); font-size: 14px; letter-spacing: 3px; text-transform: uppercase; }
-  .brand span { color: var(--text-dim); font-size: 11px; letter-spacing: 1px; margin-left: 8px; }
-  .mode-toggle { display: flex; gap: 2px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 2px; }
-  .mode-btn {
-    padding: 4px 14px; border: none; border-radius: 4px;
-    background: transparent; color: var(--text-dim);
-    cursor: pointer; font-family: var(--mono); font-size: 11px;
-    letter-spacing: 1px; text-transform: uppercase; transition: all 200ms;
-  }
-  .mode-btn.active { background: var(--border-active); color: var(--text); }
-  .status-bar { font-size: 11px; color: var(--text-dim); display: flex; gap: 12px; }
-  .pill { padding: 2px 8px; border-radius: 10px; font-size: 10px; letter-spacing: 0.5px; }
-  .pill-gate { background: var(--green-dim); color: var(--green); border: 1px solid rgba(76,175,130,0.2); }
-  .pill-ledger { background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(200,168,75,0.2); }
-  .pill-ns { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(91,141,239,0.2); }
+/* topbar */
+#bar{height:46px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:var(--bg2);border-bottom:1px solid var(--border)}
+.brand{color:var(--gold);font-size:13px;letter-spacing:3px;text-transform:uppercase}
+.brand em{color:var(--dim);font-style:normal;font-size:11px;letter-spacing:1px;margin-left:8px}
+.toggle{display:flex;gap:2px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:2px}
+.tbtn{padding:4px 16px;border:none;border-radius:4px;background:transparent;color:var(--dim);cursor:pointer;font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;transition:all 180ms}
+.tbtn.on{background:var(--border2);color:var(--text)}
+.pills{display:flex;gap:8px;align-items:center}
+.pill{padding:2px 9px;border-radius:10px;font-size:10px;letter-spacing:.5px}
+.pill-gate{background:var(--green-a);color:var(--green);border:1px solid rgba(76,175,130,.2)}
+.pill-gate.warn{background:var(--amber-a);color:var(--amber);border-color:rgba(240,160,48,.2)}
+.pill-gate.block{background:var(--red-a);color:var(--red);border-color:rgba(224,92,92,.2)}
+.pill-ledger{background:var(--gold-a);color:var(--gold);border:1px solid rgba(200,168,75,.18)}
+.pill-ns{background:var(--blue-a);color:var(--blue);border:1px solid rgba(91,141,239,.18)}
 
-  /* ── Main layout ── */
-  #main { flex: 1; display: flex; overflow: hidden; }
+/* layouts */
+#focus,#witness{flex:1;display:flex;overflow:hidden}
+#witness{display:none}
 
-  /* ── Panels ── */
-  .panel { border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
-  .panel:last-child { border-right: none; }
-  .panel-header {
-    padding: 10px 16px; border-bottom: 1px solid var(--border);
-    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-    color: var(--text-dim); flex-shrink: 0;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .panel-header .dot { width: 6px; height: 6px; border-radius: 50%; }
-  .dot-gold { background: var(--gold); }
-  .dot-green { background: var(--green); }
-  .dot-blue { background: var(--blue); }
-  .dot-red { background: var(--red); }
-  .panel-body { flex: 1; overflow-y: auto; padding: 16px; }
-  .panel-body::-webkit-scrollbar { width: 4px; }
-  .panel-body::-webkit-scrollbar-track { background: transparent; }
-  .panel-body::-webkit-scrollbar-thumb { background: var(--border-active); border-radius: 2px; }
+/* panels */
+.pane{display:flex;flex-direction:column;border-right:1px solid var(--border);overflow:hidden}
+.pane:last-child{border-right:none}
+.ph{height:36px;flex-shrink:0;display:flex;align-items:center;gap:8px;padding:0 14px;border-bottom:1px solid var(--border);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim)}
+.dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.dg{background:var(--gold)}.dgr{background:var(--green)}.db{background:var(--blue)}
+.pb{flex:1;overflow-y:auto;padding:14px}
+.pb::-webkit-scrollbar{width:3px}
+.pb::-webkit-scrollbar-thumb{background:var(--border2)}
 
-  /* ── FOCUS mode layout ── */
-  #focus-layout { display: flex; width: 100%; height: 100%; }
-  #panel-intent { width: 280px; }
-  #panel-proposal { flex: 1; }
-  #panel-witness-strip { width: 300px; border-left: 1px solid var(--border); border-right: none; }
+/* intent panel */
+#pane-intent{width:260px}
+#intent-in{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-family:var(--mono);font-size:12px;padding:10px;resize:none;outline:none;min-height:90px;transition:border-color 180ms;line-height:1.55}
+#intent-in:focus{border-color:var(--gold)}
+#intent-in::placeholder{color:var(--faint)}
+#propose-btn{width:100%;margin-top:9px;padding:9px;background:var(--gold-a);border:1px solid var(--gold);color:var(--gold);font-family:var(--mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border-radius:var(--r);transition:all 180ms}
+#propose-btn:hover:not(:disabled){background:var(--gold-b)}
+#propose-btn:disabled{opacity:.35;cursor:default}
+.hint{margin-top:14px;font-size:11px;color:var(--faint);line-height:1.7}
+.hint strong{color:var(--dim)}
+.action-list{margin-top:16px}
+.al-title{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--faint);margin-bottom:8px}
+.ai{display:flex;gap:8px;align-items:center;padding:6px 8px;border-radius:4px;margin-bottom:4px;border:1px solid var(--border)}
+.ai-icon{font-size:13px}
+.ai-name{font-size:11px;color:var(--text);margin-bottom:1px}
+.ai-desc{font-size:10px;color:var(--dim)}
 
-  /* ── WITNESS mode layout ── */
-  #witness-layout { display: flex; width: 100%; height: 100%; display: none; }
-  #panel-timeline { flex: 1; }
-  #panel-ledger { width: 340px; border-left: 1px solid var(--border); }
+/* proposal panel */
+#pane-proposal{flex:1}
+.card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:10px}
+.card.c-pass{border-color:rgba(76,175,130,.35)}
+.card.c-warn{border-color:rgba(224,92,92,.35)}
+.clabel{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:5px}
+.cval{font-size:12px;color:var(--text);line-height:1.55;margin-bottom:10px}
+.action-box{display:flex;align-items:center;gap:9px;background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:8px 10px;margin-bottom:9px}
+.ab-icon{font-size:16px}
+.ab-name{font-size:12px;color:var(--gold);margin-bottom:2px}
+.ab-param{font-size:10px;color:var(--dim);word-break:break-all}
+.hal-box{display:flex;align-items:flex-start;gap:7px;padding:7px 10px;border-radius:4px;font-size:11px;margin-bottom:11px;line-height:1.45}
+.hal-low{background:var(--green-a);color:var(--green);border:1px solid rgba(76,175,130,.2)}
+.hal-med{background:var(--amber-a);color:var(--amber);border:1px solid rgba(240,160,48,.2)}
+.hal-hi{background:var(--red-a);color:var(--red);border:1px solid rgba(224,92,92,.2)}
+.crows{display:flex;gap:7px}
+#confirm-btn{flex:1;padding:9px;background:var(--green-a);border:1px solid var(--green);color:var(--green);font-family:var(--mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border-radius:var(--r);transition:all 180ms}
+#confirm-btn:hover:not(:disabled){background:rgba(76,175,130,.22)}
+#confirm-btn:disabled{opacity:.35;cursor:default}
+#reject-btn{padding:9px 14px;background:transparent;border:1px solid var(--border);color:var(--dim);font-family:var(--mono);font-size:10px;cursor:pointer;border-radius:var(--r);transition:all 180ms}
+#reject-btn:hover{border-color:var(--red);color:var(--red)}
+.result-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:12px;margin-top:10px}
+.result-ok{border-color:rgba(76,175,130,.35)}
+.result-err{border-color:rgba(224,92,92,.35)}
+.result-line{font-size:12px;margin-bottom:7px}
+.result-detail{font-size:10px;color:var(--dim);white-space:pre-wrap;word-break:break-all;max-height:160px;overflow-y:auto;background:var(--bg);padding:7px;border-radius:4px;border:1px solid var(--border)}
+.receipt-chip{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:5px 10px;background:var(--gold-a);border:1px solid rgba(200,168,75,.2);border-radius:4px;font-size:11px;color:var(--gold)}
+.receipt-chip strong{font-size:12px}
+.empty{color:var(--faint);font-size:12px;line-height:1.8;padding:6px 0}
+.spin{animation:sp 1s linear infinite;display:inline-block}
+@keyframes sp{to{transform:rotate(360deg)}}
+.thinking{color:var(--gold);font-size:12px}
 
-  /* ── Intent panel ── */
-  #intent-input {
-    width: 100%; background: var(--bg-card); border: 1px solid var(--border);
-    border-radius: var(--radius); color: var(--text); font-family: var(--mono);
-    font-size: 13px; padding: 12px; resize: none; outline: none;
-    transition: border-color 200ms; min-height: 80px;
-  }
-  #intent-input:focus { border-color: var(--gold); }
-  #intent-input::placeholder { color: var(--text-faint); }
-  #propose-btn {
-    width: 100%; margin-top: 10px; padding: 10px;
-    background: var(--gold-dim); border: 1px solid var(--gold);
-    color: var(--gold); font-family: var(--mono); font-size: 12px;
-    letter-spacing: 1px; text-transform: uppercase;
-    cursor: pointer; border-radius: var(--radius); transition: all 200ms;
-  }
-  #propose-btn:hover { background: rgba(200,168,75,0.25); }
-  #propose-btn:disabled { opacity: 0.4; cursor: default; }
-  .intent-hint { margin-top: 12px; font-size: 11px; color: var(--text-faint); line-height: 1.6; }
-  .intent-hint strong { color: var(--text-dim); }
+/* witness strip */
+#pane-strip{width:280px}
+.te{display:flex;gap:9px;margin-bottom:12px;position:relative}
+.te:not(:last-child)::before{content:'';position:absolute;left:9px;top:20px;width:1px;height:calc(100% + 2px);background:var(--border)}
+.te-dot{width:19px;height:19px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:1px solid;margin-top:1px}
+.td-i{background:var(--blue-a);border-color:var(--blue);color:var(--blue)}
+.td-p{background:var(--gold-a);border-color:var(--gold);color:var(--gold)}
+.td-h{background:var(--green-a);border-color:var(--green);color:var(--green)}
+.td-e{background:var(--blue-a);border-color:var(--blue);color:var(--blue)}
+.td-r{background:var(--gold-a);border-color:var(--gold);color:var(--gold)}
+.td-x{background:var(--red-a);border-color:var(--red);color:var(--red)}
+.te-body{flex:1}
+.te-type{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim)}
+.te-val{font-size:11px;color:var(--text);margin-top:2px;word-break:break-word;line-height:1.4}
+.te-ts{font-size:9px;color:var(--faint);margin-top:2px}
 
-  /* ── Proposal card ── */
-  #proposal-area { min-height: 200px; }
-  .proposal-card {
-    background: var(--bg-card); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 16px; margin-bottom: 12px;
-  }
-  .proposal-card.hal-pass { border-color: rgba(76,175,130,0.4); }
-  .proposal-card.hal-warn { border-color: rgba(224,92,92,0.4); }
-  .prop-label { font-size: 10px; letter-spacing: 1.5px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 6px; }
-  .prop-value { font-size: 13px; color: var(--text); margin-bottom: 12px; line-height: 1.5; }
-  .prop-action {
-    display: flex; align-items: center; gap: 8px;
-    background: var(--bg); border: 1px solid var(--border);
-    border-radius: 4px; padding: 8px 12px; margin-bottom: 10px;
-  }
-  .prop-action-icon { font-size: 16px; }
-  .prop-action-name { color: var(--gold); font-size: 12px; letter-spacing: 0.5px; }
-  .prop-action-param { color: var(--text-dim); font-size: 11px; margin-top: 2px; word-break: break-all; }
-  .hal-verdict {
-    display: flex; align-items: center; gap: 8px;
-    padding: 8px 12px; border-radius: 4px; font-size: 11px; margin-bottom: 12px;
-  }
-  .hal-pass-bg { background: var(--green-dim); color: var(--green); border: 1px solid rgba(76,175,130,0.2); }
-  .hal-warn-bg { background: var(--red-dim); color: var(--red); border: 1px solid rgba(224,92,92,0.2); }
-  .hal-medium-bg { background: rgba(255,165,0,0.1); color: #ffa500; border: 1px solid rgba(255,165,0,0.2); }
-  .confirm-row { display: flex; gap: 8px; }
-  #confirm-btn {
-    flex: 1; padding: 10px; background: var(--green-dim); border: 1px solid var(--green);
-    color: var(--green); font-family: var(--mono); font-size: 12px;
-    letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
-    border-radius: var(--radius); transition: all 200ms;
-  }
-  #confirm-btn:hover { background: rgba(76,175,130,0.25); }
-  #confirm-btn:disabled { opacity: 0.35; cursor: default; }
-  #reject-btn {
-    padding: 10px 16px; background: transparent; border: 1px solid var(--border);
-    color: var(--text-dim); font-family: var(--mono); font-size: 11px;
-    cursor: pointer; border-radius: var(--radius); transition: all 200ms;
-  }
-  #reject-btn:hover { border-color: var(--red); color: var(--red); }
+/* witness full layout */
+#w-left{flex:1}
+#w-right{width:320px;border-left:1px solid var(--border)}
+.lr{display:flex;flex-direction:column;gap:3px;padding:7px 10px;border-bottom:1px solid var(--border);font-size:10px}
+.lr-op{color:var(--gold)}
+.lr-h{color:var(--dim);font-size:9px;word-break:break-all}
+.lr-ts{color:var(--faint);font-size:9px}
 
-  /* ── Result ── */
-  .result-card {
-    background: var(--bg-card); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 14px; margin-top: 12px;
-  }
-  .result-ok { border-color: rgba(76,175,130,0.4); }
-  .result-err { border-color: rgba(224,92,92,0.4); }
-  .result-text { font-size: 12px; color: var(--text); margin-bottom: 8px; }
-  .result-detail {
-    font-size: 11px; color: var(--text-dim); white-space: pre-wrap;
-    word-break: break-all; max-height: 140px; overflow-y: auto;
-    background: var(--bg); padding: 8px; border-radius: 4px;
-    border: 1px solid var(--border);
-  }
-  .receipt-line {
-    display: flex; align-items: center; gap: 8px;
-    margin-top: 8px; padding: 6px 10px;
-    background: var(--gold-dim); border: 1px solid rgba(200,168,75,0.2);
-    border-radius: 4px; font-size: 11px; color: var(--gold);
-  }
-  .receipt-id { font-weight: bold; }
-
-  /* ── Witness strip ── */
-  .timeline-item {
-    display: flex; gap: 10px; margin-bottom: 14px; position: relative;
-  }
-  .timeline-item:not(:last-child)::before {
-    content: ''; position: absolute; left: 10px; top: 22px;
-    width: 1px; height: calc(100% + 4px); background: var(--border);
-  }
-  .tl-dot {
-    width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 10px; margin-top: 1px; border: 1px solid;
-  }
-  .tl-dot-intent { background: var(--blue-dim); border-color: var(--blue); color: var(--blue); }
-  .tl-dot-proposal { background: var(--gold-dim); border-color: var(--gold); color: var(--gold); }
-  .tl-dot-hal { background: var(--green-dim); border-color: var(--green); color: var(--green); }
-  .tl-dot-hal-warn { background: var(--red-dim); border-color: var(--red); color: var(--red); }
-  .tl-dot-exec { background: var(--blue-dim); border-color: var(--blue); color: var(--blue); }
-  .tl-dot-receipt { background: var(--gold-dim); border-color: var(--gold); color: var(--gold); }
-  .tl-content { flex: 1; }
-  .tl-label { font-size: 10px; letter-spacing: 1px; color: var(--text-dim); text-transform: uppercase; }
-  .tl-value { font-size: 12px; color: var(--text); margin-top: 2px; word-break: break-word; line-height: 1.4; }
-  .tl-ts { font-size: 10px; color: var(--text-faint); margin-top: 2px; }
-
-  /* ── Witness full view ── */
-  #witness-layout { display: none; }
-  .ledger-row {
-    display: flex; flex-direction: column; gap: 3px;
-    padding: 8px 10px; border-bottom: 1px solid var(--border);
-    font-size: 11px;
-  }
-  .ledger-op { color: var(--gold); }
-  .ledger-hash { color: var(--text-dim); font-size: 10px; word-break: break-all; }
-  .ledger-ts { color: var(--text-faint); font-size: 10px; }
-
-  /* ── Empty / loading states ── */
-  .empty-state { color: var(--text-faint); font-size: 12px; padding: 20px 0; line-height: 1.8; }
-  .spinner { animation: spin 1s linear infinite; display: inline-block; }
-  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-  .thinking-text { color: var(--gold); font-size: 12px; }
-
-  /* ── Advanced toggle ── */
-  #advanced-section { margin-top: 16px; }
-  .adv-toggle {
-    font-size: 10px; color: var(--text-faint); cursor: pointer; letter-spacing: 1px;
-    text-transform: uppercase; user-select: none;
-  }
-  .adv-toggle:hover { color: var(--text-dim); }
-  #adv-content { display: none; margin-top: 10px; }
-  #adv-content.open { display: block; }
-  .adv-row { margin-bottom: 8px; }
-  .adv-label { font-size: 10px; color: var(--text-dim); margin-bottom: 4px; letter-spacing: 0.5px; }
-  .adv-input {
-    width: 100%; background: var(--bg-card); border: 1px solid var(--border);
-    border-radius: 4px; color: var(--text); font-family: var(--mono);
-    font-size: 11px; padding: 6px 8px; outline: none;
-  }
-  .adv-input:focus { border-color: var(--border-active); }
-  .adv-btn {
-    padding: 5px 12px; background: transparent; border: 1px solid var(--border);
-    color: var(--text-dim); font-family: var(--mono); font-size: 10px;
-    cursor: pointer; border-radius: 4px; letter-spacing: 0.5px;
-  }
-  .adv-btn:hover { border-color: var(--border-active); color: var(--text); }
+/* status bar */
+#sbar{height:24px;flex-shrink:0;background:var(--bg2);border-top:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:16px;font-size:10px;color:var(--faint)}
+#sbar span{color:var(--dim)}
 </style>
 </head>
 <body>
-<!-- Top bar -->
-<div id="topbar">
-  <div class="brand">HELEN OS <span>V0</span></div>
-  <div class="mode-toggle">
-    <button class="mode-btn active" id="btn-focus" onclick="setMode('focus')">Focus</button>
-    <button class="mode-btn" id="btn-witness" onclick="setMode('witness')">Witness</button>
+<div id="bar">
+  <div class="brand">HELEN OS <em>V0</em></div>
+  <div class="toggle">
+    <button class="tbtn on" id="btn-f" onclick="setMode('focus')">Focus</button>
+    <button class="tbtn"    id="btn-w" onclick="setMode('witness')">Witness</button>
   </div>
-  <div class="status-bar">
-    <span class="pill pill-gate" id="gate-pill">Gate Clear</span>
-    <span class="pill pill-ledger" id="ledger-pill">Ledger</span>
+  <div class="pills">
+    <span class="pill pill-gate" id="pill-gate">Gate Clear</span>
+    <span class="pill pill-ledger" id="pill-ledger">Ledger</span>
     <span class="pill pill-ns">NON_SOVEREIGN</span>
   </div>
 </div>
 
-<!-- FOCUS layout -->
-<div id="focus-layout" style="display:flex; flex:1; overflow:hidden;">
-  <!-- Panel 1: Intent -->
-  <div class="panel" id="panel-intent">
-    <div class="panel-header"><span class="dot dot-gold"></span>Intent</div>
-    <div class="panel-body">
-      <textarea id="intent-input" placeholder="What do you want HELEN to do?&#10;&#10;e.g. Search for recent AI governance papers&#10;e.g. Read the SOUL.md file&#10;e.g. Check this text for hyperstition patterns"></textarea>
-      <button id="propose-btn" onclick="propose()">▶ Propose Action</button>
-      <div class="intent-hint">
+<!-- FOCUS -->
+<div id="focus">
+  <!-- Intent -->
+  <div class="pane" id="pane-intent">
+    <div class="ph"><span class="dot dg"></span>Intent</div>
+    <div class="pb">
+      <textarea id="intent-in" rows="4"
+        placeholder="What do you want HELEN to do?&#10;&#10;e.g. Record this session start&#10;e.g. Scan recent receipts&#10;e.g. Show system status"></textarea>
+      <button id="propose-btn" onclick="propose()">▶ Propose</button>
+      <div class="hint">
         <strong>HELEN suggests.</strong><br>
         You decide.<br>
         Everything is recorded.<br><br>
-        HER proposes · HAL gates · You confirm · Ledger records.
+        ⌘↵ to propose
       </div>
-      <div id="advanced-section">
-        <div class="adv-toggle" onclick="toggleAdv()">⚙ Advanced ▾</div>
-        <div id="adv-content">
-          <div class="adv-row">
-            <div class="adv-label">Direct receipt message</div>
-            <input class="adv-input" id="adv-receipt-msg" placeholder="Enter message to receipt directly">
-          </div>
-          <button class="adv-btn" onclick="advReceipt()">Emit Receipt</button>
-        </div>
+      <div class="action-list">
+        <div class="al-title">Bounded actions</div>
+        <div class="ai"><span class="ai-icon">📋</span><div><div class="ai-name">create_receipt</div><div class="ai-desc">Write event to ledger</div></div></div>
+        <div class="ai"><span class="ai-icon">🔎</span><div><div class="ai-name">scan_receipts</div><div class="ai-desc">Read ledger tail</div></div></div>
+        <div class="ai"><span class="ai-icon">📡</span><div><div class="ai-name">show_status</div><div class="ai-desc">Kernel state report</div></div></div>
       </div>
     </div>
   </div>
 
-  <!-- Panel 2: Proposal + Execution -->
-  <div class="panel" id="panel-proposal">
-    <div class="panel-header"><span class="dot dot-gold"></span>Proposal · HAL Gate · Execution</div>
-    <div class="panel-body">
-      <div id="proposal-area">
-        <div class="empty-state">
+  <!-- Proposal + Execution -->
+  <div class="pane" id="pane-proposal">
+    <div class="ph"><span class="dot dg"></span>Proposal · HAL Gate · Execution</div>
+    <div class="pb">
+      <div id="prop-area">
+        <div class="empty">
           Awaiting intent.<br><br>
-          HELEN will propose a bounded action.<br>
+          HER will propose one bounded action.<br>
           HAL will assess risk.<br>
           You confirm before anything executes.
         </div>
@@ -527,334 +481,223 @@ HTML = r"""<!DOCTYPE html>
     </div>
   </div>
 
-  <!-- Panel 3: Witness strip -->
-  <div class="panel" id="panel-witness-strip">
-    <div class="panel-header"><span class="dot dot-green"></span>Witness Strip</div>
-    <div class="panel-body">
-      <div id="witness-strip-content">
-        <div class="empty-state">No events yet.<br><br>Timeline appears here after each governed action.</div>
-      </div>
+  <!-- Witness strip -->
+  <div class="pane" id="pane-strip">
+    <div class="ph"><span class="dot dgr"></span>Witness Strip</div>
+    <div class="pb" id="strip-body">
+      <div class="empty">No events yet.</div>
     </div>
   </div>
 </div>
 
-<!-- WITNESS layout -->
-<div id="witness-layout" style="display:none; flex:1; overflow:hidden;">
-  <div class="panel" id="panel-timeline" style="flex:1;">
-    <div class="panel-header"><span class="dot dot-green"></span>Full Event Timeline</div>
-    <div class="panel-body">
-      <div id="witness-timeline-content">
-        <div class="empty-state">No events in this session yet.<br><br>Switch to Focus Mode and run a governed action to see the timeline.</div>
-      </div>
+<!-- WITNESS -->
+<div id="witness">
+  <div class="pane" id="w-left">
+    <div class="ph"><span class="dot dgr"></span>Full Event Timeline</div>
+    <div class="pb" id="wt-body">
+      <div class="empty">No events yet — run a governed action in Focus Mode.</div>
     </div>
   </div>
-  <div class="panel" id="panel-ledger" style="width:340px;">
-    <div class="panel-header"><span class="dot dot-gold"></span>Ledger Tail</div>
-    <div class="panel-body" style="padding:0;" id="ledger-content">
-      <div class="empty-state" style="padding:16px;">Loading ledger…</div>
+  <div class="pane" id="w-right">
+    <div class="ph"><span class="dot dg"></span>Ledger Tail</div>
+    <div class="pb" style="padding:0" id="ledger-body">
+      <div class="empty" style="padding:14px">Loading…</div>
     </div>
   </div>
+</div>
+
+<div id="sbar">
+  <span id="sb-events">0 events</span>
+  <span id="sb-receipts">0 receipts</span>
+  <span id="sb-ts">—</span>
 </div>
 
 <script>
-// ── State ─────────────────────────────────────────────────────────────────────
-let currentMode = 'focus';
-let events = [];
-let pendingProposal = null;
-let running = false;
+let mode='focus', events=[], pending=null, busy=false, receiptCount=0;
 
-// ── Mode switch ───────────────────────────────────────────────────────────────
-function setMode(mode) {
-  currentMode = mode;
-  document.getElementById('btn-focus').classList.toggle('active', mode === 'focus');
-  document.getElementById('btn-witness').classList.toggle('active', mode === 'witness');
-  document.getElementById('focus-layout').style.display = mode === 'focus' ? 'flex' : 'none';
-  document.getElementById('witness-layout').style.display = mode === 'witness' ? 'flex' : 'none';
-  if (mode === 'witness') {
-    renderWitnessTimeline();
-    loadLedger();
-  }
+// ── mode ──────────────────────────────────────────────────────────────────────
+function setMode(m){
+  mode=m;
+  document.getElementById('btn-f').classList.toggle('on',m==='focus');
+  document.getElementById('btn-w').classList.toggle('on',m==='witness');
+  document.getElementById('focus').style.display=m==='focus'?'flex':'none';
+  document.getElementById('witness').style.display=m==='witness'?'flex':'none';
+  if(m==='witness'){renderWitness();loadLedger();}
 }
 
-// ── Propose ───────────────────────────────────────────────────────────────────
-async function propose() {
-  const intent = document.getElementById('intent-input').value.trim();
-  if (!intent || running) return;
-  running = true;
-  setProposeBtn(false);
-
-  const area = document.getElementById('proposal-area');
-  area.innerHTML = '<div class="thinking-text"><span class="spinner">⟳</span> HER is proposing…</div>';
-  pushEvent('intent', intent, null);
-
-  try {
-    const resp = await fetch('/api/propose', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({intent})
-    });
-    const data = await resp.json();
-    if (data.error) {
-      area.innerHTML = `<div class="empty-state" style="color:var(--red)">${data.error}</div>`;
-      running = false; setProposeBtn(true); return;
-    }
-    pendingProposal = data;
-    pushEvent('proposal', data.summary, data);
-    renderProposalCard(data);
-  } catch(e) {
-    area.innerHTML = `<div class="empty-state" style="color:var(--red)">Error: ${e.message}</div>`;
-    running = false; setProposeBtn(true);
-  }
+// ── propose ───────────────────────────────────────────────────────────────────
+async function propose(){
+  const intent=document.getElementById('intent-in').value.trim();
+  if(!intent||busy)return;
+  busy=true; setBusy(true);
+  propArea('<div class="thinking"><span class="spin">⟳</span> HER is proposing…</div>');
+  pushEv('intent',intent,null);
+  try{
+    const d=await post('/api/propose',{intent});
+    if(d.error){propArea(`<div class="empty" style="color:var(--red)">${esc(d.error)}</div>`);done();return;}
+    pending=d; pushEv('proposal',d.summary,d); renderCard(d);
+  }catch(e){propArea(`<div class="empty" style="color:var(--red)">Error: ${esc(e.message)}</div>`);done();}
 }
 
-function renderProposalCard(p) {
-  const halClass = p.hal_risk === 'LOW' ? 'hal-pass-bg' : (p.hal_risk === 'HIGH' ? 'hal-warn-bg' : 'hal-medium-bg');
-  const cardClass = p.hal_risk === 'LOW' ? 'hal-pass' : 'hal-warn';
-  const halIcon = p.hal_risk === 'LOW' ? '✓' : (p.hal_risk === 'HIGH' ? '✗' : '⚠');
-  const confirmEnabled = p.hal_risk !== 'HIGH';
-
-  document.getElementById('proposal-area').innerHTML = `
-    <div class="proposal-card ${cardClass}">
-      <div class="prop-label">HER Proposal</div>
-      <div class="prop-value">${escHtml(p.summary)}</div>
-
-      <div class="prop-action">
-        <div class="prop-action-icon">${getActionIcon(p.action)}</div>
+// ── render proposal card ──────────────────────────────────────────────────────
+function renderCard(p){
+  const icons={create_receipt:'📋',scan_receipts:'🔎',show_status:'📡'};
+  const halCls=p.hal_risk==='LOW'?'hal-low':p.hal_risk==='HIGH'?'hal-hi':'hal-med';
+  const halIcon=p.hal_risk==='LOW'?'✓ LOW':p.hal_risk==='HIGH'?'✗ HIGH':'⚠ MEDIUM';
+  const ok=p.hal_risk!=='HIGH';
+  propArea(`
+    <div class="card ${ok?'c-pass':'c-warn'}">
+      <div class="clabel">HER Proposal</div>
+      <div class="cval">${esc(p.summary)}</div>
+      <div class="action-box">
+        <span class="ab-icon">${icons[p.action]||'⚡'}</span>
         <div>
-          <div class="prop-action-name">${escHtml(p.action)}</div>
-          <div class="prop-action-param">${escHtml(p.param_label)}: ${escHtml(p.param_value)}</div>
+          <div class="ab-name">${esc(p.action)}</div>
+          <div class="ab-param">${esc(p.param_label)}: ${esc(p.param_value)}</div>
         </div>
       </div>
-
-      <div class="hal-verdict ${halClass}">
-        <strong>HAL [${halIcon}] ${p.hal_risk}</strong>
-        <span>— ${escHtml(p.hal_reason)}</span>
+      <div class="hal-box ${halCls}">
+        <strong>HAL [${halIcon}]</strong>&nbsp;${esc(p.hal_reason)}
       </div>
-
-      <div class="prop-label">Rationale</div>
-      <div class="prop-value" style="font-size:11px; color:var(--text-dim); margin-bottom:14px">${escHtml(p.rationale)}</div>
-
-      <div class="confirm-row">
-        <button id="confirm-btn" onclick="confirmExec()" ${confirmEnabled ? '' : 'disabled'}>
-          ${confirmEnabled ? '✓ Confirm & Execute' : '✗ Blocked by HAL'}
+      <div class="clabel">Rationale</div>
+      <div class="cval" style="font-size:11px;color:var(--dim);margin-bottom:13px">${esc(p.rationale)}</div>
+      <div class="crows">
+        <button id="confirm-btn" onclick="confirmExec()" ${ok?'':'disabled'}>
+          ${ok?'✓ Confirm &amp; Execute':'✗ Blocked'}
         </button>
-        <button id="reject-btn" onclick="rejectProposal()">Reject</button>
+        <button id="reject-btn" onclick="reject()">Reject</button>
       </div>
-      ${p.hal_risk === 'HIGH' ? '<div style="margin-top:8px; font-size:10px; color:var(--red)">HIGH risk — execution blocked. Reject and rephrase your intent.</div>' : ''}
+      ${!ok?'<div style="margin-top:7px;font-size:10px;color:var(--red)">HIGH risk — blocked. Reject and rephrase.</div>':''}
     </div>
-    <div id="result-area"></div>
-  `;
-  updateGatePill(p.hal_risk);
-  running = false;
-  setProposeBtn(true);
+    <div id="res-area"></div>
+  `);
+  setGate(p.hal_risk); done();
 }
 
-// ── Confirm / Execute ─────────────────────────────────────────────────────────
-async function confirmExec() {
-  if (!pendingProposal || running) return;
-  running = true;
-  document.getElementById('confirm-btn').disabled = true;
-  document.getElementById('reject-btn').disabled = true;
-
-  const ra = document.getElementById('result-area');
-  ra.innerHTML = '<div class="thinking-text" style="margin-top:12px"><span class="spinner">⟳</span> Executing bounded action…</div>';
-  pushEvent('hal', `HAL ${pendingProposal.hal_risk} — executing`, pendingProposal);
-
-  try {
-    const resp = await fetch('/api/execute', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({action: pendingProposal.action, param_value: pendingProposal.param_value})
-    });
-    const data = await resp.json();
-    pushEvent('execution', data.result || data.error, data);
-    renderResult(ra, data);
-    updateWitnessStrip();
-    if (data.receipt) {
-      pushEvent('receipt', data.receipt.receipt_id, data.receipt);
-      updateLedgerPill(data.receipt.receipt_id);
-    }
-  } catch(e) {
-    ra.innerHTML = `<div class="result-card result-err"><div class="result-text" style="color:var(--red)">Execution error: ${e.message}</div></div>`;
+// ── confirm + execute ─────────────────────────────────────────────────────────
+async function confirmExec(){
+  if(!pending||busy)return;
+  busy=true;
+  document.getElementById('confirm-btn').disabled=true;
+  document.getElementById('reject-btn').disabled=true;
+  const ra=document.getElementById('res-area');
+  ra.innerHTML='<div class="thinking" style="margin-top:10px"><span class="spin">⟳</span> Executing…</div>';
+  pushEv('hal',`HAL ${pending.hal_risk} → executing`,pending);
+  try{
+    const d=await post('/api/execute',{action:pending.action,param_value:pending.param_value});
+    pushEv('execution',d.result||d.error||'?',d);
+    if(d.receipt_id){pushEv('receipt',d.receipt_id,{receipt_id:d.receipt_id});receiptCount++;setLedgerPill(d.receipt_id);}
+    renderResult(ra,d); done(); pending=null;
+  }catch(e){
+    ra.innerHTML=`<div class="result-card result-err"><div class="result-line" style="color:var(--red)">Error: ${esc(e.message)}</div></div>`;
+    done();
   }
-  running = false;
-  pendingProposal = null;
 }
 
-function renderResult(container, data) {
-  const isOk = data.ok !== false;
-  const receiptHtml = data.receipt && data.receipt.ok
-    ? `<div class="receipt-line">📋 Receipt: <span class="receipt-id">${escHtml(data.receipt.receipt_id)}</span></div>`
-    : (data.receipt ? `<div class="receipt-line" style="color:var(--red)">⚠ Receipt failed: ${escHtml(data.receipt.error || '?')}</div>` : '');
-  container.innerHTML = `
-    <div class="result-card ${isOk ? 'result-ok' : 'result-err'}">
-      <div class="result-text" style="color:${isOk ? 'var(--green)' : 'var(--red)'}">
-        ${isOk ? '✓' : '✗'} ${escHtml(data.result || data.error || '?')}
+function renderResult(el,d){
+  const chip=d.receipt_id
+    ?`<div class="receipt-chip">📋 Receipt: <strong>${esc(d.receipt_id)}</strong></div>`
+    :(d.receipt_error?`<div style="margin-top:8px;font-size:10px;color:var(--red)">Receipt error: ${esc(d.receipt_error)}</div>`:'');
+  el.innerHTML=`
+    <div class="result-card ${d.ok?'result-ok':'result-err'}">
+      <div class="result-line" style="color:${d.ok?'var(--green)':'var(--red)'}">
+        ${d.ok?'✓':'✗'} ${esc(d.result||'?')}
       </div>
-      ${data.detail ? `<div class="result-detail">${escHtml(data.detail)}</div>` : ''}
-      ${receiptHtml}
-    </div>
-  `;
+      ${d.detail?`<div class="result-detail">${esc(d.detail)}</div>`:''}
+      ${chip}
+    </div>`;
 }
 
-function rejectProposal() {
-  pendingProposal = null;
-  pushEvent('reject', 'Operator rejected proposal', null);
-  document.getElementById('proposal-area').innerHTML = '<div class="empty-state" style="color:var(--text-dim)">Proposal rejected.<br><br>Enter a new intent above.</div>';
-  updateGatePill('CLEAR');
+function reject(){
+  pending=null;
+  pushEv('reject','Operator rejected proposal',null);
+  propArea('<div class="empty" style="color:var(--dim)">Rejected.<br><br>Enter a new intent above.</div>');
+  setGate('CLEAR');
 }
 
-// ── Witness strip ─────────────────────────────────────────────────────────────
-function updateWitnessStrip() {
-  const container = document.getElementById('witness-strip-content');
-  if (!events.length) return;
-  container.innerHTML = events.slice().reverse().map(ev => {
-    const dotClass = {
-      intent: 'tl-dot-intent', proposal: 'tl-dot-proposal',
-      hal: 'tl-dot-hal', execution: 'tl-dot-exec',
-      receipt: 'tl-dot-receipt', reject: 'tl-dot-hal-warn'
-    }[ev.type] || 'tl-dot-intent';
-    const icons = {intent:'I', proposal:'P', hal:'H', execution:'E', receipt:'R', reject:'✗'};
+// ── witness strip ─────────────────────────────────────────────────────────────
+const DOTS={intent:'td-i',proposal:'td-p',hal:'td-h',execution:'td-e',receipt:'td-r',reject:'td-x'};
+const ICONS={intent:'I',proposal:'P',hal:'H',execution:'E',receipt:'R',reject:'✗'};
+function renderStrip(){
+  const el=document.getElementById('strip-body');
+  if(!events.length){el.innerHTML='<div class="empty">No events yet.</div>';return;}
+  el.innerHTML=events.slice().reverse().map(e=>`
+    <div class="te">
+      <div class="te-dot ${DOTS[e.type]||'td-i'}">${ICONS[e.type]||'·'}</div>
+      <div class="te-body">
+        <div class="te-type">${e.type}</div>
+        <div class="te-val">${esc(e.label.length>70?e.label.slice(0,70)+'…':e.label)}</div>
+        <div class="te-ts">${e.ts}</div>
+      </div>
+    </div>`).join('');
+}
+function renderWitness(){
+  const el=document.getElementById('wt-body');
+  if(!events.length){el.innerHTML='<div class="empty">No events yet — run a governed action in Focus Mode.</div>';return;}
+  el.innerHTML=events.slice().reverse().map(e=>{
+    const det=e.data?`<div class="result-detail" style="margin-top:5px;max-height:70px">${esc(JSON.stringify(e.data).slice(0,400))}</div>`:'';
     return `
-      <div class="timeline-item">
-        <div class="tl-dot ${dotClass}">${icons[ev.type] || '·'}</div>
-        <div class="tl-content">
-          <div class="tl-label">${ev.type}</div>
-          <div class="tl-value">${escHtml(ev.label.substring(0, 80))}${ev.label.length > 80 ? '…' : ''}</div>
-          <div class="tl-ts">${ev.ts}</div>
-        </div>
+    <div class="te">
+      <div class="te-dot ${DOTS[e.type]||'td-i'}">${ICONS[e.type]||'·'}</div>
+      <div class="te-body">
+        <div class="te-type">${e.type}</div>
+        <div class="te-val">${esc(e.label)}</div>
+        ${det}
+        <div class="te-ts">${e.ts}</div>
       </div>
-    `;
-  }).join('');
+    </div>`}).join('');
+}
+async function loadLedger(){
+  try{
+    const d=await fetch('/api/ledger').then(r=>r.json());
+    const el=document.getElementById('ledger-body');
+    if(!d.entries||!d.entries.length){el.innerHTML='<div class="empty" style="padding:14px">Empty.</div>';return;}
+    el.innerHTML=d.entries.map(e=>`
+      <div class="lr">
+        <div class="lr-op">${esc(e.op)}</div>
+        <div class="lr-h">hash: ${esc(e.hash)} · cum: ${esc(e.cum)}</div>
+        <div class="lr-ts">${esc(e.ts)}</div>
+      </div>`).join('');
+  }catch(e){document.getElementById('ledger-body').innerHTML='<div class="empty" style="padding:14px;color:var(--red)">Error.</div>';}
 }
 
-function renderWitnessTimeline() {
-  const container = document.getElementById('witness-timeline-content');
-  if (!events.length) {
-    container.innerHTML = '<div class="empty-state">No events in this session yet.<br><br>Switch to Focus Mode and run a governed action.</div>';
-    return;
-  }
-  container.innerHTML = events.slice().reverse().map(ev => {
-    const dotClass = {
-      intent: 'tl-dot-intent', proposal: 'tl-dot-proposal',
-      hal: 'tl-dot-hal', execution: 'tl-dot-exec',
-      receipt: 'tl-dot-receipt', reject: 'tl-dot-hal-warn'
-    }[ev.type] || 'tl-dot-intent';
-    const icons = {intent:'I', proposal:'P', hal:'H', execution:'E', receipt:'R', reject:'✗'};
-    const detail = ev.data ? `<div class="result-detail" style="margin-top:6px; max-height:80px">${escHtml(JSON.stringify(ev.data, null, 2).substring(0, 400))}</div>` : '';
-    return `
-      <div class="timeline-item">
-        <div class="tl-dot ${dotClass}">${icons[ev.type] || '·'}</div>
-        <div class="tl-content">
-          <div class="tl-label">${ev.type}</div>
-          <div class="tl-value">${escHtml(ev.label)}</div>
-          ${detail}
-          <div class="tl-ts">${ev.ts}</div>
-        </div>
-      </div>
-    `;
-  }).join('');
+// ── helpers ───────────────────────────────────────────────────────────────────
+function pushEv(type,label,data){
+  events.push({type,label,data,ts:new Date().toLocaleTimeString()});
+  renderStrip();
+  document.getElementById('sb-events').textContent=`${events.length} event${events.length===1?'':'s'}`;
+  document.getElementById('sb-receipts').textContent=`${receiptCount} receipt${receiptCount===1?'':'s'}`;
+  document.getElementById('sb-ts').textContent=new Date().toLocaleTimeString();
 }
-
-async function loadLedger() {
-  try {
-    const resp = await fetch('/api/ledger');
-    const data = await resp.json();
-    const container = document.getElementById('ledger-content');
-    if (!data.entries || !data.entries.length) {
-      container.innerHTML = '<div class="empty-state" style="padding:16px">No ledger entries.</div>';
-      return;
-    }
-    container.innerHTML = data.entries.map(e => `
-      <div class="ledger-row">
-        <div class="ledger-op">${escHtml(e.op || 'entry')}</div>
-        <div class="ledger-hash">payload: ${escHtml(e.hash)} · cum: ${escHtml(e.cum)}</div>
-        <div class="ledger-ts">${escHtml(e.ts)}</div>
-      </div>
-    `).join('');
-  } catch(e) {
-    document.getElementById('ledger-content').innerHTML = '<div class="empty-state" style="padding:16px; color:var(--red)">Ledger read error.</div>';
-  }
+function propArea(html){document.getElementById('prop-area').innerHTML=html;}
+function setBusy(v){document.getElementById('propose-btn').disabled=v;}
+function done(){busy=false;setBusy(false);}
+function setGate(risk){
+  const p=document.getElementById('pill-gate');
+  p.className='pill pill-gate';
+  if(risk==='LOW'||risk==='CLEAR'){p.textContent='Gate Clear';}
+  else if(risk==='MEDIUM'){p.textContent='Gate Warn';p.classList.add('warn');}
+  else if(risk==='HIGH'){p.textContent='Gate Block';p.classList.add('block');}
 }
+function setLedgerPill(id){document.getElementById('pill-ledger').textContent=id||'Ledger';}
+function esc(s){if(s==null)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+async function post(url,body){const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});return r.json();}
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
-function pushEvent(type, label, data) {
-  events.push({type, label, data, ts: new Date().toLocaleTimeString()});
-  updateWitnessStrip();
-}
-
-function setProposeBtn(enabled) {
-  document.getElementById('propose-btn').disabled = !enabled;
-}
-
-function updateGatePill(risk) {
-  const pill = document.getElementById('gate-pill');
-  if (risk === 'LOW' || risk === 'CLEAR') {
-    pill.textContent = 'Gate Clear';
-    pill.style.background = 'var(--green-dim)';
-    pill.style.color = 'var(--green)';
-  } else if (risk === 'MEDIUM') {
-    pill.textContent = 'Gate Warn';
-    pill.style.background = 'rgba(255,165,0,0.1)';
-    pill.style.color = '#ffa500';
-  } else {
-    pill.textContent = 'Gate Block';
-    pill.style.background = 'var(--red-dim)';
-    pill.style.color = 'var(--red)';
-  }
-}
-
-function updateLedgerPill(receiptId) {
-  document.getElementById('ledger-pill').textContent = receiptId || 'Ledger';
-}
-
-function getActionIcon(action) {
-  const icons = {web_search:'🔍', open_url:'🌐', read_file:'📄', run_firewall:'🛡', write_note:'📝'};
-  return icons[action] || '⚡';
-}
-
-function escHtml(s) {
-  if (s == null) return '';
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-function toggleAdv() {
-  const el = document.getElementById('adv-content');
-  el.classList.toggle('open');
-}
-
-async function advReceipt() {
-  const msg = document.getElementById('adv-receipt-msg').value.trim();
-  if (!msg) return;
-  try {
-    const resp = await fetch('/api/receipt', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({message: msg})
-    });
-    const data = await resp.json();
-    alert(data.receipt_id ? `Receipt: ${data.receipt_id}` : `Error: ${data.error}`);
-  } catch(e) { alert(`Error: ${e.message}`); }
-}
-
-// Enter to submit
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('intent-input').addEventListener('keydown', e => {
-    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) propose();
-  });
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('intent-in').addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.metaKey||e.ctrlKey))propose();});
 });
 </script>
 </body>
 </html>
-"""
+"""  # noqa: E501
 
 
 # ── HTTP handler ──────────────────────────────────────────────────────────────
 class Handler(BaseHTTPRequestHandler):
-    def log_message(self, fmt, *args):
+    def log_message(self, fmt, *args):  # silence access log
         pass
 
-    def send_json(self, data: dict, status: int = 200):
+    def _json(self, data: dict, status: int = 200):
         body = json.dumps(data).encode()
         self.send_response(status)
         self.send_header("Content-Type", "application/json")
@@ -862,7 +705,7 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
-    def send_html(self, html: str):
+    def _html(self, html: str):
         body = html.encode()
         self.send_response(200)
         self.send_header("Content-Type", "text/html; charset=utf-8")
@@ -871,10 +714,21 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_GET(self):
-        if self.path == "/" or self.path == "/index.html":
-            self.send_html(HTML)
+        if self.path in ("/", "/index.html"):
+            self._html(HTML)
         elif self.path == "/api/ledger":
-            self.send_json({"entries": read_ledger_tail(10)})
+            self._json({"entries": read_ledger_tail(12)})
+        elif self.path == "/v1/status":
+            result = execute_action("show_status", "full")
+            self._json({
+                "artifact_type": "HELEN_OS_V0_STATUS",
+                "authority": "NON_SOVEREIGN",
+                "status": "NO_CLAIM",
+                "ok": result["ok"],
+                "detail": result["detail"],
+                "receipt_id": result.get("receipt_id"),
+                "ts": result.get("ts", datetime.now(timezone.utc).isoformat()),
+            })
         else:
             self.send_response(404)
             self.end_headers()
@@ -886,32 +740,17 @@ class Handler(BaseHTTPRequestHandler):
         if self.path == "/api/propose":
             intent = body.get("intent", "").strip()
             if not intent:
-                self.send_json({"error": "No intent provided."}, 400)
+                self._json({"error": "No intent."}, 400)
                 return
-            proposal = call_gemini_proposal(intent)
-            self.send_json(proposal)
+            self._json(call_gemini_proposal(intent))
 
         elif self.path == "/api/execute":
             action = body.get("action", "")
             param_value = body.get("param_value", "")
-            if action not in ALLOWED_ACTIONS:
-                self.send_json({"ok": False, "error": f"Action not in allowlist: {action}"})
+            if action not in ACTIONS:
+                self._json({"ok": False, "result": f"Unknown action: {action}", "detail": ""})
                 return
-            result = execute_action(action, param_value)
-            # emit receipt
-            receipt_msg = (
-                f"HELEN_OS_V0 action={action} param={param_value[:80]} "
-                f"result={'OK' if result['ok'] else 'ERR'}: {str(result.get('result', result.get('error', '')))[:120]}"
-            )
-            result["receipt"] = emit_receipt(receipt_msg)
-            self.send_json(result)
-
-        elif self.path == "/api/receipt":
-            msg = body.get("message", "").strip()
-            if not msg:
-                self.send_json({"ok": False, "error": "No message."})
-                return
-            self.send_json(emit_receipt(msg))
+            self._json(execute_action(action, param_value))
 
         else:
             self.send_response(404)
@@ -920,8 +759,11 @@ class Handler(BaseHTTPRequestHandler):
 
 def main():
     server = HTTPServer(("0.0.0.0", PORT), Handler)
+    has_gemini = bool(GEMINI_KEY)
     print(f"HELEN OS V0  →  http://localhost:{PORT}")
-    print("NON_SOVEREIGN · Focus + Witness · governed execution")
+    print(f"proposal engine: {'gemini (' + GEMINI_MODEL + ')' if has_gemini else 'local keyword router'}")
+    print(f"status endpoint: http://localhost:{PORT}/v1/status")
+    print("NON_SOVEREIGN · Focus + Witness · local-only bounded actions")
     server.serve_forever()
 
 
