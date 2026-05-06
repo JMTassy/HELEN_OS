@@ -19,6 +19,7 @@ artifacts/*.mp4
 artifacts/*.wav
 artifacts/*.png
 artifacts/*.json
+artifacts/*.ndjson
 helen_os/helen_memory.db
 # HELEN runtime lint artifacts
 artifacts/k8_manifest.json
