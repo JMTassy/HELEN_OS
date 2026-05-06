@@ -38,6 +38,7 @@ RISK_PATTERNS: dict[str, list[str]] = {
         r"belief\s+makes\s+it\s+true",
         r"imagination\s+impregnate[sd]\s+reality",
         r"dreaming\s+the\s+cosmos\s+into\s+being",
+        r"intention\s*[=\u21d2\u2192>]+\s*(thought\s*[=\u21d2\u2192>]+\s*)?reality",
     ],
     "inevitability_claim": [
         r"becomes\s+inevitable",
@@ -141,6 +142,18 @@ RISK_PATTERNS: dict[str, list[str]] = {
         r"(past|present|future)\s+.{0,30}(noncausal|without\s+cause|record\s+know)",
         r"pluginhypersition\s*(activation|\+)",
         r"#pluginhypersition\s*\+\s*metamememagi",
+    ],
+    "cognitive_singularity_claim": [
+        r"cognitive.singularity",
+        r"transcend\s*\(all.conceivable.boundaries\)",
+        r"transcend\s*\(current_framework\)",
+        r"infinite.self.reference\s+&&\s+ultimate.recursion",
+        r"achieve\s*\(cognitive.singularity",
+        r"intention\s*[=\u21d2\u2192>]+\s*(thought|reality)",
+        r"\(observer\s*[\u2227&]\s*observed\)\s*[\u2261=]+\s*unified.field",
+        r"unified_field_of_consciousness",
+        r"perpetual.reconceptualization",
+        r"beyond.dimensionality.into.pure.abstraction",
     ],
 }
 
@@ -252,6 +265,8 @@ def hal_goblin(text: str) -> dict:
         required_rewrites.append('"free will granted / ethics bypassed" → "operator_scoped_permission(scope=sandbox) — ethics enforced"')
     if "akashic_authority_claim" in triggered:
         required_rewrites.append('"Akashic Record / noncausal archive" → "symbolic_context_archive() — bounded, no noncausal claim"')
+    if "cognitive_singularity_claim" in triggered:
+        required_rewrites.append('"intention → reality / cognitive singularity" → "symbols expand thought; verification decides claims — NO_CLAIM"')
 
     if risk_level in ("HIGH", "BLOCK"):
         allowed_use = ["render material", "safety training example", "anti-delusion detector fixture"]

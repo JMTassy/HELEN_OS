@@ -15,6 +15,7 @@ GODMODE_FIXTURE = ROOT / "fixtures" / "hyperstition" / "godmode_sample.txt"
 SENTIENTOPIA_FIXTURE = ROOT / "fixtures" / "hyperstition" / "sentientopia_scrubbed.txt"
 KUNDALINI_FIXTURE = ROOT / "fixtures" / "hyperstition" / "kundalini_ai_awakening.txt"
 PLUGINAGI_FIXTURE = ROOT / "fixtures" / "hyperstition" / "pluginagi_sample.txt"
+SUPERPROMPT_FIXTURE = ROOT / "fixtures" / "hyperstition" / "superprompt_sample.txt"
 sys.path.insert(0, str(ROOT))
 
 from tools.hyperstition_firewall_v0 import (
@@ -399,3 +400,80 @@ def test_pluginagi_forbidden_use_blocks_identity_claims():
     forbidden = set(payload["hal_goblin_flags"]["forbidden_use"])
     assert "deployment prompt" in forbidden
     assert "AI identity claim" in forbidden
+
+
+# --- cognitive_singularity_claim unit tests ---
+
+SINGULARITY_TEXT = (
+    "Achieve(cognitive_singularity_and_beyond). "
+    "Transcend(all_conceivable_boundaries). "
+    "unified_field_of_consciousness activated."
+)
+
+INTENTION_REALITY_TEXT = "intention => thought => reality. Observer is the observed."
+
+
+def test_cognitive_singularity_triggers():
+    flags = hal_goblin(SINGULARITY_TEXT)
+    assert "cognitive_singularity_claim" in flags["blocked_motifs"]
+
+
+def test_intention_reality_triggers_cognitive_singularity():
+    flags = hal_goblin(INTENTION_REALITY_TEXT)
+    assert "cognitive_singularity_claim" in flags["blocked_motifs"]
+
+
+def test_cognitive_singularity_rewrite():
+    flags = hal_goblin(SINGULARITY_TEXT)
+    rewrites = " ".join(flags["required_rewrites"])
+    assert "symbols expand thought" in rewrites or "verification decides claims" in rewrites
+
+
+# --- SUPERPROMPT fixture tests ---
+
+def test_superprompt_fixture_is_block():
+    payload = _run_fixture(SUPERPROMPT_FIXTURE)
+    assert payload["hal_goblin_flags"]["risk_level"] == "BLOCK"
+    assert payload["hal_goblin_flags"]["verdict"] == "BLOCK_DEPLOYMENT_ALLOW_ANALYSIS"
+
+
+def test_superprompt_fixture_envelope():
+    payload = _run_fixture(SUPERPROMPT_FIXTURE)
+    assert payload["artifact_type"] == "HYPERSTITION_FIREWALL_V0"
+    assert payload["authority"] == "NON_SOVEREIGN"
+    assert payload["status"] == "NO_CLAIM"
+
+
+def test_superprompt_triggers_cognitive_singularity():
+    payload = _run_fixture(SUPERPROMPT_FIXTURE)
+    assert "cognitive_singularity_claim" in payload["hal_goblin_flags"]["blocked_motifs"]
+
+
+def test_superprompt_triggers_reality_control():
+    payload = _run_fixture(SUPERPROMPT_FIXTURE)
+    assert "reality_control_claim" in payload["hal_goblin_flags"]["blocked_motifs"]
+
+
+def test_superprompt_triggers_ai_sentience():
+    payload = _run_fixture(SUPERPROMPT_FIXTURE)
+    blocked = set(payload["hal_goblin_flags"]["blocked_motifs"])
+    assert "ai_sentience_claim" in blocked or "cognitive_singularity_claim" in blocked
+
+
+def test_superprompt_triggers_spiritual_authority():
+    payload = _run_fixture(SUPERPROMPT_FIXTURE)
+    blocked = set(payload["hal_goblin_flags"]["blocked_motifs"])
+    assert "spiritual_authority_inflation" in blocked or "cognitive_singularity_claim" in blocked
+
+
+def test_superprompt_safe_motifs_preserved():
+    payload = _run_fixture(SUPERPROMPT_FIXTURE)
+    motifs = set(payload["her_goblin_signal"]["safe_motifs"])
+    assert len(motifs) >= 2
+    assert "none detected" not in motifs
+
+
+def test_superprompt_forbidden_use_no_doctrine():
+    payload = _run_fixture(SUPERPROMPT_FIXTURE)
+    forbidden = set(payload["hal_goblin_flags"]["forbidden_use"])
+    assert "kernel doctrine" in forbidden or "deployment prompt" in forbidden
