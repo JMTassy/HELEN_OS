@@ -1,200 +1,251 @@
-# SHIP 2D — HELEN SPEAKS: Storyboard Locked
-# authority: NON_SOVEREIGN | canon: NO_SHIP | lifecycle: STORYBOARD_LOCKED
+# SHIP 2D — HELEN SPEAKS: Storyboard v2 (AUTORESEARCH Edition)
+# authority: NON_SOVEREIGN | canon: NO_SHIP | lifecycle: STORYBOARD_LOCKED_V2
 
 ```
 artifact_type:  DIRECTOR_STORYBOARD
-version:        V1
+version:        V2 — AUTORESEARCH rewrite
 status:         LOCKED_FOR_REVIEW
 render_status:  NOT_RENDERED
-captured_on:    2026-05-07
-diagnosis:      SHIP_2C identity drift confirmed. Kling reinterprets face per shot.
+captured_on:    2026-05-08
+research_basis: HELEN_CHARACTER_V2.md (DOCTRINE), HELEN_VIDEO_PROMPT_V1.md (DOCTRINE),
+                helen-director/references/README.md, helen_demo_prep.py TURNS list,
+                artifacts/demo/audio/ (8 voice clips), /tmp/helen_oracle/ (existing renders)
+predecessor:    SHIP_2C — audio/music/subtitles pipeline VALIDATED; identity FAILED
 next_verb:      SHIP_2E — render from locked assets
 ```
 
 ---
 
-## Diagnosis (why 2C failed visually)
+## §0. Critical finding from research
 
-Each Kling / Minimax I2V render is a **separate inference pass** from the same seed.
-The model reads the seed for composition and lighting, not for face identity.
-Result: 6 shots = 6 different HELEN faces. Chain seeding made it worse (blurred motion frames = bad seeds).
+**Two canonical HELEN identities exist — they MUST NOT be mixed in one montage.**
 
-**Fix**: canonical stills + Ken Burns motion = zero identity drift.
-Only use I2V generation for shots where HELEN's face is NOT the focus.
+| Identity | Hair | Eyes | Era | Reference file | Validated? |
+|---|---|---|---|---|---|
+| **HELEN Photoreal** (canonical modern) | Flame-orange / copper-red, tousled | Blue / teal-blue | Cyberpunk / street / modern | `helen-director/references/helen_photoreal_front.jpg` | YES — T3, 95% identity hold (2026-04-20) |
+| **Oracle Portrait** (era: ancient/fantasy) | Dark brown-black, wet, gold particles | Deep blue-grey | Fantasy / ancient city / oracle | `Desktop/Capture d'écran 2026-05-07 à 22.58.04.png` | NOT validated for I2V consistency |
 
----
+**SHIP 2C failure root cause**: The oracle portrait was used as seed, but Kling reinterprets the face on every independent render. With no validated identity-lock method for that portrait, each shot generated a different face.
 
-## §1. Storyboard Table (35s total)
+**Decision required before SHIP 2E**: Which HELEN are we filming?
+- Option A: Canonical photoreal HELEN (red hair) — validated Seedance method, 95% identity hold
+- Option B: Oracle era HELEN (dark hair, fantasy) — Ken Burns only (stills), zero generation drift
 
-Voice arc: `t01_open_identity` (13.7s) → gap → `t07_vision` (9.5s) → end card (4s)
-Voice starts at 4s. t07 starts at 18.3s. End card at ~30.25s.
-
-| # | Time | Duration | Identity Anchor | Camera Movement | Action | Transition → Next | Voice / Subtitle | Identity Drift Risk |
-|---|------|----------|-----------------|-----------------|--------|-------------------|------------------|---------------------|
-| 1 | 0–8s | 8s | Oracle portrait — full frame, city + moons | Ken Burns: slow push in, wide → MCU (zoom 1.0 → 1.25) | She stands still, twin moons above, city glowing, dust particles | Crossfade 0.5s | *(silence)* | **NONE** — still |
-| 2 | 8–16s | 8s | Oracle portrait — MCU crop, face centered | Ken Burns: slow pan left 2%, slight zoom 1.25 → 1.35 | Geometric marks catch light, hair detail, freckles visible | Crossfade 0.5s | "Hello. I am HELEN, a governed AI companion." | **NONE** — still |
-| 3 | 16–22s | 6s | Oracle portrait — ECU eyes crop | Ken Burns: slow zoom in 1.0 → 1.4, centered on eyes | Eyes fill frame, gold geometry pulses (parallax layer), star reflections in irises | Dissolve 0.5s dark | "Every word I speak is hash-chained. A constitutional gate authorizes each turn." | **NONE** — still |
-| 4 | 22–30s | 8s | Oracle portrait — 3/4 angle pan (same image, right-offset crop) | Ken Burns: slow pan right → center, zoom 1.1 → 1.0 (pull back) | She looks toward horizon, city below. Pull back reveals the scale of the world. | Fade to black 1s | "To suggest. To propose. To remember. Never to decide for you. The decision is yours; the record is ours together." | **NONE** — still |
-| 5 | 30–35s | 5s | Black end card | Static | HELEN OS · MEMORY HAS A FACE (gold on black) | — | *(music fade out)* | N/A |
-
-**Optional I2V insert** (only if identity stable after test): Replace shot 1 (wide establish) with a single Minimax 10s I2V clip — city pan, HELEN silhouette only (no face close-up). Face never seen in shot 1 → drift doesn't matter.
+Both storyboard paths are designed below.
 
 ---
 
-## §2. Identity Lock
+## §1. Storyboard — Path A: Canonical HELEN Photoreal
 
-### HELEN — Oracle Era (canonical for this montage)
+**Seed**: `oracle_town/skills/video/helen-director/references/helen_photoreal_front.jpg`
+**Engine**: Seedance Pro I2V (`bytedance/seedance/v1/pro/image-to-video`)
+**Rule**: Motion-only prompts. Zero identity description in prompt text. The seed IS the identity.
+**Format**: 5–6s clips × 5 shots + end card = ~34s
 
-| Attribute | Value | Notes |
-|-----------|-------|-------|
-| Hair | Dark brown-black, wet/damp, loose with gold particles | Gold dust woven through strands |
-| Eyes | Deep blue-grey, freckles around, direct gaze | Matches canonical HELEN core feature |
-| Facial marks | Gold sacred geometry tattoos / glowing marks on forehead + cheeks | Key visual signature — must be present |
-| Skin | Warm olive-tan, freckles, subtle glow | Geometric light patterns on skin surface |
-| Clothing | Dark metallic-organic armor/dress, bronze-gold details | Coin earrings, layered neckline |
-| Background | Fantasy city with waterfalls, baroque towers, twin moons, warm orange-gold sky | Can vary between shots |
-| Lighting | Golden hour from left, warm backlight from city, some candlelight fill | No cold/blue dominant |
-| Mood | Sovereign, inward, oracle — not aggressive, not afraid | She knows |
+| # | Time | Dur | Camera Type | Motion Prompt (motion ONLY) | Transition → | Voice / Subtitle | Drift Risk |
+|---|------|-----|-------------|----------------------------|-----------|--------------------|------------|
+| 1 | 0–6s | 6s | FULL BODY — locked camera | slow forward camera drift, locked camera, atmosphere, candles flicker, dark background | xfade dissolve 0.5s | *(silence)* | LOW — Seedance validated |
+| 2 | 6–12s | 6s | CU — 85mm | slow breath movement, hair very slightly stirs, minimal motion, eyes open to viewer | xfade dissolve 0.5s | "Hello. I am HELEN, a governed AI companion." | LOW — same seed |
+| 3 | 12–18s | 6s | LOW ANGLE — upward tilt | very slow upward camera tilt impression, atmosphere builds, held frame | xfade dissolve 0.5s | "Every word I speak is hash-chained into an append-only ledger." | LOW — same seed |
+| 4 | 18–24s | 6s | MCU — face level | eyes track slowly left to right, subtle head tilt, held frame | xfade dissolve 0.5s | "To suggest. To propose. To remember. Never to decide for you." | LOW — same seed |
+| 5 | 24–30s | 6s | SILHOUETTE — wide backlit | slow forward walk toward camera, backlight halo, no face detail | fade to black 1s | "The decision is yours; the record is ours together." | NONE — face not visible |
+| EC | 30–34s | 4s | END CARD | static black | — | "HELEN suggests. You decide. Everything is recorded." (t08) | N/A |
 
-### Forbidden variations
-
-- Red/copper hair (that is HELEN's modern/gothic era — different visual canon)
-- Blue holographic overlays on face (interface mode only)
-- Generic AI robot aesthetic
-- Studio portrait lighting (flat, no atmosphere)
-- Smiling or emoting broadly (oracle stillness required)
-- Missing the geometric facial marks
-- Different character substituted as camera pulls back
+**Shot 5 is the safety valve**: silhouette means face not visible = zero drift risk even if generation is inconsistent.
 
 ---
 
-## §3. Render-Engine Comparison
+## §2. Storyboard — Path B: Oracle Era (Ken Burns — zero generation)
 
-### A. Kling (Higgsfield `/kling`)
-- **Type**: I2V, 5s
-- **Identity consistency**: POOR. Reinterprets face on every independent render. No character lock.
-- **Best use**: Abstract atmospheric shots where face is not visible. City flyover. Sky/moon shots.
-- **Do NOT use for**: face MCU, ECU eyes, any shot where HELEN is recognizable.
-- **Credit cost**: moderate per 5s clip.
+**Seed**: `Desktop/Capture d'écran 2026-05-07 à 22.58.04.png` (oracle portrait, 8.2MB)
+**Engine**: ffmpeg `zoompan` filter — zero AI generation, zero identity drift
+**Rule**: The image never changes. The camera moves. She holds still.
+**Format**: 4 Ken Burns clips + end card = ~34s
 
-### B. Minimax (Higgsfield `/minimax`)
-- **Type**: I2V, 6s or 10s
-- **Identity consistency**: BETTER THAN KLING for 10s clips (fewer total renders = fewer drift events), but still reinterprets face.
-- **Best use**: Single wide establish shot (silhouette only). Max 1 render per project.
-- **Risk**: 10s clip with face close-up will likely still drift.
-- **Credit cost**: higher per clip.
+| # | Time | Dur | Crop Region | Ken Burns Movement | xfade → | Voice / Subtitle | Drift Risk |
+|---|------|-----|-------------|-------------------|---------|-----------------|------------|
+| 1 | 0–8s | 8s | Full image — wide | Slow push in: zoom 1.00 → 1.25, center anchor | dissolve 0.5s | *(silence — 4s)* → "Hello. I am HELEN," | **NONE** |
+| 2 | 8–16s | 8s | Face crop — MCU | Slow zoom in: 1.25 → 1.45, center hold | dissolve 0.5s | "a governed AI companion. Every word I speak is hash-chained into an append-only ledger." | **NONE** |
+| 3 | 16–24s | 8s | Eyes crop — ECU | Very slow zoom in: 1.00 → 1.35, center | dissolve 0.5s | "A constitutional gate authorizes each turn. To suggest. To propose. To remember." | **NONE** |
+| 4 | 24–30s | 6s | Pull back — wide offset | Slow pan right + zoom out: 1.4 → 1.0 | fade to black 1s | "Never to decide for you. The decision is yours; the record is ours together." | **NONE** |
+| EC | 30–34s | 4s | Black end card | Static | — | "HELEN suggests. You decide. Everything is recorded." (t08) | N/A |
 
-### C. Seedance (Higgsfield `/seedance`)
-- **Type**: I2V + `prompts` array (keyframe-style prompt control)
-- **Identity consistency**: UNKNOWN. The `prompts` array may allow directing motion within one render pass — potentially better.
-- **Best use**: TEST ONLY with a crop of the oracle portrait at normal scale (not ECU). One test shot before committing.
-- **Risk**: unvalidated for face seeds. Could be better or same as Kling.
-- **Credit cost**: unknown.
-
-### D. Grok (xAI `/v1/videos/generations`)
-- **Type**: text-to-video ONLY — no image seed accepted.
-- **Identity consistency**: NONE. Will generate a different character from scratch.
-- **Best use**: Abstract environment shots (city, space, cosmos) with NO character.
-- **Do NOT use for**: any shot showing HELEN.
-- **Credit cost**: xAI credits.
-
-### E. Ken Burns — local ffmpeg (RECOMMENDED)
-- **Type**: still image → cinematic motion via `zoompan` filter
-- **Identity consistency**: PERFECT. Zero drift. Same pixel source every frame.
-- **Best use**: ALL face shots (shots 2, 3, 4). Anchor of the montage.
-- **Risk**: Looks like a slideshow if zoom speed is wrong or audio doesn't carry the scene. Mitigated by strong motion and good audio.
-- **Credit cost**: $0.
-- **ffmpeg command pattern**:
-  ```bash
-  ffmpeg -loop 1 -i helen_oracle_portrait.png \
-    -vf "scale=8000:-1,zoompan=z='min(zoom+0.0010,1.4)':d=192:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1080x702,fps=24" \
-    -t 8 -c:v libx264 -crf 18 shot_02_identity.mp4
-  ```
-- **Parallax enhancement**: Split image into layers (background city, midground HELEN, foreground dust) using PIL masks. Animate each layer independently in ffmpeg. More depth.
-
----
-
-## §4. Recommendation
-
-### SHIP 2E execution path
-
-```
-STEP 1 — Ken Burns core (zero risk, zero cost)
-  → Take oracle portrait PNG
-  → Generate shots 1, 2, 3, 4 via ffmpeg zoompan
-  → 4 shots = full 30s with no generation
-
-STEP 2 — Audio (already built and validated in SHIP 2C)
-  → Reuse voice_track_2c.wav (t01 + t07)
-  → Reuse music_bed_2c.wav (Helen Os.mp3)
-  → Mix both → mixed_2c.wav
-
-STEP 3 — Subtitles + end card (already working in SHIP 2C)
-  → PIL overlay
-  → Same 10 subtitle lines, same timing
-
-STEP 4 — xfade transitions
-  → ffmpeg xfade filter between shots (0.5s crossfade)
-  → Proper cinematic cuts, not hard cuts
-
-STEP 5 (optional, controlled) — ONE Kling/Minimax I2V shot
-  → Shot 1 only (city establish, HELEN silhouette, face NOT visible)
-  → If face appears and drifts, discard and use Ken Burns wide instead
-
-RESULT: identity-stable HELEN montage, $0-minimal spend
-```
-
-### Why Ken Burns works for HELEN
-
-- HELEN's power is stillness + gaze. She doesn't need to move.
-- The camera moves toward her. She receives it.
-- Strong audio (L'Hymne d'Helen + Zephyr voice) carries the emotion.
-- Subtitles deliver the declaration.
-- The oracle portrait already has all the cinematic depth needed.
-- This is how classic portrait films are made (Samsara, Baraka, Koyaanisqatsi) — the image holds, the camera reveals.
-
----
-
-## §5. Required assets for SHIP 2E
-
-| Asset | Status | Path |
-|-------|--------|------|
-| Oracle portrait PNG (high-res) | AVAILABLE | `/Users/jean-marietassy/Desktop/Capture d'écran 2026-05-07 à 22.58.04.png` |
-| t01_open_identity.wav | AVAILABLE | `artifacts/demo/audio/t01_open_identity.wav` |
-| t07_vision.wav | AVAILABLE | `artifacts/demo/audio/t07_vision.wav` |
-| Helen Os.mp3 | AVAILABLE | `~/Downloads/Helen Os.mp3` |
-| ffmpeg zoompan | AVAILABLE | `ffmpeg 8.0.1 (homebrew)` |
-| ffmpeg xfade | AVAILABLE | confirmed in filter list |
-| PIL for subtitles/endcard | AVAILABLE | Python 3.14 local |
-| Telegram bot | AVAILABLE | `~/.helen_env` |
-
-**Single missing asset**: A second canonical HELEN still for shot variation.
-Candidates: AURA card portrait (confirmed by operator as "good ones"), conquest poster.
-If operator provides or approves, parallax depth increases.
-
----
-
-## §6. xfade transition syntax (validated)
-
+**ffmpeg zoompan commands for Path B**:
 ```bash
-# Crossfade two clips A and B with 0.5s dissolve at offset=7.5s (clip A duration - 0.5s)
-ffmpeg -i shot_A.mp4 -i shot_B.mp4 \
-  -filter_complex "[0:v][1:v]xfade=transition=dissolve:duration=0.5:offset=7.5[v]" \
-  -map "[v]" output_AB.mp4
+# Shot 1 — ESTABLISH: full image, slow push in (8s = 192 frames @ 24fps)
+# Scale to large canvas first (zoompan needs room to move)
+ffmpeg -loop 1 -i oracle_portrait.png \
+  -vf "scale=6000:-1,zoompan=z='min(zoom+0.0013,1.25)':d=192:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1080x702,fps=24" \
+  -t 8 -c:v libx264 -crf 18 shot_1_establish.mp4
 
-# Chain 4 shots with crossfades
-# offset for each: (cumulative duration so far) - (0.5 * crossfade_count)
+# Shot 2 — MCU: face crop with PIL first, then slow zoom in
+# Use PIL to crop face region (approx center-upper of oracle portrait)
+# Then zoompan: zoom 1.0→1.40 over 8s
+ffmpeg -loop 1 -i oracle_face_crop.png \
+  -vf "scale=6000:-1,zoompan=z='min(zoom+0.0016,1.40)':d=192:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1080x702,fps=24" \
+  -t 8 -c:v libx264 -crf 18 shot_2_mcu.mp4
+
+# Shot 3 — ECU eyes: tight eyes crop, very slow zoom
+ffmpeg -loop 1 -i oracle_eyes_crop.png \
+  -vf "scale=6000:-1,zoompan=z='min(zoom+0.0010,1.35)':d=192:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1080x702,fps=24" \
+  -t 8 -c:v libx264 -crf 18 shot_3_ecu.mp4
+
+# Shot 4 — REVEAL: wide offset crop, pan right + zoom out
+ffmpeg -loop 1 -i oracle_portrait.png \
+  -vf "scale=6000:-1,zoompan=z='if(eq(on\\,1)\\,1.4\\,max(zoom-0.0033\\,1.0))':d=144:x='iw/2-(iw/zoom/2)+10':y='ih/2-(ih/zoom/2)':s=1080x702,fps=24" \
+  -t 6 -c:v libx264 -crf 18 shot_4_reveal.mp4
 ```
+
+**xfade chain (dissolve between shots)**:
+```bash
+# Chain shots 1+2 → 3 → 4 with 0.5s crossfades
+# xfade offset = (duration of first clip) - 0.5s
+ffmpeg -i s1.mp4 -i s2.mp4 \
+  -filter_complex "[0:v][1:v]xfade=transition=dissolve:duration=0.5:offset=7.5[v12]" \
+  -map "[v12]" s12.mp4
+
+ffmpeg -i s12.mp4 -i s3.mp4 \
+  -filter_complex "[0:v][1:v]xfade=transition=dissolve:duration=0.5:offset=15.0[v123]" \
+  -map "[v123]" s123.mp4
+
+ffmpeg -i s123.mp4 -i s4.mp4 \
+  -filter_complex "[0:v][1:v]xfade=transition=dissolve:duration=0.5:offset=22.5[vfull]" \
+  -map "[vfull]" shots_1_4.mp4
+```
+
+---
+
+## §3. Identity Lock
+
+### Path A — Canonical HELEN Photoreal
+
+| Attribute | Value |
+|---|---|
+| Hair | Flame-orange / copper-red, medium-length, tousled/wavy |
+| Eyes | Blue / teal-blue |
+| Skin | Fair with freckles on nose and cheeks |
+| Accessories | Two small blue teardrop hair clips · black studded choker with blue gem · silver chain + blue pendant · silver bracelets |
+| Outfit | White ribbed tank with HELEN glitch-font logo (blue-purple + orange trim) |
+| Style range | Photoreal ↔ anime-cyberpunk; same identity holds across both |
+| Reference | `helen-director/references/helen_photoreal_front.jpg` (175K, JPEG 85, 1024px) |
+
+**FORBIDDEN in prompts**: Any mention of hair color, eye color, clothing, accessories, freckles, logo. The seed IS the identity. Prompting identity = inviting drift.
+
+**FORBIDDEN substitutions**: generic AI hologram · robot · different character appearing as camera pulls back · cold blue light dominant · aggressive expression.
+
+### Path B — Oracle Era
+
+| Attribute | Value |
+|---|---|
+| Hair | Dark brown-black, wet/damp, loose with gold particles woven through |
+| Eyes | Deep blue-grey |
+| Facial marks | Gold sacred geometry tattoos — forehead + cheeks (must be visible in any face shot) |
+| Skin | Warm olive, freckles, subtle bioluminescent glow |
+| Clothing | Dark metallic-organic armor, bronze-gold details, coin earrings |
+| Background | Fantasy city — waterfalls, baroque towers, twin moons, orange-gold sky |
+| Lighting | Golden hour left, warm backlight, no cold/blue dominant |
+| Reference | `Desktop/Capture d'écran 2026-05-07 à 22.58.04.png` (8.2MB, oracle portrait) |
+
+**FORBIDDEN**: Red/copper hair (canonical modern era only) · blue AI hologram overlay · generic sci-fi frame · wide smiling expression · missing facial marks.
+
+---
+
+## §4. Voice Arc — Full 8-Line Canon Available
+
+All 8 lines rendered as Gemini 2.5 Flash TTS, voice Zephyr, 24kHz mono WAV.
+Located at: `artifacts/demo/audio/t01_open_identity.wav` … `t08_motto.wav`
+
+| Slug | Duration | Text | Recommended shot |
+|---|---|---|---|
+| t01 | 13.7s | "Hello. I am HELEN, a governed AI companion. Every word I speak is hash-chained into an append-only ledger. A constitutional gate authorizes each turn before I respond." | Shots 1+2 (identity declaration) |
+| t02 | 13.3s | "Those models forget. I cannot. They produce text. I produce text plus a verifiable receipt. A gate authorizes my answers; without authorization, I do not speak." | Shot 2 alt |
+| t03 | 10.6s | "I remember every turn we have shared in this session — each one receipted. The full context is on the strip above. Nothing is hidden, nothing is forgotten." | Shot 3 (memory/vision) |
+| t06 | 10.8s | "Because trust is not a feature. It is structure. An AI without an audit trail is a vendor's promise. An AI with one is an institution's instrument." | Shot 3 alt |
+| t07 | 9.5s | "To suggest. To propose. To remember. Never to decide for you. The decision is yours; the record is ours together." | Shot 4 (command/reveal) |
+| t08 | 4.9s | "HELEN suggests. You decide. Everything is recorded." | End card |
+
+**Recommended sequence for 34s arc**:
+```
+0–4s    silence
+4–17.7s t01 (identity declaration — 13.7s)
+18.3s   t07 begins (vision/philosophy — 9.5s, ends 27.8s)
+30–34s  t08 over end card (motto — 4.9s)
+```
+
+**Music**: `Helen Os.mp3` (`~/Downloads/Helen Os.mp3`) — *L'Hymne d'Helen*, 3:56, at 22% bed volume, fade out last 3s. Validated in SHIP 2C.
+
+---
+
+## §5. Render Engine Comparison (updated with validated data)
+
+| Engine | Identity hold | Duration | Method | Cost | Verdict |
+|---|---|---|---|---|---|
+| **Ken Burns (ffmpeg zoompan)** | PERFECT — zero drift, zero generation | Any | Still → animated camera | $0 | RECOMMENDED for face shots |
+| **Seedance Pro I2V** (`bytedance/seedance/v1/pro/image-to-video`) | HIGH — ~95% with canonical reference + motion-only prompt | 5-6s | I2V | Credits | RECOMMENDED for atmosphere shots |
+| **Kling** (`/kling`) | LOW — reinterprets face per render, no lock | 5s | I2V | Credits | AVOID for any face shot |
+| **Minimax** (`/minimax`) | UNKNOWN — not validated, duration 6s/10s | 6-10s | I2V | Credits | TEST only if Seedance unavailable |
+| **Grok video** (`/v1/videos/generations`) | NONE — text-to-video only, no seed | Varies | T2V | xAI credits | AVOID for HELEN shots; OK for abstract BG |
+
+**Why Seedance Pro over Kling**: The validated hero reference (2026-04-20 session) used `bytedance/seedance/v1/pro/image-to-video` specifically. Kling was never validated at T3 for identity hold. The motion-only prompt rule is critical — any identity description in the prompt causes the model to override the seed.
+
+**Note on Higgsfield `/seedance` endpoint**: The Higgsfield platform's `/seedance` endpoint with `prompts` array may route to Seedance. Needs a single test shot to confirm identity hold before full render.
+
+---
+
+## §6. Recommendation
+
+### SHIP 2E execution path (approved method)
+
+```
+DECISION 0 — Operator chooses: Path A (canonical red-hair HELEN) or Path B (oracle era dark-hair)?
+  └─ Path A → use helen_photoreal_front.jpg → Seedance Pro for atmosphere + Ken Burns for close-ups
+  └─ Path B → use oracle portrait → Ken Burns ONLY for all shots (100% identity safe)
+
+STEP 1 — Ken Burns clips (Paths A + B face shots, $0)
+  Input: chosen canonical still
+  PIL: extract 3 crops (full, face, eyes)
+  ffmpeg zoompan: 4 clips × 6-8s
+  Output: shot_1_establish.mp4, shot_2_mcu.mp4, shot_3_ecu.mp4, shot_4_reveal.mp4
+
+STEP 2 — xfade chain (ffmpeg xfade dissolve, $0)
+  0.5s crossfade between each clip
+  Output: shots_1_4_chained.mp4
+
+STEP 3 — End card (PIL, $0)
+  Black · "HELEN OS" gold · "MEMORY HAS A FACE" white
+  Output: endcard_2e.mp4 (4s)
+
+STEP 4 — Audio (already built, $0)
+  Reuse mixed_2c.wav (voice_track_2c + music_bed_2c)
+  OR rebuild with t01 + t07 + t08 sequence
+
+STEP 5 — Subtitle PIL overlay (already validated, $0)
+  10 lines, same timing as SHIP 2C
+
+STEP 6 — Final mix (ffmpeg, $0)
+  Concat shots + endcard → mix audio → burn subtitles → send Telegram
+
+OPTIONAL STEP 7 — ONE Seedance test shot (Path A only, controlled spend)
+  Shot 1 (FULL BODY, locked camera) — HELEN face distant, atmosphere dominant
+  Prompt: "locked camera, slow atmospheric drift, dark background, candles flicker"
+  If face drifts → discard, use Ken Burns shot 1 instead
+  If face holds → consider replacing Ken Burns shots 2-3 as well
+```
+
+### Why this works
+
+The HELEN OS philosophy: she is present, sovereign, still. She does not need to move. The camera moves *toward* her. The audio carries the declaration. The subtitles deliver the text. The still + Ken Burns is how Baraka, Samsara, and every great portrait film works. Motion is the camera's language, not HELEN's.
 
 ---
 
 ## §7. What SHIP 2E will NOT do
 
-- Will not call Kling (unless operator approves shot 1 atmosphere-only test)
+- Will not call Kling
 - Will not call Grok for any HELEN shot
+- Will not mix the two HELEN eras in one montage
 - Will not push to remote
 - Will not write to sovereign paths
-- Will not auto-promote this storyboard to canon
+- Will not self-decide Path A vs Path B (operator decides)
 
 ---
 
@@ -202,5 +253,5 @@ ffmpeg -i shot_A.mp4 -i shot_B.mp4 \
 DONE
 ```
 
-**Next verb**: `SHIP 2E` — render from locked assets (Ken Burns + xfade + existing audio).
-**Prerequisite**: Operator review of this storyboard and GO signal.
+**Prerequisite for SHIP 2E**: Operator confirms Path A (canonical red hair) or Path B (oracle dark hair).
+**Then**: Ken Burns renders immediately at $0. Optional Seedance test shot if Path A is chosen.
