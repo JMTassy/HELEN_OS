@@ -27,11 +27,25 @@ Live HELEN OS work is scoped to `experiments/helen_mvp_kernel/`. Code edits go *
 
 If a task appears to require an off-limits write, stop and report — route through MAYOR via the admissible bridge (`tools/helen_say.py`), not by direct edit.
 
+### experiments/helen_mvp_kernel/ (active work surface)
+
+Non-sovereign sandbox. Status: NON_SOVEREIGN / NO_SHIP. Structure:
+
+- `helen_os/gates/` — AV validation gates (active frontier):
+  - `face_motion_gate.py` — identity-lock enforcement (face consistency)
+  - `composite_admissibility.py` — combined gate verdict
+  - `av_sync_gate.py` — audio/video sync validation
+  - `spectral_gate.py` — spectral consistency checks
+- `helen_os/ledger/` — hash-chain, receipts, event log, schemas
+- `helen_os/runtime/` — session, state observer, ralph observer, SSE server
+- `helen_os/kernel/` — core kernel logic (non-sovereign sandbox)
+- `helen_os/tests/` — 8 constitutional test files (hash-chain break, replay determinism, no-receipt-no-mutation, firewall, policy, etc.)
+- `.venv-gates/` — isolated venv for gate tests
+
 ## Repository Identity
 
-- **Canonical GitHub repo:** `https://github.com/JMTassy/helen-conquest.git`
-- **Legacy alias:** `https://github.com/JMTassy/HELEN_OS.git` — kept by GitHub as a redirect; pushes/fetches to this URL are server-side rewritten to `helen-conquest`. Treat it as historical, not authoritative.
-- **Local working tree:** `~/Documents/GitHub/helen_os_v1` may remain unchanged. The on-disk path is independent of the GitHub repo name.
+- **Canonical GitHub repo:** `https://github.com/JMTassy/HELEN_OS.git`
+- **Local working tree:** `~/Documents/GitHub/helen_os_v1`
 
 ## Architecture Layers
 
@@ -149,16 +163,35 @@ Commands:
 - `make membrane-test` — ledger validator + autoresearch bounded/deterministic + no-local-replay-shadowing
 - `make anti-regression` — replay divergence check (single-test-file, verbose)
 - Single test: `.venv/bin/pytest helen_os/tests/test_foo.py::test_bar -v`
+- Root constitutional invariants (not covered by `make test`): `.venv/bin/pytest tests/ -q`
+- Ghost closure detector: `.venv/bin/pytest helen_os/tests/test_no_ghost_closures.py -v`
+- MVP kernel sandbox (non-sovereign): `.venv/bin/pytest experiments/helen_mvp_kernel/helen_os/tests/ -v`
 - K8 target: PASS (k8=+1.000)
 - LEGORACLE replay gate: fixture integrity + determinism + frozen output + mutation detection
 
 **PYTHONPATH**: `Makefile` sets `PYTHONPATH := $(CURDIR)` (commit `5b98a3d`, repo-relative). No operator-specific path — `make test` is portable.
+
+## Setup
+
+```bash
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+```
+
+`experiments/helen_mvp_kernel/.venv-gates/` is a separate venv used by MVP kernel gate tests — bootstrap it independently if needed:
+```bash
+python3 -m venv experiments/helen_mvp_kernel/.venv-gates
+experiments/helen_mvp_kernel/.venv-gates/bin/pip install pytest pytest-asyncio
+```
 
 ## Running HELEN
 
 Prefer `.venv/bin/python` for runtime commands so imports resolve consistently with `make test`.
 
 ```bash
+# ⚠ Chat surfaces: use --ledger :memory: for ephemeral dev to avoid
+#   LNSA_ERROR on sealed sovereign ledger files (see Chat Surfaces section).
+
 # Start kernel daemon (background)
 .venv/bin/python oracle_town/kernel/kernel_daemon.py &
 
