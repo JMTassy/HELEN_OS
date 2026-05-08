@@ -5,6 +5,38 @@
   "canon": "NO_SHIP",
   "userStories": [
     {
+      "id": "HD-005",
+      "title": "GOBLIN batch runner \u2014 tranche-gated brainstorm at scale",
+      "priority": 1,
+      "status": "done",
+      "epoch_owner": null,
+      "allowed_paths": [
+        "oracle_town/skills/ops/dan_goblin/"
+      ],
+      "forbidden_paths": [
+        "oracle_town/kernel/",
+        "helen_os/governance/",
+        "helen_os/schemas/",
+        "town/ledger_v1*.ndjson",
+        "mayor_*.json",
+        "GOVERNANCE/"
+      ],
+      "required_receipts": [
+        "artifact_manifest"
+      ],
+      "acceptanceCriteria": [
+        "Script runs N epochs (default tranche_size=30)",
+        "Each epoch: GOBLIN generates insight via API \u2192 HER scores \u2192 HAL tags",
+        "HAL escalation: ESCALATE flag if p_grip < 0.4 or p_harm > 0.7",
+        "reducer_decision field absent from all epoch outputs (enforced in schema)",
+        "JSONL output one line per epoch to brainstorm/batches/",
+        "Tranche receipt written at boundary: schema=GOBLIN_BATCH_TRANCHE_V1, reducer_decision=null",
+        "Script stops at tranche boundary and prints MAYOR review instructions",
+        "dry-run flag: skips API, writes deterministic seed entries for schema validation",
+        "All outputs: authority=NON_SOVEREIGN, canon=NO_SHIP"
+      ]
+    },
+    {
       "id": "HD-001",
       "title": "Add complexity_extractor.py",
       "priority": 1,

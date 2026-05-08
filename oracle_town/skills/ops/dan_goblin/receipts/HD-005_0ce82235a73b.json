@@ -1,0 +1,24 @@
+{
+  "receipt_id": "b3221d9d78dc3e49",
+  "story_id": "HD-005",
+  "epoch": "0ce82235a73b",
+  "actor": "DAN_GOBLIN",
+  "authority": "NON_SOVEREIGN",
+  "canon": "NO_SHIP",
+  "status": "GREEN",
+  "failure_type": null,
+  "files_changed": [],
+  "tests_run": {
+    "passed": 0,
+    "failed": 0,
+    "total": 0,
+    "command": "pytest experiments/ -q --tb=no",
+    "stdout_tail": "ERROR experiments/qfse_bridge/tests/test_deterministic_compilation.py\nERROR experiments/qfse_bridge/tests/test_invalid_entropy_blocks.py\nERROR experiments/qfse_bridge/tests/test_same_trajectory_same_evidence_hash.py\n!!!!!!!!!!!!!!!!!!! Interrupted: 3 errors during collection !!!!!!!!!!!!!!!!!!!!\n3 errors in 0.19s"
+  },
+  "screenshots": [],
+  "artifact_manifest": [],
+  "commit_hash": "\"d206aaa7e787b84f9355917591fc29e27bcdeabf\"",
+  "notes": "",
+  "reducer_decision": null,
+  "timestamp": "2026-05-08T18:44:44Z"
+}

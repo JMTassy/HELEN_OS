@@ -1,0 +1,48 @@
+{
+  "schema_version": "GOBLIN_BATCH_TRANCHE_V1",
+  "tranche_id": "f88f977d47b3",
+  "batch_id": "14f0a5887553",
+  "tranche_index": 0,
+  "epochs_run": 30,
+  "mission": "HELEN OS governance architecture \u2014 receipts, reducers, and honest predictors",
+  "dry_run": true,
+  "timestamp": "2026-05-08T18:44:27.153953+00:00",
+  "actor": "DAN_GOBLIN",
+  "authority": "NON_SOVEREIGN",
+  "canon": "NO_SHIP",
+  "hal_summary": {
+    "PASS": 30,
+    "WARN": 0,
+    "BLOCK": 0
+  },
+  "escalate_count": 0,
+  "top_entries": [
+    {
+      "epoch_index": 29,
+      "epoch_hash": "2f2b6fce55864910",
+      "score": 0.54
+    },
+    {
+      "epoch_index": 28,
+      "epoch_hash": "663f9ecebafeae46",
+      "score": 0.54
+    },
+    {
+      "epoch_index": 27,
+      "epoch_hash": "91759970381e5de6",
+      "score": 0.54
+    },
+    {
+      "epoch_index": 26,
+      "epoch_hash": "66a9311e11652884",
+      "score": 0.54
+    },
+    {
+      "epoch_index": 25,
+      "epoch_hash": "15e71506d33655e5",
+      "score": 0.54
+    }
+  ],
+  "output_file": "/Users/jean-marietassy/Documents/GitHub/helen_os_v1/oracle_town/skills/ops/dan_goblin/brainstorm/batches/14f0a5887553_tranche_000.jsonl",
+  "reducer_decision": null
+}
