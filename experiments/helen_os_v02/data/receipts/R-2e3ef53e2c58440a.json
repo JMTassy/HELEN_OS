@@ -1,0 +1,21 @@
+{
+  "artifacts": [
+    {
+      "artifact_id": "ART-4f48ef2c517e",
+      "content_hash": "812cfe9109df38d6b067c757ba806345c0ddf753895b4f9c745934ae9702e60a",
+      "content_preview": "{'command': 'pwd', 'returncode': 0, 'stdout': '/Users/jean-marietassy/Documents/GitHub/helen_os_v1/experiments/helen_os_v02\\n', 'stderr': ''}",
+      "type": "EXECUTION_RESULT"
+    },
+    {
+      "artifact_id": "ART-42cc358be04b",
+      "content_hash": "ffaaaca903032c2c7c0e7069e6b8ef28c5fbf7f5aaf392b93807a8f83aaeb11b",
+      "content_preview": "{'command': 'ls', 'returncode': 0, 'stdout': 'data\\nhelen\\npolicy\\ntests\\n', 'stderr': ''}",
+      "type": "EXECUTION_RESULT"
+    }
+  ],
+  "proposal_id": "P-b98e88e1644d",
+  "receipt_id": "R-2e3ef53e2c58440a",
+  "timestamp_utc": "2026-05-08T21:05:14.648843+00:00",
+  "verified": true,
+  "verifier": "HAL_V0.2"
+}

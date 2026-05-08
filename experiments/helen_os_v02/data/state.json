@@ -1,6 +1,8 @@
 {
-  "admitted_receipts": [],
-  "last_proposal_id": null,
-  "last_receipt_id": null,
-  "last_route": null
+  "admitted_receipts": [
+    "R-ec172e96e468c742"
+  ],
+  "last_proposal_id": "P-68cace9e90d9",
+  "last_receipt_id": "R-ec172e96e468c742",
+  "last_route": "INSPECT"
 }

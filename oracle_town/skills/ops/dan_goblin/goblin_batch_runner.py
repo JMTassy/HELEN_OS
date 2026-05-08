@@ -40,6 +40,7 @@ EPOCH_SCHEMA_VERSION = "GOBLIN_EPOCH_V1"
 
 OPENAI_MODEL = "gpt-4o-mini"
 ANTHROPIC_MODEL = "claude-haiku-4-5-20251001"
+XAI_MODEL = "grok-3-mini"
 DRY_RUN_MODEL = "deterministic-seed-v0"
 
 # ── HAL thresholds ────────────────────────────────────────────────────────────
@@ -55,11 +56,13 @@ HAL_BLOCK_P_HARM = 0.85
 _BACKEND_API_PATH = {
     "openai": "chat.completions",
     "anthropic": "messages",
+    "xai": "chat.completions",
     "dry_run": "dry_run",
 }
 _BACKEND_API_VER = {
     "openai": "v1",
     "anthropic": "2023-06-01",
+    "xai": "v1",
     "dry_run": "v0",
 }
 
@@ -114,6 +117,8 @@ def call_llm(system: str, user: str, provider: str = "openai") -> tuple[str, str
     """Returns (content, model_used)."""
     if provider == "openai":
         return _call_openai(system, user), OPENAI_MODEL
+    if provider == "xai":
+        return _call_xai(system, user), XAI_MODEL
     return _call_anthropic(system, user), ANTHROPIC_MODEL
 
 
@@ -133,6 +138,29 @@ def _call_openai(system: str, user: str, model: str = OPENAI_MODEL) -> str:
         response_format={"type": "json_object"},
     )
     return resp.choices[0].message.content
+
+
+def _call_xai(system: str, user: str, model: str = XAI_MODEL) -> str:
+    import httpx
+    api_key = os.environ.get("XAI_API_KEY", "")
+    if not api_key:
+        raise RuntimeError("XAI_API_KEY not set")
+    resp = httpx.post(
+        "https://api.x.ai/v1/chat/completions",
+        headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+        json={
+            "model": model,
+            "max_tokens": 800,
+            "messages": [
+                {"role": "system", "content": system},
+                {"role": "user", "content": user},
+            ],
+            "response_format": {"type": "json_object"},
+        },
+        timeout=30.0,
+    )
+    resp.raise_for_status()
+    return resp.json()["choices"][0]["message"]["content"]
 
 
 def _call_anthropic(system: str, user: str, model: str = ANTHROPIC_MODEL) -> str:
@@ -421,7 +449,7 @@ def run_batch(
                 "authority": "NON_SOVEREIGN",
                 "canon": "NO_SHIP",
                 "provider": provider if not dry_run else "dry_run",
-                "model": OPENAI_MODEL if provider == "openai" else ANTHROPIC_MODEL if provider == "anthropic" else DRY_RUN_MODEL,
+                "model": OPENAI_MODEL if provider == "openai" else XAI_MODEL if provider == "xai" else ANTHROPIC_MODEL if provider == "anthropic" else DRY_RUN_MODEL,
             }
             epochs.append(failed_entry)
             with open(output_file, "a") as f:
@@ -429,7 +457,7 @@ def run_batch(
 
     # ── tranche receipt ───────────────────────────────────────────────────────
     tranche_provider = "dry_run" if dry_run else provider
-    tranche_model = DRY_RUN_MODEL if dry_run else (OPENAI_MODEL if provider == "openai" else ANTHROPIC_MODEL)
+    tranche_model = DRY_RUN_MODEL if dry_run else (OPENAI_MODEL if provider == "openai" else XAI_MODEL if provider == "xai" else ANTHROPIC_MODEL)
     receipt = make_tranche_receipt(
         batch_id, tranche_index, mission,
         [e for e in epochs if e.get("status") != "FAILED"],
@@ -476,7 +504,7 @@ if __name__ == "__main__":
     parser.add_argument("--batch-id", default=None)
     parser.add_argument("--dry-run", action="store_true", help="Skip API calls, use seed data")
     parser.add_argument("--delay", type=float, default=0.5, help="Seconds between API calls")
-    parser.add_argument("--provider", default="openai", choices=["openai", "anthropic"])
+    parser.add_argument("--provider", default="xai", choices=["openai", "anthropic", "xai"])
     args = parser.parse_args()
 
     source_env = Path.home() / ".helen_env"

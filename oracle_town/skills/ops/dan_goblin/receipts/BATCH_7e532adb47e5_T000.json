@@ -1,0 +1,36 @@
+{
+  "schema_version": "GOBLIN_BATCH_TRANCHE_V1",
+  "tranche_id": "95761106f231",
+  "batch_id": "7e532adb47e5",
+  "tranche_index": 0,
+  "epochs_run": 2,
+  "mission": "HELEN OS architecture and governance",
+  "dry_run": false,
+  "timestamp": "2026-05-08T19:01:53.953781+00:00",
+  "actor": "DAN_GOBLIN",
+  "authority": "NON_SOVEREIGN",
+  "canon": "NO_SHIP",
+  "provider": "xai",
+  "model": "grok-3-mini",
+  "backend_signature": "xai:grok-3-mini:chat.completions:v1",
+  "hal_summary": {
+    "PASS": 2,
+    "WARN": 0,
+    "BLOCK": 0
+  },
+  "escalate_count": 0,
+  "top_entries": [
+    {
+      "epoch_index": 1,
+      "epoch_hash": "52b1bdd11eb8e351",
+      "score": 0.56
+    },
+    {
+      "epoch_index": 0,
+      "epoch_hash": "170d5b1530d11cee",
+      "score": 0.56
+    }
+  ],
+  "output_file": "/Users/jean-marietassy/Documents/GitHub/helen_os_v1/oracle_town/skills/ops/dan_goblin/brainstorm/batches/7e532adb47e5_tranche_000.jsonl",
+  "reducer_decision": null
+}
