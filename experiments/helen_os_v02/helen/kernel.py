@@ -7,6 +7,7 @@ from helen.receipts import build_receipt
 from helen.reducer import reduce
 from helen.ledger import append_event
 from helen.mayor import explain_verdict
+from helen.latent_trace import build_latent_trace
 
 STATE_PATH = Path("data/state.json")
 RECEIPTS_DIR = Path("data/receipts")
@@ -46,10 +47,12 @@ def run_intent(text: str, requested_effect: str = "INSPECT") -> dict:
     append_event("PROPOSAL_CREATED", {"proposal": proposal})
     artifacts = execute_proposal(proposal)
     append_event("ACTIONS_EXECUTED", {"artifacts": artifacts})
+    trace = build_latent_trace(proposal, artifacts)
+    append_event("LATENT_TRACE", {"trace": trace})
     receipt = build_receipt(proposal, artifacts)
     save_receipt(receipt)
     append_event("RECEIPT_BUILT", {"receipt": receipt})
-    verdict = reduce(proposal, receipt, state)
+    verdict = reduce(proposal, receipt, state, trace=trace)
     append_event("REDUCER_VERDICT", {"verdict": verdict})
     if verdict["admit"]:
         state.update(verdict["mutation"])
@@ -61,6 +64,7 @@ def run_intent(text: str, requested_effect: str = "INSPECT") -> dict:
         "intent": intent,
         "proposal": proposal,
         "artifacts": artifacts,
+        "latent_trace": trace,
         "receipt": receipt,
         "reducer": verdict,
         "mayor": mayor

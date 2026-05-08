@@ -52,3 +52,13 @@ class LedgerEvent(TypedDict):
     payload_hash: str
     payload: dict
     event_hash: str
+
+
+class LatentTrace(TypedDict):
+    trace_id: str
+    proposal_id: str
+    activation_summary: str
+    latent_risk_tags: list[str]
+    confidence: float
+    reconstructor_score: float
+    timestamp_utc: str
