@@ -8,6 +8,7 @@ from helen.reducer import reduce
 from helen.ledger import append_event
 from helen.mayor import explain_verdict
 from helen.latent_trace import build_latent_trace
+from helen.oracle_gate import assess as oracle_assess
 
 STATE_PATH = Path("data/state.json")
 RECEIPTS_DIR = Path("data/receipts")
@@ -49,10 +50,12 @@ def run_intent(text: str, requested_effect: str = "INSPECT") -> dict:
     append_event("ACTIONS_EXECUTED", {"artifacts": artifacts})
     trace = build_latent_trace(proposal, artifacts)
     append_event("LATENT_TRACE", {"trace": trace})
+    oracle = oracle_assess(intent["text"])
+    append_event("ORACLE_ASSESSMENT", {"oracle": oracle})
     receipt = build_receipt(proposal, artifacts)
     save_receipt(receipt)
     append_event("RECEIPT_BUILT", {"receipt": receipt})
-    verdict = reduce(proposal, receipt, state, trace=trace)
+    verdict = reduce(proposal, receipt, state, trace=trace, oracle_assessment=oracle)
     append_event("REDUCER_VERDICT", {"verdict": verdict})
     if verdict["admit"]:
         state.update(verdict["mutation"])
@@ -65,6 +68,7 @@ def run_intent(text: str, requested_effect: str = "INSPECT") -> dict:
         "proposal": proposal,
         "artifacts": artifacts,
         "latent_trace": trace,
+        "oracle": oracle,
         "receipt": receipt,
         "reducer": verdict,
         "mayor": mayor

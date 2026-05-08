@@ -1,8 +1,11 @@
 {
   "admitted_receipts": [
-    "R-ec172e96e468c742"
+    "R-ec172e96e468c742",
+    "R-91d15d0c8586b600"
   ],
-  "last_proposal_id": "P-68cace9e90d9",
-  "last_receipt_id": "R-ec172e96e468c742",
-  "last_route": "INSPECT"
+  "last_oracle_classification": "TESTABLE_CLAIM",
+  "last_proposal_id": "P-cfebe603cb20",
+  "last_receipt_id": "R-91d15d0c8586b600",
+  "last_route": "INSPECT",
+  "last_trace_id": "LT-a55e18993c2b38ca"
 }
