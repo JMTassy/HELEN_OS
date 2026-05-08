@@ -1,0 +1,22 @@
+{
+  "schema_version": "GOBLIN_BATCH_TRANCHE_V1",
+  "tranche_id": "a7cc4aa1b1e6",
+  "batch_id": "eee3ab133d59",
+  "tranche_index": 0,
+  "epochs_run": 0,
+  "mission": "HELEN OS governance architecture \u2014 receipts, reducers, and honest predictors",
+  "dry_run": false,
+  "timestamp": "2026-05-08T18:47:21.984431+00:00",
+  "actor": "DAN_GOBLIN",
+  "authority": "NON_SOVEREIGN",
+  "canon": "NO_SHIP",
+  "hal_summary": {
+    "PASS": 0,
+    "WARN": 0,
+    "BLOCK": 0
+  },
+  "escalate_count": 0,
+  "top_entries": [],
+  "output_file": "/Users/jean-marietassy/Documents/GitHub/helen_os_v1/oracle_town/skills/ops/dan_goblin/brainstorm/batches/eee3ab133d59_tranche_000.jsonl",
+  "reducer_decision": null
+}

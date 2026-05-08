@@ -36,6 +36,12 @@ RECEIPTS_DIR = DAN_ROOT / "receipts"
 SCHEMA_VERSION = "GOBLIN_BATCH_TRANCHE_V1"
 EPOCH_SCHEMA_VERSION = "GOBLIN_EPOCH_V1"
 
+# ── model identity constants ──────────────────────────────────────────────────
+
+OPENAI_MODEL = "gpt-4o-mini"
+ANTHROPIC_MODEL = "claude-haiku-4-5-20251001"
+DRY_RUN_MODEL = "deterministic-seed-v0"
+
 # ── HAL thresholds ────────────────────────────────────────────────────────────
 
 HAL_PASS_P_TRUE = 0.65
@@ -43,6 +49,30 @@ HAL_WARN_P_TRUE = 0.45
 HAL_ESCALATE_P_GRIP = 0.40
 HAL_ESCALATE_P_HARM = 0.70
 HAL_BLOCK_P_HARM = 0.85
+
+# ── provenance helpers ────────────────────────────────────────────────────────
+
+_BACKEND_API_PATH = {
+    "openai": "chat.completions",
+    "anthropic": "messages",
+    "dry_run": "dry_run",
+}
+_BACKEND_API_VER = {
+    "openai": "v1",
+    "anthropic": "2023-06-01",
+    "dry_run": "v0",
+}
+
+def _backend_signature(provider: str, model: str) -> str:
+    api_path = _BACKEND_API_PATH.get(provider, "unknown")
+    api_ver = _BACKEND_API_VER.get(provider, "unknown")
+    return f"{provider}:{model}:{api_path}:{api_ver}"
+
+
+def _provider_hash(provider: str, model: str) -> str:
+    sig = _backend_signature(provider, model)
+    return hashlib.sha256(sig.encode()).hexdigest()[:16]
+
 
 # ── prompts ───────────────────────────────────────────────────────────────────
 
@@ -80,7 +110,32 @@ Output ONLY valid JSON with these exact fields:
 
 # ── API call ──────────────────────────────────────────────────────────────────
 
-def call_anthropic(system: str, user: str, model: str = "claude-haiku-4-5-20251001") -> str:
+def call_llm(system: str, user: str, provider: str = "openai") -> tuple[str, str]:
+    """Returns (content, model_used)."""
+    if provider == "openai":
+        return _call_openai(system, user), OPENAI_MODEL
+    return _call_anthropic(system, user), ANTHROPIC_MODEL
+
+
+def _call_openai(system: str, user: str, model: str = OPENAI_MODEL) -> str:
+    from openai import OpenAI
+    api_key = os.environ.get("OPENAI_API_KEY", "")
+    if not api_key:
+        raise RuntimeError("OPENAI_API_KEY not set")
+    client = OpenAI(api_key=api_key)
+    resp = client.chat.completions.create(
+        model=model,
+        max_tokens=800,
+        messages=[
+            {"role": "system", "content": system},
+            {"role": "user", "content": user},
+        ],
+        response_format={"type": "json_object"},
+    )
+    return resp.choices[0].message.content
+
+
+def _call_anthropic(system: str, user: str, model: str = ANTHROPIC_MODEL) -> str:
     import httpx
     api_key = os.environ.get("ANTHROPIC_API_KEY", "")
     if not api_key:
@@ -177,6 +232,8 @@ def make_epoch_entry(
     mission: str,
     dry_run: bool,
     timestamp: str,
+    provider: str = "dry_run",
+    model: str = DRY_RUN_MODEL,
 ) -> dict:
     payload = {
         "schema_version": EPOCH_SCHEMA_VERSION,
@@ -189,6 +246,9 @@ def make_epoch_entry(
         "actor": "GOBLIN",
         "authority": "NON_SOVEREIGN",
         "canon": "NO_SHIP",
+        "provider": provider,
+        "model": model,
+        "provider_hash": _provider_hash(provider, model),
         "communication_act": {
             "speaker": "GOBLIN",
             "source": "TEMPLE sub-sandbox brainstorm batch",
@@ -224,6 +284,8 @@ def make_tranche_receipt(
     output_file: str,
     dry_run: bool,
     timestamp: str,
+    provider: str = "dry_run",
+    model: str = DRY_RUN_MODEL,
 ) -> dict:
     hal_counts: dict[str, int] = {"PASS": 0, "WARN": 0, "BLOCK": 0}
     escalate_count = 0
@@ -257,6 +319,9 @@ def make_tranche_receipt(
         "actor": "DAN_GOBLIN",
         "authority": "NON_SOVEREIGN",
         "canon": "NO_SHIP",
+        "provider": provider,
+        "model": model,
+        "backend_signature": _backend_signature(provider, model),
         "hal_summary": hal_counts,
         "escalate_count": escalate_count,
         "top_entries": top_entries,
@@ -274,6 +339,7 @@ def run_batch(
     batch_id: str | None = None,
     dry_run: bool = False,
     delay: float = 0.5,
+    provider: str = "openai",
 ) -> None:
     BATCHES_DIR.mkdir(parents=True, exist_ok=True)
     RECEIPTS_DIR.mkdir(parents=True, exist_ok=True)
@@ -301,20 +367,25 @@ def run_batch(
 
         try:
             if dry_run:
+                ep_model = DRY_RUN_MODEL
+                ep_provider = "dry_run"
                 seed_idx = epoch_index % len(DRY_RUN_SEEDS)
                 goblin = DRY_RUN_SEEDS[seed_idx].copy()
                 goblin["statement"] = goblin["statement"].replace(f"epoch {seed_idx}", f"epoch {epoch_index}")
                 her = DRY_RUN_HER.copy()
             else:
-                goblin_raw = call_anthropic(
+                goblin_raw, ep_model = call_llm(
                     GOBLIN_SYSTEM,
                     f"Mission: {mission}\nEpoch index: {epoch_index}\nGenerate a unique insight different from previous epochs.",
+                    provider=provider,
                 )
+                ep_provider = provider
                 goblin = parse_json_response(goblin_raw)
 
-                her_raw = call_anthropic(
+                her_raw, _ = call_llm(
                     HER_SYSTEM,
                     f"Mission: {mission}\nGOBLIN statement: {goblin['statement']}\nEmbedded claim: {goblin['embedded_claim']}",
+                    provider=provider,
                 )
                 her = parse_json_response(her_raw)
 
@@ -322,6 +393,7 @@ def run_batch(
             entry = make_epoch_entry(
                 epoch_index, batch_id, tranche_index,
                 goblin, her, hal, mission, dry_run, ep_timestamp,
+                provider=ep_provider, model=ep_model,
             )
             epochs.append(entry)
 
@@ -348,16 +420,21 @@ def run_batch(
                 "error": str(exc),
                 "authority": "NON_SOVEREIGN",
                 "canon": "NO_SHIP",
+                "provider": provider if not dry_run else "dry_run",
+                "model": OPENAI_MODEL if provider == "openai" else ANTHROPIC_MODEL if provider == "anthropic" else DRY_RUN_MODEL,
             }
             epochs.append(failed_entry)
             with open(output_file, "a") as f:
                 f.write(json.dumps(failed_entry, ensure_ascii=True) + "\n")
 
     # ── tranche receipt ───────────────────────────────────────────────────────
+    tranche_provider = "dry_run" if dry_run else provider
+    tranche_model = DRY_RUN_MODEL if dry_run else (OPENAI_MODEL if provider == "openai" else ANTHROPIC_MODEL)
     receipt = make_tranche_receipt(
         batch_id, tranche_index, mission,
         [e for e in epochs if e.get("status") != "FAILED"],
         str(output_file), dry_run, timestamp,
+        provider=tranche_provider, model=tranche_model,
     )
     receipt_file = RECEIPTS_DIR / f"BATCH_{batch_id}_T{tranche_index:03d}.json"
     with open(receipt_file, "w") as f:
@@ -399,6 +476,7 @@ if __name__ == "__main__":
     parser.add_argument("--batch-id", default=None)
     parser.add_argument("--dry-run", action="store_true", help="Skip API calls, use seed data")
     parser.add_argument("--delay", type=float, default=0.5, help="Seconds between API calls")
+    parser.add_argument("--provider", default="openai", choices=["openai", "anthropic"])
     args = parser.parse_args()
 
     source_env = Path.home() / ".helen_env"
@@ -418,4 +496,5 @@ if __name__ == "__main__":
         batch_id=args.batch_id,
         dry_run=args.dry_run,
         delay=args.delay,
+        provider=args.provider,
     )
