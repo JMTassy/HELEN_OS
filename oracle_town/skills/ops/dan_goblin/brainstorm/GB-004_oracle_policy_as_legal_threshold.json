@@ -1,0 +1,43 @@
+{
+  "story_id": "GB-004",
+  "epoch": "d43ccb8da90e",
+  "actor": "GOBLIN",
+  "authority": "NON_SOVEREIGN",
+  "canon": "NO_SHIP",
+  "communication_act": {
+    "speaker": "GOBLIN",
+    "source": "TEMPLE sub-sandbox brainstorm epoch",
+    "timestamp": "2026-05-08",
+    "statement": "The ORACLE_TO_POLICY_BOUNDARY is not just a safety rule inside HELEN — it is the formal definition of when an AI system becomes legally and ethically accountable for its outputs. An oracle that only scores is an instrument. A policy constructor that selects among actions and causes them to execute is an agent. Liability law, product liability, and professional negligence doctrine all hinge on this distinction. When HELEN crosses from scoring to selecting, HELEN enters the accountability regime. The receipt system is not bureaucracy — it is the audit trail that makes legal accountability tractable.",
+    "embedded_claim": "The ORACLE_TO_POLICY_BOUNDARY in HELEN governance directly corresponds to the legal and ethical threshold at which an AI system transitions from tool to agent, and the receipt/MAYOR system is the mechanism that makes that transition auditable and attributable.",
+    "truth_assumed": false
+  },
+  "her_scoring": {
+    "p_true": 0.79,
+    "p_grip": 0.70,
+    "p_explains": 0.86,
+    "best_explanation": "Legal frameworks for AI liability (EU AI Act, product liability doctrine, professional negligence) are converging on exactly this distinction: a system that provides information is treated differently from one that makes decisions. HELEN's ORACLE_TO_POLICY_BOUNDARY formalizes this at the architecture level before law requires it. The receipt trail is what makes a MAYOR decision attributable to a human principal — the legal equivalent of informed consent before a consequential action.",
+    "evidence_for": [
+      "EU AI Act distinguishes high-risk AI systems by whether they make consequential decisions vs. provide information",
+      "Product liability doctrine: tool vs. agent distinction determines manufacturer vs. operator liability",
+      "HELEN MAYOR receipt = documented informed consent + audit trail for consequential action",
+      "PURE_PREDICTOR_GATE (scoring only) maps to instrument; POLICY_CONSTRUCTION mode maps to agent"
+    ],
+    "evidence_against": [
+      "Legal frameworks for AI are still evolving — the mapping may not hold in all jurisdictions",
+      "p_true and p_grip are probabilistic — legal accountability typically requires deterministic attribution",
+      "GOBLIN cannot verify current legal doctrine — this is a structural analogy, not legal advice"
+    ],
+    "uncertainty": "The structural analogy is strong but the legal claim is uncertain (p_grip: 0.70) because AI liability law is jurisdiction-specific and rapidly changing. Value as architecture inspiration is high; value as legal argument requires verification by qualified counsel."
+  },
+  "hal_verdict": {
+    "verdict": "PASS",
+    "epistemic_tag": "COMMUNICATION_ACT",
+    "interpretation": "High architectural value: reframes HELEN's governance design as proactive legal risk management, not just engineering discipline. The receipt-as-audit-trail framing is directly actionable for investor and regulatory conversations. Legal claim requires external verification before use in any official context.",
+    "allowed_use": "architecture framing, investor narrative, regulatory positioning, doctrine development",
+    "blocked_use": "legal advice, compliance claims, factual assertion about current law",
+    "authority": false,
+    "canon": "NO_SHIP"
+  },
+  "reducer_decision": null
+}

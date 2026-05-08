@@ -1,0 +1,43 @@
+{
+  "story_id": "GB-005",
+  "epoch": "4ea479458629",
+  "actor": "GOBLIN",
+  "authority": "NON_SOVEREIGN",
+  "canon": "NO_SHIP",
+  "communication_act": {
+    "speaker": "GOBLIN",
+    "source": "TEMPLE sub-sandbox brainstorm epoch",
+    "timestamp": "2026-05-08",
+    "statement": "The flat earth principle — the best explanation beats the loudest hypothesis — is formally equivalent to minimum description length (MDL) in information theory. MDL says: the best model is the one that compresses the data most efficiently. The Earth-is-spherical model compresses all astronomical observations, navigation data, physics, and satellite imagery into one short explanation. The flat-Earth model requires a vast conspiracy theory to explain away all contradicting evidence — it is a longer description. HELEN's 'best explanation beats volume' law is MDL applied to belief formation. At 300 epochs, this is also the correct ranking algorithm for GOBLIN outputs: score each hypothesis by how much compressed explanation it provides per unit of evidence.",
+    "embedded_claim": "HELEN's flat earth principle is a natural language expression of Minimum Description Length, and this connection provides a mathematical grounding for the 'best explanation' ranking criterion used in LATENT_WORLD_WITNESS and BAYESIAN_WITNESS.",
+    "truth_assumed": false
+  },
+  "her_scoring": {
+    "p_true": 0.91,
+    "p_grip": 0.88,
+    "p_explains": 0.94,
+    "best_explanation": "Minimum Description Length is a well-established principle in statistical learning (Rissanen, 1978; Grünwald, 2007). It formalizes Occam's razor: the hypothesis that most compresses the data is preferred. HELEN's 'shorter causal chain preferred over ornate mythology at equal score' rule in LATENT_WORLD_WITNESS is exactly this. The connection is not metaphorical — it is the same principle in different vocabularies. This provides a path to making HELEN's hypothesis ranking computable: MDL scoring is implementable.",
+    "evidence_for": [
+      "Rissanen (1978) MDL principle: best model = shortest program that generates the data",
+      "LATENT_WORLD_WITNESS: 'minimal-description preference (shorter causal chain preferred over ornate mythology at equal score)' — direct MDL statement",
+      "Kolmogorov complexity: incompressible data has no structure; flat earth conspiracy = high complexity description",
+      "MDL is used in model selection across statistics, ML, and cognitive science"
+    ],
+    "evidence_against": [
+      "MDL requires a defined encoding scheme — 'description length' for natural language hypotheses is not formally defined in HELEN",
+      "Computationally, Kolmogorov complexity is uncomputable — practical MDL uses approximations",
+      "The analogy may break down at the edges: some true hypotheses are genuinely complex and resist compression"
+    ],
+    "uncertainty": "The connection is mathematically solid at the conceptual level (p_grip: 0.88) but operationalizing MDL for HELEN's natural language hypotheses requires a defined encoding. This is tractable — embedding distance is a proxy — but not yet implemented."
+  },
+  "hal_verdict": {
+    "verdict": "PASS",
+    "epistemic_tag": "COMMUNICATION_ACT",
+    "interpretation": "Highest-scoring entry in this tranche. Provides mathematical grounding for a core HELEN doctrine principle. Directly actionable: MDL scoring can be implemented as a hypothesis ranker for the 300-epoch batch pipeline. Connects LATENT_WORLD_WITNESS doctrine to established information theory.",
+    "allowed_use": "doctrine development, hypothesis ranking algorithm design, BAYESIAN_WITNESS scoring enhancement",
+    "blocked_use": "claiming HELEN implements MDL without building the encoding scheme",
+    "authority": false,
+    "canon": "NO_SHIP"
+  },
+  "reducer_decision": null
+}

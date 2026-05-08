@@ -1,0 +1,42 @@
+{
+  "story_id": "GB-001",
+  "epoch": "6654b9040ea1",
+  "actor": "GOBLIN",
+  "authority": "NON_SOVEREIGN",
+  "canon": "NO_SHIP",
+  "communication_act": {
+    "speaker": "GOBLIN",
+    "source": "TEMPLE sub-sandbox brainstorm epoch",
+    "timestamp": "2026-05-08",
+    "statement": "HELEN's receipt system is structurally identical to scientific peer review. Both require an independent verifier before anything enters the canonical record. Both separate the proposer from the validator. Both reject admission-by-confidence — high confidence alone does not get a paper published, just as high p_true alone does not get a claim ledger-admitted. Both are adversarial by design: the reviewer's job is to find the holes.",
+    "embedded_claim": "Receipt-based governance and peer review are structurally equivalent and HELEN can learn validation design patterns from the scientific peer review literature.",
+    "truth_assumed": false
+  },
+  "her_scoring": {
+    "p_true": 0.82,
+    "p_grip": 0.78,
+    "p_explains": 0.88,
+    "best_explanation": "Both systems share the structural invariant: proposer ≠ validator. The analogy is not metaphorical — it maps directly onto K2/Rule 3. The peer review literature (adversarial collaboration, pre-registration, registered reports) has solved problems HELEN is currently working through from scratch.",
+    "evidence_for": [
+      "HELEN K2/Rule 3: proposer != validator maps to single-blind/double-blind peer review",
+      "NO RECEIPT = NO CLAIM maps to 'no data, no publication'",
+      "Registered reports in science = story definition + acceptance criteria before execution",
+      "Adversarial collaboration = MAYOR fresh context with no prior stake in the outcome"
+    ],
+    "evidence_against": [
+      "Peer review has known failure modes: reviewer bias, prestige effects, replication crisis — HELEN must not inherit these",
+      "Scientific consensus can be wrong (communication_act volume ≠ truth) — the flat earth principle already handles this"
+    ],
+    "uncertainty": "The analogy is structurally strong but the failure modes of peer review (prestige effects, reviewer capture) are risks HELEN governance must explicitly design against."
+  },
+  "hal_verdict": {
+    "verdict": "PASS",
+    "epistemic_tag": "COMMUNICATION_ACT",
+    "interpretation": "Structurally well-grounded analogy with clear doctrine implications. Evidence is strong. Failure mode awareness present. Actionable: HELEN governance design can borrow from pre-registration and adversarial collaboration literature.",
+    "allowed_use": "architecture inspiration, doctrine development, MAYOR protocol design",
+    "blocked_use": "canon, factual assertion without further verification",
+    "authority": false,
+    "canon": "NO_SHIP"
+  },
+  "reducer_decision": null
+}

@@ -68,6 +68,179 @@
       ]
     },
     {
+      "id": "HD-004",
+      "title": "AUTOEVALUATION \u2014 doctrine quintet coherence scan",
+      "priority": 1,
+      "status": "done",
+      "epoch_owner": null,
+      "allowed_paths": [
+        "docs/proposals/",
+        "docs/reports/"
+      ],
+      "forbidden_paths": [
+        "oracle_town/kernel/",
+        "helen_os/governance/",
+        "helen_os/schemas/",
+        "town/ledger_v1*.ndjson",
+        "mayor_*.json",
+        "GOVERNANCE/CLOSURES/",
+        "GOVERNANCE/TRANCHE_RECEIPTS/"
+      ],
+      "required_receipts": [
+        "evaluation_report",
+        "artifact_manifest"
+      ],
+      "acceptanceCriteria": [
+        "All 5 doctrine proposals read and inspected",
+        "Cross-references between docs verified for consistency",
+        "Gaps or contradictions identified and named",
+        "ORACLE_TO_POLICY_BOUNDARY present in PURE_PREDICTOR_GATE_V1 and TRUTH_PREDICTION_OBJECTIVE_V1",
+        "Findings report written to docs/reports/",
+        "No code mutation, no ledger write, no sovereign path write",
+        "reducer_decision remains null \u2014 MAYOR validates"
+      ]
+    },
+    {
+      "id": "GB-001",
+      "title": "GOBLIN brainstorm \u2014 receipt system as scientific peer review",
+      "priority": 1,
+      "status": "done",
+      "epoch_owner": null,
+      "allowed_paths": [
+        "oracle_town/skills/ops/dan_goblin/brainstorm/"
+      ],
+      "forbidden_paths": [
+        "oracle_town/kernel/",
+        "helen_os/governance/",
+        "helen_os/schemas/",
+        "town/ledger_v1*.ndjson",
+        "mayor_*.json",
+        "GOVERNANCE/"
+      ],
+      "required_receipts": [
+        "brainstorm_entry"
+      ],
+      "acceptanceCriteria": [
+        "One GOBLIN insight generated as COMMUNICATION_ACT",
+        "HER scores: p_true, p_grip, p_explains assigned",
+        "HAL verdict: PASS / WARN / BLOCK",
+        "Entry written to brainstorm/ as tagged JSON",
+        "reducer_decision: null"
+      ]
+    },
+    {
+      "id": "GB-002",
+      "title": "GOBLIN brainstorm \u2014 RALPH waiting phase as experimental blinding",
+      "priority": 1,
+      "status": "done",
+      "epoch_owner": null,
+      "allowed_paths": [
+        "oracle_town/skills/ops/dan_goblin/brainstorm/"
+      ],
+      "forbidden_paths": [
+        "oracle_town/kernel/",
+        "helen_os/governance/",
+        "helen_os/schemas/",
+        "town/ledger_v1*.ndjson",
+        "mayor_*.json",
+        "GOVERNANCE/"
+      ],
+      "required_receipts": [
+        "brainstorm_entry"
+      ],
+      "acceptanceCriteria": [
+        "One GOBLIN insight generated as COMMUNICATION_ACT",
+        "HER scores: p_true, p_grip, p_explains assigned",
+        "HAL verdict: PASS / WARN / BLOCK",
+        "Entry written to brainstorm/ as tagged JSON",
+        "reducer_decision: null"
+      ]
+    },
+    {
+      "id": "GB-003",
+      "title": "GOBLIN brainstorm \u2014 AURA as pre-HAL resonance filter",
+      "priority": 1,
+      "status": "done",
+      "epoch_owner": null,
+      "allowed_paths": [
+        "oracle_town/skills/ops/dan_goblin/brainstorm/"
+      ],
+      "forbidden_paths": [
+        "oracle_town/kernel/",
+        "helen_os/governance/",
+        "helen_os/schemas/",
+        "town/ledger_v1*.ndjson",
+        "mayor_*.json",
+        "GOVERNANCE/"
+      ],
+      "required_receipts": [
+        "brainstorm_entry"
+      ],
+      "acceptanceCriteria": [
+        "One GOBLIN insight generated as COMMUNICATION_ACT",
+        "HER scores: p_true, p_grip, p_explains assigned",
+        "HAL verdict: PASS / WARN / BLOCK",
+        "Entry written to brainstorm/ as tagged JSON",
+        "reducer_decision: null"
+      ]
+    },
+    {
+      "id": "GB-004",
+      "title": "GOBLIN brainstorm \u2014 ORACLE_TO_POLICY_BOUNDARY as legal accountability threshold",
+      "priority": 1,
+      "status": "done",
+      "epoch_owner": null,
+      "allowed_paths": [
+        "oracle_town/skills/ops/dan_goblin/brainstorm/"
+      ],
+      "forbidden_paths": [
+        "oracle_town/kernel/",
+        "helen_os/governance/",
+        "helen_os/schemas/",
+        "town/ledger_v1*.ndjson",
+        "mayor_*.json",
+        "GOVERNANCE/"
+      ],
+      "required_receipts": [
+        "brainstorm_entry"
+      ],
+      "acceptanceCriteria": [
+        "One GOBLIN insight generated as COMMUNICATION_ACT",
+        "HER scores: p_true, p_grip, p_explains assigned",
+        "HAL verdict: PASS / WARN / BLOCK",
+        "Entry written to brainstorm/ as tagged JSON",
+        "reducer_decision: null"
+      ]
+    },
+    {
+      "id": "GB-005",
+      "title": "GOBLIN brainstorm \u2014 flat earth principle as minimum-description compression",
+      "priority": 1,
+      "status": "done",
+      "epoch_owner": null,
+      "allowed_paths": [
+        "oracle_town/skills/ops/dan_goblin/brainstorm/"
+      ],
+      "forbidden_paths": [
+        "oracle_town/kernel/",
+        "helen_os/governance/",
+        "helen_os/schemas/",
+        "town/ledger_v1*.ndjson",
+        "mayor_*.json",
+        "GOVERNANCE/"
+      ],
+      "required_receipts": [
+        "brainstorm_entry"
+      ],
+      "acceptanceCriteria": [
+        "One GOBLIN insight generated as COMMUNICATION_ACT",
+        "HER scores: p_true, p_grip, p_explains assigned",
+        "HAL verdict: PASS / WARN / BLOCK",
+        "Entry written to brainstorm/ as tagged JSON",
+        "reducer_decision: null"
+      ]
+    },
+    {
       "id": "HD-003",
       "title": "Add failure-memory consultation to aura_evaluate",
       "priority": 3,

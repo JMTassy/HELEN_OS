@@ -1,0 +1,43 @@
+{
+  "story_id": "GB-003",
+  "epoch": "f25b3197692d",
+  "actor": "GOBLIN",
+  "authority": "NON_SOVEREIGN",
+  "canon": "NO_SHIP",
+  "communication_act": {
+    "speaker": "GOBLIN",
+    "source": "TEMPLE sub-sandbox brainstorm epoch",
+    "timestamp": "2026-05-08",
+    "statement": "AURA should sit between raw GOBLIN output and HAL as a pre-filter that scores symbolic and mythic density, not truth. HAL is expensive because it must evaluate everything. AURA is cheap because it only asks one question: does this signal have enough resonance to be worth HAL's time? At 1000 epochs, most GOBLIN output is noise by volume. AURA's job is not to decide what is true — it is to decide what is interesting enough to queue for evaluation. A signal that is both laterally strange AND structurally coherent gets forwarded. Flat mythic repetition gets dropped before HAL ever sees it.",
+    "embedded_claim": "AURA can act as an O(N) resonance pre-filter before HAL's more expensive O(N) evaluation, reducing the effective load on HAL at scale while preserving the governance invariant that AURA never admits — it only forwards.",
+    "truth_assumed": false
+  },
+  "her_scoring": {
+    "p_true": 0.75,
+    "p_grip": 0.65,
+    "p_explains": 0.83,
+    "best_explanation": "At scale (300-1000 epochs), HAL reviewing every epoch directly creates a bottleneck identical to the MAYOR bottleneck at 300 epochs. AURA as a resonance pre-filter is the correct architectural response: it reduces the input set to HAL without making admission decisions. The risk is AURA becoming a silent gatekeeper — if AURA drops a signal before HAL sees it, that signal has been effectively rejected without a receipt. This needs a 'forwarded: false' log entry to remain auditable.",
+    "evidence_for": [
+      "Attention mechanisms in neural networks are resonance filters — they reduce what the expensive layer processes",
+      "AURA already operates on mythic/symbolic density signals in TEMPLE",
+      "HAL at 1000 epochs without pre-filtering = O(1000) expensive evaluation calls",
+      "Pre-filtering is standard in information retrieval: recall filter → precision re-ranker"
+    ],
+    "evidence_against": [
+      "AURA dropping a signal before HAL = silent rejection without receipt — violates NO RECEIPT = NO CLAIM",
+      "AURA's resonance scoring is itself unverified — a flawed filter poisons the batch before HAL sees it",
+      "AURA currently has no defined scoring function for 'interesting enough'"
+    ],
+    "uncertainty": "The insight is architecturally sound but the implementation risk (AURA as silent rejecter) requires explicit mitigation: all AURA drops must be logged with reason, so MAYOR can audit the filter behavior."
+  },
+  "hal_verdict": {
+    "verdict": "WARN",
+    "epistemic_tag": "COMMUNICATION_ACT",
+    "interpretation": "Architecturally valuable but carries a RECEIPT_RISK: if AURA drops signals silently, the governance chain has a hole. Forwarding to MAYOR requires: (a) AURA logs every drop with reason, (b) AURA never marks a drop as REJECTED — only as QUEUED or DEFERRED, (c) MAYOR can audit AURA's filter decisions.",
+    "allowed_use": "architecture design for scaled brainstorm pipeline, AURA role definition",
+    "blocked_use": "implementing AURA as a decision-maker without audit trail",
+    "authority": false,
+    "canon": "NO_SHIP"
+  },
+  "reducer_decision": null
+}
