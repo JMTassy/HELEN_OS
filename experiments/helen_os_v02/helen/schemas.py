@@ -2,6 +2,7 @@ from typing import Literal, TypedDict, NotRequired
 
 Authority = Literal["NON_SOVEREIGN", "SYSTEM", "OPERATOR"]
 Route = Literal["THINK", "INSPECT", "EXECUTE", "MEMORY_LOOKUP", "ORACLE_GATE"]
+OracleClassification = Literal["SYMBOLIC_ONLY", "PROPOSAL", "TESTABLE_CLAIM", "BLOCKED_CLAIM"]
 ActionType = Literal["SHELL", "NOOP"]
 Verdict = Literal["NO_SHIP", "SHIP", "ABORT"]
 
@@ -62,3 +63,14 @@ class LatentTrace(TypedDict):
     confidence: float
     reconstructor_score: float
     timestamp_utc: str
+
+
+class OracleClaimAssessment(TypedDict):
+    assessment_id: str
+    text_preview: str
+    classification: OracleClassification
+    blocked_triggers: list[str]
+    confidence: float
+    timestamp_utc: str
+    authority: str
+    canon: str
