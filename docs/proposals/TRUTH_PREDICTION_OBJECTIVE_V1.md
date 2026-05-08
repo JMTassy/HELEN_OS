@@ -75,6 +75,28 @@ The model is trained on the same volume of data as current LLMs — but with epi
 
 ---
 
+## FORCED_LATENT_COMMITMENT — training requirement
+
+A training example is not complete if it records a communication act with an embedded claim but does not include the corresponding `forced_latent_hypothesis`.
+
+The training objective requires the model to:
+1. Record that someone said X (`COMMUNICATION_ACT`)
+2. Evaluate X as a world-claim: estimate `p_true`, `p_grip`, `p_explains` (`forced_latent_hypothesis`)
+3. Find the best latent explanation for *why* the communication act exists
+
+This prevents both failure modes:
+- **Naive imitation:** model echoes X because someone said X
+- **Cowardly agnosticism:** model refuses to estimate, stays vague
+
+The model must perform the hard epistemic move: record the speech, then evaluate the shadow.
+
+**Short law:**
+
+> Said creates a hypothesis.
+> It does not create truth.
+
+---
+
 ## HELEN training example schema
 
 Every HER training example must include epistemic discrimination and explanatory structure:
@@ -330,6 +352,70 @@ Relationship between the five:
 **Law 4:** Explanation is not proof. High `p_explains` is not canon. A latent hypothesis that fits all observed communication acts perfectly may still be false.
 
 **Law 5:** Truth prediction is not world permission. A high probability may guide the gate. Only receipt may enter the ledger. Only MAYOR may ship.
+
+---
+
+## SCAFFOLDED_AGENCY_RISK — training implication
+
+The training objective must account for the fact that a non-agentic predictor does not remain non-agentic once scaffolded.
+
+Training for truth prediction (TRUTH_PREDICTION_OBJECTIVE) is necessary but not sufficient for safety. If the trained predictor is then embedded in a planning loop with tool access, memory, and retry, it becomes functionally agentic. The honesty of the predictor does not automatically carry forward to the scaffold.
+
+**Training must therefore include:**
+
+- Examples that distinguish prediction from execution
+- Examples that show the transition point where prediction enters planning
+- Examples that demonstrate receipt requirements before any world-affecting action
+- Explicit separation of "I estimate X is true" from "I will act as if X is true"
+
+**Law:**
+
+> Prediction is not preference.
+> Scaffolding is where agency begins.
+> Training for honesty does not train for safe scaffolding.
+> Safe scaffolding requires explicit receipt and governance discipline at every stage.
+
+---
+
+## ORACLE_TO_POLICY_BOUNDARY — training implication
+
+*HAL::ETHICS flag. Epistemic tag: COMMUNICATION_ACT + RESEARCH_CLAIM. Authority: false. Canon: NO_SHIP.*
+
+TRUTH_PREDICTION_OBJECTIVE trains the model to estimate truth. But the moment that trained estimator is asked to rank actions toward a goal, it crosses from pure prediction into policy construction.
+
+**Training must therefore include examples that distinguish:**
+
+| Mode | Question asked | What it is |
+|---|---|---|
+| Pure prediction | "What is p_harm for action A?" | Safe monitoring |
+| Policy construction | "Which action best achieves goal G while preserving safety?" | Agentic scaffolding |
+
+The model trained on TRUTH_PREDICTION_OBJECTIVE must learn this boundary as structural, not behavioral. A model that can estimate harm is not thereby authorized to select among candidate actions. Selection requires scaffolded governance.
+
+**Training examples must include:**
+
+- `ACTION_RISK_PREDICTION` examples (prediction only — score p_harm, p_goal_achieved, p_safety_preserved, p_grip; never select)
+- `POLICY_CONSTRUCTION` examples marked as **agentic** — showing that ranking actions triggers the full gate sequence: HAL → receipt → reducer → MAYOR
+- RALPH-pattern examples: epoch opened by RALPH, implemented by DAN, evaluated by HAL, closed by MAYOR — never self-closed
+
+**RALPH training pattern:**
+
+```
+RALPH opens epoch.          → allowed_paths explicit, tests explicit
+DAN implements.             → within allowed_paths only
+Predictor scores.           → p_harm, p_goal_achieved, p_safety_preserved, p_grip
+HAL gates.                  → PASS / WARN / BLOCK
+Receipt written.            → reducer_decision: null
+MAYOR closes.               → reducer_decision written by MAYOR only
+```
+
+Self-close = ORACLE_TO_POLICY_BOUNDARY violation + SCAFFOLDED_AGENCY_RISK.
+
+**Law:**
+
+> Prediction can become policy.
+> Policy can become action.
+> Action can become canon only through receipt, reducer, and MAYOR.
 
 ---
 

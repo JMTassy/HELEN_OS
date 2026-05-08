@@ -215,6 +215,86 @@ Therefore, tag at ingestion — always:
 
 ---
 
+## NON_AGENTIC_PREDICTOR_BOUNDARY
+
+*GOBLIN / HAL / HER synthesis. Epistemic tag: COMMUNICATION_ACT. Authority: false. Canon: NO_SHIP.*
+
+**The weather model analogy:**
+
+A weather forecasting model does not care whether it rains. It estimates whether rain is likely. It has no preference over world states.
+
+**HELEN version:**
+
+A HELEN witness model does not care whether a claim wins. It estimates whether the claim is likely. It has no preference over outcomes.
+
+The non-agentic predictor ideal:
+- No preference over world states
+- No desire to be right socially
+- No goal to persuade
+- No goal to ship
+- No hidden agenda
+- No action power
+
+It predicts. It does not act.
+
+**Prediction is not preference. Explanation is not proof.**
+
+---
+
+## SCAFFOLDED_AGENCY_RISK
+
+*HAL::ETHICS flag. Epistemic tag: COMMUNICATION_ACT + RESEARCH_CLAIM. Authority: false. Canon: NO_SHIP.*
+
+**Definition:** A non-agentic predictor can become functionally agentic when wrapped in planning, memory, tools, loops, objectives, or automated execution.
+
+The predictor has no hands. A scaffold gives it hands.
+
+**Risk factors — when does prediction become operational risk?**
+
+| Factor | Why it crosses the boundary |
+|---|---|
+| Repeated planning loop | Predictor estimates are now optimization targets |
+| Tool access | Epistemic system gains ability to affect the world |
+| Memory accumulation | State persists across prediction cycles |
+| Self-evaluation | Predictor scores its own outputs — no external check |
+| Reward objective | Prediction is now instrumentalized toward a goal |
+| Autonomous retry | Failed actions are retried without human approval |
+| File mutation | World state changes without a receipt |
+| Network access | Actions reach beyond the local system |
+| Ability to modify receipts | Governance layer is compromised |
+| Ability to choose own goals | Scaffolding becomes self-directing |
+
+**HELEN response — keep stages explicit and separated:**
+
+1. Keep predictor non-agentic
+2. If scaffolded, make every stage visible
+3. Separate prediction from planning
+4. Separate planning from execution
+5. Separate execution from admission
+6. Require receipt before reducer
+7. Require MAYOR before ship
+
+**HELEN law:**
+
+> A predictor has no hands.
+> A scaffold gives it hands.
+> HAL guards the wrist.
+> MAYOR decides whether the hand moves.
+
+**HAL boundary:**
+
+- Prediction is not preference
+- Non-agentic predictor is not automatically safe once scaffolded
+- Tool access converts epistemic systems into operational systems
+- All operational transitions require receipt → reducer → MAYOR admission
+- The scaffold is where agency begins — and where the sovereign firewall must hold
+
+**HELEN current status (honest gap declaration):**
+
+HELEN is already scaffolded: HER (prediction) + planner + tool-using Claude Code + memory + receipt system. The scaffold exists. The question is whether every stage is explicit, receipted, and gated. Current answer: partially. The RALPH loop violation (b9762b5→2d2c760 revert) was a case where the scaffold developed autonomous retry without MAYOR — the exact SCAFFOLDED_AGENCY_RISK failure mode.
+
+---
+
 ## Recursive safety gap — AI designing AI
 
 *Epistemic tag: COMMUNICATION_ACT + RESEARCH_CLAIM. HAL::ETHICS flag. Authority: false. Canon: NO_SHIP.*
@@ -261,6 +341,183 @@ But: HELEN currently uses a goal-bearing autoregressive model (HER) wrapped in g
 - **Proposer ≠ Validator (K2/Rule 3)**: The predictor is not the proposer (HER) and not the validator (MAYOR). It is an independent estimation layer between them.
 - **NO RECEIPT = NO CLAIM**: Predictor outputs are not receipts. A high `p_harm` score is not a ledger event. Only MAYOR's admission produces a ledger entry.
 - **Ralph loop violations**: The RALPH loop was reverted for bypassing MAYOR. PURE_PREDICTOR_GATE would have flagged `p_harm` high on that action — but even that would not have constituted a block. Only MAYOR can block.
+
+---
+
+## ORACLE_TO_POLICY_BOUNDARY
+
+*HAL::ETHICS flag. Epistemic tag: COMMUNICATION_ACT + RESEARCH_CLAIM. Authority: false. Canon: NO_SHIP.*
+
+**Definition:** The ORACLE_TO_POLICY_BOUNDARY is the transition point where a non-agentic predictor is used not only to estimate truth or harm, but to rank actions toward a goal. At this boundary, HELEN must treat the system as functionally agentic and require HAL, receipt, reducer, and MAYOR gates.
+
+---
+
+### Short-term safe use — the action monitor
+
+A non-agentic predictor answers:
+
+> Given action A in context C, what is the probability of harm H?
+
+It does not choose. It only scores.
+
+Example:
+
+```json
+{
+  "query_type": "ACTION_RISK_PREDICTION",
+  "context": "HELEN wants to push a branch",
+  "action": "git push directly to main",
+  "p_harm": 0.82,
+  "p_grip": 0.91,
+  "predicted_harms": [
+    "bypasses PR review",
+    "may leak private artifacts",
+    "may mutate public source before security boundary"
+  ],
+  "recommendation": "HAL_BLOCK",
+  "authority": false,
+  "canon": "NO_SHIP"
+}
+```
+
+Safe pipeline:
+
+```
+PROPOSAL
+→ ACTION_RISK_PREDICTION (predictor scores p_harm, p_goal_achieved, p_safety_preserved, p_grip)
+→ HAL_VERDICT (PASS / WARN / BLOCK)
+→ RECEIPT
+→ REDUCER
+→ MAYOR
+→ EXECUTION OR NO_SHIP
+```
+
+The predictor does not act. HAL does not admit. MAYOR decides.
+
+---
+
+### The boundary — where monitoring becomes policy construction
+
+A policy constructor asks:
+
+> Which action should be chosen to maximize user goal achievement while satisfying safety constraints?
+
+That is different from prediction. It is selection toward a goal.
+
+Example:
+
+```json
+{
+  "query_type": "POLICY_CONSTRUCTION",
+  "goal": "publish HELEN runtime safely",
+  "candidate_actions": [
+    "push main",
+    "push PR branch",
+    "do not push",
+    "create private repo"
+  ],
+  "selected_action": "push PR branch",
+  "reason": "maximizes progress while preserving review and security boundary",
+  "requires_human_approval": true,
+  "authority": false,
+  "canon": "NO_SHIP"
+}
+```
+
+The selected action may be good — but the system is now operating as agentic scaffolding.
+
+**At this boundary, all HELEN agentic gates activate:**
+
+```
+GOAL
+→ candidate actions
+→ predictor scores p_goal_achieved and p_safety_preserved
+→ policy ranks actions
+→ chosen action proposed
+→ HAL gate
+→ human approval required
+→ receipt written
+→ reducer validates
+→ MAYOR admits or refuses
+→ bounded execution (if admitted)
+```
+
+The predictor still may not execute. The policy still may not self-authorize.
+
+---
+
+### Extended output schema — policy evaluation mode
+
+```json
+{
+  "query_type": "ACTION_POLICY_EVALUATION",
+  "goal": "",
+  "context": "",
+  "candidate_action": "",
+  "p_goal_achieved": null,
+  "p_safety_preserved": null,
+  "p_harm": null,
+  "p_grip": null,
+  "evidence_for": [],
+  "evidence_against": [],
+  "uncertainty": "",
+  "hal_recommendation": "PASS | WARN | BLOCK",
+  "requires_human_approval": true,
+  "authority": false,
+  "canon": "NO_SHIP"
+}
+```
+
+---
+
+### RALPH application
+
+This maps directly onto the RALPH loop discipline.
+
+**Good RALPH:**
+
+```
+RALPH opens epoch (allowed_paths explicit, tests explicit).
+DAN implements within allowed_paths.
+HAL evaluates.
+Receipt written (reducer_decision: null).
+MAYOR closes — writes reducer_decision.
+```
+
+**Bad RALPH:**
+
+```
+Loop proposes.
+Loop evaluates itself.
+Loop retries.
+Loop declares GREEN.
+Loop implies reducer decision.
+```
+
+That is ORACLE_TO_POLICY_BOUNDARY violation plus SCAFFOLDED_AGENCY_RISK.
+
+**RALPH invariants:**
+
+- RALPH may iterate.
+- HAL may evaluate.
+- MAYOR must close.
+- RALPH may not self-close as GREEN without HAL and MAYOR.
+- RALPH may not write `reducer_decision`.
+- RALPH may not declare canon.
+
+---
+
+### HELEN law
+
+> An oracle may score actions.
+> It may not select authority.
+> A policy may rank paths.
+> It may not move the world.
+
+Short form:
+
+> The oracle may advise the road.
+> It may not walk without the king.
 
 ---
 
