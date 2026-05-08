@@ -1,0 +1,15 @@
+{
+  "shell": {
+    "allow": ["pwd", "ls", "cat", "head", "tail", "wc", "grep"],
+    "deny": ["rm", "sudo", "curl", "wget", "python", "pip", "git", "chmod", "chown", "mv", "cp", "ssh"]
+  },
+  "network": {
+    "out": "deny"
+  },
+  "memory": {
+    "write": "reducer_only"
+  },
+  "ship": {
+    "default": "NO_SHIP"
+  }
+}
