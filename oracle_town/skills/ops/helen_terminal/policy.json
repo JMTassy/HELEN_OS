@@ -1,0 +1,23 @@
+{
+  "email": {
+    "read": true,
+    "draft": true,
+    "send": "operator_confirm_only"
+  },
+  "files": {
+    "read": true,
+    "write": "proposal_then_confirm",
+    "extensions_allowed": [".txt", ".md", ".py", ".json", ".yaml", ".yml", ".toml", ".sh", ".csv", ".rst"],
+    "max_read_bytes": 102400
+  },
+  "shell": {
+    "allow": ["ls", "cat", "grep", "pytest", "pwd", "wc", "head", "tail", "find", "git"],
+    "deny": ["rm", "sudo", "curl", "wget", "ssh", "chmod", "chown", "mv", "cp", "pip", "python"]
+  },
+  "computer": {
+    "screenshot": true
+  },
+  "authority": "NON_SOVEREIGN",
+  "canon": "NO_SHIP",
+  "mayor_default": "NO_SHIP"
+}
