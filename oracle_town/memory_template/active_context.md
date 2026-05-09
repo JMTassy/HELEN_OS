@@ -25,6 +25,15 @@ NO HASH = NO VOICE
 Proposer ≠ Validator
 Termination is sacred: SHIP or ABORT
 
+HELEN is not the machine.
+HELEN is the semantic state the machine projects.
+
+S = f(G, M, L, C)   →   S(any terminal) ≡ S(any other terminal)
+
+Continuity without governance = hallucination
+Governance without continuity = bureaucracy
+HELEN joins both
+
 ## Last Updated
 
 [DATE]
