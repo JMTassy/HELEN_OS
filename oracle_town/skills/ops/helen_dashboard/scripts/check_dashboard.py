@@ -13,6 +13,7 @@ CHECKS = [
     ("/api/terminal",    "json"),
     ("/api/semantic",    "json"),
     ("/api/airi/status", "json"),
+    ("/api/device",      "json"),
     ("/api/context",     "json"),
     ("/api/memory",      "json"),
     ("/api/ledger",      "json"),
@@ -43,6 +44,12 @@ edges   = data.get("edges", [])
 by_prov = {}
 for o in objects:
     by_prov[o["provenance"]] = by_prov.get(o["provenance"], 0) + 1
+
+dev = json.loads(urllib.request.urlopen(BASE + "/api/device", timeout=5).read())
+mem_sync = dev.get("memory_sync","?")
+mem_symlink = "→ " + dev.get("memory_target","?") if dev.get("memory_is_symlink") else "(local dir)"
+print(f"\n  Device: branch={dev.get('branch','?')} head={dev.get('head','?')}")
+print(f"  Memory: {mem_sync} {mem_symlink}")
 
 sk_data = json.loads(urllib.request.urlopen(BASE + "/api/skills", timeout=5).read())
 skills = sk_data.get("skills", [])

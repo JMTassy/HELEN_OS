@@ -260,6 +260,37 @@ SKILLS = [
      "actions": ["inspect_receipt", "list_events", "verify_chain", "query_verdict", "export_summary"]},
 ]
 
+@app.route("/api/device")
+def api_device():
+    import subprocess
+    branch, head = "unknown", "unknown"
+    memory_path = str(MEMORY_DIR)
+    memory_is_symlink = MEMORY_DIR.is_symlink()
+    memory_target = str(MEMORY_DIR.resolve()) if MEMORY_DIR.exists() else None
+    try:
+        branch = subprocess.check_output(
+            ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+            cwd=str(SOT), stderr=subprocess.DEVNULL, text=True
+        ).strip()
+        head = subprocess.check_output(
+            ["git", "rev-parse", "--short", "HEAD"],
+            cwd=str(SOT), stderr=subprocess.DEVNULL, text=True
+        ).strip()
+    except Exception:
+        pass
+    return jsonify({
+        "git_sync": "github",
+        "memory_sync": "symlink" if memory_is_symlink else "local",
+        "memory_path": memory_path,
+        "memory_is_symlink": memory_is_symlink,
+        "memory_target": memory_target,
+        "branch": branch,
+        "head": head,
+        "sot": str(SOT),
+        "authority": "NON_SOVEREIGN",
+    })
+
+
 @app.route("/api/context")
 def api_context():
     ctx = CONTEXT_FILE.read_text(encoding="utf-8") if CONTEXT_FILE.exists() else ""

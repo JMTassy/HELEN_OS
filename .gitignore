@@ -31,3 +31,12 @@ artifacts/k8_trace.ndjson
 artifacts/k_tau_manifest.json
 artifacts/k_tau_summary.json
 artifacts/k_tau_trace.ndjson
+
+# HELEN live memory — local/symlinked, never committed
+# Use oracle_town/memory_template/ for versioned placeholders
+oracle_town/memory/
+
+# Local secrets and env
+.env
+*.local.json
+.helen_env
