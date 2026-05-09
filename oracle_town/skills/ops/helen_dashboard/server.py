@@ -17,11 +17,21 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 try:
-    from flask import Flask, jsonify, send_from_directory
+    from flask import Flask, jsonify, request, send_from_directory
 except ImportError:
     raise SystemExit("pip install flask")
 
+import sys as _sys
+_BRIDGE_DIR = Path(__file__).resolve().parent.parent / "airi_helen_avatar" / "scripts"
+_sys.path.insert(0, str(_BRIDGE_DIR))
+try:
+    from airi_bridge import get_bridge as _get_airi_bridge
+    _AIRI_AVAILABLE = True
+except ImportError:
+    _AIRI_AVAILABLE = False
+
 SOT = Path(__file__).resolve().parent.parent.parent.parent.parent
+_airi = _get_airi_bridge() if _AIRI_AVAILABLE else None
 KERNEL_DIR = SOT / "experiments" / "helen_os_v02"
 GOBLIN_DIR = SOT / "oracle_town" / "skills" / "ops" / "dan_goblin"
 TERMINAL_DIR = SOT / "oracle_town" / "skills" / "ops" / "helen_terminal"
@@ -217,6 +227,26 @@ def api_semantic():
     return jsonify({"objects": objects, "edges": edges[:80]})
 
 
+@app.route("/api/airi/status")
+def api_airi_status():
+    if _airi is None:
+        return jsonify({"connected": False, "uri": "ws://localhost:6121/ws", "available": False})
+    return jsonify({**_airi.status(), "available": True})
+
+
+@app.route("/api/witness", methods=["POST"])
+def api_witness():
+    data = request.get_json(silent=True) or {}
+    obj_type   = data.get("type", "OBJECT")
+    subject    = data.get("subject", "")
+    confidence = float(data.get("confidence", 0.0))
+    provenance = data.get("provenance", "kernel")
+    pushed = False
+    if _airi is not None:
+        pushed = _airi.push_witness(obj_type, subject, confidence, provenance)
+    return jsonify({"pushed": pushed, "connected": _airi.connected if _airi else False})
+
+
 @app.route("/avatar")
 def avatar():
     portrait = SOT / "artifacts" / "video" / "ship_2e_helen_speaks" / "source" / "helen_source.png"
@@ -232,4 +262,4 @@ if __name__ == "__main__":
     STATIC_DIR.mkdir(exist_ok=True)
     print("HELEN OS Dashboard → http://localhost:7000")
     print(f"SOT: {SOT}")
-    app.run(host="127.0.0.1", port=7000, debug=False)
+    app.run(host="127.0.0.1", port=7700, debug=False)

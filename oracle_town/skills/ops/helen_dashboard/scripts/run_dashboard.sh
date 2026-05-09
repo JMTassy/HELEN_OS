@@ -3,7 +3,7 @@
 set -euo pipefail
 
 SOT="$(git -C "$(dirname "$0")" rev-parse --show-toplevel)"
-PORT=7000
+PORT=7700
 VENV="$SOT/.venv/bin/python"
 SERVER="$SOT/oracle_town/skills/ops/helen_dashboard/server.py"
 

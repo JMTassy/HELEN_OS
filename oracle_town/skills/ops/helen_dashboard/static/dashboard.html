@@ -371,6 +371,11 @@ body { display: flex; flex-direction: column; }
       <span id="n-obj" style="color:var(--off-white);">0</span> objects ·
       <span id="n-edge" style="color:var(--off-white);">0</span> edges
     </span>
+    <span id="airi-status" title="AIRI bridge"
+          style="display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:8px;color:var(--silver);letter-spacing:0.08em;">
+      <span id="airi-dot" style="width:5px;height:5px;border-radius:50%;background:var(--border);flex-shrink:0;transition:background 0.4s;"></span>
+      <span id="airi-lbl">AIRI –</span>
+    </span>
     <span class="ns-badge">NON_SOVEREIGN · NO_SHIP</span>
     <span id="clock">–</span>
   </div>
@@ -626,7 +631,21 @@ function select_obj(obj) {
 
 function deselect() { selected_id = null; hide_detail(); sync_cards(); }
 
+function witness(obj) {
+  fetch('/api/witness', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      type: obj.type,
+      subject: obj.subject,
+      confidence: obj.confidence,
+      provenance: obj.provenance,
+    }),
+  }).catch(() => {});
+}
+
 function show_detail(obj) {
+  witness(obj);
   document.getElementById('detail').classList.add('on');
   document.getElementById('det-body').innerHTML = `
     <div style="display:flex;gap:14px;align-items:flex-start;">
@@ -739,10 +758,29 @@ async function refresh() {
   } catch(e) { console.error('refresh', e); }
 }
 
+// ── AIRI status ───────────────────────────────────────────────────────────
+async function poll_airi() {
+  try {
+    const r = await fetch('/api/airi/status');
+    const d = await r.json();
+    const dot = document.getElementById('airi-dot');
+    const lbl = document.getElementById('airi-lbl');
+    if (d.connected) {
+      dot.style.background = '#4caf73';
+      lbl.textContent = 'AIRI ●';
+    } else {
+      dot.style.background = 'var(--silver)';
+      lbl.textContent = d.available ? 'AIRI ○' : 'AIRI –';
+    }
+  } catch { /* server may not be running yet */ }
+}
+
 // ── Boot ──────────────────────────────────────────────────────────────────
 init_svg();
 refresh();
+poll_airi();
 setInterval(refresh, 8000);
+setInterval(poll_airi, 5000);
 loop();
 </script>
 </body>
