@@ -4,6 +4,7 @@
 **Authority:** NON_SOVEREIGN / NO_SHIP  
 **Canon:** PROPOSAL-CLASS — not yet gate-validated  
 **Extends:** `docs/protocols/DISTRIBUTED_SEMANTIC_CONTINUITY_V1.md`  
+**Depends on:** `docs/protocols/SOVEREIGN_RECEIPT_PROPAGATION_V1.md`  
 **Date:** 2026-05-09
 
 ---
