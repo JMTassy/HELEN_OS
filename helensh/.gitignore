@@ -1,0 +1,6 @@
+# helensh — local ephemeral state (class: LOCAL / EPHEMERAL)
+.state/
+
+# Machine-local runtime scratch
+*.tmp
+*.local
