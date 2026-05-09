@@ -629,18 +629,28 @@ function deselect() { selected_id = null; hide_detail(); sync_cards(); }
 function show_detail(obj) {
   document.getElementById('detail').classList.add('on');
   document.getElementById('det-body').innerHTML = `
-    <div class="dr">
-      <span class="dk">type</span>       <span class="ds">${obj.type}</span>
-      <span class="dk">provenance</span> <span class="dv">${obj.provenance}</span>
-      <span class="dk">confidence</span> <span class="dv">${(obj.confidence||0).toFixed(3)}</span>
-      <span class="dk">receipts</span>   <span class="ds">${obj.receipts}</span>
-      ${obj.hash ? `<span class="dk">hash</span><span class="dv" style="font-family:monospace;">${obj.hash}</span>` : ''}
+    <div style="display:flex;gap:14px;align-items:flex-start;">
+      <img src="/avatar" alt="HELEN"
+           style="width:36px;height:36px;border-radius:50%;object-fit:cover;object-position:center top;
+                  filter:grayscale(20%);border:1px solid rgba(196,154,60,0.35);flex-shrink:0;"
+           onerror="this.style.display='none'">
+      <div style="flex:1;">
+        <div style="font-family:var(--serif);font-size:11px;color:var(--signal);margin-bottom:8px;letter-spacing:0.08em;">
+          I witness this ${obj.type}.
+        </div>
+        <div class="dr">
+          <span class="dk">provenance</span> <span class="dv">${obj.provenance}</span>
+          <span class="dk">confidence</span> <span class="dv">${(obj.confidence||0).toFixed(3)}</span>
+          <span class="dk">receipts</span>   <span class="ds">${obj.receipts}</span>
+          ${obj.hash ? `<span class="dk">hash</span><span class="dv" style="font-family:monospace;">${obj.hash}</span>` : ''}
+        </div>
+        <div class="dr" style="margin-top:5px;">
+          <span class="dk">subject</span>
+          <span class="dv" style="flex:1;">${obj.subject||'–'}</span>
+        </div>
+        ${(obj.relations||[]).length ? `<div class="dr" style="margin-top:4px;"><span class="dk">relations</span><span class="dv">${obj.relations.join(' · ')}</span></div>` : ''}
+      </div>
     </div>
-    <div class="dr" style="margin-top:4px;">
-      <span class="dk">subject</span>
-      <span class="dv" style="flex:1;">${obj.subject||'–'}</span>
-    </div>
-    ${(obj.relations||[]).length ? `<div class="dr" style="margin-top:4px;"><span class="dk">relations</span><span class="dv">${obj.relations.join(' · ')}</span></div>` : ''}
   `;
 }
 

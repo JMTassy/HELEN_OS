@@ -1,0 +1,27 @@
+{
+  "identity": "HELEN",
+  "role": "sovereign_core",
+  "canonical_source": "artifacts/video/ship_2e_helen_speaks/source/helen_source.png",
+  "route": "/avatar",
+  "display": {
+    "size_px": 120,
+    "shape": "circle",
+    "crop": "center top",
+    "filter": "grayscale(20%) contrast(1.05) brightness(0.92)",
+    "border": "1px solid rgba(196,154,60,0.35)",
+    "pulse_animation": "signal-pulse 4s ease-in-out infinite",
+    "orbital_ring": "orbit-ring 18s linear infinite"
+  },
+  "witness_thumbnail": {
+    "size_px": 36,
+    "shape": "circle",
+    "crop": "center top",
+    "filter": "grayscale(20%)"
+  },
+  "placement": "gravitational_center",
+  "force_exclusion_radius_px": 80,
+  "authority": "NON_SOVEREIGN",
+  "canon": "NO_SHIP",
+  "witness_phrase": "I witness this {type}.",
+  "not_aura": true
+}
