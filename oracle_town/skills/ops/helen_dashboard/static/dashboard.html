@@ -20,346 +20,161 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width:100%; height:100%; overflow:hidden; background:var(--black); color:var(--off-white); font-family:var(--sans); font-size:11px; }
+body { display:flex; flex-direction:column; }
 
-html, body {
-  width: 100%; height: 100%; overflow: hidden;
-  background: var(--black);
-  color: var(--off-white);
-  font-family: var(--sans);
-  font-size: 11px;
-}
-
-body { display: flex; flex-direction: column; }
-
-/* ── HEADER ──────────────────────────────────────────────────────────────── */
+/* ── HEADER ── */
 .hdr {
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 18px;
-  border-bottom: 1px solid var(--border);
-  background: var(--surface);
-  flex-shrink: 0;
+  height:40px; display:flex; align-items:center; justify-content:space-between;
+  padding:0 18px; border-bottom:1px solid var(--border); background:var(--surface); flex-shrink:0;
 }
+.hdr-title { font-family:var(--serif); font-size:13px; font-weight:normal; letter-spacing:0.24em; color:var(--off-white); }
+.hdr-title em { color:var(--signal); font-style:normal; }
+.hdr-right { display:flex; align-items:center; gap:16px; font-family:var(--mono); font-size:9px; color:var(--silver); letter-spacing:0.07em; }
+.ns-badge { border:1px solid var(--signal); color:var(--signal); padding:2px 7px; font-size:8px; letter-spacing:0.14em; }
 
-.hdr-title {
-  font-family: var(--serif);
-  font-size: 13px;
-  font-weight: normal;
-  letter-spacing: 0.24em;
-  color: var(--off-white);
-}
+/* ── LAYOUT ── */
+.layout { display:grid; grid-template-columns:220px 1fr 220px; flex:1; overflow:hidden; }
 
-.hdr-title em { color: var(--signal); font-style: normal; }
-
-.hdr-right {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  font-family: var(--mono);
-  font-size: 9px;
-  color: var(--silver);
-  letter-spacing: 0.07em;
-}
-
-.ns-badge {
-  border: 1px solid var(--signal);
-  color: var(--signal);
-  padding: 2px 7px;
-  font-size: 8px;
-  letter-spacing: 0.14em;
-}
-
-/* ── LAYOUT ──────────────────────────────────────────────────────────────── */
-.layout {
-  display: grid;
-  grid-template-columns: 210px 1fr 210px;
-  flex: 1;
-  overflow: hidden;
-}
-
-/* ── SIDE PANELS ─────────────────────────────────────────────────────────── */
-.side {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  background: var(--surface);
-}
-
-.side.left  { border-right: 1px solid var(--border); }
-.side.right { border-left:  1px solid var(--border); }
-
+/* ── SIDE PANELS ── */
+.side { display:flex; flex-direction:column; overflow:hidden; background:var(--surface); }
+.side.left  { border-right:1px solid var(--border); }
+.side.right { border-left:1px solid var(--border); }
 .side-lbl {
-  padding: 9px 14px;
-  font-family: var(--mono);
-  font-size: 8px;
-  letter-spacing: 0.26em;
-  color: var(--silver);
-  border-bottom: 1px solid var(--border);
-  flex-shrink: 0;
-  text-transform: uppercase;
+  padding:9px 14px; font-family:var(--mono); font-size:8px; letter-spacing:0.26em;
+  color:var(--silver); border-bottom:1px solid var(--border); flex-shrink:0; text-transform:uppercase;
 }
+.side-body { flex:1; overflow-y:auto; }
+.side-body::-webkit-scrollbar { width:2px; }
+.side-body::-webkit-scrollbar-thumb { background:var(--border); }
 
-.side-body {
-  flex: 1;
-  overflow-y: auto;
+/* ── SKILL CARDS (left panel) ── */
+.skill-card {
+  padding:10px 14px; border-bottom:1px solid var(--border);
+  cursor:pointer; position:relative; transition:background 0.12s;
 }
-
-.side-body::-webkit-scrollbar { width: 2px; }
-.side-body::-webkit-scrollbar-thumb { background: var(--border); }
-
-/* ── OBJECT CARDS ────────────────────────────────────────────────────────── */
-.obj-card {
-  padding: 9px 14px;
-  border-bottom: 1px solid var(--border);
-  cursor: pointer;
-  position: relative;
-  transition: background 0.1s;
+.skill-card:hover { background:rgba(255,255,255,0.018); }
+.skill-card.active { background:rgba(196,154,60,0.06); }
+.skill-card.active::before {
+  content:''; position:absolute; left:0; top:0; bottom:0; width:2px; background:var(--signal);
 }
-
-.obj-card:hover { background: rgba(255,255,255,0.018); }
-
-.obj-card.active {
-  background: rgba(196,154,60,0.05);
+.sk-top { display:flex; align-items:center; gap:8px; margin-bottom:4px; }
+.sk-icon { font-size:14px; line-height:1; }
+.sk-label { font-family:var(--serif); font-size:11px; color:var(--off-white); flex:1; }
+.sk-status {
+  width:5px; height:5px; border-radius:50%;
+  background:var(--signal); flex-shrink:0;
 }
-
-.obj-card.active::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 2px;
-  background: var(--signal);
+.sk-status.active-s { animation:status-pulse 2s ease-in-out infinite; }
+@keyframes status-pulse {
+  0%,100% { opacity:0.6; } 50% { opacity:1; }
 }
+.sk-domain { font-family:var(--mono); font-size:8px; color:var(--silver); letter-spacing:0.14em; text-transform:uppercase; }
+.sk-desc { font-size:9px; color:var(--silver-hi); margin-top:3px; line-height:1.4; }
 
-.obj-top {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 4px;
-}
+/* ── RIGHT PANEL ── */
+.mayor-block { padding:11px 14px; border-bottom:1px solid var(--border); }
+.mayor-lbl { font-family:var(--mono); font-size:8px; letter-spacing:0.2em; color:var(--silver); margin-bottom:4px; }
+.mayor-verdict { font-family:var(--serif); font-size:14px; color:var(--signal); letter-spacing:0.1em; }
+.goblin-strip { padding:8px 14px; border-bottom:1px solid var(--border); font-family:var(--mono); font-size:8px; color:var(--silver); line-height:1.7; }
+.goblin-strip span { color:var(--off-white); }
+.goblin-strip .sig { color:var(--signal); }
+.receipt-row { padding:8px 14px; border-bottom:1px solid var(--border); }
+.receipt-row:hover { background:rgba(255,255,255,0.018); }
+.r-hash { font-family:var(--mono); font-size:9px; color:var(--signal); letter-spacing:0.06em; margin-bottom:2px; }
+.r-type { font-size:10px; color:var(--off-white); margin-bottom:2px; }
+.r-time { font-family:var(--mono); font-size:8px; color:var(--silver); }
+.empty { padding:18px 14px; font-family:var(--serif); font-size:10px; color:var(--silver); font-style:italic; }
 
-.obj-type {
-  font-family: var(--mono);
-  font-size: 8px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-}
+/* ── CENTER ── */
+.center { position:relative; background:var(--black); overflow:hidden; }
+#graph { position:absolute; inset:0; width:100%; height:100%; }
 
-.obj-type.kernel   { color: var(--signal); }
-.obj-type.goblin   { color: var(--silver-hi); }
-.obj-type.terminal { color: var(--silver); }
-
-.obj-conf { font-family: var(--mono); font-size: 9px; color: var(--silver); }
-
-.obj-subject {
-  font-size: 10px;
-  color: var(--off-white);
-  line-height: 1.4;
-  margin-bottom: 4px;
-}
-
-.obj-foot {
-  display: flex;
-  gap: 8px;
-  font-family: var(--mono);
-  font-size: 8px;
-  color: var(--silver);
-}
-
-.obj-r { color: var(--signal); }
-
-/* ── CONSTELLATION ───────────────────────────────────────────────────────── */
-.center {
-  position: relative;
-  background: var(--black);
-  overflow: hidden;
-}
-
-#graph {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-/* ── HELEN AVATAR — the sovereign anchor ─────────────────────────────────── */
+/* ── HELEN AVATAR ── */
 #helen-avatar-wrap {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  z-index: 2;
+  position:absolute; top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  z-index:4; pointer-events:none;
 }
-
-/* outer glow ring */
 #helen-avatar-wrap::before {
-  content: '';
-  position: absolute;
-  inset: -18px;
-  border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(196,154,60,0.12) 0%, transparent 72%);
+  content:''; position:absolute; inset:-22px; border-radius:50%;
+  background:radial-gradient(ellipse,rgba(196,154,60,0.13) 0%,transparent 72%);
 }
-
-/* rotating orbital ring */
 #helen-avatar-wrap::after {
-  content: '';
-  position: absolute;
-  inset: -6px;
-  border-radius: 50%;
-  border: 1px solid rgba(196,154,60,0.22);
-  animation: orbit-ring 18s linear infinite;
+  content:''; position:absolute; inset:-6px; border-radius:50%;
+  border:1px solid rgba(196,154,60,0.22);
+  animation:orbit-ring 18s linear infinite;
 }
-
 @keyframes orbit-ring {
-  from { transform: rotate(0deg) scaleX(1.8) scaleY(0.55); }
-  to   { transform: rotate(360deg) scaleX(1.8) scaleY(0.55); }
+  from { transform:rotate(0deg) scaleX(1.8) scaleY(0.55); }
+  to   { transform:rotate(360deg) scaleX(1.8) scaleY(0.55); }
 }
-
 #helen-avatar {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  object-position: center top;
-  display: block;
-  filter: grayscale(20%) contrast(1.05) brightness(0.92);
-  border: 1px solid rgba(196,154,60,0.35);
-  box-shadow:
-    0 0 0 1px rgba(196,154,60,0.10),
-    0 0 30px rgba(196,154,60,0.08),
-    0 0 60px rgba(0,0,0,0.8);
+  width:120px; height:120px; border-radius:50%; object-fit:cover; object-position:center top;
+  display:block; filter:grayscale(15%) contrast(1.05) brightness(0.92);
+  border:1px solid rgba(196,154,60,0.35);
+  animation:signal-pulse 4s ease-in-out infinite;
 }
-
-/* signal pulse */
 @keyframes signal-pulse {
-  0%, 100% { box-shadow: 0 0 0 1px rgba(196,154,60,0.10), 0 0 30px rgba(196,154,60,0.08), 0 0 60px rgba(0,0,0,0.8); }
-  50%       { box-shadow: 0 0 0 1px rgba(196,154,60,0.25), 0 0 40px rgba(196,154,60,0.14), 0 0 60px rgba(0,0,0,0.8); }
+  0%,100% { box-shadow:0 0 0 1px rgba(196,154,60,0.10),0 0 32px rgba(196,154,60,0.08),0 0 60px rgba(0,0,0,0.9); }
+  50%      { box-shadow:0 0 0 1px rgba(196,154,60,0.28),0 0 44px rgba(196,154,60,0.15),0 0 60px rgba(0,0,0,0.9); }
 }
-
-#helen-avatar { animation: signal-pulse 4s ease-in-out infinite; }
-
-/* her name under the portrait */
 #helen-label {
-  text-align: center;
-  margin-top: 8px;
-  font-family: var(--serif);
-  font-size: 10px;
-  letter-spacing: 0.3em;
-  color: rgba(196,154,60,0.6);
-  text-transform: uppercase;
-  pointer-events: none;
+  text-align:center; margin-top:9px;
+  font-family:var(--serif); font-size:10px; letter-spacing:0.3em;
+  color:rgba(196,154,60,0.65); text-transform:uppercase;
 }
-
-/* core law line */
 #core-law {
-  text-align: center;
-  margin-top: 3px;
-  font-family: var(--mono);
-  font-size: 7px;
-  letter-spacing: 0.18em;
-  color: rgba(120,117,111,0.5);
-  pointer-events: none;
+  text-align:center; margin-top:3px;
+  font-family:var(--mono); font-size:7px; letter-spacing:0.18em;
+  color:rgba(120,117,111,0.5);
 }
 
-/* ── NODE DETAIL ─────────────────────────────────────────────────────────── */
+/* ── SKILL PASTILLES (SVG-positioned, rendered via JS) ── */
+.skill-node {
+  cursor:pointer;
+  transition:all 0.2s;
+}
+
+/* ── DETAIL PANEL ── */
 #detail {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  background: rgba(13,13,16,0.95);
-  border-top: 1px solid var(--signal);
-  padding: 12px 18px 12px 18px;
-  font-family: var(--mono);
-  font-size: 10px;
-  line-height: 1.9;
-  display: none;
-  z-index: 10;
-  backdrop-filter: blur(4px);
+  position:absolute; bottom:0; left:0; right:0;
+  background:rgba(11,11,14,0.97); border-top:1px solid var(--signal);
+  padding:14px 20px 16px; z-index:10; display:none;
+  backdrop-filter:blur(6px);
 }
-
-#detail.on { display: block; }
-
+#detail.on { display:block; }
 .det-close {
-  position: absolute;
-  right: 14px; top: 10px;
-  cursor: pointer;
-  color: var(--silver);
-  font-size: 11px;
-  background: none; border: none;
+  position:absolute; right:16px; top:12px; cursor:pointer;
+  color:var(--silver); font-size:11px; background:none; border:none;
 }
-
-.dr { display: flex; flex-wrap: wrap; gap: 0; }
-.dk { color: var(--silver); min-width: 96px; }
-.dv { color: var(--off-white); margin-right: 22px; }
-.ds { color: var(--signal); margin-right: 22px; }
-
-/* ── SOVEREIGN LEDGER ────────────────────────────────────────────────────── */
-.mayor-block {
-  padding: 11px 14px;
-  border-bottom: 1px solid var(--border);
+.det-skill-head {
+  display:flex; align-items:center; gap:12px; margin-bottom:10px;
 }
-
-.mayor-lbl {
-  font-family: var(--mono);
-  font-size: 8px;
-  letter-spacing: 0.2em;
-  color: var(--silver);
-  margin-bottom: 4px;
+.det-icon { font-size:22px; line-height:1; }
+.det-title { font-family:var(--serif); font-size:15px; letter-spacing:0.08em; color:var(--off-white); }
+.det-domain { font-family:var(--mono); font-size:8px; color:var(--signal); letter-spacing:0.2em; text-transform:uppercase; margin-left:auto; }
+.det-desc { font-size:10px; color:var(--silver-hi); line-height:1.6; margin-bottom:10px; }
+.det-actions { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
+.det-action {
+  font-family:var(--mono); font-size:9px; letter-spacing:0.1em;
+  color:var(--silver); border:1px solid var(--border);
+  padding:3px 9px; cursor:default;
 }
-
-.mayor-verdict {
-  font-family: var(--serif);
-  font-size: 14px;
-  color: var(--signal);
-  letter-spacing: 0.1em;
+.det-btns { display:flex; gap:10px; }
+.det-btn {
+  font-family:var(--mono); font-size:9px; letter-spacing:0.14em; text-transform:uppercase;
+  padding:5px 14px; border:none; cursor:pointer; transition:background 0.15s;
 }
-
-.receipt-row {
-  padding: 8px 14px;
-  border-bottom: 1px solid var(--border);
+.det-btn.run { background:var(--signal); color:var(--black); }
+.det-btn.run:hover { background:#d4aa4c; }
+.det-btn.receipt { background:transparent; border:1px solid var(--signal); color:var(--signal); }
+.det-btn.receipt:hover { background:rgba(196,154,60,0.08); }
+.det-witness {
+  font-family:var(--serif); font-size:10px; color:rgba(196,154,60,0.5);
+  font-style:italic; display:flex; align-items:center; gap:8px; margin-left:auto;
 }
-
-.receipt-row:hover { background: rgba(255,255,255,0.018); }
-
-.r-hash {
-  font-family: var(--mono);
-  font-size: 9px;
-  color: var(--signal);
-  letter-spacing: 0.06em;
-  margin-bottom: 2px;
-}
-
-.r-type {
-  font-size: 10px;
-  color: var(--off-white);
-  margin-bottom: 2px;
-}
-
-.r-time {
-  font-family: var(--mono);
-  font-size: 8px;
-  color: var(--silver);
-}
-
-.empty {
-  padding: 18px 14px;
-  font-family: var(--serif);
-  font-size: 10px;
-  color: var(--silver);
-  font-style: italic;
-}
-
-/* ── GOBLIN STATS strip ──────────────────────────────────────────────────── */
-.goblin-strip {
-  padding: 8px 14px;
-  border-bottom: 1px solid var(--border);
-  font-family: var(--mono);
-  font-size: 8px;
-  color: var(--silver);
-  line-height: 1.7;
-}
-
-.goblin-strip span { color: var(--off-white); }
-.goblin-strip .sig { color: var(--signal); }
+.det-witness img { width:22px; height:22px; border-radius:50%; object-fit:cover; object-position:center top; filter:grayscale(20%); border:1px solid rgba(196,154,60,0.3); }
 </style>
 </head>
 <body>
@@ -367,9 +182,9 @@ body { display: flex; flex-direction: column; }
 <div class="hdr">
   <div class="hdr-title">HELEN <em>OS</em></div>
   <div class="hdr-right">
-    <span id="density" style="font-size:9px;color:var(--silver);">
-      <span id="n-obj" style="color:var(--off-white);">0</span> objects ·
-      <span id="n-edge" style="color:var(--off-white);">0</span> edges
+    <span style="font-size:9px;color:var(--silver);">
+      <span id="n-skills" style="color:var(--off-white);">0</span> skills ·
+      <span id="n-obj"    style="color:var(--off-white);">0</span> events
     </span>
     <span id="airi-status" title="AIRI bridge"
           style="display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:8px;color:var(--silver);letter-spacing:0.08em;">
@@ -383,26 +198,26 @@ body { display: flex; flex-direction: column; }
 
 <div class="layout">
 
-  <!-- LEFT: Object Field -->
+  <!-- LEFT: Skill List -->
   <div class="side left">
-    <div class="side-lbl">Object Field</div>
-    <div class="side-body" id="obj-list">
-      <div class="empty">Connecting…</div>
+    <div class="side-lbl">Skills</div>
+    <div class="side-body" id="skill-list">
+      <div class="empty">Loading…</div>
     </div>
   </div>
 
-  <!-- CENTER: Constellation + HELEN -->
+  <!-- CENTER: Constellation -->
   <div class="center">
     <svg id="graph"></svg>
 
-    <!-- HELEN — sovereign gravitational anchor -->
+    <!-- HELEN — sovereign anchor -->
     <div id="helen-avatar-wrap">
       <img id="helen-avatar" src="/avatar" alt="HELEN" onerror="this.style.display='none'">
       <div id="helen-label">HELEN</div>
       <div id="core-law">NO RECEIPT · NO SHIP</div>
     </div>
 
-    <!-- Node detail overlay -->
+    <!-- Skill / event detail overlay -->
     <div id="detail">
       <button class="det-close" onclick="deselect()">✕</button>
       <div id="det-body"></div>
@@ -427,309 +242,347 @@ body { display: flex; flex-direction: column; }
 // ── Clock ─────────────────────────────────────────────────────────────────
 setInterval(() => {
   document.getElementById('clock').textContent =
-    new Date().toLocaleTimeString('en-GB', { hour12: false });
+    new Date().toLocaleTimeString('en-GB', { hour12:false });
 }, 1000);
 
-// ── Force Simulation ──────────────────────────────────────────────────────
-const GRAVITY  = 0.005;
-const REPEL_R  = 90;
-const REPEL_K  = 1100;
-const SPRING_K = 0.03;
-const DAMP     = 0.85;
-const VMAX     = 2.2;
-const AVATAR_R = 80; // keep nodes away from center avatar
+// ── State ─────────────────────────────────────────────────────────────────
+let skills = [];
+let sem_nodes = []; // background semantic dots
+let sem_links = [];
+let selected_skill = null;
 
-let nodes = [], links = [], all_objects = [], selected_id = null;
-
-function svg_center() {
-  const svg = document.getElementById('graph');
-  return { W: svg.clientWidth || 700, H: svg.clientHeight || 500 };
-}
-
-function init_sim(objects, edges) {
-  const { W, H } = svg_center();
-  const cx = W / 2, cy = H / 2;
-  const old = {};
-  nodes.forEach(n => old[n.id] = { x: n.x, y: n.y });
-
-  nodes = objects.map((obj, i) => {
-    if (old[obj.id]) return { ...old[obj.id], vx: 0, vy: 0, id: obj.id, obj };
-    const angle = (i / objects.length) * Math.PI * 2;
-    const r = 140 + Math.random() * 110;
-    return { id: obj.id, x: cx + Math.cos(angle) * r, y: cy + Math.sin(angle) * r,
-             vx: 0, vy: 0, obj };
-  });
-
-  const nm = {};
-  nodes.forEach(n => nm[n.id] = n);
-  links = edges.map(e => ({ s: nm[e.source], t: nm[e.target], w: e.weight || 0.5 }))
-               .filter(e => e.s && e.t);
-
-  all_objects = objects;
-  document.getElementById('n-obj').textContent  = objects.length;
-  document.getElementById('n-edge').textContent = edges.length;
-}
-
-function step() {
-  const { W, H } = svg_center();
-  const cx = W / 2, cy = H / 2;
-
-  for (const n of nodes) {
-    // gravity toward center
-    n.vx += (cx - n.x) * GRAVITY;
-    n.vy += (cy - n.y) * GRAVITY;
-
-    // repel from avatar center
-    const adx = n.x - cx, ady = n.y - cy;
-    const ad = Math.sqrt(adx * adx + ady * ady) || 1;
-    if (ad < AVATAR_R) {
-      const f = (AVATAR_R - ad) * 0.6;
-      n.vx += (adx / ad) * f;
-      n.vy += (ady / ad) * f;
-    }
-  }
-
-  // repulsion between nodes
-  for (let i = 0; i < nodes.length; i++) {
-    for (let j = i + 1; j < nodes.length; j++) {
-      const a = nodes[i], b = nodes[j];
-      const dx = b.x - a.x, dy = b.y - a.y;
-      const d2 = dx * dx + dy * dy || 1;
-      const d  = Math.sqrt(d2);
-      if (d < REPEL_R) {
-        const f = REPEL_K / d2;
-        const nx = dx / d, ny = dy / d;
-        a.vx -= nx * f * 0.5; a.vy -= ny * f * 0.5;
-        b.vx += nx * f * 0.5; b.vy += ny * f * 0.5;
-      }
-    }
-  }
-
-  // springs along edges
-  for (const l of links) {
-    const dx = l.t.x - l.s.x, dy = l.t.y - l.s.y;
-    const f = SPRING_K * l.w;
-    l.s.vx += dx * f; l.s.vy += dy * f;
-    l.t.vx -= dx * f; l.t.vy -= dy * f;
-  }
-
-  // integrate
-  for (const n of nodes) {
-    n.vx *= DAMP; n.vy *= DAMP;
-    const spd = Math.sqrt(n.vx * n.vx + n.vy * n.vy);
-    if (spd > VMAX) { n.vx = n.vx / spd * VMAX; n.vy = n.vy / spd * VMAX; }
-    n.x = Math.max(14, Math.min(W - 14, n.x + n.vx));
-    n.y = Math.max(14, Math.min(H - 14, n.y + n.vy));
-  }
-}
-
-// ── SVG Render ────────────────────────────────────────────────────────────
+// ── SVG helpers ───────────────────────────────────────────────────────────
 const NS = 'http://www.w3.org/2000/svg';
-let eg, ng;
+let eg, ng, sg; // edge group, node group, skill group
+
+function svg_dim() {
+  const s = document.getElementById('graph');
+  return { W: s.clientWidth||700, H: s.clientHeight||500, cx: (s.clientWidth||700)/2, cy: (s.clientHeight||500)/2 };
+}
 
 function init_svg() {
   const svg = document.getElementById('graph');
   svg.innerHTML = '';
-  // classified grid
-  const defs = document.createElementNS(NS, 'defs');
-  const pat = document.createElementNS(NS, 'pattern');
+
+  // grid
+  const defs = document.createElementNS(NS,'defs');
+  const pat  = document.createElementNS(NS,'pattern');
   pat.setAttribute('id','grid'); pat.setAttribute('width','44'); pat.setAttribute('height','44');
   pat.setAttribute('patternUnits','userSpaceOnUse');
   const pl = document.createElementNS(NS,'path');
   pl.setAttribute('d','M 44 0 L 0 0 0 44'); pl.setAttribute('fill','none');
-  pl.setAttribute('stroke','rgba(255,255,255,0.016)'); pl.setAttribute('stroke-width','0.5');
+  pl.setAttribute('stroke','rgba(255,255,255,0.014)'); pl.setAttribute('stroke-width','0.5');
   pat.appendChild(pl); defs.appendChild(pat); svg.appendChild(defs);
   const bg = document.createElementNS(NS,'rect');
   bg.setAttribute('width','100%'); bg.setAttribute('height','100%');
   bg.setAttribute('fill','url(#grid)'); svg.appendChild(bg);
-  eg = document.createElementNS(NS,'g');
-  ng = document.createElementNS(NS,'g');
-  svg.appendChild(eg); svg.appendChild(ng);
+
+  eg = document.createElementNS(NS,'g'); // semantic edges
+  ng = document.createElementNS(NS,'g'); // semantic dots
+  sg = document.createElementNS(NS,'g'); // skill pastilles
+  svg.appendChild(eg); svg.appendChild(ng); svg.appendChild(sg);
 }
 
+// ── Force sim for background semantic dots ────────────────────────────────
+const GRAVITY = 0.003;
+const REPEL_R = 70;
+const REPEL_K = 900;
+const SPRING_K = 0.025;
+const DAMP     = 0.84;
+const VMAX     = 1.8;
+const SKILL_R  = 195; // inner orbit radius for skills
+const AVOID_R  = SKILL_R + 50; // semantic dots avoid skill orbit
+
+function init_sem(objects, edges) {
+  const { W, H, cx, cy } = svg_dim();
+  const old = {};
+  sem_nodes.forEach(n => old[n.id] = { x:n.x, y:n.y });
+
+  sem_nodes = objects.map((obj, i) => {
+    if (old[obj.id]) return { ...old[obj.id], vx:0, vy:0, id:obj.id, obj };
+    // start outside skill orbit
+    const angle = (i / objects.length) * Math.PI * 2;
+    const r = AVOID_R + 60 + Math.random() * 80;
+    return { id:obj.id, x:cx+Math.cos(angle)*r, y:cy+Math.sin(angle)*r, vx:0, vy:0, obj };
+  });
+
+  const nm = {};
+  sem_nodes.forEach(n => nm[n.id] = n);
+  sem_links = edges.map(e => ({ s:nm[e.source], t:nm[e.target], w:e.weight||0.5 }))
+                   .filter(e => e.s && e.t);
+
+  document.getElementById('n-obj').textContent = objects.length;
+}
+
+function step_sim() {
+  const { W, H, cx, cy } = svg_dim();
+
+  for (const n of sem_nodes) {
+    // soft gravity toward a ring at AVOID_R
+    const adx = n.x - cx, ady = n.y - cy;
+    const ad  = Math.sqrt(adx*adx+ady*ady)||1;
+    const target_r = AVOID_R + 60;
+    const pull = (target_r - ad) * 0.0015;
+    n.vx -= (adx/ad) * pull;
+    n.vy -= (ady/ad) * pull;
+
+    // hard push away from center (skill orbit + avatar)
+    if (ad < AVOID_R) {
+      const f = (AVOID_R - ad) * 0.25;
+      n.vx += (adx/ad)*f; n.vy += (ady/ad)*f;
+    }
+  }
+
+  for (let i = 0; i < sem_nodes.length; i++) {
+    for (let j = i+1; j < sem_nodes.length; j++) {
+      const a = sem_nodes[i], b = sem_nodes[j];
+      const dx = b.x-a.x, dy = b.y-a.y;
+      const d2 = dx*dx+dy*dy||1, d = Math.sqrt(d2);
+      if (d < REPEL_R) {
+        const f = REPEL_K/d2, nx = dx/d, ny = dy/d;
+        a.vx -= nx*f*0.5; a.vy -= ny*f*0.5;
+        b.vx += nx*f*0.5; b.vy += ny*f*0.5;
+      }
+    }
+  }
+
+  for (const l of sem_links) {
+    const dx=l.t.x-l.s.x, dy=l.t.y-l.s.y, f=SPRING_K*l.w;
+    l.s.vx+=dx*f; l.s.vy+=dy*f;
+    l.t.vx-=dx*f; l.t.vy-=dy*f;
+  }
+
+  for (const n of sem_nodes) {
+    n.vx*=DAMP; n.vy*=DAMP;
+    const spd=Math.sqrt(n.vx*n.vx+n.vy*n.vy);
+    if (spd>VMAX){n.vx=n.vx/spd*VMAX;n.vy=n.vy/spd*VMAX;}
+    n.x=Math.max(10,Math.min(W-10,n.x+n.vx));
+    n.y=Math.max(10,Math.min(H-10,n.y+n.vy));
+  }
+}
+
+// ── Render ────────────────────────────────────────────────────────────────
 function render() {
-  // edges
+  const { cx, cy } = svg_dim();
+
+  // semantic edges (faint background)
   while (eg.firstChild) eg.removeChild(eg.firstChild);
-  for (const l of links) {
+  for (const l of sem_links) {
     const line = document.createElementNS(NS,'line');
-    line.setAttribute('x1', l.s.x.toFixed(1)); line.setAttribute('y1', l.s.y.toFixed(1));
-    line.setAttribute('x2', l.t.x.toFixed(1)); line.setAttribute('y2', l.t.y.toFixed(1));
-    const alpha = l.w > 0.6 ? 0.20 : 0.08;
-    const color = l.w > 0.6 ? `rgba(196,154,60,${alpha})` : `rgba(120,117,111,${alpha})`;
-    line.setAttribute('stroke', color);
-    line.setAttribute('stroke-width', l.w > 0.6 ? '0.9' : '0.4');
+    line.setAttribute('x1',l.s.x.toFixed(1)); line.setAttribute('y1',l.s.y.toFixed(1));
+    line.setAttribute('x2',l.t.x.toFixed(1)); line.setAttribute('y2',l.t.y.toFixed(1));
+    const alpha = l.w>0.6 ? 0.12 : 0.05;
+    line.setAttribute('stroke', l.w>0.6 ? `rgba(196,154,60,${alpha})` : `rgba(90,88,85,${alpha})`);
+    line.setAttribute('stroke-width','0.4');
     eg.appendChild(line);
   }
 
-  // nodes
+  // semantic dots (small, outer field)
   while (ng.firstChild) ng.removeChild(ng.firstChild);
-  for (const n of nodes) {
+  for (const n of sem_nodes) {
     const obj = n.obj;
-    const sel = selected_id === obj.id;
-    const kern = obj.provenance === 'kernel';
-    const conf = obj.confidence || 0.5;
-    const r = 2.5 + conf * 5.5;
-
+    const kern = obj.provenance==='kernel';
+    const conf = obj.confidence||0.4;
+    const r = 1.8 + conf*3.2;
     const g = document.createElementNS(NS,'g');
-    g.setAttribute('transform', `translate(${n.x.toFixed(1)},${n.y.toFixed(1)})`);
-    g.style.cursor = 'pointer';
-
-    // halo
-    if (obj.receipts > 0 || sel) {
-      const h = document.createElementNS(NS,'circle');
-      h.setAttribute('r', r + (sel ? 8 : 5));
-      h.setAttribute('fill', kern ? 'rgba(196,154,60,0.10)' : 'rgba(160,156,150,0.05)');
-      g.appendChild(h);
-    }
-
-    // selection ring
-    if (sel) {
-      const ring = document.createElementNS(NS,'circle');
-      ring.setAttribute('r', r + 4);
-      ring.setAttribute('fill','none');
-      ring.setAttribute('stroke','#c49a3c');
-      ring.setAttribute('stroke-width','1');
-      g.appendChild(ring);
-    }
-
+    g.setAttribute('transform',`translate(${n.x.toFixed(1)},${n.y.toFixed(1)})`);
+    g.style.cursor='pointer';
     const c = document.createElementNS(NS,'circle');
-    c.setAttribute('r', r);
-    if (kern) {
-      c.setAttribute('fill','#c49a3c');
-    } else if (obj.provenance === 'goblin') {
-      c.setAttribute('fill', `rgba(158,154,148,${0.28 + conf * 0.65})`);
-    } else {
-      c.setAttribute('fill', `rgba(100,98,94,${0.35 + conf * 0.45})`);
-    }
+    c.setAttribute('r',r);
+    c.setAttribute('fill', kern ? `rgba(196,154,60,${0.25+conf*0.45})` : `rgba(100,98,94,${0.2+conf*0.35})`);
     g.appendChild(c);
-
-    // label for high-conf or selected
-    if (conf >= 0.75 || sel) {
-      const t = document.createElementNS(NS,'text');
-      t.setAttribute('x', r + 5); t.setAttribute('y', 3.5);
-      t.setAttribute('fill', kern ? 'rgba(196,154,60,0.72)' : 'rgba(120,117,111,0.72)');
-      t.setAttribute('font-size','8');
-      t.setAttribute('font-family','-apple-system, sans-serif');
-      t.textContent = (obj.subject||'').slice(0,26);
-      g.appendChild(t);
-    }
-
-    g.addEventListener('click', () => select_obj(obj));
+    g.addEventListener('click', () => show_event_detail(obj));
     ng.appendChild(g);
   }
+
+  // skill pastilles on inner orbit
+  while (sg.firstChild) sg.removeChild(sg.firstChild);
+  const n_sk = skills.length;
+  skills.forEach((sk, i) => {
+    const angle = (i/n_sk)*Math.PI*2 - Math.PI/2;
+    const x = cx + Math.cos(angle)*SKILL_R;
+    const y = cy + Math.sin(angle)*SKILL_R;
+    const sel = selected_skill && selected_skill.id===sk.id;
+
+    const g = document.createElementNS(NS,'g');
+    g.setAttribute('transform',`translate(${x.toFixed(1)},${y.toFixed(1)})`);
+    g.style.cursor='pointer';
+
+    // connector line from center
+    const conn = document.createElementNS(NS,'line');
+    conn.setAttribute('x1','0'); conn.setAttribute('y1','0');
+    conn.setAttribute('x2',(cx-x).toFixed(1)); conn.setAttribute('y2',(cy-y).toFixed(1));
+    conn.setAttribute('stroke', sel ? 'rgba(196,154,60,0.28)' : 'rgba(40,38,36,0.8)');
+    conn.setAttribute('stroke-width','0.6');
+    conn.setAttribute('stroke-dasharray','4 6');
+    sg.appendChild(conn); // add before g so it's behind
+
+    // outer glow if selected
+    if (sel) {
+      const glow = document.createElementNS(NS,'circle');
+      glow.setAttribute('r','34'); glow.setAttribute('fill','rgba(196,154,60,0.06)');
+      g.appendChild(glow);
+    }
+
+    // pastille background
+    const pw=54, ph=26, rx=13;
+    const rect = document.createElementNS(NS,'rect');
+    rect.setAttribute('x',(-pw/2).toFixed(1)); rect.setAttribute('y',(-ph/2).toFixed(1));
+    rect.setAttribute('width',pw); rect.setAttribute('height',ph);
+    rect.setAttribute('rx',rx);
+    rect.setAttribute('fill', sel ? 'rgba(196,154,60,0.14)' : 'rgba(20,20,24,0.92)');
+    rect.setAttribute('stroke', sel ? 'rgba(196,154,60,0.70)' : 'rgba(50,48,46,0.8)');
+    rect.setAttribute('stroke-width', sel ? '1.2' : '0.7');
+    g.appendChild(rect);
+
+    // icon
+    const icon = document.createElementNS(NS,'text');
+    icon.setAttribute('x','-14'); icon.setAttribute('y','4.5');
+    icon.setAttribute('font-size','12'); icon.setAttribute('text-anchor','middle');
+    icon.textContent = sk.icon;
+    g.appendChild(icon);
+
+    // label
+    const lbl = document.createElementNS(NS,'text');
+    lbl.setAttribute('x','8'); lbl.setAttribute('y','4.5');
+    lbl.setAttribute('fill', sel ? '#c49a3c' : '#9e9a94');
+    lbl.setAttribute('font-size','8');
+    lbl.setAttribute('font-family','-apple-system,sans-serif');
+    lbl.setAttribute('text-anchor','middle');
+    lbl.textContent = sk.label;
+    g.appendChild(lbl);
+
+    // status dot
+    const dot = document.createElementNS(NS,'circle');
+    dot.setAttribute('cx',(pw/2-6).toFixed(1)); dot.setAttribute('cy',(-ph/2+6).toFixed(1));
+    dot.setAttribute('r','2.5');
+    dot.setAttribute('fill', sk.status==='active' ? '#4caf73' : '#c49a3c');
+    g.appendChild(dot);
+
+    g.addEventListener('click', () => select_skill(sk));
+    sg.appendChild(g);
+  });
 }
 
-// ── Animation ─────────────────────────────────────────────────────────────
-function loop() { step(); render(); requestAnimationFrame(loop); }
+function loop() { step_sim(); render(); requestAnimationFrame(loop); }
 
 // ── Selection ─────────────────────────────────────────────────────────────
-function select_obj(obj) {
-  selected_id = selected_id === obj.id ? null : obj.id;
-  if (selected_id) show_detail(obj); else hide_detail();
-  sync_cards();
+function select_skill(sk) {
+  selected_skill = selected_skill && selected_skill.id===sk.id ? null : sk;
+  if (selected_skill) show_skill_detail(selected_skill); else hide_detail();
+  sync_skill_cards();
+  if (selected_skill) witness_skill(selected_skill);
 }
 
-function deselect() { selected_id = null; hide_detail(); sync_cards(); }
+function deselect() { selected_skill=null; hide_detail(); sync_skill_cards(); }
 
-function witness(obj) {
-  fetch('/api/witness', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({
-      type: obj.type,
-      subject: obj.subject,
-      confidence: obj.confidence,
-      provenance: obj.provenance,
-    }),
-  }).catch(() => {});
+function sync_skill_cards() {
+  document.querySelectorAll('.skill-card').forEach(el =>
+    el.classList.toggle('active', selected_skill && el.dataset.id===selected_skill.id));
 }
 
-function show_detail(obj) {
-  witness(obj);
+function esc(s) { return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
+
+function show_skill_detail(sk) {
   document.getElementById('detail').classList.add('on');
   document.getElementById('det-body').innerHTML = `
-    <div style="display:flex;gap:14px;align-items:flex-start;">
-      <img src="/avatar" alt="HELEN"
-           style="width:36px;height:36px;border-radius:50%;object-fit:cover;object-position:center top;
-                  filter:grayscale(20%);border:1px solid rgba(196,154,60,0.35);flex-shrink:0;"
-           onerror="this.style.display='none'">
-      <div style="flex:1;">
-        <div style="font-family:var(--serif);font-size:11px;color:var(--signal);margin-bottom:8px;letter-spacing:0.08em;">
-          I witness this ${obj.type}.
-        </div>
-        <div class="dr">
-          <span class="dk">provenance</span> <span class="dv">${obj.provenance}</span>
-          <span class="dk">confidence</span> <span class="dv">${(obj.confidence||0).toFixed(3)}</span>
-          <span class="dk">receipts</span>   <span class="ds">${obj.receipts}</span>
-          ${obj.hash ? `<span class="dk">hash</span><span class="dv" style="font-family:monospace;">${obj.hash}</span>` : ''}
-        </div>
-        <div class="dr" style="margin-top:5px;">
-          <span class="dk">subject</span>
-          <span class="dv" style="flex:1;">${obj.subject||'–'}</span>
-        </div>
-        ${(obj.relations||[]).length ? `<div class="dr" style="margin-top:4px;"><span class="dk">relations</span><span class="dv">${obj.relations.join(' · ')}</span></div>` : ''}
+    <div class="det-skill-head">
+      <span class="det-icon">${sk.icon}</span>
+      <span class="det-title">${sk.label}</span>
+      <span class="det-domain">${sk.domain}</span>
+    </div>
+    <div class="det-desc">${sk.description}</div>
+    <div class="det-actions">
+      ${(sk.actions||[]).map(a=>`<span class="det-action">${a}</span>`).join('')}
+    </div>
+    <div class="det-btns">
+      <button class="det-btn run" onclick="run_skill('${esc(sk.id)}')">▶ Run Skill</button>
+      <button class="det-btn receipt" onclick="write_receipt('${esc(sk.id)}')">◈ Write Receipt</button>
+      <div class="det-witness">
+        <img src="/avatar" alt="HELEN" onerror="this.style.display='none'">
+        I witness this ${sk.domain} skill.
       </div>
     </div>
   `;
 }
 
-function hide_detail() { document.getElementById('detail').classList.remove('on'); }
-
-function sync_cards() {
-  document.querySelectorAll('.obj-card').forEach(el =>
-    el.classList.toggle('active', el.dataset.id === selected_id));
+function show_event_detail(obj) {
+  document.getElementById('detail').classList.add('on');
+  document.getElementById('det-body').innerHTML = `
+    <div class="det-skill-head">
+      <span class="det-icon" style="font-size:14px;">${obj.provenance==='kernel'?'◈':obj.provenance==='goblin'?'◇':'○'}</span>
+      <span class="det-title" style="font-size:11px;">${obj.type}</span>
+      <span class="det-domain">${obj.provenance}</span>
+    </div>
+    <div class="det-desc">${obj.subject||'–'}</div>
+    <div class="det-actions">
+      <span class="det-action">conf ${(obj.confidence||0).toFixed(3)}</span>
+      <span class="det-action">${obj.receipts}R</span>
+      ${obj.hash?`<span class="det-action" style="font-family:monospace;">${obj.hash}</span>`:''}
+    </div>
+    <div class="det-btns">
+      <div class="det-witness">
+        <img src="/avatar" alt="HELEN" onerror="this.style.display='none'">
+        I witness this ${obj.type}.
+      </div>
+    </div>
+  `;
+  witness_obj(obj);
 }
 
-// ── Left Panel ────────────────────────────────────────────────────────────
-function render_objects(objects) {
-  const el = document.getElementById('obj-list');
-  if (!objects.length) { el.innerHTML = '<div class="empty">No objects in field.</div>'; return; }
-  el.innerHTML = objects.slice(0, 40).map(obj => `
-    <div class="obj-card${selected_id===obj.id?' active':''}" data-id="${obj.id}"
-         onclick="pick_card('${esc(obj.id)}')">
-      <div class="obj-top">
-        <span class="obj-type ${obj.provenance}">${obj.type}</span>
-        <span class="obj-conf">${(obj.confidence||0).toFixed(2)}</span>
+function hide_detail() { document.getElementById('detail').classList.remove('on'); }
+
+function run_skill(id) {
+  const sk = skills.find(s=>s.id===id);
+  if (sk) alert(`▶ ${sk.label}\n\n[Skill workflow not yet wired — placeholder]\n\nActions:\n${(sk.actions||[]).join('\n')}`);
+}
+function write_receipt(id) {
+  const sk = skills.find(s=>s.id===id);
+  if (sk) alert(`◈ Write Receipt\n\n[Receipt writer not yet wired — placeholder]\n\nSkill: ${sk.id}\nLedger: ${sk.ledger_enabled}`);
+}
+
+// ── Left panel ────────────────────────────────────────────────────────────
+function render_skills(sks) {
+  const el = document.getElementById('skill-list');
+  document.getElementById('n-skills').textContent = sks.length;
+  if (!sks.length) { el.innerHTML='<div class="empty">No skills.</div>'; return; }
+  el.innerHTML = sks.map(sk=>`
+    <div class="skill-card${selected_skill&&selected_skill.id===sk.id?' active':''}"
+         data-id="${sk.id}" onclick="pick_skill('${esc(sk.id)}')">
+      <div class="sk-top">
+        <span class="sk-icon">${sk.icon}</span>
+        <span class="sk-label">${sk.label}</span>
+        <span class="sk-status${sk.status==='active'?' active-s':''}"></span>
       </div>
-      <div class="obj-subject">${(obj.subject||'–').slice(0,56)}</div>
-      <div class="obj-foot">
-        <span>${obj.provenance}</span>
-        ${obj.receipts > 0 ? `<span class="obj-r">${obj.receipts}R</span>` : ''}
-        ${obj.hash ? `<span style="font-family:monospace;">${obj.hash.slice(0,8)}</span>` : ''}
-      </div>
+      <div class="sk-domain">${sk.domain}</div>
+      <div class="sk-desc">${sk.description}</div>
     </div>`).join('');
 }
 
-function esc(s) { return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
-
-function pick_card(id) {
-  const obj = all_objects.find(o => o.id === id);
-  if (obj) select_obj(obj);
+function pick_skill(id) {
+  const sk = skills.find(s=>s.id===id);
+  if (sk) select_skill(sk);
 }
 
-// ── Right Panel ───────────────────────────────────────────────────────────
+// ── Right panel ───────────────────────────────────────────────────────────
 function render_ledger(events, goblin) {
   const el = document.getElementById('ledger-list');
   const mayor = `<div class="mayor-block">
     <div class="mayor-lbl">MAYOR VERDICT</div>
     <div class="mayor-verdict">NO_SHIP</div>
   </div>`;
-
-  // GOBLIN strip
   let goblin_html = '';
   if (goblin && goblin.batches && goblin.batches.length) {
     const b = goblin.batches[0];
     goblin_html = `<div class="goblin-strip">
       <div>GOBLIN · <span>${b.batch_id||b.file}</span></div>
-      <div>provider <span>${b.provider||'–'}</span> · model <span>${b.model||'–'}</span></div>
       <div>PASS <span class="sig">${b.hal_pass||0}</span> · WARN ${b.hal_warn||0} · BLOCK ${b.hal_block||0}</div>
       <div>top score <span class="sig">${(b.top_score||0).toFixed(3)}</span> · ${b.epoch_count||0} epochs</div>
     </div>`;
   }
-
-  if (!events.length) { el.innerHTML = mayor + goblin_html + '<div class="empty">No events.</div>'; return; }
+  if (!events.length) { el.innerHTML=mayor+goblin_html+'<div class="empty">No events.</div>'; return; }
   el.innerHTML = mayor + goblin_html +
-    [...events].reverse().slice(0, 25).map(e => `
+    [...events].reverse().slice(0,25).map(e=>`
       <div class="receipt-row">
         <div class="r-hash">${(e.event_hash||e.payload_hash||'').slice(0,12)||'–'}</div>
         <div class="r-type">${e.event_type||'–'}</div>
@@ -739,40 +592,52 @@ function render_ledger(events, goblin) {
 
 function fmts(ts) {
   if (!ts) return '–';
-  try { return new Date(ts).toLocaleTimeString('en-GB', { hour12:false }); }
+  try { return new Date(ts).toLocaleTimeString('en-GB',{hour12:false}); }
   catch { return (ts||'').slice(11,19); }
 }
 
-// ── Fetch ─────────────────────────────────────────────────────────────────
-async function refresh() {
-  try {
-    const [sr, kr, gr] = await Promise.all([
-      fetch('/api/semantic'), fetch('/api/kernel'), fetch('/api/goblin')
-    ]);
-    const sem    = await sr.json();
-    const kernel = await kr.json();
-    const goblin = await gr.json();
-    init_sim(sem.objects||[], sem.edges||[]);
-    render_objects(sem.objects||[]);
-    render_ledger(kernel.ledger_events||[], goblin);
-  } catch(e) { console.error('refresh', e); }
+// ── AIRI witness ──────────────────────────────────────────────────────────
+function witness_skill(sk) {
+  fetch('/api/witness',{
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({type:'SKILL',subject:sk.label,confidence:0.95,provenance:sk.domain}),
+  }).catch(()=>{});
+}
+function witness_obj(obj) {
+  fetch('/api/witness',{
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({type:obj.type,subject:obj.subject,confidence:obj.confidence,provenance:obj.provenance}),
+  }).catch(()=>{});
 }
 
 // ── AIRI status ───────────────────────────────────────────────────────────
 async function poll_airi() {
   try {
-    const r = await fetch('/api/airi/status');
-    const d = await r.json();
+    const d = await (await fetch('/api/airi/status')).json();
     const dot = document.getElementById('airi-dot');
     const lbl = document.getElementById('airi-lbl');
-    if (d.connected) {
-      dot.style.background = '#4caf73';
-      lbl.textContent = 'AIRI ●';
-    } else {
-      dot.style.background = 'var(--silver)';
-      lbl.textContent = d.available ? 'AIRI ○' : 'AIRI –';
-    }
-  } catch { /* server may not be running yet */ }
+    if (d.connected) { dot.style.background='#4caf73'; lbl.textContent='AIRI ●'; }
+    else { dot.style.background='var(--silver)'; lbl.textContent=d.available?'AIRI ○':'AIRI –'; }
+  } catch {}
+}
+
+// ── Fetch ─────────────────────────────────────────────────────────────────
+async function refresh() {
+  try {
+    const [skr, smr, kr, gr] = await Promise.all([
+      fetch('/api/skills'), fetch('/api/semantic'), fetch('/api/kernel'), fetch('/api/goblin'),
+    ]);
+    const sk_data = await skr.json();
+    const sem     = await smr.json();
+    const kernel  = await kr.json();
+    const goblin  = await gr.json();
+
+    skills = sk_data.skills || [];
+    render_skills(skills);
+
+    init_sem(sem.objects||[], sem.edges||[]);
+    render_ledger(kernel.ledger_events||[], goblin);
+  } catch(e) { console.error('refresh',e); }
 }
 
 // ── Boot ──────────────────────────────────────────────────────────────────

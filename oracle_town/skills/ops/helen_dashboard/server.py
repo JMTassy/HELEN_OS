@@ -227,6 +227,38 @@ def api_semantic():
     return jsonify({"objects": objects, "edges": edges[:80]})
 
 
+SKILLS = [
+    {"id": "video_studio",   "label": "Video Studio", "icon": "🎬", "domain": "media",       "status": "ready",
+     "description": "Créer vidéos, scripts, storyboards, reels, ads.",
+     "actions": ["write_script", "generate_storyboard", "create_voiceover", "export_prompt", "publish_plan"]},
+    {"id": "jmt_admin",      "label": "JMT Admin",    "icon": "🧾", "domain": "admin",       "status": "ready",
+     "description": "Factures, devis, documents société, suivi administratif.",
+     "actions": ["create_invoice", "create_quote", "draft_contract", "admin_report", "document_archive"]},
+    {"id": "client_crm",     "label": "Clients",      "icon": "👥", "domain": "crm",         "status": "ready",
+     "description": "CRM léger : contacts, opportunités, relances, notes.",
+     "actions": ["add_contact", "log_interaction", "set_followup", "build_opportunity", "generate_brief"]},
+    {"id": "offer_builder",  "label": "Offers",       "icon": "📦", "domain": "sales",       "status": "ready",
+     "description": "Offres commerciales, packs consulting, propositions PDF.",
+     "actions": ["build_consulting_pack", "draft_proposal", "create_pitch", "price_offer", "export_pdf_brief"]},
+    {"id": "content_engine", "label": "Content",      "icon": "📣", "domain": "content",     "status": "ready",
+     "description": "Posts LinkedIn, newsletters, pages de vente, campagnes.",
+     "actions": ["write_linkedin_post", "draft_newsletter", "build_landing_page", "write_campaign", "repurpose_content"]},
+    {"id": "research_brief", "label": "Research",     "icon": "🧠", "domain": "intelligence","status": "ready",
+     "description": "Recherche stratégique, veille, synthèse, benchmark.",
+     "actions": ["run_scan", "synthesize_brief", "build_benchmark", "extract_signals", "write_report"]},
+    {"id": "calendar_ops",   "label": "Calendar",     "icon": "📅", "domain": "ops",         "status": "ready",
+     "description": "Planning, rendez-vous, deadlines, follow-up.",
+     "actions": ["log_appointment", "set_deadline", "plan_week", "flag_followup", "review_calendar"]},
+    {"id": "sovereign_ledger","label": "Ledger",      "icon": "🏛️", "domain": "governance",  "status": "active",
+     "description": "Historique des actions, décisions, preuves, receipts.",
+     "actions": ["inspect_receipt", "list_events", "verify_chain", "query_verdict", "export_summary"]},
+]
+
+@app.route("/api/skills")
+def api_skills():
+    return jsonify({"skills": SKILLS, "authority": "NON_SOVEREIGN", "canon": "NO_SHIP"})
+
+
 @app.route("/api/airi/status")
 def api_airi_status():
     if _airi is None:

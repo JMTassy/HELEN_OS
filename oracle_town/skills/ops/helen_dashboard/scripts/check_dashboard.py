@@ -4,15 +4,17 @@ import urllib.request
 import json
 import sys
 
-BASE = "http://127.0.0.1:7000"
+BASE = "http://127.0.0.1:7700"
 CHECKS = [
-    ("/api/status",   "json"),
-    ("/api/kernel",   "json"),
-    ("/api/goblin",   "json"),
-    ("/api/terminal", "json"),
-    ("/api/semantic", "json"),
-    ("/avatar",       "image"),
-    ("/",             "html"),
+    ("/api/status",      "json"),
+    ("/api/skills",      "json"),
+    ("/api/kernel",      "json"),
+    ("/api/goblin",      "json"),
+    ("/api/terminal",    "json"),
+    ("/api/semantic",    "json"),
+    ("/api/airi/status", "json"),
+    ("/avatar",          "image"),
+    ("/",                "html"),
 ]
 
 ok = True
@@ -38,6 +40,12 @@ edges   = data.get("edges", [])
 by_prov = {}
 for o in objects:
     by_prov[o["provenance"]] = by_prov.get(o["provenance"], 0) + 1
+
+sk_data = json.loads(urllib.request.urlopen(BASE + "/api/skills", timeout=5).read())
+skills = sk_data.get("skills", [])
+print(f"\n  Skills: {len(skills)} pastilles")
+for sk in skills:
+    print(f"    {sk['icon']}  {sk['id']:20} {sk['domain']}")
 
 print(f"\n  Field: {len(objects)} objects · {len(edges)} edges")
 for prov, count in sorted(by_prov.items()):
