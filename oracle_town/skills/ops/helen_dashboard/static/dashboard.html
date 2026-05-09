@@ -5,18 +5,18 @@
 <title>HELEN OS</title>
 <style>
 :root {
-  --black:   #080808;
-  --surface: #0e0e0e;
-  --graph:   #161616;
-  --border:  #202020;
-  --off-white: #e6e1d6;
-  --silver:    #7a7874;
-  --silver-hi: #a09c96;
-  --signal:    #c49a3c;
-  --signal-bg: rgba(196,154,60,0.08);
+  --black:      #060608;
+  --surface:    #0d0d10;
+  --graphite:   #141418;
+  --border:     #1e1e24;
+  --off-white:  #e4dfd4;
+  --silver:     #78756f;
+  --silver-hi:  #9e9a94;
+  --signal:     #c49a3c;
+  --signal-dim: rgba(196,154,60,0.10);
   --serif: Georgia, 'Times New Roman', serif;
   --sans:  -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
-  --mono:  'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  --mono:  'SF Mono', 'Fira Code', monospace;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -32,49 +32,49 @@ html, body {
 body { display: flex; flex-direction: column; }
 
 /* ── HEADER ──────────────────────────────────────────────────────────────── */
-.header {
+.hdr {
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
-  height: 40px;
+  padding: 0 18px;
   border-bottom: 1px solid var(--border);
   background: var(--surface);
   flex-shrink: 0;
 }
 
-.title {
+.hdr-title {
   font-family: var(--serif);
   font-size: 13px;
   font-weight: normal;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.24em;
   color: var(--off-white);
 }
 
-.title em { color: var(--signal); font-style: normal; }
+.hdr-title em { color: var(--signal); font-style: normal; }
 
-.header-right {
+.hdr-right {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 18px;
   font-family: var(--mono);
   font-size: 9px;
   color: var(--silver);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.07em;
 }
 
-.sovereign-badge {
+.ns-badge {
   border: 1px solid var(--signal);
   color: var(--signal);
   padding: 2px 7px;
   font-size: 8px;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.14em;
 }
 
 /* ── LAYOUT ──────────────────────────────────────────────────────────────── */
 .layout {
   display: grid;
-  grid-template-columns: 220px 1fr 220px;
+  grid-template-columns: 210px 1fr 210px;
   flex: 1;
   overflow: hidden;
 }
@@ -83,18 +83,18 @@ body { display: flex; flex-direction: column; }
 .side {
   display: flex;
   flex-direction: column;
-  border-right: 1px solid var(--border);
   overflow: hidden;
   background: var(--surface);
 }
 
-.side.right { border-right: none; border-left: 1px solid var(--border); }
+.side.left  { border-right: 1px solid var(--border); }
+.side.right { border-left:  1px solid var(--border); }
 
-.side-label {
+.side-lbl {
   padding: 9px 14px;
   font-family: var(--mono);
   font-size: 8px;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.26em;
   color: var(--silver);
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
@@ -111,17 +111,17 @@ body { display: flex; flex-direction: column; }
 
 /* ── OBJECT CARDS ────────────────────────────────────────────────────────── */
 .obj-card {
-  padding: 10px 14px;
+  padding: 9px 14px;
   border-bottom: 1px solid var(--border);
   cursor: pointer;
   position: relative;
-  transition: background 0.12s;
+  transition: background 0.1s;
 }
 
-.obj-card:hover { background: rgba(255,255,255,0.02); }
+.obj-card:hover { background: rgba(255,255,255,0.018); }
 
 .obj-card.active {
-  background: rgba(196,154,60,0.06);
+  background: rgba(196,154,60,0.05);
 }
 
 .obj-card.active::before {
@@ -149,17 +149,13 @@ body { display: flex; flex-direction: column; }
 .obj-type.goblin   { color: var(--silver-hi); }
 .obj-type.terminal { color: var(--silver); }
 
-.obj-conf {
-  font-family: var(--mono);
-  font-size: 9px;
-  color: var(--silver);
-}
+.obj-conf { font-family: var(--mono); font-size: 9px; color: var(--silver); }
 
 .obj-subject {
   font-size: 10px;
   color: var(--off-white);
   line-height: 1.4;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
 }
 
 .obj-foot {
@@ -170,7 +166,7 @@ body { display: flex; flex-direction: column; }
   color: var(--silver);
 }
 
-.obj-receipts { color: var(--signal); }
+.obj-r { color: var(--signal); }
 
 /* ── CONSTELLATION ───────────────────────────────────────────────────────── */
 .center {
@@ -179,46 +175,130 @@ body { display: flex; flex-direction: column; }
   overflow: hidden;
 }
 
-#graph { width: 100%; height: 100%; display: block; }
+#graph {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── HELEN AVATAR — the sovereign anchor ─────────────────────────────────── */
+#helen-avatar-wrap {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* outer glow ring */
+#helen-avatar-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -18px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(196,154,60,0.12) 0%, transparent 72%);
+}
+
+/* rotating orbital ring */
+#helen-avatar-wrap::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px solid rgba(196,154,60,0.22);
+  animation: orbit-ring 18s linear infinite;
+}
+
+@keyframes orbit-ring {
+  from { transform: rotate(0deg) scaleX(1.8) scaleY(0.55); }
+  to   { transform: rotate(360deg) scaleX(1.8) scaleY(0.55); }
+}
+
+#helen-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  filter: grayscale(20%) contrast(1.05) brightness(0.92);
+  border: 1px solid rgba(196,154,60,0.35);
+  box-shadow:
+    0 0 0 1px rgba(196,154,60,0.10),
+    0 0 30px rgba(196,154,60,0.08),
+    0 0 60px rgba(0,0,0,0.8);
+}
+
+/* signal pulse */
+@keyframes signal-pulse {
+  0%, 100% { box-shadow: 0 0 0 1px rgba(196,154,60,0.10), 0 0 30px rgba(196,154,60,0.08), 0 0 60px rgba(0,0,0,0.8); }
+  50%       { box-shadow: 0 0 0 1px rgba(196,154,60,0.25), 0 0 40px rgba(196,154,60,0.14), 0 0 60px rgba(0,0,0,0.8); }
+}
+
+#helen-avatar { animation: signal-pulse 4s ease-in-out infinite; }
+
+/* her name under the portrait */
+#helen-label {
+  text-align: center;
+  margin-top: 8px;
+  font-family: var(--serif);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: rgba(196,154,60,0.6);
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+/* core law line */
+#core-law {
+  text-align: center;
+  margin-top: 3px;
+  font-family: var(--mono);
+  font-size: 7px;
+  letter-spacing: 0.18em;
+  color: rgba(120,117,111,0.5);
+  pointer-events: none;
+}
 
 /* ── NODE DETAIL ─────────────────────────────────────────────────────────── */
 #detail {
   position: absolute;
   bottom: 0; left: 0; right: 0;
-  background: var(--surface);
+  background: rgba(13,13,16,0.95);
   border-top: 1px solid var(--signal);
-  padding: 14px 20px 14px 20px;
+  padding: 12px 18px 12px 18px;
   font-family: var(--mono);
   font-size: 10px;
   line-height: 1.9;
   display: none;
-  max-height: 180px;
-  overflow-y: auto;
+  z-index: 10;
+  backdrop-filter: blur(4px);
 }
 
 #detail.on { display: block; }
 
-.detail-close {
+.det-close {
   position: absolute;
-  right: 16px; top: 12px;
+  right: 14px; top: 10px;
   cursor: pointer;
   color: var(--silver);
   font-size: 11px;
   background: none; border: none;
 }
 
-.dr { display: flex; gap: 0; flex-wrap: wrap; }
-.dk { color: var(--silver); min-width: 100px; }
-.dv { color: var(--off-white); margin-right: 24px; }
-.ds { color: var(--signal); }
+.dr { display: flex; flex-wrap: wrap; gap: 0; }
+.dk { color: var(--silver); min-width: 96px; }
+.dv { color: var(--off-white); margin-right: 22px; }
+.ds { color: var(--signal); margin-right: 22px; }
 
-/* ── LEDGER PANEL ────────────────────────────────────────────────────────── */
+/* ── SOVEREIGN LEDGER ────────────────────────────────────────────────────── */
 .mayor-block {
-  padding: 12px 14px;
+  padding: 11px 14px;
   border-bottom: 1px solid var(--border);
 }
 
-.mayor-label {
+.mayor-lbl {
   font-family: var(--mono);
   font-size: 8px;
   letter-spacing: 0.2em;
@@ -234,11 +314,11 @@ body { display: flex; flex-direction: column; }
 }
 
 .receipt-row {
-  padding: 9px 14px;
+  padding: 8px 14px;
   border-bottom: 1px solid var(--border);
 }
 
-.receipt-row:hover { background: rgba(255,255,255,0.02); }
+.receipt-row:hover { background: rgba(255,255,255,0.018); }
 
 .r-hash {
   font-family: var(--mono);
@@ -261,59 +341,75 @@ body { display: flex; flex-direction: column; }
 }
 
 .empty {
-  padding: 20px 14px;
+  padding: 18px 14px;
   font-family: var(--serif);
   font-size: 10px;
   color: var(--silver);
   font-style: italic;
 }
 
-/* ── DENSITY BAR ─────────────────────────────────────────────────────────── */
-#density {
+/* ── GOBLIN STATS strip ──────────────────────────────────────────────────── */
+.goblin-strip {
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--border);
   font-family: var(--mono);
-  font-size: 9px;
+  font-size: 8px;
   color: var(--silver);
+  line-height: 1.7;
 }
 
-#density span { color: var(--off-white); }
+.goblin-strip span { color: var(--off-white); }
+.goblin-strip .sig { color: var(--signal); }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="title">HELEN <em>OS</em></div>
-  <div class="header-right">
-    <div id="density">FIELD — <span id="n-objects">0</span> objects · <span id="n-edges">0</span> edges</div>
-    <div class="sovereign-badge">NON_SOVEREIGN · NO_SHIP</div>
-    <div id="clock">–</div>
+<div class="hdr">
+  <div class="hdr-title">HELEN <em>OS</em></div>
+  <div class="hdr-right">
+    <span id="density" style="font-size:9px;color:var(--silver);">
+      <span id="n-obj" style="color:var(--off-white);">0</span> objects ·
+      <span id="n-edge" style="color:var(--off-white);">0</span> edges
+    </span>
+    <span class="ns-badge">NON_SOVEREIGN · NO_SHIP</span>
+    <span id="clock">–</span>
   </div>
 </div>
 
 <div class="layout">
 
   <!-- LEFT: Object Field -->
-  <div class="side">
-    <div class="side-label">Object Field</div>
-    <div class="side-body" id="object-list">
-      <div class="empty">Connecting to kernel…</div>
+  <div class="side left">
+    <div class="side-lbl">Object Field</div>
+    <div class="side-body" id="obj-list">
+      <div class="empty">Connecting…</div>
     </div>
   </div>
 
-  <!-- CENTER: Constellation -->
+  <!-- CENTER: Constellation + HELEN -->
   <div class="center">
     <svg id="graph"></svg>
+
+    <!-- HELEN — sovereign gravitational anchor -->
+    <div id="helen-avatar-wrap">
+      <img id="helen-avatar" src="/avatar" alt="HELEN" onerror="this.style.display='none'">
+      <div id="helen-label">HELEN</div>
+      <div id="core-law">NO RECEIPT · NO SHIP</div>
+    </div>
+
+    <!-- Node detail overlay -->
     <div id="detail">
-      <button class="detail-close" onclick="deselect()">✕</button>
-      <div id="detail-body"></div>
+      <button class="det-close" onclick="deselect()">✕</button>
+      <div id="det-body"></div>
     </div>
   </div>
 
   <!-- RIGHT: Sovereign Ledger -->
   <div class="side right">
-    <div class="side-label">Sovereign Ledger</div>
+    <div class="side-lbl">Sovereign Ledger</div>
     <div class="side-body" id="ledger-list">
       <div class="mayor-block">
-        <div class="mayor-label">MAYOR VERDICT</div>
+        <div class="mayor-lbl">MAYOR VERDICT</div>
         <div class="mayor-verdict">NO_SHIP</div>
       </div>
       <div class="empty">Awaiting receipts…</div>
@@ -330,56 +426,65 @@ setInterval(() => {
 }, 1000);
 
 // ── Force Simulation ──────────────────────────────────────────────────────
-const GRAVITY   = 0.006;
-const REPEL_R   = 85;
-const REPEL_K   = 1000;
-const SPRING_K  = 0.035;
-const DAMP      = 0.86;
-const VMAX      = 2.5;
+const GRAVITY  = 0.005;
+const REPEL_R  = 90;
+const REPEL_K  = 1100;
+const SPRING_K = 0.03;
+const DAMP     = 0.85;
+const VMAX     = 2.2;
+const AVATAR_R = 80; // keep nodes away from center avatar
 
 let nodes = [], links = [], all_objects = [], selected_id = null;
 
-function init_sim(objects, edges) {
+function svg_center() {
   const svg = document.getElementById('graph');
-  const W = svg.clientWidth  || 600;
-  const H = svg.clientHeight || 400;
-  const cx = W / 2, cy = H / 2;
+  return { W: svg.clientWidth || 700, H: svg.clientHeight || 500 };
+}
 
-  // Preserve positions if id already exists
-  const old_map = {};
-  nodes.forEach(n => old_map[n.id] = { x: n.x, y: n.y });
+function init_sim(objects, edges) {
+  const { W, H } = svg_center();
+  const cx = W / 2, cy = H / 2;
+  const old = {};
+  nodes.forEach(n => old[n.id] = { x: n.x, y: n.y });
 
   nodes = objects.map((obj, i) => {
-    if (old_map[obj.id]) return { ...old_map[obj.id], vx: 0, vy: 0, id: obj.id, obj };
+    if (old[obj.id]) return { ...old[obj.id], vx: 0, vy: 0, id: obj.id, obj };
     const angle = (i / objects.length) * Math.PI * 2;
-    const r = 100 + Math.random() * 100;
+    const r = 140 + Math.random() * 110;
     return { id: obj.id, x: cx + Math.cos(angle) * r, y: cy + Math.sin(angle) * r,
              vx: 0, vy: 0, obj };
   });
 
-  const nmap = {};
-  nodes.forEach(n => nmap[n.id] = n);
-  links = edges.map(e => ({ s: nmap[e.source], t: nmap[e.target], w: e.weight || 0.5 }))
+  const nm = {};
+  nodes.forEach(n => nm[n.id] = n);
+  links = edges.map(e => ({ s: nm[e.source], t: nm[e.target], w: e.weight || 0.5 }))
                .filter(e => e.s && e.t);
 
   all_objects = objects;
-  document.getElementById('n-objects').textContent = objects.length;
-  document.getElementById('n-edges').textContent   = edges.length;
+  document.getElementById('n-obj').textContent  = objects.length;
+  document.getElementById('n-edge').textContent = edges.length;
 }
 
-function step_sim() {
-  const svg = document.getElementById('graph');
-  const W = svg.clientWidth  || 600;
-  const H = svg.clientHeight || 400;
+function step() {
+  const { W, H } = svg_center();
   const cx = W / 2, cy = H / 2;
 
-  // Gravity
   for (const n of nodes) {
+    // gravity toward center
     n.vx += (cx - n.x) * GRAVITY;
     n.vy += (cy - n.y) * GRAVITY;
+
+    // repel from avatar center
+    const adx = n.x - cx, ady = n.y - cy;
+    const ad = Math.sqrt(adx * adx + ady * ady) || 1;
+    if (ad < AVATAR_R) {
+      const f = (AVATAR_R - ad) * 0.6;
+      n.vx += (adx / ad) * f;
+      n.vy += (ady / ad) * f;
+    }
   }
 
-  // Repulsion
+  // repulsion between nodes
   for (let i = 0; i < nodes.length; i++) {
     for (let j = i + 1; j < nodes.length; j++) {
       const a = nodes[i], b = nodes[j];
@@ -395,20 +500,21 @@ function step_sim() {
     }
   }
 
-  // Spring
+  // springs along edges
   for (const l of links) {
     const dx = l.t.x - l.s.x, dy = l.t.y - l.s.y;
-    l.s.vx += dx * SPRING_K * l.w; l.s.vy += dy * SPRING_K * l.w;
-    l.t.vx -= dx * SPRING_K * l.w; l.t.vy -= dy * SPRING_K * l.w;
+    const f = SPRING_K * l.w;
+    l.s.vx += dx * f; l.s.vy += dy * f;
+    l.t.vx -= dx * f; l.t.vy -= dy * f;
   }
 
-  // Integrate
+  // integrate
   for (const n of nodes) {
     n.vx *= DAMP; n.vy *= DAMP;
     const spd = Math.sqrt(n.vx * n.vx + n.vy * n.vy);
     if (spd > VMAX) { n.vx = n.vx / spd * VMAX; n.vy = n.vy / spd * VMAX; }
-    n.x = Math.max(16, Math.min(W - 16, n.x + n.vx));
-    n.y = Math.max(16, Math.min(H - 16, n.y + n.vy));
+    n.x = Math.max(14, Math.min(W - 14, n.x + n.vx));
+    n.y = Math.max(14, Math.min(H - 14, n.y + n.vy));
   }
 }
 
@@ -419,88 +525,87 @@ let eg, ng;
 function init_svg() {
   const svg = document.getElementById('graph');
   svg.innerHTML = '';
-  // subtle grid (classified-terminal feel)
+  // classified grid
   const defs = document.createElementNS(NS, 'defs');
-  const pat  = document.createElementNS(NS, 'pattern');
-  pat.setAttribute('id', 'grid'); pat.setAttribute('width', '40'); pat.setAttribute('height', '40');
-  pat.setAttribute('patternUnits', 'userSpaceOnUse');
-  const pl = document.createElementNS(NS, 'path');
-  pl.setAttribute('d', 'M 40 0 L 0 0 0 40');
-  pl.setAttribute('fill', 'none'); pl.setAttribute('stroke', 'rgba(255,255,255,0.018)');
-  pl.setAttribute('stroke-width', '0.5');
+  const pat = document.createElementNS(NS, 'pattern');
+  pat.setAttribute('id','grid'); pat.setAttribute('width','44'); pat.setAttribute('height','44');
+  pat.setAttribute('patternUnits','userSpaceOnUse');
+  const pl = document.createElementNS(NS,'path');
+  pl.setAttribute('d','M 44 0 L 0 0 0 44'); pl.setAttribute('fill','none');
+  pl.setAttribute('stroke','rgba(255,255,255,0.016)'); pl.setAttribute('stroke-width','0.5');
   pat.appendChild(pl); defs.appendChild(pat); svg.appendChild(defs);
-  const rect = document.createElementNS(NS, 'rect');
-  rect.setAttribute('width', '100%'); rect.setAttribute('height', '100%');
-  rect.setAttribute('fill', 'url(#grid)');
-  svg.appendChild(rect);
-  eg = document.createElementNS(NS, 'g'); ng = document.createElementNS(NS, 'g');
+  const bg = document.createElementNS(NS,'rect');
+  bg.setAttribute('width','100%'); bg.setAttribute('height','100%');
+  bg.setAttribute('fill','url(#grid)'); svg.appendChild(bg);
+  eg = document.createElementNS(NS,'g');
+  ng = document.createElementNS(NS,'g');
   svg.appendChild(eg); svg.appendChild(ng);
 }
 
-function render_frame() {
-  // Edges
+function render() {
+  // edges
   while (eg.firstChild) eg.removeChild(eg.firstChild);
   for (const l of links) {
-    const line = document.createElementNS(NS, 'line');
-    line.setAttribute('x1', l.s.x); line.setAttribute('y1', l.s.y);
-    line.setAttribute('x2', l.t.x); line.setAttribute('y2', l.t.y);
-    const alpha = l.w > 0.6 ? 0.18 : 0.09;
-    line.setAttribute('stroke', `rgba(196,154,60,${l.w > 0.6 ? alpha : 0.07})`);
-    line.setAttribute('stroke-width', l.w > 0.6 ? '0.8' : '0.4');
+    const line = document.createElementNS(NS,'line');
+    line.setAttribute('x1', l.s.x.toFixed(1)); line.setAttribute('y1', l.s.y.toFixed(1));
+    line.setAttribute('x2', l.t.x.toFixed(1)); line.setAttribute('y2', l.t.y.toFixed(1));
+    const alpha = l.w > 0.6 ? 0.20 : 0.08;
+    const color = l.w > 0.6 ? `rgba(196,154,60,${alpha})` : `rgba(120,117,111,${alpha})`;
+    line.setAttribute('stroke', color);
+    line.setAttribute('stroke-width', l.w > 0.6 ? '0.9' : '0.4');
     eg.appendChild(line);
   }
 
-  // Nodes
+  // nodes
   while (ng.firstChild) ng.removeChild(ng.firstChild);
   for (const n of nodes) {
     const obj = n.obj;
-    const is_sel    = selected_id === obj.id;
-    const is_kernel = obj.provenance === 'kernel';
-    const conf      = obj.confidence || 0.5;
-    const r_base    = 2.5 + conf * 5;
+    const sel = selected_id === obj.id;
+    const kern = obj.provenance === 'kernel';
+    const conf = obj.confidence || 0.5;
+    const r = 2.5 + conf * 5.5;
 
-    const g = document.createElementNS(NS, 'g');
+    const g = document.createElementNS(NS,'g');
     g.setAttribute('transform', `translate(${n.x.toFixed(1)},${n.y.toFixed(1)})`);
     g.style.cursor = 'pointer';
 
-    // Halo for receipt-verified or selected
-    if (obj.receipts > 0 || is_sel) {
-      const halo = document.createElementNS(NS, 'circle');
-      halo.setAttribute('r', r_base + (is_sel ? 7 : 4));
-      halo.setAttribute('fill', is_kernel ? 'rgba(196,154,60,0.10)' : 'rgba(160,156,150,0.06)');
-      g.appendChild(halo);
+    // halo
+    if (obj.receipts > 0 || sel) {
+      const h = document.createElementNS(NS,'circle');
+      h.setAttribute('r', r + (sel ? 8 : 5));
+      h.setAttribute('fill', kern ? 'rgba(196,154,60,0.10)' : 'rgba(160,156,150,0.05)');
+      g.appendChild(h);
     }
 
-    // Selection ring
-    if (is_sel) {
-      const ring = document.createElementNS(NS, 'circle');
-      ring.setAttribute('r', r_base + 4);
-      ring.setAttribute('fill', 'none');
-      ring.setAttribute('stroke', '#c49a3c');
-      ring.setAttribute('stroke-width', '1');
+    // selection ring
+    if (sel) {
+      const ring = document.createElementNS(NS,'circle');
+      ring.setAttribute('r', r + 4);
+      ring.setAttribute('fill','none');
+      ring.setAttribute('stroke','#c49a3c');
+      ring.setAttribute('stroke-width','1');
       g.appendChild(ring);
     }
 
-    const c = document.createElementNS(NS, 'circle');
-    c.setAttribute('r', r_base);
-    if (is_kernel) {
-      c.setAttribute('fill', '#c49a3c');
+    const c = document.createElementNS(NS,'circle');
+    c.setAttribute('r', r);
+    if (kern) {
+      c.setAttribute('fill','#c49a3c');
     } else if (obj.provenance === 'goblin') {
-      c.setAttribute('fill', `rgba(160,156,150,${0.3 + conf * 0.6})`);
+      c.setAttribute('fill', `rgba(158,154,148,${0.28 + conf * 0.65})`);
     } else {
-      c.setAttribute('fill', `rgba(100,98,95,${0.4 + conf * 0.4})`);
+      c.setAttribute('fill', `rgba(100,98,94,${0.35 + conf * 0.45})`);
     }
     g.appendChild(c);
 
-    // Label for high-conf or selected
-    if (conf >= 0.75 || is_sel) {
-      const t = document.createElementNS(NS, 'text');
-      t.setAttribute('x', r_base + 5);
-      t.setAttribute('y', 3.5);
-      t.setAttribute('fill', is_kernel ? 'rgba(196,154,60,0.7)' : 'rgba(122,120,116,0.7)');
-      t.setAttribute('font-size', '8');
-      t.setAttribute('font-family', '-apple-system, sans-serif');
-      t.textContent = (obj.subject || '').slice(0, 24);
+    // label for high-conf or selected
+    if (conf >= 0.75 || sel) {
+      const t = document.createElementNS(NS,'text');
+      t.setAttribute('x', r + 5); t.setAttribute('y', 3.5);
+      t.setAttribute('fill', kern ? 'rgba(196,154,60,0.72)' : 'rgba(120,117,111,0.72)');
+      t.setAttribute('font-size','8');
+      t.setAttribute('font-family','-apple-system, sans-serif');
+      t.textContent = (obj.subject||'').slice(0,26);
       g.appendChild(t);
     }
 
@@ -510,31 +615,25 @@ function render_frame() {
 }
 
 // ── Animation ─────────────────────────────────────────────────────────────
-function loop() {
-  step_sim();
-  render_frame();
-  requestAnimationFrame(loop);
-}
+function loop() { step(); render(); requestAnimationFrame(loop); }
 
 // ── Selection ─────────────────────────────────────────────────────────────
 function select_obj(obj) {
   selected_id = selected_id === obj.id ? null : obj.id;
-  if (selected_id) show_detail(obj);
-  else             hide_detail();
-  sync_card_states();
+  if (selected_id) show_detail(obj); else hide_detail();
+  sync_cards();
 }
 
-function deselect() { selected_id = null; hide_detail(); sync_card_states(); }
+function deselect() { selected_id = null; hide_detail(); sync_cards(); }
 
 function show_detail(obj) {
-  const el = document.getElementById('detail');
-  el.classList.add('on');
-  document.getElementById('detail-body').innerHTML = `
+  document.getElementById('detail').classList.add('on');
+  document.getElementById('det-body').innerHTML = `
     <div class="dr">
-      <span class="dk">type</span>      <span class="ds">${obj.type}</span>
-      <span class="dk">provenance</span><span class="dv">${obj.provenance}</span>
-      <span class="dk">confidence</span><span class="dv">${(obj.confidence||0).toFixed(3)}</span>
-      <span class="dk">receipts</span>  <span class="ds">${obj.receipts}</span>
+      <span class="dk">type</span>       <span class="ds">${obj.type}</span>
+      <span class="dk">provenance</span> <span class="dv">${obj.provenance}</span>
+      <span class="dk">confidence</span> <span class="dv">${(obj.confidence||0).toFixed(3)}</span>
+      <span class="dk">receipts</span>   <span class="ds">${obj.receipts}</span>
       ${obj.hash ? `<span class="dk">hash</span><span class="dv" style="font-family:monospace;">${obj.hash}</span>` : ''}
     </div>
     <div class="dr" style="margin-top:4px;">
@@ -545,58 +644,71 @@ function show_detail(obj) {
   `;
 }
 
-function hide_detail() {
-  document.getElementById('detail').classList.remove('on');
-}
+function hide_detail() { document.getElementById('detail').classList.remove('on'); }
 
-function sync_card_states() {
-  document.querySelectorAll('.obj-card').forEach(el => {
-    el.classList.toggle('active', el.dataset.id === selected_id);
-  });
+function sync_cards() {
+  document.querySelectorAll('.obj-card').forEach(el =>
+    el.classList.toggle('active', el.dataset.id === selected_id));
 }
 
 // ── Left Panel ────────────────────────────────────────────────────────────
 function render_objects(objects) {
-  const el = document.getElementById('object-list');
+  const el = document.getElementById('obj-list');
   if (!objects.length) { el.innerHTML = '<div class="empty">No objects in field.</div>'; return; }
   el.innerHTML = objects.slice(0, 40).map(obj => `
     <div class="obj-card${selected_id===obj.id?' active':''}" data-id="${obj.id}"
-         onclick="select_from_card('${obj.id.replace(/'/g,'\\\')}')">
+         onclick="pick_card('${esc(obj.id)}')">
       <div class="obj-top">
         <span class="obj-type ${obj.provenance}">${obj.type}</span>
         <span class="obj-conf">${(obj.confidence||0).toFixed(2)}</span>
       </div>
-      <div class="obj-subject">${(obj.subject||'–').slice(0,58)}</div>
+      <div class="obj-subject">${(obj.subject||'–').slice(0,56)}</div>
       <div class="obj-foot">
         <span>${obj.provenance}</span>
-        ${obj.receipts > 0 ? `<span class="obj-receipts">${obj.receipts}R</span>` : ''}
+        ${obj.receipts > 0 ? `<span class="obj-r">${obj.receipts}R</span>` : ''}
         ${obj.hash ? `<span style="font-family:monospace;">${obj.hash.slice(0,8)}</span>` : ''}
       </div>
     </div>`).join('');
 }
 
-function select_from_card(id) {
+function esc(s) { return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
+
+function pick_card(id) {
   const obj = all_objects.find(o => o.id === id);
   if (obj) select_obj(obj);
 }
 
 // ── Right Panel ───────────────────────────────────────────────────────────
-function render_ledger(events) {
+function render_ledger(events, goblin) {
   const el = document.getElementById('ledger-list');
   const mayor = `<div class="mayor-block">
-    <div class="mayor-label">MAYOR VERDICT</div>
+    <div class="mayor-lbl">MAYOR VERDICT</div>
     <div class="mayor-verdict">NO_SHIP</div>
   </div>`;
-  if (!events.length) { el.innerHTML = mayor + '<div class="empty">No events.</div>'; return; }
-  el.innerHTML = mayor + [...events].reverse().slice(0, 30).map(e => `
-    <div class="receipt-row">
-      <div class="r-hash">${(e.event_hash||e.payload_hash||'').slice(0,12)||'–'}</div>
-      <div class="r-type">${e.event_type||'–'}</div>
-      <div class="r-time">${fmt_ts(e.timestamp_utc)}</div>
-    </div>`).join('');
+
+  // GOBLIN strip
+  let goblin_html = '';
+  if (goblin && goblin.batches && goblin.batches.length) {
+    const b = goblin.batches[0];
+    goblin_html = `<div class="goblin-strip">
+      <div>GOBLIN · <span>${b.batch_id||b.file}</span></div>
+      <div>provider <span>${b.provider||'–'}</span> · model <span>${b.model||'–'}</span></div>
+      <div>PASS <span class="sig">${b.hal_pass||0}</span> · WARN ${b.hal_warn||0} · BLOCK ${b.hal_block||0}</div>
+      <div>top score <span class="sig">${(b.top_score||0).toFixed(3)}</span> · ${b.epoch_count||0} epochs</div>
+    </div>`;
+  }
+
+  if (!events.length) { el.innerHTML = mayor + goblin_html + '<div class="empty">No events.</div>'; return; }
+  el.innerHTML = mayor + goblin_html +
+    [...events].reverse().slice(0, 25).map(e => `
+      <div class="receipt-row">
+        <div class="r-hash">${(e.event_hash||e.payload_hash||'').slice(0,12)||'–'}</div>
+        <div class="r-type">${e.event_type||'–'}</div>
+        <div class="r-time">${fmts(e.timestamp_utc)}</div>
+      </div>`).join('');
 }
 
-function fmt_ts(ts) {
+function fmts(ts) {
   if (!ts) return '–';
   try { return new Date(ts).toLocaleTimeString('en-GB', { hour12:false }); }
   catch { return (ts||'').slice(11,19); }
@@ -605,12 +717,15 @@ function fmt_ts(ts) {
 // ── Fetch ─────────────────────────────────────────────────────────────────
 async function refresh() {
   try {
-    const [s, k] = await Promise.all([fetch('/api/semantic'), fetch('/api/kernel')]);
-    const sem    = await s.json();
-    const kernel = await k.json();
+    const [sr, kr, gr] = await Promise.all([
+      fetch('/api/semantic'), fetch('/api/kernel'), fetch('/api/goblin')
+    ]);
+    const sem    = await sr.json();
+    const kernel = await kr.json();
+    const goblin = await gr.json();
     init_sim(sem.objects||[], sem.edges||[]);
     render_objects(sem.objects||[]);
-    render_ledger(kernel.ledger_events||[]);
+    render_ledger(kernel.ledger_events||[], goblin);
   } catch(e) { console.error('refresh', e); }
 }
 

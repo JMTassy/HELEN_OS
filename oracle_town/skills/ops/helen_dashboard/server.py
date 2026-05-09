@@ -217,6 +217,12 @@ def api_semantic():
     return jsonify({"objects": objects, "edges": edges[:80]})
 
 
+@app.route("/avatar")
+def avatar():
+    portrait = SOT / "artifacts" / "video" / "ship_2e_helen_speaks" / "source" / "helen_source.png"
+    return send_from_directory(str(portrait.parent), portrait.name)
+
+
 @app.route("/")
 def index():
     return send_from_directory(str(STATIC_DIR), "dashboard.html")
