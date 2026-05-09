@@ -140,6 +140,83 @@ def api_status():
     })
 
 
+@app.route("/api/semantic")
+def api_semantic():
+    objects = []
+
+    # Kernel ledger events
+    ledger = _read_ndjson(KERNEL_DIR / "data" / "ledger.ndjson", tail=40)
+    for e in ledger:
+        p = e.get("payload", {})
+        subj = p.get("op") or e.get("event_type", "event")
+        objects.append({
+            "id": e.get("event_id", f"k-{len(objects)}"),
+            "type": "EVENT",
+            "subject": subj,
+            "relations": [e.get("event_type", "")],
+            "confidence": 0.90,
+            "receipts": 1,
+            "timestamp": e.get("timestamp_utc", ""),
+            "provenance": "kernel",
+            "sovereign": True,
+            "hash": (e.get("event_hash") or e.get("payload_hash") or "")[:12],
+        })
+
+    # GOBLIN top epochs
+    batches_dir = GOBLIN_DIR / "brainstorm" / "batches"
+    if batches_dir.exists():
+        for jsonl in sorted(batches_dir.glob("*.jsonl"), key=lambda p: p.stat().st_mtime, reverse=True)[:2]:
+            lines = [json.loads(l) for l in jsonl.read_text().splitlines() if l.strip()]
+            valid = [e for e in lines if "her_scoring" in e]
+            top = sorted(valid, key=lambda e: e["her_scoring"]["score"], reverse=True)[:15]
+            for e in top:
+                stmt = e.get("communication_act", {}).get("statement", "epoch")
+                objects.append({
+                    "id": f"g-{jsonl.stem[:8]}-{e['epoch_index']}",
+                    "type": "EPOCH",
+                    "subject": stmt[:70],
+                    "relations": ["her_scoring", "hal_verdict"],
+                    "confidence": round(e["her_scoring"]["score"], 3),
+                    "receipts": 1 if e["hal_verdict"]["verdict"] == "PASS" else 0,
+                    "timestamp": e.get("timestamp", ""),
+                    "provenance": "goblin",
+                    "sovereign": False,
+                    "hash": "",
+                })
+
+    # Terminal ledger
+    terminal_ledger = _read_ndjson(TERMINAL_DIR / "data" / "ledger.ndjson", tail=10)
+    for e in terminal_ledger:
+        p = e.get("payload", {})
+        objects.append({
+            "id": e.get("event_id", f"t-{len(objects)}"),
+            "type": "ACTION",
+            "subject": p.get("action_type", "terminal_action"),
+            "relations": ["receipt", "policy"],
+            "confidence": 0.95,
+            "receipts": 1,
+            "timestamp": e.get("timestamp_utc", ""),
+            "provenance": "terminal",
+            "sovereign": False,
+            "hash": (e.get("event_hash") or "")[:12],
+        })
+
+    # Edges: temporal within same provenance, top-conf cross links
+    edges = []
+    by_prov = {}
+    for o in objects:
+        by_prov.setdefault(o["provenance"], []).append(o)
+    for prov, obs in by_prov.items():
+        for i in range(len(obs) - 1):
+            edges.append({"source": obs[i]["id"], "target": obs[i + 1]["id"], "weight": 0.4})
+    top_conf = sorted(objects, key=lambda o: o["confidence"], reverse=True)[:6]
+    for i in range(len(top_conf) - 1):
+        if top_conf[i]["provenance"] != top_conf[i + 1]["provenance"]:
+            edges.append({"source": top_conf[i]["id"], "target": top_conf[i + 1]["id"], "weight": 0.7})
+
+    return jsonify({"objects": objects, "edges": edges[:80]})
+
+
 @app.route("/")
 def index():
     return send_from_directory(str(STATIC_DIR), "dashboard.html")
