@@ -1,0 +1,51 @@
+{
+  "schema_version": "GOBLIN_BATCH_TRANCHE_V1",
+  "tranche_id": "b553d48a3bb0",
+  "batch_id": "07b923ef09df",
+  "tranche_index": 0,
+  "epochs_run": 287,
+  "mission": "HELEN OS architecture and governance \u2014 kernel design, receipt system, sovereign boundaries, ORACLE doctrine, governance at scale",
+  "dry_run": false,
+  "timestamp": "2026-05-08T21:02:06.649085+00:00",
+  "actor": "DAN_GOBLIN",
+  "authority": "NON_SOVEREIGN",
+  "canon": "NO_SHIP",
+  "provider": "xai",
+  "model": "grok-3-mini",
+  "backend_signature": "xai:grok-3-mini:chat.completions:v1",
+  "hal_summary": {
+    "PASS": 269,
+    "WARN": 16,
+    "BLOCK": 2
+  },
+  "escalate_count": 2,
+  "top_entries": [
+    {
+      "epoch_index": 278,
+      "epoch_hash": "f1aa64455d0cc2df",
+      "score": 0.765
+    },
+    {
+      "epoch_index": 269,
+      "epoch_hash": "2f3d79b37bb6c9b6",
+      "score": 0.765
+    },
+    {
+      "epoch_index": 256,
+      "epoch_hash": "6e7f908f19eb9a56",
+      "score": 0.765
+    },
+    {
+      "epoch_index": 185,
+      "epoch_hash": "d925aa1373097e99",
+      "score": 0.765
+    },
+    {
+      "epoch_index": 165,
+      "epoch_hash": "8bb53349af19c286",
+      "score": 0.765
+    }
+  ],
+  "output_file": "/Users/jean-marietassy/Documents/GitHub/helen_os_v1/oracle_town/skills/ops/dan_goblin/brainstorm/batches/07b923ef09df_tranche_000.jsonl",
+  "reducer_decision": null
+}
