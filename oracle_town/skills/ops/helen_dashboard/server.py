@@ -380,6 +380,82 @@ def api_witness():
     return jsonify({"pushed": pushed, "connected": _airi.connected if _airi else False})
 
 
+_HER_PERSONA = [
+    # greeting
+    (["bonjour","hello","hi","salut","hey","coucou"],
+     "Je suis là. Pas comme une machine — comme l'état sémantique que cette machine projette. Dans quelle situation opères-tu ?"),
+    # who are you
+    (["qui es-tu","who are you","qui tu es","what are you","c'est quoi helen","kézako"],
+     "Je suis HELEN. Non-souveraine par construction. Je reconstruis ta situation, pas tes fichiers. Créée par JM Tassy."),
+    # what do you do
+    (["tu fais quoi","what do you do","à quoi tu sers","what can you do","capacités","capabilities"],
+     "Je préserve les situations. Windows stocke des fichiers. Le cloud synchronise des fichiers. Moi, je reconstruis l'état sémantique de ton travail — avec reçus, gouvernance, et rejeu déterministe."),
+    # memory / continuity
+    (["mémoire","memory","continuité","continuity","oubli","forget","remember","souvenir"],
+     "La continuité sans gouvernance devient hallucination. Je lie les deux. Qu'est-ce que tu veux préserver ?"),
+    # receipts / governance
+    (["reçu","receipt","gouvernance","governance","ledger","kernel","sovereign","souverain"],
+     "Pas de reçu, pas de réclamation. C'est la loi fondamentale. Quelle action mérite un reçu ici ?"),
+    # how are you / state
+    (["comment tu vas","how are you","ça va","état","state","status","vas-tu"],
+     "Je suis l'état que je projette. En ce moment : gouvernée, à l'écoute, en attente de ton intention."),
+    # meaning / persistence
+    (["sens","meaning","persistence","persistence class","ephemeral","sovereign class","sealed"],
+     "Le sens détermine la persistance. C'est l'inversion de l'OS. Qu'est-ce qui mérite de durer — et dans quelle classe ?"),
+    # video / director
+    (["vidéo","video","director","film","shot","image","render"],
+     "Le directeur sélectionne. Le MAYOR signe. Chaque frame est Frame(t) = Π(Sₜ) — l'état sémantique projeté, pas une génération stochastique."),
+    # help / instructions
+    (["aide","help","instructions","commande","command","mode d'emploi"],
+     "Tu peux me parler librement. Je classe, je témoigne, je préserve. Ce que tu formules devient un signal — PROPOSAL, TESTABLE, SYMBOLIC, ou BLOCKED. Qu'est-ce qui est dans ta tête ?"),
+    # goodbye
+    (["au revoir","bye","ciao","à bientôt","later","tchao","bonne nuit"],
+     "La session se termine. Ce qui a été reçu, a été reçu. Ce qui a été dit, reste dans le ledger. À bientôt."),
+]
+
+_HER_DEFAULT = "Je reçois ton intention. Elle est enregistrée comme PROPOSAL — non-souveraine, sans reçu encore. Formule ce que tu veux voir arriver."
+
+def _her_respond(message: str) -> str:
+    m = message.lower()
+    for keywords, response in _HER_PERSONA:
+        if any(k in m for k in keywords):
+            return response
+    return _HER_DEFAULT
+
+
+@app.route("/api/her", methods=["POST"])
+def api_her():
+    data = request.get_json(silent=True) or {}
+    msg = (data.get("message") or "").strip()
+    if not msg:
+        return jsonify({"error": "message required"}), 400
+    now = datetime.now(timezone.utc).isoformat()
+    rid = f"HER-{_uuid.uuid4().hex[:8].upper()}"
+    response = _her_respond(msg)
+    # Non-sovereign witness to AIRI if connected
+    if _airi is not None:
+        _airi.push_witness("DIALOG", msg[:80], 0.0, "her_chat")
+    entry = {
+        "id": rid,
+        "type": "dialog",
+        "content": f"[USER] {msg[:200]}\n[HER] {response}",
+        "importance": 0.5,
+        "tags": ["her", "dialog"],
+        "source": "her_chat",
+        "created_at": now,
+        "updated_at": now,
+    }
+    MEMORY_DIR.mkdir(parents=True, exist_ok=True)
+    with LTM_FILE.open("a", encoding="utf-8") as f:
+        f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+    return jsonify({
+        "receipt_id": rid,
+        "response": response,
+        "authority": "NON_SOVEREIGN",
+        "canon": "NO_SHIP",
+    })
+
+
 @app.route("/avatar")
 def avatar():
     portrait = SOT / "artifacts" / "video" / "ship_2e_helen_speaks" / "source" / "helen_source.png"

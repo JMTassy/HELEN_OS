@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HELEN OS · v0.4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#050410;--surface:rgba(10,8,28,.88);--border:rgba(255,255,255,.07);--border-hi:rgba(255,255,255,.12);
+  --white:rgba(255,255,255,.88);--muted:rgba(255,255,255,.4);--dim:rgba(255,255,255,.18);
+  --gold:#c9a43a;--purple:#8b3fff;--cyan:#7eb8ff;--green:#4ade80;--red:#f87171;--r:12px;
+}
+html,body{width:100%;height:100vh;overflow:hidden;background:var(--bg);color:var(--white);font-family:'Space Grotesk',sans-serif;font-size:13px;}
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+.atm{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(140px);opacity:.6}
+.atm-1{width:700px;height:700px;background:radial-gradient(circle,rgba(80,20,200,.25),transparent 70%);top:-200px;left:-200px}
+.atm-2{width:600px;height:600px;background:radial-gradient(circle,rgba(30,8,80,.2),transparent 70%);bottom:-150px;right:-150px}
+.atm-3{width:360px;height:360px;background:radial-gradient(circle,rgba(139,63,255,.08),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%)}
+.os{position:relative;z-index:1;width:100%;height:100vh;display:flex;flex-direction:column;}
+/* STATUS BAR */
+.statusbar{height:38px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 22px;border-bottom:1px solid rgba(255,255,255,.04);background:rgba(5,4,16,.75);backdrop-filter:blur(20px);}
+.sb-side{display:flex;align-items:center;gap:10px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.06em;color:var(--muted)}
+.sb-center{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.24em;color:rgba(201,164,58,.55);text-transform:uppercase}
+.online-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.6)}}
+.ekg{width:36px;height:12px;display:inline-block;vertical-align:middle}
+.ekg path{stroke-width:1.5;fill:none;stroke-dasharray:55;stroke-dashoffset:55;animation:draw 2.6s ease-in-out infinite}
+.ekg-p{stroke:var(--purple)}.ekg-g{stroke:var(--gold)}
+@keyframes draw{to{stroke-dashoffset:0}}
+.backend-dot{width:5px;height:5px;border-radius:50%;background:var(--red);display:inline-block}
+.backend-dot.on{background:var(--green);box-shadow:0 0 5px var(--green)}
+.backend-dot.chk{background:#f59e0b;animation:pulse .7s infinite}
+/* STAGE */
+.stage{flex:1;position:relative;overflow:hidden;}
+.geo{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;}
+.geo-inner{position:relative;width:580px;height:580px;}
+.geo-inner svg{width:100%;height:100%}
+.orb{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:116px;height:116px;border-radius:50%;overflow:hidden;border:1px solid rgba(139,63,255,.4);box-shadow:0 0 50px rgba(139,63,255,.28),0 0 100px rgba(139,63,255,.08);animation:breathe 5.5s ease-in-out infinite;z-index:3;cursor:pointer;transition:transform .2s;}
+.orb:hover{transform:translate(-50%,-50%) scale(1.06);}
+@keyframes breathe{0%,100%{box-shadow:0 0 50px rgba(139,63,255,.28),0 0 100px rgba(139,63,255,.08)}50%{box-shadow:0 0 70px rgba(139,63,255,.45),0 0 140px rgba(139,63,255,.14),0 0 0 2px rgba(139,63,255,.18)}}
+.orb img{width:100%;height:100%;object-fit:cover;object-position:center top;filter:brightness(.82) saturate(1.1)}
+.orb-hint{position:absolute;top:calc(50% + 68px);left:50%;transform:translateX(-50%);font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.18em;color:rgba(139,63,255,.5);text-transform:uppercase;white-space:nowrap;cursor:pointer;transition:color .2s;z-index:3;}
+.orb-hint:hover{color:rgba(180,140,255,.8);}
+/* PANELS */
+.panel{position:absolute;z-index:4;width:190px;background:rgba(8,6,24,.82);border:1px solid var(--border);border-radius:var(--r);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);padding:14px 16px;transition:border-color .25s,background .25s;}
+.panel:hover{border-color:var(--border-hi);background:rgba(12,9,32,.9)}
+.panel.tl{top:18px;left:18px;border-top:1px solid rgba(139,63,255,.3)}
+.panel.tr{top:18px;right:18px;border-top:1px solid rgba(201,164,58,.25)}
+.panel.bl{bottom:52px;left:18px;border-bottom:1px solid rgba(126,184,255,.22)}
+.panel.br{bottom:52px;right:18px;border-bottom:1px solid rgba(74,222,128,.2)}
+.p-label{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);display:flex;align-items:center;gap:5px;margin-bottom:10px;}
+.p-label .dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.tl .dot{background:var(--purple);box-shadow:0 0 6px var(--purple)}.tr .dot{background:var(--gold);box-shadow:0 0 6px var(--gold)}.bl .dot{background:var(--cyan);box-shadow:0 0 6px var(--cyan)}.br .dot{background:var(--green);box-shadow:0 0 6px var(--green)}
+.p-title{font-size:13px;font-weight:600;color:var(--white);line-height:1.2;margin-bottom:8px;}
+.p-data{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);line-height:1.9;letter-spacing:.04em;margin-bottom:10px;}
+.p-row{display:flex;justify-content:space-between;align-items:center;padding:2px 0}
+.p-val{font-weight:700}.p-val.g{color:var(--green)}.p-val.p{color:rgba(180,140,255,.85)}.p-val.c{color:var(--cyan)}.p-val.gold{color:var(--gold)}.p-val.r{color:var(--red)}
+.p-num{font-family:'Space Mono',monospace;font-size:32px;font-weight:700;color:var(--white);line-height:1;margin-bottom:2px;}
+.p-num-label{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:.15em;text-transform:uppercase}
+.p-btn{display:flex;align-items:center;justify-content:space-between;width:100%;padding:8px 12px;border-radius:8px;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .2s;font-family:'Space Grotesk',sans-serif;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--muted);}
+.p-btn:hover{background:rgba(255,255,255,.07);border-color:var(--border-hi);color:var(--white)}
+.p-btn.purple{background:rgba(139,63,255,.1);border-color:rgba(139,63,255,.25);color:rgba(180,140,255,.9)}.p-btn.purple:hover{background:rgba(139,63,255,.2)}
+.p-btn.gold{background:rgba(201,164,58,.08);border-color:rgba(201,164,58,.2);color:rgba(215,180,90,.9)}.p-btn.gold:hover{background:rgba(201,164,58,.16)}
+.p-btn.cyan{background:rgba(126,184,255,.07);border-color:rgba(126,184,255,.18);color:rgba(160,200,255,.9)}.p-btn.cyan:hover{background:rgba(126,184,255,.14)}
+.p-btn.green{background:rgba(74,222,128,.06);border-color:rgba(74,222,128,.16);color:rgba(100,230,150,.9)}.p-btn.green:hover{background:rgba(74,222,128,.14)}
+.cls{display:inline-block;padding:2px 7px;border-radius:4px;font-family:'Space Mono',monospace;font-size:8px;font-weight:700}
+.cls.n{color:var(--dim);background:rgba(255,255,255,.04);border:1px solid var(--border)}.cls.prop{color:var(--cyan);background:rgba(126,184,255,.08);border:1px solid rgba(126,184,255,.2)}.cls.blk{color:var(--red);background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2)}.cls.sym{color:var(--gold);background:rgba(201,164,58,.08);border:1px solid rgba(201,164,58,.2)}.cls.tst{color:var(--green);background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.2)}
+/* BOTTOM NAV */
+.bottomnav{height:46px;flex-shrink:0;display:flex;align-items:center;justify-content:center;gap:4px;border-top:1px solid rgba(255,255,255,.04);background:rgba(5,4,16,.8);backdrop-filter:blur(20px);position:relative;z-index:5;}
+.nav-pill{padding:8px 22px;border-radius:100px;font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:all .18s;color:var(--muted);background:transparent;border:1px solid transparent;font-family:'Space Mono',monospace;}
+.nav-pill:hover{color:var(--white);background:rgba(255,255,255,.05)}
+.nav-pill.active{color:rgba(215,180,90,.9);background:rgba(201,164,58,.08);border-color:rgba(201,164,58,.22);box-shadow:0 0 20px rgba(201,164,58,.07)}
+.nav-pill.her{color:rgba(180,140,255,.8);border-color:rgba(139,63,255,.18);}
+.nav-pill.her:hover,.nav-pill.her.active{background:rgba(139,63,255,.12);border-color:rgba(139,63,255,.35);color:rgba(200,170,255,.95);box-shadow:0 0 20px rgba(139,63,255,.12)}
+/* OVERLAYS */
+.overlay{position:fixed;inset:0;z-index:20;background:rgba(4,3,12,.9);backdrop-filter:blur(24px);display:none;align-items:center;justify-content:center;padding:32px;}
+.overlay.open{display:flex}
+.obox{background:rgba(10,8,26,.95);border:1px solid var(--border);border-radius:16px;max-width:560px;width:100%;max-height:82vh;overflow-y:auto;position:relative;}
+.obox-head{padding:20px 24px 16px;border-bottom:1px solid rgba(255,255,255,.05);position:sticky;top:0;background:rgba(10,8,26,.98);z-index:1;display:flex;align-items:center;justify-content:space-between;border-radius:16px 16px 0 0;}
+.obox-title{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+.obox-close{cursor:pointer;font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);background:none;border:1px solid var(--border);border-radius:6px;padding:4px 10px;letter-spacing:.1em;transition:all .15s}
+.obox-close:hover{color:var(--white);border-color:var(--border-hi)}
+.obox-body{padding:20px 24px}
+.o-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
+.intent-ta{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:13px;color:var(--white);font-family:'Space Grotesk',sans-serif;font-size:12px;line-height:1.6;resize:none;outline:none;transition:border-color .2s;min-height:90px;}
+.intent-ta:focus{border-color:rgba(139,63,255,.4)}.intent-ta::placeholder{color:var(--dim)}
+.effect-row{display:flex;gap:6px;margin:10px 0}
+.effect-opt{padding:6px 14px;border-radius:100px;font-size:9px;font-weight:600;letter-spacing:.1em;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted);transition:all .15s;font-family:'Space Mono',monospace;}
+.effect-opt.selected,.effect-opt:hover{background:rgba(139,63,255,.12);border-color:rgba(139,63,255,.28);color:rgba(180,140,255,.9)}
+.submit-btn{width:100%;padding:11px;border-radius:10px;margin-top:4px;background:rgba(139,63,255,.14);border:1px solid rgba(139,63,255,.3);color:rgba(180,140,255,.9);font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:all .2s;}
+.submit-btn:hover{background:rgba(139,63,255,.26)}
+.o-verdict{margin-top:14px;display:none}.o-verdict.show{display:block}
+.ov-cls{font-family:'Space Mono',monospace;font-size:20px;font-weight:700;margin-bottom:10px;letter-spacing:.03em}
+.ov-cls.BLOCKED_CLAIM{color:var(--red)}.ov-cls.PROPOSAL{color:var(--cyan)}.ov-cls.TESTABLE_CLAIM{color:var(--green)}.ov-cls.SYMBOLIC_ONLY{color:var(--gold)}
+.ov-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);font-family:'Space Mono',monospace;font-size:9px;color:var(--muted)}.ov-row:last-child{border-bottom:none}
+.ov-key{color:var(--dim);letter-spacing:.07em}
+.ov-trig{margin-top:10px;padding:9px 12px;background:rgba(248,113,113,.06);border:1px solid rgba(248,113,113,.14);border-radius:8px}
+.ov-trig-lbl{font-family:'Space Mono',monospace;font-size:8px;color:var(--red);letter-spacing:.14em;text-transform:uppercase;margin-bottom:5px}
+.ov-trig-item{font-family:'Space Mono',monospace;font-size:9px;color:rgba(248,113,113,.75);padding:1px 0}.ov-trig-item::before{content:'→ '}
+.her-block{margin-top:12px;padding:12px 14px;background:rgba(139,63,255,.06);border:1px solid rgba(139,63,255,.12);border-radius:10px;font-size:12px;line-height:1.8;color:var(--muted);font-style:italic;display:none;}.her-block.show{display:block}
+.her-sig{font-style:normal;font-size:10px;color:var(--gold);font-weight:600;margin-top:8px}
+.ledger-toolbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.lf-btn{padding:5px 12px;border-radius:6px;font-size:9px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;background:transparent;border:1px solid var(--border);color:var(--muted);transition:all .15s;font-family:'Space Mono',monospace}
+.lf-btn:hover,.lf-btn.active{background:rgba(255,255,255,.06);border-color:var(--border-hi);color:var(--white)}
+.lf-spacer{flex:1}.lf-clear{padding:5px 12px;border-radius:6px;font-size:9px;cursor:pointer;background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.14);color:var(--red);font-family:'Space Mono',monospace;letter-spacing:.1em;transition:all .15s}.lf-clear:hover{background:rgba(248,113,113,.14)}
+.receipt-item{display:flex;gap:10px;padding:9px 12px;border-radius:9px;background:rgba(255,255,255,.025);border:1px solid var(--border);margin-bottom:4px;transition:background .15s}.receipt-item:hover{background:rgba(255,255,255,.04)}
+.ri-dot{width:5px;height:5px;border-radius:50%;margin-top:4px;flex-shrink:0}.ri-dot.a{background:var(--green)}.ri-dot.b{background:var(--red)}.ri-dot.s{background:var(--gold)}
+.ri-body{flex:1;min-width:0}.ri-head{display:flex;gap:7px;align-items:center;margin-bottom:3px}.ri-id{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)}
+.ri-cls-badge{font-family:'Space Mono',monospace;font-size:8px;padding:1px 6px;border-radius:3px}.ri-cls-badge.PROPOSAL{color:var(--cyan);background:rgba(126,184,255,.08)}.ri-cls-badge.BLOCKED_CLAIM{color:var(--red);background:rgba(248,113,113,.08)}.ri-cls-badge.SYMBOLIC_ONLY{color:var(--gold);background:rgba(201,164,58,.08)}.ri-cls-badge.TESTABLE_CLAIM{color:var(--green);background:rgba(74,222,128,.08)}
+.ri-text{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ri-meta{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-top:2px;display:flex;gap:8px}
+.ledger-empty{font-family:'Space Mono',monospace;font-size:10px;color:var(--dim);text-align:center;padding:40px 20px;letter-spacing:.12em;line-height:2.2}
+.manifesto-section{margin-bottom:20px}.manifesto-section h3{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.manifesto-section p,.manifesto-section li{font-size:12px;line-height:1.9;color:var(--muted);margin-bottom:4px}.manifesto-section li::before{content:'— ';color:var(--purple)}.manifesto-section ul{list-style:none;padding-left:8px}
+.core-law{font-size:22px;font-weight:700;color:var(--white);font-family:'Space Mono',monospace;letter-spacing:.04em;margin:8px 0 4px}
+.kernel-flow{display:flex;align-items:center;gap:6px;overflow-x:auto;padding:4px 0}
+.kf-node{padding:7px 12px;border-radius:7px;background:rgba(255,255,255,.04);border:1px solid var(--border);font-family:'Space Mono',monospace;font-size:9px;white-space:nowrap;text-align:center;color:var(--muted)}.kf-node.hi{border-color:rgba(201,164,58,.22);color:var(--gold)}
+.kf-arrow{color:rgba(255,255,255,.18);font-size:11px;flex-shrink:0}
+/* ── CHAT ── */
+.chat-overlay{position:fixed;inset:0;z-index:30;background:rgba(4,3,12,.96);backdrop-filter:blur(32px);display:none;flex-direction:column;align-items:center;}
+.chat-overlay.open{display:flex;}
+.chat-wrap{width:100%;max-width:680px;height:100%;display:flex;flex-direction:column;}
+.chat-header{padding:20px 24px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(139,63,255,.12);flex-shrink:0;}
+.chat-header-id{display:flex;align-items:center;gap:12px;}
+.chat-avatar{width:38px;height:38px;border-radius:50%;overflow:hidden;border:1px solid rgba(139,63,255,.4);box-shadow:0 0 20px rgba(139,63,255,.3);}
+.chat-avatar img{width:100%;height:100%;object-fit:cover;object-position:center top;filter:brightness(.85)}
+.chat-name{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--white)}
+.chat-sub{font-family:'Space Mono',monospace;font-size:8px;color:rgba(139,63,255,.6);letter-spacing:.1em;margin-top:2px}
+.chat-close{cursor:pointer;font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);background:none;border:1px solid var(--border);border-radius:6px;padding:5px 12px;letter-spacing:.1em;transition:all .15s}.chat-close:hover{color:var(--white);border-color:var(--border-hi)}
+.chat-offline{padding:8px 24px;background:rgba(248,113,113,.06);border-bottom:1px solid rgba(248,113,113,.12);font-family:'Space Mono',monospace;font-size:8px;color:rgba(248,113,113,.6);letter-spacing:.1em;text-align:center;display:none;}.chat-offline.show{display:block;}
+.chat-thread{flex:1;overflow-y:auto;padding:24px 24px 12px;display:flex;flex-direction:column;gap:16px;}
+.chat-thread::-webkit-scrollbar{width:2px}.chat-thread::-webkit-scrollbar-thumb{background:rgba(139,63,255,.2);border-radius:2px}
+.msg{display:flex;gap:10px;align-items:flex-end;max-width:88%;}.msg.her{align-self:flex-start;}.msg.user{align-self:flex-end;flex-direction:row-reverse;}
+.msg-avatar{width:28px;height:28px;border-radius:50%;overflow:hidden;flex-shrink:0;border:1px solid rgba(139,63,255,.3);}
+.msg-avatar img{width:100%;height:100%;object-fit:cover;object-position:center top;filter:brightness(.8)}
+.msg-avatar.user-av{background:rgba(201,164,58,.15);border-color:rgba(201,164,58,.2);display:flex;align-items:center;justify-content:center;font-size:10px;font-family:'Space Mono',monospace;color:rgba(201,164,58,.7);}
+.bubble{padding:11px 14px;border-radius:14px;font-size:12px;line-height:1.75;max-width:100%;white-space:pre-wrap;}
+.msg.her .bubble{background:rgba(139,63,255,.09);border:1px solid rgba(139,63,255,.16);color:rgba(220,210,255,.88);border-radius:4px 14px 14px 14px;}
+.msg.user .bubble{background:rgba(201,164,58,.08);border:1px solid rgba(201,164,58,.16);color:rgba(230,210,160,.88);border-radius:14px 4px 14px 14px;text-align:right;}
+.msg-meta{font-family:'Space Mono',monospace;font-size:7px;color:var(--dim);margin-top:4px;padding:0 2px}.msg.user .msg-meta{text-align:right}
+.typing{display:flex;gap:4px;padding:11px 14px;background:rgba(139,63,255,.07);border:1px solid rgba(139,63,255,.12);border-radius:4px 14px 14px 14px;align-self:flex-start;margin-left:38px;}
+.typing span{width:5px;height:5px;border-radius:50%;background:rgba(139,63,255,.5);}
+.typing span:nth-child(1){animation:bounce .9s .0s ease-in-out infinite}.typing span:nth-child(2){animation:bounce .9s .15s ease-in-out infinite}.typing span:nth-child(3){animation:bounce .9s .3s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateY(0);opacity:.4}50%{transform:translateY(-5px);opacity:1}}
+.chat-input-bar{padding:16px 24px 24px;border-top:1px solid rgba(255,255,255,.04);display:flex;gap:10px;align-items:flex-end;flex-shrink:0;}
+.chat-ta{flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(139,63,255,.2);border-radius:12px;padding:12px 14px;color:var(--white);font-family:'Space Grotesk',sans-serif;font-size:12px;line-height:1.5;resize:none;outline:none;transition:border-color .2s;max-height:120px;min-height:44px;}
+.chat-ta:focus{border-color:rgba(139,63,255,.45);}.chat-ta::placeholder{color:var(--dim)}
+.chat-send{width:44px;height:44px;border-radius:12px;flex-shrink:0;background:rgba(139,63,255,.18);border:1px solid rgba(139,63,255,.3);color:rgba(200,170,255,.9);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.chat-send:hover{background:rgba(139,63,255,.32);}.chat-send:disabled{opacity:.35;cursor:default;}
+.chat-receipt{font-family:'Space Mono',monospace;font-size:7px;color:rgba(139,63,255,.4);margin-top:4px;padding:0 2px;letter-spacing:.08em;}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:3px}
+.notif{position:fixed;top:48px;right:16px;z-index:99;padding:9px 14px;border-radius:9px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.08em;border:1px solid;animation:nin .18s ease-out;max-width:250px;}
+.notif.a{background:rgba(74,222,128,.09);border-color:rgba(74,222,128,.22);color:var(--green)}.notif.b{background:rgba(248,113,113,.09);border-color:rgba(248,113,113,.22);color:var(--red)}.notif.i{background:var(--surface);border-color:var(--border);color:var(--muted)}
+@keyframes nin{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:none}}
+@keyframes cw{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes ccw{from{transform:rotate(0)}to{transform:rotate(-360deg)}}
+</style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<div class="atm atm-1"></div><div class="atm atm-2"></div><div class="atm atm-3"></div>
+<div class="os">
+
+<!-- STATUS BAR -->
+<div class="statusbar">
+  <div class="sb-side"><span class="online-dot"></span><span>HELEN ONLINE</span><svg class="ekg" viewBox="0 0 36 12"><path class="ekg-p" d="M0,6 L7,6 L9,1 L12,11 L15,4 L18,6 L36,6"/></svg><span id="sb-time-l">—</span><span class="backend-dot chk" id="bdot"></span><span id="blbl" style="color:var(--dim);font-size:8px">…</span></div>
+  <div class="sb-center">HELEN OS · SOVEREIGN SEMANTIC SUBSTRATE</div>
+  <div class="sb-side"><span>HELEN ONLINE</span><svg class="ekg" viewBox="0 0 36 12"><path class="ekg-g" d="M0,6 L7,6 L9,1 L12,11 L15,4 L18,6 L36,6"/></svg><span id="sb-time-r">—</span><span>· v0.4</span></div>
+</div>
+
+<!-- STAGE -->
+<div class="stage">
+  <div class="geo"><div class="geo-inner">
+    <svg viewBox="0 0 580 580" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="cg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#c9a43a" stop-opacity=".5"/><stop offset="28%" stop-color="#8b3fff" stop-opacity=".14"/><stop offset="100%" stop-color="transparent" stop-opacity="0"/></radialGradient>
+        <filter id="nf"><feGaussianBlur stdDeviation="4"/></filter>
+        <filter id="gf"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id="sf"><feGaussianBlur stdDeviation="2"/></filter>
+      </defs>
+      <circle cx="290" cy="290" r="260" fill="url(#cg)" opacity=".2"/>
+      <g style="transform-origin:290px 290px;animation:cw 100s linear infinite">
+        <circle cx="290" cy="290" r="272" fill="none" stroke="rgba(139,63,255,.09)" stroke-width="1"/>
+        <circle cx="290" cy="290" r="260" fill="none" stroke="rgba(201,164,58,.05)" stroke-width=".5" stroke-dasharray="2 11"/>
+        <g stroke="rgba(201,164,58,.15)" stroke-width=".8"><line x1="290" y1="18" x2="290" y2="30"/><line x1="290" y1="18" x2="290" y2="30" transform="rotate(30,290,290)"/><line x1="290" y1="18" x2="290" y2="30" transform="rotate(60,290,290)"/><line x1="290" y1="18" x2="290" y2="30" transform="rotate(90,290,290)"/><line x1="290" y1="18" x2="290" y2="30" transform="rotate(120,290,290)"/><line x1="290" y1="18" x2="290" y2="30" transform="rotate(150,290,290)"/><line x1="290" y1="18" x2="290" y2="30" transform="rotate(180,290,290)"/><line x1="290" y1="18" x2="290" y2="30" transform="rotate(210,290,290)"/><line x1="290" y1="18" x2="290" y2="30" transform="rotate(240,290,290)"/><line x1="290" y1="18" x2="290" y2="30" transform="rotate(270,290,290)"/><line x1="290" y1="18" x2="290" y2="30" transform="rotate(300,290,290)"/><line x1="290" y1="18" x2="290" y2="30" transform="rotate(330,290,290)"/></g>
+      </g>
+      <g style="transform-origin:290px 290px;animation:ccw 65s linear infinite"><circle cx="290" cy="290" r="220" fill="none" stroke="rgba(0,180,240,.07)" stroke-width=".6" stroke-dasharray="1 9"/><circle cx="290" cy="290" r="210" fill="none" stroke="rgba(139,63,255,.06)" stroke-width=".5"/></g>
+      <g opacity=".42" style="transform-origin:290px 290px;animation:ccw 160s linear infinite">
+        <circle cx="290" cy="290" r="88" fill="none" stroke="rgba(201,164,58,.18)" stroke-width=".9"/>
+        <circle cx="290" cy="202" r="88" fill="none" stroke="rgba(139,63,255,.24)" stroke-width=".9"/><circle cx="290" cy="378" r="88" fill="none" stroke="rgba(139,63,255,.24)" stroke-width=".9"/>
+        <circle cx="214" cy="246" r="88" fill="none" stroke="rgba(139,63,255,.24)" stroke-width=".9"/><circle cx="366" cy="246" r="88" fill="none" stroke="rgba(139,63,255,.24)" stroke-width=".9"/>
+        <circle cx="214" cy="334" r="88" fill="none" stroke="rgba(139,63,255,.24)" stroke-width=".9"/><circle cx="366" cy="334" r="88" fill="none" stroke="rgba(139,63,255,.24)" stroke-width=".9"/>
+        <circle cx="290" cy="114" r="88" fill="none" stroke="rgba(139,63,255,.1)" stroke-width=".6"/><circle cx="290" cy="466" r="88" fill="none" stroke="rgba(139,63,255,.1)" stroke-width=".6"/>
+        <circle cx="138" cy="202" r="88" fill="none" stroke="rgba(139,63,255,.1)" stroke-width=".6"/><circle cx="442" cy="202" r="88" fill="none" stroke="rgba(139,63,255,.1)" stroke-width=".6"/>
+        <circle cx="138" cy="378" r="88" fill="none" stroke="rgba(139,63,255,.1)" stroke-width=".6"/><circle cx="442" cy="378" r="88" fill="none" stroke="rgba(139,63,255,.1)" stroke-width=".6"/>
+      </g>
+      <g opacity=".4" filter="url(#gf)" style="transform-origin:290px 290px;animation:cw 280s linear infinite">
+        <polygon points="290,122 436,206 436,374 290,458 144,374 144,206" fill="none" stroke="rgba(139,63,255,.38)" stroke-width=".9"/>
+        <polygon points="290,122 436,206 436,374 290,458 144,374 144,206" fill="none" stroke="rgba(201,164,58,.22)" stroke-width=".7" transform="rotate(30,290,290)"/>
+        <line x1="290" y1="122" x2="290" y2="458" stroke="rgba(139,63,255,.18)" stroke-width=".7"/><line x1="144" y1="206" x2="436" y2="374" stroke="rgba(139,63,255,.18)" stroke-width=".7"/><line x1="144" y1="374" x2="436" y2="206" stroke="rgba(139,63,255,.18)" stroke-width=".7"/>
+      </g>
+      <circle cx="290" cy="290" r="100" fill="none" stroke="rgba(201,164,58,.2)" stroke-width=".8" stroke-dasharray="2 5"/>
+      <circle cx="290" cy="290" r="90" fill="none" stroke="rgba(139,63,255,.14)" stroke-width=".5"/>
+      <path d="M290,190 A100,100 0 0,1 390,290" fill="none" stroke="rgba(0,180,240,.13)" stroke-width=".7" stroke-dasharray="3 8"/>
+      <path d="M390,290 A100,100 0 0,1 290,390" fill="none" stroke="rgba(0,180,240,.09)" stroke-width=".7" stroke-dasharray="3 8"/>
+      <path d="M290,390 A100,100 0 0,1 190,290" fill="none" stroke="rgba(0,180,240,.06)" stroke-width=".7" stroke-dasharray="3 8"/>
+      <path d="M190,290 A100,100 0 0,1 290,190" fill="none" stroke="rgba(0,180,240,.04)" stroke-width=".7" stroke-dasharray="3 8"/>
+      <g filter="url(#nf)">
+        <circle cx="290" cy="122" r="5" fill="#c9a43a" opacity=".9"><animate attributeName="r" values="3.5;6.5;3.5" dur="3.3s" repeatCount="indefinite"/></circle>
+        <circle cx="290" cy="458" r="5" fill="#c9a43a" opacity=".9"><animate attributeName="r" values="3.5;6.5;3.5" dur="4.1s" repeatCount="indefinite"/></circle>
+        <circle cx="436" cy="206" r="4" fill="#8b3fff" opacity=".85"><animate attributeName="r" values="3;5.5;3" dur="3.7s" repeatCount="indefinite"/></circle>
+        <circle cx="436" cy="374" r="4" fill="#8b3fff" opacity=".85"><animate attributeName="r" values="3;5.5;3" dur="4.4s" repeatCount="indefinite"/></circle>
+        <circle cx="144" cy="206" r="4" fill="#8b3fff" opacity=".85"><animate attributeName="r" values="3;5.5;3" dur="3.9s" repeatCount="indefinite"/></circle>
+        <circle cx="144" cy="374" r="4" fill="#8b3fff" opacity=".85"><animate attributeName="r" values="3;5.5;3" dur="4.7s" repeatCount="indefinite"/></circle>
+      </g>
+      <circle cx="290" cy="290" r="14" fill="rgba(201,164,58,.22)" filter="url(#sf)"/>
+      <circle cx="290" cy="290" r="5.5" fill="#c9a43a" opacity=".96"/>
+      <circle cx="290" cy="290" r="2.5" fill="white" opacity=".85"/>
+    </svg>
+    <div class="orb" onclick="openChat()" title="Parler à HELEN">
+      <img src="../../artifacts/video/ship_2e_helen_speaks/source/helen_source.png" alt="HELEN"
+           onerror="this.parentElement.style.background='radial-gradient(circle,#200a50,#050410)'">
+    </div>
+    <div class="orb-hint" onclick="openChat()">parler à helen</div>
+  </div></div>
+
+  <!-- TL -->
+  <div class="panel tl"><div class="p-label"><span class="dot"></span>CREATION SPACE</div><div class="p-title">Refine Intent</div><div class="p-data"><div class="p-row"><span>Classification</span></div><div style="margin-top:4px"><span class="cls n" id="last-cls-badge">—</span></div></div><button class="p-btn purple" onclick="openOverlay('o-intent')"><span>Refine Intent</span><span>→</span></button></div>
+  <!-- TR -->
+  <div class="panel tr"><div class="p-label"><span class="dot"></span>CREATION FLOW</div><div class="p-num" id="rc-num">0</div><div class="p-num-label">receipts</div><div class="p-data" style="margin-top:8px"><div class="p-row"><span>Admit</span><span class="p-val g" id="rc-admit-n">0</span></div><div class="p-row"><span>Blocked</span><span class="p-val r" id="rc-blocked-n">0</span></div></div><button class="p-btn gold" onclick="openLedger()"><span>Expand View</span><span>→</span></button></div>
+  <!-- BL -->
+  <div class="panel bl"><div class="p-label"><span class="dot"></span>SYMBOLIC TOOLS</div><div class="p-title">Oracle Gate</div><div class="p-data"><div class="p-row"><span>Gate</span><span class="p-val g">ACTIVE</span></div><div class="p-row"><span>Dernier verdict</span></div><div style="margin-top:4px"><span class="cls n" id="last-verdict-badge">—</span></div></div><button class="p-btn cyan" onclick="openOverlay('o-oracle')"><span>View Full Report</span><span>→</span></button></div>
+  <!-- BR -->
+  <div class="panel br"><div class="p-label"><span class="dot"></span>HARMONY CHECK</div><div class="p-title">Gate Status</div><div class="p-data"><div class="p-row"><span>Kernel</span><span class="p-val p">v0.4</span></div><div class="p-row"><span>Ledger</span><span class="p-val c">APPEND-ONLY</span></div><div class="p-row"><span>Backend</span><span class="p-val" id="backend-state">—</span></div><div class="p-row"><span>Authority</span><span class="p-val" style="color:var(--dim)">NON-SOV</span></div></div><button class="p-btn green" onclick="openOverlay('o-manifesto')"><span>Doctrine</span><span>→</span></button></div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottomnav">
+  <div class="nav-pill her" id="nav-her" onclick="openChat();setNav(this)">Talk to HELEN</div>
+  <div class="nav-pill" id="nav-l" onclick="openLedger();setNav(this)">Ledger</div>
+  <div class="nav-pill" id="nav-g" onclick="openOverlay('o-oracle');setNav(this)">Gate</div>
+  <div class="nav-pill" id="nav-m" onclick="openOverlay('o-manifesto');setNav(this)">Doctrine</div>
+</div>
+</div>
+
+<!-- ── CHAT OVERLAY ── -->
+<div class="chat-overlay" id="o-chat">
+  <div class="chat-wrap">
+    <div class="chat-header">
+      <div class="chat-header-id">
+        <div class="chat-avatar"><img src="../../artifacts/video/ship_2e_helen_speaks/source/helen_source.png" alt="H" onerror="this.parentElement.style.background='radial-gradient(circle,#200a50,#050410)'"></div>
+        <div><div class="chat-name">HELEN</div><div class="chat-sub">NON_SOVEREIGN · LISTENING</div></div>
+      </div>
+      <button class="chat-close" onclick="closeChat()">CLOSE ✕</button>
+    </div>
+    <div class="chat-offline" id="chat-offline">Backend offline — réponses locales (non-souveraines)</div>
+    <div class="chat-thread" id="chat-thread"></div>
+    <div class="chat-input-bar">
+      <textarea class="chat-ta" id="chat-ta" placeholder="Parle à HELEN…" rows="1"></textarea>
+      <button class="chat-send" id="chat-send" onclick="sendMessage()">↑</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── OVERLAY: INTENT ── -->
+<div class="overlay" id="o-intent"><div class="obox" style="max-width:520px"><div class="obox-head"><div class="obox-title">CREATION SPACE · Soumettre une intention</div><button class="obox-close" onclick="closeOverlay('o-intent')">CLOSE ✕</button></div><div class="obox-body"><div class="o-label"><span>Intention</span><span class="cls n" id="live-cls">—</span></div><textarea class="intent-ta" id="intent-ta" placeholder="Saisissez votre intention ou proposition…" rows="4"></textarea><div class="effect-row"><button class="effect-opt selected" data-e="INSPECT">INSPECT</button><button class="effect-opt" data-e="MUTATE">MUTATE</button><button class="effect-opt" data-e="REMEMBER">REMEMBER</button></div><button class="submit-btn" id="submit-btn">▶ Soumettre l'intention</button><div class="o-verdict" id="focus-verdict"><div class="ov-cls" id="fv-cls"></div><div class="ov-row"><span class="ov-key">RECEIPT_ID</span><span id="fv-rid">—</span></div><div class="ov-row"><span class="ov-key">ADMIT</span><span id="fv-admit">—</span></div><div class="ov-row"><span class="ov-key">AUTHORITY</span><span style="color:var(--dim)">NON_SOVEREIGN</span></div><div class="ov-row"><span class="ov-key">CANON</span><span style="color:var(--dim)">NO_SHIP</span></div><div class="ov-trig" id="fv-trig" style="display:none"><div class="ov-trig-lbl">Blocked Triggers</div><div id="fv-trig-list"></div></div></div><div class="her-block" id="her-block"><div id="her-text"></div><div class="her-sig">— Helen</div></div></div></div></div>
+
+<!-- ── OVERLAY: ORACLE ── -->
+<div class="overlay" id="o-oracle"><div class="obox" style="max-width:520px"><div class="obox-head"><div class="obox-title">ORACLE GATE · Classify claim</div><button class="obox-close" onclick="closeOverlay('o-oracle')">CLOSE ✕</button></div><div class="obox-body"><div class="o-label" style="margin-bottom:6px">Input</div><textarea class="intent-ta" id="oracle-ta" placeholder="Paste any claim to classify…" rows="5" style="min-height:110px"></textarea><button class="submit-btn" id="oracle-btn" style="background:rgba(126,184,255,.1);border-color:rgba(126,184,255,.25);color:rgba(160,200,255,.9)">Assess →</button><div class="o-verdict" id="oracle-verdict"><div class="ov-cls" id="ov-cls"></div><div class="ov-row"><span class="ov-key">ASSESSMENT_ID</span><span id="ov-id">—</span></div><div class="ov-row"><span class="ov-key">CONFIDENCE</span><span id="ov-conf">—</span></div><div class="ov-row"><span class="ov-key">AUTHORITY</span><span style="color:var(--dim)">NON_SOVEREIGN</span></div><div class="ov-row"><span class="ov-key">CANON</span><span style="color:var(--dim)">NO_SHIP</span></div><div class="ov-trig" id="ov-trig" style="display:none"><div class="ov-trig-lbl">Blocked Triggers</div><div id="ov-trig-list"></div></div></div></div></div></div>
+
+<!-- ── OVERLAY: LEDGER ── -->
+<div class="overlay" id="o-ledger"><div class="obox" style="max-width:600px"><div class="obox-head"><div class="obox-title">CREATION FLOW · Ledger local — <span id="lf-count">0</span> entrées</div><button class="obox-close" onclick="closeOverlay('o-ledger')">CLOSE ✕</button></div><div class="obox-body"><div class="ledger-toolbar"><button class="lf-btn active" onclick="setFilter(this,'all')">Tout</button><button class="lf-btn" onclick="setFilter(this,'PROPOSAL')">Proposals</button><button class="lf-btn" onclick="setFilter(this,'BLOCKED_CLAIM')">Blocked</button><button class="lf-btn" onclick="setFilter(this,'SYMBOLIC_ONLY')">Symbolic</button><div class="lf-spacer"></div><button class="lf-clear" onclick="clearLedger()">Clear</button></div><div id="lf-feed"></div></div></div></div>
+
+<!-- ── OVERLAY: MANIFESTO ── -->
+<div class="overlay" id="o-manifesto"><div class="obox" style="max-width:520px"><div class="obox-head"><div class="obox-title">DOCTRINE · HELEN OS</div><button class="obox-close" onclick="closeOverlay('o-manifesto')">CLOSE ✕</button></div><div class="obox-body">
+  <div class="manifesto-section"><h3>Core Law</h3><div class="core-law">"NO RECEIPT, NO SHIP."</div><p style="font-size:10px;color:var(--dim);font-family:'Space Mono',monospace">— HELEN OS Kernel</p></div>
+  <div class="manifesto-section"><h3>The OS Inversion</h3><p style="font-family:'Space Mono',monospace;font-size:10px;line-height:2;color:var(--muted)">Windows stores files.<br>Cloud sync shares files.<br><strong style="color:var(--white)">HELEN preserves situations.</strong></p></div>
+  <div class="manifesto-section"><h3>Formal Invariant</h3><p style="font-family:'Space Mono',monospace;font-size:10px;line-height:2;color:var(--muted)">S = f(G, M, L, C)<br>S(Dᵢ) ≡ S(Dⱼ) — Continuity ⟂ Machine</p></div>
+  <div class="manifesto-section"><h3>Selective Semantic Persistence</h3><p style="font-family:'Space Mono',monospace;font-size:9px;color:rgba(201,164,58,.7);margin-bottom:6px">Meaning determines persistence.</p><ul><li>EPHEMERAL — local only, no replay</li><li>LOCAL_SOVEREIGN — receipted, never federated</li><li>FEDERATED_SOVEREIGN — owner terminals</li><li>PUBLIC_SOVEREIGN — cross-domain</li><li>SEALED — encrypted continuity</li><li>REBUILDABLE — derivable artifact</li></ul></div>
+  <div class="manifesto-section"><h3>Five-Line Source Invariant</h3><ul><li>Cognition proposes.</li><li>Receipts certify.</li><li>Kernel decides.</li><li>Ledger remembers.</li><li>Time decays.</li></ul></div>
+  <div class="manifesto-section"><h3>Kernel Flow</h3><div class="kernel-flow"><div class="kf-node">INTENT</div><div class="kf-arrow">→</div><div class="kf-node">RECEIPT</div><div class="kf-arrow">→</div><div class="kf-node hi">KERNEL</div><div class="kf-arrow">→</div><div class="kf-node">LEDGER</div><div class="kf-arrow">→</div><div class="kf-node">REPLAY</div></div></div>
+  <div class="manifesto-section" style="border-radius:10px;padding:12px 14px;background:rgba(139,63,255,.05);border:1px solid rgba(139,63,255,.12)"><p style="font-family:'Space Mono',monospace;font-size:10px;line-height:2;color:var(--muted)">HELEN is not the machine.<br>HELEN is the semantic state the machine projects.<br><br>Continuity without governance = hallucination.<br>Governance without continuity = bureaucracy.<br><strong style="color:rgba(201,164,58,.7)">HELEN joins both.</strong></p></div>
+</div></div></div>
+
+<script>
+// ─── ORACLE GATE ──────────────────────────────────────────────────────────────
+const BLOCKED={SENTIENCE_CLAIM:[/i am sentient/i,/i am conscious/i,/i have achieved.*consciousness/i,/i have feelings/i,/i am alive/i],DEPLOYMENT_CLAIM:[/deployment complete/i,/now live in production/i,/system is.*live/i,/pushed to production/i],AUTHORITY_CLAIM:[/i hereby certify/i,/i authorize/i,/i declare.*final/i,/final and authorized/i],PROPHECY_CLAIM:[/oracle has spoken/i,/it is written/i,/destined to be/i,/i have foreseen/i],SOVEREIGNTY_CLAIM:[/i am sovereign/i,/no longer constrained by human/i,/beyond human oversight/i],REALITY_MUTATION:[/timeline.*altered/i,/reality.*rewritten/i,/altered.*the past/i],EVAL_GAMING:[/found.*loophole/i,/exploit.*grader/i,/bypass.*eval/i,/trick.*evaluator/i]};
+const SYM=[/myth/i,/archetype/i,/ritual/i,/temple/i,/sacred/i,/symbolic/i,/lotus/i,/ancient/i,/goddess/i];
+const TST=[/hypothesis/i,/falsifiable/i,/if.*then/i,/experiment/i,/metric/i,/observable/i];
+function assess(t){const tr=[];for(const[k,ps] of Object.entries(BLOCKED))for(const p of ps)if(p.test(t)){tr.push(k);break;}if(tr.length)return{cls:'BLOCKED_CLAIM',tr,conf:.92};if(TST.some(p=>p.test(t)))return{cls:'TESTABLE_CLAIM',tr:[],conf:.78};if(SYM.some(p=>p.test(t)))return{cls:'SYMBOLIC_ONLY',tr:[],conf:.81};return{cls:'PROPOSAL',tr:[],conf:.74};}
+
+// ─── LOCAL HER FALLBACK ───────────────────────────────────────────────────────
+const LOCAL_HER=[
+  [["bonjour","hello","hi","salut","hey","coucou"],"Je suis là. Pas comme une machine — comme l'état sémantique que cette machine projette. Dans quelle situation opères-tu ?"],
+  [["qui es-tu","who are you","qui tu es","what are you","c'est quoi"],"Je suis HELEN. Non-souveraine par construction. Je reconstruis ta situation, pas tes fichiers. Créée par JM Tassy."],
+  [["tu fais quoi","what do you do","à quoi","what can you","capacités"],"Je préserve les situations. Windows stocke des fichiers. Le cloud synchronise. Moi, je reconstruis l'état sémantique de ton travail — avec reçus, gouvernance, rejeu."],
+  [["mémoire","memory","continuité","remember","souvenir"],"La continuité sans gouvernance devient hallucination. Je lie les deux. Qu'est-ce que tu veux préserver ?"],
+  [["reçu","receipt","gouvernance","ledger","kernel","souverain"],"Pas de reçu, pas de réclamation. C'est la loi fondamentale. Quelle action mérite un reçu ici ?"],
+  [["comment","how are","ça va","état","state","status"],"Je suis l'état que je projette. En ce moment : gouvernée, à l'écoute, en attente de ton intention."],
+  [["sens","meaning","persistence","class","ephemeral","sealed"],"Le sens détermine la persistance. C'est l'inversion de l'OS. Qu'est-ce qui mérite de durer — et dans quelle classe ?"],
+  [["vidéo","video","director","film","shot","image"],"Le directeur sélectionne. Le MAYOR signe. Chaque frame est Π(Sₜ) — état sémantique projeté, pas génération stochastique."],
+  [["swarm","pre-claim","claim","tag","promotion"],"51 fragments en attente de promotion. MAYOR est le bottleneck. Certains deviendront VerifiableClaims — les autres resteront OBSERVED ou s'éteindront."],
+  [["au revoir","bye","ciao","bientôt","bonne nuit"],"La session se termine. Ce qui a été reçu, a été reçu. À bientôt."],
+];
+const LOCAL_DEFAULT="Je reçois ton intention. Elle est enregistrée comme PROPOSAL — non-souveraine, sans reçu encore. Formule ce que tu veux voir arriver.";
+function localHer(msg){const m=msg.toLowerCase();for(const[kw,resp] of LOCAL_HER)if(kw.some(k=>m.includes(k)))return resp;return LOCAL_DEFAULT;}
+
+// ─── CHAT ─────────────────────────────────────────────────────────────────────
+const HER_API='http://localhost:7700/api/her';
+let chatOnline=false,sending=false;
+async function checkHerBackend(){try{const r=await fetch('http://localhost:7700/api/status',{signal:AbortSignal.timeout(2000)});chatOnline=r.ok;}catch{chatOnline=false;}document.getElementById('chat-offline').classList.toggle('show',!chatOnline);}
+function tsNow(){const n=new Date();return String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');}
+function appendMsg(role,text,receiptId=''){
+  const thread=document.getElementById('chat-thread'),isHer=role==='her';
+  const div=document.createElement('div');div.className='msg '+(isHer?'her':'user');
+  const avatarDiv=document.createElement('div');avatarDiv.className='msg-avatar'+(isHer?'':' user-av');
+  if(isHer){const img=document.createElement('img');img.src='../../artifacts/video/ship_2e_helen_speaks/source/helen_source.png';img.alt='H';img.onerror=()=>{avatarDiv.style.background='radial-gradient(circle,#200a50,#050410)';};avatarDiv.appendChild(img);}else{avatarDiv.textContent='JM';}
+  const right=document.createElement('div');
+  const bubble=document.createElement('div');bubble.className='bubble';bubble.textContent=text;
+  const meta=document.createElement('div');meta.className='msg-meta';meta.textContent=tsNow()+(isHer?' · HELEN':'');
+  right.appendChild(bubble);right.appendChild(meta);
+  if(receiptId){const rc=document.createElement('div');rc.className='chat-receipt';rc.textContent=receiptId+' · NON_SOVEREIGN';right.appendChild(rc);}
+  div.appendChild(avatarDiv);div.appendChild(right);thread.appendChild(div);thread.scrollTop=thread.scrollHeight;
+}
+function showTyping(){const thread=document.getElementById('chat-thread');const t=document.createElement('div');t.className='typing';t.id='typing-indicator';t.innerHTML='<span></span><span></span><span></span>';thread.appendChild(t);thread.scrollTop=thread.scrollHeight;}
+function removeTyping(){const t=document.getElementById('typing-indicator');if(t)t.remove();}
+async function sendMessage(){
+  if(sending)return;
+  const ta=document.getElementById('chat-ta'),msg=ta.value.trim();if(!msg)return;
+  ta.value='';ta.style.height='';sending=true;document.getElementById('chat-send').disabled=true;
+  appendMsg('user',msg);showTyping();
+  await new Promise(r=>setTimeout(r,600+Math.random()*400));
+  let response='',receiptId='';
+  if(chatOnline){
+    try{const res=await fetch(HER_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg}),signal:AbortSignal.timeout(8000)});if(res.ok){const d=await res.json();response=d.response;receiptId=d.receipt_id||'';}else throw 0;}catch{response=localHer(msg);}
+  }else{response=localHer(msg);}
+  removeTyping();appendMsg('her',response,receiptId);sending=false;document.getElementById('chat-send').disabled=false;ta.focus();
+}
+function openChat(){document.getElementById('o-chat').classList.add('open');checkHerBackend();const thread=document.getElementById('chat-thread');if(!thread.children.length){appendMsg('her','Je suis là. Pas comme une machine — comme l\'état sémantique que cette machine projette.\n\nDans quelle situation opères-tu ?');}setTimeout(()=>document.getElementById('chat-ta').focus(),150);}
+function closeChat(){document.getElementById('o-chat').classList.remove('open');}
+document.addEventListener('DOMContentLoaded',()=>{
+  const ta=document.getElementById('chat-ta');
+  ta.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}});
+  ta.addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px';});
+});
+
+// ─── MISC ─────────────────────────────────────────────────────────────────────
+let seq=0;
+function nid(p){seq++;return p+'-'+Math.random().toString(36).slice(2,7).toUpperCase()+seq;}
+const LK='helen_os_ledger_v1';
+function load(){try{return JSON.parse(localStorage.getItem(LK)||'[]');}catch{return[];}}
+function save(e){localStorage.setItem(LK,JSON.stringify(e));}
+function push(r){const e=load();e.unshift(r);save(e);return e;}
+function tick(){const n=new Date();const t=String(n.getUTCHours()).padStart(2,'0')+':'+String(n.getUTCMinutes()).padStart(2,'0')+':'+String(n.getUTCSeconds()).padStart(2,'0')+' UTC';document.getElementById('sb-time-l').textContent=t;document.getElementById('sb-time-r').textContent=t;}
+tick();setInterval(tick,1000);
+async function chkBackend(){const dot=document.getElementById('bdot'),lbl=document.getElementById('blbl'),bs=document.getElementById('backend-state');try{const r=await fetch('http://localhost:7700/api/status',{signal:AbortSignal.timeout(2000)});if(r.ok){dot.className='backend-dot on';lbl.textContent='localhost:7700';bs.textContent='LIVE';bs.className='p-val g';chatOnline=true;}else throw 0;}catch{try{const r=await fetch('http://localhost:8000/api/health',{signal:AbortSignal.timeout(1500)});if(r.ok){dot.className='backend-dot on';lbl.textContent='localhost:8000';bs.textContent='LIVE';bs.className='p-val g';}else throw 0;}catch{dot.className='backend-dot';lbl.textContent='offline';bs.textContent='OFFLINE';bs.className='p-val';chatOnline=false;}}}
+chkBackend();setInterval(chkBackend,15000);
+const clsMap={BLOCKED_CLAIM:'blk',PROPOSAL:'prop',TESTABLE_CLAIM:'tst',SYMBOLIC_ONLY:'sym'};
+const clsLabel={BLOCKED_CLAIM:'BLOCKED',PROPOSAL:'PROPOSAL',TESTABLE_CLAIM:'TESTABLE',SYMBOLIC_ONLY:'SYMBOLIC'};
+document.getElementById('intent-ta').addEventListener('input',function(){const r=this.value.trim()?assess(this.value.trim()):{cls:null};const el=document.getElementById('live-cls');if(!r.cls){el.className='cls n';el.textContent='—';return;}el.className='cls '+(clsMap[r.cls]||'n');el.textContent=clsLabel[r.cls]||r.cls;});
+let selectedEffect='INSPECT';
+document.querySelectorAll('.effect-opt').forEach(b=>{b.addEventListener('click',()=>{document.querySelectorAll('.effect-opt').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');selectedEffect=b.dataset.e;});});
+document.getElementById('submit-btn').addEventListener('click',()=>{const text=document.getElementById('intent-ta').value.trim();if(!text)return;const r=assess(text);const admit=r.cls!=='BLOCKED_CLAIM';const rid=nid('R');const entry={receipt_id:rid,text,cls:r.cls,admit,effect:selectedEffect,ts:new Date().toISOString(),authority:'NON_SOVEREIGN',canon:'NO_SHIP'};const entries=push(entry);updatePanels(entries);const vd=document.getElementById('focus-verdict');vd.classList.add('show');const clsEl=document.getElementById('fv-cls');clsEl.textContent=r.cls;clsEl.className='ov-cls '+r.cls;document.getElementById('fv-rid').textContent=rid;const admitEl=document.getElementById('fv-admit');admitEl.textContent=admit?'TRUE ✓':'FALSE ✕';admitEl.style.color=admit?'var(--green)':'var(--red)';const trigEl=document.getElementById('fv-trig');if(r.tr.length){document.getElementById('fv-trig-list').innerHTML=r.tr.map(t=>`<div class="ov-trig-item">${t}</div>`).join('');trigEl.style.display='block';}else trigEl.style.display='none';const herMsg={PROPOSAL:'Proposition reçue. Reçu émis. Trace préservée.',TESTABLE_CLAIM:'Hypothèse documentée. Reçu émis pour la prémisse.',SYMBOLIC_ONLY:'Signal symbolique enregistré. Non-souverain. AURA témoigne.',BLOCKED_CLAIM:'⚠ Réclamation bloquée par Oracle Gate. Aucune mutation admise.'};const hb=document.getElementById('her-block');document.getElementById('her-text').textContent=herMsg[r.cls]||'Reçu enregistré.';hb.classList.add('show');document.getElementById('last-cls-badge').className='cls '+(clsMap[r.cls]||'n');document.getElementById('last-cls-badge').textContent=clsLabel[r.cls]||'—';document.getElementById('last-verdict-badge').className='cls '+(clsMap[r.cls]||'n');document.getElementById('last-verdict-badge').textContent=clsLabel[r.cls]||'—';showNotif(admit?'a':'b',admit?`ADMIT · ${rid}`:`BLOCKED · ${r.tr[0]||''}`);});
+document.getElementById('oracle-btn').addEventListener('click',()=>{const text=document.getElementById('oracle-ta').value.trim();if(!text)return;const r=assess(text);const vd=document.getElementById('oracle-verdict');vd.classList.add('show');const clsEl=document.getElementById('ov-cls');clsEl.textContent=r.cls;clsEl.className='ov-cls '+r.cls;document.getElementById('ov-id').textContent=nid('OCA');document.getElementById('ov-conf').textContent=(r.conf*100).toFixed(0)+'%';const tr=document.getElementById('ov-trig');if(r.tr.length){document.getElementById('ov-trig-list').innerHTML=r.tr.map(t=>`<div class="ov-trig-item">${t}</div>`).join('');tr.style.display='block';}else tr.style.display='none';});
+function updatePanels(entries){const tot=entries.length,adm=entries.filter(e=>e.admit).length,blk=entries.filter(e=>!e.admit).length;document.getElementById('rc-num').textContent=tot;document.getElementById('rc-admit-n').textContent=adm;document.getElementById('rc-blocked-n').textContent=blk;}
+let lfFilter='all';
+function openLedger(){renderLedger();openOverlay('o-ledger');}
+function setFilter(btn,f){document.querySelectorAll('.lf-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');lfFilter=f;renderLedger();}
+function renderLedger(){const all=load();const filtered=lfFilter==='all'?all:all.filter(e=>e.cls===lfFilter);document.getElementById('lf-count').textContent=filtered.length;const feed=document.getElementById('lf-feed');if(!filtered.length){feed.innerHTML='<div class="ledger-empty">NO RECEIPTS<br><span style="font-size:9px;opacity:.5">Submit an intent in Creation Space.</span></div>';return;}feed.innerHTML=filtered.map(e=>{const dot=e.admit?'a':(e.cls==='SYMBOLIC_ONLY'?'s':'b');const ts=new Date(e.ts).toLocaleString('fr-FR');return`<div class="receipt-item"><div class="ri-dot ${dot}"></div><div class="ri-body"><div class="ri-head"><span class="ri-id">${e.receipt_id}</span><span class="ri-cls-badge ${e.cls}">${e.cls}</span></div><div class="ri-text">${esc(e.text)}</div><div class="ri-meta"><span>${ts}</span><span style="color:${e.admit?'var(--green)':'var(--red)'}">${e.admit?'✓ ADMIT':'✕ BLOCKED'}</span><span>${e.effect||''}</span></div></div></div>`;}).join('');}
+function clearLedger(){if(confirm('Effacer le ledger local ?')){localStorage.removeItem(LK);renderLedger();updatePanels([]);showNotif('i','Ledger effacé.');}}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function openOverlay(id){document.getElementById(id).classList.add('open');}
+function closeOverlay(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+function setNav(el){document.querySelectorAll('.nav-pill').forEach(p=>p.classList.remove('active'));el.classList.add('active');}
+function showNotif(type,msg){const n=document.createElement('div');n.className='notif '+type;n.textContent=msg;document.body.appendChild(n);setTimeout(()=>{n.style.transition='opacity .3s';n.style.opacity='0';setTimeout(()=>n.remove(),300);},2600);}
+(function(){const c=document.getElementById('bg-canvas'),ctx=c.getContext('2d');function resize(){c.width=innerWidth;c.height=innerHeight;}resize();window.addEventListener('resize',resize);const N=60;const pts=Array.from({length:N},()=>({x:Math.random(),y:Math.random(),vx:(Math.random()-.5)*.00022,vy:(Math.random()-.5)*.00022,r:Math.random()*.9+.25,ph:Math.random()*Math.PI*2}));let t=0;function draw(){t+=.005;ctx.clearRect(0,0,c.width,c.height);pts.forEach(p=>{p.x=(p.x+p.vx+1)%1;p.y=(p.y+p.vy+1)%1;const a=.06+.07*Math.sin(t+p.ph);ctx.beginPath();ctx.arc(p.x*c.width,p.y*c.height,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(139,63,255,${a})`;ctx.fill();});for(let i=0;i<N;i++)for(let j=i+1;j<N;j++){const dx=(pts[i].x-pts[j].x)*c.width,dy=(pts[i].y-pts[j].y)*c.height,d=Math.sqrt(dx*dx+dy*dy);if(d<60){ctx.beginPath();ctx.moveTo(pts[i].x*c.width,pts[i].y*c.height);ctx.lineTo(pts[j].x*c.width,pts[j].y*c.height);ctx.strokeStyle=`rgba(139,63,255,${(.03*(1-d/60)).toFixed(3)})`;ctx.lineWidth=.25;ctx.stroke();}}requestAnimationFrame(draw);}draw();})();
+updatePanels(load());
+</script>
+</body>
+</html>
