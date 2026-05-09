@@ -30,9 +30,15 @@ try:
 except ImportError:
     _AIRI_AVAILABLE = False
 
+import uuid as _uuid
+
 SOT = Path(__file__).resolve().parent.parent.parent.parent.parent
 _airi = _get_airi_bridge() if _AIRI_AVAILABLE else None
-KERNEL_DIR = SOT / "experiments" / "helen_os_v02"
+KERNEL_DIR   = SOT / "experiments" / "helen_os_v02"
+MEMORY_DIR   = SOT / "oracle_town" / "memory"
+LTM_FILE     = MEMORY_DIR / "long_term_memory.jsonl"
+RECEIPTS_FILE= MEMORY_DIR / "sovereign_ledger.jsonl"
+CONTEXT_FILE = MEMORY_DIR / "active_context.md"
 GOBLIN_DIR = SOT / "oracle_town" / "skills" / "ops" / "dan_goblin"
 TERMINAL_DIR = SOT / "oracle_town" / "skills" / "ops" / "helen_terminal"
 STATIC_DIR = Path(__file__).resolve().parent / "static"
@@ -253,6 +259,70 @@ SKILLS = [
      "description": "Historique des actions, décisions, preuves, receipts.",
      "actions": ["inspect_receipt", "list_events", "verify_chain", "query_verdict", "export_summary"]},
 ]
+
+@app.route("/api/context")
+def api_context():
+    ctx = CONTEXT_FILE.read_text(encoding="utf-8") if CONTEXT_FILE.exists() else ""
+    return jsonify({
+        "active_context": ctx,
+        "memory_file": str(LTM_FILE),
+        "ledger_file": str(RECEIPTS_FILE),
+        "authority": "NON_SOVEREIGN",
+    })
+
+
+@app.route("/api/memory", methods=["GET"])
+def api_memory_get():
+    memories = _read_ndjson(LTM_FILE, tail=100)
+    memories.sort(key=lambda m: m.get("importance", 0), reverse=True)
+    return jsonify({"memories": memories, "count": len(memories), "authority": "NON_SOVEREIGN"})
+
+
+@app.route("/api/memory", methods=["POST"])
+def api_memory_post():
+    data = request.get_json(silent=True) or {}
+    now = datetime.now(timezone.utc).isoformat()
+    entry = {
+        "id": data.get("id") or f"mem_{now[:10].replace('-','')}_{_uuid.uuid4().hex[:6]}",
+        "type": data.get("type", "fact"),
+        "content": data.get("content", ""),
+        "importance": float(data.get("importance", 0.7)),
+        "tags": data.get("tags", []),
+        "source": data.get("source", "manual"),
+        "created_at": now,
+        "updated_at": now,
+    }
+    MEMORY_DIR.mkdir(parents=True, exist_ok=True)
+    with LTM_FILE.open("a", encoding="utf-8") as f:
+        f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+    return jsonify({"ok": True, "id": entry["id"]}), 201
+
+
+@app.route("/api/ledger", methods=["GET"])
+def api_ledger_get():
+    receipts = _read_ndjson(RECEIPTS_FILE, tail=50)
+    receipts.sort(key=lambda r: r.get("created_at", ""), reverse=True)
+    return jsonify({"receipts": receipts, "count": len(receipts), "authority": "NON_SOVEREIGN"})
+
+
+@app.route("/api/receipt", methods=["POST"])
+def api_receipt_post():
+    data = request.get_json(silent=True) or {}
+    now = datetime.now(timezone.utc).isoformat()
+    entry = {
+        "id": data.get("id") or f"rcpt_{now[:10].replace('-','')}_{_uuid.uuid4().hex[:6]}",
+        "skill_id": data.get("skill_id", "unknown"),
+        "action": data.get("action", ""),
+        "summary": data.get("summary", ""),
+        "status": data.get("status", "draft"),
+        "created_at": now,
+        "artifacts": data.get("artifacts", []),
+    }
+    MEMORY_DIR.mkdir(parents=True, exist_ok=True)
+    with RECEIPTS_FILE.open("a", encoding="utf-8") as f:
+        f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+    return jsonify({"ok": True, "id": entry["id"]}), 201
+
 
 @app.route("/api/skills")
 def api_skills():

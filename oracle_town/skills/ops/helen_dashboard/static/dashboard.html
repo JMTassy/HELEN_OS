@@ -73,6 +73,20 @@ body { display:flex; flex-direction:column; }
 .sk-desc { font-size:9px; color:var(--silver-hi); margin-top:3px; line-height:1.4; }
 
 /* ── RIGHT PANEL ── */
+.panel-tabs {
+  display:flex; border-bottom:1px solid var(--border); flex-shrink:0;
+}
+.panel-tab {
+  flex:1; padding:8px 0; font-family:var(--mono); font-size:8px; letter-spacing:0.18em;
+  text-transform:uppercase; color:var(--silver); text-align:center; cursor:pointer;
+  border-bottom:2px solid transparent; transition:all 0.15s;
+}
+.panel-tab.active { color:var(--signal); border-bottom-color:var(--signal); }
+.panel-pane { display:none; flex:1; overflow-y:auto; }
+.panel-pane.active { display:block; }
+.panel-pane::-webkit-scrollbar { width:2px; }
+.panel-pane::-webkit-scrollbar-thumb { background:var(--border); }
+
 .mayor-block { padding:11px 14px; border-bottom:1px solid var(--border); }
 .mayor-lbl { font-family:var(--mono); font-size:8px; letter-spacing:0.2em; color:var(--silver); margin-bottom:4px; }
 .mayor-verdict { font-family:var(--serif); font-size:14px; color:var(--signal); letter-spacing:0.1em; }
@@ -85,6 +99,33 @@ body { display:flex; flex-direction:column; }
 .r-type { font-size:10px; color:var(--off-white); margin-bottom:2px; }
 .r-time { font-family:var(--mono); font-size:8px; color:var(--silver); }
 .empty { padding:18px 14px; font-family:var(--serif); font-size:10px; color:var(--silver); font-style:italic; }
+
+/* ── MEMORY PANEL ── */
+.ctx-block {
+  padding:11px 14px; border-bottom:1px solid var(--border);
+}
+.ctx-lbl { font-family:var(--mono); font-size:8px; letter-spacing:0.2em; color:var(--silver); margin-bottom:6px; }
+.ctx-body { font-size:9px; color:var(--silver-hi); line-height:1.6; white-space:pre-wrap; }
+.mem-btns { display:flex; gap:6px; padding:8px 14px; border-bottom:1px solid var(--border); }
+.mem-btn {
+  font-family:var(--mono); font-size:8px; letter-spacing:0.1em; padding:4px 9px;
+  background:transparent; border:1px solid var(--border); color:var(--silver);
+  cursor:pointer; text-transform:uppercase;
+}
+.mem-btn:hover { border-color:var(--signal); color:var(--signal); }
+.mem-row { padding:8px 14px; border-bottom:1px solid var(--border); }
+.mem-row:hover { background:rgba(255,255,255,0.012); }
+.mem-type { font-family:var(--mono); font-size:7px; letter-spacing:0.18em; text-transform:uppercase; color:var(--signal); margin-bottom:2px; }
+.mem-content { font-size:9px; color:var(--off-white); line-height:1.4; margin-bottom:3px; }
+.mem-imp { font-family:var(--mono); font-size:8px; color:var(--silver); }
+.rcpt-row { padding:8px 14px; border-bottom:1px solid var(--border); }
+.rcpt-row:hover { background:rgba(255,255,255,0.012); }
+.rcpt-id { font-family:var(--mono); font-size:8px; color:var(--signal); margin-bottom:2px; }
+.rcpt-sk { font-size:9px; color:var(--off-white); margin-bottom:2px; }
+.rcpt-st { font-family:var(--mono); font-size:8px; }
+.rcpt-st.done { color:#4caf73; }
+.rcpt-st.blocked { color:#e06c75; }
+.rcpt-st.draft { color:var(--silver); }
 
 /* ── CENTER ── */
 .center { position:relative; background:var(--black); overflow:hidden; }
@@ -224,15 +265,36 @@ body { display:flex; flex-direction:column; }
     </div>
   </div>
 
-  <!-- RIGHT: Sovereign Ledger -->
-  <div class="side right">
-    <div class="side-lbl">Sovereign Ledger</div>
-    <div class="side-body" id="ledger-list">
+  <!-- RIGHT: Ledger / Memory tabs -->
+  <div class="side right" style="display:flex;flex-direction:column;">
+    <div class="panel-tabs">
+      <div class="panel-tab active" id="tab-ledger"   onclick="switch_tab('ledger')">Ledger</div>
+      <div class="panel-tab"        id="tab-memory"   onclick="switch_tab('memory')">Memory</div>
+    </div>
+
+    <!-- LEDGER pane -->
+    <div class="panel-pane active" id="pane-ledger">
       <div class="mayor-block">
         <div class="mayor-lbl">MAYOR VERDICT</div>
         <div class="mayor-verdict">NO_SHIP</div>
       </div>
-      <div class="empty">Awaiting receipts…</div>
+      <div id="ledger-list"><div class="empty">Awaiting receipts…</div></div>
+    </div>
+
+    <!-- MEMORY pane -->
+    <div class="panel-pane" id="pane-memory">
+      <div class="ctx-block">
+        <div class="ctx-lbl">ACTIVE CONTEXT</div>
+        <div class="ctx-body" id="ctx-text">Loading…</div>
+      </div>
+      <div class="mem-btns">
+        <button class="mem-btn" onclick="remember_this()">◈ Remember</button>
+        <button class="mem-btn" onclick="write_receipt_mem()">◇ Receipt</button>
+        <button class="mem-btn" onclick="refresh_memory()">↺ Refresh</button>
+      </div>
+      <div id="memory-items"><div class="empty">Loading memories…</div></div>
+      <div style="padding:8px 14px;font-family:var(--mono);font-size:8px;letter-spacing:0.18em;color:var(--silver);border-bottom:1px solid var(--border);">RECEIPTS</div>
+      <div id="receipt-items"><div class="empty">No receipts yet.</div></div>
     </div>
   </div>
 
@@ -594,6 +656,77 @@ function fmts(ts) {
   if (!ts) return '–';
   try { return new Date(ts).toLocaleTimeString('en-GB',{hour12:false}); }
   catch { return (ts||'').slice(11,19); }
+}
+
+// ── Tab switcher ──────────────────────────────────────────────────────────
+function switch_tab(name) {
+  ['ledger','memory'].forEach(t => {
+    document.getElementById('tab-'+t).classList.toggle('active', t===name);
+    document.getElementById('pane-'+t).classList.toggle('active', t===name);
+  });
+  if (name==='memory') refresh_memory();
+}
+
+// ── Memory renders ────────────────────────────────────────────────────────
+async function refresh_memory() {
+  try {
+    const [cr, mr, lr] = await Promise.all([
+      fetch('/api/context'), fetch('/api/memory'), fetch('/api/ledger'),
+    ]);
+    const ctx  = await cr.json();
+    const mems = await mr.json();
+    const rcpts= await lr.json();
+    render_context(ctx.active_context||'');
+    render_memories(mems.memories||[]);
+    render_receipts(rcpts.receipts||[]);
+  } catch(e) { console.error('memory refresh',e); }
+}
+
+function render_context(text) {
+  document.getElementById('ctx-text').textContent = text.slice(0,800);
+}
+
+function render_memories(mems) {
+  const el = document.getElementById('memory-items');
+  if (!mems.length) { el.innerHTML='<div class="empty">No memories yet.</div>'; return; }
+  el.innerHTML = mems.slice(0,20).map(m=>`
+    <div class="mem-row">
+      <div class="mem-type">${m.type||'fact'} · ${(m.importance||0).toFixed(2)}</div>
+      <div class="mem-content">${(m.content||'').slice(0,100)}</div>
+      <div class="mem-imp">${(m.tags||[]).slice(0,3).join(' · ')}</div>
+    </div>`).join('');
+}
+
+function render_receipts(rcpts) {
+  const el = document.getElementById('receipt-items');
+  if (!rcpts.length) { el.innerHTML='<div class="empty">No receipts yet.</div>'; return; }
+  el.innerHTML = rcpts.slice(0,10).map(r=>`
+    <div class="rcpt-row">
+      <div class="rcpt-id">${(r.id||'').slice(0,20)}</div>
+      <div class="rcpt-sk">${r.skill_id||'–'} · ${r.action||'–'}</div>
+      <div class="rcpt-st ${r.status||'draft'}">${r.status||'draft'}</div>
+    </div>`).join('');
+}
+
+function remember_this() {
+  const content = prompt('What should HELEN remember?');
+  if (!content || !content.trim()) return;
+  fetch('/api/memory', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ type:'manual', content, importance:0.80, tags:['manual'], source:'manual' }),
+  }).then(() => refresh_memory()).catch(()=>{});
+}
+
+function write_receipt_mem() {
+  const summary = prompt('Receipt summary?');
+  if (!summary || !summary.trim()) return;
+  fetch('/api/receipt', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({
+      skill_id: selected_skill ? selected_skill.id : 'unknown',
+      action: 'manual', summary, status:'draft',
+    }),
+  }).then(() => refresh_memory()).catch(()=>{});
 }
 
 // ── AIRI witness ──────────────────────────────────────────────────────────

@@ -13,6 +13,9 @@ CHECKS = [
     ("/api/terminal",    "json"),
     ("/api/semantic",    "json"),
     ("/api/airi/status", "json"),
+    ("/api/context",     "json"),
+    ("/api/memory",      "json"),
+    ("/api/ledger",      "json"),
     ("/avatar",          "image"),
     ("/",                "html"),
 ]
