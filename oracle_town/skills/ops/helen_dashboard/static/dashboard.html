@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HELEN OS — Dashboard</title>
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --surface: #111116;
+    --surface2: #18181f;
+    --border: #232330;
+    --text: #d0cfe8;
+    --dim: #6b6a84;
+    --accent: #9b8cff;
+    --gold: #c9a84c;
+    --green: #4caf7d;
+    --red: #e05a5a;
+    --yellow: #d4a84b;
+    --mono: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  header h1 {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+
+  #clock {
+    color: var(--dim);
+    font-size: 11px;
+  }
+
+  #status-bar {
+    display: flex;
+    gap: 16px;
+    padding: 6px 20px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+  }
+
+  .status-chip {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--dim);
+  }
+
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--dim);
+  }
+  .dot.green { background: var(--green); }
+  .dot.red   { background: var(--red); }
+  .dot.gold  { background: var(--gold); }
+
+  main {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 1px;
+    background: var(--border);
+    height: calc(100vh - 66px);
+    overflow: hidden;
+  }
+
+  .panel {
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .panel.wide {
+    grid-column: span 2;
+  }
+
+  .panel.full {
+    grid-column: span 3;
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .panel-title {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .panel-meta {
+    font-size: 10px;
+    color: var(--dim);
+  }
+
+  .panel-body {
+    padding: 10px 14px;
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  /* scrollbar */
+  .panel-body::-webkit-scrollbar { width: 4px; }
+  .panel-body::-webkit-scrollbar-track { background: transparent; }
+  .panel-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  /* kernel state grid */
+  .kv-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2px 12px;
+    align-items: baseline;
+  }
+
+  .kv-key {
+    color: var(--dim);
+    font-size: 10px;
+    white-space: nowrap;
+  }
+
+  .kv-val {
+    color: var(--text);
+    font-size: 11px;
+    word-break: break-all;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 0 5px;
+    border-radius: 2px;
+    font-size: 10px;
+    font-weight: 600;
+  }
+
+  .tag.no-ship { background: #2a1818; color: var(--red); }
+  .tag.ship    { background: #182a1e; color: var(--green); }
+  .tag.warn    { background: #2a2218; color: var(--yellow); }
+  .tag.pass    { background: #182a1e; color: var(--green); }
+  .tag.block   { background: #2a1818; color: var(--red); }
+  .tag.neutral { background: #1e1e2a; color: var(--accent); }
+
+  /* ledger stream */
+  .event-row {
+    display: flex;
+    gap: 10px;
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 10px;
+    align-items: flex-start;
+  }
+
+  .event-row:last-child { border-bottom: none; }
+
+  .event-time { color: var(--dim); flex-shrink: 0; }
+  .event-type { color: var(--gold); flex-shrink: 0; min-width: 130px; }
+  .event-hash { color: var(--dim); font-size: 9px; flex-shrink: 0; }
+  .event-body { color: var(--text); flex: 1; word-break: break-all; }
+
+  /* goblin batches */
+  .batch-card {
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    margin-bottom: 8px;
+    padding: 8px 10px;
+    background: var(--surface2);
+  }
+
+  .batch-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+
+  .batch-id {
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .batch-meta {
+    color: var(--dim);
+    font-size: 10px;
+  }
+
+  .hal-bar {
+    display: flex;
+    gap: 6px;
+    margin: 5px 0;
+  }
+
+  .hal-count {
+    font-size: 10px;
+    padding: 1px 5px;
+    border-radius: 2px;
+  }
+
+  .hal-count.pass { background: #182a1e; color: var(--green); }
+  .hal-count.warn { background: #2a2218; color: var(--yellow); }
+  .hal-count.blk  { background: #2a1818; color: var(--red); }
+
+  .batch-statement {
+    font-size: 10px;
+    color: var(--dim);
+    font-style: italic;
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+
+  .score-bar-wrap {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-top: 5px;
+  }
+
+  .score-bar {
+    height: 3px;
+    border-radius: 2px;
+    background: var(--accent);
+    transition: width 0.4s ease;
+  }
+
+  /* terminal */
+  .terminal-row {
+    display: flex;
+    gap: 8px;
+    padding: 3px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 10px;
+  }
+
+  .terminal-row:last-child { border-bottom: none; }
+  .t-time { color: var(--dim); flex-shrink: 0; }
+  .t-op   { color: var(--gold); flex-shrink: 0; min-width: 90px; }
+  .t-info { color: var(--text); flex: 1; }
+
+  /* pending edits */
+  .pending-card {
+    border: 1px solid #2a2218;
+    border-radius: 3px;
+    padding: 6px 8px;
+    margin-bottom: 6px;
+    background: #1a1710;
+  }
+
+  .pending-id { color: var(--yellow); font-size: 10px; font-weight: 600; }
+  .pending-path { color: var(--dim); font-size: 10px; margin-top: 2px; }
+
+  /* system panel */
+  .sys-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+  }
+
+  .sys-row:last-child { border-bottom: none; }
+  .sys-label { color: var(--dim); }
+  .sys-val { color: var(--text); }
+
+  .no-data {
+    color: var(--dim);
+    font-size: 10px;
+    font-style: italic;
+    padding: 6px 0;
+  }
+
+  .section-sep {
+    height: 1px;
+    background: var(--border);
+    margin: 8px 0;
+  }
+
+  .receipt-row {
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 6px 8px;
+    margin-bottom: 6px;
+    background: var(--surface2);
+  }
+
+  .receipt-id { color: var(--gold); font-size: 10px; font-weight: 600; }
+  .receipt-meta { color: var(--dim); font-size: 10px; margin-top: 2px; }
+
+  #last-refresh {
+    color: var(--dim);
+    font-size: 10px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>HELEN OS — Dashboard</h1>
+  <div style="display:flex; gap:20px; align-items:center;">
+    <span id="last-refresh">–</span>
+    <span id="clock">–</span>
+  </div>
+</header>
+
+<div id="status-bar">
+  <div class="status-chip">
+    <div class="dot" id="dot-kernel"></div>
+    <span id="lbl-kernel">kernel</span>
+  </div>
+  <div class="status-chip">
+    <div class="dot" id="dot-goblin"></div>
+    <span id="lbl-goblin">goblin</span>
+  </div>
+  <div class="status-chip">
+    <div class="dot" id="dot-terminal"></div>
+    <span id="lbl-terminal">terminal</span>
+  </div>
+  <div class="status-chip" style="margin-left:auto;">
+    <span class="tag no-ship">NON_SOVEREIGN · NO_SHIP</span>
+  </div>
+</div>
+
+<main>
+
+  <!-- Panel 1: Kernel State -->
+  <div class="panel">
+    <div class="panel-header">
+      <span class="panel-title">Kernel State</span>
+      <span class="panel-meta" id="kernel-receipt-count">–</span>
+    </div>
+    <div class="panel-body">
+      <div class="kv-grid" id="kernel-state-grid">
+        <span class="kv-key">loading...</span>
+        <span class="kv-val">–</span>
+      </div>
+      <div class="section-sep"></div>
+      <div class="panel-title" style="font-size:9px; margin-bottom:6px;">MAYOR VERDICT</div>
+      <span class="tag no-ship" id="mayor-verdict">NO_SHIP</span>
+    </div>
+  </div>
+
+  <!-- Panel 2: Ledger Stream -->
+  <div class="panel wide">
+    <div class="panel-header">
+      <span class="panel-title">Ledger Stream</span>
+      <span class="panel-meta" id="ledger-count">–</span>
+    </div>
+    <div class="panel-body" id="ledger-stream">
+      <div class="no-data">no events</div>
+    </div>
+  </div>
+
+  <!-- Panel 3: GOBLIN Batches -->
+  <div class="panel wide">
+    <div class="panel-header">
+      <span class="panel-title">GOBLIN Batches</span>
+      <span class="panel-meta" id="goblin-meta">–</span>
+    </div>
+    <div class="panel-body" id="goblin-batches">
+      <div class="no-data">no batches</div>
+    </div>
+  </div>
+
+  <!-- Panel 4: GOBLIN Receipts -->
+  <div class="panel">
+    <div class="panel-header">
+      <span class="panel-title">Tranche Receipts</span>
+      <span class="panel-meta" id="goblin-receipts-meta">–</span>
+    </div>
+    <div class="panel-body" id="goblin-receipts">
+      <div class="no-data">no receipts</div>
+    </div>
+  </div>
+
+  <!-- Panel 5: Terminal -->
+  <div class="panel">
+    <div class="panel-header">
+      <span class="panel-title">Terminal Ledger</span>
+      <span class="panel-meta" id="terminal-meta">–</span>
+    </div>
+    <div class="panel-body" id="terminal-log">
+      <div class="no-data">no actions</div>
+    </div>
+  </div>
+
+  <!-- Panel 6: System -->
+  <div class="panel">
+    <div class="panel-header">
+      <span class="panel-title">System</span>
+      <span class="panel-meta">ops</span>
+    </div>
+    <div class="panel-body">
+      <div id="sys-rows"></div>
+      <div class="section-sep"></div>
+      <div class="panel-title" style="font-size:9px; margin-bottom:6px;">PENDING EDITS</div>
+      <div id="pending-edits"><div class="no-data">none</div></div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+
+function fmt_time(ts) {
+  if (!ts) return '–';
+  try {
+    const d = new Date(ts);
+    return d.toLocaleTimeString('en-GB', { hour12: false });
+  } catch { return ts.slice(11, 19) || ts; }
+}
+
+function short_hash(h) {
+  if (!h) return '–';
+  return h.slice(0, 8);
+}
+
+function tick() {
+  $('clock').textContent = new Date().toLocaleTimeString('en-GB', { hour12: false });
+}
+setInterval(tick, 1000);
+tick();
+
+// ── fetch + render ─────────────────────────────────────────────────────────
+
+async function load_status() {
+  try {
+    const r = await fetch('/api/status');
+    const d = await r.json();
+    const c = d.components || {};
+    ['kernel', 'goblin', 'terminal'].forEach(k => {
+      const dot = $(`dot-${k}`);
+      dot.className = 'dot ' + (c[k] ? 'green' : 'red');
+    });
+    const rows = [
+      ['sot', (d.sot || '–').replace(/.*GitHub\//, '…/')],
+      ['authority', d.authority || '–'],
+      ['canon', d.canon || '–'],
+      ['kernel_version', d.kernel_version || '–'],
+    ];
+    $('sys-rows').innerHTML = rows.map(([k, v]) =>
+      `<div class="sys-row"><span class="sys-label">${k}</span><span class="sys-val">${v}</span></div>`
+    ).join('');
+  } catch (e) {
+    console.error('status', e);
+  }
+}
+
+async function load_kernel() {
+  try {
+    const r = await fetch('/api/kernel');
+    const d = await r.json();
+    $('kernel-receipt-count').textContent = `${d.receipt_count ?? 0} receipts · ${d.ledger_count ?? 0} events`;
+
+    const state = d.state || {};
+    const keys = Object.keys(state);
+    if (!keys.length) {
+      $('kernel-state-grid').innerHTML = '<span class="kv-key">–</span><span class="kv-val">empty</span>';
+    } else {
+      $('kernel-state-grid').innerHTML = keys.slice(0, 12).map(k => {
+        let v = state[k];
+        if (Array.isArray(v)) v = `[${v.length} items]`;
+        else if (typeof v === 'object' && v !== null) v = JSON.stringify(v).slice(0, 60);
+        else v = String(v ?? '–');
+        return `<span class="kv-key">${k}</span><span class="kv-val">${v}</span>`;
+      }).join('');
+    }
+
+    $('mayor-verdict').textContent = d.mayor_verdict || 'NO_SHIP';
+
+    const events = d.ledger_events || [];
+    $('ledger-count').textContent = `last ${events.length} shown`;
+    if (!events.length) {
+      $('ledger-stream').innerHTML = '<div class="no-data">no events</div>';
+    } else {
+      $('ledger-stream').innerHTML = [...events].reverse().map(e => {
+        const payload = e.payload || {};
+        const summary = payload.op || payload.event_type || payload.action || '';
+        const hash = e.event_hash || e.payload_hash || '';
+        return `<div class="event-row">
+          <span class="event-time">${fmt_time(e.timestamp_utc)}</span>
+          <span class="event-type">${(e.event_type || '–').slice(0, 22)}</span>
+          <span class="event-hash">${short_hash(hash)}</span>
+          <span class="event-body">${summary}</span>
+        </div>`;
+      }).join('');
+    }
+  } catch (e) {
+    console.error('kernel', e);
+  }
+}
+
+async function load_goblin() {
+  try {
+    const r = await fetch('/api/goblin');
+    const d = await r.json();
+    const batches = d.batches || [];
+    const receipts = d.tranche_receipts || [];
+
+    $('goblin-meta').textContent = `${batches.length} batch${batches.length !== 1 ? 'es' : ''}`;
+    $('goblin-receipts-meta').textContent = `${receipts.length} receipt${receipts.length !== 1 ? 's' : ''}`;
+
+    if (!batches.length) {
+      $('goblin-batches').innerHTML = '<div class="no-data">no batches found</div>';
+    } else {
+      $('goblin-batches').innerHTML = batches.map(b => {
+        const pct = Math.min(100, Math.round((b.top_score || 0) * 10));
+        return `<div class="batch-card">
+          <div class="batch-card-header">
+            <span class="batch-id">${b.batch_id || b.file}</span>
+            <span class="batch-meta">${b.provider || '–'} · ${b.model || '–'}</span>
+          </div>
+          <div class="hal-bar">
+            <span class="hal-count pass">PASS ${b.hal_pass ?? 0}</span>
+            <span class="hal-count warn">WARN ${b.hal_warn ?? 0}</span>
+            <span class="hal-count blk">BLOCK ${b.hal_block ?? 0}</span>
+            <span class="batch-meta" style="margin-left:auto;">${b.epoch_count} epochs · top score ${(b.top_score ?? 0).toFixed(2)}</span>
+          </div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:${pct}%"></div></div>
+          ${b.top_statement ? `<div class="batch-statement">"${b.top_statement}…"</div>` : ''}
+        </div>`;
+      }).join('');
+    }
+
+    if (!receipts.length) {
+      $('goblin-receipts').innerHTML = '<div class="no-data">no tranche receipts</div>';
+    } else {
+      $('goblin-receipts').innerHTML = receipts.map(r => {
+        const hal = r.hal_summary || {};
+        return `<div class="receipt-row">
+          <div class="receipt-id">${r.tranche_id || r.batch_id}</div>
+          <div class="receipt-meta">
+            ${r.provider || '–'} · ${r.epochs_run ?? 0} epochs ·
+            PASS ${hal.pass ?? 0} / WARN ${hal.warn ?? 0} / BLOCK ${hal.block ?? 0}
+          </div>
+          <div class="receipt-meta" style="margin-top:2px;">
+            reducer: ${r.reducer_decision !== undefined ? (r.reducer_decision ?? 'null') : 'absent'} ·
+            ${fmt_time(r.timestamp)}
+          </div>
+        </div>`;
+      }).join('');
+    }
+  } catch (e) {
+    console.error('goblin', e);
+  }
+}
+
+async function load_terminal() {
+  try {
+    const r = await fetch('/api/terminal');
+    const d = await r.json();
+    const events = d.ledger_events || [];
+    const pending = d.pending_edits || [];
+
+    $('terminal-meta').textContent = `${d.receipt_count ?? 0} receipts · ${events.length} shown`;
+
+    if (!events.length) {
+      $('terminal-log').innerHTML = '<div class="no-data">no actions</div>';
+    } else {
+      $('terminal-log').innerHTML = [...events].reverse().map(e => {
+        const p = e.payload || {};
+        const op = p.action_type || p.op || p.event_type || '–';
+        const info = p.action_params ? JSON.stringify(p.action_params).slice(0, 60) : '';
+        return `<div class="terminal-row">
+          <span class="t-time">${fmt_time(e.timestamp_utc)}</span>
+          <span class="t-op">${op}</span>
+          <span class="t-info">${info}</span>
+        </div>`;
+      }).join('');
+    }
+
+    if (!pending.length) {
+      $('pending-edits').innerHTML = '<div class="no-data">none</div>';
+    } else {
+      $('pending-edits').innerHTML = pending.map(p =>
+        `<div class="pending-card">
+          <div class="pending-id">${p.proposal_id || '–'}</div>
+          <div class="pending-path">${p.path || '–'}</div>
+          <div class="pending-path" style="margin-top:2px; color:var(--yellow);">${p.reason || ''}</div>
+        </div>`
+      ).join('');
+    }
+  } catch (e) {
+    console.error('terminal', e);
+  }
+}
+
+async function refresh() {
+  await Promise.all([load_status(), load_kernel(), load_goblin(), load_terminal()]);
+  $('last-refresh').textContent = 'refreshed ' + new Date().toLocaleTimeString('en-GB', { hour12: false });
+}
+
+refresh();
+setInterval(refresh, 5000);
+</script>
+</body>
+</html>
