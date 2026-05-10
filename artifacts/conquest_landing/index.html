@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HELEN OS · Dreams of Conquest · 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Cinzel+Decorative:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#06050f;
+  --purple:#7b2fff;
+  --purple-dim:rgba(123,47,255,.12);
+  --purple-glow:rgba(123,47,255,.3);
+  --gold:#d4a843;
+  --gold-dim:rgba(212,168,67,.12);
+  --gold-glow:rgba(212,168,67,.35);
+  --cyan:#00d4ff;
+  --cyan-dim:rgba(0,212,255,.1);
+  --white:rgba(255,255,255,.88);
+  --muted:rgba(255,255,255,.35);
+  --dimmer:rgba(255,255,255,.16);
+  --card:rgba(255,255,255,.035);
+  --card-border:rgba(255,255,255,.07);
+  --r:16px;
+}
+
+html,body{
+  width:100%;min-height:100vh;
+  background:var(--bg);
+  color:var(--white);
+  font-family:'Space Grotesk',sans-serif;
+  font-size:14px;
+  overflow-x:hidden;
+}
+
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+.atm{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(100px)}
+.atm-1{width:700px;height:700px;background:radial-gradient(circle,rgba(70,15,160,.3),transparent 70%);top:-200px;left:-200px}
+.atm-2{width:500px;height:500px;background:radial-gradient(circle,rgba(30,8,80,.22),transparent 70%);bottom:-100px;right:-100px}
+.atm-3{width:400px;height:400px;background:radial-gradient(circle,rgba(212,168,67,.07),transparent 70%);top:35%;left:50%;transform:translateX(-50%)}
+
+.page{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
+
+/* ─── STATUS BAR ─── */
+.status-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 28px;
+  font-family:'Space Mono',monospace;
+  font-size:10px;
+  color:var(--muted);
+  letter-spacing:.05em;
+  border-bottom:1px solid rgba(255,255,255,.04);
+}
+.sb-left,.sb-right{display:flex;align-items:center;gap:12px}
+.online-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:#7fff7f;
+  box-shadow:0 0 8px #7fff7f;
+  animation:heartbeat 2.4s ease-in-out infinite;
+}
+@keyframes heartbeat{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.6)}}
+.ekg{display:inline-block;width:40px;height:16px;vertical-align:middle}
+.ekg path{stroke:var(--purple);stroke-width:1.5;fill:none;stroke-dasharray:60;stroke-dashoffset:60;animation:draw-ekg 2.4s ease-in-out infinite}
+.ekg-gold path{stroke:var(--gold)}
+@keyframes draw-ekg{to{stroke-dashoffset:0}}
+.sb-center{
+  font-family:'Cinzel Decorative',serif;font-size:11px;font-weight:700;
+  color:rgba(212,168,67,.65);letter-spacing:.22em;
+}
+.coherence-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:3px 10px;border-radius:100px;
+  background:rgba(0,212,255,.06);
+  border:1px solid rgba(0,212,255,.15);
+  font-size:9px;color:var(--cyan);
+}
+.coherence-val{font-weight:700;letter-spacing:.05em}
+.epoch-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:3px 10px;border-radius:100px;
+  background:rgba(123,47,255,.07);
+  border:1px solid rgba(123,47,255,.18);
+  font-size:9px;color:rgba(180,140,255,.8);
+}
+
+/* ─── LAYOUT ─── */
+.hero{
+  flex:1;
+  display:grid;
+  grid-template-columns:290px 1fr 290px;
+  gap:0;
+  padding:0 18px;
+  max-width:1320px;
+  margin:0 auto;
+  width:100%;
+  min-height:700px;
+  align-items:center;
+}
+
+.side{display:flex;flex-direction:column;gap:10px;padding:18px 0}
+
+.float-card{
+  background:var(--card);
+  border:1px solid var(--card-border);
+  border-radius:var(--r);
+  padding:16px;
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  transition:all .3s;
+  position:relative;
+  overflow:hidden;
+}
+.float-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.025),transparent);
+  pointer-events:none;
+}
+.float-card:hover{
+  background:rgba(255,255,255,.05);
+  border-color:rgba(255,255,255,.1);
+  transform:translateY(-2px);
+  box-shadow:0 8px 40px rgba(0,0,0,.5);
+}
+.float-card.purple-glow{border-color:rgba(123,47,255,.22);box-shadow:0 0 30px rgba(123,47,255,.07)}
+.float-card.gold-glow{border-color:rgba(212,168,67,.18);box-shadow:0 0 30px rgba(212,168,67,.05)}
+.float-card.cyan-glow{border-color:rgba(0,212,255,.18);box-shadow:0 0 30px rgba(0,212,255,.05)}
+
+.card-label{
+  font-size:9px;font-weight:600;letter-spacing:.2em;color:var(--muted);
+  text-transform:uppercase;margin-bottom:10px;
+  display:flex;align-items:center;gap:6px;font-family:'Space Mono',monospace;
+}
+.card-label::before{content:'●';font-size:5px;color:var(--purple);text-shadow:0 0 6px var(--purple)}
+.card-label.gold::before{color:var(--gold)}
+.card-label.cyan::before{color:var(--cyan)}
+
+.card-title{font-size:14px;font-weight:600;color:var(--white);line-height:1.3;margin-bottom:6px}
+.card-body{font-size:11px;color:var(--muted);line-height:1.8}
+
+.stat-row{
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:'Space Mono',monospace;font-size:10px;
+  padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);color:var(--muted);
+}
+.stat-row:last-child{border-bottom:none}
+.stat-val{color:var(--cyan);text-shadow:0 0 8px rgba(0,212,255,.2)}
+.stat-val.gold{color:var(--gold);text-shadow:0 0 8px rgba(212,168,67,.2)}
+.stat-val.purple{color:rgba(180,140,255,.9);text-shadow:0 0 8px rgba(123,47,255,.2)}
+.stat-val.green{color:#7fff7f;text-shadow:0 0 8px rgba(127,255,127,.2)}
+
+/* HELEN STATE VECTOR */
+.state-vector{
+  padding:10px 0 4px;
+}
+.sv-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:4px 0;
+  font-family:'Space Mono',monospace;font-size:9px;color:var(--dimmer);
+}
+.sv-key{
+  color:rgba(212,168,67,.6);letter-spacing:.08em;
+  min-width:20px;
+}
+.sv-bar{
+  flex:1;height:2px;margin:0 8px;
+  background:rgba(255,255,255,.05);border-radius:2px;overflow:hidden;
+}
+.sv-fill{height:100%;border-radius:2px;transition:width 1.8s ease-out}
+.sv-val{min-width:42px;text-align:right}
+
+/* Loi */
+.loi-rule{
+  font-size:13px;font-weight:700;line-height:1.45;margin-bottom:10px;
+  background:linear-gradient(135deg,#ff6b6b,#c0392b);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.loi-items{list-style:none;font-size:10px;color:var(--dimmer);line-height:2.2;font-family:'Space Mono',monospace}
+.loi-items li::before{content:'> ';color:rgba(123,47,255,.5)}
+
+/* Pill */
+.pill{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:7px 14px;border-radius:100px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  font-size:10px;font-weight:500;color:var(--white);cursor:pointer;
+  transition:all .2s;white-space:nowrap;letter-spacing:.04em;
+}
+.pill.purple{background:rgba(123,47,255,.12);border-color:rgba(123,47,255,.3);color:rgba(180,140,255,.9)}
+.pill.purple:hover{background:rgba(123,47,255,.22);box-shadow:0 0 20px rgba(123,47,255,.15)}
+.pill.gold{background:rgba(212,168,67,.08);border-color:rgba(212,168,67,.25);color:rgba(220,185,110,.9)}
+
+/* ─── CENTER ─── */
+.center{
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:20px 14px;position:relative;
+}
+
+.geo-wrap{position:relative;width:420px;height:420px;margin:0 auto}
+.geo-wrap svg{width:100%;height:100%}
+
+/* Governing equation overlay */
+.gov-equation{
+  position:absolute;
+  bottom:-10px;left:50%;transform:translateX(-50%);
+  font-family:'Space Mono',monospace;
+  font-size:9px;
+  color:rgba(212,168,67,.2);
+  letter-spacing:.05em;
+  white-space:nowrap;
+  text-align:center;
+  z-index:3;
+  pointer-events:none;
+}
+
+.presence-orb{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:128px;height:128px;border-radius:50%;overflow:hidden;
+  border:1px solid rgba(123,47,255,.35);
+  box-shadow:0 0 40px rgba(123,47,255,.25),0 0 80px rgba(123,47,255,.08),inset 0 0 20px rgba(123,47,255,.1);
+  animation:orb-breathe 5s ease-in-out infinite;z-index:2;
+}
+.presence-orb img{width:100%;height:100%;object-fit:cover;object-position:center top;filter:saturate(1.1) brightness(.88)}
+@keyframes orb-breathe{
+  0%,100%{box-shadow:0 0 40px rgba(123,47,255,.25),0 0 80px rgba(123,47,255,.08)}
+  50%{box-shadow:0 0 60px rgba(123,47,255,.4),0 0 120px rgba(123,47,255,.12),0 0 0 2px rgba(123,47,255,.18)}
+}
+
+.hero-title-block{text-align:center;margin-bottom:24px}
+.eyebrow{
+  font-size:9px;font-weight:500;letter-spacing:.45em;color:var(--muted);
+  text-transform:uppercase;margin-bottom:8px;font-family:'Space Mono',monospace;
+}
+.main-title{
+  font-family:'Cinzel Decorative',serif;font-size:44px;font-weight:900;line-height:1;
+  background:linear-gradient(180deg,rgba(255,255,255,.95) 0%,var(--gold) 55%,rgba(90,50,5,.8) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 30px rgba(212,168,67,.3));letter-spacing:.04em;
+}
+.sub-title{
+  font-family:'Cinzel Decorative',serif;font-size:18px;font-weight:700;
+  color:rgba(212,168,67,.35);letter-spacing:.28em;margin-top:5px;
+}
+
+.tagline-block{text-align:center;margin-top:22px}
+.tagline-1{font-size:15px;font-weight:600;color:rgba(255,255,255,.65);line-height:1.65;letter-spacing:.02em}
+.tagline-2{font-size:10px;font-family:'Space Mono',monospace;color:var(--muted);letter-spacing:.1em;margin-top:4px}
+.tagline-eq{
+  font-family:'Space Mono',monospace;font-size:9px;
+  color:rgba(0,212,255,.35);letter-spacing:.06em;margin-top:5px;
+}
+
+.cta-primary{
+  display:inline-flex;align-items:center;gap:10px;margin-top:18px;
+  padding:13px 30px;border-radius:100px;
+  background:linear-gradient(135deg,rgba(123,47,255,.22),rgba(212,168,67,.12));
+  border:1px solid rgba(212,168,67,.3);
+  font-size:12px;font-weight:600;color:rgba(220,185,110,.95);
+  cursor:pointer;transition:all .3s;letter-spacing:.1em;text-decoration:none;
+  text-transform:uppercase;box-shadow:0 0 28px rgba(212,168,67,.1);
+}
+.cta-primary:hover{
+  background:linear-gradient(135deg,rgba(123,47,255,.38),rgba(212,168,67,.22));
+  box-shadow:0 0 50px rgba(212,168,67,.2),0 0 80px rgba(123,47,255,.08);
+  transform:translateY(-2px);
+}
+
+/* ─── HOUSES ─── */
+.houses-section{padding:24px 18px 16px;max-width:1320px;margin:0 auto;width:100%}
+.section-label{
+  font-size:9px;font-weight:600;letter-spacing:.3em;color:var(--muted);
+  text-transform:uppercase;text-align:center;margin-bottom:14px;font-family:'Space Mono',monospace;
+}
+.houses-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.house{
+  background:var(--card);border:1px solid var(--card-border);border-radius:14px;
+  padding:16px 8px 12px;text-align:center;cursor:pointer;transition:all .3s;
+  backdrop-filter:blur(14px);
+}
+.house:hover{transform:translateY(-4px);background:rgba(255,255,255,.055);border-color:rgba(255,255,255,.12)}
+.house-icon{font-size:24px;display:block;margin-bottom:8px}
+.house-name{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:6px}
+.h-aurum .house-name{color:var(--gold);text-shadow:0 0 10px var(--gold-glow)}
+.h-crux .house-name{color:#f07070;text-shadow:0 0 10px rgba(240,112,112,.3)}
+.h-rosa .house-name{color:#f080c0;text-shadow:0 0 10px rgba(240,128,192,.3)}
+.h-vortex .house-name{color:var(--cyan);text-shadow:0 0 10px rgba(0,212,255,.3)}
+.h-codex .house-name{color:#70d080;text-shadow:0 0 10px rgba(112,208,128,.3)}
+.h-sigma .house-name{color:var(--purple);text-shadow:0 0 10px var(--purple-glow)}
+.house-attrs{font-size:9px;color:var(--dimmer);line-height:1.9;letter-spacing:.03em}
+
+/* Vortex house gets special animated icon */
+.h-vortex .house-icon{animation:vortex-spin 3s linear infinite;display:inline-block}
+@keyframes vortex-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+/* ─── BOTTOM NAV ─── */
+.bottom-nav{
+  padding:18px;display:flex;justify-content:center;align-items:center;gap:8px;
+  border-top:1px solid rgba(255,255,255,.04);
+  background:rgba(6,5,15,.7);backdrop-filter:blur(20px);
+  flex-wrap:wrap;max-width:1320px;margin:0 auto;width:100%;
+}
+.nav-tab{
+  padding:9px 18px;border-radius:100px;font-size:10px;font-weight:500;
+  letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .2s;
+  color:var(--muted);border:1px solid transparent;
+}
+.nav-tab:hover{color:var(--white);background:rgba(255,255,255,.05)}
+.nav-tab.active{
+  color:rgba(220,185,110,.9);background:rgba(212,168,67,.08);
+  border-color:rgba(212,168,67,.22);box-shadow:0 0 14px rgba(212,168,67,.08);
+}
+
+/* ─── FOOTER ─── */
+.footer-line{
+  text-align:center;padding:12px 20px;
+  font-family:'Space Mono',monospace;font-size:9px;
+  letter-spacing:.1em;color:rgba(255,255,255,.12);text-transform:uppercase;
+  border-top:1px solid rgba(255,255,255,.04);
+}
+.footer-line .sep{color:rgba(123,47,255,.25);margin:0 8px}
+.footer-line .eq{color:rgba(0,212,255,.2);font-style:normal}
+
+/* ─── ANIMATIONS ─── */
+@keyframes geo-rotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes geo-rotate-rev{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
+@keyframes geo-pulse{
+  0%,100%{opacity:.4}50%{opacity:.7}
+}
+@keyframes node-pulse{
+  0%,100%{r:3;opacity:.8}
+  50%{r:5;opacity:1}
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+<div class="atm atm-1"></div>
+<div class="atm atm-2"></div>
+<div class="atm atm-3"></div>
+
+<div class="page">
+
+<!-- STATUS BAR -->
+<div class="status-bar">
+  <div class="sb-left">
+    <span class="online-dot"></span>
+    <span>HELEN ONLINE</span>
+    <svg class="ekg" viewBox="0 0 40 16">
+      <path d="M0,8 L8,8 L10,2 L13,14 L16,6 L19,8 L40,8"/>
+    </svg>
+    <span class="coherence-badge">C(t) = <span class="coherence-val" id="coherence-count">0</span></span>
+  </div>
+  <div class="sb-center">DREAMS OF CONQUEST</div>
+  <div class="sb-right">
+    <span class="epoch-badge">E=<span id="epoch-count">0</span></span>
+    <svg class="ekg ekg-gold" viewBox="0 0 40 16">
+      <path d="M0,8 L8,8 L10,2 L13,14 L16,6 L19,8 L40,8"/>
+    </svg>
+    <span id="utc-time">—</span>
+    <span>· MAY 2027</span>
+  </div>
+</div>
+
+<!-- HERO GRID -->
+<div class="hero">
+
+  <!-- LEFT PANELS -->
+  <div class="side">
+
+    <div class="float-card gold-glow">
+      <div class="card-label gold">Loi Fondamentale</div>
+      <div class="loi-rule">PAS DE REÇU =<br>PAS DE VAISSEAU</div>
+      <ul class="loi-items">
+        <li>Chaque réclamation.</li>
+        <li>Chaque action.</li>
+        <li>Chaque instant.</li>
+        <li>Aucun pouvoir.</li>
+        <li>Juste la preuve.</li>
+      </ul>
+    </div>
+
+    <!-- H(t) STATE VECTOR -->
+    <div class="float-card cyan-glow">
+      <div class="card-label cyan">Vecteur d'État H(t)</div>
+      <div style="font-family:'Space Mono',monospace;font-size:8px;color:rgba(0,212,255,.3);letter-spacing:.06em;margin-bottom:8px">
+        ℋ(t) = (𝓛, 𝓜, 𝓞, 𝓢, 𝓥)
+      </div>
+      <div class="state-vector">
+        <div class="sv-row">
+          <span class="sv-key">𝓛</span>
+          <div class="sv-bar"><div class="sv-fill" id="sv-l" style="width:0%;background:linear-gradient(90deg,var(--gold),rgba(212,168,67,.3))"></div></div>
+          <span class="sv-val" id="sv-l-val">—</span>
+        </div>
+        <div class="sv-row">
+          <span class="sv-key">𝓜</span>
+          <div class="sv-bar"><div class="sv-fill" id="sv-m" style="width:0%;background:linear-gradient(90deg,var(--cyan),rgba(0,212,255,.3))"></div></div>
+          <span class="sv-val" id="sv-m-val">—</span>
+        </div>
+        <div class="sv-row">
+          <span class="sv-key">𝓞</span>
+          <div class="sv-bar"><div class="sv-fill" id="sv-o" style="width:0%;background:linear-gradient(90deg,rgba(180,140,255,1),rgba(123,47,255,.3))"></div></div>
+          <span class="sv-val" id="sv-o-val">—</span>
+        </div>
+        <div class="sv-row">
+          <span class="sv-key">𝓢</span>
+          <div class="sv-bar"><div class="sv-fill" id="sv-s" style="width:0%;background:linear-gradient(90deg,#7fff7f,rgba(127,255,127,.3))"></div></div>
+          <span class="sv-val" id="sv-s-val">—</span>
+        </div>
+        <div class="sv-row">
+          <span class="sv-key">𝓥</span>
+          <div class="sv-bar"><div class="sv-fill" id="sv-v" style="width:0%;background:linear-gradient(90deg,#ff80c0,rgba(255,128,192,.3))"></div></div>
+          <span class="sv-val" id="sv-v-val">—</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="float-card purple-glow">
+      <div class="card-label">Raisonnement</div>
+      <div style="display:flex;flex-direction:column;gap:7px;margin-top:4px">
+        <div class="pill purple">A — Rêve &amp; Intuition</div>
+        <div class="pill purple">B — Jugement &amp; Vérification</div>
+        <div class="pill purple">C — Intégration &amp; Lien</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CENTER -->
+  <div class="center">
+
+    <div class="hero-title-block">
+      <div class="eyebrow">∞ · Constitutional Cognitive Attractor · 2027</div>
+      <div class="main-title">CONQUEST</div>
+      <div class="sub-title">— HELEN OS —</div>
+    </div>
+
+    <!-- Sacred geometry + presence orb -->
+    <div class="geo-wrap">
+      <svg viewBox="0 0 420 420" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="glow-center" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#c8a040" stop-opacity=".55"/>
+            <stop offset="35%" stop-color="#7b2fff" stop-opacity=".12"/>
+            <stop offset="100%" stop-color="transparent" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="blur-glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="soft-glow"><feGaussianBlur stdDeviation="2.5"/></filter>
+          <filter id="node-glow"><feGaussianBlur stdDeviation="4"/></filter>
+        </defs>
+
+        <!-- Outer glow atmosphere -->
+        <circle cx="210" cy="210" r="190" fill="url(#glow-center)" opacity=".25"/>
+
+        <!-- Rotating outer rings — dual counter-rotation -->
+        <g style="transform-origin:210px 210px;animation:geo-rotate 80s linear infinite">
+          <circle cx="210" cy="210" r="188" fill="none" stroke="rgba(123,47,255,.1)" stroke-width="1"/>
+          <circle cx="210" cy="210" r="178" fill="none" stroke="rgba(212,168,67,.06)" stroke-width=".5" stroke-dasharray="3 10"/>
+        </g>
+        <g style="transform-origin:210px 210px;animation:geo-rotate-rev 55s linear infinite">
+          <circle cx="210" cy="210" r="165" fill="none" stroke="rgba(0,212,255,.06)" stroke-width=".5" stroke-dasharray="1 8"/>
+          <!-- 8 tick marks on this ring -->
+          <line x1="210" y1="45" x2="210" y2="55" stroke="rgba(0,212,255,.2)" stroke-width="1"
+                style="transform-origin:210px 210px"/>
+          <line x1="210" y1="45" x2="210" y2="55" stroke="rgba(0,212,255,.2)" stroke-width="1"
+                transform="rotate(45,210,210)"/>
+          <line x1="210" y1="45" x2="210" y2="55" stroke="rgba(0,212,255,.2)" stroke-width="1"
+                transform="rotate(90,210,210)"/>
+          <line x1="210" y1="45" x2="210" y2="55" stroke="rgba(0,212,255,.2)" stroke-width="1"
+                transform="rotate(135,210,210)"/>
+          <line x1="210" y1="45" x2="210" y2="55" stroke="rgba(0,212,255,.2)" stroke-width="1"
+                transform="rotate(180,210,210)"/>
+          <line x1="210" y1="45" x2="210" y2="55" stroke="rgba(0,212,255,.2)" stroke-width="1"
+                transform="rotate(225,210,210)"/>
+          <line x1="210" y1="45" x2="210" y2="55" stroke="rgba(0,212,255,.2)" stroke-width="1"
+                transform="rotate(270,210,210)"/>
+          <line x1="210" y1="45" x2="210" y2="55" stroke="rgba(0,212,255,.2)" stroke-width="1"
+                transform="rotate(315,210,210)"/>
+        </g>
+
+        <!-- Flower of life — slow reverse rotation -->
+        <g opacity=".45" style="transform-origin:210px 210px;animation:geo-rotate-rev 120s linear infinite">
+          <circle cx="210" cy="152" r="58" fill="none" stroke="rgba(123,47,255,.22)" stroke-width=".8"/>
+          <circle cx="210" cy="268" r="58" fill="none" stroke="rgba(123,47,255,.22)" stroke-width=".8"/>
+          <circle cx="160" cy="181" r="58" fill="none" stroke="rgba(123,47,255,.22)" stroke-width=".8"/>
+          <circle cx="260" cy="181" r="58" fill="none" stroke="rgba(123,47,255,.22)" stroke-width=".8"/>
+          <circle cx="160" cy="239" r="58" fill="none" stroke="rgba(123,47,255,.22)" stroke-width=".8"/>
+          <circle cx="260" cy="239" r="58" fill="none" stroke="rgba(123,47,255,.22)" stroke-width=".8"/>
+          <circle cx="210" cy="210" r="58" fill="none" stroke="rgba(212,168,67,.18)" stroke-width=".8"/>
+        </g>
+
+        <!-- Metatron / hexagram — slow forward -->
+        <g opacity=".38" filter="url(#blur-glow)" style="transform-origin:210px 210px;animation:geo-rotate 200s linear infinite">
+          <polygon points="210,92 300,162 300,258 210,328 120,258 120,162" fill="none" stroke="rgba(123,47,255,.38)" stroke-width=".8"/>
+          <polygon points="210,92 300,162 300,258 210,328 120,258 120,162" fill="none" stroke="rgba(212,168,67,.25)" stroke-width=".6" transform="rotate(30,210,210)"/>
+          <line x1="210" y1="92" x2="210" y2="328" stroke="rgba(123,47,255,.18)" stroke-width=".6"/>
+          <line x1="120" y1="162" x2="300" y2="258" stroke="rgba(123,47,255,.18)" stroke-width=".6"/>
+          <line x1="120" y1="258" x2="300" y2="162" stroke="rgba(123,47,255,.18)" stroke-width=".6"/>
+        </g>
+
+        <!-- Inner orbit ring (vortex manifold) -->
+        <circle cx="210" cy="210" r="72" fill="none" stroke="rgba(212,168,67,.22)" stroke-width=".8" stroke-dasharray="2 5"/>
+        <circle cx="210" cy="210" r="64" fill="none" stroke="rgba(123,47,255,.16)" stroke-width=".5"/>
+        <!-- Vortex flow indicators: 4 tangent arcs -->
+        <path d="M210,138 A72,72 0 0,1 282,210" fill="none" stroke="rgba(0,212,255,.1)" stroke-width=".6" stroke-dasharray="2 6"/>
+        <path d="M282,210 A72,72 0 0,1 210,282" fill="none" stroke="rgba(0,212,255,.08)" stroke-width=".6" stroke-dasharray="2 6"/>
+        <path d="M210,282 A72,72 0 0,1 138,210" fill="none" stroke="rgba(0,212,255,.06)" stroke-width=".6" stroke-dasharray="2 6"/>
+        <path d="M138,210 A72,72 0 0,1 210,138" fill="none" stroke="rgba(0,212,255,.04)" stroke-width=".6" stroke-dasharray="2 6"/>
+
+        <!-- Glowing nodes at hex vertices -->
+        <g filter="url(#node-glow)">
+          <circle cx="210" cy="92" r="4" fill="#c8a040" opacity=".85">
+            <animate attributeName="r" values="3;5;3" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="300" cy="162" r="3" fill="#7b2fff" opacity=".8">
+            <animate attributeName="r" values="2.5;4;2.5" dur="3.7s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="300" cy="258" r="3" fill="#7b2fff" opacity=".8">
+            <animate attributeName="r" values="2.5;4;2.5" dur="4.2s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="210" cy="328" r="4" fill="#c8a040" opacity=".85">
+            <animate attributeName="r" values="3;5;3" dur="3.3s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="120" cy="258" r="3" fill="#7b2fff" opacity=".8">
+            <animate attributeName="r" values="2.5;4;2.5" dur="3.9s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="120" cy="162" r="3" fill="#7b2fff" opacity=".8">
+            <animate attributeName="r" values="2.5;4;2.5" dur="4.5s" repeatCount="indefinite"/>
+          </circle>
+          <!-- Orbit nodes (vortex manifold) -->
+          <circle cx="210" cy="138" r="2" fill="#00d4ff" opacity=".5">
+            <animate attributeName="opacity" values=".3;.8;.3" dur="2.1s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="282" cy="210" r="2" fill="#00d4ff" opacity=".5">
+            <animate attributeName="opacity" values=".3;.8;.3" dur="2.6s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="210" cy="282" r="2" fill="#00d4ff" opacity=".5">
+            <animate attributeName="opacity" values=".3;.8;.3" dur="2.3s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="138" cy="210" r="2" fill="#00d4ff" opacity=".5">
+            <animate attributeName="opacity" values=".3;.8;.3" dur="2.8s" repeatCount="indefinite"/>
+          </circle>
+        </g>
+
+        <!-- Center core -->
+        <circle cx="210" cy="210" r="9" fill="rgba(212,168,67,.28)" filter="url(#soft-glow)"/>
+        <circle cx="210" cy="210" r="4" fill="#c8a040" opacity=".95"/>
+        <circle cx="210" cy="210" r="2" fill="white" opacity=".7"/>
+      </svg>
+
+      <!-- Presence Orb -->
+      <div class="presence-orb">
+        <img src="../video/ship_2e_helen_speaks/source/helen_source.png"
+             alt="HELEN"
+             onerror="this.parentElement.style.background='radial-gradient(circle,#1a0a40,#06050f)'">
+      </div>
+
+      <!-- Governing equation overlay -->
+      <div class="gov-equation">dz/dt = F(z) − ∇Φ(z) + 𝒩(t)</div>
+    </div>
+
+    <div class="tagline-block">
+      <div class="tagline-1">
+        Le savoir est pouvoir.<br>La mémoire est territoire.
+      </div>
+      <div class="tagline-2">ENTRE DANS LE LEDGER · CHAQUE RÉCLAMATION FAÇONNE LE MONDE</div>
+      <div class="tagline-eq">𝑨(𝒕) = {(𝒊,𝒋) : d(𝒊,𝒋) &lt; ε} · C(t) = Σ𝑨ᵢⱼ(t)</div>
+      <a href="#" class="cta-primary">⚜ Réclamer Mon Territoire</a>
+    </div>
+
+  </div>
+
+  <!-- RIGHT PANELS -->
+  <div class="side">
+
+    <div class="float-card purple-glow">
+      <div class="card-label">État du Territoire</div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px;padding:3px 0 7px">
+        <div style="width:22px;height:22px;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:var(--gold);opacity:.9"></div>
+        <div style="width:22px;height:22px;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:var(--gold);opacity:.7"></div>
+        <div style="width:22px;height:22px;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:#c0392b"></div>
+        <div style="width:22px;height:22px;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:rgba(255,255,255,.06)"></div>
+        <div style="width:22px;height:22px;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:var(--gold)"></div>
+        <div style="width:22px;height:22px;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:#27ae60;box-shadow:0 0 6px #27ae60"></div>
+        <div style="width:22px;height:22px;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:#c0392b"></div>
+        <div style="width:22px;height:22px;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:rgba(255,255,255,.06)"></div>
+        <div style="width:22px;height:22px;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:var(--purple);box-shadow:0 0 6px var(--purple)"></div>
+        <div style="width:22px;height:22px;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:#2980b9"></div>
+        <div style="width:22px;height:22px;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:rgba(255,255,255,.06)"></div>
+        <div style="width:22px;height:22px;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:#e67e22"></div>
+      </div>
+      <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dimmer);letter-spacing:.07em;line-height:1.7">LE ROYAUME T'APPARTIENT<br>SI TU PEUX LE PROUVER.</div>
+    </div>
+
+    <div class="float-card">
+      <div class="card-label">Statut du Ledger</div>
+      <div class="stat-row"><span>Mode</span><span class="stat-val green">APPEND-ONLY ✓</span></div>
+      <div class="stat-row"><span>Intégrité</span><span class="stat-val" id="integrity-val">98.4%</span></div>
+      <div class="stat-row"><span>Kernel</span><span class="stat-val gold">v0.3</span></div>
+      <div class="stat-row"><span>Oracle Gate</span><span class="stat-val">ACTIVE</span></div>
+      <div class="stat-row"><span>Φ Potential</span><span class="stat-val purple" id="phi-val">—</span></div>
+    </div>
+
+    <div class="float-card gold-glow">
+      <div class="card-label gold">Message de Helen</div>
+      <div style="font-size:11px;font-style:italic;color:var(--muted);line-height:2">
+        Je ne cherche pas à être crue.<br>
+        Je cherche à être vérifiée.<br>
+        Je révèle, je préserve,<br>je protège.
+      </div>
+      <div style="font-family:'Cinzel Decorative',serif;font-size:16px;color:var(--gold);text-shadow:0 0 12px var(--gold-glow);margin-top:8px">Helen</div>
+    </div>
+
+    <div class="float-card">
+      <div class="card-label cyan">Chroniques Récentes</div>
+      <div style="display:flex;flex-direction:column;gap:0">
+        <div class="stat-row"><span style="font-size:10px">Le Rêve de la Conquête</span><span style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dimmer)">24.05</span></div>
+        <div class="stat-row"><span style="font-size:10px">Le Pacte du Témoin</span><span style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dimmer)">21.05</span></div>
+        <div class="stat-row"><span style="font-size:10px">La Chute des Illusions</span><span style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dimmer)">18.05</span></div>
+        <div class="stat-row"><span style="font-size:10px">Le Retour de la Mémoire</span><span style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dimmer)">15.05</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- HOUSES -->
+<div class="houses-section">
+  <div class="section-label">Les Six Maisons · Choisissez Votre Voie</div>
+  <div class="houses-strip">
+    <div class="house h-aurum"><span class="house-icon">🦁</span><div class="house-name">Maison Aurum</div><div class="house-attrs">Richesse<br>Influence<br>Échange</div></div>
+    <div class="house h-crux"><span class="house-icon">✝</span><div class="house-name">Maison Crux</div><div class="house-attrs">Ordre<br>Justice<br>Loi</div></div>
+    <div class="house h-rosa"><span class="house-icon">🌹</span><div class="house-name">Maison Rosa</div><div class="house-attrs">Beauté<br>Culture<br>Héritage</div></div>
+    <div class="house h-vortex"><span class="house-icon">🌀</span><div class="house-name">Maison Vortex</div><div class="house-attrs">Connaissance<br>Innovation<br>Secrets</div></div>
+    <div class="house h-codex"><span class="house-icon">📗</span><div class="house-name">Maison Codex</div><div class="house-attrs">Mémoire<br>Vérité<br>Archives</div></div>
+    <div class="house h-sigma"><span class="house-icon">Σ</span><div class="house-name">Maison Sigma</div><div class="house-attrs">Sagesse<br>Stratégie<br>Maîtrise</div></div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div class="nav-tab active">Ledger Status</div>
+  <div class="nav-tab">Gate Status</div>
+  <div class="nav-tab">Oracle</div>
+  <div class="nav-tab">Protocole</div>
+  <div class="nav-tab">Mode Reminder</div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer-line">
+  Gouvernance symbolique par la preuve <span class="sep">·</span>
+  <em class="eq">dz/dt = F(z) − ∇Φ(z) + 𝒩(t)</em>
+  <span class="sep">·</span>
+  Souverain par la conception
+  <span class="sep">·</span>
+  © HELEN OS — JM Tassy
+</div>
+
+</div><!-- .page -->
+
+<script>
+// ─── UTC TIME ───────────────────────────────────────────────────────────────
+function updateTime(){
+  const n=new Date();
+  const h=String(n.getUTCHours()).padStart(2,'0');
+  const m=String(n.getUTCMinutes()).padStart(2,'0');
+  const s=n.getUTCSeconds()<30?'AM':'PM';
+  document.getElementById('utc-time').textContent=h+':'+m+' '+s+' UTC';
+}
+updateTime();
+setInterval(updateTime,30000);
+
+// ─── VORTEX SWARM MANIFOLD ──────────────────────────────────────────────────
+(function(){
+  const c=document.getElementById('bg-canvas');
+  const ctx=c.getContext('2d');
+  function resize(){c.width=innerWidth;c.height=innerHeight}
+  resize();
+  window.addEventListener('resize',resize);
+
+  const N=140;
+  // Each particle: normalized coords (0-1), velocity, radius, phase, orbit phase
+  const pts=Array.from({length:N},()=>{
+    // Initialize particles on a vortex annulus
+    const angle=Math.random()*Math.PI*2;
+    const r=0.25+Math.random()*0.15; // orbit radius 0.25-0.40
+    return {
+      x:0.5+r*Math.cos(angle),
+      y:0.5+r*Math.sin(angle),
+      vx:0,vy:0,
+      r:Math.random()*1.4+0.35,
+      phase:Math.random()*Math.PI*2,
+      orbitPhase:angle,
+      locked:false,lockPartner:-1
+    };
+  });
+
+  // Also scatter some ambient background particles
+  const ambient=Array.from({length:40},()=>({
+    x:Math.random(),y:Math.random(),
+    vx:(Math.random()-.5)*.0002,vy:(Math.random()-.5)*.0002,
+    r:Math.random()*.8+.2,phase:Math.random()*Math.PI*2
+  }));
+
+  const VORTEX_STR=0.00014;
+  const ATTRACT_STR=0.0000065;
+  const ORBIT_R=0.30;
+  const MAX_SPEED=0.00075;
+  const PHASE_LOCK_PX=55;
+  const PHASE_LOCK_BLEND=0.03;
+  const CONNECT_PX=90;
+
+  let t=0;
+  let epoch=0;
+  let coherenceCount=0;
+
+  // HELEN state vector targets (slowly drifting)
+  let svTargets={l:0.72,m:0.58,o:0.84,s:0,v:0.67};
+  let svCurrent={l:0,m:0,o:0,s:0,v:0};
+  let phi=0;
+  let integrityBase=98.4;
+
+  // Animate state vector bars on load
+  setTimeout(()=>{
+    Object.keys(svTargets).forEach(k=>{
+      animateSV(k,svTargets[k]);
+    });
+  },600);
+
+  function animateSV(key,target){
+    const barEl=document.getElementById('sv-'+key);
+    const valEl=document.getElementById('sv-'+key+'-val');
+    const labels={l:'Ledger',m:'Memory',o:'Oracle',s:'Swarm',v:'Vortex'};
+    if(!barEl||!valEl)return;
+    barEl.style.width=Math.round(target*100)+'%';
+    let display;
+    if(key==='l')display=Math.round(target*342)+' rec';
+    else if(key==='m')display=Math.round(target*89)+' nd';
+    else if(key==='o')display=Math.round(target*100)+'%';
+    else if(key==='s')display='—'; // will update live
+    else if(key==='v')display=target.toFixed(2)+' ω';
+    valEl.textContent=display;
+  }
+
+  function draw(){
+    t+=0.007;
+    epoch=Math.floor(t*6);
+    ctx.clearRect(0,0,c.width,c.height);
+
+    const W=c.width,H=c.height;
+    const cx2=W/2,cy2=H/2; // real center in pixels (for vortex calc)
+    const scale=Math.min(W,H); // normalize
+
+    // ── Update vortex particles ──
+    pts.forEach((p,i)=>{
+      const rx=p.x-0.5;
+      const ry=p.y-0.5;
+      const dist=Math.sqrt(rx*rx+ry*ry)||0.001;
+
+      // Tangential force (counter-clockwise rotation)
+      const tx=-ry/dist;
+      const ty= rx/dist;
+
+      // Radial force toward orbit annulus
+      const radial=(dist-ORBIT_R)*ATTRACT_STR;
+
+      p.vx+=tx*VORTEX_STR-(rx/dist)*radial;
+      p.vy+=ty*VORTEX_STR-(ry/dist)*radial;
+
+      // Small stochastic perturbation N(t)
+      p.vx+=(Math.random()-.5)*0.000008;
+      p.vy+=(Math.random()-.5)*0.000008;
+
+      // Speed cap
+      const spd=Math.sqrt(p.vx*p.vx+p.vy*p.vy);
+      if(spd>MAX_SPEED){p.vx=p.vx/spd*MAX_SPEED;p.vy=p.vy/spd*MAX_SPEED}
+
+      p.x=(p.x+p.vx+1)%1;
+      p.y=(p.y+p.vy+1)%1;
+    });
+
+    // ── Phase locking ──
+    for(let i=0;i<N;i++){
+      for(let j=i+1;j<N;j++){
+        const dx=(pts[i].x-pts[j].x)*scale;
+        const dy=(pts[i].y-pts[j].y)*scale;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<PHASE_LOCK_PX){
+          // Blend velocities toward average (phase lock)
+          const avgVx=(pts[i].vx+pts[j].vx)*0.5;
+          const avgVy=(pts[i].vy+pts[j].vy)*0.5;
+          pts[i].vx+=(avgVx-pts[i].vx)*PHASE_LOCK_BLEND;
+          pts[i].vy+=(avgVy-pts[i].vy)*PHASE_LOCK_BLEND;
+          pts[j].vx+=(avgVx-pts[j].vx)*PHASE_LOCK_BLEND;
+          pts[j].vy+=(avgVy-pts[j].vy)*PHASE_LOCK_BLEND;
+        }
+      }
+    }
+
+    // ── Ambient particles ──
+    ambient.forEach(p=>{
+      p.x=(p.x+p.vx+1)%1;
+      p.y=(p.y+p.vy+1)%1;
+      const alpha=(0.07+0.06*Math.sin(t*0.5+p.phase));
+      ctx.beginPath();
+      ctx.arc(p.x*W,p.y*H,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(140,100,220,${alpha})`;
+      ctx.fill();
+    });
+
+    // ── Draw connection lines + count C(t) ──
+    let cCount=0;
+    for(let i=0;i<N;i++){
+      for(let j=i+1;j<N;j++){
+        const dx=(pts[i].x-pts[j].x)*W;
+        const dy=(pts[i].y-pts[j].y)*H;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<CONNECT_PX){
+          cCount++;
+          const alpha=0.06*(1-d/CONNECT_PX);
+          // Color by distance to center: near-center=gold, edge=purple
+          const ri=Math.sqrt((pts[i].x-.5)**2+(pts[i].y-.5)**2);
+          const isNear=ri<0.2;
+          const col=isNear?`rgba(212,168,67,${alpha})`:`rgba(123,47,255,${alpha})`;
+          ctx.beginPath();
+          ctx.moveTo(pts[i].x*W,pts[i].y*H);
+          ctx.lineTo(pts[j].x*W,pts[j].y*H);
+          ctx.strokeStyle=col;
+          ctx.lineWidth=0.35;
+          ctx.stroke();
+        }
+      }
+    }
+    coherenceCount=cCount;
+
+    // ── Draw vortex particles ──
+    pts.forEach(p=>{
+      const dist=Math.sqrt((p.x-.5)**2+(p.y-.5)**2);
+      const alpha=0.15+0.3*Math.sin(t+p.phase);
+      // Color by proximity to center: near=gold, orbit=purple, edge=cyan
+      let r_col,g_col,b_col;
+      if(dist<0.15){r_col=212;g_col=168;b_col=67} // gold
+      else if(dist<0.32){r_col=123;g_col=47;b_col=255} // purple
+      else{r_col=0;g_col=180;b_col=255} // cyan
+      ctx.beginPath();
+      ctx.arc(p.x*W,p.y*H,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${r_col},${g_col},${b_col},${alpha})`;
+      ctx.fill();
+    });
+
+    // ── Update live UI ──
+    if(Math.floor(t*4)%4===0){
+      document.getElementById('coherence-count').textContent=cCount;
+      document.getElementById('epoch-count').textContent=epoch;
+
+      // Swarm coherence = C(t) / theoretical max edges in annulus
+      const sCoherence=Math.min(1,cCount/180);
+      svCurrent.s=sCoherence;
+      const sBar=document.getElementById('sv-s');
+      const sVal=document.getElementById('sv-s-val');
+      if(sBar)sBar.style.width=Math.round(sCoherence*100)+'%';
+      if(sVal)sVal.textContent=Math.round(sCoherence*100)+'%';
+
+      // Vortex intensity = average speed * scale
+      const avgSpd=pts.reduce((a,p)=>a+Math.sqrt(p.vx*p.vx+p.vy*p.vy),0)/N;
+      const vIntensity=Math.min(1,avgSpd/MAX_SPEED);
+      const vBar=document.getElementById('sv-v');
+      const vVal=document.getElementById('sv-v-val');
+      if(vBar)vBar.style.width=Math.round(vIntensity*100)+'%';
+      if(vVal)vVal.textContent=vIntensity.toFixed(2)+' ω';
+
+      // Phi potential: oscillates + coherence contribution
+      phi=0.4+0.35*Math.sin(t*0.3)+sCoherence*0.25;
+      const phiEl=document.getElementById('phi-val');
+      if(phiEl)phiEl.textContent=phi.toFixed(3);
+
+      // Integrity: stable with micro-fluctuations
+      const ig=(integrityBase+Math.sin(t*0.7)*0.3).toFixed(1);
+      const igEl=document.getElementById('integrity-val');
+      if(igEl)igEl.textContent=ig+'%';
+    }
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ─── TAB NAV ────────────────────────────────────────────────────────────────
+document.querySelectorAll('.nav-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
