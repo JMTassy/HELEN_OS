@@ -7,65 +7,87 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#120d08;
-  --surface:rgba(255,248,236,.04);
-  --border:rgba(255,220,140,.08);
-  --border-med:rgba(255,220,140,.13);
-  --text:rgba(255,240,210,.92);
-  --text-dim:rgba(255,240,210,.55);
-  --text-mute:rgba(255,240,210,.28);
-  --gold:#c9940c;
-  --gold-dim:rgba(201,148,12,.5);
-  --helen:#38bdf8;
-  --ok:#4ade80;
-  --warn:#fbbf24;
-  --blocked:#f87171;
+  --bg:#f0ede6;
+  --surface:#fff;
+  --border:rgba(0,0,0,.07);
+  --border-med:rgba(0,0,0,.12);
+  --text:#1a1916;
+  --text-dim:rgba(26,25,22,.52);
+  --text-mute:rgba(26,25,22,.3);
+  --gold:#b8860b;
+  --gold-dim:rgba(184,134,11,.55);
+  --helen:#0ea5e9;
+  --ok:#16a34a;
+  --warn:#d97706;
+  --blocked:#dc2626;
   --sans:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;
   --mono:'Courier New',Courier,monospace;
 }
 html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:var(--sans);-webkit-font-smoothing:antialiased}
 
 /* ── TOP BAR ─────────────────────────────────────────────────────────────── */
-#top{position:fixed;top:0;left:0;right:0;z-index:20;background:rgba(18,13,8,.85);border-bottom:1px solid var(--border);backdrop-filter:blur(16px)}
+#top{position:fixed;top:0;left:0;right:0;z-index:20;background:rgba(240,237,230,.92);border-bottom:1px solid var(--border);backdrop-filter:blur(16px)}
 #top-bar{display:flex;align-items:center;padding:0 24px;height:38px;gap:0}
 .tb-brand{display:flex;align-items:center;gap:9px;margin-right:22px;cursor:pointer}
 .tb-logo{width:22px;height:22px;flex-shrink:0}
-.tb-name{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,220,140,.65);font-weight:400}
+.tb-name{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(26,25,22,.6);font-weight:400}
 .tb-year{font-family:var(--mono);font-size:7.5px;color:var(--text-mute);margin-left:2px}
-.tb-sep{width:1px;height:13px;background:var(--border);margin:0 14px;flex-shrink:0}
+.tb-sep{width:1px;height:13px;background:var(--border-med);margin:0 14px;flex-shrink:0}
 .tb-field{display:flex;flex-direction:column;gap:1px;margin-right:14px}
 .tb-field-k{font-size:7.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mute)}
 .tb-field-v{font-size:11px;color:var(--text-dim)}
 .tb-push{margin-left:auto;display:flex;align-items:center;gap:8px}
 .tb-badge{font-family:var(--mono);font-size:7px;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:3px;border:1px solid;white-space:nowrap}
-.tb-badge.auth{color:rgba(248,113,113,.6);border-color:rgba(248,113,113,.15)}
-.tb-badge.demo{color:var(--text-mute);border-color:var(--border)}
-.tb-badge.presence{color:var(--ok);border-color:rgba(74,222,128,.2);display:flex;align-items:center;gap:4px}
+.tb-badge.auth{color:rgba(220,38,38,.6);border-color:rgba(220,38,38,.18)}
+.tb-badge.demo{color:var(--text-mute);border-color:var(--border-med)}
+.tb-badge.presence{color:var(--ok);border-color:rgba(22,163,74,.22);display:flex;align-items:center;gap:4px}
 .presence-dot{width:5px;height:5px;border-radius:50%;background:var(--ok);flex-shrink:0;animation:pulse 2.4s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 #tb-clock{font-family:var(--mono);font-size:10px;color:var(--text-mute);letter-spacing:.04em}
 
 #top-nav{display:flex;align-items:center;justify-content:center;padding:0 24px;height:30px;gap:2px;border-top:1px solid var(--border)}
 .nav-item{font-size:11px;letter-spacing:.01em;color:var(--text-mute);padding:2px 14px;border-radius:20px;cursor:pointer;transition:all .15s;user-select:none}
-.nav-item:hover{color:var(--text-dim);background:rgba(255,220,140,.05)}
-.nav-item.active{color:var(--text);background:rgba(255,220,140,.09);font-weight:500}
+.nav-item:hover{color:var(--text-dim);background:rgba(0,0,0,.05)}
+.nav-item.active{color:var(--text);background:rgba(0,0,0,.08);font-weight:500}
 
 /* ── STAGE ───────────────────────────────────────────────────────────────── */
 #stage{
   position:fixed;inset:68px 0 72px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   overflow-y:auto;
-  background:
-    radial-gradient(ellipse 60% 50% at 50% 40%,rgba(120,60,10,.28) 0%,transparent 70%),
-    radial-gradient(ellipse 100% 60% at 50% 100%,rgba(80,30,5,.35) 0%,transparent 65%),
-    var(--bg);
+  background:var(--bg);
+  position:relative;
 }
+
+/* ── SACRED GEOMETRY ─────────────────────────────────────────────────────── */
+#geo-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:0}
+.geo-str{animation:geoBreath 16s ease-in-out infinite}
+@keyframes geoBreath{0%,100%{opacity:.07}50%{opacity:.16}}
+.geo-slowrot{transform-origin:720px 450px;animation:geoRot 90s linear infinite}
+.geo-slowrot-r{transform-origin:720px 450px;animation:geoRotR 72s linear infinite}
+.geo-breathe{animation:geoBreath 8s ease-in-out infinite}
+@keyframes geoRot{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes geoRotR{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
+.geo-hot{pointer-events:all;cursor:pointer}
+.geo-dot{fill:#b8860b;opacity:.28;transition:opacity .2s}
+.geo-dot-glow{fill:#b8860b;opacity:0;transition:opacity .2s}
+.geo-ring{fill:none;stroke:#b8860b;stroke-width:1.2;opacity:0;transition:opacity .2s}
+.geo-lbl{opacity:0;transition:opacity .2s;font-family:'Courier New',monospace;fill:#1a1916;font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:11px}
+.geo-sub{opacity:0;transition:opacity .2s;font-family:'Courier New',monospace;fill:rgba(26,25,22,.4);letter-spacing:.05em;font-size:8.5px}
+.geo-hot:hover .geo-dot{opacity:.7}
+.geo-hot:hover .geo-dot-glow{opacity:.85}
+.geo-hot:hover .geo-ring{opacity:.6}
+.geo-hot:hover .geo-lbl{opacity:1}
+.geo-hot:hover .geo-sub{opacity:1}
+.geo-hot.active .geo-dot{opacity:.85}
+.geo-hot.active .geo-dot-glow{opacity:.4}
+#stage-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;width:100%}
 
 /* ── MARK ────────────────────────────────────────────────────────────────── */
 #mark-wrap{margin-bottom:28px;position:relative}
 #mark-wrap svg{width:52px;height:52px;animation:breathe 9s ease-in-out infinite}
-@keyframes breathe{0%,100%{opacity:.65;transform:scale(1)}50%{opacity:1;transform:scale(1.04)}}
-#mark-ring{position:absolute;inset:-12px;border-radius:50%;border:1px solid rgba(201,148,12,.12);animation:ringPulse 9s ease-in-out infinite}
+@keyframes breathe{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:.9;transform:scale(1.04)}}
+#mark-ring{position:absolute;inset:-12px;border-radius:50%;border:1px solid rgba(184,134,11,.15);animation:ringPulse 9s ease-in-out infinite}
 @keyframes ringPulse{0%,100%{opacity:0;transform:scale(.92)}50%{opacity:1;transform:scale(1)}}
 
 /* ── VOICE ───────────────────────────────────────────────────────────────── */
@@ -80,13 +102,14 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 .chip{display:flex;align-items:center;gap:5px;font-size:9px;padding:4px 11px;border-radius:20px;white-space:nowrap;border:1px solid;cursor:pointer;transition:all .15s;letter-spacing:.01em}
 .chip:hover{transform:translateY(-1px)}
 .chip-dot{width:4px;height:4px;border-radius:50%;flex-shrink:0}
-.chip.linked{background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.2);color:rgba(100,200,255,.8)}.chip.linked .chip-dot{background:#38bdf8}
-.chip.saved{background:rgba(74,222,128,.08);border-color:rgba(74,222,128,.2);color:rgba(100,220,150,.8)}.chip.saved .chip-dot{background:#4ade80}
-.chip.draft{background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.2);color:rgba(255,200,80,.8)}.chip.draft .chip-dot{background:#fbbf24}
-.chip.mute{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.07);color:rgba(255,240,200,.35)}.chip.mute .chip-dot{background:rgba(255,240,200,.25)}
+.chip.linked{background:rgba(14,165,233,.08);border-color:rgba(14,165,233,.2);color:rgba(7,100,160,.8)}.chip.linked .chip-dot{background:#0ea5e9}
+.chip.saved{background:rgba(22,163,74,.08);border-color:rgba(22,163,74,.2);color:rgba(15,100,50,.8)}.chip.saved .chip-dot{background:#16a34a}
+.chip.draft{background:rgba(217,119,6,.08);border-color:rgba(217,119,6,.2);color:rgba(160,90,5,.8)}.chip.draft .chip-dot{background:#d97706}
+.chip.mute{background:rgba(0,0,0,.04);border-color:var(--border-med);color:var(--text-mute)}.chip.mute .chip-dot{background:var(--text-mute)}
+
 
 /* ── STATUS ROW ──────────────────────────────────────────────────────────── */
-#status-row{display:flex;gap:0;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:36px}
+#status-row{display:flex;gap:0;border:1px solid var(--border-med);border-radius:10px;overflow:hidden;margin-bottom:36px;background:var(--surface)}
 .sr{padding:10px 22px;text-align:center;border-right:1px solid var(--border);cursor:default}
 .sr:last-child{border-right:none}
 .sr-n{font-family:var(--mono);font-size:18px;font-weight:300;line-height:1;margin-bottom:3px}
@@ -103,27 +126,27 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
   padding:14px 20px;border-radius:12px;
   border:1px solid var(--border);background:var(--surface);
   cursor:pointer;transition:all .18s;min-width:96px;
-  text-decoration:none;
+  box-shadow:0 1px 3px rgba(0,0,0,.05);
 }
-.surf:hover{background:rgba(255,220,140,.06);border-color:var(--border-med);transform:translateY(-2px)}
-.surf.active{background:rgba(201,148,12,.08);border-color:rgba(201,148,12,.22)}
-.surf-icon{font-size:20px;opacity:.55;line-height:1}
-.surf.active .surf-icon{opacity:.9}
+.surf:hover{border-color:var(--border-med);transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,.08)}
+.surf.active{background:rgba(184,134,11,.07);border-color:rgba(184,134,11,.22)}
+.surf-icon{font-size:20px;opacity:.45;line-height:1}
+.surf.active .surf-icon{opacity:.8}
 .surf-name{font-size:11px;font-weight:500;color:var(--text-dim);letter-spacing:.01em}
 .surf.active .surf-name{color:var(--text)}
 .surf-state{font-family:var(--mono);font-size:7.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mute)}
 .surf.active .surf-state{color:var(--gold-dim)}
 
 /* ── BOTTOM INPUT ────────────────────────────────────────────────────────── */
-#bottom{position:fixed;bottom:0;left:0;right:0;height:72px;background:rgba(18,13,8,.92);border-top:1px solid var(--border);backdrop-filter:blur(16px);display:flex;align-items:center;padding:0 24px;gap:10px}
-#helen-input{flex:1;background:rgba(255,220,140,.04);border:1px solid var(--border);border-radius:8px;padding:0 16px;height:38px;font-family:var(--sans);font-size:12px;color:var(--text);outline:none;transition:border-color .14s}
-#helen-input:focus{border-color:rgba(201,148,12,.3);background:rgba(255,220,140,.06)}
+#bottom{position:fixed;bottom:0;left:0;right:0;height:72px;background:rgba(240,237,230,.94);border-top:1px solid var(--border);backdrop-filter:blur(16px);display:flex;align-items:center;padding:0 24px;gap:10px}
+#helen-input{flex:1;background:rgba(0,0,0,.04);border:1px solid var(--border-med);border-radius:8px;padding:0 16px;height:38px;font-family:var(--sans);font-size:12px;color:var(--text);outline:none;transition:border-color .14s}
+#helen-input:focus{border-color:rgba(184,134,11,.35);background:rgba(255,255,255,.7)}
 #helen-input::placeholder{color:var(--text-mute)}
-.send-btn{height:38px;padding:0 18px;border-radius:8px;background:rgba(201,148,12,.12);border:1px solid rgba(201,148,12,.2);color:var(--gold);font-family:var(--sans);font-size:11px;cursor:pointer;transition:all .14s;white-space:nowrap;letter-spacing:.02em}
-.send-btn:hover{background:rgba(201,148,12,.2);border-color:rgba(201,148,12,.35)}
+.send-btn{height:38px;padding:0 18px;border-radius:8px;background:rgba(184,134,11,.1);border:1px solid rgba(184,134,11,.2);color:var(--gold);font-family:var(--sans);font-size:11px;cursor:pointer;transition:all .14s;white-space:nowrap;letter-spacing:.02em}
+.send-btn:hover{background:rgba(184,134,11,.18);border-color:rgba(184,134,11,.35)}
 
 /* ── TOAST ───────────────────────────────────────────────────────────────── */
-#toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%);background:rgba(40,28,12,.95);color:var(--text);border:1px solid var(--border-med);border-radius:8px;padding:9px 20px;font-size:11.5px;display:none;pointer-events:none;white-space:nowrap;box-shadow:0 4px 24px rgba(0,0,0,.4);z-index:40;letter-spacing:-.01em}
+#toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%);background:var(--text);color:rgba(255,252,246,.9);border-radius:8px;padding:9px 20px;font-size:11.5px;display:none;pointer-events:none;white-space:nowrap;box-shadow:0 4px 24px rgba(0,0,0,.18);z-index:40;letter-spacing:-.01em}
 #toast.on{display:block;animation:tIn .15s ease}
 @keyframes tIn{from{opacity:0;transform:translateX(-50%) translateY(5px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 </style>
@@ -168,6 +191,219 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 
 <!-- STAGE -->
 <div id="stage">
+
+  <!-- SACRED GEOMETRY LAYER · Sri Yantra + Sephirotic map -->
+  <!-- ViewBox 1440×900 · Sri Yantra center (720,450) · Sephirotic hotspots -->
+  <!-- Hotspot map: Kether=PILOT · Chokmah=COCKPIT · Binah=TEMPLE · Tiphareth=HOME · Chesed=LEDGER · Geburah=MEMORY · Yesod=AGENTS -->
+  <svg id="geo-svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <filter id="geo-glow">
+        <feGaussianBlur stdDeviation="4" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <filter id="geo-engrave">
+        <feTurbulence type="turbulence" baseFrequency="0.9" numOctaves="3" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="0.6"/>
+      </filter>
+    </defs>
+
+    <!-- ── STRUCTURAL GEOMETRY (global breathing) ── -->
+    <g class="geo-str" stroke="#b8860b" fill="none">
+
+      <!-- Ouroboros outer ring (dashed, engrave texture) -->
+      <circle cx="720" cy="450" r="400" stroke-width=".6" opacity=".35" stroke-dasharray="6 14" filter="url(#geo-engrave)"/>
+      <circle cx="720" cy="450" r="396" stroke-width=".25" opacity=".18"/>
+
+      <!-- Vesica Piscis (HELEN vessel mark, large) -->
+      <circle cx="570" cy="450" r="230" stroke-width=".3" opacity=".15"/>
+      <circle cx="870" cy="450" r="230" stroke-width=".3" opacity=".15"/>
+
+      <!-- ── SRI YANTRA · 4 Shiva up-triangles (gold, counter-rotate) ── -->
+      <g class="geo-slowrot-r" opacity=".65" filter="url(#geo-glow)" stroke="#c9a43a">
+        <polygon points="720,190 958,575 482,575"   stroke-width=".9" opacity=".75"/>
+        <polygon points="720,260 900,548 540,548"   stroke-width=".7" opacity=".6"/>
+        <polygon points="720,330 840,518 600,518"   stroke-width=".55" opacity=".48"/>
+        <polygon points="720,387 787,493 653,493"   stroke-width=".4" opacity=".35"/>
+      </g>
+
+      <!-- ── SRI YANTRA · 5 Shakti down-triangles (red/silver, rotate) ── -->
+      <g class="geo-slowrot" opacity=".6" stroke="rgba(160,30,30,.7)">
+        <polygon points="720,710 958,325 482,325"   stroke-width=".9" opacity=".75"/>
+        <polygon points="720,640 896,340 544,340"   stroke-width=".7" opacity=".6"/>
+        <polygon points="720,572 848,370 592,370"   stroke-width=".55" opacity=".48"/>
+        <polygon points="720,504 800,396 640,396"   stroke-width=".4" opacity=".35"/>
+        <polygon points="720,468 758,430 682,430"   stroke-width=".3" opacity=".22"/>
+      </g>
+
+      <!-- ── FLOWER OF LIFE · 7 circles (r=120) ── -->
+      <g class="geo-breathe" opacity=".38" stroke="#b8860b" stroke-width=".5">
+        <circle cx="720" cy="450" r="120"/>
+        <circle cx="840" cy="450" r="120"/>
+        <circle cx="600" cy="450" r="120"/>
+        <circle cx="780" cy="554" r="120"/>
+        <circle cx="660" cy="554" r="120"/>
+        <circle cx="780" cy="346" r="120"/>
+        <circle cx="660" cy="346" r="120"/>
+      </g>
+
+      <!-- ── METATRON'S CUBE · connections between circle centers ── -->
+      <g class="geo-slowrot" opacity=".28" stroke="rgba(255,255,255,.5)" stroke-width=".5">
+        <line x1="720" y1="450" x2="840" y2="450"/>
+        <line x1="720" y1="450" x2="600" y2="450"/>
+        <line x1="720" y1="450" x2="780" y2="554"/>
+        <line x1="720" y1="450" x2="660" y2="554"/>
+        <line x1="720" y1="450" x2="780" y2="346"/>
+        <line x1="720" y1="450" x2="660" y2="346"/>
+        <line x1="840" y1="450" x2="780" y2="554"/>
+        <line x1="840" y1="450" x2="780" y2="346"/>
+        <line x1="600" y1="450" x2="660" y2="554"/>
+        <line x1="600" y1="450" x2="660" y2="346"/>
+        <line x1="780" y1="554" x2="660" y2="554"/>
+        <line x1="780" y1="346" x2="660" y2="346"/>
+        <line x1="840" y1="450" x2="600" y2="450"/>
+        <line x1="780" y1="554" x2="660" y2="346"/>
+        <line x1="660" y1="554" x2="780" y2="346"/>
+      </g>
+
+      <!-- ── SEPHIROTIC PATHS (Tree of Life connections) ── -->
+      <g opacity=".22" stroke="#b8860b" stroke-width=".5">
+        <line x1="720" y1="110" x2="1040" y2="260"/>
+        <line x1="720" y1="110" x2="400" y2="260"/>
+        <line x1="720" y1="110" x2="720" y2="450"/>
+        <line x1="720" y1="450" x2="1040" y2="450"/>
+        <line x1="720" y1="450" x2="400" y2="450"/>
+        <line x1="720" y1="450" x2="720" y2="750"/>
+        <line x1="1040" y1="260" x2="1040" y2="450"/>
+        <line x1="400" y1="260" x2="400" y2="450"/>
+        <line x1="1040" y1="260" x2="720" y2="450"/>
+        <line x1="400" y1="260" x2="720" y2="450"/>
+        <line x1="1040" y1="450" x2="720" y2="750"/>
+        <line x1="400" y1="450" x2="720" y2="750"/>
+      </g>
+
+      <!-- ── BINDU inner rings ── -->
+      <circle cx="720" cy="450" r="14" stroke-width=".5" opacity=".45"/>
+      <circle cx="720" cy="450" r="6"  stroke-width=".8" opacity=".6" filter="url(#geo-glow)"/>
+
+      <!-- ── Cross-rose axis ── -->
+      <line x1="720" y1="50" x2="720" y2="850" stroke-width=".3" opacity=".2"/>
+      <line x1="50" y1="450" x2="1390" y2="450" stroke-width=".3" opacity=".2"/>
+
+      <!-- ── Enochian / Hermetic margin text ── -->
+      <g opacity=".14" font-family="Courier New" font-size="8" fill="rgba(184,134,11,.8)" letter-spacing="4">
+        <text x="30" y="240" transform="rotate(-90,30,240)">ΑΩ · ARCHE · TELOS · LOGOS · PNEUMA · NOUS · SOPHIA</text>
+        <text x="1413" y="660" transform="rotate(90,1413,660)">OM · TAT · SAT · AUM · SHRI · HREEM · KLEEM · SHREEM</text>
+        <text x="720" y="878" text-anchor="middle">VITRIOL · VISITA INTERIORA TERRAE RECTIFICANDO INVENIES OCCULTUM LAPIDEM</text>
+        <text x="720" y="26" text-anchor="middle">AS ABOVE · SO BELOW · AS WITHIN · SO WITHOUT · AS THE UNIVERSE · SO THE SOUL</text>
+      </g>
+
+      <!-- ── Pentagrams at 4 corners ── -->
+      <g opacity=".18" stroke="#b8860b" stroke-width=".5" fill="none">
+        <polygon points="80,100 72,124 96,108 64,108 88,124"/>
+        <polygon points="1360,100 1352,124 1376,108 1344,108 1368,124"/>
+        <polygon points="80,800 72,824 96,808 64,808 88,824"/>
+        <polygon points="1360,800 1352,824 1376,808 1344,808 1368,824"/>
+      </g>
+
+      <!-- ── Eye of Providence (top center) ── -->
+      <g transform="translate(720,46)" opacity=".28" stroke="#b8860b" fill="none">
+        <ellipse cx="0" cy="0" rx="22" ry="13" stroke-width=".6"/>
+        <circle cx="0" cy="0" r="5" fill="rgba(184,134,11,.2)" stroke-width=".5"/>
+        <circle cx="0" cy="0" r="1.8" fill="#b8860b"/>
+        <line x1="0" y1="-15" x2="0" y2="-24" stroke-width=".4"/>
+        <line x1="15" y1="-8" x2="24" y2="-13" stroke-width=".4"/>
+        <line x1="15" y1="8" x2="24" y2="13" stroke-width=".4"/>
+        <line x1="0" y1="15" x2="0" y2="24" stroke-width=".4"/>
+        <line x1="-15" y1="8" x2="-24" y2="13" stroke-width=".4"/>
+        <line x1="-15" y1="-8" x2="-24" y2="-13" stroke-width=".4"/>
+      </g>
+
+      <!-- ── Phi spiral (golden ratio trace) ── -->
+      <g opacity=".12" stroke="#b8860b" stroke-width=".6" fill="none">
+        <path d="M 1380 820 A 220 220 0 0 0 1160 600 A 136 136 0 0 0 1024 736 A 84 84 0 0 0 1108 820 A 52 52 0 0 0 1056 768"/>
+      </g>
+
+    </g><!-- /geo-str -->
+
+    <!-- ── SEPHIROTIC HOTSPOT NODES · semantic navigation ── -->
+    <!-- Kether=PILOT · Chokmah=COCKPIT · Binah=TEMPLE · Tiphareth=HOME · Chesed=LEDGER · Geburah=MEMORY · Yesod=AGENTS -->
+    <g class="geo-nodes">
+
+      <!-- TIPHARETH · HOME (heart/beauty, center) -->
+      <g class="geo-hot active" onclick="navTo('home',null)">
+        <circle cx="720" cy="450" r="32" fill="transparent"/>
+        <circle cx="720" cy="450" r="5" class="geo-dot"/>
+        <circle cx="720" cy="450" r="11" class="geo-dot-glow" filter="url(#geo-glow)"/>
+        <circle cx="720" cy="450" r="18" class="geo-ring"/>
+        <text class="geo-lbl" x="720" y="432" text-anchor="middle">HOME</text>
+        <text class="geo-sub" x="720" y="476" text-anchor="middle">Tiphareth · what now</text>
+      </g>
+
+      <!-- KETHER · PILOT (crown, top) -->
+      <g class="geo-hot" onclick="navTo('pilot',null)">
+        <circle cx="720" cy="110" r="32" fill="transparent"/>
+        <circle cx="720" cy="110" r="4" class="geo-dot"/>
+        <circle cx="720" cy="110" r="9" class="geo-dot-glow" filter="url(#geo-glow)"/>
+        <circle cx="720" cy="110" r="16" class="geo-ring"/>
+        <text class="geo-lbl" x="720" y="68" text-anchor="middle">PILOT</text>
+        <text class="geo-sub" x="720" y="81" text-anchor="middle">Kether · source analysis</text>
+      </g>
+
+      <!-- CHOKMAH · COCKPIT (wisdom, top-right) -->
+      <g class="geo-hot" onclick="navTo('cockpit',null)">
+        <circle cx="1040" cy="260" r="32" fill="transparent"/>
+        <circle cx="1040" cy="260" r="4" class="geo-dot"/>
+        <circle cx="1040" cy="260" r="9" class="geo-dot-glow" filter="url(#geo-glow)"/>
+        <circle cx="1040" cy="260" r="16" class="geo-ring"/>
+        <text class="geo-lbl" x="1078" y="254" text-anchor="start">COCKPIT</text>
+        <text class="geo-sub" x="1078" y="268" text-anchor="start">Chokmah · operations</text>
+      </g>
+
+      <!-- BINAH · TEMPLE (understanding, top-left) -->
+      <g class="geo-hot" onclick="navTo('temple',null)">
+        <circle cx="400" cy="260" r="32" fill="transparent"/>
+        <circle cx="400" cy="260" r="4" class="geo-dot"/>
+        <circle cx="400" cy="260" r="9" class="geo-dot-glow" filter="url(#geo-glow)"/>
+        <circle cx="400" cy="260" r="16" class="geo-ring"/>
+        <text class="geo-lbl" x="362" y="254" text-anchor="end">TEMPLE</text>
+        <text class="geo-sub" x="362" y="268" text-anchor="end">Binah · reflection</text>
+      </g>
+
+      <!-- CHESED · LEDGER (mercy/record, right) -->
+      <g class="geo-hot" onclick="navTo('ledger',null)">
+        <circle cx="1040" cy="450" r="32" fill="transparent"/>
+        <circle cx="1040" cy="450" r="4" class="geo-dot"/>
+        <circle cx="1040" cy="450" r="9" class="geo-dot-glow" filter="url(#geo-glow)"/>
+        <circle cx="1040" cy="450" r="16" class="geo-ring"/>
+        <text class="geo-lbl" x="1078" y="445" text-anchor="start">LEDGER</text>
+        <text class="geo-sub" x="1078" y="460" text-anchor="start">Chesed · 128 entries</text>
+      </g>
+
+      <!-- GEBURAH · MEMORY (strength/past, left) -->
+      <g class="geo-hot" onclick="navTo('memory',null)">
+        <circle cx="400" cy="450" r="32" fill="transparent"/>
+        <circle cx="400" cy="450" r="4" class="geo-dot"/>
+        <circle cx="400" cy="450" r="9" class="geo-dot-glow" filter="url(#geo-glow)"/>
+        <circle cx="400" cy="450" r="16" class="geo-ring"/>
+        <text class="geo-lbl" x="362" y="445" text-anchor="end">MEMORY</text>
+        <text class="geo-sub" x="362" y="460" text-anchor="end">Geburah · context</text>
+      </g>
+
+      <!-- YESOD · AGENTS (foundation, bottom) -->
+      <g class="geo-hot" onclick="navTo('agents',null)">
+        <circle cx="720" cy="750" r="32" fill="transparent"/>
+        <circle cx="720" cy="750" r="4" class="geo-dot"/>
+        <circle cx="720" cy="750" r="9" class="geo-dot-glow" filter="url(#geo-glow)"/>
+        <circle cx="720" cy="750" r="16" class="geo-ring"/>
+        <text class="geo-lbl" x="720" y="798" text-anchor="middle">AGENTS</text>
+        <text class="geo-sub" x="720" y="812" text-anchor="middle">Yesod · not yet built</text>
+      </g>
+
+    </g><!-- /geo-nodes -->
+  </svg><!-- /geo-svg -->
+
+  <!-- CONTENT (above geometry) -->
+  <div id="stage-content">
 
   <!-- VESSEL MARK -->
   <div id="mark-wrap">
@@ -238,6 +474,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
     </div>
   </div>
 
+  </div><!-- /stage-content -->
 </div><!-- /stage -->
 
 <!-- BOTTOM INPUT -->
