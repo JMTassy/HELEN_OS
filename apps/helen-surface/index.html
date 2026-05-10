@@ -10,182 +10,200 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
 :root {
-  --black:       #07070a;
-  --deep:        #0c0c10;
-  --graphite:    #14141a;
-  --surface:     #1c1c22;
-  --surface-hi:  #242430;
-  --border:      rgba(255,255,255,.065);
-  --border-hi:   rgba(255,255,255,.12);
-  --white:       rgba(255,255,255,.90);
-  --silver:      rgba(255,255,255,.52);
-  --mid:         rgba(255,255,255,.32);
-  --dim:         rgba(255,255,255,.18);
-  --ghost:       rgba(255,255,255,.035);
-  --gold:        #c9a43a;
-  --gold-hi:     #e2bc52;
-  --gold-dim:    rgba(201,164,58,.36);
-  --gold-bg:     rgba(201,164,58,.06);
-  --red:         #e05252;
-  --red-dim:     rgba(224,82,82,.30);
-  --red-bg:      rgba(224,82,82,.055);
-  --blue:        #5b8af0;
-  --blue-dim:    rgba(91,138,240,.30);
-  --blue-bg:     rgba(91,138,240,.055);
-  --green:       #3dd68c;
-  --green-dim:   rgba(61,214,140,.28);
-  --green-bg:    rgba(61,214,140,.05);
-  --amber:       #f59e0b;
-  --amber-dim:   rgba(245,158,11,.28);
-  --mono:        'Space Mono', monospace;
-  --sans:        'Space Grotesk', sans-serif;
+  --black:      #07070a;
+  --deep:       #0c0c10;
+  --graphite:   #14141a;
+  --surface:    #1c1c22;
+  --surface-hi: #242430;
+  --border:     rgba(255,255,255,.065);
+  --border-hi:  rgba(255,255,255,.12);
+  --white:      rgba(255,255,255,.90);
+  --silver:     rgba(255,255,255,.52);
+  --mid:        rgba(255,255,255,.32);
+  --dim:        rgba(255,255,255,.18);
+  --ghost:      rgba(255,255,255,.035);
+  --gold:       #c9a43a;
+  --gold-dim:   rgba(201,164,58,.36);
+  --gold-bg:    rgba(201,164,58,.06);
+  --red:        #e05252;
+  --red-dim:    rgba(224,82,82,.30);
+  --red-bg:     rgba(224,82,82,.055);
+  --blue:       #5b8af0;
+  --blue-dim:   rgba(91,138,240,.30);
+  --blue-bg:    rgba(91,138,240,.055);
+  --green:      #3dd68c;
+  --green-dim:  rgba(61,214,140,.28);
+  --green-bg:   rgba(61,214,140,.05);
+  --amber:      #f59e0b;
+  --amber-dim:  rgba(245,158,11,.28);
+  --purple:     #a78bfa;
+  --purple-dim: rgba(167,139,250,.28);
+  --purple-bg:  rgba(167,139,250,.055);
+  --mono:       'Space Mono', monospace;
+  --sans:       'Space Grotesk', sans-serif;
   --state-accent: var(--gold);
   --state-bg:     var(--gold-bg);
 }
 
-body.s-calm    { --state-accent:var(--gold);  --state-bg:var(--gold-bg) }
-body.s-excited { --state-accent:var(--blue);  --state-bg:var(--blue-bg) }
-body.s-worried { --state-accent:var(--amber); --state-bg:rgba(245,158,11,.06) }
-body.s-angry   { --state-accent:var(--red);   --state-bg:var(--red-bg) }
-body.s-sad     { --state-accent:var(--mid);   --state-bg:var(--ghost) }
-body.s-proud   { --state-accent:var(--gold);  --state-bg:var(--gold-bg) }
-body.s-scared  { --state-accent:var(--red);   --state-bg:var(--red-bg) }
-body.s-happy   { --state-accent:var(--green); --state-bg:var(--green-bg) }
+body.s-calm    { --state-accent:var(--gold);   --state-bg:var(--gold-bg) }
+body.s-excited { --state-accent:var(--blue);   --state-bg:var(--blue-bg) }
+body.s-worried { --state-accent:var(--amber);  --state-bg:rgba(245,158,11,.06) }
+body.s-angry   { --state-accent:var(--red);    --state-bg:var(--red-bg) }
+body.s-sad     { --state-accent:var(--mid);    --state-bg:var(--ghost) }
+body.s-proud   { --state-accent:var(--gold);   --state-bg:var(--gold-bg) }
+body.s-scared  { --state-accent:var(--red);    --state-bg:var(--red-bg) }
+body.s-happy   { --state-accent:var(--green);  --state-bg:var(--green-bg) }
 
-html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:var(--white);font-family:var(--sans);font-size:13px;-webkit-font-smoothing:antialiased}
+html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:var(--white);font-family:var(--sans);font-size:12px;-webkit-font-smoothing:antialiased}
 
 /* ═══ SURFACE 0 — OPERATOR STATE ENTRY ═══ */
-#entry{
-  position:fixed;inset:0;z-index:100;
-  background:var(--black);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  transition:opacity .4s ease;
-}
+#entry{position:fixed;inset:0;z-index:100;background:var(--black);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .4s ease}
 #entry.hidden{opacity:0;pointer-events:none}
-
-.entry-eyebrow{
-  font-family:var(--mono);font-size:9px;letter-spacing:.36em;
-  text-transform:uppercase;color:var(--gold-dim);margin-bottom:20px;
-}
-.entry-q{
-  font-size:22px;font-weight:600;color:var(--white);
-  letter-spacing:-.02em;margin-bottom:6px;text-align:center;
-}
-.entry-sub{
-  font-family:var(--mono);font-size:10px;color:var(--dim);
-  letter-spacing:.08em;margin-bottom:40px;text-align:center;
-}
-.state-grid{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:10px;
-  width:min(680px,90vw);
-}
-.state-card{
-  background:var(--graphite);border:1px solid var(--border);border-radius:10px;
-  padding:16px 14px 14px;cursor:pointer;transition:all .18s ease;
-  display:flex;flex-direction:column;gap:6px;
-}
+.entry-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:.36em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:20px}
+.entry-q{font-size:22px;font-weight:600;color:var(--white);letter-spacing:-.02em;margin-bottom:6px;text-align:center}
+.entry-sub{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.08em;margin-bottom:36px;text-align:center}
+.state-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;width:min(660px,90vw)}
+.state-card{background:var(--graphite);border:1px solid var(--border);border-radius:10px;padding:14px 12px 12px;cursor:pointer;transition:all .18s ease;display:flex;flex-direction:column;gap:5px}
 .state-card:hover{background:var(--surface);border-color:var(--border-hi);transform:translateY(-2px)}
 .state-card.selected{border-color:var(--state-accent);background:var(--state-bg)}
-.state-icon{font-size:18px;line-height:1}
+.state-icon{font-size:16px;line-height:1}
 .state-name{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--silver)}
 .state-mode{font-size:10px;color:var(--dim);line-height:1.4}
-.entry-btn{
-  margin-top:32px;
-  font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--gold);background:none;border:1px solid var(--gold-dim);
-  padding:10px 28px;border-radius:6px;cursor:pointer;transition:all .15s;
-}
+.entry-btn{margin-top:28px;font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid var(--gold-dim);padding:10px 28px;border-radius:6px;cursor:pointer;transition:all .15s}
 .entry-btn:hover{background:var(--gold-bg);border-color:var(--gold)}
 .entry-btn:disabled{color:var(--dim);border-color:var(--border);cursor:default}
 
 /* ═══ MAIN COCKPIT ═══ */
-#cockpit{
-  display:flex;flex-direction:column;width:100%;height:100vh;
-  opacity:0;transition:opacity .5s ease;pointer-events:none;
-}
+#cockpit{display:flex;flex-direction:column;width:100%;height:100vh;opacity:0;transition:opacity .5s ease;pointer-events:none}
 #cockpit.visible{opacity:1;pointer-events:all}
 
 /* Header */
-.hdr{
-  height:36px;flex-shrink:0;display:flex;align-items:center;
-  background:var(--deep);border-bottom:1px solid var(--border);padding:0 16px;
-}
-.hdr-brand{
-  font-family:var(--mono);font-size:10px;font-weight:700;
-  letter-spacing:.32em;text-transform:uppercase;color:var(--gold);
-  padding-right:16px;border-right:1px solid var(--border);margin-right:14px;flex-shrink:0;
-}
+.hdr{height:34px;flex-shrink:0;display:flex;align-items:center;background:var(--deep);border-bottom:1px solid var(--border);padding:0 14px;gap:0}
+.hdr-brand{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);padding-right:14px;border-right:1px solid var(--border);margin-right:12px;flex-shrink:0}
 .hdr-tags{display:flex;align-items:center;flex:1;overflow:hidden}
-.htag{
-  font-family:var(--mono);font-size:8px;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--dim);padding:0 14px;border-right:1px solid var(--border);
-  white-space:nowrap;display:flex;align-items:center;gap:5px;height:36px;
-}
+.htag{font-family:var(--mono);font-size:7.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);padding:0 11px;border-right:1px solid var(--border);white-space:nowrap;display:flex;align-items:center;gap:4px;height:34px}
 .htag b{color:var(--silver);font-weight:400}
 .htag b.gold{color:var(--gold)}
 .htag b.red{color:var(--red)}
 .hdr-right{display:flex;align-items:center;gap:10px;margin-left:auto;flex-shrink:0}
-.state-badge{
-  font-family:var(--mono);font-size:8px;letter-spacing:.14em;text-transform:uppercase;
-  padding:3px 10px;border-radius:100px;
-  border:1px solid var(--state-accent);background:var(--state-bg);color:var(--state-accent);
-  cursor:pointer;
-}
+.state-badge{font-family:var(--mono);font-size:8px;letter-spacing:.14em;text-transform:uppercase;padding:2px 9px;border-radius:100px;border:1px solid var(--state-accent);background:var(--state-bg);color:var(--state-accent);cursor:pointer}
 .live-pulse{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green-dim);animation:pulse 3s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
 
-/* Body 3-col */
-.body{flex:1;display:flex;overflow:hidden;min-height:0}
+/* Body — 5 columns */
+.body{flex:1;display:grid;grid-template-columns:200px 200px 1fr 216px 200px;overflow:hidden;min-height:0}
 
-/* Columns */
-.col{display:flex;flex-direction:column;overflow:hidden}
-.col-hd{
-  height:30px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;
-  padding:0 13px;border-bottom:1px solid var(--border);background:var(--deep);
-}
-.col-hd-title{font-family:var(--mono);font-size:7.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--dim)}
-.col-hd-sub{font-family:var(--mono);font-size:7px;color:var(--dim)}
-.col-body{flex:1;overflow-y:auto;padding:8px 0}
+/* Column shared */
+.col{display:flex;flex-direction:column;overflow:hidden;border-right:1px solid var(--border)}
+.col:last-child{border-right:none}
+.col-hd{height:28px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 11px;border-bottom:1px solid var(--border);background:var(--deep)}
+.col-hd-title{font-family:var(--mono);font-size:7px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--dim)}
+.col-hd-sub{font-family:var(--mono);font-size:6.5px;color:var(--dim)}
+.col-body{flex:1;overflow-y:auto;padding:6px 0}
 .col-body::-webkit-scrollbar{width:2px}
 .col-body::-webkit-scrollbar-thumb{background:var(--border-hi)}
 
-.col-left{width:216px;flex-shrink:0;background:var(--deep);border-right:1px solid var(--border)}
-.col-right{width:244px;flex-shrink:0;background:var(--deep);border-left:1px solid var(--border)}
-.col-center{flex:1;background:var(--black)}
+/* Backgrounds */
+.col-stream  {background:var(--deep)}
+.col-sources {background:var(--graphite)}
+.col-compass {background:var(--black)}
+.col-tasks   {background:var(--graphite)}
+.col-ledger  {background:var(--deep)}
 
 /* Section */
-.sec{border-bottom:1px solid var(--border);padding:6px 0 8px}
-.sec-label{font-family:var(--mono);font-size:7px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);padding:0 13px 6px}
+.sec{border-bottom:1px solid var(--border);padding:5px 0 7px}
+.sec-label{font-family:var(--mono);font-size:6.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);padding:0 11px 5px}
 
 /* Mission row */
-.mrow{
-  display:flex;align-items:center;gap:8px;padding:4px 13px;cursor:pointer;
-  transition:background .1s;border-left:2px solid transparent;
-}
+.mrow{display:flex;align-items:center;gap:7px;padding:3px 11px;cursor:pointer;transition:background .1s;border-left:2px solid transparent}
 .mrow:hover{background:var(--ghost);border-left-color:var(--border-hi)}
 .mrow.active{border-left-color:var(--gold-dim)}
 .mrow-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
-.mrow-dot.live{background:var(--green);box-shadow:0 0 5px var(--green-dim)}
+.mrow-dot.live{background:var(--green);box-shadow:0 0 4px var(--green-dim)}
 .mrow-dot.pending{background:var(--amber)}
 .mrow-dot.dim{background:var(--dim)}
-.mrow-dot.blocked{background:var(--red);box-shadow:0 0 5px var(--red-dim)}
+.mrow-dot.blocked{background:var(--red);box-shadow:0 0 4px var(--red-dim)}
 .mrow-dot.blue{background:var(--blue)}
+.mrow-dot.purple{background:var(--purple)}
 .mrow-info{flex:1;min-width:0}
-.mrow-text{font-size:11px;color:var(--silver);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mrow-sub{font-size:9px;color:var(--dim);line-height:1.2}
-.badge{font-family:var(--mono);font-size:7px;padding:1px 5px;border-radius:3px;flex-shrink:0;letter-spacing:.06em;text-transform:uppercase}
-.badge.live{color:var(--green);border:1px solid var(--green-dim);background:var(--green-bg)}
-.badge.pending{color:var(--amber);border:1px solid var(--amber-dim)}
-.badge.blocked{color:var(--red);border:1px solid var(--red-dim);background:var(--red-bg)}
-.badge.blue{color:var(--blue);border:1px solid var(--blue-dim);background:var(--blue-bg)}
-.badge.noship{color:var(--red);border:1px solid var(--red-dim)}
-.badge.demo{color:var(--dim);border:1px solid var(--border)}
-.badge.sovereign{color:var(--gold);border:1px solid var(--gold-dim);background:var(--gold-bg)}
+.mrow-text{font-size:10.5px;color:var(--silver);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mrow-sub{font-size:8.5px;color:var(--dim);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.badge{font-family:var(--mono);font-size:6.5px;padding:1px 4px;border-radius:3px;flex-shrink:0;letter-spacing:.06em;text-transform:uppercase}
+.badge.live    {color:var(--green); border:1px solid var(--green-dim);background:var(--green-bg)}
+.badge.pending {color:var(--amber); border:1px solid var(--amber-dim)}
+.badge.blocked {color:var(--red);   border:1px solid var(--red-dim);  background:var(--red-bg)}
+.badge.blue    {color:var(--blue);  border:1px solid var(--blue-dim); background:var(--blue-bg)}
+.badge.noship  {color:var(--red);   border:1px solid var(--red-dim)}
+.badge.demo    {color:var(--dim);   border:1px solid var(--border)}
+.badge.sovereign{color:var(--gold); border:1px solid var(--gold-dim); background:var(--gold-bg)}
+.badge.purple  {color:var(--purple);border:1px solid var(--purple-dim);background:var(--purple-bg)}
+.badge.new     {color:var(--blue);  border:1px solid var(--blue-dim); background:var(--blue-bg)}
 
 /* Agent row */
-.arow{display:flex;align-items:center;gap:7px;padding:3px 13px}
-.arow-name{font-family:var(--mono);font-size:9px;color:var(--silver);width:74px;flex-shrink:0;letter-spacing:.04em}
-.arow-role{font-size:9px;color:var(--dim);flex:1}
+.arow{display:flex;align-items:center;gap:6px;padding:2px 11px}
+.arow-name{font-family:var(--mono);font-size:8.5px;color:var(--silver);width:68px;flex-shrink:0;letter-spacing:.04em}
+.arow-role{font-size:8.5px;color:var(--dim);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ═══ SOURCE COLUMN ═══ */
+.src-row{
+  display:flex;align-items:flex-start;gap:7px;
+  padding:5px 11px;cursor:pointer;transition:background .1s;
+  border-left:2px solid transparent;
+}
+.src-row:hover{background:var(--ghost);border-left-color:var(--border-hi)}
+.src-row.unread{border-left-color:var(--blue-dim)}
+.src-icon{
+  font-size:11px;flex-shrink:0;margin-top:1px;
+  width:18px;text-align:center;
+}
+.src-info{flex:1;min-width:0}
+.src-title{font-size:10px;color:var(--silver);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.src-meta{font-size:8.5px;color:var(--dim);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.src-type{
+  font-family:var(--mono);font-size:6px;padding:1px 4px;border-radius:2px;
+  text-transform:uppercase;letter-spacing:.06em;flex-shrink:0;margin-top:1px;
+}
+.src-type.x    {color:var(--white);background:rgba(255,255,255,.08);border:1px solid var(--border-hi)}
+.src-type.gh   {color:var(--purple);border:1px solid var(--purple-dim)}
+.src-type.arxiv{color:var(--amber);border:1px solid var(--amber-dim)}
+.src-type.yt   {color:var(--red);border:1px solid var(--red-dim)}
+.src-type.nl   {color:var(--blue);border:1px solid var(--blue-dim)}
+.src-type.web  {color:var(--dim);border:1px solid var(--border)}
+
+/* Account row */
+.acct-row{display:flex;align-items:center;gap:7px;padding:3px 11px}
+.acct-icon{font-size:11px;width:18px;text-align:center;flex-shrink:0}
+.acct-info{flex:1;min-width:0}
+.acct-name{font-size:10px;color:var(--silver)}
+.acct-handle{font-family:var(--mono);font-size:8px;color:var(--dim)}
+.acct-stat{font-family:var(--mono);font-size:8px;color:var(--dim);white-space:nowrap;flex-shrink:0}
+
+/* ═══ TASK COLUMN ═══ */
+.task-row{
+  display:flex;align-items:flex-start;gap:8px;
+  padding:5px 11px;cursor:pointer;transition:background .1s;
+  border-left:2px solid transparent;
+}
+.task-row:hover{background:var(--ghost);border-left-color:var(--border-hi)}
+.task-check{
+  width:14px;height:14px;border-radius:3px;border:1px solid var(--border-hi);
+  flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;
+  font-size:8px;cursor:pointer;transition:all .15s;
+}
+.task-check:hover{border-color:var(--state-accent)}
+.task-check.done{background:var(--green-bg);border-color:var(--green-dim);color:var(--green)}
+.task-check.done::after{content:'✓'}
+.task-info{flex:1;min-width:0}
+.task-title{font-size:10px;color:var(--silver);line-height:1.4}
+.task-title.done-text{text-decoration:line-through;color:var(--dim)}
+.task-meta{font-size:8px;color:var(--dim);margin-top:2px}
+.task-priority{
+  font-family:var(--mono);font-size:6px;padding:1px 4px;
+  border-radius:2px;text-transform:uppercase;letter-spacing:.06em;flex-shrink:0;margin-top:1px;
+}
+.task-priority.high{color:var(--red);border:1px solid var(--red-dim)}
+.task-priority.med{color:var(--amber);border:1px solid var(--amber-dim)}
+.task-priority.low{color:var(--dim);border:1px solid var(--border)}
 
 /* ═══ SURFACE 1 — SEMANTIC COMPASS ═══ */
 .compass-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden}
@@ -193,223 +211,127 @@ html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:
   flex:1;display:grid;
   grid-template-columns:1fr 2fr 1fr;
   grid-template-rows:1fr 2fr 1fr;
-  gap:0;padding:16px;position:relative;
+  gap:0;padding:12px;position:relative;
 }
-/* Hairline cross */
-.compass-grid::before{
-  content:'';position:absolute;
-  left:calc(33.33% + 8px);right:calc(33.33% + 8px);
-  top:16px;bottom:16px;
-  border-left:1px solid var(--border);border-right:1px solid var(--border);
-  pointer-events:none;z-index:0;
-}
-.compass-grid::after{
-  content:'';position:absolute;
-  top:calc(33.33% + 8px);bottom:calc(33.33% + 8px);
-  left:16px;right:16px;
-  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
-  pointer-events:none;z-index:0;
-}
-/* Cardinal cells */
-.cv{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px;gap:5px;z-index:1}
-.cv-label{font-family:var(--mono);font-size:7.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
-.cv-desc{font-size:10px;color:rgba(255,255,255,.16);text-align:center;line-height:1.4}
-.cv-n{grid-column:2;grid-row:1}
-.cv-s{grid-column:2;grid-row:3}
-.cv-w{grid-column:1;grid-row:2}
-.cv-e{grid-column:3;grid-row:2}
-.cv-nw{grid-column:1;grid-row:1}
-.cv-ne{grid-column:3;grid-row:1}
-.cv-sw{grid-column:1;grid-row:3}
-.cv-se{grid-column:3;grid-row:3}
-
-/* Active object — compass center */
+.compass-grid::before{content:'';position:absolute;left:calc(33.33% + 6px);right:calc(33.33% + 6px);top:12px;bottom:12px;border-left:1px solid var(--border);border-right:1px solid var(--border);pointer-events:none;z-index:0}
+.compass-grid::after{content:'';position:absolute;top:calc(33.33% + 6px);bottom:calc(33.33% + 6px);left:12px;right:12px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);pointer-events:none;z-index:0}
+.cv{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px;gap:4px;z-index:1}
+.cv-label{font-family:var(--mono);font-size:7px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.cv-desc{font-size:9px;color:rgba(255,255,255,.14);text-align:center;line-height:1.4}
+.cv-n{grid-column:2;grid-row:1}.cv-s{grid-column:2;grid-row:3}
+.cv-w{grid-column:1;grid-row:2}.cv-e{grid-column:3;grid-row:2}
+.cv-nw{grid-column:1;grid-row:1}.cv-ne{grid-column:3;grid-row:1}
+.cv-sw{grid-column:1;grid-row:3}.cv-se{grid-column:3;grid-row:3}
 .compass-center{grid-column:2;grid-row:2;display:flex;align-items:center;justify-content:center;z-index:2}
-.obj-card{
-  background:var(--graphite);border:1px solid var(--border-hi);border-radius:10px;
-  padding:16px 20px;width:100%;max-width:280px;cursor:pointer;
-  transition:border-color .2s;text-align:center;position:relative;overflow:hidden;
-}
-.obj-card::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 50% 0%,var(--state-bg) 0%,transparent 70%);
-  pointer-events:none;
-}
+.obj-card{background:var(--graphite);border:1px solid var(--border-hi);border-radius:10px;padding:14px 16px;width:100%;cursor:pointer;transition:border-color .2s;text-align:center;position:relative;overflow:hidden}
+.obj-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,var(--state-bg) 0%,transparent 70%);pointer-events:none}
 .obj-card:hover{border-color:var(--state-accent)}
-.obj-type{font-family:var(--mono);font-size:7.5px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--state-accent);margin-bottom:8px}
-.obj-name{font-size:16px;font-weight:600;color:var(--white);letter-spacing:-.01em;line-height:1.3;margin-bottom:8px}
-.obj-status{font-family:var(--mono);font-size:8px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase}
-.obj-hash{font-family:var(--mono);font-size:8px;color:var(--dim);margin-top:8px;padding-top:8px;border-top:1px solid var(--border);letter-spacing:.04em}
-
-/* Object type selector */
-.obj-selector{display:flex;gap:6px;padding:10px 16px;border-top:1px solid var(--border);background:var(--deep);flex-wrap:wrap}
-.obj-pill{
-  font-family:var(--mono);font-size:7.5px;letter-spacing:.1em;text-transform:uppercase;
-  padding:3px 10px;border-radius:100px;border:1px solid var(--border);color:var(--dim);cursor:pointer;transition:all .14s;
-}
+.obj-type{font-family:var(--mono);font-size:7px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--state-accent);margin-bottom:6px}
+.obj-name{font-size:14px;font-weight:600;color:var(--white);letter-spacing:-.01em;line-height:1.3;margin-bottom:6px}
+.obj-status{font-family:var(--mono);font-size:7.5px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase}
+.obj-hash{font-family:var(--mono);font-size:7px;color:var(--dim);margin-top:7px;padding-top:7px;border-top:1px solid var(--border);letter-spacing:.04em}
+.obj-selector{display:flex;gap:5px;padding:8px 12px;border-top:1px solid var(--border);background:var(--deep);flex-wrap:wrap}
+.obj-pill{font-family:var(--mono);font-size:7px;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:100px;border:1px solid var(--border);color:var(--dim);cursor:pointer;transition:all .14s}
 .obj-pill:hover{border-color:var(--border-hi);color:var(--silver)}
 .obj-pill.active{border-color:var(--state-accent);color:var(--state-accent);background:var(--state-bg)}
 
 /* HELEN Presence */
-.presence-strip{
-  height:36px;flex-shrink:0;display:flex;align-items:center;gap:12px;
-  padding:0 16px;border-top:1px solid var(--border);background:var(--deep);
-}
+.presence-strip{height:33px;flex-shrink:0;display:flex;align-items:center;gap:10px;padding:0 14px;border-top:1px solid var(--border);background:var(--deep)}
 .presence-mark{width:5px;height:5px;border-radius:50%;background:var(--state-accent);box-shadow:0 0 8px var(--state-accent);flex-shrink:0}
-.presence-label{font-family:var(--mono);font-size:7.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);flex-shrink:0}
-.presence-note{font-size:11px;color:var(--silver);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.presence-next{font-family:var(--mono);font-size:8px;color:var(--gold-dim);letter-spacing:.08em;white-space:nowrap}
+.presence-label{font-family:var(--mono);font-size:7px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);flex-shrink:0}
+.presence-note{font-size:10px;color:var(--silver);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.presence-next{font-family:var(--mono);font-size:7.5px;color:var(--gold-dim);letter-spacing:.08em;white-space:nowrap}
 
-/* ═══ SURFACE 2 — ACTION GRAMMAR ═══ */
-.action-rail{
-  height:54px;flex-shrink:0;display:grid;
-  grid-template-columns:auto repeat(6,1fr);
-  border-top:1px solid var(--border);background:var(--deep);
-}
-.rail-label{
-  display:flex;align-items:center;padding:0 16px;
-  font-family:var(--mono);font-size:7.5px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--dim);border-right:1px solid var(--border);white-space:nowrap;
-}
-.verb{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:3px;border-right:1px solid var(--border);cursor:pointer;padding:0 8px;
-  transition:background .14s;position:relative;
-}
-.verb:last-child{border-right:none}
-.verb:hover:not(.locked){background:var(--ghost)}
-.verb.locked{opacity:.28;cursor:not-allowed}
-.verb-cmd{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
-.verb-def{font-size:8.5px;color:var(--dim);text-align:center;line-height:1.3}
-.verb-cmd.pull{color:var(--blue)}
-.verb-cmd.compose{color:var(--silver)}
-.verb-cmd.validate{color:var(--silver)}
-.verb-cmd.persist{color:var(--mid)}
-.verb-cmd.ship{color:var(--gold)}
-.verb-cmd.noship{color:var(--red)}
-.lock-icon{position:absolute;top:6px;right:8px;font-size:8px;color:var(--red);opacity:.7;display:none}
-
-/* ═══ SURFACE 3 — SOVEREIGN LEDGER ═══ */
-.memory-block{padding:10px 13px 6px}
-.memory-num{font-size:28px;font-weight:700;color:var(--white);line-height:1}
-.memory-sub{font-family:var(--mono);font-size:8px;color:var(--dim);letter-spacing:.08em;margin-top:2px}
-.rrow{display:flex;align-items:flex-start;gap:8px;padding:5px 13px;border-bottom:1px solid rgba(255,255,255,.03)}
-.rrow-dot{width:5px;height:5px;border-radius:50%;margin-top:4px;flex-shrink:0}
+/* ═══ LEDGER COLUMN ═══ */
+.memory-block{padding:8px 11px 5px}
+.memory-num{font-size:24px;font-weight:700;color:var(--white);line-height:1}
+.memory-sub{font-family:var(--mono);font-size:7.5px;color:var(--dim);letter-spacing:.08em;margin-top:2px}
+.rrow{display:flex;align-items:flex-start;gap:7px;padding:4px 11px;border-bottom:1px solid rgba(255,255,255,.03)}
+.rrow-dot{width:5px;height:5px;border-radius:50%;margin-top:3px;flex-shrink:0}
 .rrow-info{flex:1;min-width:0}
-.rrow-id{font-family:var(--mono);font-size:9px;color:var(--silver);font-weight:700}
-.rrow-label{font-size:9px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.rrow-status{font-family:var(--mono);font-size:7.5px;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;margin-top:1px}
+.rrow-id{font-family:var(--mono);font-size:8.5px;color:var(--silver);font-weight:700}
+.rrow-label{font-size:8.5px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rrow-status{font-family:var(--mono);font-size:7px;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;margin-top:1px}
 .rrow-status.committed{color:var(--green)}
 .rrow-status.pending{color:var(--amber)}
 .rrow-status.demo{color:var(--dim)}
-.next-action{margin:8px 13px;border:1px solid var(--gold-dim);border-radius:6px;padding:10px;background:var(--gold-bg)}
-.next-label{font-family:var(--mono);font-size:7px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:5px}
-.next-text{font-size:10px;color:var(--silver);line-height:1.5}
-.next-note{font-family:var(--mono);font-size:8px;color:var(--dim);margin-top:4px}
-.mayor-block{margin:8px 13px;border:1px solid var(--red-dim);border-radius:6px;padding:10px;background:var(--red-bg)}
-.mayor-label{font-family:var(--mono);font-size:7px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
-.mayor-verdict{font-family:var(--mono);font-size:15px;font-weight:700;color:var(--red);letter-spacing:.1em}
-.mayor-note{font-size:9px;color:var(--dim);margin-top:4px}
-.blocker{display:flex;gap:7px;padding:4px 13px;align-items:flex-start}
-.blocker-icon{color:var(--red);font-size:9px;flex-shrink:0;margin-top:1px}
-.blocker-text{font-size:9px;color:var(--mid);line-height:1.4}
-.div{height:1px;background:var(--border);margin:4px 0}
+.next-action{margin:7px 11px;border:1px solid var(--gold-dim);border-radius:6px;padding:8px 10px;background:var(--gold-bg)}
+.next-label{font-family:var(--mono);font-size:6.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:4px}
+.next-text{font-size:9.5px;color:var(--silver);line-height:1.5}
+.next-note{font-family:var(--mono);font-size:7.5px;color:var(--dim);margin-top:3px}
+.mayor-block{margin:7px 11px;border:1px solid var(--red-dim);border-radius:6px;padding:8px 10px;background:var(--red-bg)}
+.mayor-label{font-family:var(--mono);font-size:6.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:3px}
+.mayor-verdict{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--red);letter-spacing:.1em}
+.mayor-note{font-size:8.5px;color:var(--dim);margin-top:3px}
+.blocker{display:flex;gap:6px;padding:3px 11px;align-items:flex-start}
+.blocker-icon{color:var(--red);font-size:8.5px;flex-shrink:0;margin-top:1px}
+.blocker-text{font-size:8.5px;color:var(--mid);line-height:1.4}
+
+/* ═══ ACTION GRAMMAR ═══ */
+.action-rail{height:50px;flex-shrink:0;display:grid;grid-template-columns:auto repeat(6,1fr);border-top:1px solid var(--border);background:var(--deep)}
+.rail-label{display:flex;align-items:center;padding:0 14px;font-family:var(--mono);font-size:7px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);border-right:1px solid var(--border);white-space:nowrap}
+.verb{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border-right:1px solid var(--border);cursor:pointer;padding:0 8px;transition:background .14s;position:relative}
+.verb:last-child{border-right:none}
+.verb:hover:not(.locked){background:var(--ghost)}
+.verb.locked{opacity:.28;cursor:not-allowed}
+.verb-cmd{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.verb-def{font-size:8px;color:var(--dim);text-align:center;line-height:1.3}
+.verb-cmd.pull    {color:var(--blue)}
+.verb-cmd.compose {color:var(--silver)}
+.verb-cmd.validate{color:var(--silver)}
+.verb-cmd.persist {color:var(--mid)}
+.verb-cmd.ship    {color:var(--gold)}
+.verb-cmd.noship  {color:var(--red)}
+.lock-icon{position:absolute;top:5px;right:7px;font-size:7.5px;color:var(--red);opacity:.7;display:none}
 
 /* ═══ GO / NO-GO MODAL ═══ */
-#gonogo{
-  display:none;position:fixed;inset:0;z-index:50;
-  background:rgba(7,7,10,.88);backdrop-filter:blur(8px);
-  align-items:center;justify-content:center;
-}
+#gonogo{display:none;position:fixed;inset:0;z-index:50;background:rgba(7,7,10,.88);backdrop-filter:blur(8px);align-items:center;justify-content:center}
 #gonogo.open{display:flex}
-.gonogo-panel{
-  background:var(--graphite);border:1px solid var(--border-hi);
-  border-radius:12px;padding:28px 32px;width:460px;max-width:90vw;
-}
-.gonogo-title{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
-.gonogo-sub{font-size:11px;color:var(--mid);margin-bottom:24px}
-.station-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)}
+.gonogo-panel{background:var(--graphite);border:1px solid var(--border-hi);border-radius:12px;padding:26px 30px;width:440px;max-width:90vw}
+.gonogo-title{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+.gonogo-sub{font-size:11px;color:var(--mid);margin-bottom:20px}
+.station-row{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--border)}
 .station-row:last-of-type{border-bottom:none}
-.station-name{font-family:var(--mono);font-size:9px;color:var(--silver);width:90px;flex-shrink:0;letter-spacing:.06em}
+.station-name{font-family:var(--mono);font-size:9px;color:var(--silver);width:80px;flex-shrink:0;letter-spacing:.06em}
 .station-status{font-size:10px;color:var(--mid);flex:1}
 .station-verdict{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
 .station-verdict.go{color:var(--green)}
 .station-verdict.hold{color:var(--red)}
 .station-verdict.pend{color:var(--amber)}
-.gonogo-actions{display:flex;gap:10px;margin-top:20px}
-.gonogo-btn{flex:1;padding:10px;border-radius:6px;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;border:1px solid;transition:all .15s}
+.gonogo-actions{display:flex;gap:10px;margin-top:18px}
+.gonogo-btn{flex:1;padding:9px;border-radius:6px;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;border:1px solid;transition:all .15s}
 .gonogo-btn.abort{color:var(--red);border-color:var(--red-dim);background:var(--red-bg)}
 .gonogo-btn.abort:hover{background:rgba(224,82,82,.12)}
 .gonogo-btn.commit{color:var(--dim);border-color:var(--border);background:none;cursor:not-allowed;opacity:.4}
 
 /* Footer */
-.footer{
-  height:22px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;
-  padding:0 16px;background:var(--black);border-top:1px solid var(--border);
-  font-family:var(--mono);font-size:7.5px;letter-spacing:.08em;color:var(--dim);
-}
+.footer{height:20px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:var(--black);border-top:1px solid var(--border);font-family:var(--mono);font-size:7px;letter-spacing:.08em;color:var(--dim)}
 </style>
 </head>
 <body>
 
-<!-- ═══════════════ SURFACE 0 — OPERATOR STATE ENTRY ═══════════════ -->
+<!-- ═══ SURFACE 0 — OPERATOR STATE ENTRY ═══ -->
 <div id="entry">
   <div class="entry-eyebrow">HELEN OS · Surface 0 · Operator State</div>
   <div class="entry-q">How are you entering the field today?</div>
   <div class="entry-sub">Your state routes the cockpit mode. No state → no ship.</div>
-
   <div class="state-grid">
-    <div class="state-card" onclick="selectState('calm')">
-      <div class="state-icon">◎</div>
-      <div class="state-name">CALM</div>
-      <div class="state-mode">Validate · Ship · Full grammar active</div>
-    </div>
-    <div class="state-card" onclick="selectState('excited')">
-      <div class="state-icon">◈</div>
-      <div class="state-name">EXCITED</div>
-      <div class="state-mode">Capture · Constrain · Ship delayed</div>
-    </div>
-    <div class="state-card" onclick="selectState('worried')">
-      <div class="state-icon">◇</div>
-      <div class="state-name">WORRIED</div>
-      <div class="state-mode">Clarify · Reduce · Protect scope</div>
-    </div>
-    <div class="state-card" onclick="selectState('angry')">
-      <div class="state-icon">▲</div>
-      <div class="state-name">ANGRY</div>
-      <div class="state-mode">Witness only · No irreversible action</div>
-    </div>
-    <div class="state-card" onclick="selectState('sad')">
-      <div class="state-icon">○</div>
-      <div class="state-name">SAD</div>
-      <div class="state-mode">Preserve · Low-demand mode</div>
-    </div>
-    <div class="state-card" onclick="selectState('proud')">
-      <div class="state-icon">◉</div>
-      <div class="state-name">PROUD</div>
-      <div class="state-mode">Archive · Reflect · Full grammar</div>
-    </div>
-    <div class="state-card" onclick="selectState('scared')">
-      <div class="state-icon">◫</div>
-      <div class="state-name">SCARED</div>
-      <div class="state-mode">Safety mode · Choices reduced</div>
-    </div>
-    <div class="state-card" onclick="selectState('happy')">
-      <div class="state-icon">◐</div>
-      <div class="state-name">HAPPY</div>
-      <div class="state-mode">Create · Connect · Full grammar</div>
-    </div>
+    <div class="state-card" onclick="selectState('calm')">   <div class="state-icon">◎</div><div class="state-name">CALM</div>   <div class="state-mode">Validate · Ship · Full grammar</div></div>
+    <div class="state-card" onclick="selectState('excited')"><div class="state-icon">◈</div><div class="state-name">EXCITED</div><div class="state-mode">Capture · Constrain · Ship delayed</div></div>
+    <div class="state-card" onclick="selectState('worried')"><div class="state-icon">◇</div><div class="state-name">WORRIED</div><div class="state-mode">Clarify · Reduce · Protect scope</div></div>
+    <div class="state-card" onclick="selectState('angry')">  <div class="state-icon">▲</div><div class="state-name">ANGRY</div>  <div class="state-mode">Witness only · No irreversible action</div></div>
+    <div class="state-card" onclick="selectState('sad')">    <div class="state-icon">○</div><div class="state-name">SAD</div>    <div class="state-mode">Preserve · Low-demand mode</div></div>
+    <div class="state-card" onclick="selectState('proud')">  <div class="state-icon">◉</div><div class="state-name">PROUD</div>  <div class="state-mode">Archive · Reflect · Full grammar</div></div>
+    <div class="state-card" onclick="selectState('scared')"> <div class="state-icon">◫</div><div class="state-name">SCARED</div> <div class="state-mode">Safety mode · Choices reduced</div></div>
+    <div class="state-card" onclick="selectState('happy')">  <div class="state-icon">◐</div><div class="state-name">HAPPY</div>  <div class="state-mode">Create · Connect · Full grammar</div></div>
   </div>
-
-  <button class="entry-btn" id="entry-proceed" onclick="openCockpit()" disabled>
-    Enter the Field →
-  </button>
+  <button class="entry-btn" id="entry-proceed" onclick="openCockpit()" disabled>Enter the Field →</button>
 </div>
 
-<!-- ═══════════════ MAIN COCKPIT ═══════════════ -->
+<!-- ═══ MAIN COCKPIT ═══ -->
 <div id="cockpit">
 
-  <!-- Header strip -->
+  <!-- Header -->
   <div class="hdr">
     <div class="hdr-brand">HELEN OS</div>
     <div class="hdr-tags">
@@ -425,93 +347,66 @@ html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:
     </div>
   </div>
 
-  <!-- 3-col body -->
+  <!-- 5 columns -->
   <div class="body">
 
-    <!-- LEFT: Operator Stream -->
-    <div class="col col-left">
+    <!-- COL 1: Operator Stream -->
+    <div class="col col-stream">
       <div class="col-hd">
         <span class="col-hd-title">Operator Stream</span>
-        <span class="col-hd-sub">what Jean-Marie carries</span>
+        <span class="col-hd-sub">what I carry</span>
       </div>
       <div class="col-body">
 
         <div class="sec">
           <div class="sec-label">Active Missions</div>
-          <div class="mrow active" onclick="focusObject('MISSION','HELEN Canonical Surface','3 receipts · localhost:7000 · ACTIVE')">
+          <div class="mrow active" onclick="focusObject('MISSION','HELEN Canonical Surface','localhost:7000 · 3 receipts · ACTIVE')">
             <div class="mrow-dot live"></div>
-            <div class="mrow-info">
-              <div class="mrow-text">HELEN Canonical Surface</div>
-              <div class="mrow-sub">semantic cockpit · localhost:7000</div>
-            </div>
+            <div class="mrow-info"><div class="mrow-text">HELEN Canonical Surface</div><div class="mrow-sub">semantic cockpit · localhost:7000</div></div>
             <div class="badge live">ACTIVE</div>
           </div>
           <div class="mrow" onclick="focusObject('MISSION','JMT Consulting Admin','Clients, offers, invoices, ops · ACTIVE')">
             <div class="mrow-dot live"></div>
-            <div class="mrow-info">
-              <div class="mrow-text">JMT Consulting Admin</div>
-              <div class="mrow-sub">Clients · offers · invoices</div>
-            </div>
+            <div class="mrow-info"><div class="mrow-text">JMT Consulting Admin</div><div class="mrow-sub">Clients · offers · invoices · ops</div></div>
             <div class="badge live">ACTIVE</div>
           </div>
-          <div class="mrow" onclick="focusObject('MISSION','Video Studio','Higgsfield AI · Shorts · Assets · ACTIVE')">
+          <div class="mrow" onclick="focusObject('MISSION','Video Studio','Higgsfield AI · Shorts · Assets')">
             <div class="mrow-dot live"></div>
-            <div class="mrow-info">
-              <div class="mrow-text">Video Studio</div>
-              <div class="mrow-sub">Higgsfield AI · Shorts · Assets</div>
-            </div>
+            <div class="mrow-info"><div class="mrow-text">Video Studio</div><div class="mrow-sub">Higgsfield · Shorts · Assets</div></div>
             <div class="badge live">ACTIVE</div>
           </div>
-          <div class="mrow" onclick="focusObject('MISSION','CONQUEST / EDUverse','Sovereign learning architecture · ACTIVE')">
+          <div class="mrow" onclick="focusObject('MISSION','CONQUEST / EDUverse','Sovereign learning architecture')">
             <div class="mrow-dot live"></div>
-            <div class="mrow-info">
-              <div class="mrow-text">CONQUEST / EDUverse</div>
-              <div class="mrow-sub">Sovereign learning architecture</div>
-            </div>
+            <div class="mrow-info"><div class="mrow-text">CONQUEST / EDUverse</div><div class="mrow-sub">Sovereign learning architecture</div></div>
             <div class="badge live">ACTIVE</div>
           </div>
           <div class="mrow" onclick="focusObject('MISSION','CIELO / Akashic AI','Research · Symbolic systems · NO_CLAIM')">
             <div class="mrow-dot blue"></div>
-            <div class="mrow-info">
-              <div class="mrow-text">CIELO / Akashic AI</div>
-              <div class="mrow-sub">Research · Symbolic systems</div>
-            </div>
+            <div class="mrow-info"><div class="mrow-text">CIELO / Akashic AI</div><div class="mrow-sub">Research · Symbolic systems</div></div>
             <div class="badge blue">RESEARCH</div>
           </div>
           <div class="mrow" onclick="focusObject('MISSION','φ / RH finite-band','Analytic number theory · RESEARCH')">
             <div class="mrow-dot blue"></div>
-            <div class="mrow-info">
-              <div class="mrow-text">φ / RH finite-band</div>
-              <div class="mrow-sub">Analytic number theory</div>
-            </div>
+            <div class="mrow-info"><div class="mrow-text">φ / RH finite-band</div><div class="mrow-sub">Analytic number theory</div></div>
             <div class="badge blue">RESEARCH</div>
           </div>
         </div>
 
         <div class="sec">
           <div class="sec-label">Pending Decisions</div>
-          <div class="mrow" onclick="focusObject('DECISION','MAYOR Approval','28 pre-claims pending · Signature required')">
+          <div class="mrow" onclick="focusObject('DECISION','MAYOR Approval','28 pre-claims · signature required')">
             <div class="mrow-dot pending"></div>
-            <div class="mrow-info">
-              <div class="mrow-text">MAYOR approval</div>
-              <div class="mrow-sub">Signature required</div>
-            </div>
+            <div class="mrow-info"><div class="mrow-text">MAYOR approval</div><div class="mrow-sub">28 pre-claims pending</div></div>
             <div class="badge pending">PENDING</div>
           </div>
-          <div class="mrow" onclick="focusObject('DECISION','Ship / No-Ship','Determine publication status')">
+          <div class="mrow" onclick="focusObject('DECISION','Ship / No-Ship','Publication status · Gate B review')">
             <div class="mrow-dot pending"></div>
-            <div class="mrow-info">
-              <div class="mrow-text">Ship / No-Ship</div>
-              <div class="mrow-sub">Publication status</div>
-            </div>
+            <div class="mrow-info"><div class="mrow-text">Ship / No-Ship</div><div class="mrow-sub">Publication status</div></div>
             <div class="badge pending">PENDING</div>
           </div>
           <div class="mrow" onclick="focusObject('BLOCKER','E11/E12 Reconciliation','Parallel session divergence · peer-review required')">
             <div class="mrow-dot blocked"></div>
-            <div class="mrow-info">
-              <div class="mrow-text">E11/E12 Reconciliation</div>
-              <div class="mrow-sub">Peer-review required</div>
-            </div>
+            <div class="mrow-info"><div class="mrow-text">E11/E12 Reconciliation</div><div class="mrow-sub">Peer-review required</div></div>
             <div class="badge blocked">BLOCKED</div>
           </div>
         </div>
@@ -521,46 +416,149 @@ html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:
           <div class="arow"><span class="arow-name">HELEN</span><span class="arow-role">Witness · Orchestrator</span><div class="badge live">ONLINE</div></div>
           <div class="arow"><span class="arow-name">HER</span><span class="arow-role">Perception · Interpretation</span><div class="badge live">ONLINE</div></div>
           <div class="arow"><span class="arow-name">HAL</span><span class="arow-role">Validation · Logic Gate</span><div class="badge live">ONLINE</div></div>
-          <div class="arow"><span class="arow-name">CHRONOS</span><span class="arow-role">Time · Continuity</span><div class="badge live">ONLINE</div></div>
           <div class="arow"><span class="arow-name">MAYOR</span><span class="arow-role">Signature · Governance</span><div class="badge noship">NO_SHIP</div></div>
-          <div class="arow"><span class="arow-name">GOBLIN</span><span class="arow-role">Terminal Execution</span><div class="badge live">ONLINE</div></div>
-          <div class="arow"><span class="arow-name">AUTORESEARCH</span><span class="arow-role">28 pre-claims · Proposal Engine</span><div class="badge blue">RUNNING</div></div>
+          <div class="arow"><span class="arow-name">AUTORESEARCH</span><span class="arow-role">28 pre-claims</span><div class="badge blue">RUNNING</div></div>
         </div>
 
       </div>
     </div>
 
-    <!-- CENTER: Semantic Compass (Surface 1) -->
-    <div class="col col-center">
+    <!-- COL 2: Source Intake -->
+    <div class="col col-sources">
+      <div class="col-hd">
+        <span class="col-hd-title">Source Intake</span>
+        <span class="col-hd-sub">what I'm watching</span>
+      </div>
+      <div class="col-body">
+
+        <div class="sec">
+          <div class="sec-label">X / Twitter — Research</div>
+          <div class="src-row unread" onclick="focusObject('SOURCE','Andrej Karpathy — on LLM training dynamics','X · @karpathy · unread')">
+            <div class="src-icon">𝕏</div>
+            <div class="src-info">
+              <div class="src-title">On LLM training dynamics and the hidden cost of context windows</div>
+              <div class="src-meta">@karpathy · 2h ago</div>
+            </div>
+            <div class="src-type x">X</div>
+          </div>
+          <div class="src-row unread" onclick="focusObject('SOURCE','Yann LeCun — on world models','X · @ylecun · unread')">
+            <div class="src-icon">𝕏</div>
+            <div class="src-info">
+              <div class="src-title">World models are not the next step. They are the only step.</div>
+              <div class="src-meta">@ylecun · 5h ago</div>
+            </div>
+            <div class="src-type x">X</div>
+          </div>
+          <div class="src-row" onclick="focusObject('SOURCE','Sam Altman — on AGI timelines','X · @sama · read')">
+            <div class="src-icon">𝕏</div>
+            <div class="src-info">
+              <div class="src-title">AGI timelines are shorter than most people think. Plan accordingly.</div>
+              <div class="src-meta">@sama · 1d ago</div>
+            </div>
+            <div class="src-type x">X</div>
+          </div>
+          <div class="src-row" onclick="focusObject('SOURCE','Emad Mostaque — on sovereign AI','X · @EMostaque · read')">
+            <div class="src-icon">𝕏</div>
+            <div class="src-info">
+              <div class="src-title">Sovereign AI infrastructure is the next geopolitical frontier</div>
+              <div class="src-meta">@EMostaque · 2d ago</div>
+            </div>
+            <div class="src-type x">X</div>
+          </div>
+        </div>
+
+        <div class="sec">
+          <div class="sec-label">GitHub — Repos to track</div>
+          <div class="src-row unread" onclick="focusObject('SOURCE','anthropics/claude-code — latest commits','GitHub · unread')">
+            <div class="src-icon">⌥</div>
+            <div class="src-info">
+              <div class="src-title">anthropics/claude-code — new hook architecture</div>
+              <div class="src-meta">3 new commits · 4h ago</div>
+            </div>
+            <div class="src-type gh">GH</div>
+          </div>
+          <div class="src-row" onclick="focusObject('SOURCE','mistralai/mistral-common','GitHub · read')">
+            <div class="src-icon">⌥</div>
+            <div class="src-info">
+              <div class="src-title">mistralai/mistral-common · tokenizer updates</div>
+              <div class="src-meta">12 stars this week · 1d ago</div>
+            </div>
+            <div class="src-type gh">GH</div>
+          </div>
+          <div class="src-row" onclick="focusObject('SOURCE','JMTassy/helen-conquest','GitHub · SOT')">
+            <div class="src-icon">⌥</div>
+            <div class="src-info">
+              <div class="src-title">JMTassy/helen-conquest — canonical SOT</div>
+              <div class="src-meta">HEAD: 7703486 · main · clean</div>
+            </div>
+            <div class="src-type gh">GH</div>
+          </div>
+        </div>
+
+        <div class="sec">
+          <div class="sec-label">Papers / arXiv</div>
+          <div class="src-row unread" onclick="focusObject('SOURCE','Attention Is All You Need — revisited','arXiv · PENDING_RECEIPT')">
+            <div class="src-icon">∂</div>
+            <div class="src-info">
+              <div class="src-title">Scaling Laws for Neural Language Models — 2025 extension</div>
+              <div class="src-meta">arXiv:2506.xxxxx · unread</div>
+            </div>
+            <div class="src-type arxiv">arXiv</div>
+          </div>
+          <div class="src-row" onclick="focusObject('SOURCE','Semantic Memory Architecture in LLMs','arXiv · read')">
+            <div class="src-icon">∂</div>
+            <div class="src-info">
+              <div class="src-title">Persistent semantic memory architectures for autonomous agents</div>
+              <div class="src-meta">arXiv:2505.xxxxx · tagged</div>
+            </div>
+            <div class="src-type arxiv">arXiv</div>
+          </div>
+        </div>
+
+        <div class="sec">
+          <div class="sec-label">Accounts</div>
+          <div class="acct-row">
+            <div class="acct-icon">𝕏</div>
+            <div class="acct-info"><div class="acct-name">X / Twitter</div><div class="acct-handle">@JMTassy</div></div>
+            <div class="acct-stat badge live">ACTIVE</div>
+          </div>
+          <div class="acct-row">
+            <div class="acct-icon">⌥</div>
+            <div class="acct-info"><div class="acct-name">GitHub</div><div class="acct-handle">JMTassy</div></div>
+            <div class="acct-stat badge live">ACTIVE</div>
+          </div>
+          <div class="acct-row">
+            <div class="acct-icon">✈</div>
+            <div class="acct-info"><div class="acct-name">Telegram</div><div class="acct-handle">HELEN bot · 6624890918</div></div>
+            <div class="acct-stat badge live">LIVE</div>
+          </div>
+          <div class="acct-row">
+            <div class="acct-icon">◎</div>
+            <div class="acct-info"><div class="acct-name">Higgsfield AI</div><div class="acct-handle">Video Studio · API</div></div>
+            <div class="acct-stat badge live">ACTIVE</div>
+          </div>
+          <div class="acct-row">
+            <div class="acct-icon">◈</div>
+            <div class="acct-info"><div class="acct-name">Gemini TTS</div><div class="acct-handle">Zephyr · free tier</div></div>
+            <div class="acct-stat badge pending">10/day</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- COL 3: Semantic Compass -->
+    <div class="col col-compass">
       <div class="col-hd">
         <span class="col-hd-title">Semantic Compass</span>
-        <span class="col-hd-sub">what reality is doing</span>
+        <span class="col-hd-sub">active object field</span>
       </div>
-
       <div class="compass-wrap">
         <div class="compass-grid">
-
-          <div class="cv cv-nw">
-            <div class="cv-label">NW · Open Questions</div>
-            <div class="cv-desc">What is not yet answered about this object?</div>
-          </div>
-
-          <div class="cv cv-n">
-            <div class="cv-label">N · Provenance</div>
-            <div class="cv-desc">Where does this come from? What authored it?</div>
-          </div>
-
-          <div class="cv cv-ne">
-            <div class="cv-label">NE · Evidence</div>
-            <div class="cv-desc">What receipts support this?</div>
-          </div>
-
-          <div class="cv cv-w">
-            <div class="cv-label">W · Contradictions</div>
-            <div class="cv-desc">What conflicts with or blocks this?</div>
-          </div>
-
-          <!-- ACTIVE OBJECT -->
+          <div class="cv cv-nw"><div class="cv-label">NW · Open Questions</div><div class="cv-desc">What is not yet answered?</div></div>
+          <div class="cv cv-n"> <div class="cv-label">N · Provenance</div>    <div class="cv-desc">Where does this come from?</div></div>
+          <div class="cv cv-ne"><div class="cv-label">NE · Evidence</div>     <div class="cv-desc">What receipts support this?</div></div>
+          <div class="cv cv-w"> <div class="cv-label">W · Contradictions</div><div class="cv-desc">What conflicts with this?</div></div>
           <div class="compass-center">
             <div class="obj-card" id="obj-card">
               <div class="obj-type" id="obj-type">MISSION</div>
@@ -569,30 +567,11 @@ html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:
               <div class="obj-hash">NO_CLAIM · authority=false · canon=NO_SHIP</div>
             </div>
           </div>
-
-          <div class="cv cv-e">
-            <div class="cv-label">E · Relations</div>
-            <div class="cv-desc">What is this object connected to?</div>
-          </div>
-
-          <div class="cv cv-sw">
-            <div class="cv-label">SW · Risks</div>
-            <div class="cv-desc">What could break or invalidate this?</div>
-          </div>
-
-          <div class="cv cv-s">
-            <div class="cv-label">S · Receipts</div>
-            <div class="cv-desc">What is proven about this object?</div>
-          </div>
-
-          <div class="cv cv-se">
-            <div class="cv-label">SE · Derived</div>
-            <div class="cv-desc">What comes from this as output?</div>
-          </div>
-
+          <div class="cv cv-e"> <div class="cv-label">E · Relations</div>     <div class="cv-desc">What is this connected to?</div></div>
+          <div class="cv cv-sw"><div class="cv-label">SW · Risks</div>        <div class="cv-desc">What could invalidate this?</div></div>
+          <div class="cv cv-s"> <div class="cv-label">S · Receipts</div>      <div class="cv-desc">What is proven?</div></div>
+          <div class="cv cv-se"><div class="cv-label">SE · Derived</div>      <div class="cv-desc">What comes from this?</div></div>
         </div>
-
-        <!-- Object type selector -->
         <div class="obj-selector">
           <div class="obj-pill active" onclick="setObjType(this,'CLAIM')">CLAIM</div>
           <div class="obj-pill" onclick="setObjType(this,'RECEIPT')">RECEIPT</div>
@@ -600,12 +579,10 @@ html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:
           <div class="obj-pill" onclick="setObjType(this,'AGENT')">AGENT</div>
           <div class="obj-pill" onclick="setObjType(this,'BLOCKER')">BLOCKER</div>
           <div class="obj-pill" onclick="setObjType(this,'MISSION')">MISSION</div>
-          <div class="obj-pill" onclick="setObjType(this,'RISK')">RISK</div>
           <div class="obj-pill" onclick="setObjType(this,'SOURCE')">SOURCE</div>
+          <div class="obj-pill" onclick="setObjType(this,'TASK')">TASK</div>
         </div>
       </div>
-
-      <!-- Surface 4: HELEN Presence -->
       <div class="presence-strip">
         <div class="presence-mark"></div>
         <div class="presence-label">HELEN</div>
@@ -614,8 +591,96 @@ html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:
       </div>
     </div>
 
-    <!-- RIGHT: Sovereign Ledger (Surface 3) -->
-    <div class="col col-right">
+    <!-- COL 4: Task Rail -->
+    <div class="col col-tasks">
+      <div class="col-hd">
+        <span class="col-hd-title">Task Rail</span>
+        <span class="col-hd-sub">what must happen</span>
+      </div>
+      <div class="col-body">
+
+        <div class="sec">
+          <div class="sec-label">Today</div>
+          <div class="task-row" onclick="focusObject('TASK','MAYOR ruling on promotion queue','28 pre-claims · Gate B/C pending · HIGH')">
+            <div class="task-check" onclick="toggleTask(this,event)"></div>
+            <div class="task-info"><div class="task-title">MAYOR ruling on promotion queue</div><div class="task-meta">28 pre-claims · Gate B/C</div></div>
+            <div class="task-priority high">HIGH</div>
+          </div>
+          <div class="task-row" onclick="focusObject('TASK','E11/E12 peer-review — fresh context','Reconciliation hypothesis · awaiting Rule 3 review')">
+            <div class="task-check" onclick="toggleTask(this,event)"></div>
+            <div class="task-info"><div class="task-title">E11/E12 peer-review — fresh context</div><div class="task-meta">Reconciliation hypothesis · Rule 3</div></div>
+            <div class="task-priority high">HIGH</div>
+          </div>
+          <div class="task-row" onclick="focusObject('TASK','Wire /api/ledger to cockpit right panel','Live receipts from sovereign ledger')">
+            <div class="task-check" onclick="toggleTask(this,event)"></div>
+            <div class="task-info"><div class="task-title">Wire /api/ledger to cockpit</div><div class="task-meta">Surface 3 live data</div></div>
+            <div class="task-priority med">MED</div>
+          </div>
+          <div class="task-row" onclick="focusObject('TASK','Tag 4 unread X sources for PULL','Karpathy + LeCun + Altman + Mostaque')">
+            <div class="task-check" onclick="toggleTask(this,event)"></div>
+            <div class="task-info"><div class="task-title">Tag 4 unread X sources for PULL</div><div class="task-meta">Karpathy · LeCun · Altman · Mostaque</div></div>
+            <div class="task-priority med">MED</div>
+          </div>
+          <div class="task-row" onclick="focusObject('TASK','AUTORESEARCH E13 — pending reconciliation','Blocked on E11/E12 · MAYOR ruling required')">
+            <div class="task-check" onclick="toggleTask(this,event)"></div>
+            <div class="task-info"><div class="task-title">AUTORESEARCH E13 — unblock</div><div class="task-meta">Blocked on E11/E12 MAYOR ruling</div></div>
+            <div class="task-priority high">HIGH</div>
+          </div>
+        </div>
+
+        <div class="sec">
+          <div class="sec-label">This Week</div>
+          <div class="task-row" onclick="focusObject('TASK','Wire Source Intake to real API feeds','X API + GitHub webhooks + arXiv RSS')">
+            <div class="task-check" onclick="toggleTask(this,event)"></div>
+            <div class="task-info"><div class="task-title">Wire Source Intake to real APIs</div><div class="task-meta">X API · GitHub webhooks · arXiv RSS</div></div>
+            <div class="task-priority med">MED</div>
+          </div>
+          <div class="task-row" onclick="focusObject('TASK','HAL grounding fix — Gate C test','Add file-existence check to HAL reviewer prompt')">
+            <div class="task-check" onclick="toggleTask(this,event)"></div>
+            <div class="task-info"><div class="task-title">HAL grounding fix — Gate C test</div><div class="task-meta">File-existence check · pc_HAL_GROUNDING</div></div>
+            <div class="task-priority med">MED</div>
+          </div>
+          <div class="task-row" onclick="focusObject('TASK','HELEN Rothschild demo prep','€2.8M raise · wow+reliability over tranche purity')">
+            <div class="task-check" onclick="toggleTask(this,event)"></div>
+            <div class="task-info"><div class="task-title">Rothschild demo prep</div><div class="task-meta">€2.8M raise · wow + reliability</div></div>
+            <div class="task-priority high">HIGH</div>
+          </div>
+          <div class="task-row" onclick="focusObject('TASK','Video Studio — new Kling cut','Rhythm variety · Higgsfield I2V · pacing fix')">
+            <div class="task-check" onclick="toggleTask(this,event)"></div>
+            <div class="task-info"><div class="task-title">Video Studio — new Kling cut</div><div class="task-meta">Rhythm variety · pacing fix</div></div>
+            <div class="task-priority low">LOW</div>
+          </div>
+          <div class="task-row" onclick="focusObject('TASK','Publish HELEN OS v2 UX proposal — MAYOR review','Status: PROPOSAL · NON_SOVEREIGN · NO_SHIP')">
+            <div class="task-check" onclick="toggleTask(this,event)"></div>
+            <div class="task-info"><div class="task-title">HELEN OS v2 UX — MAYOR review</div><div class="task-meta">PROPOSAL status · docs/proposals/</div></div>
+            <div class="task-priority low">LOW</div>
+          </div>
+        </div>
+
+        <div class="sec">
+          <div class="sec-label">Done</div>
+          <div class="task-row">
+            <div class="task-check done" onclick="toggleTask(this,event)"></div>
+            <div class="task-info"><div class="task-title done-text">Three-field decision model — shipped</div><div class="task-meta">a5ab917 · reviewer + mayor decision</div></div>
+            <div class="task-priority low">DONE</div>
+          </div>
+          <div class="task-row">
+            <div class="task-check done" onclick="toggleTask(this,event)"></div>
+            <div class="task-info"><div class="task-title done-text">Home Cockpit v2 — shipped</div><div class="task-meta">7703486 · 5 surfaces · operator state</div></div>
+            <div class="task-priority low">DONE</div>
+          </div>
+          <div class="task-row">
+            <div class="task-check done" onclick="toggleTask(this,event)"></div>
+            <div class="task-info"><div class="task-title done-text">AUTORESEARCH E16 specimen — committed</div><div class="task-meta">6f86b92 · HAL grounding gap documented</div></div>
+            <div class="task-priority low">DONE</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- COL 5: Sovereign Ledger -->
+    <div class="col col-ledger">
       <div class="col-hd">
         <span class="col-hd-title">Sovereign Ledger</span>
         <span class="col-hd-sub">what receipts allow</span>
@@ -623,7 +688,7 @@ html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:
       <div class="col-body">
 
         <div class="sec">
-          <div class="sec-label">Active Memory Packets</div>
+          <div class="sec-label">Active Memory</div>
           <div class="memory-block">
             <div class="memory-num">128</div>
             <div class="memory-sub">PENDING_RECEIPT · wire /api/ledger</div>
@@ -631,11 +696,11 @@ html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:
         </div>
 
         <div class="sec">
-          <div class="sec-label">Next Irreversible Action</div>
+          <div class="sec-label">Next Irreversible</div>
           <div class="next-action">
             <div class="next-label">⚠ Irreversible</div>
-            <div class="next-text">MAYOR ruling on E11/E12 + git push to remote</div>
-            <div class="next-note">Needs: peer-review → countersign → MAYOR verdict</div>
+            <div class="next-text">MAYOR ruling on E11/E12 + git push</div>
+            <div class="next-note">Needs: peer-review → countersign → MAYOR</div>
           </div>
         </div>
 
@@ -643,34 +708,22 @@ html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:
           <div class="sec-label">Latest Receipts</div>
           <div class="rrow">
             <div class="rrow-dot" style="background:var(--green)"></div>
-            <div class="rrow-info">
-              <div class="rrow-id">a5ab917</div>
-              <div class="rrow-label">three-field decision model</div>
-            </div>
+            <div class="rrow-info"><div class="rrow-id">7703486</div><div class="rrow-label">home cockpit v2 · 5 surfaces</div></div>
             <div class="rrow-status committed">COMMITTED</div>
           </div>
           <div class="rrow">
             <div class="rrow-dot" style="background:var(--green)"></div>
-            <div class="rrow-info">
-              <div class="rrow-id">4a43945</div>
-              <div class="rrow-label">helen-surface home cockpit v1</div>
-            </div>
+            <div class="rrow-info"><div class="rrow-id">a5ab917</div><div class="rrow-label">three-field decision model</div></div>
             <div class="rrow-status committed">COMMITTED</div>
           </div>
           <div class="rrow">
             <div class="rrow-dot" style="background:var(--amber)"></div>
-            <div class="rrow-info">
-              <div class="rrow-id">R-HELEN-0001</div>
-              <div class="rrow-label">canonical_surface_v2</div>
-            </div>
-            <div class="rrow-status pending">PENDING_RECEIPT</div>
+            <div class="rrow-info"><div class="rrow-id">R-HELEN-0001</div><div class="rrow-label">canonical_surface_v3</div></div>
+            <div class="rrow-status pending">PENDING</div>
           </div>
           <div class="rrow">
             <div class="rrow-dot" style="background:var(--dim)"></div>
-            <div class="rrow-info">
-              <div class="rrow-id">R-HAL-GROUNDING</div>
-              <div class="rrow-label">hal gap · Gate C · test required</div>
-            </div>
+            <div class="rrow-info"><div class="rrow-id">R-HAL-GROUNDING</div><div class="rrow-label">hal gap · Gate C · test required</div></div>
             <div class="rrow-status demo">DEMO_OBJECT</div>
           </div>
         </div>
@@ -680,20 +733,14 @@ html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:
           <div class="mayor-block">
             <div class="mayor-label">Current verdict</div>
             <div class="mayor-verdict">NO_SHIP</div>
-            <div class="mayor-note">Authority: false · 28 pre-claims awaiting signature</div>
+            <div class="mayor-note">Authority: false · 28 claims awaiting</div>
           </div>
         </div>
 
         <div class="sec">
           <div class="sec-label">Blockers (2)</div>
-          <div class="blocker">
-            <span class="blocker-icon">✗</span>
-            <span class="blocker-text">E11/E12 reconciliation — peer-review required</span>
-          </div>
-          <div class="blocker">
-            <span class="blocker-icon">✗</span>
-            <span class="blocker-text">HAL grounding gap — Gate C test not executed</span>
-          </div>
+          <div class="blocker"><span class="blocker-icon">✗</span><span class="blocker-text">E11/E12 reconciliation — peer-review required</span></div>
+          <div class="blocker"><span class="blocker-icon">✗</span><span class="blocker-text">HAL grounding gap — Gate C test pending</span></div>
         </div>
 
       </div>
@@ -701,73 +748,37 @@ html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:
 
   </div><!-- /body -->
 
-  <!-- Surface 2: Action Grammar -->
+  <!-- Action Grammar -->
   <div class="action-rail">
     <div class="rail-label">Action Grammar</div>
-    <div class="verb" onclick="doVerb('pull')">
-      <span class="verb-cmd pull">PULL</span>
-      <span class="verb-def">Find related<br>objects</span>
-    </div>
-    <div class="verb" onclick="doVerb('compose')">
-      <span class="verb-cmd compose">COMPOSE</span>
-      <span class="verb-def">Form candidate<br>structure</span>
-    </div>
-    <div class="verb" onclick="doVerb('validate')">
-      <span class="verb-cmd validate">VALIDATE</span>
-      <span class="verb-def">Run HAL /<br>receipt check</span>
-    </div>
-    <div class="verb" onclick="doVerb('persist')">
-      <span class="verb-cmd persist">PERSIST</span>
-      <span class="verb-def">Save only if<br>receipted</span>
-    </div>
+    <div class="verb" onclick="doVerb('pull')">     <span class="verb-cmd pull">PULL</span>    <span class="verb-def">Find related<br>objects</span></div>
+    <div class="verb" onclick="doVerb('compose')">  <span class="verb-cmd compose">COMPOSE</span><span class="verb-def">Form candidate<br>structure</span></div>
+    <div class="verb" onclick="doVerb('validate')"> <span class="verb-cmd validate">VALIDATE</span><span class="verb-def">Run HAL /<br>receipt check</span></div>
+    <div class="verb" onclick="doVerb('persist')">  <span class="verb-cmd persist">PERSIST</span><span class="verb-def">Save only if<br>receipted</span></div>
     <div class="verb" id="verb-ship" onclick="attemptShip()">
-      <span class="verb-cmd ship">SHIP</span>
-      <span class="verb-def">Irreversible<br>external action</span>
+      <span class="verb-cmd ship">SHIP</span><span class="verb-def">Irreversible<br>external action</span>
       <span class="lock-icon" id="ship-lock-icon">🔒</span>
     </div>
-    <div class="verb" onclick="doVerb('noship')">
-      <span class="verb-cmd noship">NO_SHIP</span>
-      <span class="verb-def">Block, defer,<br>or reject</span>
-    </div>
+    <div class="verb" onclick="doVerb('noship')">   <span class="verb-cmd noship">NO_SHIP</span><span class="verb-def">Block, defer,<br>or reject</span></div>
   </div>
 
   <div class="footer">
     <span>Witness-first. Authority: false. Reality source: receipts.</span>
-    <span>HELEN OS v2.0 · Built around Jean-Marie / JMT</span>
+    <span>HELEN OS v3.0 · Second Brain · Built around Jean-Marie / JMT</span>
   </div>
 
 </div><!-- /cockpit -->
 
-<!-- GO / NO-GO MODAL -->
+<!-- Go/No-Go Modal -->
 <div id="gonogo">
   <div class="gonogo-panel">
     <div class="gonogo-title">Go / No-Go Poll</div>
     <div class="gonogo-sub">All stations must be GO before SHIP is authorized.</div>
-    <div class="station-row">
-      <span class="station-name">HER</span>
-      <span class="station-status">Proposal ready</span>
-      <span class="station-verdict go">GO</span>
-    </div>
-    <div class="station-row">
-      <span class="station-name">HAL</span>
-      <span class="station-status">Admissibility checked</span>
-      <span class="station-verdict go">GO</span>
-    </div>
-    <div class="station-row">
-      <span class="station-name">LEDGER</span>
-      <span class="station-status">Receipt missing — PENDING_RECEIPT</span>
-      <span class="station-verdict hold">HOLD</span>
-    </div>
-    <div class="station-row">
-      <span class="station-name">MAYOR</span>
-      <span class="station-status">Signature pending — no ruling</span>
-      <span class="station-verdict pend">PENDING</span>
-    </div>
-    <div class="station-row">
-      <span class="station-name">FLIGHT</span>
-      <span class="station-status">LEDGER HOLD → SHIP blocked</span>
-      <span class="station-verdict hold">NO_GO</span>
-    </div>
+    <div class="station-row"><span class="station-name">HER</span>    <span class="station-status">Proposal ready</span>                          <span class="station-verdict go">GO</span></div>
+    <div class="station-row"><span class="station-name">HAL</span>    <span class="station-status">Admissibility checked</span>                   <span class="station-verdict go">GO</span></div>
+    <div class="station-row"><span class="station-name">LEDGER</span> <span class="station-status">Receipt missing — PENDING_RECEIPT</span>       <span class="station-verdict hold">HOLD</span></div>
+    <div class="station-row"><span class="station-name">MAYOR</span>  <span class="station-status">Signature pending — no ruling issued</span>    <span class="station-verdict pend">PENDING</span></div>
+    <div class="station-row"><span class="station-name">FLIGHT</span> <span class="station-status">LEDGER HOLD → SHIP blocked</span>              <span class="station-verdict hold">NO_GO</span></div>
     <div class="gonogo-actions">
       <button class="gonogo-btn abort" onclick="closeGonogo()">ABORT SHIP</button>
       <button class="gonogo-btn commit" disabled>COMMIT SHIP — locked until LEDGER GO</button>
@@ -777,23 +788,22 @@ html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:
 
 <script>
 const STATES = {
-  calm:    { badge:'CALM',    note:'Field is stable. Full grammar active. Ship authorized when receipted.', next:'NEXT: validate promotion queue →', lock:false },
-  excited: { badge:'EXCITED', note:'High energy detected. Capture and constrain. COMPOSE allowed. SHIP delayed.', next:'NEXT: record this — choose one object to hold →', lock:true },
-  worried: { badge:'WORRIED', note:'Clarify and reduce. Scope protection active. Low-risk actions only.', next:'NEXT: identify the one thing that is certain →', lock:true },
-  angry:   { badge:'ANGRY',   note:'Witness mode only. No irreversible action allowed. HELEN holds the field.', next:'NEXT: nothing ships today. Record what you see →', lock:true },
-  sad:     { badge:'SAD',     note:'Low-demand mode. Preserve and protect. Only safe retrieval active.', next:'NEXT: what do you want to keep? →', lock:true },
-  proud:   { badge:'PROUD',   note:'Archive and reflect mode. Full grammar. Good moment to ship stable work.', next:'NEXT: what is ready to persist? →', lock:false },
-  scared:  { badge:'SCARED',  note:'Safety mode. Choices reduced. HELEN stands between you and irreversible action.', next:'NEXT: pause. What is the smallest safe step? →', lock:true },
-  happy:   { badge:'HAPPY',   note:'Creative mode. Connect and build. Full grammar authorized.', next:'NEXT: what wants to be created? →', lock:false },
+  calm:    { badge:'CALM',    note:'Field is stable. Full grammar active. Ship authorized when receipted.',         next:'NEXT: validate promotion queue →', lock:false },
+  excited: { badge:'EXCITED', note:'High energy. Capture and constrain. COMPOSE allowed. SHIP delayed.',            next:'NEXT: choose one object to hold →', lock:true  },
+  worried: { badge:'WORRIED', note:'Clarify and reduce. Scope protection active. Low-risk actions only.',           next:'NEXT: identify the one thing certain →', lock:true  },
+  angry:   { badge:'ANGRY',   note:'Witness mode only. No irreversible action. HELEN holds the field.',             next:'NEXT: nothing ships today →', lock:true  },
+  sad:     { badge:'SAD',     note:'Low-demand mode. Preserve and protect. Only safe retrieval active.',            next:'NEXT: what do you want to keep? →', lock:true  },
+  proud:   { badge:'PROUD',   note:'Archive and reflect. Full grammar. Good moment to ship stable work.',           next:'NEXT: what is ready to persist? →', lock:false },
+  scared:  { badge:'SCARED',  note:'Safety mode. Choices reduced. HELEN stands between you and irreversible action.',next:'NEXT: smallest safe step? →', lock:true  },
+  happy:   { badge:'HAPPY',   note:'Creative mode. Connect and build. Full grammar authorized.',                    next:'NEXT: what wants to be created? →', lock:false },
 };
 
 let currentState = null;
 
 function selectState(s) {
   document.querySelectorAll('.state-card').forEach(c => c.classList.remove('selected'));
-  const states = ['calm','excited','worried','angry','sad','proud','scared','happy'];
-  const cards  = document.querySelectorAll('.state-card');
-  cards.forEach((c,i) => { if (states[i] === s) c.classList.add('selected') });
+  const keys = ['calm','excited','worried','angry','sad','proud','scared','happy'];
+  document.querySelectorAll('.state-card').forEach((c,i) => { if (keys[i]===s) c.classList.add('selected') });
   currentState = s;
   document.body.className = 's-' + s;
   document.getElementById('entry-proceed').disabled = false;
@@ -803,15 +813,14 @@ function openCockpit() {
   if (!currentState) return;
   const d = STATES[currentState];
   document.getElementById('entry').classList.add('hidden');
-  const ck = document.getElementById('cockpit');
-  ck.classList.add('visible');
+  document.getElementById('cockpit').classList.add('visible');
   document.getElementById('state-badge').textContent = d.badge;
   document.getElementById('presence-note').textContent = d.note;
   document.getElementById('presence-next').textContent = d.next;
-  const sv   = document.getElementById('verb-ship');
-  const lock = document.getElementById('ship-lock-icon');
-  if (d.lock) { sv.classList.add('locked');    lock.style.display = 'block' }
-  else        { sv.classList.remove('locked'); lock.style.display = 'none'  }
+  const sv = document.getElementById('verb-ship');
+  const lk = document.getElementById('ship-lock-icon');
+  if (d.lock) { sv.classList.add('locked'); lk.style.display='block' }
+  else        { sv.classList.remove('locked'); lk.style.display='none' }
 }
 
 function resetState() {
@@ -835,9 +844,16 @@ function setObjType(el, type) {
   document.getElementById('obj-type').textContent = type;
 }
 
+function toggleTask(el, e) {
+  e.stopPropagation();
+  el.classList.toggle('done');
+  const title = el.parentElement.querySelector('.task-title');
+  if (title) title.classList.toggle('done-text');
+}
+
 function doVerb(v) {
   const notes = {
-    pull:     'PULL initiated — retrieving related objects for current compass center.',
+    pull:     'PULL initiated — retrieving related objects from Source Intake and Compass.',
     compose:  'COMPOSE — forming candidate structure. No persistence until receipted.',
     validate: 'VALIDATE — running HAL admissibility check. Awaiting receipt signal.',
     persist:  'PERSIST — save only if receipt confirmed. Waiting for LEDGER GO.',
