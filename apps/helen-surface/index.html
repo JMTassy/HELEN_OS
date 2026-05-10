@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HELEN OS — Home Cockpit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#07070a;
+  --graphite-deep:#0f0f12;
+  --graphite:#18181c;
+  --graphite-hi:#242428;
+  --border:rgba(255,255,255,.06);
+  --border-hi:rgba(255,255,255,.11);
+  --white:rgba(255,255,255,.88);
+  --silver:rgba(255,255,255,.45);
+  --dim:rgba(255,255,255,.22);
+  --ghost:rgba(255,255,255,.04);
+  --gold:#c9a43a;
+  --gold-dim:rgba(201,164,58,.38);
+  --gold-bg:rgba(201,164,58,.07);
+  --red:#e05252;
+  --red-dim:rgba(224,82,82,.32);
+  --red-bg:rgba(224,82,82,.06);
+  --blue:#5b8af0;
+  --blue-dim:rgba(91,138,240,.32);
+  --blue-bg:rgba(91,138,240,.06);
+  --green:#3dd68c;
+  --green-dim:rgba(61,214,140,.3);
+  --green-bg:rgba(61,214,140,.05);
+  --amber:#f59e0b;
+  --mono:'Space Mono',monospace;
+  --sans:'Space Grotesk',sans-serif;
+}
+html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:var(--white);font-family:var(--sans);font-size:12px}
+
+/* ─── SHELL ─── */
+.cockpit{display:flex;flex-direction:column;width:100%;height:100vh}
+
+/* ─── HEADER ─── */
+.hdr{
+  height:38px;flex-shrink:0;
+  display:flex;align-items:center;gap:0;
+  border-bottom:1px solid var(--border);
+  background:var(--graphite-deep);
+  padding:0 16px;
+}
+.hdr-brand{
+  font-family:var(--mono);font-size:10px;font-weight:700;
+  letter-spacing:.32em;text-transform:uppercase;color:var(--gold);
+  padding-right:18px;border-right:1px solid var(--border);margin-right:16px;flex-shrink:0;
+}
+.hdr-tags{display:flex;align-items:center;gap:14px;flex:1;overflow:hidden}
+.tag{
+  font-family:var(--mono);font-size:7.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--dim);white-space:nowrap;
+  display:flex;align-items:center;gap:4px;
+}
+.tag b{font-weight:400;color:var(--silver)}
+.tag.warn b{color:var(--amber)}
+.tag.danger b{color:var(--red)}
+.tag.sovereign b{color:var(--gold)}
+.hdr-right{
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:8px;color:var(--dim);
+  margin-left:auto;flex-shrink:0;
+}
+.live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 5px var(--green-dim);animation:dp 3s ease-in-out infinite}
+@keyframes dp{0%,100%{opacity:.65}50%{opacity:1}}
+
+/* ─── BODY ─── */
+.body{flex:1;display:flex;overflow:hidden}
+
+/* ─── LEFT COLUMN ─── */
+.col-left{
+  width:224px;flex-shrink:0;
+  border-right:1px solid var(--border);
+  background:var(--graphite-deep);
+  display:flex;flex-direction:column;overflow-y:auto;
+}
+
+/* ─── CENTER COLUMN ─── */
+.col-center{flex:1;display:flex;flex-direction:column;overflow-y:auto;background:var(--black)}
+
+/* ─── RIGHT COLUMN ─── */
+.col-right{
+  width:250px;flex-shrink:0;
+  border-left:1px solid var(--border);
+  background:var(--graphite-deep);
+  display:flex;flex-direction:column;overflow-y:auto;
+}
+
+/* Column label */
+.col-label{
+  height:30px;flex-shrink:0;
+  display:flex;align-items:center;padding:0 13px;
+  border-bottom:1px solid var(--border);
+  font-family:var(--mono);font-size:7.5px;font-weight:700;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--dim);
+}
+
+/* ─── SECTION ─── */
+.sec{border-bottom:1px solid var(--border);padding:9px 0}
+.sec-label{
+  font-family:var(--mono);font-size:7px;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--dim);
+  padding:0 13px 7px;
+}
+
+/* Mission rows */
+.row{
+  display:flex;align-items:center;gap:8px;
+  padding:4px 13px;cursor:pointer;transition:background .12s;
+}
+.row:hover{background:var(--ghost)}
+.row-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.row-dot.live{background:var(--green);box-shadow:0 0 4px var(--green-dim)}
+.row-dot.pending{background:var(--amber);box-shadow:0 0 4px rgba(245,158,11,.25)}
+.row-dot.blocked{background:var(--red);box-shadow:0 0 4px var(--red-dim)}
+.row-dot.dim{background:var(--dim)}
+.row-text{font-size:11px;color:var(--silver);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.badge{
+  font-family:var(--mono);font-size:7px;padding:1px 5px;border-radius:3px;flex-shrink:0;
+}
+.badge.live{color:var(--green);border:1px solid var(--green-dim);background:var(--green-bg)}
+.badge.pending{color:var(--amber);border:1px solid rgba(245,158,11,.22)}
+.badge.demo{color:var(--dim);border:1px solid var(--border)}
+.badge.blocked{color:var(--red);border:1px solid var(--red-dim);background:var(--red-bg)}
+.badge.sovereign{color:var(--gold);border:1px solid var(--gold-dim);background:var(--gold-bg)}
+
+/* Agent rows */
+.agent{display:flex;align-items:center;gap:8px;padding:3px 13px}
+.agent-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.agent-name{font-family:var(--mono);font-size:9px;color:var(--silver);flex:1;letter-spacing:.04em}
+.agent-state{font-family:var(--mono);font-size:7px;padding:1px 5px;border-radius:3px}
+.agent-state.online{color:var(--green);border:1px solid var(--green-dim);background:var(--green-bg)}
+.agent-state.active{color:var(--blue);border:1px solid var(--blue-dim);background:var(--blue-bg)}
+.agent-state.review{color:var(--amber);border:1px solid rgba(245,158,11,.22)}
+.agent-state.idle{color:var(--dim);border:1px solid var(--border)}
+.agent-state.pending{color:var(--gold);border:1px solid var(--gold-dim)}
+.agent-state.deep{color:rgba(200,100,255,.7);border:1px solid rgba(200,100,255,.2)}
+.agent-state.running{color:var(--blue);border:1px solid var(--blue-dim);background:var(--blue-bg)}
+
+/* ─── CENTER: HERO ─── */
+.hero{
+  padding:24px 26px 18px;
+  border-bottom:1px solid var(--border);
+}
+.hero-eyebrow{
+  font-family:var(--mono);font-size:8px;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--gold-dim);margin-bottom:5px;
+}
+.hero-h1{font-size:20px;font-weight:600;letter-spacing:-.01em;color:var(--white);line-height:1.2;margin-bottom:3px}
+.hero-sub{font-size:12px;color:var(--silver);margin-bottom:14px}
+.hero-copy{
+  font-size:12px;line-height:2;color:var(--dim);max-width:520px;
+}
+.hero-copy strong{color:rgba(255,255,255,.5);font-weight:500}
+.hero-law{
+  margin-top:13px;display:flex;gap:16px;
+  font-family:var(--mono);font-size:7.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-dim);
+}
+
+/* ─── PASTILLES ─── */
+.pastilles{
+  padding:12px 20px;display:flex;flex-wrap:wrap;gap:6px;
+  border-bottom:1px solid var(--border);
+}
+.pastille{
+  display:flex;align-items:center;gap:6px;
+  padding:5px 12px;border-radius:100px;
+  border:1px solid var(--border);background:var(--graphite);
+  cursor:pointer;transition:all .14s;
+  font-size:11px;color:var(--silver);
+}
+.pastille:hover{border-color:var(--border-hi);color:var(--white);background:var(--graphite-hi)}
+.pastille.active{border-color:var(--gold-dim);color:var(--gold);background:var(--gold-bg)}
+
+/* ─── FIVE QUESTIONS ─── */
+.five-q{
+  padding:14px 20px;display:grid;
+  grid-template-columns:1fr 1fr;gap:7px;
+  border-bottom:1px solid var(--border);
+}
+.q-card{padding:10px 12px;border-radius:8px;background:var(--graphite);border:1px solid var(--border)}
+.q-card.full{grid-column:1/-1}
+.q-label{
+  font-family:var(--mono);font-size:7px;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:5px;
+}
+.q-val{font-size:11px;color:var(--silver);line-height:1.75}
+.q-val .t{
+  display:inline-block;font-family:var(--mono);font-size:7px;
+  padding:1px 5px;border-radius:3px;margin-left:3px;vertical-align:middle;
+}
+.q-val .t.demo{color:var(--dim);border:1px solid var(--border)}
+.q-val .t.pending{color:var(--amber);border:1px solid rgba(245,158,11,.2)}
+.q-val .t.blocked{color:var(--red);border:1px solid var(--red-dim);background:var(--red-bg)}
+.q-val .t.sovereign{color:var(--gold);border:1px solid var(--gold-dim);background:var(--gold-bg)}
+.q-val .t.live{color:var(--green);border:1px solid var(--green-dim);background:var(--green-bg)}
+.q-val code{font-family:var(--mono);font-size:10px;color:var(--gold)}
+
+/* ─── NODES ─── */
+.nodes-header{
+  padding:11px 20px 7px;display:flex;align-items:center;justify-content:space-between;
+}
+.nodes-title{font-family:var(--mono);font-size:7.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+.nodes-meta{font-family:var(--mono);font-size:7px;color:var(--dim)}
+.nodes{padding:0 20px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:7px}
+
+.node{
+  padding:11px 13px;border-radius:9px;
+  background:var(--graphite);border:1px solid var(--border);
+  cursor:pointer;transition:all .14s;
+}
+.node:hover{border-color:var(--border-hi);background:var(--graphite-hi)}
+.node-type{
+  font-family:var(--mono);font-size:7px;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;margin-bottom:6px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.node-type.mission{color:var(--blue)}
+.node-type.claim{color:var(--gold)}
+.node-type.receipt{color:var(--green)}
+.node-type.agent{color:var(--silver)}
+.node-type.blocker{color:var(--red)}
+.node-type.skill{color:var(--silver)}
+.node-type.gate{color:var(--amber)}
+.node-h{font-size:11px;font-weight:500;color:var(--white);margin-bottom:3px;line-height:1.4}
+.node-sub{font-size:10px;color:var(--silver);line-height:1.5}
+.node-foot{margin-top:8px;display:flex;align-items:center;justify-content:space-between;font-family:var(--mono);font-size:7px}
+.nstatus{padding:2px 5px;border-radius:3px}
+.nstatus.demo{color:var(--dim);border:1px solid var(--border)}
+.nstatus.pending{color:var(--amber);border:1px solid rgba(245,158,11,.2)}
+.nstatus.live{color:var(--green);border:1px solid var(--green-dim);background:var(--green-bg)}
+.nstatus.blocked{color:var(--red);border:1px solid var(--red-dim);background:var(--red-bg)}
+.nstatus.sovereign{color:var(--gold);border:1px solid var(--gold-dim);background:var(--gold-bg)}
+.nts{color:var(--dim)}
+
+/* ─── RIGHT PANEL ─── */
+.r-sec{border-bottom:1px solid var(--border);padding:9px 0}
+.r-label{
+  font-family:var(--mono);font-size:7px;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--dim);
+  padding:0 13px 8px;
+}
+
+/* Next irreversible */
+.next-irrev{
+  margin:0 13px 8px;padding:10px 12px;border-radius:8px;
+  background:rgba(224,82,82,.04);border:1px solid rgba(224,82,82,.12);
+}
+.ni-label{
+  font-family:var(--mono);font-size:7px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--red);margin-bottom:5px;
+}
+.ni-text{font-size:11px;color:var(--silver);line-height:1.6}
+.ni-tag{margin-top:6px;font-family:var(--mono);font-size:7px;color:var(--dim);border:1px solid var(--border);padding:1px 6px;border-radius:3px;display:inline-block}
+
+/* Receipt rows */
+.r-row{
+  padding:6px 13px;border-bottom:1px solid rgba(255,255,255,.025);
+  cursor:pointer;transition:background .12s;
+}
+.r-row:hover{background:var(--ghost)}
+.r-row-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px}
+.r-id{font-family:var(--mono);font-size:8px;color:var(--dim)}
+.r-badge{font-family:var(--mono);font-size:7px;padding:1px 5px;border-radius:3px}
+.r-badge.live{color:var(--green);border:1px solid var(--green-dim);background:var(--green-bg)}
+.r-badge.pending{color:var(--amber);border:1px solid rgba(245,158,11,.2)}
+.r-badge.demo{color:var(--dim);border:1px solid var(--border)}
+.r-badge.blocked{color:var(--red);border:1px solid var(--red-dim)}
+.r-text{font-size:10px;color:var(--silver)}
+
+/* Memory */
+.mem{display:flex;gap:7px;padding:5px 13px;align-items:flex-start}
+.mem-dot{width:4px;height:4px;border-radius:50%;margin-top:4px;flex-shrink:0}
+.mem-body{flex:1}
+.mem-text{font-size:10px;color:var(--silver);line-height:1.5}
+.mem-tag{font-family:var(--mono);font-size:7px;color:var(--dim)}
+
+/* MAYOR gate */
+.mayor-box{
+  margin:0 13px;padding:10px 12px;border-radius:8px;
+  background:var(--graphite);border:1px solid var(--border);
+}
+.mayor-label{font-family:var(--mono);font-size:7px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:5px}
+.mayor-status{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--amber);letter-spacing:.04em;margin-bottom:4px}
+.mayor-note{font-size:10px;color:var(--dim);line-height:1.6}
+
+/* ─── RAIL ─── */
+.rail{
+  height:44px;flex-shrink:0;
+  display:flex;align-items:center;
+  border-top:1px solid var(--border);
+  background:var(--graphite-deep);
+  padding:0 18px;gap:0;
+}
+.rail-label{
+  font-family:var(--mono);font-size:7px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--dim);padding-right:14px;border-right:1px solid var(--border);margin-right:11px;
+}
+.actions{display:flex;gap:3px}
+.btn{
+  padding:6px 14px;border-radius:6px;
+  font-family:var(--mono);font-size:8.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  cursor:pointer;border:1px solid var(--border);background:none;color:var(--dim);
+  transition:all .14s;
+}
+.btn:hover{border-color:var(--border-hi);color:var(--white);background:var(--ghost)}
+.btn.pull:hover{color:var(--blue);border-color:var(--blue-dim);background:var(--blue-bg)}
+.btn.validate:hover{color:var(--amber);border-color:rgba(245,158,11,.22)}
+.btn.ship{color:rgba(224,82,82,.6);border-color:rgba(224,82,82,.18)}
+.btn.ship:hover{background:var(--red-bg);color:var(--red)}
+.rail-spacer{flex:1}
+.rail-right{
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:8px;color:var(--dim);
+  border-left:1px solid var(--border);padding-left:13px;
+}
+.auth-badge{
+  padding:3px 9px;border-radius:100px;
+  font-family:var(--mono);font-size:7px;font-weight:700;letter-spacing:.12em;
+  color:var(--red);border:1px solid rgba(224,82,82,.2);background:var(--red-bg);
+}
+
+/* Scrollbars */
+::-webkit-scrollbar{width:2px}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.06);border-radius:2px}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:54px;right:18px;z-index:99;
+  padding:7px 13px;border-radius:7px;
+  font-family:var(--mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;
+  border:1px solid;pointer-events:none;animation:ti .13s ease-out;max-width:280px;
+}
+.toast.info{background:rgba(255,255,255,.03);border-color:var(--border);color:var(--silver)}
+.toast.warn{background:rgba(245,158,11,.04);border-color:rgba(245,158,11,.18);color:var(--amber)}
+.toast.block{background:var(--red-bg);border-color:var(--red-dim);color:var(--red)}
+@keyframes ti{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="cockpit">
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-brand">HELEN OS</div>
+  <div class="hdr-tags">
+    <div class="tag">OPERATOR <b>Jean-Marie / JMT</b></div>
+    <div class="tag">MODE <b>WITNESS-FIRST</b></div>
+    <div class="tag danger">AUTHORITY <b>FALSE</b></div>
+    <div class="tag warn">REALITY SOURCE <b>RECEIPTS</b></div>
+    <div class="tag danger">CLAIM STATUS <b>NO_CLAIM</b></div>
+  </div>
+  <div class="hdr-right">
+    <div class="live-dot"></div>
+    <span id="hdr-time">—</span>
+    <span id="hdr-backend" style="color:var(--dim)">···</span>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="body">
+
+<!-- ═══ LEFT: OPERATOR STREAM ═══ -->
+<div class="col-left">
+  <div class="col-label">Operator Stream</div>
+
+  <div class="sec">
+    <div class="sec-label">Active Missions</div>
+    <div class="row"><div class="row-dot live"></div><div class="row-text">HELEN Canonical Surface</div><div class="badge live">LIVE</div></div>
+    <div class="row"><div class="row-dot pending"></div><div class="row-text">JMT Consulting Admin</div><div class="badge demo">DEMO</div></div>
+    <div class="row"><div class="row-dot pending"></div><div class="row-text">Video Studio</div><div class="badge demo">DEMO</div></div>
+    <div class="row"><div class="row-dot pending"></div><div class="row-text">CONQUEST / EDUverse</div><div class="badge demo">DEMO</div></div>
+    <div class="row"><div class="row-dot dim"></div><div class="row-text">CIELO / Akashic AI</div><div class="badge demo">NO_CLAIM</div></div>
+    <div class="row"><div class="row-dot dim"></div><div class="row-text">φ / RH finite-band</div><div class="badge demo">DEMO</div></div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-label">Pending Decisions</div>
+    <div class="row"><div class="row-dot pending"></div><div class="row-text">MAYOR approval</div><div class="badge pending">PENDING</div></div>
+    <div class="row"><div class="row-dot pending"></div><div class="row-text">Ship / No-Ship</div><div class="badge pending">PENDING</div></div>
+    <div class="row"><div class="row-dot dim"></div><div class="row-text">Refactor / Freeze</div><div class="badge demo">DEMO</div></div>
+    <div class="row"><div class="row-dot dim"></div><div class="row-text">Promote / Defer</div><div class="badge demo">DEMO</div></div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-label">Live Agents</div>
+    <div class="agent"><div class="agent-dot" style="background:var(--green);box-shadow:0 0 4px var(--green-dim)"></div><div class="agent-name">HELEN</div><div class="agent-state online">ONLINE</div></div>
+    <div class="agent"><div class="agent-dot" style="background:var(--blue);box-shadow:0 0 4px var(--blue-dim)"></div><div class="agent-name">HER</div><div class="agent-state active">PROPOSE</div></div>
+    <div class="agent"><div class="agent-dot" style="background:var(--amber);box-shadow:0 0 4px rgba(245,158,11,.25)"></div><div class="agent-name">HAL</div><div class="agent-state review">REVIEW</div></div>
+    <div class="agent"><div class="agent-dot" style="background:var(--dim)"></div><div class="agent-name">CHRONOS</div><div class="agent-state idle">IDLE</div></div>
+    <div class="agent"><div class="agent-dot" style="background:var(--gold);box-shadow:0 0 4px var(--gold-dim)"></div><div class="agent-name">MAYOR</div><div class="agent-state pending">PENDING</div></div>
+    <div class="agent"><div class="agent-dot" style="background:rgba(190,100,255,.7)"></div><div class="agent-name">GOBLIN</div><div class="agent-state deep">UNDERWARREN</div></div>
+    <div class="agent"><div class="agent-dot" style="background:var(--blue);box-shadow:0 0 4px var(--blue-dim)"></div><div class="agent-name">AUTORESEARCH</div><div class="agent-state running">E~250/1000</div></div>
+  </div>
+</div>
+
+<!-- ═══ CENTER: SEMANTIC FIELD ═══ -->
+<div class="col-center">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">HELEN OS · HOME COCKPIT</div>
+    <div class="hero-h1">Sovereign Semantic Cockpit</div>
+    <div class="hero-sub">Hello Jean-Marie.</div>
+    <div class="hero-copy">
+      This is your visible field: projects, claims, agents, memories, receipts, and next irreversible actions.<br>
+      <strong>I do not replace your judgment.</strong><br>
+      I witness, organize, validate, and remember.<br><br>
+      Your work becomes objects. Your objects become relations.<br>
+      Your actions become receipts. Your receipts become memory.
+    </div>
+    <div class="hero-law">
+      <span>Witness-first.</span>
+      <span>Authority: false.</span>
+      <span>Reality source: receipts.</span>
+    </div>
+  </div>
+
+  <!-- SKILL PASTILLES -->
+  <div class="pastilles">
+    <div class="pastille active">🎬 Video Studio</div>
+    <div class="pastille">🧾 JMT Admin</div>
+    <div class="pastille">👥 Clients</div>
+    <div class="pastille">📦 Offers</div>
+    <div class="pastille">📣 Content</div>
+    <div class="pastille">🧠 Research</div>
+    <div class="pastille">📅 Calendar</div>
+    <div class="pastille">🏛️ Ledger</div>
+  </div>
+
+  <!-- FIVE QUESTIONS -->
+  <div class="five-q">
+    <div class="q-card">
+      <div class="q-label">What am I building?</div>
+      <div class="q-val">
+        HELEN OS Home Cockpit <span class="t live">LIVE</span><br>
+        AUTORESEARCH 1000-epoch run <span class="t pending">E~250</span>
+      </div>
+    </div>
+    <div class="q-card">
+      <div class="q-label">What is alive now?</div>
+      <div class="q-val">
+        Doctrine chain: DSC→SRP→SSP <span class="t live">PUSHED</span><br>
+        28 pre-claims in queue <span class="t demo">DEMO_OBJECT</span>
+      </div>
+    </div>
+    <div class="q-card">
+      <div class="q-label">What has receipts?</div>
+      <div class="q-val">
+        3 doctrine commits (git-hashed) <span class="t live">GIT</span><br>
+        temple_1000_results.jsonl <span class="t pending">PENDING_RECEIPT</span>
+      </div>
+    </div>
+    <div class="q-card">
+      <div class="q-label">What needs my decision?</div>
+      <div class="q-val">
+        MAYOR: 28 pre-claims <span class="t pending">PENDING</span><br>
+        E11/E12 reconciliation <span class="t blocked">BLOCKED</span>
+      </div>
+    </div>
+    <div class="q-card full">
+      <div class="q-label">What is the next irreversible action?</div>
+      <div class="q-val">
+        Reclassify <code>temple_1000_results.jsonl</code> as
+        <span class="t sovereign">FEDERATED_SOVEREIGN</span>
+        → push to <code>oracle_town/memory/autoresearch/</code>
+        → replay on MacBook → compare <code>governed_state_hash</code>.
+        If equal: Δ_ij = 0. First passing test of the doctrine.
+        <span class="t pending">PENDING_RECEIPT</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEMANTIC NODES -->
+  <div class="nodes-header">
+    <div class="nodes-title">Semantic Field — Active Objects</div>
+    <div class="nodes-meta">DEMO_OBJECT · NO_CLAIM · PENDING_RECEIPT</div>
+  </div>
+  <div class="nodes">
+    <div class="node">
+      <div class="node-type mission">MISSION</div>
+      <div class="node-h">HELEN OS Home Cockpit</div>
+      <div class="node-sub">Canonical surface — build in progress</div>
+      <div class="node-foot"><span class="nstatus live">LIVE</span><span class="nts">2026-05-10</span></div>
+    </div>
+    <div class="node">
+      <div class="node-type claim">CLAIM</div>
+      <div class="node-h">Meaning determines persistence</div>
+      <div class="node-sub">SSP doctrine · Storage Policy = Semantic Governance</div>
+      <div class="node-foot"><span class="nstatus pending">PENDING_RECEIPT</span><span class="nts">pc_0003</span></div>
+    </div>
+    <div class="node">
+      <div class="node-type receipt">RECEIPT</div>
+      <div class="node-h">E16 Autoresearch Epoch</div>
+      <div class="node-sub">cd4a8ad0…43a8 · HAL APPROVE conf=1.0 · hallucinated file path</div>
+      <div class="node-foot"><span class="nstatus demo">DEMO_OBJECT</span><span class="nts">NO_CLAIM</span></div>
+    </div>
+    <div class="node">
+      <div class="node-type agent">AGENT</div>
+      <div class="node-h">AUTORESEARCH Loop</div>
+      <div class="node-sub">32s/proposal · ~250/1000 epochs · iMac PID 38251</div>
+      <div class="node-foot"><span class="nstatus live">RUNNING</span><span class="nts">LOCAL</span></div>
+    </div>
+    <div class="node">
+      <div class="node-type blocker">BLOCKER</div>
+      <div class="node-h">E11/E12 Reconciliation</div>
+      <div class="node-sub">Two sessions diverged · awaiting peer-review → MAYOR ruling</div>
+      <div class="node-foot"><span class="nstatus blocked">BLOCKED</span><span class="nts">E13 gated</span></div>
+    </div>
+    <div class="node">
+      <div class="node-type gate">SHIP_GATE</div>
+      <div class="node-h">Live Falsification Test</div>
+      <div class="node-sub">temple_1000 → FEDERATED_SOVEREIGN → MacBook hash check</div>
+      <div class="node-foot"><span class="nstatus pending">PENDING</span><span class="nts">Phase 2</span></div>
+    </div>
+    <div class="node">
+      <div class="node-type claim">CLAIM</div>
+      <div class="node-h">S(Dᵢ) ≡ S(Dⱼ)</div>
+      <div class="node-sub">Primary cross-terminal invariant · testable when run completes</div>
+      <div class="node-foot"><span class="nstatus pending">PENDING_RECEIPT</span><span class="nts">pc_0013</span></div>
+    </div>
+    <div class="node">
+      <div class="node-type skill">SKILL</div>
+      <div class="node-h">promote_pre_claim.py</div>
+      <div class="node-sub">Gate A/B/C runner · helensh/tools/ · 28 entries</div>
+      <div class="node-foot"><span class="nstatus live">RUNNABLE</span><span class="nts">33458c6</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ RIGHT: SOVEREIGN LEDGER ═══ -->
+<div class="col-right">
+  <div class="col-label">Sovereign Ledger</div>
+
+  <div class="r-sec">
+    <div class="r-label">Next Irreversible Action</div>
+    <div class="next-irrev">
+      <div class="ni-label">▲ IRREVERSIBLE · DECISION REQUIRED</div>
+      <div class="ni-text">Reclassify autoresearch results as FEDERATED_SOVEREIGN and push to oracle_town/memory/. Once propagated, receipts are canonical across terminals.</div>
+      <div class="ni-tag">PENDING_RECEIPT · DEMO_OBJECT</div>
+    </div>
+  </div>
+
+  <div class="r-sec">
+    <div class="r-label">Latest Receipts</div>
+    <div class="r-row">
+      <div class="r-row-head"><div class="r-id">33458c6</div><div class="r-badge live">PUSHED</div></div>
+      <div class="r-text">mayor_decision schema · 28 entries updated</div>
+    </div>
+    <div class="r-row">
+      <div class="r-row-head"><div class="r-id">6f86b92</div><div class="r-badge live">PUSHED</div></div>
+      <div class="r-text">E16 specimen + HAL gap + promote_pre_claim.py</div>
+    </div>
+    <div class="r-row">
+      <div class="r-row-head"><div class="r-id">46ccb1a</div><div class="r-badge live">PUSHED</div></div>
+      <div class="r-text">SSP doctrine + swarm promotion pipeline</div>
+    </div>
+    <div class="r-row">
+      <div class="r-row-head"><div class="r-id">R-IMAC-???</div><div class="r-badge pending">PENDING_RECEIPT</div></div>
+      <div class="r-text">temple_1000_results.jsonl · not propagated · LOCAL</div>
+    </div>
+  </div>
+
+  <div class="r-sec">
+    <div class="r-label">Active Memory Packets</div>
+    <div class="mem">
+      <div class="mem-dot" style="background:var(--blue)"></div>
+      <div class="mem-body">
+        <div class="mem-text">Doctrine chain: DSC → SRP → SSP</div>
+        <div class="mem-tag">FEDERATED_SOVEREIGN · pushed</div>
+      </div>
+    </div>
+    <div class="mem">
+      <div class="mem-dot" style="background:var(--blue)"></div>
+      <div class="mem-body">
+        <div class="mem-text">28-entry promotion queue · 3-gate model</div>
+        <div class="mem-tag">DEMO_OBJECT · pending MAYOR</div>
+      </div>
+    </div>
+    <div class="mem">
+      <div class="mem-dot" style="background:var(--amber)"></div>
+      <div class="mem-body">
+        <div class="mem-text">HAL grounding gap — E16 live specimen</div>
+        <div class="mem-tag">OBSERVED · pc_HAL_GROUNDING</div>
+      </div>
+    </div>
+    <div class="mem">
+      <div class="mem-dot" style="background:var(--dim)"></div>
+      <div class="mem-body">
+        <div class="mem-text">E11/E12 reconciliation — blocked</div>
+        <div class="mem-tag">BLOCKER · E13 gated</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="r-sec">
+    <div class="r-label">MAYOR Gate</div>
+    <div class="mayor-box">
+      <div class="mayor-label">Current Ruling</div>
+      <div class="mayor-status">NO_SHIP · PENDING</div>
+      <div class="mayor-note">28 pre-claims await review.<br>HAL APPROVE ≠ canonical truth.<br>MAYOR is the bottleneck of legitimacy.</div>
+    </div>
+  </div>
+
+  <div class="r-sec" style="border:none">
+    <div class="r-label">What Needs Decision</div>
+    <div class="r-row">
+      <div class="r-row-head"><div class="r-id">E11/E12</div><div class="r-badge blocked">BLOCKED</div></div>
+      <div class="r-text">Reconciliation → peer-review → MAYOR</div>
+    </div>
+    <div class="r-row">
+      <div class="r-row-head"><div class="r-id">28 pre-claims</div><div class="r-badge pending">PENDING</div></div>
+      <div class="r-text">Promotion queue · MAYOR approves rules</div>
+    </div>
+    <div class="r-row">
+      <div class="r-row-head"><div class="r-id">FALSIFICATION</div><div class="r-badge pending">PENDING</div></div>
+      <div class="r-text">temple_1000 replay · hash comparison</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- .body -->
+
+<!-- ═══ BOTTOM RAIL: ACTION GRAMMAR ═══ -->
+<div class="rail">
+  <div class="rail-label">Action Grammar</div>
+  <div class="actions">
+    <button class="btn pull" onclick="act('PULL','Retrieving related objects — no write yet.')">PULL</button>
+    <button class="btn" onclick="act('COMPOSE','Forming candidate structure — not persisted.')">COMPOSE</button>
+    <button class="btn validate" onclick="act('VALIDATE','HAL gate check — result is non-sovereign.')">VALIDATE</button>
+    <button class="btn" onclick="act('PERSIST','Persist requires a receipt. No receipt = no persist.','warn')">PERSIST</button>
+    <button class="btn ship" onclick="act('SHIP','SHIP requires MAYOR signature. Status: PENDING.','block')">SHIP</button>
+    <button class="btn" onclick="act('NO_SHIP','NO_SHIP recorded. Action deferred.','warn')">NO_SHIP</button>
+  </div>
+  <div class="rail-spacer"></div>
+  <div class="rail-right">
+    <span id="rail-status">Witness mode · no active action</span>
+    <div class="auth-badge">AUTHORITY: FALSE</div>
+  </div>
+</div>
+
+</div><!-- .cockpit -->
+
+<script>
+function act(verb,msg,type='info'){
+  document.getElementById('rail-status').textContent=verb+' · '+msg.split('.')[0];
+  const el=document.createElement('div');
+  el.className='toast '+type;
+  el.textContent=msg;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),3200);
+}
+
+document.querySelectorAll('.pastille').forEach(p=>{
+  p.addEventListener('click',()=>{
+    document.querySelectorAll('.pastille').forEach(x=>x.classList.remove('active'));
+    p.classList.add('active');
+    document.getElementById('rail-status').textContent='Skill context: '+p.textContent.trim();
+  });
+});
+
+function probeBackend(){
+  const c=new AbortController(),t=setTimeout(()=>c.abort(),2000);
+  fetch('http://localhost:8000/api/health',{signal:c.signal})
+    .then(r=>r.ok?r.json():Promise.reject())
+    .then(()=>{const el=document.getElementById('hdr-backend');el.textContent='KERNEL ONLINE';el.style.color='var(--green)'})
+    .catch(()=>{const el=document.getElementById('hdr-backend');el.textContent='LOCAL ONLY';el.style.color='var(--dim)'})
+    .finally(()=>clearTimeout(t));
+}
+
+function tick(){
+  document.getElementById('hdr-time').textContent=
+    new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}
+
+probeBackend();setInterval(probeBackend,15000);
+setInterval(tick,1000);tick();
+</script>
+</body>
+</html>
