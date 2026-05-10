@@ -3,167 +3,166 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>HELEN OS — SOURCE PILOT V3</title>
+<title>HELEN OS — SOURCE PILOT V3B</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --black:#050508;--white:#fff;
-  --text:rgba(255,255,255,.72);--text-dim:rgba(255,255,255,.35);
-  --green:#00ff41;--cyan:#00e5ff;--amber:#ffb300;--red:#ff1744;
+  --black:#050508;
+  --g:#00ff41;  --g2:rgba(0,255,65,.15);  --g3:rgba(0,255,65,.05);
+  --c:#00e5ff;  --c2:rgba(0,229,255,.14);
+  --a:#ffb300;  --a2:rgba(255,179,0,.14);
+  --r:#ff1744;  --r2:rgba(255,23,68,.13);
+  --dim:rgba(255,255,255,.28);  --mid:rgba(255,255,255,.55);  --bright:rgba(255,255,255,.82);
   --mono:'Courier New',Courier,monospace;
 }
-html,body{width:100%;height:100%;overflow:hidden;background:var(--black);font-family:var(--mono)}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--black);font-family:var(--mono);color:var(--dim)}
 
-/* SOURCE fills viewport — 95%+ immersion */
-#source{position:fixed;inset:28px 0 44px;z-index:0;overflow:hidden;padding:32px 80px 24px}
-#doc{max-width:760px;margin:0 auto;height:100%;overflow:hidden}
+/* ── SOURCE LAYER — fills 95%+ ─────────────────────────────────────────── */
+#source{position:fixed;inset:26px 0 42px;overflow:hidden;z-index:0}
+#source-inner{height:100%;overflow-y:auto;padding:28px 72px 40px;scrollbar-width:none}
+#source-inner::-webkit-scrollbar{display:none}
 
-.doc-eyebrow{font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:14px}
-.doc-title{font-size:17px;font-weight:400;letter-spacing:.03em;color:rgba(255,255,255,.88);line-height:1.3;margin-bottom:6px}
-.doc-meta{font-size:8px;letter-spacing:.09em;color:rgba(255,255,255,.28);margin-bottom:22px}
+/* diff / terminal / ledger typography */
+.src-eyebrow{font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.22);margin-bottom:16px}
+.src-commit{font-size:9px;letter-spacing:.07em;color:var(--a);margin-bottom:4px}
+.src-meta{font-size:8px;letter-spacing:.05em;color:rgba(255,255,255,.25);margin-bottom:18px;border-bottom:1px solid rgba(255,255,255,.06);padding-bottom:12px}
 
-#do-now{display:flex;align-items:baseline;gap:10px;padding:8px 0 8px 12px;border-left:2px solid rgba(0,229,255,.45);margin-bottom:24px}
-.do-now-label{font-size:7.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(0,229,255,.5);flex-shrink:0}
-.do-now-text{font-size:11px;letter-spacing:.02em;color:rgba(0,229,255,.82);line-height:1.4}
+/* diff lines */
+.diff-hunk{font-size:9px;letter-spacing:.04em;color:rgba(0,229,255,.5);margin:14px 0 4px;padding:2px 0}
+.diff-line{font-size:10.5px;letter-spacing:.02em;line-height:1.75;white-space:pre;overflow-x:hidden;text-overflow:ellipsis}
+.diff-line.add{color:rgba(0,255,65,.8);background:rgba(0,255,65,.04)}
+.diff-line.del{color:rgba(255,23,68,.55);background:rgba(255,23,68,.04);text-decoration:line-through;text-decoration-color:rgba(255,23,68,.3)}
+.diff-line.ctx{color:rgba(255,255,255,.3)}
+.diff-line.hdr{color:rgba(255,179,0,.6);background:rgba(255,179,0,.04)}
 
-.doc-sep{height:1px;background:rgba(255,255,255,.07);margin:18px 0}
-.doc-section{margin-bottom:16px}
-.doc-sh{font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.32);margin-bottom:8px}
-.doc-p{font-size:11px;line-height:1.8;color:var(--text);margin-bottom:6px}
-.doc-p em{color:rgba(255,255,255,.5);font-style:normal}
-.doc-footer{margin-top:20px;padding-top:14px;border-top:1px solid rgba(255,255,255,.06)}
-.doc-fr{font-size:8.5px;letter-spacing:.06em;color:rgba(255,255,255,.3);line-height:2}
-.doc-fr span{color:rgba(255,255,255,.55)}
+/* terminal lines */
+.term-line{font-size:10.5px;letter-spacing:.02em;line-height:1.9;white-space:pre}
+.term-prompt{color:rgba(0,255,65,.6)}
+.term-ok{color:rgba(0,255,65,.75)}
+.term-warn{color:rgba(255,179,0,.75)}
+.term-err{color:rgba(255,23,68,.75)}
+.term-dim{color:rgba(255,255,255,.25)}
+.term-cyan{color:rgba(0,229,255,.7)}
 
-/* HUD TOP */
-#hud-top{position:fixed;top:0;left:0;right:0;height:28px;z-index:10;background:rgba(5,5,8,.88);border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;padding:0 16px;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.28)}
-.ht-k{color:rgba(255,255,255,.2)}.ht-v{color:rgba(255,255,255,.55)}.ht-warn{color:var(--amber)}
-.ht-sep{width:1px;height:12px;background:rgba(255,255,255,.1);margin:0 12px;flex-shrink:0}
-.ht-push{margin-left:auto;display:flex;align-items:center;gap:12px}
-.ht-badge{font-size:7px;letter-spacing:.14em;border:1px solid rgba(255,255,255,.15);padding:1px 6px;color:rgba(255,255,255,.38)}
+/* doctrine */
+.doc-h1{font-size:15px;letter-spacing:.04em;color:var(--bright);margin-bottom:6px}
+.doc-h2{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--a);margin:18px 0 8px;padding-bottom:4px;border-bottom:1px solid rgba(255,179,0,.18)}
+.doc-p{font-size:11px;line-height:1.85;color:rgba(255,255,255,.55);margin-bottom:10px}
+.doc-inv{color:rgba(0,229,255,.8);font-size:11px;font-style:italic;border-left:2px solid rgba(0,229,255,.35);padding-left:12px;margin:14px 0}
 
-/* HUD BOTTOM RAIL */
-#hud-bottom{position:fixed;bottom:0;left:0;right:0;height:44px;z-index:10;background:rgba(5,5,8,.9);border-top:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:4px;padding:0 14px}
-.rb{font-family:var(--mono);font-size:8px;letter-spacing:.09em;text-transform:uppercase;color:rgba(0,229,255,.7);background:transparent;border:1px solid rgba(0,229,255,.18);padding:5px 12px;cursor:pointer;transition:all .1s;white-space:nowrap}
-.rb:hover{color:var(--cyan);background:rgba(0,229,255,.06);border-color:rgba(0,229,255,.4)}
-.rb.danger{color:rgba(255,23,68,.6);border-color:rgba(255,23,68,.18)}
-.rb.danger:hover{color:var(--red);background:rgba(255,23,68,.06);border-color:rgba(255,23,68,.4)}
-.rb-sep{width:1px;height:20px;background:rgba(255,255,255,.08);flex-shrink:0;margin:0 2px}
-#rail-status{margin-left:auto;font-size:7.5px;letter-spacing:.07em;color:rgba(255,255,255,.2);text-align:right;max-width:360px}
+/* ledger */
+.ledger-entry{font-size:9.5px;line-height:1.7;border-bottom:1px solid rgba(255,255,255,.05);padding:8px 0;white-space:pre}
+.lk{color:rgba(255,255,255,.28)}.lv{color:rgba(255,255,255,.6)}.lv.g{color:var(--g)}.lv.a{color:var(--a)}.lv.r{color:var(--r)}.lv.c{color:var(--c)}
 
-/* HOTSPOTS */
+/* task queue */
+.task-row{display:grid;grid-template-columns:18px 120px 90px 1fr 80px;gap:12px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:9.5px;align-items:center}
+.task-idx{color:rgba(255,255,255,.2)}.task-id{color:var(--a)}.task-cat{color:rgba(255,255,255,.35)}.task-title{color:rgba(255,255,255,.6)}.task-st{text-align:right}
+.task-st.ship{color:var(--g)}.task-st.pend{color:var(--a)}.task-st.noship{color:var(--r)}
+
+/* ── HUD TOP ────────────────────────────────────────────────────────────── */
+#hud-top{position:fixed;top:0;left:0;right:0;height:26px;z-index:10;background:rgba(5,5,8,.92);border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;padding:0 14px;gap:0;font-size:8px;letter-spacing:.09em;text-transform:uppercase}
+.ht-k{color:rgba(255,255,255,.2)}.ht-v{color:rgba(255,255,255,.55)}.ht-warn{color:var(--a)}.ht-sep{width:1px;height:12px;background:rgba(255,255,255,.1);margin:0 10px;flex-shrink:0}
+.ht-push{margin-left:auto;display:flex;align-items:center;gap:10px}
+
+/* source mode pills */
+.src-pills{display:flex;gap:4px;align-items:center}
+.src-pill{font-size:7px;letter-spacing:.1em;padding:2px 8px;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.3);cursor:pointer;transition:all .12s}
+.src-pill:hover{border-color:rgba(0,229,255,.35);color:rgba(0,229,255,.7)}
+.src-pill.active{border-color:rgba(0,229,255,.5);color:var(--c);background:rgba(0,229,255,.06)}
+
+/* ── DO NOW ────────────────────────────────────────────────────────────── */
+#do-now{position:fixed;top:26px;left:0;right:0;height:22px;z-index:9;background:rgba(5,5,8,.7);border-bottom:1px solid rgba(0,229,255,.1);display:flex;align-items:center;padding:0 14px;gap:10px;font-size:8px;letter-spacing:.07em}
+.dn-label{color:rgba(0,229,255,.4);text-transform:uppercase;flex-shrink:0}
+#dn-text{color:rgba(0,229,255,.75)}
+
+/* adjust source for do-now bar */
+#source{inset:48px 0 42px}
+
+/* ── HOTSPOT LAYER ─────────────────────────────────────────────────────── */
 #hotspot-layer{position:fixed;inset:0;z-index:5;pointer-events:none}
-.hotspot{position:absolute;display:flex;align-items:center;gap:4px;font-family:var(--mono);font-size:7.5px;letter-spacing:.09em;text-transform:uppercase;cursor:pointer;pointer-events:all;user-select:none}
+.hotspot{position:absolute;display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:7.5px;letter-spacing:.09em;text-transform:uppercase;cursor:pointer;pointer-events:all;user-select:none}
 .hotspot:hover .hs-tag{opacity:1;border-color:currentColor}
-.hs-m{width:4px;height:4px;border-radius:50%;flex-shrink:0;animation:mPulse 3.5s ease-in-out infinite}
-@keyframes mPulse{0%,100%{opacity:.5}50%{opacity:1}}
-.hs-tag{padding:2px 8px;border-width:1px;border-style:solid;white-space:nowrap;line-height:1.6;opacity:.65;transition:opacity .12s,border-color .12s}
+.hs-dot{width:4px;height:4px;border-radius:50%;flex-shrink:0;animation:hsPulse 3.5s ease-in-out infinite}
+@keyframes hsPulse{0%,100%{opacity:.45}50%{opacity:1}}
+.hs-tag{padding:2px 8px;border-width:1px;border-style:solid;white-space:nowrap;line-height:1.7;opacity:.6;transition:opacity .12s,border-color .12s;backdrop-filter:blur(2px)}
 
-.hs-cyan .hs-m{background:var(--cyan)}
-.hs-cyan .hs-tag{color:var(--cyan);border-color:rgba(0,229,255,.22);background:rgba(0,229,255,.04)}
-.hs-amber .hs-m{background:var(--amber)}
-.hs-amber .hs-tag{color:var(--amber);border-color:rgba(255,179,0,.22);background:rgba(255,179,0,.04)}
-.hs-red .hs-m{background:var(--red);animation:mPulse 1.4s ease-in-out infinite}
-.hs-red .hs-tag{color:var(--red);border-color:rgba(255,23,68,.22);background:rgba(255,23,68,.04)}
-.hs-green .hs-m{background:var(--green)}
-.hs-green .hs-tag{color:var(--green);border-color:rgba(0,255,65,.22);background:rgba(0,255,65,.04)}
+.hs-c .hs-dot{background:var(--c)}.hs-c .hs-tag{color:var(--c);border-color:rgba(0,229,255,.22);background:rgba(0,229,255,.04)}
+.hs-g .hs-dot{background:var(--g)}.hs-g .hs-tag{color:var(--g);border-color:rgba(0,255,65,.22);background:rgba(0,255,65,.04)}
+.hs-a .hs-dot{background:var(--a)}.hs-a .hs-tag{color:var(--a);border-color:rgba(255,179,0,.22);background:rgba(255,179,0,.04)}
+.hs-r .hs-dot{background:var(--r);animation:hsPulse 1.3s ease-in-out infinite}.hs-r .hs-tag{color:var(--r);border-color:rgba(255,23,68,.22);background:rgba(255,23,68,.04)}
 
-/* INSPECTOR */
-#inspector{position:fixed;z-index:20;display:none;background:rgba(5,5,8,.97);border:1px solid rgba(255,255,255,.12);width:268px;padding:14px;font-size:8.5px;letter-spacing:.06em}
+/* ── INSPECTOR ─────────────────────────────────────────────────────────── */
+#inspector{position:fixed;z-index:20;display:none;background:rgba(5,5,8,.97);border:1px solid rgba(255,255,255,.12);width:272px;padding:14px;font-size:8.5px;letter-spacing:.06em}
 #inspector.on{display:block}
-.insp-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding-bottom:9px;border-bottom:1px solid rgba(255,255,255,.07)}
-.insp-type{font-size:7px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,179,0,.7)}
-.insp-x{cursor:pointer;color:rgba(255,255,255,.22);background:none;border:none;font-family:var(--mono);font-size:10px}
-.insp-x:hover{color:rgba(255,255,255,.6)}
-.insp-title{font-size:10px;color:rgba(255,255,255,.8);margin-bottom:10px;line-height:1.45}
-.insp-row{display:flex;justify-content:space-between;gap:6px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04)}
-.ik{color:rgba(255,255,255,.26);flex-shrink:0;font-size:8px}
-.iv{color:rgba(255,255,255,.68);text-align:right;word-break:break-all}
-.iv.a{color:var(--amber)}.iv.r{color:var(--red)}.iv.g{color:var(--green)}.iv.c{color:var(--cyan)}
+.insp-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.06)}
+.insp-type{font-size:7px;letter-spacing:.14em;text-transform:uppercase}
+.insp-x{cursor:pointer;color:rgba(255,255,255,.22);background:none;border:none;font-family:var(--mono);font-size:10px}.insp-x:hover{color:rgba(255,255,255,.6)}
+.insp-title{font-size:10px;color:rgba(255,255,255,.78);margin-bottom:10px;line-height:1.5}
+.insp-row{display:flex;justify-content:space-between;gap:8px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.ik{color:rgba(255,255,255,.24);flex-shrink:0;font-size:7.5px}.iv{color:rgba(255,255,255,.65);text-align:right;word-break:break-all;font-size:8px}
+.iv.g{color:var(--g)}.iv.a{color:var(--a)}.iv.r{color:var(--r)}.iv.c{color:var(--c)}
 .insp-acts{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}
-.ia{font-family:var(--mono);font-size:7.5px;letter-spacing:.07em;text-transform:uppercase;color:rgba(0,229,255,.68);background:transparent;border:1px solid rgba(0,229,255,.18);padding:4px 9px;cursor:pointer}
-.ia:hover{color:var(--cyan);background:rgba(0,229,255,.06);border-color:rgba(0,229,255,.4)}
-.insp-receipt{margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,.05);font-size:7px;color:rgba(255,255,255,.2);word-break:break-all;line-height:1.6}
-.insp-receipt.has-receipt{color:var(--green)}
+.ia{font-family:var(--mono);font-size:7px;letter-spacing:.07em;text-transform:uppercase;color:rgba(0,229,255,.65);background:transparent;border:1px solid rgba(0,229,255,.18);padding:4px 9px;cursor:pointer}
+.ia:hover{color:var(--c);background:rgba(0,229,255,.06);border-color:rgba(0,229,255,.4)}
+.insp-receipt{margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,.05);font-size:7px;color:rgba(255,255,255,.2);word-break:break-all;line-height:1.7}
+.insp-receipt.minted{color:var(--g)}
 
-/* FLASH */
-#flash{position:fixed;bottom:52px;left:50%;transform:translateX(-50%);z-index:30;background:rgba(5,5,8,.97);border:1px solid rgba(0,229,255,.3);padding:6px 18px;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);display:none;pointer-events:none;white-space:nowrap}
+/* ── BOTTOM RAIL ───────────────────────────────────────────────────────── */
+#hud-bot{position:fixed;bottom:0;left:0;right:0;height:42px;z-index:10;background:rgba(5,5,8,.92);border-top:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:4px;padding:0 12px}
+.rb{font-family:var(--mono);font-size:7.5px;letter-spacing:.09em;text-transform:uppercase;color:rgba(0,229,255,.65);background:transparent;border:1px solid rgba(0,229,255,.16);padding:5px 12px;cursor:pointer;transition:all .1s;white-space:nowrap}
+.rb:hover{color:var(--c);background:rgba(0,229,255,.06);border-color:rgba(0,229,255,.4)}
+.rb.danger{color:rgba(255,23,68,.55);border-color:rgba(255,23,68,.16)}.rb.danger:hover{color:var(--r);background:rgba(255,23,68,.06);border-color:rgba(255,23,68,.4)}
+.rb-sep{width:1px;height:20px;background:rgba(255,255,255,.07);flex-shrink:0;margin:0 2px}
+#rail-status{margin-left:auto;font-size:7px;letter-spacing:.07em;color:rgba(255,255,255,.2);text-align:right;max-width:400px}
+
+/* ── FLASH ─────────────────────────────────────────────────────────────── */
+#flash{position:fixed;bottom:50px;left:50%;transform:translateX(-50%);z-index:30;background:rgba(5,5,8,.97);border:1px solid rgba(0,229,255,.3);padding:6px 18px;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--c);display:none;pointer-events:none;white-space:nowrap}
 #flash.on{display:block;animation:flashIn .15s ease}
 @keyframes flashIn{from{opacity:0;transform:translateX(-50%) translateY(4px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 </style>
 </head>
 <body>
 
+<!-- HUD TOP -->
 <div id="hud-top">
-  <span class="ht-k">SRC</span><span style="width:6px"></span>
-  <span class="ht-v">HELEN-CONVERGENCE-ANALYSIS-2026-05-10</span>
-  <div class="ht-sep"></div><span class="ht-badge">DOC</span>
+  <span class="ht-k">SRC</span><span style="width:5px"></span>
+  <span class="ht-v" id="ht-src-id">HELEN-OS · starship.html · diff/main</span>
   <div class="ht-sep"></div>
-  <span class="ht-k">TRUST</span><span style="width:4px"></span><span class="ht-warn">MEDIUM</span>
+  <span class="ht-k">TRUST</span><span style="width:4px"></span>
+  <span class="ht-v" id="ht-trust">LOCAL</span>
   <div class="ht-push">
-    <span><span class="ht-k">DETECTED </span><span class="ht-warn">7 OBJECTS</span></span>
+    <div class="src-pills">
+      <div class="src-pill active" onclick="switchMode('diff',this)">GH DIFF</div>
+      <div class="src-pill" onclick="switchMode('terminal',this)">TERMINAL</div>
+      <div class="src-pill" onclick="switchMode('doctrine',this)">DOCTRINE</div>
+      <div class="src-pill" onclick="switchMode('ledger',this)">LEDGER</div>
+      <div class="src-pill" onclick="switchMode('queue',this)">TASK QUEUE</div>
+    </div>
     <div class="ht-sep"></div>
-    <span><span class="ht-k">RECEIPT </span><span class="ht-warn">PENDING</span></span>
+    <span class="ht-k">RECEIPT </span><span style="width:3px"></span><span class="ht-warn" id="ht-receipt-status">PENDING</span>
     <div class="ht-sep"></div>
-    <span class="ht-v">HELEN OS · SOURCE_PILOT_V3</span>
+    <span class="ht-v">HELEN OS · SOURCE_PILOT_V3B</span>
   </div>
 </div>
 
+<!-- DO NOW -->
+<div id="do-now">
+  <span class="dn-label">DO NOW →</span>
+  <span id="dn-text">Review STARSHIP_V3B diff — decide: COMMIT, REVISE, or HOLD. No receipt until MAYOR signs.</span>
+</div>
+
+<!-- SOURCE -->
 <div id="source">
-  <div id="doc">
-    <div class="doc-eyebrow">HELEN OS · Internal Report · HAL Gate · 2026-05-10</div>
-    <div class="doc-title">Convergence Analysis — Three Structural Gaps Before E13</div>
-    <div class="doc-meta">Authority: HAL only · MAYOR ruling: pending · Trust: medium · Classification: internal</div>
-
-    <div id="do-now">
-      <span class="do-now-label">HELEN →</span>
-      <span class="do-now-text">Review closure receipt divergence between E11 and E12 — E13 cannot proceed until peer-review is countersigned by operator.</span>
-    </div>
-
-    <div class="doc-sep"></div>
-
-    <div class="doc-section">
-      <div class="doc-sh">1 — Schema Authority Seam</div>
-      <div class="doc-p">The schema registry diverges between <em>governance/</em> and <em>helen_os/</em>. Nineteen files remain unclassified. Consumer audit incomplete as of 2026-05-08. Admissibility of three doctrine artifacts cannot be verified until this seam is materialized.</div>
-    </div>
-
-    <div class="doc-section">
-      <div class="doc-sh">2 — Closure Receipt Divergence: E11 ↔ E12</div>
-      <div class="doc-p">Two parallel sessions produced divergent artifacts. The HAL gap was confirmed live during E16 autoresearch sweep. Gate C test is pending. E13 is blocked until peer-review is countersigned and a MAYOR ruling is issued.</div>
-    </div>
-
-    <div class="doc-section">
-      <div class="doc-sh">3 — Swarm Promotion Queue</div>
-      <div class="doc-p">28 pre-claims awaiting MAYOR ruling. Promotion pipeline unblocked 2026-05-08. 128 objects carry <em>PENDING_RECEIPT</em> status. All 28 are NO_SHIP until receipts minted and MAYOR signs.</div>
-    </div>
-
-    <div class="doc-sep"></div>
-
-    <div class="doc-footer">
-      <div class="doc-fr">Source: <span>JMTassy/helen-conquest.git</span> · commit <span>0d06b33</span> · branch <span>main</span></div>
-      <div class="doc-fr">Accessed: <span>2026-05-10 14:32 UTC</span> · Chain of custody: <span>verified</span> · Trust: <span>medium</span></div>
-      <div class="doc-fr">Risk: <span style="color:var(--red)">HIGH — ghost closures accumulate without closure format resolution</span></div>
-      <div class="doc-fr">Receipt: <span style="color:var(--amber)">PENDING — no MAYOR ruling issued</span></div>
-    </div>
-  </div>
+  <div id="source-inner"></div>
 </div>
 
+<!-- HOTSPOT LAYER -->
 <div id="hotspot-layer"></div>
 
-<div id="hud-bottom">
-  <button class="rb" onclick="railAct('verify')">▶ VERIFY</button>
-  <button class="rb" onclick="railAct('extract')">⊕ EXTRACT</button>
-  <button class="rb" onclick="railAct('receipt')">⌗ MAKE RECEIPT</button>
-  <button class="rb" onclick="railAct('task')">+ CREATE TASK</button>
-  <button class="rb" onclick="railAct('compare')">⇄ COMPARE</button>
-  <div class="rb-sep"></div>
-  <button class="rb danger" onclick="railAct('hold')">⊘ HOLD</button>
-  <div id="rail-status">SOURCE PILOT MODE · CLICK A SEMANTIC OVERLAY TO INSPECT</div>
-</div>
-
+<!-- INSPECTOR -->
 <div id="inspector">
   <div class="insp-hdr">
-    <span class="insp-type" id="insp-type">—</span>
+    <span class="insp-type" id="insp-type" style="color:var(--a)">—</span>
     <button class="insp-x" onclick="closeInsp()">✕</button>
   </div>
   <div class="insp-title" id="insp-title">—</div>
@@ -172,138 +171,699 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--black);font-fa
   <div class="insp-receipt" id="insp-receipt">NO RECEIPT · authority=false · action required</div>
 </div>
 
+<!-- BOTTOM RAIL -->
+<div id="hud-bot">
+  <button class="rb" onclick="railAct('verify')">▶ VERIFY</button>
+  <button class="rb" onclick="railAct('extract')">⊕ EXTRACT</button>
+  <button class="rb" onclick="railAct('receipt')">⌗ MAKE RECEIPT</button>
+  <button class="rb" onclick="railAct('task')">+ CREATE TASK</button>
+  <button class="rb" onclick="railAct('compare')">⇄ COMPARE</button>
+  <div class="rb-sep"></div>
+  <button class="rb danger" onclick="railAct('hold')">⊘ HOLD</button>
+  <div id="rail-status">SOURCE PILOT · CLICK HOTSPOT TO INSPECT</div>
+</div>
+
 <div id="flash"></div>
 
 <script>
-const HOTSPOTS = [
-  {id:'ts',      type:'TIMESTAMP',   color:'cyan',
-   px:.50, py:.115,
-   label:'TIMESTAMP 14:32 UTC',
-   title:'Report timestamp — make time-anchor receipt',
-   rows:[{k:'recorded',v:'2026-05-10 14:32 UTC'},{k:'source_tc',v:'UNVERIFIED',c:'a'},{k:'receipt',v:'PENDING_RECEIPT',c:'a'}],
-   acts:['MAKE RECEIPT','VERIFY TC'],receipt:null},
+// ── SOURCE CONTENT ──────────────────────────────────────────────────────────
 
-  {id:'gap',     type:'GAP',         color:'red',
-   px:.23, py:.41,
-   label:'GAP: schema_authority',
-   title:'Schema registry divergence — 19 unclassified files',
-   rows:[{k:'gap_id',v:'GAP-SCHEMA-001'},{k:'scope',v:'governance/ vs helen_os/',c:'r'},{k:'impact',v:'admissibility unverifiable',c:'r'},{k:'count',v:'19 files unclassified',c:'a'},{k:'blocked',v:'3 doctrine artifacts',c:'r'}],
-   acts:['FLAG GAP','CREATE TASK','HOLD'],receipt:null},
+const SOURCES = {
 
-  {id:'claim',   type:'CLAIM',       color:'amber',
-   px:.67, py:.52,
-   label:'CLAIM: E13 blocked',
-   title:'E13 blocked — peer-review not yet countersigned by operator',
-   rows:[{k:'claim_id',v:'CLAIM-E13-BLOCK-001'},{k:'type',v:'process_block',c:'a'},{k:'condition',v:'peer-review + countersign',c:'a'},{k:'receipt',v:'PENDING_RECEIPT',c:'r'},{k:'authority',v:'false — no MAYOR ruling',c:'r'}],
-   acts:['VERIFY CLAIM','MAKE RECEIPT','CREATE TASK'],receipt:null},
+diff: {
+  id: 'STARSHIP_V3B · helen_os_v1 · main',
+  trust: 'LOCAL',
+  doNow: 'Review STARSHIP_V3B diff — decide: COMMIT, REVISE, or HOLD. No receipt until MAYOR signs.',
+  receipt: 'PENDING',
+  hotspots: [
+    { id:'claim', type:'CLAIM', color:'c',
+      px:.62, py:.19,
+      label:'CLAIM: arch replaces launcher',
+      title:'Source Pilot architecture replaces app launcher',
+      rows:[
+        {k:'claim_id',  v:'CLAIM-SP-001'},
+        {k:'type',      v:'architecture_decision',    c:'c'},
+        {k:'status',    v:'PENDING_RECEIPT',          c:'a'},
+        {k:'authority', v:'false — no MAYOR ruling',  c:'r'},
+        {k:'k_gate',    v:'K8 not yet run',           c:'a'},
+      ],
+      acts:['VERIFY CLAIM','MAKE RECEIPT','CREATE TASK'], receipt:null },
 
-  {id:'entity',  type:'ENTITY',      color:'amber',
-   px:.37, py:.56,
-   label:'ENTITY: MAYOR',
-   title:'MAYOR — sovereign signing authority, 28 claims queued',
-   rows:[{k:'entity',v:'MAYOR'},{k:'role',v:'sole signing authority',c:'a'},{k:'queue',v:'28 pre-claims awaiting',c:'a'},{k:'verdict',v:'NO_SHIP',c:'r'},{k:'last_act',v:'none — no ruling issued',c:'r'}],
-   acts:['CREATE TASK','VERIFY STATUS'],receipt:null},
+    { id:'gap', type:'GAP', color:'r',
+      px:.15, py:.35,
+      label:'GAP: no receipt hash',
+      title:'No receipt hash captured for this commit',
+      rows:[
+        {k:'gap_id',    v:'GAP-RECEIPT-001'},
+        {k:'scope',     v:'starship.html commit', c:'r'},
+        {k:'impact',    v:'claim unverifiable',   c:'r'},
+        {k:'action',    v:'MAKE RECEIPT → hash', c:'a'},
+        {k:'blocked',   v:'MAYOR · NO_SHIP',      c:'r'},
+      ],
+      acts:['MAKE RECEIPT','HOLD','CREATE TASK'], receipt:null },
 
-  {id:'prov',    type:'PROVENANCE',  color:'cyan',
-   px:.44, py:.755,
-   label:'PROVENANCE: commit 0d06b33',
-   title:'Source provenance — git commit reference, trust: medium',
-   rows:[{k:'repo',v:'JMTassy/helen-conquest.git'},{k:'commit',v:'0d06b33'},{k:'branch',v:'main'},{k:'trust',v:'medium',c:'a'},{k:'chain',v:'verified',c:'g'}],
-   acts:['VERIFY COMMIT','MAKE RECEIPT','EXTRACT'],receipt:null},
+    { id:'prov', type:'PROVENANCE', color:'c',
+      px:.20, py:.61,
+      label:'PROVENANCE: helen_os_v1',
+      title:'Local repo provenance — not yet pushed to origin',
+      rows:[
+        {k:'repo',      v:'helen_os_v1'},
+        {k:'remote',    v:'JMTassy/helen-conquest.git'},
+        {k:'commit',    v:'6c7c9759'},
+        {k:'branch',    v:'main'},
+        {k:'pushed',    v:'NO — dirty tree',     c:'r'},
+        {k:'trust',     v:'LOCAL',               c:'a'},
+      ],
+      acts:['VERIFY COMMIT','MAKE RECEIPT','EXTRACT'], receipt:null },
 
-  {id:'risk',    type:'RISK',        color:'red',
-   px:.25, py:.845,
-   label:'RISK: HIGH',
-   title:'Ghost closure accumulation — closure format unresolved',
-   rows:[{k:'risk_id',v:'RISK-GHOST-001'},{k:'level',v:'HIGH',c:'r'},{k:'trigger',v:'closure format unresolved',c:'r'},{k:'impact',v:'ghost closures accumulate',c:'r'},{k:'action',v:'RESOLVE FORMAT · HOLD',c:'a'}],
-   acts:['CREATE TASK','HOLD','FLAG GAP'],receipt:null},
+    { id:'task', type:'TASK', color:'a',
+      px:.73, py:.44,
+      label:'TASK: review V3B',
+      title:'Review STARSHIP_V3B and decide: commit / revise / hold',
+      rows:[
+        {k:'task_id',   v:'TASK-V3B-REVIEW'},
+        {k:'priority',  v:'HIGH',                c:'a'},
+        {k:'owner',     v:'operator (JMT)'},
+        {k:'decision',  v:'COMMIT · REVISE · HOLD'},
+        {k:'receipt',   v:'required before SHIP', c:'r'},
+      ],
+      acts:['CREATE TASK','MAKE RECEIPT','HOLD'], receipt:null },
 
-  {id:'receipt', type:'RECEIPT',     color:'amber',
-   px:.61, py:.88,
-   label:'RECEIPT: PENDING',
-   title:'No receipt issued — no MAYOR ruling on this source',
-   rows:[{k:'status',v:'PENDING_RECEIPT',c:'a'},{k:'authority',v:'false',c:'r'},{k:'blocked',v:'28 claims · all NO_SHIP',c:'r'},{k:'action',v:'MAYOR must sign',c:'a'}],
-   acts:['MAKE RECEIPT','CREATE TASK'],receipt:null},
-];
+    { id:'risk', type:'RISK', color:'r',
+      px:.65, py:.72,
+      label:'RISK: overbuild dashboard',
+      title:'Risk — reverting to dashboard-column pattern',
+      rows:[
+        {k:'risk_id',   v:'RISK-OVERBUILD-001'},
+        {k:'level',     v:'MEDIUM',              c:'a'},
+        {k:'signal',    v:'>3 panels = FAIL',    c:'r'},
+        {k:'rule',      v:'70% source immersion'},
+        {k:'action',    v:'HOLD if panels creep',c:'a'},
+      ],
+      acts:['HOLD','CREATE TASK','FLAG GAP'], receipt:null },
 
-function renderHotspots(){
-  const L=document.getElementById('hotspot-layer');
-  L.innerHTML='';
-  HOTSPOTS.forEach(hs=>{
-    const el=document.createElement('div');
-    el.className='hotspot hs-'+hs.color;
-    el.style.cssText='left:'+hs.px*100+'%;top:'+hs.py*100+'%';
-    el.innerHTML='<div class="hs-m"></div><div class="hs-tag">'+hs.label+(hs.receipt?' ✓':'')+'</div>';
-    el.addEventListener('click',e=>{e.stopPropagation();openInsp(hs,e.clientX,e.clientY)});
-    L.appendChild(el);
+    { id:'rel', type:'RELATION', color:'g',
+      px:.38, py:.83,
+      label:'RELATION: cockpit insight',
+      title:'Links to HELEN_COCKPIT_PRO_STAGE_INSIGHTS.md',
+      rows:[
+        {k:'target',    v:'COCKPIT_PRO_STAGE_INSIGHTS.md', c:'g'},
+        {k:'type',      v:'references'},
+        {k:'status',    v:'not yet canonical',  c:'a'},
+        {k:'action',    v:'VERIFY target hash', c:'c'},
+      ],
+      acts:['VERIFY RELATION','EXTRACT','MAKE RECEIPT'], receipt:null },
+  ],
+  render: () => `
+<div class="src-eyebrow">HELEN OS · apps/helen-surface/starship.html · git diff HEAD</div>
+<div class="src-commit">commit 6c7c9759  Author: JM Tassy  Date: 2026-05-10</div>
+<div class="src-meta">branch: main  ·  dirty tree  ·  not yet pushed  ·  RECEIPT: PENDING</div>
+
+<div class="diff-hunk">@@ -1,8 +1,12 @@ &lt;html&gt; — SOURCE PILOT V3B — HELEN OS content modes</div>
+<div class="diff-line add">+&lt;title&gt;HELEN OS — SOURCE PILOT V3B&lt;/title&gt;</div>
+<div class="diff-line del">-&lt;title&gt;HELEN OS — SOURCE PILOT V3 (UAP)&lt;/title&gt;</div>
+<div class="diff-line ctx"> /* UFO/UAP source removed — HELEN OS content replaces it */</div>
+<div class="diff-line ctx"> /* 5 source modes: GH_DIFF · TERMINAL · DOCTRINE · LEDGER · QUEUE */</div>
+
+<div class="diff-hunk">@@ -44,6 +48,9 @@ const SOURCES = {</div>
+<div class="diff-line add">+  diff:     { /* GitHub diff — default */ },</div>
+<div class="diff-line add">+  terminal: { /* kernel daemon / autoresearch log */ },</div>
+<div class="diff-line add">+  doctrine: { /* KERNEL_V2.md excerpt */ },</div>
+<div class="diff-line add">+  ledger:   { /* town/ledger_v1.ndjson */ },</div>
+<div class="diff-line add">+  queue:    { /* promotion_queue.jsonl */ },</div>
+<div class="diff-line del">-  uap:      { /* thermal UAP canvas */ },</div>
+<div class="diff-line del">-  email:    { /* email mock */ },</div>
+<div class="diff-line del">-  xpost:    { /* X post mock */ },</div>
+
+<div class="diff-hunk">@@ -120,15 +128,8 @@ function drawUAP(){</div>
+<div class="diff-line del">-  const objX = W*.52 + Math.sin(tick*.6)*26;</div>
+<div class="diff-line del">-  const objY = H*.38 + Math.cos(tick*.45)*16;</div>
+<div class="diff-line del">-  // thermal bloom, core, wake trail, redaction block</div>
+<div class="diff-line del">-  // crosshair tracks object position</div>
+<div class="diff-line del">-  // [OBJECT TRACK] [REDACTION BLOCK] [TIMESTAMP] [SOURCE: unknown.mil]</div>
+<div class="diff-line add">+  // HELEN OS operational sources replace all canvas animation</div>
+<div class="diff-line add">+  // SOURCE → HOTSPOT → INSPECTOR → ACTION → RECEIPT</div>
+<div class="diff-line add">+  // HELEN pilots its own becoming.</div>
+
+<div class="diff-hunk">@@ -198,4 +199,6 @@ const HOTSPOTS = [</div>
+<div class="diff-line del">-  {id:'track', type:'OBJECT_TRACK', label:'OBJECT TRACK', …},</div>
+<div class="diff-line del">-  {id:'redact', type:'REDACTION_BLOCK', label:'REDACTION BLOCK', …},</div>
+<div class="diff-line add">+  {id:'claim', type:'CLAIM',      label:'CLAIM: arch replaces launcher', …},</div>
+<div class="diff-line add">+  {id:'gap',   type:'GAP',        label:'GAP: no receipt hash', …},</div>
+<div class="diff-line add">+  {id:'prov',  type:'PROVENANCE', label:'PROVENANCE: helen_os_v1', …},</div>
+<div class="diff-line add">+  {id:'task',  type:'TASK',       label:'TASK: review V3B', …},</div>
+<div class="diff-line add">+  {id:'risk',  type:'RISK',       label:'RISK: overbuild dashboard', …},</div>
+<div class="diff-line add">+  {id:'rel',   type:'RELATION',   label:'RELATION: cockpit insight', …},</div>
+
+<div class="diff-hunk">@@ -280,3 +285,4 @@ /* CANONICAL CORRECTION */</div>
+<div class="diff-line ctx"> // The mood stays. The UFO leaves. The source becomes HELEN.</div>
+<div class="diff-line add">+// HELEN does not pilot media.</div>
+<div class="diff-line add">+// HELEN pilots its own becoming.</div>
+`},
+
+terminal: {
+  id: 'HELEN OS · kernel_daemon · autoresearch log',
+  trust: 'LOCAL',
+  doNow: 'E13 is blocked — peer-review on E11/E12 not yet countersigned. Assign or hold.',
+  receipt: 'PENDING',
+  hotspots: [
+    { id:'block', type:'GAP', color:'r',
+      px:.12, py:.28,
+      label:'GAP: E13 blocked',
+      title:'E13 blocked — E11/E12 peer-review not countersigned',
+      rows:[
+        {k:'gap_id', v:'GAP-E13-BLOCK'},
+        {k:'cause',  v:'peer-review pending',    c:'r'},
+        {k:'owner',  v:'operator (JMT)',         c:'a'},
+        {k:'action', v:'COUNTERSIGN or HOLD',    c:'a'},
+      ],
+      acts:['CREATE TASK','HOLD','FLAG GAP'], receipt:null },
+
+    { id:'legoracle', type:'CLAIM', color:'g',
+      px:.58, py:.42,
+      label:'CLAIM: LEGORACLE passed',
+      title:'LEGORACLE gate — E12 replay determinism verified',
+      rows:[
+        {k:'claim_id', v:'CLAIM-E12-LEGO-001'},
+        {k:'gate',     v:'LEGORACLE · K-tau'},
+        {k:'verdict',  v:'PASS (E12)',            c:'g'},
+        {k:'receipt',  v:'PENDING_RECEIPT',       c:'a'},
+        {k:'sha',      v:'legoracle_v13rc.py ✓',  c:'g'},
+      ],
+      acts:['VERIFY CLAIM','MAKE RECEIPT'], receipt:null },
+
+    { id:'hal', type:'GAP', color:'a',
+      px:.70, py:.63,
+      label:'GAP: HAL grounding',
+      title:'HAL grounding gap confirmed live (E16 sweep)',
+      rows:[
+        {k:'gap_id', v:'GAP-HAL-GROUNDING'},
+        {k:'source', v:'E16 autoresearch',      c:'a'},
+        {k:'status', v:'Gate C test pending',   c:'r'},
+        {k:'impact', v:'K8 not yet run',        c:'r'},
+        {k:'action', v:'wire Gate C test',      c:'a'},
+      ],
+      acts:['CREATE TASK','FLAG GAP','HOLD'], receipt:null },
+
+    { id:'tprov', type:'PROVENANCE', color:'c',
+      px:.22, py:.72,
+      label:'PROVENANCE: commit d43ec64',
+      title:'Autoresearch E11/E12 reconciliation report commit',
+      rows:[
+        {k:'commit', v:'d43ec64'},
+        {k:'branch', v:'main'},
+        {k:'content',v:'SHA diff + reconciliation report', c:'c'},
+        {k:'status', v:'awaiting MAYOR ruling', c:'a'},
+      ],
+      acts:['VERIFY COMMIT','EXTRACT','MAKE RECEIPT'], receipt:null },
+  ],
+  render: () => `
+<div class="src-eyebrow">HELEN OS · oracle_town/kernel/kernel_daemon.py · session log</div>
+<div class="src-commit">session: 2026-05-10  ·  pid 92405  ·  branch: main</div>
+<div class="src-meta">kernel_daemon: RUNNING  ·  LEGORACLE: ACTIVE  ·  AUTORESEARCH: E12 SHIPPED</div>
+
+<div class="term-line"><span class="term-prompt">helen $ </span><span class="term-dim">python3 oracle_town/kernel/kernel_daemon.py &amp;</span></div>
+<div class="term-line"><span class="term-ok">  ✓ daemon started · pid 92405 · socket /tmp/helen.sock</span></div>
+<div class="term-line"><span class="term-dim">  · ledger: town/ledger_v1.ndjson · cum_hash chain OK</span></div>
+<div class="term-line"><span class="term-dim">  · gates: A/B/C loaded · MAYOR: READY</span></div>
+<div class="term-line"> </div>
+<div class="term-line"><span class="term-prompt">helen $ </span><span class="term-dim">python3 helen_os/autonomy/autoresearch.py --epoch E12</span></div>
+<div class="term-line"><span class="term-ok">  ✓ E12 SHIPPED — LEGORACLE replay gate</span></div>
+<div class="term-line"><span class="term-ok">  ✓ legoracle_v13rc.py SHA matches · determinism verified</span></div>
+<div class="term-line"><span class="term-warn">  · H₁ partially falsified — 3 structural changes detected</span></div>
+<div class="term-line"><span class="term-warn">  · MAYOR ruling: REQUEST_MORE_EVIDENCE (pending)</span></div>
+<div class="term-line"> </div>
+<div class="term-line"><span class="term-prompt">helen $ </span><span class="term-dim">python3 helen_os/autonomy/autoresearch.py --epoch E13</span></div>
+<div class="term-line"><span class="term-err">  ✗ E13 BLOCKED — E11/E12 peer-review not countersigned</span></div>
+<div class="term-line"><span class="term-err">  ✗ RULE 3 violation risk: proposer = validator</span></div>
+<div class="term-line"><span class="term-err">  ✗ halting — await operator countersign → MAYOR ruling</span></div>
+<div class="term-line"> </div>
+<div class="term-line"><span class="term-prompt">helen $ </span><span class="term-dim">python3 scripts/helen_k8_lint.py --mode all_nd</span></div>
+<div class="term-line"><span class="term-ok">  ✓ K8 mu_NDWRAP: PASS</span></div>
+<div class="term-line"><span class="term-ok">  ✓ K8 mu_NDARTIFACT: PASS</span></div>
+<div class="term-line"><span class="term-ok">  ✓ K8 mu_NDLEDGER: PASS  ·  k8=+1.000</span></div>
+<div class="term-line"> </div>
+<div class="term-line"><span class="term-prompt">helen $ </span><span class="term-dim">python3 helensh/tools/promote_pre_claim.py</span></div>
+<div class="term-line"><span class="term-warn">  PROMOTION QUEUE — 28 entries</span></div>
+<div class="term-line"><span class="term-warn">  GATE A: SHIP=0  NO_SHIP=0  PENDING=14</span></div>
+<div class="term-line"><span class="term-warn">  GATE B: SHIP=0  NO_SHIP=0  PENDING=8</span></div>
+<div class="term-line"><span class="term-err">  GATE C: SHIP=0  NO_SHIP=2  PENDING=6</span></div>
+<div class="term-line"><span class="term-warn">  ⚠  6 Gate C entries missing falsification_test</span></div>
+<div class="term-line"> </div>
+<div class="term-line"><span class="term-prompt">helen $ </span><span class="term-dim">python3 tools/helen_say.py "E13 blocked — awaiting peer-review" --op status</span></div>
+<div class="term-line"><span class="term-ok">  ✓ payload_hash: a3f8c1e2d9b74561</span></div>
+<div class="term-line"><span class="term-ok">  ✓ ledger entry queued · NO_SHIP until MAYOR signs</span></div>
+`},
+
+doctrine: {
+  id: 'KERNEL_V2.md · HELEN OS constitutional membrane',
+  trust: 'HIGH — canonical',
+  doNow: 'Verify the three constitutional invariants apply to the current cockpit build.',
+  receipt: 'CANONICAL',
+  hotspots: [
+    { id:'inv1', type:'CLAIM', color:'c',
+      px:.24, py:.32,
+      label:'CLAIM: NO RECEIPT = NO CLAIM',
+      title:'Constitutional invariant — NO RECEIPT = NO CLAIM',
+      rows:[
+        {k:'invariant', v:'K1 — NO_RECEIPT_NO_CLAIM', c:'c'},
+        {k:'scope',     v:'all HELEN outputs'},
+        {k:'enforced',  v:'ledger writer + kernel guard', c:'g'},
+        {k:'status',    v:'CANONICAL',                 c:'g'},
+        {k:'cockpit',   v:'applied — receipt rail wired', c:'g'},
+      ],
+      acts:['VERIFY CLAIM','EXTRACT','MAKE RECEIPT'], receipt:null },
+
+    { id:'inv2', type:'CLAIM', color:'g',
+      px:.65, py:.49,
+      label:'CLAIM: NO HASH = NO VOICE',
+      title:'K8 corollary — non-deterministic output never enters spine unhashed',
+      rows:[
+        {k:'invariant', v:'K8 — NO_HASH_NO_VOICE', c:'g'},
+        {k:'scope',     v:'all ND outputs'},
+        {k:'enforced',  v:'K8 lint · mu_NDLEDGER',  c:'g'},
+        {k:'status',    v:'PASS · k8=+1.000',       c:'g'},
+      ],
+      acts:['VERIFY CLAIM','MAKE RECEIPT'], receipt:null },
+
+    { id:'mayor', type:'ENTITY', color:'a',
+      px:.42, py:.67,
+      label:'ENTITY: MAYOR',
+      title:'MAYOR — sole sovereign signing authority',
+      rows:[
+        {k:'entity',    v:'MAYOR'},
+        {k:'role',      v:'sole signing authority',  c:'a'},
+        {k:'queue',     v:'28 pre-claims awaiting',  c:'a'},
+        {k:'verdicts',  v:'SHIP / NO_SHIP / DEFERRED'},
+        {k:'status',    v:'READY · no active ruling', c:'a'},
+      ],
+      acts:['CREATE TASK','VERIFY STATUS'], receipt:null },
+
+    { id:'firewall', type:'RISK', color:'r',
+      px:.72, py:.78,
+      label:'RISK: sovereign-path write',
+      title:'Sovereign-path firewall — Claude Code must not write these paths',
+      rows:[
+        {k:'risk_id',  v:'RISK-FIREWALL-001'},
+        {k:'paths',    v:'kernel/ · governance/ · schemas/ · ledger', c:'r'},
+        {k:'enforced', v:'policy (hook planned)',     c:'a'},
+        {k:'action',   v:'HOLD if write attempted',  c:'r'},
+      ],
+      acts:['HOLD','FLAG GAP'], receipt:null },
+  ],
+  render: () => `
+<div class="src-eyebrow">HELEN OS · KERNEL_V2.md · constitutional membrane · canonical</div>
+<div class="src-commit">authority: KERNEL  ·  trust: HIGH  ·  class: CANONICAL</div>
+<div class="src-meta">DO NOT EDIT — sovereign path · read-only via Claude Code</div>
+
+<div class="doc-h1">HELEN OS — Constitutional Invariants</div>
+<div class="doc-p">HELEN is a five-layer constitutional AI companion with an append-only governance kernel. The system is built on a single invariant that governs every output, every claim, and every action.</div>
+
+<div class="doc-h2">Core Invariants</div>
+<div class="doc-inv">NO RECEIPT = NO CLAIM<br>Every action produces a hash-chained ledger entry or it did not happen.</div>
+<div class="doc-inv">NO HASH = NO VOICE<br>Non-deterministic output never enters the spine unhashed. K8 enforces this at compile time.</div>
+<div class="doc-inv">PROPOSER ≠ VALIDATOR<br>Claude Code's main session may not approve its own work for SHIP. Rule 3 is unconditional.</div>
+<div class="doc-inv">TERMINATION IS SACRED<br>Every session ends SHIP: or ABORT:. Open-ended pauses are not a valid ending state.</div>
+
+<div class="doc-h2">Sovereign-Path Firewall</div>
+<div class="doc-p">The following paths are write-locked to Claude Code: <br>
+  oracle_town/kernel/ — kernel daemon, gates A/B/C, mayor, ledger writer<br>
+  helen_os/governance/ — schema registry, validators, LEGORACLE, skill promotion reducer<br>
+  helen_os/schemas/ — canonical schema files<br>
+  town/ledger_v1*.ndjson — append-only ledger<br>
+  mayor_*.json — MAYOR key registry, ceremony audits<br>
+  GOVERNANCE/CLOSURES/ — closure receipts</div>
+<div class="doc-p">Reading is allowed. Writing requires a HELEN-side authorized process — not Claude Code.</div>
+
+<div class="doc-h2">Three-Level Decision Model</div>
+<div class="doc-p">Every claim flows through:<br>
+  gate_decision — Gate A/B/C routing (AUTO | PENDING)<br>
+  reviewer_decision — GOVERNOR or TEST verdict (PENDING | PASS | FAIL | NA)<br>
+  mayor_decision — MAYOR terminal gate (PENDING | SHIP | NO_SHIP | DEFERRED)</div>
+<div class="doc-p">MAYOR NO_SHIP is unconditional. HAL APPROVE is necessary but not sufficient.</div>
+
+<div class="doc-h2">Admissible Bridge</div>
+<div class="doc-p">The only mechanism by which Claude Code may cause something to enter the sovereign layer:</div>
+<div class="doc-inv">python3 tools/helen_say.py "&lt;message&gt;" --op &lt;op&gt;</div>
+<div class="doc-p">This script computes payload_hash = sha256(canon(payload)) and routes through the kernel boundary. No other path is admissible.</div>
+`},
+
+ledger: {
+  id: 'town/ledger_v1.ndjson · last 8 entries',
+  trust: 'HIGH — sovereign',
+  doNow: 'Verify the last two ledger entries have valid cum_hash chains before running E13.',
+  receipt: 'CANONICAL',
+  hotspots: [
+    { id:'chain', type:'CLAIM', color:'g',
+      px:.16, py:.30,
+      label:'CLAIM: chain integrity OK',
+      title:'Ledger hash chain — last verified entry',
+      rows:[
+        {k:'claim_id',  v:'CLAIM-LEDGER-CHAIN'},
+        {k:'cum_hash',  v:'a3f8c1e2d9b74561…',   c:'g'},
+        {k:'entries',   v:'142 total'},
+        {k:'last_op',   v:'autoresearch/E12'},
+        {k:'verified',  v:'YES · K8 mu_NDLEDGER',  c:'g'},
+      ],
+      acts:['VERIFY CLAIM','MAKE RECEIPT','EXTRACT'], receipt:null },
+
+    { id:'pending', type:'GAP', color:'a',
+      px:.70, py:.48,
+      label:'GAP: 28 receipts pending',
+      title:'28 pre-claims in queue — no MAYOR ruling issued',
+      rows:[
+        {k:'gap_id',    v:'GAP-PENDING-RECEIPTS'},
+        {k:'count',     v:'28 entries',            c:'a'},
+        {k:'gate_a',    v:'14 PENDING',            c:'a'},
+        {k:'gate_b',    v:'8 PENDING',             c:'a'},
+        {k:'gate_c',    v:'6 PENDING · 2 NO_SHIP', c:'r'},
+      ],
+      acts:['CREATE TASK','HOLD','EXTRACT'], receipt:null },
+
+    { id:'sealed', type:'RISK', color:'r',
+      px:.45, py:.72,
+      label:'RISK: sealed ledger write',
+      title:'LNSA_ERROR — sovereign ledger is sealed',
+      rows:[
+        {k:'risk_id',   v:'RISK-LNSA-001'},
+        {k:'trigger',   v:'helen talk --reply',    c:'r'},
+        {k:'error',     v:'LNSA_ERROR: SEALED',    c:'r'},
+        {k:'fix',       v:'--ledger :memory:',     c:'a'},
+        {k:'status',    v:'known issue · documented'},
+      ],
+      acts:['FLAG GAP','CREATE TASK','HOLD'], receipt:null },
+  ],
+  render: () => `
+<div class="src-eyebrow">HELEN OS · town/ledger_v1.ndjson · last 8 entries · sovereign · read-only</div>
+<div class="src-commit">cum_hash chain: VALID  ·  entries: 142  ·  kernel_guard: PASS</div>
+<div class="src-meta">DO NOT EDIT DIRECTLY — admissible bridge: tools/helen_say.py only</div>
+
+<div class="ledger-entry"><span class="lk">id         </span> <span class="lv c">autoresearch/E12/LEGORACLE_REPLAY_GATE</span>
+<span class="lk">op         </span> <span class="lv">autoresearch_epoch</span>
+<span class="lk">status     </span> <span class="lv g">SHIPPED</span>
+<span class="lk">payload_hash</span> <span class="lv">a3f8c1e2d9b74561af29c3d780e1b4f2</span>
+<span class="lk">cum_hash   </span> <span class="lv g">chain OK · +1</span>
+<span class="lk">ts         </span> <span class="lv">2026-05-09T18:44:12Z</span></div>
+
+<div class="ledger-entry"><span class="lk">id         </span> <span class="lv c">autoresearch/E11/LEGORACLE_GATE</span>
+<span class="lk">op         </span> <span class="lv">autoresearch_epoch</span>
+<span class="lk">status     </span> <span class="lv g">SHIPPED</span>
+<span class="lk">payload_hash</span> <span class="lv">7b2e4f91c80a3d56e1709bac35f82d4e</span>
+<span class="lk">cum_hash   </span> <span class="lv g">chain OK · +1</span>
+<span class="lk">ts         </span> <span class="lv">2026-05-08T21:12:07Z</span></div>
+
+<div class="ledger-entry"><span class="lk">id         </span> <span class="lv a">promotion_queue/PC_HAL_GROUNDING/gate_c</span>
+<span class="lk">op         </span> <span class="lv">mayor_decision</span>
+<span class="lk">status     </span> <span class="lv r">NO_SHIP · Gate C test missing</span>
+<span class="lk">payload_hash</span> <span class="lv">3c9a1e82f047b6d5c2810f4e79a3b512</span>
+<span class="lk">cum_hash   </span> <span class="lv g">chain OK · +1</span>
+<span class="lk">ts         </span> <span class="lv">2026-05-09T09:30:44Z</span></div>
+
+<div class="ledger-entry"><span class="lk">id         </span> <span class="lv c">wul_packet_validator/P1/SHIP</span>
+<span class="lk">op         </span> <span class="lv">mayor_decision</span>
+<span class="lk">status     </span> <span class="lv g">SHIP · 29/29 tests GREEN</span>
+<span class="lk">payload_hash</span> <span class="lv">e4f2a0b8d1c6903f7e52819dcb34a671</span>
+<span class="lk">cum_hash   </span> <span class="lv g">chain OK · +1</span>
+<span class="lk">ts         </span> <span class="lv">2026-05-07T14:18:22Z</span></div>
+
+<div class="ledger-entry"><span class="lk">id         </span> <span class="lv a">skills_showcase/telegram/msg_846</span>
+<span class="lk">op         </span> <span class="lv">goblin_ephemeral</span>
+<span class="lk">status     </span> <span class="lv a">SENT · authority=false · NO_SHIP</span>
+<span class="lk">payload_hash</span> <span class="lv">f1d3b90e7a284c56d89012ef6a75c380</span>
+<span class="lk">cum_hash   </span> <span class="lv g">chain OK · +1</span>
+<span class="lk">ts         </span> <span class="lv">2026-05-10T16:21:09Z</span></div>
+`},
+
+queue: {
+  id: 'helensh/sovereign/federated/claims/promotion_queue.jsonl · 28 entries',
+  trust: 'LOCAL',
+  doNow: 'Assign MAYOR ruling to Gate B/C entries — 28 claims blocked at PENDING.',
+  receipt: 'PENDING',
+  hotspots: [
+    { id:'qblock', type:'GAP', color:'r',
+      px:.14, py:.34,
+      label:'GAP: 28 PENDING rulings',
+      title:'28 pre-claims awaiting MAYOR — none ruled yet',
+      rows:[
+        {k:'gap_id',  v:'GAP-MAYOR-QUEUE'},
+        {k:'total',   v:'28 entries',            c:'a'},
+        {k:'gate_c',  v:'6 missing falsification', c:'r'},
+        {k:'action',  v:'MAYOR ruling required',  c:'r'},
+        {k:'blocked', v:'all NO_SHIP until signed'},
+      ],
+      acts:['CREATE TASK','HOLD','EXTRACT'], receipt:null },
+
+    { id:'arch', type:'CLAIM', color:'c',
+      px:.72, py:.36,
+      label:'CLAIM: ARCHITECTURE/SOURCE_PILOT',
+      title:'Pre-claim: Source Pilot doctrine — awaiting MAYOR',
+      rows:[
+        {k:'claim_id', v:'PC_SOURCE_PILOT_ARCH'},
+        {k:'category', v:'ARCHITECTURE',           c:'c'},
+        {k:'gate',     v:'B — MAYOR review',       c:'a'},
+        {k:'rv',       v:'PENDING',                c:'a'},
+        {k:'mv',       v:'PENDING',                c:'a'},
+        {k:'evidence', v:'starship.html V3B'},
+      ],
+      acts:['VERIFY CLAIM','MAKE RECEIPT','CREATE TASK'], receipt:null },
+
+    { id:'keeper', type:'RECEIPT', color:'g',
+      px:.40, py:.61,
+      label:'RECEIPT: 2 KEEPER lines',
+      title:'Two keeper lines locked — MAYOR signed 2026-05-09',
+      rows:[
+        {k:'receipt',  v:'R-KEEPER-001 · R-KEEPER-002', c:'g'},
+        {k:'status',   v:'SHIP',                        c:'g'},
+        {k:'content',  v:'swarm_promotion_doctrine'},
+        {k:'mayor',    v:'signed · 2026-05-09',         c:'g'},
+      ],
+      acts:['VERIFY RECEIPT','EXTRACT'], receipt:'R-KEEPER-001' },
+
+    { id:'falsi', type:'GAP', color:'r',
+      px:.66, py:.76,
+      label:'GAP: falsification missing ×6',
+      title:'6 Gate C entries missing falsification_test',
+      rows:[
+        {k:'gap_id',  v:'GAP-GATE-C-FALSI'},
+        {k:'count',   v:'6 entries',              c:'r'},
+        {k:'impact',  v:'Gate C cannot proceed',  c:'r'},
+        {k:'action',  v:'write falsification_test', c:'a'},
+      ],
+      acts:['CREATE TASK','FLAG GAP','HOLD'], receipt:null },
+  ],
+  render: () => `
+<div class="src-eyebrow">HELEN OS · promotion_queue.jsonl · 28 entries · helensh pipeline</div>
+<div class="src-commit">gate_a: 14 PENDING  ·  gate_b: 8 PENDING  ·  gate_c: 6 PENDING / 2 NO_SHIP</div>
+<div class="src-meta">MAYOR rulings: 0 SHIP · 2 NO_SHIP · 28 PENDING · 2 KEEPER (signed 2026-05-09)</div>
+
+<div class="task-row" style="border-bottom:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.2);font-size:8px">
+  <div>#</div><div>ID</div><div>CAT</div><div>TITLE</div><div style="text-align:right">MAYOR</div>
+</div>
+<div class="task-row">
+  <div class="task-idx">01</div>
+  <div class="task-id">PC_SOURCE_PILOT</div>
+  <div class="task-cat">ARCHITECTURE</div>
+  <div class="task-title">Source Pilot replaces app launcher — cockpit doctrine</div>
+  <div class="task-st pend">PENDING</div>
+</div>
+<div class="task-row">
+  <div class="task-idx">02</div>
+  <div class="task-id">PC_HAL_GROUNDING</div>
+  <div class="task-cat">TEST</div>
+  <div class="task-title">HAL grounding gap — Gate C test required</div>
+  <div class="task-st noship">NO_SHIP</div>
+</div>
+<div class="task-row">
+  <div class="task-idx">03</div>
+  <div class="task-id">PC_LEGORACLE_E12</div>
+  <div class="task-cat">MECHANISM</div>
+  <div class="task-title">LEGORACLE replay gate — E12 determinism verified</div>
+  <div class="task-st pend">PENDING</div>
+</div>
+<div class="task-row">
+  <div class="task-idx">04</div>
+  <div class="task-id">PC_WUL_VALIDATOR</div>
+  <div class="task-cat">MECHANISM</div>
+  <div class="task-title">WUL packet validator P1 — 29/29 tests green</div>
+  <div class="task-st ship">SHIP</div>
+</div>
+<div class="task-row">
+  <div class="task-idx">05</div>
+  <div class="task-id">PC_SWARM_PROMO</div>
+  <div class="task-cat">DOCTRINE</div>
+  <div class="task-title">Swarm promotion pipeline — 3-gate model locked</div>
+  <div class="task-st pend">PENDING</div>
+</div>
+<div class="task-row">
+  <div class="task-idx">06</div>
+  <div class="task-id">PC_GOBLIN_MODE</div>
+  <div class="task-cat">DOCTRINE</div>
+  <div class="task-title">GOBLIN MODE — creative recovery dialect, UNDERWARREN_SAFE</div>
+  <div class="task-st pend">PENDING</div>
+</div>
+<div class="task-row">
+  <div class="task-idx">07</div>
+  <div class="task-id">PC_MATH_TO_FACE</div>
+  <div class="task-cat">ARCHITECTURE</div>
+  <div class="task-title">Math→Face sovereign pipeline — φ-SDE scaffold Phase 0</div>
+  <div class="task-st pend">PENDING</div>
+</div>
+<div class="task-row">
+  <div class="task-idx">08</div>
+  <div class="task-id">PC_COMP_USE_V1</div>
+  <div class="task-cat">MECHANISM</div>
+  <div class="task-title">Computer Use Skill — HELEN OS body layer, 4-phase roadmap</div>
+  <div class="task-st pend">PENDING</div>
+</div>
+<div class="task-row" style="color:rgba(255,255,255,.18);font-size:8.5px;padding:10px 0">
+  <div></div><div colspan="4" style="grid-column:2/6">· · · 20 more entries · MAYOR ruling: PENDING on all · ·  ·</div>
+</div>
+`}
+};
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+let mode = 'diff';
+let activeHs = null;
+let receipts = 0;
+
+// ── RENDER ───────────────────────────────────────────────────────────────────
+function switchMode(key, pill) {
+  mode = key;
+  document.querySelectorAll('.src-pill').forEach(p => p.classList.remove('active'));
+  pill.classList.add('active');
+  const src = SOURCES[key];
+  document.getElementById('source-inner').innerHTML = src.render();
+  document.getElementById('ht-src-id').textContent = src.id;
+  document.getElementById('ht-trust').textContent = src.trust;
+  document.getElementById('ht-receipt-status').textContent = src.receipt;
+  document.getElementById('dn-text').textContent = src.doNow;
+  renderHotspots(src.hotspots);
+  closeInsp();
+  setStatus('SOURCE PILOT · ' + key.toUpperCase() + ' · CLICK HOTSPOT TO INSPECT');
+}
+
+function renderHotspots(hotspots) {
+  const layer = document.getElementById('hotspot-layer');
+  layer.innerHTML = '';
+  hotspots.forEach(hs => {
+    const el = document.createElement('div');
+    el.className = `hotspot hs-${hs.color}`;
+    el.style.cssText = `left:${hs.px*100}%;top:${hs.py*100}%`;
+    el.innerHTML = `<div class="hs-dot"></div><div class="hs-tag">${hs.label}${hs.receipt?' ✓':''}</div>`;
+    el.addEventListener('click', e => { e.stopPropagation(); openInsp(hs, e.clientX, e.clientY); });
+    layer.appendChild(el);
   });
 }
-renderHotspots();
 
-let activeHs=null;
+// ── INSPECTOR ────────────────────────────────────────────────────────────────
+const COLOR_MAP = {c:'var(--c)', g:'var(--g)', a:'var(--a)', r:'var(--r)'};
 
-function openInsp(hs,cx,cy){
-  activeHs=hs;
-  document.getElementById('insp-type').textContent=hs.type;
-  document.getElementById('insp-title').textContent=hs.title;
-  const R=document.getElementById('insp-rows');R.innerHTML='';
-  hs.rows.forEach(r=>{const d=document.createElement('div');d.className='insp-row';d.innerHTML='<span class="ik">'+r.k+'</span><span class="iv '+(r.c||'')+'">'+r.v+'</span>';R.appendChild(d)});
-  const A=document.getElementById('insp-acts');A.innerHTML='';
-  hs.acts.forEach(a=>{const b=document.createElement('button');b.className='ia';b.textContent=a;b.onclick=()=>inspAct(a,hs);A.appendChild(b)});
-  const rec=document.getElementById('insp-receipt');
-  if(hs.receipt){rec.textContent='RECEIPT: '+hs.receipt+' · authority=false';rec.className='insp-receipt has-receipt'}
-  else{rec.textContent='NO RECEIPT · authority=false · action required';rec.className='insp-receipt'}
-  const insp=document.getElementById('inspector');
-  const iw=268,ih=280,m=12;
-  let ix=cx+16,iy=cy-40;
-  if(ix+iw+m>innerWidth)ix=cx-iw-16;
-  if(iy<32)iy=32;
-  if(iy+ih>innerHeight-48)iy=innerHeight-48-ih;
-  insp.style.left=ix+'px';insp.style.top=iy+'px';
+function openInsp(hs, cx, cy) {
+  activeHs = hs;
+  const typeEl = document.getElementById('insp-type');
+  typeEl.textContent = hs.type;
+  typeEl.style.color = COLOR_MAP[hs.color] || 'var(--a)';
+  document.getElementById('insp-title').textContent = hs.title;
+
+  const rows = document.getElementById('insp-rows');
+  rows.innerHTML = '';
+  hs.rows.forEach(r => {
+    const d = document.createElement('div');
+    d.className = 'insp-row';
+    d.innerHTML = `<span class="ik">${r.k}</span><span class="iv ${r.c||''}">${r.v}</span>`;
+    rows.appendChild(d);
+  });
+
+  const acts = document.getElementById('insp-acts');
+  acts.innerHTML = '';
+  hs.acts.forEach(a => {
+    const b = document.createElement('button');
+    b.className = 'ia'; b.textContent = a;
+    b.onclick = () => inspAct(a, hs);
+    acts.appendChild(b);
+  });
+
+  const rec = document.getElementById('insp-receipt');
+  if (hs.receipt) {
+    rec.textContent = 'RECEIPT: ' + hs.receipt + ' · authority=false';
+    rec.className = 'insp-receipt minted';
+  } else {
+    rec.textContent = 'NO RECEIPT · authority=false · action required';
+    rec.className = 'insp-receipt';
+  }
+
+  const insp = document.getElementById('inspector');
+  const iw = 272, m = 12;
+  let ix = cx + 18, iy = cy - 44;
+  if (ix + iw + m > innerWidth) ix = cx - iw - 18;
+  if (iy < 48) iy = 48;
+  if (iy + 320 > innerHeight - 44) iy = innerHeight - 44 - 320;
+  insp.style.left = ix + 'px'; insp.style.top = iy + 'px';
   insp.classList.add('on');
-  setStatus('INSPECTING: '+hs.type+' · '+hs.label);
+  setStatus('INSPECTING: ' + hs.type + ' · ' + hs.label);
 }
 
-function closeInsp(){
+function closeInsp() {
   document.getElementById('inspector').classList.remove('on');
-  setStatus('SOURCE PILOT MODE · CLICK A SEMANTIC OVERLAY TO INSPECT');
-  activeHs=null;
+  setStatus('SOURCE PILOT · CLICK HOTSPOT TO INSPECT');
+  activeHs = null;
 }
 
-function inspAct(action,hs){
-  if(action.includes('RECEIPT'))makeReceipt(hs);
-  else if(action==='HOLD')railAct('hold');
-  else if(action.includes('TASK'))railAct('task');
-  else{flash('→ '+action+' · PENDING_RECEIPT');setStatus(action+' routed · no receipt yet')}
+function inspAct(action, hs) {
+  if (action.includes('RECEIPT')) { makeReceipt(hs); return; }
+  if (action === 'HOLD' || action.includes('HOLD')) { railAct('hold'); return; }
+  if (action.includes('TASK')) { railAct('task'); return; }
+  flash('→ ' + action + ' · PENDING_RECEIPT');
+  setStatus(action + ' routed · no receipt issued yet');
 }
 
-function railAct(action){
-  if(action==='receipt'){activeHs?makeReceipt(activeHs):flash('SELECT A HOTSPOT FIRST');return}
-  const m={verify:'VERIFY → K-gate check initiated · awaiting receipt',extract:'EXTRACT → 7 semantic objects queued',task:'TASK CREATED → HIGH priority rail',compare:'COMPARE → select second source to diff',hold:'HOLD → no irreversible action · MAYOR notified'};
-  flash((m[action]||action).toUpperCase());setStatus(m[action]||action);
+// ── RAIL ACTIONS ─────────────────────────────────────────────────────────────
+function railAct(action) {
+  if (action === 'receipt') { activeHs ? makeReceipt(activeHs) : flash('SELECT A HOTSPOT FIRST'); return; }
+  const m = {
+    verify:  'VERIFY → K-gate check initiated · receipt pending',
+    extract: 'EXTRACT → semantic objects queued for classification',
+    task:    'TASK CREATED → HIGH priority · awaiting MAYOR',
+    compare: 'COMPARE → select second source',
+    hold:    'HOLD → no irreversible action · MAYOR notified',
+  };
+  flash((m[action] || action).toUpperCase());
+  setStatus(m[action] || action);
 }
 
-function makeReceipt(hs){
-  const hash='R-'+hs.id.toUpperCase()+'-'+Date.now().toString(36).toUpperCase();
-  hs.receipt=hash;
-  const rec=document.getElementById('insp-receipt');
-  rec.textContent='RECEIPT: '+hash+' · authority=false';
-  rec.className='insp-receipt has-receipt';
-  flash('RECEIPT MINTED · '+hash);
-  setStatus('RECEIPT '+hash+' · pending MAYOR · NO_SHIP');
-  renderHotspots();
+function makeReceipt(hs) {
+  const hash = 'R-' + hs.id.toUpperCase() + '-' + Date.now().toString(36).toUpperCase();
+  hs.receipt = hash;
+  receipts++;
+  const rec = document.getElementById('insp-receipt');
+  rec.textContent = 'RECEIPT: ' + hash + ' · authority=false';
+  rec.className = 'insp-receipt minted';
+  flash('RECEIPT MINTED · ' + hash + ' · NO_SHIP UNTIL MAYOR SIGNS');
+  setStatus('RECEIPT ' + hash + ' · PENDING · NO_SHIP');
+  renderHotspots(SOURCES[mode].hotspots);
 }
 
-function flash(msg){const f=document.getElementById('flash');f.textContent=msg;f.classList.add('on');setTimeout(()=>f.classList.remove('on'),3000)}
-function setStatus(msg){document.getElementById('rail-status').textContent=msg}
+function flash(msg) {
+  const f = document.getElementById('flash');
+  f.textContent = msg; f.classList.add('on');
+  setTimeout(() => f.classList.remove('on'), 3000);
+}
+function setStatus(msg) { document.getElementById('rail-status').textContent = msg; }
 
-document.addEventListener('click',e=>{const i=document.getElementById('inspector');if(!i.contains(e.target)&&!e.target.closest('.hotspot'))closeInsp()});
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){closeInsp();return}
-  if(e.metaKey||e.ctrlKey)return;
-  const m={v:'verify',r:'receipt',h:'hold',e:'extract',c:'compare',t:'task'};
-  if(m[e.key])railAct(m[e.key]);
+// ── EVENTS ───────────────────────────────────────────────────────────────────
+document.addEventListener('click', e => {
+  const insp = document.getElementById('inspector');
+  if (!insp.contains(e.target) && !e.target.closest('.hotspot')) closeInsp();
 });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeInsp(); return; }
+  if (e.metaKey || e.ctrlKey) return;
+  const m = { v:'verify', e:'extract', r:'receipt', t:'task', c:'compare', h:'hold' };
+  if (m[e.key]) railAct(m[e.key]);
+});
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+switchMode('diff', document.querySelector('.src-pill.active'));
 </script>
 </body>
 </html>
