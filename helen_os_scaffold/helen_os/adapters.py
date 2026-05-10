@@ -10,7 +10,7 @@ class LLMAdapter(ABC):
         pass
 
 class OllamaAdapter(LLMAdapter):
-    def __init__(self, base_url: str = "http://localhost:11434", model: str = "mistral"):
+    def __init__(self, base_url: str = "http://localhost:11434", model: str = "qwen3.6:latest"):
         self.base_url = base_url
         self.model = model
 
@@ -34,7 +34,7 @@ class OllamaAdapter(LLMAdapter):
                     "messages": messages,
                     "stream": False
                 },
-                timeout=60
+                timeout=300
             )
             response.raise_for_status()
             return response.json().get("message", {}).get("content", "No response from Ollama.")
@@ -121,7 +121,7 @@ def get_adapter(config: Dict[str, Any]) -> LLMAdapter:
         opts = config.get("adapter", {}).get("ollama", {})
         return OllamaAdapter(
             base_url=opts.get("base_url", "http://localhost:11434"),
-            model=opts.get("model", "mistral")
+            model=opts.get("model", "qwen3.6:latest")
         )
     elif adapter_type == "openai":
         opts = config.get("adapter", {}).get("openai", {})
