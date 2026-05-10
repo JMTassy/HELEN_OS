@@ -312,29 +312,36 @@ html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:
 #geo-bg svg{width:100%;height:100%;animation:geoPulse 14s ease-in-out infinite}
 @keyframes geoPulse{0%,100%{opacity:.07}50%{opacity:.13}}
 
-/* ── AUTORESEARCH_UI_E02: What Do I Do Now? ── */
-#next-action{
-  height:38px;flex-shrink:0;display:flex;align-items:center;gap:10px;
-  padding:0 16px;background:rgba(201,164,58,.04);
-  border-bottom:1px solid rgba(201,164,58,.14);position:relative;z-index:1;
+/* ── AUTORESEARCH_UI_E02: NOW CARD — six-pack ── */
+#now-card{
+  flex-shrink:0;background:rgba(7,7,10,.97);
+  border-bottom:1px solid rgba(201,164,58,.14);
+  padding:11px 16px 13px;position:relative;z-index:1;
 }
-.na-state{
-  font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--state-accent);flex-shrink:0;padding:2px 9px;
-  border:1px solid var(--state-accent);border-radius:100px;background:var(--state-bg);
+.nc-title{
+  font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.32em;
+  text-transform:uppercase;color:var(--state-accent);
+  display:flex;align-items:center;gap:8px;margin-bottom:10px;
 }
-.na-arrow{color:var(--dim);font-size:10px;flex-shrink:0}
-.na-prefix{
-  font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.15em;
-  text-transform:uppercase;color:var(--state-accent);flex-shrink:0;
+.nc-title::after{content:'';flex:1;height:1px;background:rgba(201,164,58,.1)}
+.nc-grid{
+  display:grid;
+  grid-template-columns:1.1fr 1.5fr 1.7fr 1fr 1fr 1.9fr;
+  gap:0;
 }
-.na-text{font-size:11px;color:var(--silver);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.na-ack{
-  font-family:var(--mono);font-size:7px;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--dim);cursor:pointer;flex-shrink:0;padding:2px 8px;
-  border:1px solid var(--border);border-radius:4px;transition:all .15s;
+.nc-cell{padding-right:16px;margin-right:0;border-right:1px solid var(--border)}
+.nc-cell:last-child{border-right:none;padding-right:0}
+.nc-cell+.nc-cell{padding-left:16px}
+.nc-lbl{
+  font-family:var(--mono);font-size:6.5px;font-weight:700;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--dim);margin-bottom:4px;
 }
-.na-ack:hover{color:var(--silver);border-color:var(--border-hi)}
+.nc-val{font-size:10.5px;color:var(--silver);line-height:1.45}
+.nc-val.v-mode{font-family:var(--mono);font-size:9px;color:var(--state-accent);letter-spacing:.04em}
+.nc-val.v-action{color:var(--white);font-weight:500}
+.nc-val.v-allowed{color:var(--green);font-family:var(--mono);font-size:9px;letter-spacing:.05em}
+.nc-val.v-blocked{color:var(--red);font-family:var(--mono);font-size:9px;letter-spacing:.05em}
+.nc-val.v-why{font-size:10px;color:var(--dim)}
 
 /* Surface 0 orientation panel */
 .entry-orient{
@@ -479,13 +486,35 @@ html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:
     </div>
   </div>
 
-  <!-- ── NEXT ACTION BAR — answers "what do I do now?" in <3s ── -->
-  <div id="next-action">
-    <div class="na-state"  id="na-state">—</div>
-    <div class="na-arrow">→</div>
-    <div class="na-prefix" id="na-prefix">NOW</div>
-    <div class="na-text"   id="na-text">Select your state above to receive your first directive.</div>
-    <div class="na-ack" onclick="dismissNext()" title="mark done, show next">✓ done</div>
+  <!-- ── NOW CARD — HELEN six-pack · answers "what do I do now?" in <3s ── -->
+  <div id="now-card">
+    <div class="nc-title" id="nc-title">NOW</div>
+    <div class="nc-grid">
+      <div class="nc-cell">
+        <div class="nc-lbl">Mode</div>
+        <div class="nc-val v-mode" id="nc-mode">Select state →</div>
+      </div>
+      <div class="nc-cell">
+        <div class="nc-lbl">Active Object</div>
+        <div class="nc-val" id="nc-object">HELEN Cockpit E02</div>
+      </div>
+      <div class="nc-cell">
+        <div class="nc-lbl">Do Now</div>
+        <div class="nc-val v-action" id="nc-action">Enter Surface 0 to receive your directive.</div>
+      </div>
+      <div class="nc-cell">
+        <div class="nc-lbl">Allowed</div>
+        <div class="nc-val v-allowed" id="nc-allowed">—</div>
+      </div>
+      <div class="nc-cell">
+        <div class="nc-lbl">Blocked</div>
+        <div class="nc-val v-blocked" id="nc-blocked">—</div>
+      </div>
+      <div class="nc-cell">
+        <div class="nc-lbl">Why</div>
+        <div class="nc-val v-why" id="nc-why">State unknown. Declare before acting.</div>
+      </div>
+    </div>
   </div>
 
   <!-- 5 columns -->
@@ -928,35 +957,79 @@ html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:
 </div>
 
 <script>
-/* ── AUTORESEARCH_UI_E02: Next-Action directives ── */
-const NEXT_ACTIONS = {
-  calm:    { prefix:'READY',     items:['MAYOR ruling on 28 pre-claims — Gate B/C review is your highest-value action today','Wire /api/ledger to cockpit — Surface 3 needs live data','Tag 4 unread X sources for PULL (Karpathy · LeCun · Altman · Mostaque)'] },
-  excited: { prefix:'CONSTRAIN', items:['You are in capture mode — write the idea DOWN, do NOT ship it yet','Pick ONE object to hold and close all other tabs','AUTORESEARCH E13 is blocked — stay in capture, do not unblock yet'] },
-  worried: { prefix:'CLARIFY',   items:['E11/E12 reconciliation is your top blocker — read the hypothesis before adding new work','Reduce scope: what is the one thing you are certain about?','Check the ledger — is anything marked PENDING_RECEIPT that should be receipted?'] },
-  angry:   { prefix:'WITNESS',   items:['No irreversible actions in this state — HELEN is holding the gate for you','Read the ledger only — observe what has receipts, what does not','Write nothing, delete nothing, ship nothing — the field is stable without your action'] },
-  sad:     { prefix:'PRESERVE',  items:['Low-demand mode — protect what exists, no new commitments','Close one small open loop — that is enough for today','Check what is already done and mark it done in the task rail'] },
-  proud:   { prefix:'ARCHIVE',   items:['Write the receipt for what you just shipped — make it real','Document the decision: why was this the right move?','What is stable enough to archive? Move it from ACTIVE to DONE.'] },
-  scared:  { prefix:'SAFETY',    items:['Reduce surface area — close open loops before opening new ones','Smallest safe next step: what is the one action with the least risk?','Check the sovereign ledger — what is already proven? Build from there.'] },
-  happy:   { prefix:'CREATE',    items:['Creative mode is fully open — what wants to be made?','Capture the idea with a receipt so it enters the sovereign layer','Connect two things that have not been connected yet'] },
+/* ── AUTORESEARCH_UI_E02: NOW CARD six-pack data ── */
+const NOW_CARDS = {
+  calm: {
+    mode:    'CALM → VALIDATE_AND_SHIP',
+    action:  'Review receipt status and run GO / NO-GO.',
+    allowed: 'VALIDATE · PERSIST · SHIP',
+    blocked: 'None unless HAL or Ledger holds.',
+    why:     'Operator state is stable. Irreversible action authorized when receipted.'
+  },
+  excited: {
+    mode:    'EXCITED → CAPTURE_AND_CONSTRAIN',
+    action:  'Choose one improvement and test it.',
+    allowed: 'PULL · COMPOSE · HOLD',
+    blocked: 'SHIP · PERSIST',
+    why:     'No receipt yet + excited state risks scope explosion.'
+  },
+  worried: {
+    mode:    'WORRIED → CLARIFY_AND_REDUCE',
+    action:  'Reduce the next step to one safe action.',
+    allowed: 'PULL · CLARIFY · HOLD',
+    blocked: 'SHIP · DELETE · SEND',
+    why:     'Uncertainty is high. HELEN keeps action reversible.'
+  },
+  angry: {
+    mode:    'ANGRY → WITNESS_ONLY',
+    action:  'Read. Observe. Write nothing.',
+    allowed: 'PULL · READ',
+    blocked: 'SHIP · DELETE · PERSIST · SEND',
+    why:     'High emotional state risks irreversible error. Witness mode protects the field.'
+  },
+  sad: {
+    mode:    'SAD → PRESERVE_AND_PROTECT',
+    action:  'Close one small open loop. That is enough.',
+    allowed: 'PULL · HOLD',
+    blocked: 'SHIP · DELETE · NEW_SCOPE',
+    why:     'Low-demand mode. Protect what exists. No new commitments.'
+  },
+  proud: {
+    mode:    'PROUD → ARCHIVE_AND_REFLECT',
+    action:  'Write the receipt for what you shipped.',
+    allowed: 'VALIDATE · PERSIST · ARCHIVE',
+    blocked: 'None unless Ledger incomplete.',
+    why:     'Good state for documentation and reflection. Make shipped work real.'
+  },
+  scared: {
+    mode:    'SCARED → SAFETY_MODE',
+    action:  'Smallest safe next step only.',
+    allowed: 'PULL · READ · HOLD',
+    blocked: 'SHIP · DELETE · SEND · NEW_SCOPE',
+    why:     'Reduce surface area. Build only from what is already proven.'
+  },
+  happy: {
+    mode:    'HAPPY → CREATE_AND_CONNECT',
+    action:  'What wants to be made? Capture it with a receipt.',
+    allowed: 'PULL · COMPOSE · VALIDATE · SHIP',
+    blocked: 'Nothing — receipt required for persistence.',
+    why:     'Creative mode is fully open. Full grammar authorized.'
+  }
 };
 
-let naIndex = 0;
+let currentObject = 'HELEN Cockpit E02';
 
-function updateNextAction() {
+function updateNowCard() {
   if (!currentState) return;
-  const d = NEXT_ACTIONS[currentState];
+  const d = NOW_CARDS[currentState];
   const s = STATES[currentState];
-  naIndex = 0;
-  document.getElementById('na-state').textContent  = s.badge;
-  document.getElementById('na-prefix').textContent = d.prefix;
-  document.getElementById('na-text').textContent   = d.items[0];
-}
-
-function dismissNext() {
-  if (!currentState) return;
-  const items = NEXT_ACTIONS[currentState].items;
-  naIndex = (naIndex + 1) % items.length;
-  document.getElementById('na-text').textContent = items[naIndex];
+  document.getElementById('nc-title').textContent  = 'NOW · ' + s.badge;
+  document.getElementById('nc-mode').textContent   = d.mode;
+  document.getElementById('nc-object').textContent = currentObject;
+  document.getElementById('nc-action').textContent = d.action;
+  document.getElementById('nc-allowed').textContent= d.allowed;
+  document.getElementById('nc-blocked').textContent= d.blocked;
+  document.getElementById('nc-why').textContent    = d.why;
 }
 
 const STATES = {
@@ -993,7 +1066,7 @@ function openCockpit() {
   const lk = document.getElementById('ship-lock-icon');
   if (d.lock) { sv.classList.add('locked'); lk.style.display='block' }
   else        { sv.classList.remove('locked'); lk.style.display='none' }
-  updateNextAction();
+  updateNowCard();
 }
 
 function resetState() {
@@ -1006,9 +1079,11 @@ function resetState() {
 }
 
 function focusObject(type, name, status) {
-  document.getElementById('obj-type').textContent = type;
-  document.getElementById('obj-name').textContent = name;
+  document.getElementById('obj-type').textContent   = type;
+  document.getElementById('obj-name').textContent   = name;
   document.getElementById('obj-status').textContent = status;
+  currentObject = name;
+  document.getElementById('nc-object').textContent  = name;
 }
 
 function setObjType(el, type) {
