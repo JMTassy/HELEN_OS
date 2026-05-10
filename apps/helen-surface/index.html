@@ -318,9 +318,18 @@ html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:
   border-bottom:1px solid rgba(201,164,58,.14);
   padding:9px 16px;position:relative;z-index:1;
   display:grid;
-  grid-template-columns:220px 1fr 200px 1fr;
+  grid-template-columns:200px 1fr 180px 1fr 240px;
   gap:0;align-items:center;
 }
+/* action buttons inside NOW CARD */
+.nc-actions{display:flex;gap:6px;align-items:center}
+.nc-btn{
+  font-family:var(--mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--state-accent);background:var(--state-bg);
+  border:1px solid var(--state-accent);border-radius:5px;
+  padding:4px 10px;cursor:pointer;transition:all .15s;white-space:nowrap;
+}
+.nc-btn:hover{background:rgba(201,164,58,.12);color:var(--white)}
 .nc-cell{padding-right:16px;border-right:1px solid var(--border)}
 .nc-cell+.nc-cell{padding-left:16px}
 .nc-cell:last-child{border-right:none}
@@ -532,6 +541,14 @@ html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:
     <div class="nc-cell">
       <div class="nc-lbl">Why</div>
       <div class="nc-val v-why" id="nc-why">State unknown. Declare before acting.</div>
+    </div>
+    <div class="nc-cell" style="border-right:none">
+      <div class="nc-lbl">Do it →</div>
+      <div class="nc-actions" id="nc-actions">
+        <button class="nc-btn" id="ncb0" onclick="ncAct(0)">—</button>
+        <button class="nc-btn" id="ncb1" onclick="ncAct(1)">—</button>
+        <button class="nc-btn" id="ncb2" onclick="ncAct(2)">—</button>
+      </div>
     </div>
   </div>
 
@@ -1041,16 +1058,75 @@ const NOW_CARDS = {
   }
 };
 
+/* ── State-aware one-click actions ── */
+const STATE_ACTIONS = {
+  calm:    [
+    { label:'Check tasks',   fn: () => oracleResp('Task rail → review HIGH priority items. Top: MAYOR ruling on 28 pre-claims.') },
+    { label:'Run Ship check',fn: () => attemptShip() },
+    { label:'Open email',    fn: () => { window.open('https://mail.google.com','_blank'); oracleResp('Gmail opened.'); } },
+  ],
+  excited: [
+    { label:'Capture idea',  fn: () => { fillOracle('focus '); oracleResp('Type the name of your idea → press Enter to set focus.'); } },
+    { label:'Play music',    fn: () => executeOracle('play') },
+    { label:'Open calendar', fn: () => executeOracle('calendar') },
+  ],
+  worried: [
+    { label:'See blockers',  fn: () => oracleResp('Top blocker: E11/E12 reconciliation. Reduce scope before new work.') },
+    { label:'Open tasks',    fn: () => oracleResp('Task rail → find the one thing you are certain about and start there.') },
+    { label:'Check ledger',  fn: () => oracleResp('Ledger: 128 PENDING_RECEIPT. Wire /api/ledger for live data.') },
+  ],
+  angry:   [
+    { label:'Read ledger',   fn: () => oracleResp('Ledger: witness mode. Observe receipts. Nothing to write.') },
+    { label:'Check status',  fn: () => executeOracle('status') },
+    { label:'Take a breath', fn: () => oracleResp('HELEN is holding the gate. No irreversible action will pass in this state.') },
+  ],
+  sad:     [
+    { label:'See what is done', fn: () => oracleResp('Done: three-field model · home cockpit v2 · E16 specimen. You shipped real things.') },
+    { label:'Close one loop',   fn: () => oracleResp('Pick the smallest open task and close it. One is enough.') },
+    { label:'Play music',       fn: () => executeOracle('play') },
+  ],
+  proud:   [
+    { label:'Write receipt', fn: () => { fillOracle('focus '); oracleResp('Name what you shipped → HELEN will help you write its receipt.'); } },
+    { label:'Open GitHub',   fn: () => executeOracle('github') },
+    { label:'Archive done',  fn: () => oracleResp('Move completed tasks to Done. Make the win visible.') },
+  ],
+  scared:  [
+    { label:'See what is proven', fn: () => oracleResp('Proven: three-field model · cockpit shipped · AUTORESEARCH E16. Build from these.') },
+    { label:'Reduce to one step', fn: () => oracleResp('What is the single safest next action? Name it in the Oracle Line.') },
+    { label:'Check status',       fn: () => executeOracle('status') },
+  ],
+  happy:   [
+    { label:'Create something',fn: () => { fillOracle('focus '); oracleResp('What wants to be made? Name it → HELEN sets focus.'); } },
+    { label:'Play music',      fn: () => executeOracle('play') },
+    { label:'Open email',      fn: () => executeOracle('email') },
+  ],
+};
+
+let _ncActions = [];
+
+function ncAct(i) { if (_ncActions[i]) _ncActions[i].fn(); }
+
+function oracleResp(msg) {
+  document.getElementById('oracle-resp').textContent = msg;
+}
+
 let currentObject = 'HELEN Cockpit E03';
 
 function updateNowCard() {
   if (!currentState) return;
   const d = NOW_CARDS[currentState];
   const s = STATES[currentState];
-  document.getElementById('nc-mode').textContent   = d.mode;
-  document.getElementById('nc-action').textContent = d.action;
-  document.getElementById('nc-blocked').textContent= d.blocked;
-  document.getElementById('nc-why').textContent    = d.why;
+  document.getElementById('nc-mode').textContent    = d.mode;
+  document.getElementById('nc-action').textContent  = d.action;
+  document.getElementById('nc-blocked').textContent = d.blocked;
+  document.getElementById('nc-why').textContent     = d.why;
+  _ncActions = STATE_ACTIONS[currentState] || [];
+  ['ncb0','ncb1','ncb2'].forEach((id,i) => {
+    const btn = document.getElementById(id);
+    if (_ncActions[i]) { btn.textContent = _ncActions[i].label; btn.style.display='block'; }
+    else btn.style.display='none';
+  });
+  oracleResp('State: ' + s.badge + ' · ' + _ncActions.length + ' actions available → click above or type a command.');
 }
 
 /* ── ORACLE LINE — intent router ── */
