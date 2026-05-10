@@ -57,7 +57,7 @@ body.s-happy   { --state-accent:var(--green);  --state-bg:var(--green-bg) }
 html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:var(--white);font-family:var(--sans);font-size:12px;-webkit-font-smoothing:antialiased}
 
 /* ═══ SURFACE 0 — OPERATOR STATE ENTRY ═══ */
-#entry{position:fixed;inset:0;z-index:100;background:var(--black);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .4s ease}
+#entry{position:fixed;inset:0;z-index:100;background:rgba(7,7,10,.96);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .4s ease}
 #entry.hidden{opacity:0;pointer-events:none}
 .entry-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:.36em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:20px}
 .entry-q{font-size:22px;font-weight:600;color:var(--white);letter-spacing:-.02em;margin-bottom:6px;text-align:center}
@@ -106,7 +106,7 @@ html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:
 /* Backgrounds */
 .col-stream  {background:var(--deep)}
 .col-sources {background:var(--graphite)}
-.col-compass {background:var(--black)}
+.col-compass {background:rgba(7,7,10,.15)}
 .col-tasks   {background:var(--graphite)}
 .col-ledger  {background:var(--deep)}
 
@@ -306,9 +306,99 @@ html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:
 
 /* Footer */
 .footer{height:20px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:var(--black);border-top:1px solid var(--border);font-family:var(--mono);font-size:7px;letter-spacing:.08em;color:var(--dim)}
+
+/* ── AUTORESEARCH_UI_E01: Sacred Geometry Foundation ── */
+#geo-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+#geo-bg svg{width:100%;height:100%;animation:geoPulse 14s ease-in-out infinite}
+@keyframes geoPulse{0%,100%{opacity:.07}50%{opacity:.13}}
 </style>
 </head>
 <body>
+
+<!-- ═══ AUTORESEARCH_UI_E01 — Sacred Geometry Foundation ═══ -->
+<div id="geo-bg">
+<svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <!-- Temple frame -->
+  <rect x="12" y="12" width="1416" height="876" fill="none" stroke="#c9a43a" stroke-width=".5" opacity=".7"/>
+  <!-- Column pillars — aligned to cockpit grid (200 / 400 / 840 / 1056) -->
+  <line x1="200" y1="12" x2="200" y2="888" stroke="#c9a43a" stroke-width=".3" opacity=".5"/>
+  <line x1="400" y1="12" x2="400" y2="888" stroke="#c9a43a" stroke-width=".3" opacity=".5"/>
+  <line x1="840" y1="12" x2="840" y2="888" stroke="#c9a43a" stroke-width=".3" opacity=".5"/>
+  <line x1="1056" y1="12" x2="1056" y2="888" stroke="#c9a43a" stroke-width=".3" opacity=".5"/>
+  <!-- Header / footer temple lintel -->
+  <line x1="12" y1="34" x2="1428" y2="34" stroke="#c9a43a" stroke-width=".4" opacity=".5"/>
+  <line x1="12" y1="862" x2="1428" y2="862" stroke="#c9a43a" stroke-width=".4" opacity=".5"/>
+  <!-- Sri Yantra + Flower of Life — compass center (620, 446) -->
+  <g transform="translate(620,446)">
+    <!-- Sri Yantra — 9 interlocked triangles -->
+    <polygon points="0,-110 95,55 -95,55"   fill="none" stroke="#c9a43a"          stroke-width=".8" opacity=".85"/>
+    <polygon points="0,110  95,-55 -95,-55"  fill="none" stroke="rgba(160,20,20,.6)" stroke-width=".8" opacity=".85"/>
+    <polygon points="0,-80  70,40 -70,40"   fill="none" stroke="#c9a43a"          stroke-width=".6" opacity=".65"/>
+    <polygon points="0,85   70,-43 -70,-43"  fill="none" stroke="rgba(160,20,20,.5)" stroke-width=".6" opacity=".65"/>
+    <polygon points="0,-55  48,28 -48,28"   fill="none" stroke="#c9a43a"          stroke-width=".5" opacity=".5"/>
+    <polygon points="0,60   48,-30 -48,-30"  fill="none" stroke="rgba(160,20,20,.4)" stroke-width=".5" opacity=".5"/>
+    <polygon points="0,-32  28,16 -28,16"   fill="none" stroke="#c9a43a"          stroke-width=".4" opacity=".38"/>
+    <polygon points="0,35   28,-18 -28,-18"  fill="none" stroke="rgba(160,20,20,.35)" stroke-width=".4" opacity=".38"/>
+    <polygon points="0,-16  14,8  -14,8"    fill="none" stroke="#c9a43a"          stroke-width=".3" opacity=".28"/>
+    <!-- Flower of Life — 7 circles -->
+    <g fill="none" stroke="#c9a43a" stroke-width=".35" opacity=".3">
+      <circle cx="0"   cy="0"   r="60"/>
+      <circle cx="60"  cy="0"   r="60"/>
+      <circle cx="-60" cy="0"   r="60"/>
+      <circle cx="30"  cy="52"  r="60"/>
+      <circle cx="-30" cy="52"  r="60"/>
+      <circle cx="30"  cy="-52" r="60"/>
+      <circle cx="-30" cy="-52" r="60"/>
+    </g>
+    <!-- Ouroboros outer ring -->
+    <circle r="200" fill="none" stroke="#c9a43a" stroke-width=".4" opacity=".25"/>
+    <!-- Cross-rose axis -->
+    <line x1="0" y1="-420" x2="0"    y2="420" stroke="#c9a43a" stroke-width=".3" opacity=".18"/>
+    <line x1="-620" y1="0" x2="620"  y2="0"   stroke="#c9a43a" stroke-width=".3" opacity=".18"/>
+    <!-- Bindu -->
+    <circle r="3" fill="#c9a43a" opacity=".6"/>
+    <circle r="9" fill="none" stroke="#c9a43a" stroke-width=".3" opacity=".3"/>
+  </g>
+  <!-- Rosicrucian cross — Operator Stream column (x≈100) -->
+  <g transform="translate(100,446)" fill="none" opacity=".5">
+    <line x1="0" y1="-65" x2="0"  y2="65" stroke="rgba(160,20,20,.5)" stroke-width=".7"/>
+    <line x1="-42" y1="0" x2="42" y2="0"  stroke="rgba(160,20,20,.5)" stroke-width=".7"/>
+    <circle cx="0" cy="0" r="13" stroke="rgba(160,20,20,.35)" stroke-width=".5"/>
+  </g>
+  <!-- Templar cross — Ledger column (x≈1248) -->
+  <g transform="translate(1248,446)" fill="none" opacity=".45">
+    <rect x="-9" y="-52" width="18" height="104" stroke="#c9a43a" stroke-width=".55" fill="rgba(201,164,58,.03)"/>
+    <rect x="-35" y="-9" width="70" height="18"  stroke="#c9a43a" stroke-width=".55" fill="rgba(201,164,58,.03)"/>
+  </g>
+  <!-- Dharma wheel — Source column (x≈300) -->
+  <g transform="translate(300,446)" fill="none" stroke="#c9a43a" stroke-width=".4" opacity=".3">
+    <circle r="42"/>
+    <circle r="9"/>
+    <line x1="0" y1="-42" x2="0"   y2="42"/>
+    <line x1="-42" y1="0" x2="42"  y2="0"/>
+    <line x1="-30" y1="-30" x2="30" y2="30"/>
+    <line x1="30"  y1="-30" x2="-30" y2="30"/>
+  </g>
+  <!-- Eye of Providence — header center -->
+  <g transform="translate(720,48)" opacity=".5">
+    <ellipse cx="0" cy="0" rx="18" ry="11" fill="none" stroke="#c9a43a" stroke-width=".5"/>
+    <circle  cx="0" cy="0" r="4"   fill="none" stroke="#c9a43a" stroke-width=".4"/>
+    <circle  cx="0" cy="0" r="1.5" fill="#c9a43a"/>
+  </g>
+  <!-- Corner pentagrams -->
+  <g fill="none" stroke="#c9a43a" stroke-width=".45" opacity=".55">
+    <polygon points="50,72  44,90  62,78  38,78  56,90"/>
+    <polygon points="1390,72 1384,90 1402,78 1378,78 1396,90"/>
+    <polygon points="50,828  44,846 62,834 38,834 56,846"/>
+    <polygon points="1390,828 1384,846 1402,834 1378,834 1396,846"/>
+  </g>
+  <!-- Sacred text margins -->
+  <text x="20" y="450" transform="rotate(-90,20,450)" font-size="5.5" fill="rgba(201,164,58,.5)" font-family="Courier New" letter-spacing="3.5" text-anchor="middle">ΑΩ · ARCHE · TELOS · LOGOS · PNEUMA · NOUS · SOPHIA · WITNESS FIRST · NO RECEIPT NO CLAIM</text>
+  <text x="1424" y="450" transform="rotate(90,1424,450)" font-size="5.5" fill="rgba(201,164,58,.5)" font-family="Courier New" letter-spacing="3.5" text-anchor="middle">OM · TAT · SAT · AUM · SHRI · HREEM · KLEEM · THE TEMPLE IS THE COCKPIT · HELEN OS</text>
+  <text x="720" y="893" font-size="5" fill="rgba(201,164,58,.4)" font-family="Courier New" letter-spacing="5" text-anchor="middle">VITRIOL · VISITA INTERIORA TERRAE RECTIFICANDO INVENIES OCCULTUM LAPIDEM · NO RECEIPT · NO CLAIM</text>
+  <text x="720" y="20"  font-size="5" fill="rgba(201,164,58,.4)" font-family="Courier New" letter-spacing="5" text-anchor="middle">AS ABOVE · SO BELOW · AS WITHIN · SO WITHOUT · THE TEMPLE IS THE COCKPIT · THE COCKPIT IS THE TEMPLE</text>
+</svg>
+</div>
 
 <!-- ═══ SURFACE 0 — OPERATOR STATE ENTRY ═══ -->
 <div id="entry">
