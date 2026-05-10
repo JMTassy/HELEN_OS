@@ -311,6 +311,44 @@ html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:
 #geo-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 #geo-bg svg{width:100%;height:100%;animation:geoPulse 14s ease-in-out infinite}
 @keyframes geoPulse{0%,100%{opacity:.07}50%{opacity:.13}}
+
+/* ── AUTORESEARCH_UI_E02: What Do I Do Now? ── */
+#next-action{
+  height:38px;flex-shrink:0;display:flex;align-items:center;gap:10px;
+  padding:0 16px;background:rgba(201,164,58,.04);
+  border-bottom:1px solid rgba(201,164,58,.14);position:relative;z-index:1;
+}
+.na-state{
+  font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--state-accent);flex-shrink:0;padding:2px 9px;
+  border:1px solid var(--state-accent);border-radius:100px;background:var(--state-bg);
+}
+.na-arrow{color:var(--dim);font-size:10px;flex-shrink:0}
+.na-prefix{
+  font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--state-accent);flex-shrink:0;
+}
+.na-text{font-size:11px;color:var(--silver);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.na-ack{
+  font-family:var(--mono);font-size:7px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--dim);cursor:pointer;flex-shrink:0;padding:2px 8px;
+  border:1px solid var(--border);border-radius:4px;transition:all .15s;
+}
+.na-ack:hover{color:var(--silver);border-color:var(--border-hi)}
+
+/* Surface 0 orientation panel */
+.entry-orient{
+  display:flex;flex-direction:column;gap:8px;
+  width:min(580px,88vw);margin-bottom:22px;
+  background:rgba(255,255,255,.02);border:1px solid var(--border);
+  border-radius:9px;padding:14px 16px;
+}
+.orient-row{display:flex;align-items:flex-start;gap:11px;font-size:11px;color:var(--dim);line-height:1.55}
+.orient-num{
+  font-family:var(--mono);font-size:8px;letter-spacing:.1em;
+  color:var(--gold-dim);flex-shrink:0;margin-top:2px;width:18px;
+}
+.orient-row b{color:var(--silver);font-weight:500}
 </style>
 </head>
 <body>
@@ -402,9 +440,13 @@ html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:
 
 <!-- ═══ SURFACE 0 — OPERATOR STATE ENTRY ═══ -->
 <div id="entry">
-  <div class="entry-eyebrow">HELEN OS · Surface 0 · Operator State</div>
-  <div class="entry-q">How are you entering the field today?</div>
-  <div class="entry-sub">Your state routes the cockpit mode. No state → no ship.</div>
+  <div class="entry-eyebrow">HELEN OS · Sovereign Workspace</div>
+  <div class="entry-q">Before you work, declare your state.</div>
+  <div class="entry-orient">
+    <div class="orient-row"><span class="orient-num">01</span><span>Your <b>state (mood)</b> gates what HELEN allows. ANGRY = no delete, no ship. EXCITED = no ship. CALM = full grammar.</span></div>
+    <div class="orient-row"><span class="orient-num">02</span><span>The <b>cockpit</b> has 5 columns: your world · incoming signals · focus object · tasks · receipts. Click any row → it centers on the compass.</span></div>
+    <div class="orient-row"><span class="orient-num">03</span><span><b>Nothing is real without a receipt.</b> HELEN tracks what happened, not what was intended. No receipt = no claim = no ship.</span></div>
+  </div>
   <div class="state-grid">
     <div class="state-card" onclick="selectState('calm')">   <div class="state-icon">◎</div><div class="state-name">CALM</div>   <div class="state-mode">Validate · Ship · Full grammar</div></div>
     <div class="state-card" onclick="selectState('excited')"><div class="state-icon">◈</div><div class="state-name">EXCITED</div><div class="state-mode">Capture · Constrain · Ship delayed</div></div>
@@ -435,6 +477,15 @@ html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:
       <div class="state-badge" id="state-badge" onclick="resetState()">—</div>
       <div class="live-pulse"></div>
     </div>
+  </div>
+
+  <!-- ── NEXT ACTION BAR — answers "what do I do now?" in <3s ── -->
+  <div id="next-action">
+    <div class="na-state"  id="na-state">—</div>
+    <div class="na-arrow">→</div>
+    <div class="na-prefix" id="na-prefix">NOW</div>
+    <div class="na-text"   id="na-text">Select your state above to receive your first directive.</div>
+    <div class="na-ack" onclick="dismissNext()" title="mark done, show next">✓ done</div>
   </div>
 
   <!-- 5 columns -->
@@ -877,6 +928,37 @@ html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:
 </div>
 
 <script>
+/* ── AUTORESEARCH_UI_E02: Next-Action directives ── */
+const NEXT_ACTIONS = {
+  calm:    { prefix:'READY',     items:['MAYOR ruling on 28 pre-claims — Gate B/C review is your highest-value action today','Wire /api/ledger to cockpit — Surface 3 needs live data','Tag 4 unread X sources for PULL (Karpathy · LeCun · Altman · Mostaque)'] },
+  excited: { prefix:'CONSTRAIN', items:['You are in capture mode — write the idea DOWN, do NOT ship it yet','Pick ONE object to hold and close all other tabs','AUTORESEARCH E13 is blocked — stay in capture, do not unblock yet'] },
+  worried: { prefix:'CLARIFY',   items:['E11/E12 reconciliation is your top blocker — read the hypothesis before adding new work','Reduce scope: what is the one thing you are certain about?','Check the ledger — is anything marked PENDING_RECEIPT that should be receipted?'] },
+  angry:   { prefix:'WITNESS',   items:['No irreversible actions in this state — HELEN is holding the gate for you','Read the ledger only — observe what has receipts, what does not','Write nothing, delete nothing, ship nothing — the field is stable without your action'] },
+  sad:     { prefix:'PRESERVE',  items:['Low-demand mode — protect what exists, no new commitments','Close one small open loop — that is enough for today','Check what is already done and mark it done in the task rail'] },
+  proud:   { prefix:'ARCHIVE',   items:['Write the receipt for what you just shipped — make it real','Document the decision: why was this the right move?','What is stable enough to archive? Move it from ACTIVE to DONE.'] },
+  scared:  { prefix:'SAFETY',    items:['Reduce surface area — close open loops before opening new ones','Smallest safe next step: what is the one action with the least risk?','Check the sovereign ledger — what is already proven? Build from there.'] },
+  happy:   { prefix:'CREATE',    items:['Creative mode is fully open — what wants to be made?','Capture the idea with a receipt so it enters the sovereign layer','Connect two things that have not been connected yet'] },
+};
+
+let naIndex = 0;
+
+function updateNextAction() {
+  if (!currentState) return;
+  const d = NEXT_ACTIONS[currentState];
+  const s = STATES[currentState];
+  naIndex = 0;
+  document.getElementById('na-state').textContent  = s.badge;
+  document.getElementById('na-prefix').textContent = d.prefix;
+  document.getElementById('na-text').textContent   = d.items[0];
+}
+
+function dismissNext() {
+  if (!currentState) return;
+  const items = NEXT_ACTIONS[currentState].items;
+  naIndex = (naIndex + 1) % items.length;
+  document.getElementById('na-text').textContent = items[naIndex];
+}
+
 const STATES = {
   calm:    { badge:'CALM',    note:'Field is stable. Full grammar active. Ship authorized when receipted.',         next:'NEXT: validate promotion queue →', lock:false },
   excited: { badge:'EXCITED', note:'High energy. Capture and constrain. COMPOSE allowed. SHIP delayed.',            next:'NEXT: choose one object to hold →', lock:true  },
@@ -911,6 +993,7 @@ function openCockpit() {
   const lk = document.getElementById('ship-lock-icon');
   if (d.lock) { sv.classList.add('locked'); lk.style.display='block' }
   else        { sv.classList.remove('locked'); lk.style.display='none' }
+  updateNextAction();
 }
 
 function resetState() {
