@@ -307,6 +307,38 @@ html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:
 /* Footer */
 .footer{height:20px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:var(--black);border-top:1px solid var(--border);font-family:var(--mono);font-size:7px;letter-spacing:.08em;color:var(--dim)}
 
+/* ═══ ACTION CARDS — WHAT CAN I DO NOW? ═══ */
+.action-cards-wrap{
+  flex-shrink:0;background:var(--deep);
+  border-top:1px solid var(--border);
+  padding:8px 14px 7px;
+}
+.ac-eyebrow{
+  font-family:var(--mono);font-size:6.5px;font-weight:700;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--dim);margin-bottom:7px;
+  display:flex;align-items:center;gap:12px;
+}
+.ac-eyebrow span{color:var(--mid)}
+.action-cards{display:grid;grid-template-columns:repeat(6,1fr);gap:7px}
+.ac-card{
+  background:var(--graphite);border:1px solid var(--border);border-radius:7px;
+  padding:8px 10px;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;gap:3px;
+  position:relative;overflow:hidden;
+}
+.ac-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,var(--state-bg) 0%,transparent 80%);
+  pointer-events:none;opacity:0;transition:opacity .15s;
+}
+.ac-card:hover{border-color:var(--state-accent);background:var(--surface)}
+.ac-card:hover::before{opacity:1}
+.ac-title{font-size:11px;font-weight:600;color:var(--white);line-height:1.2}
+.ac-desc{font-size:8.5px;color:var(--dim);line-height:1.4;flex:1}
+.ac-cmd{
+  font-family:var(--mono);font-size:6.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--state-accent);margin-top:3px;
+}
+
 /* ── AUTORESEARCH_UI_E01: Sacred Geometry Foundation ── */
 #geo-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 #geo-bg svg{width:100%;height:100%;animation:geoPulse 14s ease-in-out infinite}
@@ -953,13 +985,50 @@ html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:
 
   </div><!-- /body -->
 
-  <!-- Oracle Line — the intent-centric shell. Type to route. No other apps needed. -->
+  <!-- Action Cards — WHAT CAN I DO NOW? E04 -->
+  <div class="action-cards-wrap">
+    <div class="ac-eyebrow">WHAT CAN I DO NOW? <span>Start with a card. Use the Oracle when you know the command.</span></div>
+    <div class="action-cards">
+      <div class="ac-card" onclick="executeOracle('play')">
+        <div class="ac-title">Play music</div>
+        <div class="ac-desc">Open Spotify and switch HELEN into focus mode.</div>
+        <div class="ac-cmd">→ play</div>
+      </div>
+      <div class="ac-card" onclick="executeOracle('email')">
+        <div class="ac-title">Check email</div>
+        <div class="ac-desc">Open Gmail and prepare inbox triage.</div>
+        <div class="ac-cmd">→ email</div>
+      </div>
+      <div class="ac-card" onclick="executeOracle('calendar')">
+        <div class="ac-title">Open calendar</div>
+        <div class="ac-desc">Show today's schedule and next time block.</div>
+        <div class="ac-cmd">→ calendar</div>
+      </div>
+      <div class="ac-card" onclick="executeOracle('build')">
+        <div class="ac-title">Continue HELEN build</div>
+        <div class="ac-desc">Show repo state and next implementation action.</div>
+        <div class="ac-cmd">→ build</div>
+      </div>
+      <div class="ac-card" onclick="executeOracle('source')">
+        <div class="ac-title">Capture a source</div>
+        <div class="ac-desc">Save an X, GitHub, or article link into the research stream.</div>
+        <div class="ac-cmd">→ source</div>
+      </div>
+      <div class="ac-card" onclick="executeOracle('receipts')">
+        <div class="ac-title">Review receipts</div>
+        <div class="ac-desc">Open ledger, blockers, and pending MAYOR decisions.</div>
+        <div class="ac-cmd">→ receipts</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Oracle Line — type to route. Secondary to action cards. -->
   <div class="oracle-wrap">
     <div class="oracle-bar">
       <div class="oracle-dot"></div>
       <span class="oracle-prefix">HELEN→</span>
       <input class="oracle-input" id="oracle-input"
-        placeholder="speak an intent — play · email · calendar · ship · focus [name] · fullscreen · next · help"
+        placeholder="Or type a command — play · email · calendar · build · source · receipts · ship · help"
         onkeydown="if(event.key==='Enter'&&this.value.trim()){executeOracle(this.value);this.value=''}"/>
       <div class="oracle-resp" id="oracle-resp">ready.</div>
     </div>
@@ -967,11 +1036,13 @@ html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:
       <span class="oracle-cmd" onclick="fillOracle('play')">play</span>
       <span class="oracle-cmd" onclick="fillOracle('email')">email</span>
       <span class="oracle-cmd" onclick="fillOracle('calendar')">calendar</span>
-      <span class="oracle-cmd" onclick="fillOracle('github')">github</span>
+      <span class="oracle-cmd" onclick="fillOracle('build')">build</span>
+      <span class="oracle-cmd" onclick="fillOracle('source')">source</span>
+      <span class="oracle-cmd" onclick="fillOracle('receipts')">receipts</span>
       <span class="oracle-cmd" onclick="fillOracle('ship')">ship</span>
-      <span class="oracle-cmd" onclick="fillOracle('next')">next</span>
-      <span class="oracle-cmd" onclick="fillOracle('fullscreen')">fullscreen</span>
-      <span style="margin-left:auto;color:var(--dim)">↵ enter to execute · HELEN OS v3.1 · authority=false · receipts required</span>
+      <span class="oracle-cmd" onclick="fillOracle('tasks')">tasks</span>
+      <span class="oracle-cmd" onclick="fillOracle('github')">github</span>
+      <span style="margin-left:auto;color:var(--dim)">↵ enter to execute · HELEN OS v3.2 · authority=false · receipts required</span>
     </div>
   </div>
   <!-- SHIP still needs modal trigger — hidden verb -->
@@ -1142,9 +1213,14 @@ const ORACLE_ROUTES = {
   notion:     () => { window.open('https://notion.so','_blank');        return 'Notion → opening now.'; },
   docs:       () => { window.open('https://docs.google.com','_blank');  return 'Google Docs → opening now.'; },
   fullscreen: () => { toggleFullscreen(); return 'Fullscreen mode — browser chrome killed.'; },
-  next:       () => { const items=NOW_CARDS[currentState]?.items; return NOW_CARDS[currentState]?.action || 'Declare state first.'; },
+  next:       () => NOW_CARDS[currentState]?.action || 'Declare state first.',
   ship:       () => { attemptShip(); return 'SHIP gate opened — Go/No-Go poll launched.'; },
-  help:       () => 'Commands: play · email · calendar · github · ship · fullscreen · next · focus [name] · calm / excited / angry / …',
+  build:      () => 'HELEN build → current branch: main · HEAD: 7703486 · Next: wire /api/ledger + E11/E12 peer-review + MAYOR ruling on 28 claims.',
+  source:     () => 'Source capture → paste URL in Source Intake column, tag as X/GH/arXiv, mark unread. Or: focus [source name] to center on compass.',
+  receipts:   () => 'Ledger: 128 PENDING_RECEIPT · Blockers: 2 (E11/E12, HAL grounding) · MAYOR: NO_SHIP · 28 claims awaiting ruling.',
+  tasks:      () => 'TOP TASKS: (1) MAYOR ruling on 28 pre-claims [HIGH] (2) E11/E12 peer-review [HIGH] (3) Rothschild demo prep [HIGH].',
+  schedule:   () => { window.open('https://calendar.google.com','_blank'); return 'Calendar → schedule opened.'; },
+  help:       () => 'Cards: play · email · calendar · build · source · receipts | Commands: ship · tasks · schedule · focus [name] · github · fullscreen · calm/excited/…',
   status:     () => 'State: '+(currentState||'none')+' · Object: '+currentObject+' · Receipts: PENDING_RECEIPT · MAYOR: NO_SHIP',
 };
 
@@ -1164,7 +1240,7 @@ function executeOracle(raw) {
   } else if (cmd.startsWith('focus ')) {
     const obj = raw.slice(6).trim();
     currentObject = obj;
-    document.getElementById('nc-object') && (document.getElementById('nc-object').textContent = obj);
+    const nco2 = document.getElementById('nc-object'); if (nco2) nco2.textContent = obj;
     const el = document.getElementById('obj-name');
     if (el) el.textContent = obj;
     resp = 'Focus set → ' + obj;
@@ -1241,7 +1317,7 @@ function focusObject(type, name, status) {
   document.getElementById('obj-name').textContent   = name;
   document.getElementById('obj-status').textContent = status;
   currentObject = name;
-  document.getElementById('nc-object').textContent  = name;
+  const nco = document.getElementById('nc-object'); if (nco) nco.textContent = name;
 }
 
 function setObjType(el, type) {
