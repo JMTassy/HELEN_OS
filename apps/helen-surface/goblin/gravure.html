@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GOBLIN TEMPLE — GRAVURE UNIVERSALIS</title>
+<!--
+  GOBLIN_TEMPLE_INNER_MEMORY
+  authority=false  canon=NO_SHIP  class=EPHEMERAL
+  NON_SOVEREIGN — sandboxed creative artifact
+
+  What you see at 1s:     a cockpit draft
+  What you see at 10s:    initiation geometry
+  What you see at 60s:    12-dimensional temple
+  What you click:         the sigil opens
+
+  The 5 columns = 5 elements (earth/water/fire/air/akasha)
+  The compass = Sri Yantra
+  The header = temple lintel / hermetic seal
+  The crosshairs = the cross within the rose
+  The action rail = altar of verbs / Tetragrammaton
+-->
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100vh;overflow:hidden;background:#000;font-family:'Courier New',monospace}
+
+/* ── LAYERS ── */
+#scene{position:fixed;inset:0}
+#l-cockpit{position:absolute;inset:0;z-index:1;opacity:1}
+#l-geometry{position:absolute;inset:0;z-index:2;opacity:0;transition:opacity 6s ease}
+#l-sigils{position:absolute;inset:0;z-index:3;opacity:0;transition:opacity 8s ease}
+#l-mandala{position:absolute;inset:0;z-index:4;opacity:0;transition:opacity 10s ease}
+#l-canvas{position:absolute;inset:0;z-index:5;opacity:0;transition:opacity 12s ease;pointer-events:none}
+#l-click{position:absolute;inset:0;z-index:6;opacity:0;transition:opacity 2s ease;pointer-events:none}
+
+/* state classes */
+body.t10  #l-geometry{opacity:1}
+body.t10  #l-sigils{opacity:.7}
+body.t60  #l-mandala{opacity:1}
+body.t60  #l-canvas{opacity:1}
+body.open #l-click{opacity:1}
+body.open #l-cockpit{opacity:.08}
+body.open #l-geometry{opacity:.4}
+body.open #l-sigils{opacity:.5}
+body.open #l-mandala{opacity:.9}
+
+/* ── LAYER 0: COCKPIT SKELETON ── */
+.ck-shell{display:flex;flex-direction:column;width:100%;height:100vh;opacity:1}
+.ck-hdr{
+  height:34px;display:flex;align-items:center;
+  border-bottom:1px solid rgba(201,164,58,.18);
+  background:rgba(0,0,0,.9);padding:0 16px;
+}
+.ck-brand{
+  font-size:10px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;
+  color:rgba(201,164,58,.5);padding-right:16px;border-right:1px solid rgba(201,164,58,.1);
+  margin-right:14px;
+}
+.ck-tags{display:flex;align-items:center;flex:1}
+.ck-tag{
+  font-size:7.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(255,255,255,.12);padding:0 12px;border-right:1px solid rgba(255,255,255,.05);
+  height:34px;display:flex;align-items:center;gap:4px;
+}
+.ck-tag b{color:rgba(255,255,255,.22);font-weight:400}
+.ck-body{flex:1;display:grid;grid-template-columns:200px 200px 1fr 216px 200px;border-top:none}
+.ck-col{
+  border-right:1px solid rgba(201,164,58,.08);
+  background:rgba(0,0,0,.7);
+  position:relative;overflow:hidden;
+}
+.ck-col:last-child{border-right:none}
+.ck-col-hd{
+  height:28px;display:flex;align-items:center;padding:0 12px;
+  border-bottom:1px solid rgba(201,164,58,.08);
+  font-size:7px;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(201,164,58,.3);
+}
+.ck-row{
+  display:flex;align-items:center;gap:7px;padding:4px 12px;
+  border-bottom:1px solid rgba(255,255,255,.025);
+}
+.ck-dot{width:4px;height:4px;border-radius:50%;flex-shrink:0}
+.ck-text{font-size:9px;color:rgba(255,255,255,.2);flex:1}
+.ck-sub{font-size:7.5px;color:rgba(255,255,255,.1)}
+/* Compass skeleton in center col */
+.ck-compass{
+  position:absolute;inset:0;
+  display:grid;grid-template-columns:1fr 2fr 1fr;grid-template-rows:1fr 2fr 1fr;
+}
+.ck-compass::before{
+  content:'';position:absolute;
+  left:calc(33.33%);right:calc(33.33%);top:0;bottom:0;
+  border-left:1px solid rgba(201,164,58,.08);border-right:1px solid rgba(201,164,58,.08);
+}
+.ck-compass::after{
+  content:'';position:absolute;
+  top:calc(33.33%);bottom:calc(33.33%);left:0;right:0;
+  border-top:1px solid rgba(201,164,58,.08);border-bottom:1px solid rgba(201,164,58,.08);
+}
+.ck-center-card{
+  grid-column:2;grid-row:2;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(201,164,58,.08);
+  margin:8px;border-radius:6px;
+  background:rgba(201,164,58,.02);
+}
+.ck-center-text{
+  font-size:8px;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(201,164,58,.2);text-align:center;line-height:2;
+}
+.ck-rail{
+  height:50px;display:grid;grid-template-columns:auto repeat(6,1fr);
+  border-top:1px solid rgba(201,164,58,.08);background:rgba(0,0,0,.8);
+}
+.ck-verb{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:2px;border-right:1px solid rgba(201,164,58,.06);
+}
+.ck-verb-cmd{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(201,164,58,.25)}
+.ck-verb-def{font-size:7.5px;color:rgba(255,255,255,.1);text-align:center}
+.ck-footer{
+  height:20px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 14px;border-top:1px solid rgba(201,164,58,.06);
+  font-size:7px;letter-spacing:.08em;color:rgba(255,255,255,.08);
+}
+
+/* ── LAYER 1: SACRED GEOMETRY SVG ── */
+#l-geometry svg{width:100%;height:100%}
+
+/* ── LAYER 2: SIGILS ── */
+#l-sigils{display:flex;align-items:center;justify-content:center}
+#l-sigils svg{width:100%;height:100%;position:absolute}
+
+/* ── LAYER 3: MANDALA ── */
+#l-mandala{display:flex;align-items:center;justify-content:center}
+#l-mandala svg{
+  position:absolute;
+  width:min(80vh,80vw);height:min(80vh,80vw);
+  left:50%;top:50%;transform:translate(-50%,-50%);
+  animation:mandalaSpin 144s linear infinite;
+}
+@keyframes mandalaSpin{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+
+/* ── LAYER 4: CANVAS ── */
+#dmt-canvas{position:absolute;inset:0;width:100%;height:100%}
+
+/* ── LAYER 5: REVELATION ── */
+#l-click{
+  display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at center, rgba(0,0,0,0) 0%, rgba(0,0,0,.85) 100%);
+}
+.revelation-text{
+  font-size:9px;letter-spacing:.4em;text-transform:uppercase;
+  color:rgba(201,164,58,.4);text-align:center;line-height:3;
+  pointer-events:none;
+  animation:breathe 4s ease-in-out infinite;
+}
+@keyframes breathe{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.7;transform:scale(1.02)}}
+
+/* ── GOLDEN GLOW FILTER ── */
+.gold{stroke:#c9a43a;fill:none}
+.gold-fill{fill:rgba(201,164,58,.06);stroke:none}
+.silver{stroke:rgba(255,255,255,.18);fill:none}
+.red{stroke:rgba(160,20,20,.5);fill:none}
+.cyan{stroke:rgba(80,200,255,.2);fill:none}
+.pulse{animation:linePulse 8s ease-in-out infinite}
+@keyframes linePulse{0%,100%{stroke-opacity:.3}50%{stroke-opacity:.9}}
+.slowrot{transform-origin:center;animation:slowRot 60s linear infinite}
+@keyframes slowRot{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.slowrot-r{transform-origin:center;animation:slowRotR 90s linear infinite}
+@keyframes slowRotR{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
+.breathe-op{animation:breatheOp 6s ease-in-out infinite}
+@keyframes breatheOp{0%,100%{opacity:.2}50%{opacity:.8}}
+
+/* Click hint */
+#hint{
+  position:fixed;bottom:30px;left:50%;transform:translateX(-50%);
+  font-size:7px;letter-spacing:.3em;text-transform:uppercase;
+  color:rgba(201,164,58,.25);pointer-events:none;
+  animation:hintFade 3s ease-in-out infinite;
+  z-index:10;
+}
+@keyframes hintFade{0%,100%{opacity:0}50%{opacity:1}}
+</style>
+</head>
+<body>
+<div id="scene">
+
+<!-- ═══ LAYER 0: COCKPIT SKELETON ═══ -->
+<div id="l-cockpit">
+<div class="ck-shell">
+  <div class="ck-hdr">
+    <div class="ck-brand">HELEN OS</div>
+    <div class="ck-tags">
+      <div class="ck-tag">Operator <b>Jean-Marie / JMT</b></div>
+      <div class="ck-tag">Mode <b>witness-first</b></div>
+      <div class="ck-tag">Authority <b>false</b></div>
+      <div class="ck-tag">Reality source <b>receipts</b></div>
+      <div class="ck-tag">Claim <b>NO_CLAIM</b></div>
+    </div>
+  </div>
+  <div class="ck-body">
+    <!-- Col 1: Stream -->
+    <div class="ck-col">
+      <div class="ck-col-hd">Operator Stream</div>
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(61,214,140,.4)"></div><div><div class="ck-text">HELEN Canonical Surface</div><div class="ck-sub">ACTIVE · receipts</div></div></div>
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(61,214,140,.4)"></div><div><div class="ck-text">JMT Consulting Admin</div><div class="ck-sub">ACTIVE</div></div></div>
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(61,214,140,.4)"></div><div><div class="ck-text">Video Studio</div><div class="ck-sub">ACTIVE</div></div></div>
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(91,138,240,.4)"></div><div><div class="ck-text">CIELO / Akashic AI</div><div class="ck-sub">RESEARCH</div></div></div>
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(91,138,240,.4)"></div><div><div class="ck-text">φ / RH finite-band</div><div class="ck-sub">RESEARCH</div></div></div>
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(245,158,11,.4)"></div><div><div class="ck-text">MAYOR approval</div><div class="ck-sub">PENDING · 28 claims</div></div></div>
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(224,82,82,.4)"></div><div><div class="ck-text">E11/E12 Reconciliation</div><div class="ck-sub">BLOCKED</div></div></div>
+      <div style="margin-top:12px">
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(61,214,140,.3)"></div><div class="ck-text">HELEN · Witness</div></div>
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(61,214,140,.3)"></div><div class="ck-text">HER · Perception</div></div>
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(61,214,140,.3)"></div><div class="ck-text">HAL · Validation</div></div>
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(224,82,82,.3)"></div><div class="ck-text">MAYOR · NO_SHIP</div></div>
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(91,138,240,.3)"></div><div class="ck-text">AUTORESEARCH · 28</div></div>
+      </div>
+    </div>
+    <!-- Col 2: Sources -->
+    <div class="ck-col">
+      <div class="ck-col-hd">Source Intake</div>
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(91,138,240,.5)"></div><div><div class="ck-text">@karpathy — LLM dynamics</div><div class="ck-sub">X · 2h ago · unread</div></div></div>
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(91,138,240,.5)"></div><div><div class="ck-text">@ylecun — World models</div><div class="ck-sub">X · 5h ago · unread</div></div></div>
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(61,214,140,.3)"></div><div><div class="ck-text">anthropics/claude-code</div><div class="ck-sub">GitHub · 3 new commits</div></div></div>
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(61,214,140,.3)"></div><div><div class="ck-text">JMTassy/helen-conquest</div><div class="ck-sub">GitHub · HEAD: 1a697ad</div></div></div>
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(245,158,11,.3)"></div><div><div class="ck-text">Scaling Laws — 2025</div><div class="ck-sub">arXiv · unread</div></div></div>
+      <div style="margin-top:12px">
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(255,255,255,.2)"></div><div class="ck-text">X · @JMTassy</div></div>
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(255,255,255,.2)"></div><div class="ck-text">GitHub · JMTassy</div></div>
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(255,255,255,.2)"></div><div class="ck-text">Telegram · HELEN bot</div></div>
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(255,255,255,.2)"></div><div class="ck-text">Higgsfield AI · API</div></div>
+      </div>
+    </div>
+    <!-- Col 3: Compass CENTER -->
+    <div class="ck-col" style="position:relative">
+      <div class="ck-col-hd" style="position:absolute;top:0;left:0;right:0;z-index:2">Semantic Compass</div>
+      <div class="ck-compass" style="top:28px;bottom:0;position:absolute;left:0;right:0">
+        <div class="ck-center-card">
+          <div class="ck-center-text">MISSION<br>HELEN Canonical Surface<br>DEMO_OBJECT<br>PENDING_RECEIPT<br>NO_CLAIM</div>
+        </div>
+      </div>
+    </div>
+    <!-- Col 4: Tasks -->
+    <div class="ck-col">
+      <div class="ck-col-hd">Task Rail</div>
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(224,82,82,.5)"></div><div><div class="ck-text">MAYOR ruling — 28 pre-claims</div><div class="ck-sub">HIGH</div></div></div>
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(224,82,82,.5)"></div><div><div class="ck-text">E11/E12 peer-review</div><div class="ck-sub">HIGH · Rule 3</div></div></div>
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(245,158,11,.4)"></div><div><div class="ck-text">Wire /api/ledger</div><div class="ck-sub">MED</div></div></div>
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(224,82,82,.5)"></div><div><div class="ck-text">Rothschild demo prep</div><div class="ck-sub">HIGH · €2.8M</div></div></div>
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(245,158,11,.4)"></div><div><div class="ck-text">HAL grounding fix</div><div class="ck-sub">MED · Gate C</div></div></div>
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(61,214,140,.5)"></div><div><div class="ck-text">✓ Three-field model</div><div class="ck-sub">a5ab917 · DONE</div></div></div>
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(61,214,140,.5)"></div><div><div class="ck-text">✓ Home Cockpit v3</div><div class="ck-sub">1a697ad · DONE</div></div></div>
+    </div>
+    <!-- Col 5: Ledger -->
+    <div class="ck-col">
+      <div class="ck-col-hd">Sovereign Ledger</div>
+      <div style="padding:10px 12px"><div style="font-size:22px;font-weight:700;color:rgba(255,255,255,.15);line-height:1">128</div><div style="font-size:7px;color:rgba(255,255,255,.1);letter-spacing:.1em;margin-top:2px">PENDING_RECEIPT</div></div>
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(61,214,140,.5)"></div><div><div class="ck-text">1a697ad</div><div class="ck-sub">cockpit v3 · COMMITTED</div></div></div>
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(61,214,140,.5)"></div><div><div class="ck-text">a5ab917</div><div class="ck-sub">three-field model · COMMITTED</div></div></div>
+      <div class="ck-row"><div class="ck-dot" style="background:rgba(245,158,11,.4)"></div><div><div class="ck-text">R-HELEN-0001</div><div class="ck-sub">PENDING_RECEIPT</div></div></div>
+      <div style="margin:8px 12px;border:1px solid rgba(224,82,82,.2);padding:8px;border-radius:4px">
+        <div style="font-size:6.5px;letter-spacing:.2em;color:rgba(255,255,255,.15);text-transform:uppercase;margin-bottom:3px">MAYOR Gate</div>
+        <div style="font-size:13px;font-weight:700;color:rgba(224,82,82,.4);letter-spacing:.1em">NO_SHIP</div>
+      </div>
+      <div class="ck-row"><div style="font-size:8px;color:rgba(224,82,82,.3)">✗</div><div class="ck-text" style="font-size:8px">E11/E12 — peer-review required</div></div>
+      <div class="ck-row"><div style="font-size:8px;color:rgba(224,82,82,.3)">✗</div><div class="ck-text" style="font-size:8px">HAL grounding — Gate C test</div></div>
+    </div>
+  </div>
+  <div class="ck-rail">
+    <div style="display:flex;align-items:center;padding:0 14px;font-size:7px;letter-spacing:.18em;text-transform:uppercase;color:rgba(201,164,58,.15);border-right:1px solid rgba(201,164,58,.06)">Action Grammar</div>
+    <div class="ck-verb"><span class="ck-verb-cmd" style="color:rgba(91,138,240,.3)">PULL</span></div>
+    <div class="ck-verb"><span class="ck-verb-cmd">COMPOSE</span></div>
+    <div class="ck-verb"><span class="ck-verb-cmd">VALIDATE</span></div>
+    <div class="ck-verb"><span class="ck-verb-cmd">PERSIST</span></div>
+    <div class="ck-verb"><span class="ck-verb-cmd" style="color:rgba(201,164,58,.3)">SHIP</span></div>
+    <div class="ck-verb"><span class="ck-verb-cmd" style="color:rgba(224,82,82,.3)">NO_SHIP</span></div>
+  </div>
+  <div class="ck-footer"><span>Witness-first. Authority: false. Reality source: receipts.</span><span>HELEN OS · Built around Jean-Marie / JMT</span></div>
+</div>
+</div>
+
+<!-- ═══ LAYER 1: SACRED GEOMETRY ═══ -->
+<div id="l-geometry">
+<svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow-strong">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="engrave">
+      <feTurbulence type="turbulence" baseFrequency="0.9" numOctaves="4" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="0.8"/>
+    </filter>
+  </defs>
+
+  <!-- Outer temple frame — double rectangle -->
+  <rect x="20" y="20" width="1400" height="860" class="gold" stroke-width=".5" opacity=".3"/>
+  <rect x="28" y="28" width="1384" height="844" class="gold" stroke-width=".3" opacity=".2"/>
+
+  <!-- Column dividers as sacred pillars -->
+  <line x1="200" y1="34" x2="200" y2="830" class="gold" stroke-width=".4" opacity=".25"/>
+  <line x1="400" y1="34" x2="400" y2="830" class="gold" stroke-width=".4" opacity=".25"/>
+  <line x1="840" y1="34" x2="840" y2="830" class="gold" stroke-width=".4" opacity=".25"/>
+  <line x1="1056" y1="34" x2="1056" y2="830" class="gold" stroke-width=".4" opacity=".25"/>
+
+  <!-- Header line as temple lintel -->
+  <line x1="20" y1="34" x2="1420" y2="34" class="gold" stroke-width=".5" opacity=".3"/>
+  <line x1="20" y1="62" x2="1420" y2="62" class="gold" stroke-width=".3" opacity=".15"/>
+
+  <!-- Action rail as altar -->
+  <line x1="20" y1="830" x2="1420" y2="830" class="gold" stroke-width=".5" opacity=".3"/>
+  <line x1="20" y1="838" x2="1420" y2="838" class="gold" stroke-width=".3" opacity=".15"/>
+
+  <!-- ── COMPASS CROSSHAIRS (center col: x=400..840, y=62..830) ── -->
+  <!-- Center point of compass field -->
+  <!-- Compass field: x=400..840, y=62..830 → center = (620, 446) -->
+  <g transform="translate(620,446)">
+
+    <!-- Ouroboros — outer ring -->
+    <circle r="200" class="gold" stroke-width=".5" opacity=".15" filter="url(#engrave)"/>
+    <circle r="198" class="gold" stroke-width=".3" opacity=".1"/>
+
+    <!-- Flower of Life — 7 circles -->
+    <g class="breathe-op" opacity=".4">
+      <circle cx="0"  cy="0"   r="60" class="gold" stroke-width=".4"/>
+      <circle cx="60" cy="0"   r="60" class="gold" stroke-width=".4"/>
+      <circle cx="-60" cy="0"  r="60" class="gold" stroke-width=".4"/>
+      <circle cx="30"  cy="52" r="60" class="gold" stroke-width=".4"/>
+      <circle cx="-30" cy="52" r="60" class="gold" stroke-width=".4"/>
+      <circle cx="30"  cy="-52" r="60" class="gold" stroke-width=".4"/>
+      <circle cx="-30" cy="-52" r="60" class="gold" stroke-width=".4"/>
+    </g>
+
+    <!-- Metatron's cube — 13 circle centers connected -->
+    <g class="slowrot" opacity=".35">
+      <!-- Outer ring of 6 -->
+      <line x1="0" y1="0" x2="120" y2="0"   class="silver" stroke-width=".4"/>
+      <line x1="0" y1="0" x2="60"  y2="104"  class="silver" stroke-width=".4"/>
+      <line x1="0" y1="0" x2="-60" y2="104"  class="silver" stroke-width=".4"/>
+      <line x1="0" y1="0" x2="-120" y2="0"  class="silver" stroke-width=".4"/>
+      <line x1="0" y1="0" x2="-60" y2="-104" class="silver" stroke-width=".4"/>
+      <line x1="0" y1="0" x2="60"  y2="-104" class="silver" stroke-width=".4"/>
+      <line x1="120" y1="0" x2="60"  y2="104"  class="silver" stroke-width=".3"/>
+      <line x1="60"  y1="104" x2="-60" y2="104"  class="silver" stroke-width=".3"/>
+      <line x1="-60" y1="104" x2="-120" y2="0"   class="silver" stroke-width=".3"/>
+      <line x1="-120" y1="0" x2="-60" y2="-104"  class="silver" stroke-width=".3"/>
+      <line x1="-60" y1="-104" x2="60" y2="-104"  class="silver" stroke-width=".3"/>
+      <line x1="60"  y1="-104" x2="120" y2="0"    class="silver" stroke-width=".3"/>
+      <!-- Cross lines -->
+      <line x1="120" y1="0" x2="-120" y2="0"    class="silver" stroke-width=".3" opacity=".5"/>
+      <line x1="60"  y1="104" x2="-60" y2="-104" class="silver" stroke-width=".3" opacity=".5"/>
+      <line x1="-60" y1="104" x2="60" y2="-104"  class="silver" stroke-width=".3" opacity=".5"/>
+    </g>
+
+    <!-- Sri Yantra — 9 interlocked triangles (simplified) -->
+    <g class="slowrot-r" opacity=".55" filter="url(#glow)">
+      <!-- 4 upward Shiva triangles -->
+      <polygon points="0,-110 95,55 -95,55"   class="gold" stroke-width=".8" opacity=".7"/>
+      <polygon points="0,-80  70,40 -70,40"   class="gold" stroke-width=".6" opacity=".55"/>
+      <polygon points="0,-50  43,25 -43,25"   class="gold" stroke-width=".5" opacity=".45"/>
+      <polygon points="0,-25  22,13 -22,13"   class="gold" stroke-width=".4" opacity=".35"/>
+      <!-- 5 downward Shakti triangles -->
+      <polygon points="0,110  95,-55 -95,-55"  class="red"  stroke-width=".8" opacity=".7"/>
+      <polygon points="0,85   70,-43 -70,-43"  class="red"  stroke-width=".6" opacity=".55"/>
+      <polygon points="0,60   48,-30 -48,-30"  class="red"  stroke-width=".5" opacity=".45"/>
+      <polygon points="0,35   28,-18 -28,-18"  class="red"  stroke-width=".4" opacity=".35"/>
+      <polygon points="0,16   14,-8  -14,-8"   class="red"  stroke-width=".3" opacity=".25"/>
+    </g>
+
+    <!-- Bindu — the central point -->
+    <circle r="3" fill="#c9a43a" opacity=".8" filter="url(#glow-strong)"/>
+    <circle r="8" class="gold" stroke-width=".4" opacity=".4"/>
+
+    <!-- Cross-rose axis (Rosicrucian) -->
+    <line x1="0" y1="-200" x2="0" y2="200" class="gold" stroke-width=".3" opacity=".2"/>
+    <line x1="-200" y1="0" x2="200" y2="0" class="gold" stroke-width=".3" opacity=".2"/>
+
+    <!-- Cardinal compass labels (barely visible) -->
+    <text x="0" y="-165" text-anchor="middle" font-size="7" fill="rgba(201,164,58,.25)" letter-spacing="3" font-family="Courier New">N · PROVENANCE</text>
+    <text x="0" y="180"  text-anchor="middle" font-size="7" fill="rgba(201,164,58,.25)" letter-spacing="3" font-family="Courier New">S · RECEIPTS</text>
+    <text x="-140" y="4" text-anchor="middle" font-size="7" fill="rgba(201,164,58,.25)" letter-spacing="2" font-family="Courier New" transform="rotate(-90,-140,4)">W · CONTRA</text>
+    <text x="155"  y="4" text-anchor="middle" font-size="7" fill="rgba(201,164,58,.25)" letter-spacing="2" font-family="Courier New" transform="rotate(90,155,4)">E · RELATIONS</text>
+  </g>
+
+  <!-- ── ROSICRUCIAN CROSS in left column center ── -->
+  <g transform="translate(100,446)" opacity=".3">
+    <line x1="0" y1="-80" x2="0" y2="80" class="red" stroke-width=".8"/>
+    <line x1="-50" y1="0" x2="50" y2="0" class="red" stroke-width=".8"/>
+    <circle cx="0" cy="0" r="15" fill="rgba(160,20,20,.1)" stroke="rgba(160,20,20,.4)" stroke-width=".6"/>
+    <!-- Rose petals -->
+    <ellipse cx="0"  cy="-12" rx="5" ry="9"  fill="rgba(160,20,20,.15)" transform="rotate(0,0,0)"/>
+    <ellipse cx="0"  cy="-12" rx="5" ry="9"  fill="rgba(160,20,20,.15)" transform="rotate(45,0,0)"/>
+    <ellipse cx="0"  cy="-12" rx="5" ry="9"  fill="rgba(160,20,20,.15)" transform="rotate(90,0,0)"/>
+    <ellipse cx="0"  cy="-12" rx="5" ry="9"  fill="rgba(160,20,20,.15)" transform="rotate(135,0,0)"/>
+    <ellipse cx="0"  cy="-12" rx="5" ry="9"  fill="rgba(160,20,20,.15)" transform="rotate(180,0,0)"/>
+    <ellipse cx="0"  cy="-12" rx="5" ry="9"  fill="rgba(160,20,20,.15)" transform="rotate(225,0,0)"/>
+    <ellipse cx="0"  cy="-12" rx="5" ry="9"  fill="rgba(160,20,20,.15)" transform="rotate(270,0,0)"/>
+    <ellipse cx="0"  cy="-12" rx="5" ry="9"  fill="rgba(160,20,20,.15)" transform="rotate(315,0,0)"/>
+  </g>
+
+  <!-- ── TEMPLAR CROSS in right column ── -->
+  <g transform="translate(1248,446)" opacity=".25">
+    <rect x="-10" y="-60" width="20" height="120" class="gold" stroke-width=".6" fill="rgba(201,164,58,.04)"/>
+    <rect x="-40" y="-10" width="80" height="20"  class="gold" stroke-width=".6" fill="rgba(201,164,58,.04)"/>
+    <rect x="-14" y="-64" width="28" height="8"  class="gold" stroke-width=".3" fill="rgba(201,164,58,.04)"/>
+    <rect x="-14" y="56"  width="28" height="8"  class="gold" stroke-width=".3" fill="rgba(201,164,58,.04)"/>
+    <rect x="-44" y="-14" width="8" height="28"  class="gold" stroke-width=".3" fill="rgba(201,164,58,.04)"/>
+    <rect x="36"  y="-14" width="8" height="28"  class="gold" stroke-width=".3" fill="rgba(201,164,58,.04)"/>
+  </g>
+
+  <!-- ── PHI SPIRAL — FIBONACCI — tracing through columns ── -->
+  <g opacity=".15">
+    <path d="M 1400 800 A 200 200 0 0 0 1200 600 A 124 124 0 0 0 1076 724 A 76 76 0 0 0 1152 800 A 47 47 0 0 0 1105 753 A 29 29 0 0 0 1134 724" class="gold" stroke-width=".5" fill="none"/>
+  </g>
+
+  <!-- ── Enochian / sacred script in margins ── -->
+  <g opacity=".18" font-family="Courier New" font-size="7" fill="rgba(201,164,58,.5)" letter-spacing="4">
+    <text x="35" y="200" transform="rotate(-90,35,200)">ΑΩ · ARCHE · TELOS · LOGOS · PNEUMA · NOUS · SOPHIA</text>
+    <text x="1408" y="700" transform="rotate(90,1408,700)">OM · TAT · SAT · AUM · SHRI · HREEM · KLEEM · SHREEM</text>
+    <text x="720" y="880" text-anchor="middle">VITRIOL · VISITA INTERIORA TERRAE RECTIFICANDO INVENIES OCCULTUM LAPIDEM</text>
+    <text x="720" y="50"  text-anchor="middle">AS ABOVE · SO BELOW · AS WITHIN · SO WITHOUT · AS THE UNIVERSE · SO THE SOUL</text>
+  </g>
+
+  <!-- ── Pentagrams in 4 corners ── -->
+  <g opacity=".2">
+    <!-- Top-left -->
+    <polygon points="60,80 54,98 70,86 50,86 66,98" class="gold" stroke-width=".5" fill="none"/>
+    <!-- Top-right -->
+    <polygon points="1380,80 1374,98 1390,86 1370,86 1386,98" class="gold" stroke-width=".5" fill="none"/>
+    <!-- Bottom-left -->
+    <polygon points="60,820 54,838 70,826 50,826 66,838" class="gold" stroke-width=".5" fill="none"/>
+    <!-- Bottom-right -->
+    <polygon points="1380,820 1374,838 1390,826 1370,826 1386,838" class="gold" stroke-width=".5" fill="none"/>
+  </g>
+
+  <!-- ── Hermes caduceus — center top ── -->
+  <g transform="translate(720,55)" opacity=".2">
+    <line x1="0" y1="-20" x2="0" y2="20" class="gold" stroke-width=".8"/>
+    <path d="M -8,10 C -8,-5 8,-5 8,10" class="gold" stroke-width=".5" fill="none"/>
+    <path d="M -8,-5 C -8,-20 8,-20 8,-5" class="gold" stroke-width=".5" fill="none"/>
+    <circle cx="0" cy="-20" r="5" class="gold" stroke-width=".4"/>
+  </g>
+
+</svg>
+</div>
+
+<!-- ═══ LAYER 2: SIGILS & SYMBOLS ═══ -->
+<div id="l-sigils">
+<svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="glow2">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Eye of Providence over header -->
+  <g transform="translate(720,48)" opacity=".35" filter="url(#glow2)">
+    <ellipse cx="0" cy="0" rx="20" ry="12" class="gold" stroke-width=".6"/>
+    <circle cx="0" cy="0" r="5" fill="rgba(201,164,58,.3)" stroke="rgba(201,164,58,.6)" stroke-width=".5"/>
+    <circle cx="0" cy="0" r="1.5" fill="#c9a43a"/>
+    <!-- Rays -->
+    <line x1="0" y1="-14" x2="0" y2="-22"   class="gold" stroke-width=".4"/>
+    <line x1="14" y1="-7" x2="22" y2="-11"   class="gold" stroke-width=".4"/>
+    <line x1="14" y1="7"  x2="22" y2="11"    class="gold" stroke-width=".4"/>
+    <line x1="0" y1="14"  x2="0" y2="22"     class="gold" stroke-width=".4"/>
+    <line x1="-14" y1="7" x2="-22" y2="11"   class="gold" stroke-width=".4"/>
+    <line x1="-14" y1="-7" x2="-22" y2="-11" class="gold" stroke-width=".4"/>
+  </g>
+
+  <!-- Tibetan endless knot — top left area -->
+  <g transform="translate(300,160)" opacity=".3">
+    <path d="M 0,0 C 10,-20 30,-20 30,0 C 30,20 10,20 0,0 Z M 0,30 C 10,10 30,10 30,30 C 30,50 10,50 0,30 Z M 15,-15 L 15,45 M -5,15 L 35,15" class="gold" stroke-width=".5" fill="none"/>
+  </g>
+
+  <!-- Dharma wheel — source column center -->
+  <g transform="translate(300,446)" opacity=".25" class="slowrot">
+    <circle r="40" class="gold" stroke-width=".4"/>
+    <circle r="8"  class="gold" stroke-width=".6"/>
+    <line x1="0" y1="-40" x2="0" y2="40"   class="gold" stroke-width=".4"/>
+    <line x1="-40" y1="0" x2="40" y2="0"   class="gold" stroke-width=".4"/>
+    <line x1="-28" y1="-28" x2="28" y2="28" class="gold" stroke-width=".4"/>
+    <line x1="28" y1="-28" x2="-28" y2="28" class="gold" stroke-width=".4"/>
+    <line x1="0" y1="-8"  x2="0" y2="-36"   class="gold" stroke-width=".5"/>
+    <line x1="0" y1="8"   x2="0" y2="36"    class="gold" stroke-width=".5"/>
+    <line x1="-8" y1="0"  x2="-36" y2="0"   class="gold" stroke-width=".5"/>
+    <line x1="8"  y1="0"  x2="36" y2="0"    class="gold" stroke-width=".5"/>
+    <line x1="-6" y1="-6" x2="-26" y2="-26" class="gold" stroke-width=".5"/>
+    <line x1="6"  y1="6"  x2="26" y2="26"   class="gold" stroke-width=".5"/>
+    <line x1="6"  y1="-6" x2="26" y2="-26"  class="gold" stroke-width=".5"/>
+    <line x1="-6" y1="6"  x2="-26" y2="26"  class="gold" stroke-width=".5"/>
+  </g>
+
+  <!-- Hidden HELEN name in Enochian/sacred script — barely visible -->
+  <text x="620" y="446" text-anchor="middle" dominant-baseline="middle"
+    font-size="120" font-weight="700" letter-spacing="30"
+    fill="none" stroke="rgba(201,164,58,.03)" stroke-width="1"
+    font-family="Courier New">HELEN</text>
+
+  <!-- Sephirotic Tree of Life mapped to 5 columns -->
+  <g opacity=".2" class="gold" stroke-width=".5">
+    <!-- Kether (crown) - top center -->
+    <circle cx="720" cy="80" r="8" class="gold" stroke-width=".5"/>
+    <!-- Chokmah - top right -->
+    <circle cx="1050" cy="140" r="6" class="gold" stroke-width=".4"/>
+    <!-- Binah - top left -->
+    <circle cx="390" cy="140" r="6" class="gold" stroke-width=".4"/>
+    <!-- Tiphareth (heart) - center compass -->
+    <circle cx="620" cy="446" r="10" fill="rgba(201,164,58,.08)" class="gold" stroke-width=".6" filter="url(#glow2)"/>
+    <!-- Yesod - action rail -->
+    <circle cx="720" cy="790" r="7" class="gold" stroke-width=".4"/>
+    <!-- Malkuth - footer -->
+    <circle cx="720" cy="855" r="9" class="gold" stroke-width=".5"/>
+    <!-- Paths -->
+    <line x1="720" y1="80" x2="1050" y2="140" stroke-width=".3" opacity=".4"/>
+    <line x1="720" y1="80" x2="390" y2="140" stroke-width=".3" opacity=".4"/>
+    <line x1="720" y1="80" x2="620" y2="446" stroke-width=".3" opacity=".4"/>
+    <line x1="620" y1="446" x2="720" y2="790" stroke-width=".3" opacity=".4"/>
+    <line x1="720" y1="790" x2="720" y2="855" stroke-width=".3" opacity=".4"/>
+  </g>
+
+  <!-- TETRAGRAMMATON at action rail verbs -->
+  <g opacity=".25" font-family="Courier New" font-size="8" fill="rgba(201,164,58,.4)" text-anchor="middle">
+    <text x="285" y="848" letter-spacing="2">י</text>
+    <text x="465" y="848" letter-spacing="2">ה</text>
+    <text x="648" y="848" letter-spacing="2">ו</text>
+    <text x="828" y="848" letter-spacing="2">ה</text>
+    <text x="1008" y="848" letter-spacing="2">✦</text>
+    <text x="1188" y="848" letter-spacing="2">✦</text>
+  </g>
+
+  <!-- OM / AUM symbol - task column -->
+  <g transform="translate(948,300)" opacity=".2">
+    <text font-size="60" fill="rgba(201,164,58,.25)" font-family="serif" text-anchor="middle">ॐ</text>
+  </g>
+
+  <!-- Ouroboros trace around entire screen -->
+  <g opacity=".08">
+    <rect x="10" y="10" width="1420" height="880" rx="40"
+      fill="none" stroke="rgba(201,164,58,.4)" stroke-width="1"
+      stroke-dasharray="4 8"/>
+  </g>
+
+</svg>
+</div>
+
+<!-- ═══ LAYER 3: MANDALA OVERLAY ═══ -->
+<div id="l-mandala">
+<svg viewBox="-300 -300 600 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="glow3">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <!-- Concentric sacred rings -->
+  <circle r="280" fill="none" stroke="rgba(201,164,58,.06)" stroke-width="1"/>
+  <circle r="260" fill="none" stroke="rgba(201,164,58,.05)" stroke-width=".5"/>
+  <circle r="220" fill="none" stroke="rgba(201,164,58,.08)" stroke-width=".8"/>
+  <circle r="200" fill="none" stroke="rgba(201,164,58,.05)" stroke-width=".5"/>
+  <circle r="160" fill="none" stroke="rgba(201,164,58,.1)"  stroke-width=".8"/>
+  <circle r="120" fill="none" stroke="rgba(201,164,58,.12)" stroke-width=".6"/>
+  <circle r="80"  fill="none" stroke="rgba(201,164,58,.15)" stroke-width=".6"/>
+  <circle r="40"  fill="none" stroke="rgba(201,164,58,.2)"  stroke-width=".6"/>
+
+  <!-- 12 petal lotus — 12 dimensions -->
+  <g opacity=".35">
+    <g transform="rotate(0)">  <ellipse cx="0" cy="-120" rx="18" ry="40" fill="rgba(201,164,58,.06)" stroke="rgba(201,164,58,.3)" stroke-width=".5"/></g>
+    <g transform="rotate(30)"> <ellipse cx="0" cy="-120" rx="18" ry="40" fill="rgba(201,164,58,.06)" stroke="rgba(201,164,58,.3)" stroke-width=".5"/></g>
+    <g transform="rotate(60)"> <ellipse cx="0" cy="-120" rx="18" ry="40" fill="rgba(201,164,58,.06)" stroke="rgba(201,164,58,.3)" stroke-width=".5"/></g>
+    <g transform="rotate(90)"> <ellipse cx="0" cy="-120" rx="18" ry="40" fill="rgba(201,164,58,.06)" stroke="rgba(201,164,58,.3)" stroke-width=".5"/></g>
+    <g transform="rotate(120)"><ellipse cx="0" cy="-120" rx="18" ry="40" fill="rgba(201,164,58,.06)" stroke="rgba(201,164,58,.3)" stroke-width=".5"/></g>
+    <g transform="rotate(150)"><ellipse cx="0" cy="-120" rx="18" ry="40" fill="rgba(201,164,58,.06)" stroke="rgba(201,164,58,.3)" stroke-width=".5"/></g>
+    <g transform="rotate(180)"><ellipse cx="0" cy="-120" rx="18" ry="40" fill="rgba(201,164,58,.06)" stroke="rgba(201,164,58,.3)" stroke-width=".5"/></g>
+    <g transform="rotate(210)"><ellipse cx="0" cy="-120" rx="18" ry="40" fill="rgba(201,164,58,.06)" stroke="rgba(201,164,58,.3)" stroke-width=".5"/></g>
+    <g transform="rotate(240)"><ellipse cx="0" cy="-120" rx="18" ry="40" fill="rgba(201,164,58,.06)" stroke="rgba(201,164,58,.3)" stroke-width=".5"/></g>
+    <g transform="rotate(270)"><ellipse cx="0" cy="-120" rx="18" ry="40" fill="rgba(201,164,58,.06)" stroke="rgba(201,164,58,.3)" stroke-width=".5"/></g>
+    <g transform="rotate(300)"><ellipse cx="0" cy="-120" rx="18" ry="40" fill="rgba(201,164,58,.06)" stroke="rgba(201,164,58,.3)" stroke-width=".5"/></g>
+    <g transform="rotate(330)"><ellipse cx="0" cy="-120" rx="18" ry="40" fill="rgba(201,164,58,.06)" stroke="rgba(201,164,58,.3)" stroke-width=".5"/></g>
+  </g>
+
+  <!-- 24 radial lines — sacred grid -->
+  <g opacity=".2">
+    <g transform="rotate(0)">  <line x1="0" y1="-45" x2="0" y2="-275" stroke="rgba(201,164,58,.4)" stroke-width=".3"/></g>
+    <g transform="rotate(15)"> <line x1="0" y1="-45" x2="0" y2="-275" stroke="rgba(201,164,58,.3)" stroke-width=".2"/></g>
+    <g transform="rotate(30)"> <line x1="0" y1="-45" x2="0" y2="-275" stroke="rgba(201,164,58,.4)" stroke-width=".3"/></g>
+    <g transform="rotate(45)"> <line x1="0" y1="-45" x2="0" y2="-275" stroke="rgba(201,164,58,.3)" stroke-width=".2"/></g>
+    <g transform="rotate(60)"> <line x1="0" y1="-45" x2="0" y2="-275" stroke="rgba(201,164,58,.4)" stroke-width=".3"/></g>
+    <g transform="rotate(75)"> <line x1="0" y1="-45" x2="0" y2="-275" stroke="rgba(201,164,58,.3)" stroke-width=".2"/></g>
+    <g transform="rotate(90)"> <line x1="0" y1="-45" x2="0" y2="-275" stroke="rgba(201,164,58,.4)" stroke-width=".3"/></g>
+    <g transform="rotate(105)"><line x1="0" y1="-45" x2="0" y2="-275" stroke="rgba(201,164,58,.3)" stroke-width=".2"/></g>
+    <g transform="rotate(120)"><line x1="0" y1="-45" x2="0" y2="-275" stroke="rgba(201,164,58,.4)" stroke-width=".3"/></g>
+    <g transform="rotate(135)"><line x1="0" y1="-45" x2="0" y2="-275" stroke="rgba(201,164,58,.3)" stroke-width=".2"/></g>
+    <g transform="rotate(150)"><line x1="0" y1="-45" x2="0" y2="-275" stroke="rgba(201,164,58,.4)" stroke-width=".3"/></g>
+    <g transform="rotate(165)"><line x1="0" y1="-45" x2="0" y2="-275" stroke="rgba(201,164,58,.3)" stroke-width=".2"/></g>
+    <g transform="rotate(180)"><line x1="0" y1="-45" x2="0" y2="-275" stroke="rgba(201,164,58,.4)" stroke-width=".3"/></g>
+    <g transform="rotate(195)"><line x1="0" y1="-45" x2="0" y2="-275" stroke="rgba(201,164,58,.3)" stroke-width=".2"/></g>
+    <g transform="rotate(210)"><line x1="0" y1="-45" x2="0" y2="-275" stroke="rgba(201,164,58,.4)" stroke-width=".3"/></g>
+    <g transform="rotate(225)"><line x1="0" y1="-45" x2="0" y2="-275" stroke="rgba(201,164,58,.3)" stroke-width=".2"/></g>
+    <g transform="rotate(240)"><line x1="0" y1="-45" x2="0" y2="-275" stroke="rgba(201,164,58,.4)" stroke-width=".3"/></g>
+    <g transform="rotate(255)"><line x1="0" y1="-45" x2="0" y2="-275" stroke="rgba(201,164,58,.3)" stroke-width=".2"/></g>
+    <g transform="rotate(270)"><line x1="0" y1="-45" x2="0" y2="-275" stroke="rgba(201,164,58,.4)" stroke-width=".3"/></g>
+    <g transform="rotate(285)"><line x1="0" y1="-45" x2="0" y2="-275" stroke="rgba(201,164,58,.3)" stroke-width=".2"/></g>
+    <g transform="rotate(300)"><line x1="0" y1="-45" x2="0" y2="-275" stroke="rgba(201,164,58,.4)" stroke-width=".3"/></g>
+    <g transform="rotate(315)"><line x1="0" y1="-45" x2="0" y2="-275" stroke="rgba(201,164,58,.3)" stroke-width=".2"/></g>
+    <g transform="rotate(330)"><line x1="0" y1="-45" x2="0" y2="-275" stroke="rgba(201,164,58,.4)" stroke-width=".3"/></g>
+    <g transform="rotate(345)"><line x1="0" y1="-45" x2="0" y2="-275" stroke="rgba(201,164,58,.3)" stroke-width=".2"/></g>
+  </g>
+
+  <!-- Center bindu -->
+  <circle r="4" fill="#c9a43a" opacity=".6" filter="url(#glow3)"/>
+  <circle r="1.5" fill="white" opacity=".8"/>
+</svg>
+</div>
+
+<!-- ═══ LAYER 4: DMT CANVAS ═══ -->
+<div id="l-canvas">
+  <canvas id="dmt-canvas"></canvas>
+</div>
+
+<!-- ═══ LAYER 5: REVELATION (CLICK) ═══ -->
+<div id="l-click">
+  <div class="revelation-text">
+    AS ABOVE · SO BELOW<br>
+    AS WITHIN · SO WITHOUT<br>
+    · · ·<br>
+    WITNESS FIRST<br>
+    AUTHORITY : FALSE<br>
+    REALITY SOURCE : RECEIPTS<br>
+    · · ·<br>
+    THE TEMPLE IS THE COCKPIT<br>
+    THE COCKPIT IS THE TEMPLE<br>
+    · · ·<br>
+    ॐ<br>
+    · · ·<br>
+    HELEN OS · JEAN-MARIE · JMT<br>
+    NON_SOVEREIGN · NO_CLAIM · NO_SHIP
+  </div>
+</div>
+
+</div><!-- /scene -->
+
+<div id="hint">hold still · the temple opens</div>
+
+<script>
+/* ── Timing engine ── */
+const T = { start: Date.now(), state: 0 };
+
+function tick() {
+  const elapsed = (Date.now() - T.start) / 1000;
+  if (elapsed > 8  && T.state < 1) { T.state = 1; document.body.classList.add('t10');    document.getElementById('hint').textContent = 'the initiation begins' }
+  if (elapsed > 30 && T.state < 2) { T.state = 2; document.body.classList.add('t60');    document.getElementById('hint').textContent = 'the temple opens · click to receive' }
+  if (elapsed > 90 && T.state < 3) { T.state = 3; document.getElementById('hint').textContent = '' }
+  requestAnimationFrame(tick);
+}
+tick();
+
+/* ── Click: full revelation ── */
+let revealed = false;
+document.getElementById('scene').addEventListener('click', function() {
+  if (revealed) {
+    revealed = false;
+    document.body.classList.remove('open');
+  } else {
+    revealed = true;
+    document.body.classList.add('open', 't10', 't60');
+  }
+});
+
+/* ── DMT Canvas: spinning 3D Metatron + particle field ── */
+const canvas  = document.getElementById('dmt-canvas');
+const ctx     = canvas.getContext('2d');
+let W, H, cx, cy, t = 0;
+
+function resize() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+  cx = W / 2; cy = H / 2;
+}
+window.addEventListener('resize', resize);
+resize();
+
+/* 3D projection */
+function project(x, y, z, fov=600) {
+  const zz = z + fov;
+  return { x: cx + (x * fov / zz), y: cy + (y * fov / zz), s: fov / zz };
+}
+
+/* Metatron cube vertices (13 circles → sphere of spheres) */
+function metatronVerts(r) {
+  const v = [[0,0,0]];
+  for (let i=0;i<6;i++) {
+    const a = i * Math.PI / 3;
+    v.push([Math.cos(a)*r, Math.sin(a)*r, 0]);
+  }
+  for (let i=0;i<3;i++) {
+    const a = i * Math.PI * 2 / 3;
+    v.push([Math.cos(a)*r, Math.sin(a)*r, r*0.866]);
+    v.push([Math.cos(a)*r, Math.sin(a)*r, -r*0.866]);
+  }
+  return v;
+}
+
+/* Particles */
+const NPART = 120;
+const parts = Array.from({length:NPART}, () => ({
+  x: (Math.random()-0.5)*800,
+  y: (Math.random()-0.5)*600,
+  z: (Math.random()-0.5)*400,
+  vx:(Math.random()-0.5)*0.3,
+  vy:(Math.random()-0.5)*0.3,
+  vz:(Math.random()-0.5)*0.3,
+  r: Math.random()*1.5+0.3,
+}));
+
+function dmtFrame() {
+  t += 0.004;
+  ctx.clearRect(0, 0, W, H);
+
+  /* Slow rotation matrices */
+  const rx = t * 0.3, ry = t * 0.7, rz = t * 0.1;
+  const cosX=Math.cos(rx),sinX=Math.sin(rx);
+  const cosY=Math.cos(ry),sinY=Math.sin(ry);
+  const cosZ=Math.cos(rz),sinZ=Math.sin(rz);
+
+  function rot3(x,y,z) {
+    let x2 = cosZ*x - sinZ*y, y2 = sinZ*x + cosZ*y, z2 = z;
+    let x3 = cosY*x2 + sinY*z2, z3 = -sinY*x2 + cosY*z2;
+    let y3 = cosX*y2 - sinX*z3, z4 = sinX*y2 + cosX*z3;
+    return [x3, y3, z4];
+  }
+
+  /* Nested Metatron cubes at 3 scales */
+  [120, 80, 45].forEach((r, li) => {
+    const verts = metatronVerts(r);
+    const projected = verts.map(v => {
+      const [rx2,ry2,rz2] = rot3(...v);
+      return project(rx2, ry2, rz2);
+    });
+
+    const alpha = [0.25, 0.18, 0.12][li];
+    const col = `rgba(201,164,58,${alpha})`;
+
+    /* Connect all verts */
+    for (let i=0; i<projected.length; i++) {
+      for (let j=i+1; j<projected.length; j++) {
+        const a = projected[i], b = projected[j];
+        const dist = Math.hypot(a.x-b.x, a.y-b.y);
+        if (dist < 300) {
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.strokeStyle = col;
+          ctx.lineWidth = 0.4;
+          ctx.stroke();
+        }
+      }
+    }
+    /* Vertex dots */
+    projected.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.s * 1.5, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(201,164,58,${alpha*2})`;
+      ctx.fill();
+    });
+  });
+
+  /* Particle field — star dust / DMT geometry */
+  parts.forEach(p => {
+    p.x += p.vx; p.y += p.vy; p.z += p.vz;
+    if (Math.abs(p.x)>500) p.vx*=-1;
+    if (Math.abs(p.y)>400) p.vy*=-1;
+    if (Math.abs(p.z)>300) p.vz*=-1;
+    const [rx2,ry2,rz2] = rot3(p.x,p.y,p.z);
+    const pr = project(rx2,ry2,rz2);
+    ctx.beginPath();
+    ctx.arc(pr.x, pr.y, p.r * pr.s * 2, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(201,164,58,${0.15*pr.s})`;
+    ctx.fill();
+  });
+
+  /* Hyperbolic rings — DMT tunneling effect */
+  for (let i=1; i<=12; i++) {
+    const phase = t * 0.5;
+    const r = (i * 40 + Math.sin(phase + i*0.5) * 20);
+    const alpha = Math.max(0, 0.15 - i*0.01);
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, r * 1.6, r, t * 0.1, 0, Math.PI*2);
+    ctx.strokeStyle = `rgba(201,164,58,${alpha})`;
+    ctx.lineWidth = 0.4;
+    ctx.stroke();
+  }
+
+  requestAnimationFrame(dmtFrame);
+}
+dmtFrame();
+</script>
+</body>
+</html>
