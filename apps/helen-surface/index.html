@@ -312,36 +312,64 @@ html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:
 #geo-bg svg{width:100%;height:100%;animation:geoPulse 14s ease-in-out infinite}
 @keyframes geoPulse{0%,100%{opacity:.07}50%{opacity:.13}}
 
-/* ── AUTORESEARCH_UI_E02: NOW CARD — six-pack ── */
+/* ── AUTORESEARCH_UI_E03: NOW CARD (compact) + Oracle Line ── */
 #now-card{
   flex-shrink:0;background:rgba(7,7,10,.97);
   border-bottom:1px solid rgba(201,164,58,.14);
-  padding:11px 16px 13px;position:relative;z-index:1;
-}
-.nc-title{
-  font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.32em;
-  text-transform:uppercase;color:var(--state-accent);
-  display:flex;align-items:center;gap:8px;margin-bottom:10px;
-}
-.nc-title::after{content:'';flex:1;height:1px;background:rgba(201,164,58,.1)}
-.nc-grid{
+  padding:9px 16px;position:relative;z-index:1;
   display:grid;
-  grid-template-columns:1.1fr 1.5fr 1.7fr 1fr 1fr 1.9fr;
-  gap:0;
+  grid-template-columns:220px 1fr 200px 1fr;
+  gap:0;align-items:center;
 }
-.nc-cell{padding-right:16px;margin-right:0;border-right:1px solid var(--border)}
-.nc-cell:last-child{border-right:none;padding-right:0}
+.nc-cell{padding-right:16px;border-right:1px solid var(--border)}
 .nc-cell+.nc-cell{padding-left:16px}
+.nc-cell:last-child{border-right:none}
 .nc-lbl{
   font-family:var(--mono);font-size:6.5px;font-weight:700;letter-spacing:.22em;
-  text-transform:uppercase;color:var(--dim);margin-bottom:4px;
+  text-transform:uppercase;color:var(--dim);margin-bottom:3px;
 }
-.nc-val{font-size:10.5px;color:var(--silver);line-height:1.45}
+.nc-val{font-size:10.5px;color:var(--silver);line-height:1.3}
 .nc-val.v-mode{font-family:var(--mono);font-size:9px;color:var(--state-accent);letter-spacing:.04em}
 .nc-val.v-action{color:var(--white);font-weight:500}
-.nc-val.v-allowed{color:var(--green);font-family:var(--mono);font-size:9px;letter-spacing:.05em}
 .nc-val.v-blocked{color:var(--red);font-family:var(--mono);font-size:9px;letter-spacing:.05em}
 .nc-val.v-why{font-size:10px;color:var(--dim)}
+
+/* Oracle Line — kill Windows: intent-centric command surface */
+.oracle-wrap{
+  flex-shrink:0;display:flex;flex-direction:column;
+  border-top:1px solid rgba(201,164,58,.18);
+  background:var(--deep);position:relative;z-index:2;
+}
+.oracle-bar{
+  height:50px;display:flex;align-items:center;gap:12px;padding:0 16px;
+}
+.oracle-dot{
+  width:8px;height:8px;border-radius:50%;background:var(--gold);
+  box-shadow:0 0 8px rgba(201,164,58,.5);flex-shrink:0;
+  animation:pulse 3s ease-in-out infinite;
+}
+.oracle-prefix{
+  font-family:var(--mono);font-size:9px;letter-spacing:.14em;
+  color:var(--gold-dim);flex-shrink:0;
+}
+.oracle-input{
+  flex:1;background:none;border:none;outline:none;
+  font-family:var(--mono);font-size:12px;color:var(--white);
+  letter-spacing:.03em;caret-color:var(--gold);
+}
+.oracle-input::placeholder{color:var(--dim)}
+.oracle-resp{
+  font-family:var(--mono);font-size:9px;letter-spacing:.08em;
+  color:var(--gold-dim);flex-shrink:0;max-width:380px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.oracle-hint{
+  height:18px;display:flex;align-items:center;padding:0 16px;
+  border-top:1px solid var(--border);gap:16px;
+  font-family:var(--mono);font-size:6.5px;color:var(--dim);letter-spacing:.08em;
+}
+.oracle-cmd{cursor:pointer;transition:color .1s}
+.oracle-cmd:hover{color:var(--gold-dim)}
 
 /* Surface 0 orientation panel */
 .entry-orient{
@@ -481,39 +509,29 @@ html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:
       <div class="htag">Claim status <b>NO_CLAIM</b></div>
     </div>
     <div class="hdr-right">
+      <div class="htag" onclick="toggleFullscreen()" style="cursor:pointer;border-right:none" title="Kill the browser — enter HELEN OS full screen">⊞ FULL OS</div>
       <div class="state-badge" id="state-badge" onclick="resetState()">—</div>
       <div class="live-pulse"></div>
     </div>
   </div>
 
-  <!-- ── NOW CARD — HELEN six-pack · answers "what do I do now?" in <3s ── -->
+  <!-- ── NOW CARD — compact four-cell, scannable in 1s ── -->
   <div id="now-card">
-    <div class="nc-title" id="nc-title">NOW</div>
-    <div class="nc-grid">
-      <div class="nc-cell">
-        <div class="nc-lbl">Mode</div>
-        <div class="nc-val v-mode" id="nc-mode">Select state →</div>
-      </div>
-      <div class="nc-cell">
-        <div class="nc-lbl">Active Object</div>
-        <div class="nc-val" id="nc-object">HELEN Cockpit E02</div>
-      </div>
-      <div class="nc-cell">
-        <div class="nc-lbl">Do Now</div>
-        <div class="nc-val v-action" id="nc-action">Enter Surface 0 to receive your directive.</div>
-      </div>
-      <div class="nc-cell">
-        <div class="nc-lbl">Allowed</div>
-        <div class="nc-val v-allowed" id="nc-allowed">—</div>
-      </div>
-      <div class="nc-cell">
-        <div class="nc-lbl">Blocked</div>
-        <div class="nc-val v-blocked" id="nc-blocked">—</div>
-      </div>
-      <div class="nc-cell">
-        <div class="nc-lbl">Why</div>
-        <div class="nc-val v-why" id="nc-why">State unknown. Declare before acting.</div>
-      </div>
+    <div class="nc-cell">
+      <div class="nc-lbl">Mode</div>
+      <div class="nc-val v-mode" id="nc-mode">declare state →</div>
+    </div>
+    <div class="nc-cell">
+      <div class="nc-lbl">Do now</div>
+      <div class="nc-val v-action" id="nc-action">Open Surface 0 and choose your state.</div>
+    </div>
+    <div class="nc-cell">
+      <div class="nc-lbl">Blocked</div>
+      <div class="nc-val v-blocked" id="nc-blocked">—</div>
+    </div>
+    <div class="nc-cell">
+      <div class="nc-lbl">Why</div>
+      <div class="nc-val v-why" id="nc-why">State unknown. Declare before acting.</div>
     </div>
   </div>
 
@@ -918,24 +936,30 @@ html,body{width:100%;height:100vh;overflow:hidden;background:var(--black);color:
 
   </div><!-- /body -->
 
-  <!-- Action Grammar -->
-  <div class="action-rail">
-    <div class="rail-label">Action Grammar</div>
-    <div class="verb" onclick="doVerb('pull')">     <span class="verb-cmd pull">PULL</span>    <span class="verb-def">Find related<br>objects</span></div>
-    <div class="verb" onclick="doVerb('compose')">  <span class="verb-cmd compose">COMPOSE</span><span class="verb-def">Form candidate<br>structure</span></div>
-    <div class="verb" onclick="doVerb('validate')"> <span class="verb-cmd validate">VALIDATE</span><span class="verb-def">Run HAL /<br>receipt check</span></div>
-    <div class="verb" onclick="doVerb('persist')">  <span class="verb-cmd persist">PERSIST</span><span class="verb-def">Save only if<br>receipted</span></div>
-    <div class="verb" id="verb-ship" onclick="attemptShip()">
-      <span class="verb-cmd ship">SHIP</span><span class="verb-def">Irreversible<br>external action</span>
-      <span class="lock-icon" id="ship-lock-icon">🔒</span>
+  <!-- Oracle Line — the intent-centric shell. Type to route. No other apps needed. -->
+  <div class="oracle-wrap">
+    <div class="oracle-bar">
+      <div class="oracle-dot"></div>
+      <span class="oracle-prefix">HELEN→</span>
+      <input class="oracle-input" id="oracle-input"
+        placeholder="speak an intent — play · email · calendar · ship · focus [name] · fullscreen · next · help"
+        onkeydown="if(event.key==='Enter'&&this.value.trim()){executeOracle(this.value);this.value=''}"/>
+      <div class="oracle-resp" id="oracle-resp">ready.</div>
     </div>
-    <div class="verb" onclick="doVerb('noship')">   <span class="verb-cmd noship">NO_SHIP</span><span class="verb-def">Block, defer,<br>or reject</span></div>
+    <div class="oracle-hint">
+      <span class="oracle-cmd" onclick="fillOracle('play')">play</span>
+      <span class="oracle-cmd" onclick="fillOracle('email')">email</span>
+      <span class="oracle-cmd" onclick="fillOracle('calendar')">calendar</span>
+      <span class="oracle-cmd" onclick="fillOracle('github')">github</span>
+      <span class="oracle-cmd" onclick="fillOracle('ship')">ship</span>
+      <span class="oracle-cmd" onclick="fillOracle('next')">next</span>
+      <span class="oracle-cmd" onclick="fillOracle('fullscreen')">fullscreen</span>
+      <span style="margin-left:auto;color:var(--dim)">↵ enter to execute · HELEN OS v3.1 · authority=false · receipts required</span>
+    </div>
   </div>
-
-  <div class="footer">
-    <span>Witness-first. Authority: false. Reality source: receipts.</span>
-    <span>HELEN OS v3.0 · Second Brain · Built around Jean-Marie / JMT</span>
-  </div>
+  <!-- SHIP still needs modal trigger — hidden verb -->
+  <div id="verb-ship" style="display:none"></div>
+  <span id="ship-lock-icon" style="display:none"></span>
 
 </div><!-- /cockpit -->
 
@@ -1017,19 +1041,77 @@ const NOW_CARDS = {
   }
 };
 
-let currentObject = 'HELEN Cockpit E02';
+let currentObject = 'HELEN Cockpit E03';
 
 function updateNowCard() {
   if (!currentState) return;
   const d = NOW_CARDS[currentState];
   const s = STATES[currentState];
-  document.getElementById('nc-title').textContent  = 'NOW · ' + s.badge;
   document.getElementById('nc-mode').textContent   = d.mode;
-  document.getElementById('nc-object').textContent = currentObject;
   document.getElementById('nc-action').textContent = d.action;
-  document.getElementById('nc-allowed').textContent= d.allowed;
   document.getElementById('nc-blocked').textContent= d.blocked;
   document.getElementById('nc-why').textContent    = d.why;
+}
+
+/* ── ORACLE LINE — intent router ── */
+const ORACLE_ROUTES = {
+  play:       () => { window.open('https://open.spotify.com','_blank'); return 'Spotify → opening now.'; },
+  spotify:    () => { window.open('https://open.spotify.com','_blank'); return 'Spotify → opening now.'; },
+  music:      () => { window.open('https://open.spotify.com','_blank'); return 'Music → Spotify routed.'; },
+  email:      () => { window.open('https://mail.google.com','_blank');  return 'Gmail → opening now.'; },
+  mail:       () => { window.open('https://mail.google.com','_blank');  return 'Gmail → opening now.'; },
+  calendar:   () => { window.open('https://calendar.google.com','_blank'); return 'Calendar → opening now.'; },
+  cal:        () => { window.open('https://calendar.google.com','_blank'); return 'Calendar → opening now.'; },
+  github:     () => { window.open('https://github.com/JMTassy/HELEN_OS','_blank'); return 'GitHub → HELEN_OS repo.'; },
+  notion:     () => { window.open('https://notion.so','_blank');        return 'Notion → opening now.'; },
+  docs:       () => { window.open('https://docs.google.com','_blank');  return 'Google Docs → opening now.'; },
+  fullscreen: () => { toggleFullscreen(); return 'Fullscreen mode — browser chrome killed.'; },
+  next:       () => { const items=NOW_CARDS[currentState]?.items; return NOW_CARDS[currentState]?.action || 'Declare state first.'; },
+  ship:       () => { attemptShip(); return 'SHIP gate opened — Go/No-Go poll launched.'; },
+  help:       () => 'Commands: play · email · calendar · github · ship · fullscreen · next · focus [name] · calm / excited / angry / …',
+  status:     () => 'State: '+(currentState||'none')+' · Object: '+currentObject+' · Receipts: PENDING_RECEIPT · MAYOR: NO_SHIP',
+};
+
+const STATE_WORDS = ['calm','excited','worried','angry','sad','proud','scared','happy'];
+
+function executeOracle(raw) {
+  const cmd = raw.toLowerCase().trim();
+  const first = cmd.split(' ')[0];
+  let resp = '';
+
+  if (ORACLE_ROUTES[first]) {
+    resp = ORACLE_ROUTES[first]();
+  } else if (STATE_WORDS.includes(first)) {
+    selectState(first);
+    resp = 'State updated → ' + first.toUpperCase() + '. NOW CARD recalculated.';
+    if (document.getElementById('cockpit').classList.contains('visible')) updateNowCard();
+  } else if (cmd.startsWith('focus ')) {
+    const obj = raw.slice(6).trim();
+    currentObject = obj;
+    document.getElementById('nc-object') && (document.getElementById('nc-object').textContent = obj);
+    const el = document.getElementById('obj-name');
+    if (el) el.textContent = obj;
+    resp = 'Focus set → ' + obj;
+  } else {
+    resp = 'Routing: "' + raw + '" — intent received. No direct route found. Try: help';
+  }
+
+  document.getElementById('oracle-resp').textContent = resp;
+  document.getElementById('oracle-input').value = '';
+}
+
+function fillOracle(cmd) {
+  const el = document.getElementById('oracle-input');
+  el.value = cmd + ' ';
+  el.focus();
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {});
+  } else {
+    document.exitFullscreen();
+  }
 }
 
 const STATES = {
