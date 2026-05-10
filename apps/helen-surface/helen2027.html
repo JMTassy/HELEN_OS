@@ -7,231 +7,125 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#f0ede6;
-  --surface:#fff;
-  --surface-warm:rgba(255,252,246,.9);
-  --border:rgba(0,0,0,.07);
-  --border-med:rgba(0,0,0,.1);
-  --shadow:0 1px 4px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.05);
-  --shadow-lg:0 8px 40px rgba(0,0,0,.1),0 2px 8px rgba(0,0,0,.06);
-  --text:#1a1916;
-  --text-dim:rgba(26,25,22,.5);
-  --text-label:rgba(26,25,22,.32);
-  --gold:#b8860b;
-  --gold-bg:rgba(184,134,11,.09);
-  --helen:#0ea5e9;
-  --helen-bg:rgba(14,165,233,.08);
-  --ok:#16a34a;
-  --ok-bg:rgba(22,163,74,.09);
-  --warn:#d97706;
-  --warn-bg:rgba(217,119,6,.09);
-  --blocked:#dc2626;
-  --blocked-bg:rgba(220,38,38,.08);
+  --bg:#120d08;
+  --surface:rgba(255,248,236,.04);
+  --border:rgba(255,220,140,.08);
+  --border-med:rgba(255,220,140,.13);
+  --text:rgba(255,240,210,.92);
+  --text-dim:rgba(255,240,210,.55);
+  --text-mute:rgba(255,240,210,.28);
+  --gold:#c9940c;
+  --gold-dim:rgba(201,148,12,.5);
+  --helen:#38bdf8;
+  --ok:#4ade80;
+  --warn:#fbbf24;
+  --blocked:#f87171;
   --sans:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;
   --mono:'Courier New',Courier,monospace;
-  --radius:12px;
-  --sidebar-w:208px;
-  --right-w:232px;
 }
 html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:var(--sans);-webkit-font-smoothing:antialiased}
 
-/* ─── TOP BAR ──────────────────────────────────────────────────────────────── */
-#top{position:fixed;top:0;left:0;right:0;z-index:20;background:rgba(240,237,230,.94);border-bottom:1px solid var(--border);backdrop-filter:blur(14px)}
-#top-bar{display:flex;align-items:center;padding:0 20px;height:38px;gap:0}
-.tb-brand{display:flex;align-items:center;gap:8px;margin-right:20px}
-.tb-logo{width:24px;height:24px;flex-shrink:0}
-.tb-name{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(26,25,22,.78);font-weight:400}
-.tb-year{font-family:var(--mono);font-size:8px;color:var(--text-label);margin-left:3px;letter-spacing:.06em}
-.tb-sep{width:1px;height:14px;background:var(--border-med);margin:0 14px;flex-shrink:0}
+/* ── TOP BAR ─────────────────────────────────────────────────────────────── */
+#top{position:fixed;top:0;left:0;right:0;z-index:20;background:rgba(18,13,8,.85);border-bottom:1px solid var(--border);backdrop-filter:blur(16px)}
+#top-bar{display:flex;align-items:center;padding:0 24px;height:38px;gap:0}
+.tb-brand{display:flex;align-items:center;gap:9px;margin-right:22px;cursor:pointer}
+.tb-logo{width:22px;height:22px;flex-shrink:0}
+.tb-name{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,220,140,.65);font-weight:400}
+.tb-year{font-family:var(--mono);font-size:7.5px;color:var(--text-mute);margin-left:2px}
+.tb-sep{width:1px;height:13px;background:var(--border);margin:0 14px;flex-shrink:0}
 .tb-field{display:flex;flex-direction:column;gap:1px;margin-right:14px}
-.tb-field-k{font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-label)}
+.tb-field-k{font-size:7.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mute)}
 .tb-field-v{font-size:11px;color:var(--text-dim)}
 .tb-push{margin-left:auto;display:flex;align-items:center;gap:8px}
-.tb-badge{font-family:var(--mono);font-size:7.5px;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:3px;border:1px solid}
-.tb-badge.auth{color:rgba(220,38,38,.65);border-color:rgba(220,38,38,.2)}
-.tb-badge.demo{color:var(--text-label);border-color:var(--border-med)}
-.tb-badge.presence{color:var(--ok);border-color:rgba(22,163,74,.2);display:flex;align-items:center;gap:4px}
-.presence-dot{width:5px;height:5px;border-radius:50%;background:var(--ok);flex-shrink:0}
-#tb-clock{font-family:var(--mono);font-size:10px;color:var(--text-dim);letter-spacing:.04em}
+.tb-badge{font-family:var(--mono);font-size:7px;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:3px;border:1px solid;white-space:nowrap}
+.tb-badge.auth{color:rgba(248,113,113,.6);border-color:rgba(248,113,113,.15)}
+.tb-badge.demo{color:var(--text-mute);border-color:var(--border)}
+.tb-badge.presence{color:var(--ok);border-color:rgba(74,222,128,.2);display:flex;align-items:center;gap:4px}
+.presence-dot{width:5px;height:5px;border-radius:50%;background:var(--ok);flex-shrink:0;animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+#tb-clock{font-family:var(--mono);font-size:10px;color:var(--text-mute);letter-spacing:.04em}
 
-#top-nav{display:flex;align-items:center;padding:0 20px;height:30px;gap:2px;border-top:1px solid var(--border)}
-.nav-item{font-size:11px;letter-spacing:.01em;color:var(--text-label);padding:2px 12px;border-radius:20px;cursor:pointer;transition:all .14s;user-select:none;white-space:nowrap}
-.nav-item:hover{color:var(--text-dim);background:rgba(0,0,0,.04)}
-.nav-item.active{color:var(--text);background:rgba(0,0,0,.07);font-weight:500}
+#top-nav{display:flex;align-items:center;justify-content:center;padding:0 24px;height:30px;gap:2px;border-top:1px solid var(--border)}
+.nav-item{font-size:11px;letter-spacing:.01em;color:var(--text-mute);padding:2px 14px;border-radius:20px;cursor:pointer;transition:all .15s;user-select:none}
+.nav-item:hover{color:var(--text-dim);background:rgba(255,220,140,.05)}
+.nav-item.active{color:var(--text);background:rgba(255,220,140,.09);font-weight:500}
 
-/* ─── BODY ─────────────────────────────────────────────────────────────────── */
-#body{position:fixed;inset:68px 0 100px;display:flex;overflow:hidden}
-
-/* ─── LEFT SIDEBAR ─────────────────────────────────────────────────────────── */
-#sidebar{width:var(--sidebar-w);flex-shrink:0;border-right:1px solid var(--border);display:flex;flex-direction:column;background:rgba(240,237,230,.5);overflow:hidden}
-.sb-section{padding:12px 10px;display:flex;flex-direction:column;gap:1px}
-.sb-section+.sb-section{border-top:1px solid var(--border)}
-.sb-label{font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-label);padding:0 10px;margin-bottom:6px;margin-top:4px}
-.sb-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:background .12s;color:var(--text-dim);font-size:12px}
-.sb-item:hover{background:rgba(0,0,0,.05);color:var(--text)}
-.sb-item.active{background:var(--surface);color:var(--text);font-weight:500;box-shadow:var(--shadow)}
-.sb-icon{width:16px;height:16px;flex-shrink:0;opacity:.5;font-size:14px;display:flex;align-items:center;justify-content:center;line-height:1}
-.sb-item.active .sb-icon{opacity:.85}
-.sb-sub{font-size:9.5px;color:var(--text-label);line-height:1.4;margin-top:1px}
-
-/* system health */
-#sys-health{padding:12px 12px 8px;border-top:1px solid var(--border);margin-top:auto}
-.sh-title{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-label);margin-bottom:8px;display:flex;align-items:center;gap:6px}
-.sh-dot{width:5px;height:5px;border-radius:50%;background:var(--ok);flex-shrink:0}
-.sh-row{display:flex;justify-content:space-between;align-items:center;padding:3px 0;font-size:10px}
-.sh-k{color:var(--text-label)}.sh-v{color:var(--text-dim);font-family:var(--mono);font-size:9px}
-.sh-v.ok{color:var(--ok)}.sh-v.warn{color:var(--warn)}.sh-v.err{color:var(--blocked)}
-
-#sb-quote{padding:10px 12px 12px;border-top:1px solid var(--border);font-size:10px;color:var(--text-label);line-height:1.6;font-style:italic}
-#sb-quote cite{display:block;font-style:normal;color:var(--gold);margin-top:4px;font-size:9px;letter-spacing:.06em;text-transform:uppercase}
-
-/* ─── CENTER ───────────────────────────────────────────────────────────────── */
-#center{flex:1;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;gap:14px;padding:18px 16px 20px;scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.1) transparent}
-
-/* HERO */
-#hero{
-  border-radius:var(--radius);overflow:hidden;
-  background:linear-gradient(160deg,#1c1409 0%,#2d1e0e 30%,#4a2d12 55%,#6b4020 75%,#7d5128 100%);
-  box-shadow:var(--shadow-lg);flex-shrink:0;
-  position:relative;
+/* ── STAGE ───────────────────────────────────────────────────────────────── */
+#stage{
+  position:fixed;inset:68px 0 72px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  overflow-y:auto;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 40%,rgba(120,60,10,.28) 0%,transparent 70%),
+    radial-gradient(ellipse 100% 60% at 50% 100%,rgba(80,30,5,.35) 0%,transparent 65%),
+    var(--bg);
 }
-#hero-inner{padding:28px 32px 22px;position:relative;z-index:1}
-.hero-glow{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:60%;height:50%;background:radial-gradient(ellipse at 50% 100%,rgba(180,100,20,.35) 0%,transparent 70%);pointer-events:none;z-index:0}
-.hero-eyebrow{font-family:var(--mono);font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,220,140,.45);margin-bottom:12px;text-align:center}
-.hero-sit{font-size:11px;color:rgba(255,220,160,.5);text-align:center;margin-bottom:6px;letter-spacing:.01em}
-.hero-action{font-size:22px;font-weight:300;color:rgba(255,240,210,.92);line-height:1.3;margin-bottom:4px;letter-spacing:-.02em;text-align:center}
-.hero-move-label{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,200,100,.4);text-align:center;margin-bottom:4px;margin-top:10px}
-.hero-move{font-size:14px;color:rgba(255,235,180,.75);text-align:center;line-height:1.4;margin-bottom:18px;letter-spacing:-.005em}
 
-/* source chips */
-.hero-chips{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
-.chip{display:flex;align-items:center;gap:5px;font-size:9.5px;padding:3px 10px;border-radius:20px;white-space:nowrap;letter-spacing:.01em;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:rgba(255,240,200,.5)}
+/* ── MARK ────────────────────────────────────────────────────────────────── */
+#mark-wrap{margin-bottom:28px;position:relative}
+#mark-wrap svg{width:52px;height:52px;animation:breathe 9s ease-in-out infinite}
+@keyframes breathe{0%,100%{opacity:.65;transform:scale(1)}50%{opacity:1;transform:scale(1.04)}}
+#mark-ring{position:absolute;inset:-12px;border-radius:50%;border:1px solid rgba(201,148,12,.12);animation:ringPulse 9s ease-in-out infinite}
+@keyframes ringPulse{0%,100%{opacity:0;transform:scale(.92)}50%{opacity:1;transform:scale(1)}}
+
+/* ── VOICE ───────────────────────────────────────────────────────────────── */
+#voice{text-align:center;max-width:620px;padding:0 24px}
+.v-eyebrow{font-family:var(--mono);font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:14px}
+.v-sit{font-size:13px;color:var(--text-dim);line-height:1.55;margin-bottom:18px;letter-spacing:-.01em}
+.v-action{font-size:26px;font-weight:300;color:var(--text);line-height:1.2;margin-bottom:8px;letter-spacing:-.03em}
+.v-move{font-size:13px;color:var(--text-dim);line-height:1.5;margin-bottom:22px;letter-spacing:-.005em}
+
+/* chips */
+.chips{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:32px}
+.chip{display:flex;align-items:center;gap:5px;font-size:9px;padding:4px 11px;border-radius:20px;white-space:nowrap;border:1px solid;cursor:pointer;transition:all .15s;letter-spacing:.01em}
+.chip:hover{transform:translateY(-1px)}
 .chip-dot{width:4px;height:4px;border-radius:50%;flex-shrink:0}
-.chip.linked{background:rgba(14,165,233,.12);border-color:rgba(14,165,233,.2);color:rgba(100,200,255,.75)}.chip.linked .chip-dot{background:#38bdf8}
-.chip.saved{background:rgba(22,163,74,.12);border-color:rgba(22,163,74,.2);color:rgba(100,220,150,.75)}.chip.saved .chip-dot{background:#4ade80}
-.chip.draft{background:rgba(217,119,6,.12);border-color:rgba(217,119,6,.2);color:rgba(255,190,80,.75)}.chip.draft .chip-dot{background:#fbbf24}
-.chip.verified{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1);color:rgba(255,240,200,.4)}.chip.verified .chip-dot{background:rgba(255,240,200,.3)}
+.chip.linked{background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.2);color:rgba(100,200,255,.8)}.chip.linked .chip-dot{background:#38bdf8}
+.chip.saved{background:rgba(74,222,128,.08);border-color:rgba(74,222,128,.2);color:rgba(100,220,150,.8)}.chip.saved .chip-dot{background:#4ade80}
+.chip.draft{background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.2);color:rgba(255,200,80,.8)}.chip.draft .chip-dot{background:#fbbf24}
+.chip.mute{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.07);color:rgba(255,240,200,.35)}.chip.mute .chip-dot{background:rgba(255,240,200,.25)}
 
-/* status pills */
-.hero-pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
-.h-pill{font-size:10.5px;padding:4px 14px;border-radius:20px;border:1px solid rgba(255,255,255,.1);color:rgba(255,240,200,.5);background:rgba(255,255,255,.04);display:flex;align-items:center;gap:6px}
-.h-pill-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
-.h-pill.prog .h-pill-dot{background:var(--helen)}.h-pill.prog{color:rgba(100,200,255,.75)}
-.h-pill.sched .h-pill-dot{background:var(--ok)}.h-pill.sched{color:rgba(100,220,150,.7)}
-.h-pill.wait .h-pill-dot{background:var(--warn)}.h-pill.wait{color:rgba(255,190,80,.7)}
-.h-pill.block .h-pill-dot{background:var(--blocked);animation:blink 2s ease-in-out infinite}.h-pill.block{color:rgba(255,130,130,.7)}
-@keyframes blink{0%,100%{opacity:.6}50%{opacity:1}}
+/* ── STATUS ROW ──────────────────────────────────────────────────────────── */
+#status-row{display:flex;gap:0;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:36px}
+.sr{padding:10px 22px;text-align:center;border-right:1px solid var(--border);cursor:default}
+.sr:last-child{border-right:none}
+.sr-n{font-family:var(--mono);font-size:18px;font-weight:300;line-height:1;margin-bottom:3px}
+.sr-l{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mute)}
+.sr-n.prog{color:var(--helen)}
+.sr-n.todo{color:var(--text-dim)}
+.sr-n.wait{color:var(--warn)}
+.sr-n.block{color:var(--blocked)}
 
-/* ZONES */
-#zones{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;flex-shrink:0}
-.zone{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden}
-.zone-hdr{padding:10px 12px 9px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
-.zone-icon{font-size:11px;opacity:.6}
-.zone-label{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-label);flex:1}
-.zone-count{font-size:10px;color:var(--text-label);background:rgba(0,0,0,.05);padding:1px 7px;border-radius:10px}
-.zone-body{padding:4px 0}
+/* ── SURFACE NAV ─────────────────────────────────────────────────────────── */
+#surfaces{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.surf{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  padding:14px 20px;border-radius:12px;
+  border:1px solid var(--border);background:var(--surface);
+  cursor:pointer;transition:all .18s;min-width:96px;
+  text-decoration:none;
+}
+.surf:hover{background:rgba(255,220,140,.06);border-color:var(--border-med);transform:translateY(-2px)}
+.surf.active{background:rgba(201,148,12,.08);border-color:rgba(201,148,12,.22)}
+.surf-icon{font-size:20px;opacity:.55;line-height:1}
+.surf.active .surf-icon{opacity:.9}
+.surf-name{font-size:11px;font-weight:500;color:var(--text-dim);letter-spacing:.01em}
+.surf.active .surf-name{color:var(--text)}
+.surf-state{font-family:var(--mono);font-size:7.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mute)}
+.surf.active .surf-state{color:var(--gold-dim)}
 
-.zone.todo .zone-label{color:var(--warn)}
-.zone.inprog .zone-label{color:var(--helen)}
-.zone.sched .zone-label{color:var(--ok)}
-.zone.blocked-z .zone-label{color:var(--blocked)}
+/* ── BOTTOM INPUT ────────────────────────────────────────────────────────── */
+#bottom{position:fixed;bottom:0;left:0;right:0;height:72px;background:rgba(18,13,8,.92);border-top:1px solid var(--border);backdrop-filter:blur(16px);display:flex;align-items:center;padding:0 24px;gap:10px}
+#helen-input{flex:1;background:rgba(255,220,140,.04);border:1px solid var(--border);border-radius:8px;padding:0 16px;height:38px;font-family:var(--sans);font-size:12px;color:var(--text);outline:none;transition:border-color .14s}
+#helen-input:focus{border-color:rgba(201,148,12,.3);background:rgba(255,220,140,.06)}
+#helen-input::placeholder{color:var(--text-mute)}
+.send-btn{height:38px;padding:0 18px;border-radius:8px;background:rgba(201,148,12,.12);border:1px solid rgba(201,148,12,.2);color:var(--gold);font-family:var(--sans);font-size:11px;cursor:pointer;transition:all .14s;white-space:nowrap;letter-spacing:.02em}
+.send-btn:hover{background:rgba(201,148,12,.2);border-color:rgba(201,148,12,.35)}
 
-/* ITEMS */
-.item{padding:8px 12px;cursor:pointer;transition:background .1s;position:relative}
-.item:hover{background:rgba(0,0,0,.025)}
-.item-title{font-size:11.5px;color:var(--text);line-height:1.35;letter-spacing:-.01em;margin-bottom:3px}
-.item-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-top:3px}
-.item-src{font-family:var(--mono);font-size:8px;color:var(--text-label)}
-.marker{font-size:8.5px;padding:1px 6px;border-radius:10px;font-weight:500;letter-spacing:.02em;white-space:nowrap}
-.m-linked{color:var(--helen);background:var(--helen-bg)}
-.m-saved{color:var(--ok);background:var(--ok-bg)}
-.m-draft{color:var(--warn);background:var(--warn-bg)}
-.m-blocked{color:var(--blocked);background:var(--blocked-bg)}
-.m-waiting{color:var(--warn);background:var(--warn-bg)}
-.m-verified{color:var(--text-label);background:rgba(0,0,0,.05)}
-
-/* progress bar */
-.item-prog-wrap{margin-top:5px;height:3px;background:rgba(0,0,0,.07);border-radius:2px;overflow:hidden}
-.item-prog-fill{height:100%;border-radius:2px;transition:width .4s ease}
-.prog-blue{background:var(--helen)}.prog-gold{background:var(--warn)}
-.item-prog-label{font-size:8.5px;color:var(--text-label);margin-top:3px;font-family:var(--mono)}
-
-/* schedule */
-.sched-time{font-family:var(--mono);font-size:10px;color:var(--helen);flex-shrink:0}
-
-/* ─── RIGHT SIDEBAR ─────────────────────────────────────────────────────────── */
-#right{width:var(--right-w);flex-shrink:0;border-left:1px solid var(--border);overflow-y:auto;scrollbar-width:none;display:flex;flex-direction:column;gap:0;background:rgba(240,237,230,.4)}
-#right::-webkit-scrollbar{display:none}
-.rs-block{padding:14px 14px 12px;border-bottom:1px solid var(--border)}
-.rs-label{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-label);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
-.rs-more{font-family:var(--sans);font-size:9.5px;color:var(--helen);letter-spacing:.01em;cursor:pointer;text-transform:none}
-
-/* TODAY schedule */
-.sched-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(0,0,0,.04);font-size:11px}
-.sched-row:last-child{border-bottom:none}
-.s-time{font-family:var(--mono);font-size:9.5px;color:var(--text-label);width:40px;flex-shrink:0}
-.s-label{flex:1;color:var(--text-dim)}
-.s-dur{font-family:var(--mono);font-size:8.5px;color:var(--text-label)}
-.s-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-right:2px}
-
-/* ACTIVE OBJECT */
-#active-obj{background:var(--surface);border-radius:10px;padding:12px;box-shadow:var(--shadow);margin:0 14px 0}
-.ao-tag{font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:5px;margin-bottom:6px}
-.ao-name{font-size:13px;font-weight:500;color:var(--text);line-height:1.3;margin-bottom:4px}
-.ao-desc{font-size:11px;color:var(--text-dim);line-height:1.5;margin-bottom:10px}
-.ao-prog-wrap{height:4px;background:rgba(0,0,0,.07);border-radius:2px;overflow:hidden;margin-bottom:8px}
-.ao-prog-fill{height:100%;background:var(--helen);border-radius:2px;width:65%}
-.ao-row{display:flex;justify-content:space-between;font-size:10px;padding:2px 0;border-bottom:1px solid rgba(0,0,0,.04)}
-.ao-k{color:var(--text-label)}.ao-v{color:var(--text-dim);font-weight:500}
-.ao-v.high{color:var(--blocked)}.ao-v.ok{color:var(--ok)}
-
-/* LEDGER SNAPSHOT */
-.ledger-num{font-size:28px;font-weight:300;color:var(--text);letter-spacing:-.02em;margin:4px 0}
-.ledger-sub{font-size:10px;color:var(--text-label);margin-bottom:8px}
-.ledger-link{font-size:10.5px;color:var(--helen);cursor:pointer;display:inline-flex;align-items:center;gap:4px}
-
-/* ─── BOTTOM ───────────────────────────────────────────────────────────────── */
-#bottom{position:fixed;bottom:0;left:0;right:0;z-index:10;background:rgba(240,237,230,.95);border-top:1px solid var(--border);backdrop-filter:blur(14px)}
-#action-rail{display:flex;align-items:center;justify-content:center;gap:6px;padding:6px 20px 0}
-.abt{display:flex;flex-direction:column;align-items:center;gap:2px;padding:5px 14px;border-radius:8px;cursor:pointer;transition:all .12s;border:1px solid transparent;min-width:70px}
-.abt:hover{background:rgba(0,0,0,.05);border-color:var(--border-med)}
-.abt-icon{font-size:14px;line-height:1}
-.abt-label{font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--text-label);font-weight:500}
-.abt-sub{font-size:8px;color:var(--text-label);opacity:.7}
-.abt.primary{background:var(--helen-bg);border-color:rgba(14,165,233,.2)}.abt.primary .abt-label{color:var(--helen)}
-
-#input-row{display:flex;align-items:center;gap:10px;padding:7px 20px 8px}
-#helen-input{flex:1;background:rgba(0,0,0,.05);border:1px solid var(--border-med);border-radius:8px;padding:0 14px;height:32px;font-family:var(--sans);font-size:12px;color:var(--text);outline:none;transition:border-color .12s}
-#helen-input:focus{border-color:rgba(14,165,233,.4);background:rgba(255,255,255,.7)}
-#helen-input::placeholder{color:var(--text-label)}
-.send-btn{height:32px;padding:0 14px;border-radius:8px;background:rgba(0,0,0,.06);border:1px solid var(--border-med);color:var(--text-dim);font-family:var(--sans);font-size:11px;cursor:pointer;transition:all .12s;white-space:nowrap}
-.send-btn:hover{background:var(--helen-bg);color:var(--helen);border-color:rgba(14,165,233,.3)}
-
-/* ─── DETAIL CARD (floating) ───────────────────────────────────────────────── */
-#detail{position:fixed;z-index:30;display:none;background:var(--surface);border:1px solid var(--border-med);border-radius:14px;width:308px;box-shadow:var(--shadow-lg)}
-#detail.on{display:block;animation:detailIn .18s ease}
-@keyframes detailIn{from{opacity:0;transform:scale(.96) translateY(-4px)}to{opacity:1;transform:scale(1) translateY(0)}}
-.d-hdr{padding:14px 16px 12px;border-bottom:1px solid var(--border)}
-.d-tag-row{display:flex;align-items:center;gap:6px;margin-bottom:7px}
-.d-tag-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.d-tag-txt{font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
-.d-title{font-size:13.5px;font-weight:500;color:var(--text);line-height:1.35;letter-spacing:-.01em}
-.d-close{position:absolute;top:10px;right:12px;cursor:pointer;color:var(--text-label);background:none;border:none;font-size:18px;line-height:1;padding:2px}
-.d-close:hover{color:var(--text)}
-.d-body{padding:12px 16px 14px}
-.d-why{font-size:11.5px;color:var(--text-dim);line-height:1.6;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border)}
-.d-row{display:flex;justify-content:space-between;gap:10px;padding:4px 0;border-bottom:1px solid rgba(0,0,0,.04)}
-.dk{font-size:10px;color:var(--text-label)}.dv{font-size:10.5px;color:var(--text-dim);font-weight:500}
-.dv.ok{color:var(--ok)}.dv.warn{color:var(--warn)}.dv.err{color:var(--blocked)}.dv.helen{color:var(--helen)}
-.d-acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
-.da{font-size:11px;padding:6px 14px;border-radius:7px;border:1px solid var(--border-med);background:transparent;color:var(--text-dim);cursor:pointer;transition:all .12s;letter-spacing:-.01em}
-.da:hover{border-color:rgba(14,165,233,.3);color:var(--helen);background:var(--helen-bg)}
-.da.primary{background:var(--helen);border-color:var(--helen);color:#fff}.da.primary:hover{background:#0284c7;border-color:#0284c7}
-
-/* ─── TOAST ────────────────────────────────────────────────────────────────── */
-#toast{position:fixed;bottom:110px;left:50%;transform:translateX(-50%);background:var(--text);color:rgba(255,255,255,.88);border-radius:8px;padding:8px 18px;font-size:12px;display:none;pointer-events:none;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.15);z-index:40}
+/* ── TOAST ───────────────────────────────────────────────────────────────── */
+#toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%);background:rgba(40,28,12,.95);color:var(--text);border:1px solid var(--border-med);border-radius:8px;padding:9px 20px;font-size:11.5px;display:none;pointer-events:none;white-space:nowrap;box-shadow:0 4px 24px rgba(0,0,0,.4);z-index:40;letter-spacing:-.01em}
 #toast.on{display:block;animation:tIn .15s ease}
-@keyframes tIn{from{opacity:0;transform:translateX(-50%) translateY(4px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@keyframes tIn{from{opacity:0;transform:translateX(-50%) translateY(5px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 </style>
 </head>
 <body>
@@ -239,23 +133,22 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 <!-- TOP BAR -->
 <div id="top">
 <div id="top-bar">
-  <div class="tb-brand">
-    <svg class="tb-logo" viewBox="0 0 24 24" fill="none" stroke="#b8860b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-      <polygon points="12,2 21,7 21,17 12,22 3,17 3,7"/>
-      <line x1="12" y1="2" x2="12" y2="22"/><line x1="3" y1="7" x2="21" y2="7"/>
-      <line x1="3" y1="17" x2="21" y2="17"/>
+  <div class="tb-brand" onclick="navTo('home',null)">
+    <svg class="tb-logo" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <path d="M6 32 C16 13 48 13 58 32 C48 51 16 51 6 32Z" stroke="#c9940c" stroke-width="2"/>
+      <path d="M18 32 C25 24 39 24 46 32 C39 40 25 40 18 32Z" stroke="#c9940c" stroke-width="1.4" opacity=".65"/>
+      <circle cx="32" cy="32" r="3.2" fill="#c9940c"/>
+      <path d="M32 8 L32 18 M32 46 L32 56 M8 32 L16 32 M48 32 L56 32" stroke="#c9940c" stroke-width="1.2" opacity=".45"/>
     </svg>
     <span class="tb-name">HELEN OS</span><span class="tb-year">2027</span>
   </div>
   <div class="tb-sep"></div>
-  <div class="tb-field"><span class="tb-field-k">Operator</span><span class="tb-field-v">Jean-Marie / JMT</span></div>
+  <div class="tb-field"><span class="tb-field-k">Operator</span><span class="tb-field-v">JM Tassy</span></div>
   <div class="tb-sep"></div>
-  <div class="tb-field"><span class="tb-field-k">Focus</span><span class="tb-field-v">Building</span></div>
-  <div class="tb-sep"></div>
-  <div class="tb-field"><span class="tb-field-k">Energy</span><span class="tb-field-v">Steady</span></div>
+  <div class="tb-field"><span class="tb-field-k">Mode</span><span class="tb-field-v">Building</span></div>
   <div class="tb-push">
     <span class="tb-badge demo">Demo</span>
-    <span class="tb-badge auth">Authority: false</span>
+    <span class="tb-badge auth">auth: false</span>
     <div class="tb-sep"></div>
     <span class="tb-badge presence"><span class="presence-dot"></span>Online</span>
     <div class="tb-sep"></div>
@@ -270,363 +163,153 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
   <div class="nav-item" onclick="navTo('ledger',this)">Ledger</div>
   <div class="nav-item" onclick="navTo('memory',this)">Memory</div>
   <div class="nav-item" onclick="navTo('agents',this)">Agents</div>
-  <div class="nav-item" onclick="navTo('terminal',this)">Terminal</div>
 </div>
 </div>
 
-<!-- BODY -->
-<div id="body">
+<!-- STAGE -->
+<div id="stage">
 
-  <!-- LEFT SIDEBAR -->
-  <div id="sidebar">
-    <div class="sb-section">
-      <div class="sb-label">Navigation</div>
-      <div class="sb-item active" onclick="navTo('home',null)">
-        <div class="sb-icon">⌂</div>
-        <div><div>Home</div><div class="sb-sub">What matters now</div></div>
-      </div>
-      <div class="sb-item" onclick="navTo('pilot',null)">
-        <div class="sb-icon">◎</div>
-        <div><div>Pilot</div><div class="sb-sub">Source analysis</div></div>
-      </div>
-      <div class="sb-item" onclick="navTo('cockpit',null)">
-        <div class="sb-icon">⊞</div>
-        <div><div>Cockpit</div><div class="sb-sub">Operations & decisions</div></div>
-      </div>
-      <div class="sb-item" onclick="navTo('temple',null)">
-        <div class="sb-icon">◇</div>
-        <div><div>Temple</div><div class="sb-sub">Vision & reflection</div></div>
-      </div>
-      <div class="sb-item" onclick="navTo('ledger',null)">
-        <div class="sb-icon">≡</div>
-        <div><div>Ledger</div><div class="sb-sub">Receipts & proof</div></div>
-      </div>
-      <div class="sb-item" onclick="navTo('memory',null)">
-        <div class="sb-icon">○</div>
-        <div><div>Memory</div><div class="sb-sub">Context & knowledge</div></div>
-      </div>
+  <!-- VESSEL MARK -->
+  <div id="mark-wrap">
+    <div id="mark-ring"></div>
+    <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <path d="M6 32 C16 13 48 13 58 32 C48 51 16 51 6 32Z" stroke="#c9940c" stroke-width="1.8"/>
+      <path d="M18 32 C25 24 39 24 46 32 C39 40 25 40 18 32Z" stroke="#c9940c" stroke-width="1.3" opacity=".6"/>
+      <circle cx="32" cy="32" r="2.8" fill="#c9940c"/>
+      <path d="M32 8 L32 17 M32 47 L32 56 M8 32 L17 32 M47 32 L56 32" stroke="#c9940c" stroke-width="1.1" opacity=".38"/>
+    </svg>
+  </div>
+
+  <!-- HELEN'S VOICE -->
+  <div id="voice">
+    <div class="v-eyebrow" id="v-eyebrow">2026 · 05 · 10 &nbsp;·&nbsp; Building &nbsp;·&nbsp; Steady</div>
+    <div class="v-sit">HOME is close. One review away from ship.</div>
+    <div class="v-action">Review the surface now,<br>then decide.</div>
+    <div class="v-move">20 minutes · rate it · commit or revise. Nothing else matters first.</div>
+  </div>
+
+  <!-- CHIPS -->
+  <div class="chips">
+    <div class="chip linked" onclick="openChip('pilot')"><div class="chip-dot"></div>linked · STARSHIP_V3</div>
+    <div class="chip draft" onclick="openChip('source')"><div class="chip-dot"></div>source · helen2027.html</div>
+    <div class="chip saved" onclick="openChip('saved')"><div class="chip-dot"></div>saved · local draft</div>
+    <div class="chip mute" onclick="openChip('verified')"><div class="chip-dot"></div>auth: false · demo</div>
+  </div>
+
+  <!-- STATUS -->
+  <div id="status-row">
+    <div class="sr"><div class="sr-n prog">2</div><div class="sr-l">In progress</div></div>
+    <div class="sr"><div class="sr-n todo">3</div><div class="sr-l">To do</div></div>
+    <div class="sr"><div class="sr-n wait">3</div><div class="sr-l">Waiting</div></div>
+    <div class="sr"><div class="sr-n block">1</div><div class="sr-l">Blocked</div></div>
+  </div>
+
+  <!-- SURFACE NAV -->
+  <div id="surfaces">
+    <div class="surf active" onclick="navTo('home',null)">
+      <span class="surf-icon">⌂</span>
+      <span class="surf-name">Home</span>
+      <span class="surf-state">Active</span>
     </div>
-
-    <div id="sys-health">
-      <div class="sh-title"><span class="sh-dot"></span>System</div>
-      <div class="sh-row"><span class="sh-k">Receipts</span><span class="sh-v ok">128</span></div>
-      <div class="sh-row"><span class="sh-k">HAL gate</span><span class="sh-v ok">Validated</span></div>
-      <div class="sh-row"><span class="sh-k">Ledger sync</span><span class="sh-v ok">Stable</span></div>
-      <div class="sh-row"><span class="sh-k">Claims pending</span><span class="sh-v warn">28</span></div>
-      <div class="sh-row"><span class="sh-k">Authority</span><span class="sh-v err">False</span></div>
+    <div class="surf" onclick="navTo('pilot',null)">
+      <span class="surf-icon">◎</span>
+      <span class="surf-name">Pilot</span>
+      <span class="surf-state">Ready</span>
     </div>
-
-    <div id="sb-quote">
-      "We build the OS so love can govern what intelligence builds."
-      <cite>— HELEN</cite>
+    <div class="surf" onclick="navTo('cockpit',null)">
+      <span class="surf-icon">⊞</span>
+      <span class="surf-name">Cockpit</span>
+      <span class="surf-state">In flight</span>
+    </div>
+    <div class="surf" onclick="navTo('temple',null)">
+      <span class="surf-icon">◇</span>
+      <span class="surf-name">Temple</span>
+      <span class="surf-state">Not built</span>
+    </div>
+    <div class="surf" onclick="navTo('ledger',null)">
+      <span class="surf-icon">≡</span>
+      <span class="surf-name">Ledger</span>
+      <span class="surf-state">128 entries</span>
+    </div>
+    <div class="surf" onclick="navTo('memory',null)">
+      <span class="surf-icon">○</span>
+      <span class="surf-name">Memory</span>
+      <span class="surf-state">Not built</span>
     </div>
   </div>
 
-  <!-- CENTER -->
-  <div id="center">
+</div><!-- /stage -->
 
-    <!-- HERO -->
-    <div id="hero">
-      <div class="hero-glow"></div>
-      <div id="hero-inner">
-        <div class="hero-eyebrow">What now?</div>
-        <div class="hero-sit">Current situation</div>
-        <div class="hero-action">HELEN HOME is close,<br>but needs one review before ship.</div>
-        <div class="hero-move-label">Best next move</div>
-        <div class="hero-move">Review the HOME surface for 20 minutes,<br>then decide: revise, hold, or ship.</div>
-
-        <div class="hero-chips">
-          <div class="chip linked"><div class="chip-dot"></div>linked · STARSHIP_V3B</div>
-          <div class="chip saved"><div class="chip-dot"></div>saved · local draft</div>
-          <div class="chip draft"><div class="chip-dot"></div>source · helen2027.html</div>
-          <div class="chip verified"><div class="chip-dot"></div>verified · demo only</div>
-        </div>
-
-        <div class="hero-pills">
-          <div class="h-pill prog"><div class="h-pill-dot"></div>2 in progress</div>
-          <div class="h-pill sched"><div class="h-pill-dot"></div>4 scheduled</div>
-          <div class="h-pill wait"><div class="h-pill-dot"></div>3 waiting</div>
-          <div class="h-pill block"><div class="h-pill-dot"></div>1 blocked</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ZONES -->
-    <div id="zones">
-
-      <!-- TO DO -->
-      <div class="zone todo">
-        <div class="zone-hdr"><span class="zone-icon">○</span><span class="zone-label">To do</span><span class="zone-count">3</span></div>
-        <div class="zone-body">
-          <div class="item" onclick="openDetail('v3b')">
-            <div class="item-title">Review HELEN HOME</div>
-            <div class="item-row">
-              <span class="item-src">helen2027.html</span>
-              <span class="marker m-linked">linked</span>
-            </div>
-          </div>
-          <div class="item" onclick="openDetail('push')">
-            <div class="item-title">Push dashboard fix</div>
-            <div class="item-row">
-              <span class="item-src">index.html</span>
-              <span class="marker m-saved">saved</span>
-            </div>
-          </div>
-          <div class="item" onclick="openDetail('doctrine')">
-            <div class="item-title">Draft HELEN doctrine v1</div>
-            <div class="item-row">
-              <span class="item-src">docs/surface</span>
-              <span class="marker m-draft">draft</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- IN PROGRESS -->
-      <div class="zone inprog">
-        <div class="zone-hdr"><span class="zone-icon">◑</span><span class="zone-label">In progress</span><span class="zone-count">2</span></div>
-        <div class="zone-body">
-          <div class="item" onclick="openDetail('cockpit')">
-            <div class="item-title">HELEN OS cockpit evolution</div>
-            <div class="item-row"><span class="item-src">cockpit · surface</span></div>
-            <div class="item-prog-wrap"><div class="item-prog-fill prog-blue" style="width:65%"></div></div>
-            <div class="item-prog-label">65%</div>
-          </div>
-          <div class="item" onclick="openDetail('research')">
-            <div class="item-title">Research protected block</div>
-            <div class="item-row"><span class="item-src">planning note</span></div>
-            <div class="item-prog-wrap"><div class="item-prog-fill prog-gold" style="width:40%"></div></div>
-            <div class="item-prog-label">40%</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- SCHEDULE -->
-      <div class="zone sched">
-        <div class="zone-hdr"><span class="zone-icon">◷</span><span class="zone-label">Schedule</span><span class="zone-count">4</span></div>
-        <div class="zone-body">
-          <div class="item" onclick="openDetail('deepwork')">
-            <div class="item-row" style="gap:6px"><span class="sched-time">14:00</span><span class="item-title" style="margin:0">Deep work</span></div>
-            <div class="item-row" style="margin-top:2px"><span class="item-src">protected · 2h</span><span class="marker m-saved">protected</span></div>
-          </div>
-          <div class="item" onclick="openDetail('review16')">
-            <div class="item-row" style="gap:6px"><span class="sched-time">16:00</span><span class="item-title" style="margin:0">Review</span></div>
-            <div class="item-row" style="margin-top:2px"><span class="item-src">1h</span></div>
-          </div>
-          <div class="item" onclick="openDetail('admin')">
-            <div class="item-row" style="gap:6px"><span class="sched-time">18:00</span><span class="item-title" style="margin:0">Admin</span></div>
-            <div class="item-row" style="margin-top:2px"><span class="item-src">UZIK · Corsica · 45m</span></div>
-          </div>
-          <div class="item" onclick="openDetail('personal')">
-            <div class="item-row" style="gap:6px"><span class="sched-time">20:00</span><span class="item-title" style="margin:0">Personal</span></div>
-            <div class="item-row" style="margin-top:2px"><span class="item-src">1h</span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- WAITING / BLOCKED -->
-      <div class="zone blocked-z">
-        <div class="zone-hdr"><span class="zone-icon">◻</span><span class="zone-label">Waiting · Blocked</span><span class="zone-count">4</span></div>
-        <div class="zone-body">
-          <div class="item" onclick="openDetail('apikeys')">
-            <div class="item-title">API keys</div>
-            <div class="item-row"><span class="item-src">Higgsfield</span><span class="marker m-waiting">waiting</span></div>
-          </div>
-          <div class="item" onclick="openDetail('claudefb')">
-            <div class="item-title">Claude feedback</div>
-            <div class="item-row"><span class="item-src">review pending</span><span class="marker m-waiting">waiting</span></div>
-          </div>
-          <div class="item" onclick="openDetail('apple')">
-            <div class="item-title">Apple review</div>
-            <div class="item-row"><span class="item-src">external</span><span class="marker m-blocked">blocked</span></div>
-          </div>
-          <div class="item" onclick="openDetail('e12')">
-            <div class="item-title">E11/E12 reconciliation</div>
-            <div class="item-row"><span class="item-src">autoresearch</span><span class="marker m-blocked">blocked</span></div>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /zones -->
-  </div><!-- /center -->
-
-  <!-- RIGHT SIDEBAR -->
-  <div id="right">
-    <div class="rs-block">
-      <div class="rs-label">Today · May 10<span class="rs-more" onclick="toast('Calendar → opening…')">View full day →</span></div>
-      <div class="sched-row"><div class="s-dot" style="background:var(--ok)"></div><span class="s-time">14:00</span><span class="s-label">Deep work</span><span class="s-dur">2h</span></div>
-      <div class="sched-row"><div class="s-dot" style="background:rgba(0,0,0,.15)"></div><span class="s-time">16:00</span><span class="s-label">Review</span><span class="s-dur">1h</span></div>
-      <div class="sched-row"><div class="s-dot" style="background:rgba(0,0,0,.15)"></div><span class="s-time">18:00</span><span class="s-label">Admin</span><span class="s-dur">1h</span></div>
-      <div class="sched-row"><div class="s-dot" style="background:rgba(0,0,0,.15)"></div><span class="s-time">20:00</span><span class="s-label">Personal</span><span class="s-dur">1h</span></div>
-    </div>
-
-    <div class="rs-block" style="padding-bottom:0">
-      <div class="rs-label">Active object</div>
-      <div id="active-obj">
-        <div class="ao-tag">
-          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4" stroke="#b8860b" stroke-width="1.2"/><path d="M5 2v3l2 1" stroke="#b8860b" stroke-width="1.2" stroke-linecap="round"/></svg>
-          In progress
-        </div>
-        <div class="ao-name">HELEN OS<br>cockpit evolution</div>
-        <div class="ao-desc">Core operating surface for HELEN OS. Source Pilot + HOME layer.</div>
-        <div class="ao-prog-wrap"><div class="ao-prog-fill"></div></div>
-        <div class="ao-row"><span class="ao-k">Progress</span><span class="ao-v">65%</span></div>
-        <div class="ao-row"><span class="ao-k">Priority</span><span class="ao-v high">High</span></div>
-        <div class="ao-row"><span class="ao-k">Linked</span><span class="ao-v helen">STARSHIP_V3B</span></div>
-        <div class="ao-row"><span class="ao-k">Status</span><span class="ao-v">Review pending</span></div>
-      </div>
-    </div>
-
-    <div class="rs-block">
-      <div class="rs-label">Ledger snapshot<span class="rs-more" onclick="toast('Ledger → opening…')">Open ledger →</span></div>
-      <div class="ledger-num">128</div>
-      <div class="ledger-sub">total entries · 28 pending ruling</div>
-      <div class="ao-row"><span class="ao-k">Last entry</span><span class="ao-v">skills / telegram</span></div>
-      <div class="ao-row"><span class="ao-k">Chain</span><span class="ao-v ok">Intact</span></div>
-      <div class="ao-row"><span class="ao-k">Authority</span><span class="ao-v high">False</span></div>
-    </div>
-  </div>
-
-</div><!-- /body -->
-
-<!-- DETAIL CARD -->
-<div id="detail">
-  <button class="d-close" onclick="closeDetail()">×</button>
-  <div class="d-hdr">
-    <div class="d-tag-row" id="d-tag-row"></div>
-    <div class="d-title" id="d-title"></div>
-  </div>
-  <div class="d-body">
-    <div class="d-why" id="d-why"></div>
-    <div id="d-rows"></div>
-    <div class="d-acts" id="d-acts"></div>
-  </div>
-</div>
-
-<!-- BOTTOM -->
+<!-- BOTTOM INPUT -->
 <div id="bottom">
-  <div id="action-rail">
-    <div class="abt primary" onclick="act('start')"><div class="abt-icon">▶</div><div class="abt-label">Start</div><div class="abt-sub">Begin now</div></div>
-    <div class="abt" onclick="act('focus')"><div class="abt-icon">◎</div><div class="abt-label">Focus</div><div class="abt-sub">Deep work</div></div>
-    <div class="abt" onclick="act('schedule')"><div class="abt-icon">◷</div><div class="abt-label">Schedule</div><div class="abt-sub">Plan time</div></div>
-    <div class="abt" onclick="act('complete')"><div class="abt-icon">✓</div><div class="abt-label">Complete</div><div class="abt-sub">Mark done</div></div>
-    <div class="abt" onclick="act('defer')"><div class="abt-icon">→</div><div class="abt-label">Defer</div><div class="abt-sub">Do later</div></div>
-    <div class="abt" onclick="act('hold')"><div class="abt-icon">⊘</div><div class="abt-label">Hold</div><div class="abt-sub">Block for now</div></div>
-  </div>
-  <div id="input-row">
-    <input id="helen-input" type="text" placeholder="Ask HELEN what to do next, what is blocked, or what to focus on…" onkeydown="if(event.key==='Enter')sendCmd()">
-    <button class="send-btn" onclick="sendCmd()">Ask →</button>
-  </div>
+  <input id="helen-input" type="text" placeholder="Ask HELEN — or type: next · status · play · pilot · cockpit · ship · help" onkeydown="if(event.key==='Enter')sendCmd()">
+  <button class="send-btn" onclick="sendCmd()">Ask →</button>
 </div>
 
 <div id="toast"></div>
 
 <script>
-// ── DETAIL DATA ───────────────────────────────────────────────────────────────
-const DETAILS = {
-  v3b:{tag:'To do',col:'warn',title:'Review HELEN HOME',
-    why:'helen2027.html is close but needs one operator review before ship. The layout matches the reference. Rate it now — commit, revise, or hold.',
-    rows:[{k:'source',v:'helen2027.html'},{k:'linked',v:'STARSHIP_V3B',vc:'helen'},{k:'status',v:'Draft · not committed',vc:'warn'},{k:'estimate',v:'20 minutes'}],
-    acts:['Review now','Hold','Defer']},
-  push:{tag:'To do',col:'warn',title:'Push dashboard fix to origin',
-    why:'index.html (E04 cards), starship.html (V3B), skills_video.py, helen2027.html — 6 files dirty. Commit once reviewed.',
-    rows:[{k:'files',v:'6 uncommitted',vc:'warn'},{k:'branch',v:'main'},{k:'action',v:'commit + push'}],
-    acts:['Commit all','Review diff','Hold']},
-  doctrine:{tag:'To do',col:'dim',title:'Draft HELEN doctrine v1',
-    why:'Source Pilot is the analysis mode. HOME is where cognition starts. A doctrine document anchors both before more layers are added.',
-    rows:[{k:'output',v:'SOURCE_PILOT_DOCTRINE_V1.md'},{k:'estimate',v:'45 minutes'},{k:'gate',v:'HAL review needed'}],
-    acts:['Start now','Schedule','Defer']},
-  cockpit:{tag:'In progress',col:'helen',title:'HELEN OS cockpit evolution',
-    why:'Building the complete surface: HOME (helen2027.html) + Pilot (starship.html). 65% done — hero card + zones + sidebar complete.',
-    rows:[{k:'progress',v:'65%',vc:'helen'},{k:'next',v:'rate + commit if approved'},{k:'linked',v:'STARSHIP_V3B · helen2027.html'}],
-    acts:['Continue','Pause','Mark done']},
-  research:{tag:'In progress',col:'warn',title:'Research protected block',
-    why:'HELEN OS architecture research. Protected 14:00–16:00 block. No admin, no drift.',
-    rows:[{k:'progress',v:'40%',vc:'warn'},{k:'block',v:'14:00 – 16:00'},{k:'focus',v:'HELEN OS · math · architecture'}],
-    acts:['Start focus block','Reschedule']},
-  deepwork:{tag:'14:00',col:'ok',title:'Deep work',
-    why:'Protected research block. Allowed: HELEN OS, math, architecture. Blocked: admin, social, random tooling. Hard cap.',
-    rows:[{k:'start',v:'14:00'},{k:'duration',v:'2 hours'},{k:'protected',v:'YES — no interruptions',vc:'ok'}],
-    acts:['Confirm','Reschedule','Skip']},
-  review16:{tag:'16:00',col:'dim',title:'Review session',
-    rows:[{k:'start',v:'16:00'},{k:'duration',v:'1 hour'},{k:'output',v:'commit verdict'}],
-    acts:['Confirm','Reschedule']},
-  admin:{tag:'18:00',col:'dim',title:'Admin',
-    rows:[{k:'start',v:'18:00'},{k:'duration',v:'45 min'},{k:'cap',v:'hard stop at 18:45'}],
-    acts:['Confirm','Skip this week']},
-  personal:{tag:'20:00',col:'dim',title:'Personal',
-    rows:[{k:'start',v:'20:00'},{k:'duration',v:'1 hour'}],
-    acts:['Confirm','Reschedule']},
-  apikeys:{tag:'Waiting',col:'warn',title:'API keys — Higgsfield',
-    why:'HIGGSFIELD_ID and HIGGSFIELD_SECRET expired. Kling I2V video pipeline offline until refreshed.',
-    rows:[{k:'error',v:'401 — expired',vc:'err'},{k:'file',v:'~/.helen_env'},{k:'fix',v:'paste new keys'}],
-    acts:['Paste keys','Skip for now']},
-  claudefb:{tag:'Waiting',col:'warn',title:'Claude feedback',
-    rows:[{k:'status',v:'Review pending',vc:'warn'},{k:'action',v:'await response'}],
-    acts:['Follow up','Hold']},
-  apple:{tag:'Blocked',col:'err',title:'Apple review',
-    rows:[{k:'status',v:'Under review',vc:'err'},{k:'type',v:'external · no action'}],
-    acts:['Hold','Monitor']},
-  e12:{tag:'Blocked',col:'err',title:'E11/E12 reconciliation',
-    why:'E13 cannot start until operator countersigns the E11/E12 peer-review. Rule 3 (proposer ≠ validator) blocks it.',
-    rows:[{k:'blocked by',v:'your countersign',vc:'err'},{k:'next',v:'countersign → MAYOR → E13'},{k:'report',v:'docs/reports/'}],
-    acts:['Countersign','Read report','Defer']},
+const SURFACE_MAP={
+  home:'helen2027.html',
+  pilot:'starship.html',
+  cockpit:'index.html',
+  temple:null,
+  ledger:null,
+  memory:null,
+  agents:null,
 };
 
-const COL = {warn:'var(--warn)',helen:'var(--helen)',ok:'var(--ok)',err:'var(--blocked)',dim:'var(--text-label)'};
-
-function openDetail(id){
-  const d=DETAILS[id]; if(!d) return;
-  const tagRow=document.getElementById('d-tag-row');
-  tagRow.innerHTML=`<div class="d-tag-dot" style="background:${COL[d.col]||COL.dim}"></div><span class="d-tag-txt" style="color:${COL[d.col]||COL.dim}">${d.tag}</span>`;
-  document.getElementById('d-title').textContent=d.title;
-  document.getElementById('d-why').textContent=d.why||'';
-  const rows=document.getElementById('d-rows');rows.innerHTML='';
-  (d.rows||[]).forEach(r=>{const el=document.createElement('div');el.className='d-row';el.innerHTML=`<span class="dk">${r.k}</span><span class="dv ${r.vc||''}">${r.v}</span>`;rows.appendChild(el)});
-  const acts=document.getElementById('d-acts');acts.innerHTML='';
-  (d.acts||[]).forEach((a,i)=>{const b=document.createElement('button');b.className='da'+(i===0?' primary':'');b.textContent=a;b.onclick=()=>{toast('→ '+a);closeDetail()};acts.appendChild(b)});
-  const det=document.getElementById('detail');
-  det.style.right='248px';det.style.top='86px';
-  det.classList.add('on');
-}
-function closeDetail(){document.getElementById('detail').classList.remove('on')}
-
-function act(a){
-  const msgs={start:'Starting — select an item to begin.',focus:'Focus mode — 14:00 block. HELEN OS only.',schedule:'Schedule — open calendar.',complete:'Marked done.',defer:'Deferred — moved to later.',hold:'On hold — no irreversible action.'};
-  toast(msgs[a]||a);
-}
-
 function navTo(key,pill){
-  document.querySelectorAll('.nav-item,.sb-item').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(p=>p.classList.remove('active'));
   if(pill)pill.classList.add('active');
-  if(key==='pilot'){window.location.href='starship.html';return}
-  if(key==='home'){document.querySelector('.nav-item').classList.add('active');document.querySelector('.sb-item').classList.add('active')}
-  toast('Surface: '+key.toUpperCase());
+  const dest=SURFACE_MAP[key];
+  if(dest){window.location.href=dest;return}
+  toast('Surface '+key.toUpperCase()+' — not yet built');
+}
+
+function openChip(type){
+  if(type==='pilot'){window.location.href='starship.html';return}
+  if(type==='source'){toast('Source: apps/helen-surface/helen2027.html');return}
+  if(type==='saved'){toast('Draft saved locally — not yet pushed to origin');return}
+  if(type==='verified'){toast('Demo mode · authority: false · no sovereign claim');return}
+}
+
+function openMedia(){
+  const w=window.open('https://open.spotify.com','_blank','noopener,noreferrer');
+  if(!w)toast('Allow pop-ups to open media');
+  else toast('Media → Spotify');
 }
 
 function sendCmd(){
-  const val=document.getElementById('helen-input').value.trim();if(!val)return;
-  document.getElementById('helen-input').value='';
-  const r={
-    next:'Next: Review helen2027.html — rate it, then commit or revise.',
-    focus:'Focus mode — 14:00 protected block. HELEN OS only. No admin.',
-    status:'2 in progress · 3 to do · 1 blocked (E13) · 3 waiting.',
-    blocked:'E13 blocked — countersign E11/E12 peer-review. API keys expired.',
-    ship:'Not shipping yet — 6 files uncommitted, E11/E12 pending, 28 claims queued.',
-    help:'Try: next · focus · status · blocked · ship',
-  };
+  const inp=document.getElementById('helen-input');
+  const val=inp.value.trim();if(!val)return;
+  inp.value='';
   const key=val.toLowerCase().split(' ')[0];
-  toast('HELEN → '+(r[key]||'Try: next · focus · status · blocked · ship'));
+  if(['play','music','spotify','sound','audio'].includes(key)){openMedia();return}
+  if(key==='pilot'||key==='starship'){window.location.href='starship.html';return}
+  if(key==='cockpit'){window.location.href='index.html';return}
+  const r={
+    next:'Next: Review helen2027.html — rate it, commit or revise.',
+    status:'2 in progress · 3 to do · 1 blocked (E13) · 3 waiting.',
+    blocked:'E13 blocked — countersign E11/E12 peer-review first.',
+    ship:'Not yet — E11/E12 pending + 28 claims queued.',
+    focus:'Focus mode — 14:00 block. HELEN OS only. No admin.',
+    help:'Commands: next · status · blocked · ship · focus · play · pilot · cockpit',
+  };
+  toast('HELEN → '+(r[key]||'Commands: next · status · blocked · ship · play · pilot · cockpit'));
 }
 
-// clock
-function updateClock(){const n=new Date();document.getElementById('tb-clock').textContent=n.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}
+function updateClock(){
+  const n=new Date();
+  document.getElementById('tb-clock').textContent=n.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}
 updateClock();setInterval(updateClock,1000);
 
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3500)}
-
-document.addEventListener('click',e=>{const d=document.getElementById('detail');if(!d.contains(e.target)&&!e.target.closest('.item')&&!e.target.closest('.ao-name'))closeDetail()});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDetail()});
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('on');
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),3500);
+}
 </script>
 </body>
 </html>
