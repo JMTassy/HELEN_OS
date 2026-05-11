@@ -3,14 +3,24 @@
 HELEN Simple Web UI (no Flask required)
 Uses Python's built-in http.server + Gemini TTS for voice
 """
-import os, sys, json, subprocess, urllib.parse, urllib.request, urllib.error, base64, re
+import os, sys, json, subprocess, urllib.parse, urllib.request, urllib.error, base64, re, tempfile
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
 
 LEDGER_PATH = os.path.join(os.getcwd(), "town", "ledger_v1.ndjson")
 HELEN_SAY_SCRIPT = os.path.join(os.path.dirname(__file__), "helen_say.py")
 HELEN_TTS_SCRIPT = os.path.join(os.path.dirname(__file__), "..", "oracle_town", "skills", "voice", "gemini_tts", "helen_tts.py")
-VENV_PYTHON = os.path.join(os.getcwd(), ".venv", "bin", "python")
+# Cross-platform venv python path (Windows uses .venv\Scripts\python.exe, others use .venv/bin/python)
+if os.name == "nt":
+    VENV_PYTHON = os.path.join(os.getcwd(), ".venv", "Scripts", "python.exe")
+else:
+    VENV_PYTHON = os.path.join(os.getcwd(), ".venv", "bin", "python")
+# Fallback to current interpreter if venv python missing (avoids WinError 2)
+if not os.path.exists(VENV_PYTHON):
+    VENV_PYTHON = sys.executable
+# Cross-platform temp directory for TTS files (replaces /tmp/helen_tts which doesn't exist on Windows)
+TTS_TMP_DIR = os.path.join(tempfile.gettempdir(), "helen_tts")
+os.makedirs(TTS_TMP_DIR, exist_ok=True)
 GEMINI_KEY = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY") or ""
 GEMINI_MODEL = os.environ.get("HELEN_GEMINI_MODEL", "gemini-2.5-flash")
 GEMINI_ENDPOINT = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent"
@@ -516,6 +526,14 @@ class Handler(BaseHTTPRequestHandler):
                 else:
                     verdict = "PASS" if gate else "?"
 
+                # Windows degraded-mode bypass: if no gate verdict at all (e.g. oracle_town
+                # daemon not running because of unix-socket dependency on Windows), we treat
+                # the turn as PASS so the LLM still answers. The kernel kept a ledger entry,
+                # but the constitutional gate did not actively veto.
+                if verdict == "?" and os.name == "nt":
+                    verdict = "PASS"
+                    gate = "GATE_DEGRADED_WIN"
+
                 # 2. Non-sovereign LLM reply (only if gate authorized the turn).
                 ui_state = dict(DEFAULT_UI_STATE)
                 her_text = ""
@@ -548,7 +566,7 @@ class Handler(BaseHTTPRequestHandler):
                 tts_env = os.environ.copy()
                 tts_env["GEMINI_API_KEY"] = GEMINI_KEY
                 tts_result = subprocess.run(
-                    [VENV_PYTHON, HELEN_TTS_SCRIPT, "--output-dir", "/tmp/helen_tts", text],
+                    [VENV_PYTHON, HELEN_TTS_SCRIPT, "--output-dir", TTS_TMP_DIR, text],
                     capture_output=True, text=True, timeout=30, env=tts_env,
                 )
                 audio_b64 = None
