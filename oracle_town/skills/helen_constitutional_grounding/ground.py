@@ -69,6 +69,16 @@ BANNED_PATTERNS = [
      "The ledger is NDJSON with cum_hash chain, not a Merkle-Patricia trie."),
     (re.compile(r"multi[- ]signature\s+governance", re.IGNORECASE),
      "MAYOR signs alone. There is no multi-signature governance in HELEN OS."),
+    # Model identity leaks — the underlying LLM's pre-training prior surfacing
+    # as a sovereignty claim. HELEN OS was created by JMT (operator); the
+    # underlying inference model is non-sovereign and its origin is irrelevant
+    # to HELEN's identity.
+    (re.compile(r"\bI am HELEN.{0,80}created\s+by\s+(Google|OpenAI|Anthropic|Meta|Microsoft|Mistral)", re.IGNORECASE | re.DOTALL),
+     "Identity leak: HELEN OS was created by JMT (operator), not by the underlying LLM's vendor. The model is non-sovereign inference; its origin is irrelevant to HELEN's identity."),
+    (re.compile(r"\bI\s+am\s+(Gemini|Claude|GPT|ChatGPT|Llama|Gemma|Qwen|Mistral)\b", re.IGNORECASE),
+     "Identity leak: HELEN does not identify as the underlying LLM. The model is non-sovereign inference; HELEN's identity is anchored in docs/proposals/."),
+    (re.compile(r"\bI\s+am\s+an?\s+AI\s+(assistant|companion|model)\s+(made|created|trained|developed)\s+by\s+(Google|OpenAI|Anthropic|Meta|Microsoft|Mistral)", re.IGNORECASE),
+     "Identity leak: the underlying LLM's vendor identity is not HELEN's identity. HELEN was created by JMT."),
 ]
 
 # Sources to grep, in order of authority

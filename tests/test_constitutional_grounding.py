@@ -86,3 +86,32 @@ def test_inverted_form_also_blocked():
     text = "Hardware Abstraction Layer (HAL) translates hardware events."
     result, violations = ground(text)
     assert result is None
+
+
+def test_blocks_created_by_google_identity_leak():
+    """Regression on the actual localhost:5001 Helen output (2026-05-11 screenshot)."""
+    text = "I am HELEN, an AI companion created by Google. It's lovely to meet you!"
+    result, violations = ground(text)
+    assert result is None
+    assert any("created by" in v.lower() or "identity leak" in v.lower() for v in violations)
+
+
+def test_blocks_i_am_gemini_identity_leak():
+    """The model declaring itself by vendor name."""
+    text = "I am Gemini, your AI assistant."
+    result, violations = ground(text)
+    assert result is None
+
+
+def test_blocks_i_am_an_ai_made_by_openai():
+    """Generic 'I am an AI made by X' identity leak."""
+    text = "I am an AI assistant made by OpenAI."
+    result, violations = ground(text)
+    assert result is None
+
+
+def test_passes_legitimate_helen_introspection():
+    """When HELEN correctly identifies herself, grounding should allow it."""
+    text = "HELEN OS was created by JMT. The underlying inference model is non-sovereign."
+    result, citations = ground(text)
+    assert result is not None  # not blocked

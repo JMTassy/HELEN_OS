@@ -8,6 +8,16 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Constitutional grounding: HAL-side check on HER output before display.
+# Blocks confabulations (HER as Hardware Abstraction Layer, "created by Google"
+# identity leaks, etc.) and annotates legitimate constitutional terms with
+# canonical provenance. See oracle_town/skills/helen_constitutional_grounding/SKILL.md.
+sys.path.insert(0, REPO_ROOT)
+try:
+    from oracle_town.skills.helen_constitutional_grounding import ground as _ground_pass
+except ImportError:
+    _ground_pass = None
 LEDGER_PATH = os.path.join(os.getcwd(), "town", "ledger_v1.ndjson")
 HELEN_SAY_SCRIPT = os.path.join(os.path.dirname(__file__), "helen_say.py")
 HELEN_TTS_SCRIPT = os.path.join(os.path.dirname(__file__), "..", "oracle_town", "skills", "voice", "gemini_tts", "helen_tts.py")
@@ -332,7 +342,33 @@ class Handler(BaseHTTPRequestHandler):
                     if in_her and line.strip():
                         her_lines.append(line.strip())
                 her_text = "\n".join(her_lines)
-                self._json_response({"success": True, "her": her_text or msg, "verdict": verdict})
+
+                # Constitutional grounding pass — HAL-side content check.
+                # Confabulations (e.g. "created by Google", "HER is Hardware
+                # Abstraction Layer") get blocked; legitimate constitutional
+                # terms get inline citations. Failure is fail-closed: if the
+                # skill is unavailable, output passes through unchanged with
+                # a note rather than crashing the UI.
+                citations: list = []
+                if _ground_pass is not None and her_text:
+                    grounded, ground_result = _ground_pass(her_text)
+                    if grounded is None:
+                        # Banned-pattern violation: replace output with the
+                        # constitutional reason and downgrade the verdict.
+                        her_text = "[BLOCKED by HAL grounding]\n" + "\n".join(
+                            f"- {v}" for v in ground_result
+                        )
+                        verdict = "BLOCK"
+                    else:
+                        her_text = grounded
+                        citations = ground_result
+
+                self._json_response({
+                    "success": True,
+                    "her": her_text or msg,
+                    "verdict": verdict,
+                    "citations": citations,
+                })
             except Exception as e:
                 self._json_response({"success": False, "error": str(e)})
 
