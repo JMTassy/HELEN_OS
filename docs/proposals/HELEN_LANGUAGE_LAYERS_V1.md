@@ -207,3 +207,20 @@ OPEN_QUESTIONS:  3 (color, i18n, affective scope)
 NEXT_EPOCH:      HYPERSTITION_FIREWALL_V0.md
 NEXT_REDUCER:    operator confirmation or refinement
 ```
+
+---
+
+## §8 — Admission Sidecar
+
+APPEND-ONLY. Added 2026-05-11 by gate binding pass. Does not modify §1–§7.
+
+```
+sha256:         dbd254370525087179876bd5dcb121b9f44e7261f9b12d1bca0823f3e5212bd0
+sha256_of:      HELEN_LANGUAGE_LAYERS_V1.md at commit 62348d5 (sealed 2026-05-10)
+provenance:     SESSION_RECEIPT_HER_5_EPOCHS §4 (hash independently recorded)
+test_pointer:   tests/test_doctrine_language_layers_v1.py
+gate_run:       2026-05-11 — decision:KEEP, missing:[receipt_pointer,passing_test_result]
+gate_version:   tools/doctrine_admission_gate.py (c3346b3)
+```
+
+sha256:dbd254370525087179876bd5dcb121b9f44e7261f9b12d1bca0823f3e5212bd0
