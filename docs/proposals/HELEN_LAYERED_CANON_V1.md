@@ -305,3 +305,20 @@ OPEN_QUESTIONS:  3 (submodule, future repos, telegram bot placement)
 NEXT_EPOCH:      SESSION_RECEIPT_HER_5_EPOCHS.md (seal session)
 NEXT_REDUCER:    operator confirmation or refinement
 ```
+
+---
+
+## §11 — Admission Sidecar
+
+APPEND-ONLY. Added 2026-05-11 by gate binding pass. Does not modify §1–§10.
+
+```
+sha256:         0c9acf951669d47624432daa24c98c2421d75cb5f53520dd39b41386d798c7f1
+sha256_of:      HELEN_LAYERED_CANON_V1.md at commit 3544164 (sealed 2026-05-10)
+provenance:     SESSION_RECEIPT_HER_5_EPOCHS §4 (hash independently recorded)
+test_pointer:   tests/test_doctrine_layered_canon_v1.py
+gate_run:       2026-05-11 — decision:KEEP, missing:[receipt_pointer,passing_test_result]
+gate_version:   tools/doctrine_admission_gate.py (c3346b3)
+```
+
+sha256:0c9acf951669d47624432daa24c98c2421d75cb5f53520dd39b41386d798c7f1
