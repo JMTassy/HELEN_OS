@@ -56,10 +56,12 @@ def test_only_mayor_writes_decisions_dir():
         except Exception:
             continue
 
-        # Check for write patterns to decisions/ directory
+        # Check for write patterns to decisions/ directory.
+        # Require the slash to distinguish path writes from metadata strings
+        # like `["validation", "authority", "decisions"]` (a list label, not a path).
         write_patterns = [
-            f'"{DECISION_DIR}',
-            f"'{DECISION_DIR}",
+            f'"{DECISION_DIR}/',
+            f"'{DECISION_DIR}/",
             'decision_record.json',
             'remediation_plan.json'
         ]
