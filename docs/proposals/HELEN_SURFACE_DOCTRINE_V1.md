@@ -309,3 +309,20 @@ OPEN_QUESTIONS:  4 (Q1, Q2, Q3, Q4)
 NEXT_EPOCH:      HELEN_LANGUAGE_LAYERS_V1.md (full mapping table)
 NEXT_REDUCER:    operator confirmation or refinement
 ```
+
+---
+
+## §11 — Admission Sidecar
+
+APPEND-ONLY. Added 2026-05-11 by gate binding pass. Does not modify §1–§10.
+
+```
+sha256:         fa3bdcec4ebc89606ce88ead57a736e60cf71765dbcf46d4d8a41e1ec9558970
+sha256_of:      HELEN_SURFACE_DOCTRINE_V1.md at commit 6bead73 (sealed 2026-05-10)
+provenance:     SESSION_RECEIPT_HER_5_EPOCHS §4 (hash independently recorded)
+test_pointer:   tests/test_doctrine_surface_v1.py
+gate_run:       2026-05-11 — decision:KEEP, missing:[receipt_pointer,passing_test_result]
+gate_version:   tools/doctrine_admission_gate.py (c3346b3)
+```
+
+sha256:fa3bdcec4ebc89606ce88ead57a736e60cf71765dbcf46d4d8a41e1ec9558970
