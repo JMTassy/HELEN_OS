@@ -9,6 +9,7 @@
 :root{
   --bg:#f0ede6;
   --surface:#fff;
+  --surface-warm:rgba(255,252,246,.9);
   --border:rgba(0,0,0,.07);
   --border-med:rgba(0,0,0,.12);
   --text:#1a1916;
@@ -16,6 +17,7 @@
   --text-mute:rgba(26,25,22,.3);
   --gold:#b8860b;
   --gold-dim:rgba(184,134,11,.55);
+  --gold-faint:rgba(184,134,11,.1);
   --helen:#0ea5e9;
   --ok:#16a34a;
   --warn:#d97706;
@@ -25,8 +27,8 @@
 }
 html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:var(--sans);-webkit-font-smoothing:antialiased}
 
-/* ── TOP BAR ─────────────────────────────────────────────────────────────── */
-#top{position:fixed;top:0;left:0;right:0;z-index:20;background:rgba(240,237,230,.92);border-bottom:1px solid var(--border);backdrop-filter:blur(16px)}
+/* ── TOP BAR ── */
+#top{position:fixed;top:0;left:0;right:0;z-index:20;background:rgba(240,237,230,.94);border-bottom:1px solid var(--border);backdrop-filter:blur(16px)}
 #top-bar{display:flex;align-items:center;padding:0 24px;height:38px;gap:0}
 .tb-brand{display:flex;align-items:center;gap:9px;margin-right:22px;cursor:pointer}
 .tb-logo{width:22px;height:22px;flex-shrink:0}
@@ -38,117 +40,159 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 .tb-field-v{font-size:11px;color:var(--text-dim)}
 .tb-push{margin-left:auto;display:flex;align-items:center;gap:8px}
 .tb-badge{font-family:var(--mono);font-size:7px;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:3px;border:1px solid;white-space:nowrap}
-.tb-badge.auth{color:rgba(220,38,38,.6);border-color:rgba(220,38,38,.18)}
+.tb-badge.auth{color:rgba(220,38,38,.55);border-color:rgba(220,38,38,.15)}
 .tb-badge.demo{color:var(--text-mute);border-color:var(--border-med)}
 .tb-badge.presence{color:var(--ok);border-color:rgba(22,163,74,.22);display:flex;align-items:center;gap:4px}
 .presence-dot{width:5px;height:5px;border-radius:50%;background:var(--ok);flex-shrink:0;animation:pulse 2.4s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 #tb-clock{font-family:var(--mono);font-size:10px;color:var(--text-mute);letter-spacing:.04em}
-
 #top-nav{display:flex;align-items:center;justify-content:center;padding:0 24px;height:30px;gap:2px;border-top:1px solid var(--border)}
 .nav-item{font-size:11px;letter-spacing:.01em;color:var(--text-mute);padding:2px 14px;border-radius:20px;cursor:pointer;transition:all .15s;user-select:none}
 .nav-item:hover{color:var(--text-dim);background:rgba(0,0,0,.05)}
 .nav-item.active{color:var(--text);background:rgba(0,0,0,.08);font-weight:500}
+.nav-sep-v{width:1px;height:12px;background:var(--border-med);margin:0 6px;flex-shrink:0;align-self:center}
+.nav-item.nav-focus{font-size:10px;color:var(--gold-dim);border:1px solid rgba(184,134,11,.2);padding:2px 12px}
+.nav-item.nav-focus:hover{color:var(--gold);background:rgba(184,134,11,.07);border-color:rgba(184,134,11,.3)}
 
-/* ── STAGE ───────────────────────────────────────────────────────────────── */
-#stage{
-  position:fixed;inset:68px 0 72px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  overflow-y:auto;
-  background:var(--bg);
-  position:relative;
-}
+/* ── STAGE ── */
+#stage{position:fixed;inset:68px 0 88px;overflow:hidden;background:var(--bg)}
 
-/* ── SACRED GEOMETRY ─────────────────────────────────────────────────────── */
-#geo-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:0}
-.geo-str{animation:geoBreath 16s ease-in-out infinite}
-@keyframes geoBreath{0%,100%{opacity:.07}50%{opacity:.16}}
-.geo-slowrot{transform-origin:720px 450px;animation:geoRot 90s linear infinite}
-.geo-slowrot-r{transform-origin:720px 450px;animation:geoRotR 72s linear infinite}
-.geo-breathe{animation:geoBreath 8s ease-in-out infinite}
-@keyframes geoRot{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-@keyframes geoRotR{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
-.geo-hot{pointer-events:all;cursor:pointer}
-.geo-dot{fill:#b8860b;opacity:.28;transition:opacity .2s}
-.geo-dot-glow{fill:#b8860b;opacity:0;transition:opacity .2s}
-.geo-ring{fill:none;stroke:#b8860b;stroke-width:1.2;opacity:0;transition:opacity .2s}
-.geo-lbl{opacity:0;transition:opacity .2s;font-family:'Courier New',monospace;fill:#1a1916;font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:11px}
-.geo-sub{opacity:0;transition:opacity .2s;font-family:'Courier New',monospace;fill:rgba(26,25,22,.4);letter-spacing:.05em;font-size:8.5px}
-.geo-hot:hover .geo-dot{opacity:.7}
-.geo-hot:hover .geo-dot-glow{opacity:.85}
-.geo-hot:hover .geo-ring{opacity:.6}
-.geo-hot:hover .geo-lbl{opacity:1}
-.geo-hot:hover .geo-sub{opacity:1}
-.geo-hot.active .geo-dot{opacity:.85}
-.geo-hot.active .geo-dot-glow{opacity:.4}
-#stage-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;width:100%}
+/* ── SACRED GEOMETRY CANVAS ── */
+#geo-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.72}
 
-/* ── MARK ────────────────────────────────────────────────────────────────── */
-#mark-wrap{margin-bottom:28px;position:relative}
-#mark-wrap svg{width:52px;height:52px;animation:breathe 9s ease-in-out infinite}
-@keyframes breathe{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:.9;transform:scale(1.04)}}
-#mark-ring{position:absolute;inset:-12px;border-radius:50%;border:1px solid rgba(184,134,11,.15);animation:ringPulse 9s ease-in-out infinite}
-@keyframes ringPulse{0%,100%{opacity:0;transform:scale(.92)}50%{opacity:1;transform:scale(1)}}
+/* ── 3-COLUMN LAYOUT ── */
+#layout{position:relative;z-index:2;display:grid;grid-template-columns:162px 1fr 232px;height:100%;overflow:hidden}
 
-/* ── VOICE ───────────────────────────────────────────────────────────────── */
-#voice{text-align:center;max-width:620px;padding:0 24px}
-.v-eyebrow{font-family:var(--mono);font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:14px}
-.v-sit{font-size:13px;color:var(--text-dim);line-height:1.55;margin-bottom:18px;letter-spacing:-.01em}
-.v-action{font-size:26px;font-weight:300;color:var(--text);line-height:1.2;margin-bottom:8px;letter-spacing:-.03em}
-.v-move{font-size:13px;color:var(--text-dim);line-height:1.5;margin-bottom:22px;letter-spacing:-.005em}
+/* ── LEFT COLUMN ── */
+#col-left{border-right:1px solid var(--border);padding:18px 0 18px;overflow-y:auto;display:flex;flex-direction:column;gap:1px;background:rgba(240,237,230,.55);backdrop-filter:blur(8px)}
+.lnav-section{padding:0 16px 5px;font-size:7.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-mute);margin-top:12px}
+.lnav-section:first-child{margin-top:0}
+.lnav-item{display:flex;align-items:center;gap:10px;padding:8px 16px;cursor:pointer;transition:background .13s;position:relative}
+.lnav-item:hover{background:rgba(0,0,0,.04)}
+.lnav-item.active{background:rgba(184,134,11,.07)}
+.lnav-item.active::before{content:'';position:absolute;left:0;top:5px;bottom:5px;width:2.5px;border-radius:0 2px 2px 0;background:var(--gold);opacity:.7}
+.lnav-icon{font-size:15px;opacity:.38;flex-shrink:0;width:18px;text-align:center;line-height:1}
+.lnav-item.active .lnav-icon{opacity:.65}
+.lnav-text{display:flex;flex-direction:column;gap:1px;min-width:0}
+.lnav-name{font-size:12px;color:var(--text-dim);font-weight:400;white-space:nowrap}
+.lnav-item.active .lnav-name{color:var(--text);font-weight:500}
+.lnav-state{font-family:var(--mono);font-size:7px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-mute)}
+.lnav-item.active .lnav-state{color:var(--gold-dim)}
 
-/* chips */
-.chips{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:32px}
-.chip{display:flex;align-items:center;gap:5px;font-size:9px;padding:4px 11px;border-radius:20px;white-space:nowrap;border:1px solid;cursor:pointer;transition:all .15s;letter-spacing:.01em}
-.chip:hover{transform:translateY(-1px)}
-.chip-dot{width:4px;height:4px;border-radius:50%;flex-shrink:0}
-.chip.linked{background:rgba(14,165,233,.08);border-color:rgba(14,165,233,.2);color:rgba(7,100,160,.8)}.chip.linked .chip-dot{background:#0ea5e9}
-.chip.saved{background:rgba(22,163,74,.08);border-color:rgba(22,163,74,.2);color:rgba(15,100,50,.8)}.chip.saved .chip-dot{background:#16a34a}
-.chip.draft{background:rgba(217,119,6,.08);border-color:rgba(217,119,6,.2);color:rgba(160,90,5,.8)}.chip.draft .chip-dot{background:#d97706}
-.chip.mute{background:rgba(0,0,0,.04);border-color:var(--border-med);color:var(--text-mute)}.chip.mute .chip-dot{background:var(--text-mute)}
+/* ── CENTER COLUMN ── */
+#col-center{padding:22px 24px;overflow-y:auto;display:flex;flex-direction:column;gap:14px}
 
+/* Hero card */
+.hero-card{background:var(--surface-warm);border:1px solid rgba(184,134,11,.16);border-radius:14px;padding:22px 26px 20px;cursor:pointer;transition:box-shadow .2s;position:relative;box-shadow:0 1px 8px rgba(184,134,11,.06)}
+.hero-card:hover{box-shadow:0 4px 20px rgba(184,134,11,.1)}
+.hero-open{position:absolute;top:15px;right:18px;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-mute);opacity:.45;cursor:pointer;transition:opacity .15s}
+.hero-card:hover .hero-open{opacity:.85}
+.hero-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.hero-meta-item{display:flex;align-items:center;gap:5px}
+.hero-meta-k{font-size:7.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mute)}
+.hero-meta-v{font-family:var(--mono);font-size:8.5px;color:var(--text-dim);letter-spacing:.03em}
+.hero-meta-v.pending{color:var(--warn)}
+.hero-meta-sep{width:1px;height:9px;background:var(--border-med);flex-shrink:0}
+.hero-eyebrow{font-family:var(--mono);font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:9px}
+.hero-sit{font-size:12.5px;color:var(--text-dim);margin-bottom:12px;line-height:1.5}
+.hero-action{font-size:26px;font-weight:300;color:var(--text);line-height:1.2;margin-bottom:8px;letter-spacing:-.03em}
+.hero-sub{font-size:12px;color:var(--text-dim);line-height:1.55;margin-bottom:16px}
+.hero-chips{display:flex;gap:5px;flex-wrap:wrap}
+.hchip{font-size:8.5px;padding:3px 9px;border-radius:20px;border:1px solid var(--border-med);color:var(--text-mute);cursor:pointer;letter-spacing:.01em;display:flex;align-items:center;gap:4px;transition:border-color .13s}
+.hchip:hover{border-color:rgba(0,0,0,.2)}
+.hchip-dot{width:3.5px;height:3.5px;border-radius:50%;flex-shrink:0}
+.hchip.linked{border-color:rgba(14,165,233,.2);color:rgba(7,100,160,.7)}.hchip.linked .hchip-dot{background:#0ea5e9}
+.hchip.saved{border-color:rgba(22,163,74,.2);color:rgba(15,100,50,.7)}.hchip.saved .hchip-dot{background:#16a34a}
+.hchip.draft{border-color:rgba(217,119,6,.2);color:rgba(160,90,5,.7)}.hchip.draft .hchip-dot{background:#d97706}
 
-/* ── STATUS ROW ──────────────────────────────────────────────────────────── */
-#status-row{display:flex;gap:0;border:1px solid var(--border-med);border-radius:10px;overflow:hidden;margin-bottom:36px;background:var(--surface)}
-.sr{padding:10px 22px;text-align:center;border-right:1px solid var(--border);cursor:default}
-.sr:last-child{border-right:none}
-.sr-n{font-family:var(--mono);font-size:18px;font-weight:300;line-height:1;margin-bottom:3px}
-.sr-l{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mute)}
-.sr-n.prog{color:var(--helen)}
-.sr-n.todo{color:var(--text-dim)}
-.sr-n.wait{color:var(--warn)}
-.sr-n.block{color:var(--blocked)}
+/* Situation card */
+.sit-card{background:rgba(255,255,255,.5);border:1px solid var(--border);border-radius:10px;padding:14px 18px}
+.sit-title{font-family:var(--mono);font-size:7.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-mute);margin-bottom:9px}
+.sit-line{font-size:12px;color:var(--text-dim);line-height:1.65}
 
-/* ── SURFACE NAV ─────────────────────────────────────────────────────────── */
-#surfaces{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-.surf{
-  display:flex;flex-direction:column;align-items:center;gap:6px;
-  padding:14px 20px;border-radius:12px;
-  border:1px solid var(--border);background:var(--surface);
-  cursor:pointer;transition:all .18s;min-width:96px;
-  box-shadow:0 1px 3px rgba(0,0,0,.05);
-}
-.surf:hover{border-color:var(--border-med);transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,.08)}
-.surf.active{background:rgba(184,134,11,.07);border-color:rgba(184,134,11,.22)}
-.surf-icon{font-size:20px;opacity:.45;line-height:1}
-.surf.active .surf-icon{opacity:.8}
-.surf-name{font-size:11px;font-weight:500;color:var(--text-dim);letter-spacing:.01em}
-.surf.active .surf-name{color:var(--text)}
-.surf-state{font-family:var(--mono);font-size:7.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mute)}
-.surf.active .surf-state{color:var(--gold-dim)}
+/* State cards 2×2 */
+.state-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.state-card{background:rgba(255,255,255,.58);border:1px solid var(--border);border-radius:10px;padding:13px 15px}
+.sc-header{display:flex;align-items:baseline;gap:8px;margin-bottom:10px}
+.sc-n{font-family:var(--mono);font-size:20px;font-weight:300;line-height:1}
+.sc-n.prog{color:var(--helen)}
+.sc-n.todo{color:var(--text-dim)}
+.sc-n.wait{color:var(--warn)}
+.sc-n.block{color:var(--blocked)}
+.sc-label{font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-mute)}
+.sc-items{display:flex;flex-direction:column;gap:7px}
+.sc-item{display:flex;flex-direction:column;gap:3px}
+.sc-item-name{font-size:11px;color:var(--text-dim);line-height:1.3}
+.sc-item-chips{display:flex;gap:4px;flex-wrap:wrap}
+.sc-chip{font-size:7.5px;padding:2px 7px;border-radius:10px;border:1px solid var(--border);color:var(--text-mute);letter-spacing:.01em}
+.sc-chip.source{border-color:rgba(14,165,233,.18);color:rgba(7,100,160,.6)}
+.sc-chip.linked{border-color:rgba(22,163,74,.18);color:rgba(15,100,50,.6)}
+.sc-chip.blocked{border-color:rgba(220,38,38,.18);color:rgba(200,30,30,.65)}
+.sc-chip.waiting{border-color:rgba(217,119,6,.18);color:rgba(160,90,5,.65)}
+.sc-chip.draft{border-color:rgba(217,119,6,.16);color:rgba(150,85,5,.6)}
+.sc-chip.saved{border-color:rgba(22,163,74,.18);color:rgba(15,100,50,.6)}
 
-/* ── BOTTOM INPUT ────────────────────────────────────────────────────────── */
-#bottom{position:fixed;bottom:0;left:0;right:0;height:72px;background:rgba(240,237,230,.94);border-top:1px solid var(--border);backdrop-filter:blur(16px);display:flex;align-items:center;padding:0 24px;gap:10px}
-#helen-input{flex:1;background:rgba(0,0,0,.04);border:1px solid var(--border-med);border-radius:8px;padding:0 16px;height:38px;font-family:var(--sans);font-size:12px;color:var(--text);outline:none;transition:border-color .14s}
-#helen-input:focus{border-color:rgba(184,134,11,.35);background:rgba(255,255,255,.7)}
+/* ── RIGHT COLUMN ── */
+#col-right{border-left:1px solid var(--border);padding:18px 16px;overflow-y:auto;display:flex;flex-direction:column;gap:16px;background:rgba(240,237,230,.45);backdrop-filter:blur(8px)}
+.r-section{display:flex;flex-direction:column;gap:8px}
+.r-title{font-family:var(--mono);font-size:7.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-mute);padding-bottom:7px;border-bottom:1px solid var(--border)}
+.r-object-card{background:rgba(255,255,255,.72);border:1px solid var(--border);border-radius:9px;padding:13px 14px;cursor:pointer;transition:border-color .15s}
+.r-object-card:hover{border-color:rgba(184,134,11,.2)}
+.r-obj-name{font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px}
+.r-obj-type{font-size:8.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-mute);margin-bottom:11px}
+.r-obj-row{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-bottom:1px solid rgba(0,0,0,.045)}
+.r-obj-row:last-of-type{border-bottom:none}
+.r-obj-k{font-size:9.5px;color:var(--text-mute)}
+.r-obj-v{font-family:var(--mono);font-size:9px;color:var(--text-dim);letter-spacing:.02em}
+.r-obj-v.pending{color:var(--warn)}
+.r-obj-open{margin-top:11px;font-size:9px;color:var(--text-mute);opacity:.55;cursor:pointer;letter-spacing:.04em}
+.r-obj-open:hover{opacity:1}
+
+/* Ledger snapshot — quiet */
+.ledger-entry{display:flex;flex-direction:column;gap:2px;padding:6px 0;border-bottom:1px solid rgba(0,0,0,.045)}
+.ledger-entry:last-of-type{border-bottom:none}
+.le-op{font-family:var(--mono);font-size:8.5px;color:rgba(26,25,22,.4);letter-spacing:.03em}
+.le-meta{font-size:8px;color:var(--text-mute)}
+.le-total{font-family:var(--mono);font-size:7.5px;color:rgba(26,25,22,.18);letter-spacing:.02em;margin-top:6px;padding-top:6px;border-top:1px solid var(--border)}
+
+/* ── BOTTOM ── */
+#bottom{position:fixed;bottom:0;left:0;right:0;z-index:20;background:rgba(240,237,230,.95);border-top:1px solid var(--border);backdrop-filter:blur(16px)}
+#action-rail{display:flex;align-items:center;padding:0 24px;height:44px;gap:8px;border-bottom:1px solid var(--border)}
+.rail-primary{height:30px;padding:0 20px;border-radius:6px;background:var(--gold);border:none;color:rgba(255,255,255,.95);font-family:var(--sans);font-size:11.5px;font-weight:500;cursor:pointer;letter-spacing:.01em;transition:opacity .14s}
+.rail-primary:hover{opacity:.85}
+.rail-secondary{height:30px;padding:0 15px;border-radius:6px;background:transparent;border:1px solid var(--border-med);color:var(--text-dim);font-family:var(--sans);font-size:11px;cursor:pointer;letter-spacing:.01em;transition:all .14s}
+.rail-secondary:hover{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.18)}
+.rail-spacer{flex:1}
+.rail-context{font-size:9.5px;color:var(--text-mute);letter-spacing:.01em}
+#ask-bar{display:flex;align-items:center;padding:0 24px;height:44px;gap:10px}
+#helen-input{flex:1;background:rgba(0,0,0,.04);border:1px solid var(--border-med);border-radius:8px;padding:0 16px;height:32px;font-family:var(--sans);font-size:12px;color:var(--text);outline:none;transition:border-color .14s}
+#helen-input:focus{border-color:rgba(184,134,11,.35);background:rgba(255,255,255,.72)}
 #helen-input::placeholder{color:var(--text-mute)}
-.send-btn{height:38px;padding:0 18px;border-radius:8px;background:rgba(184,134,11,.1);border:1px solid rgba(184,134,11,.2);color:var(--gold);font-family:var(--sans);font-size:11px;cursor:pointer;transition:all .14s;white-space:nowrap;letter-spacing:.02em}
+.send-btn{height:32px;padding:0 16px;border-radius:8px;background:rgba(184,134,11,.1);border:1px solid rgba(184,134,11,.2);color:var(--gold);font-family:var(--sans);font-size:11px;cursor:pointer;transition:all .14s;white-space:nowrap;letter-spacing:.01em}
 .send-btn:hover{background:rgba(184,134,11,.18);border-color:rgba(184,134,11,.35)}
 
-/* ── TOAST ───────────────────────────────────────────────────────────────── */
-#toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%);background:var(--text);color:rgba(255,252,246,.9);border-radius:8px;padding:9px 20px;font-size:11.5px;display:none;pointer-events:none;white-space:nowrap;box-shadow:0 4px 24px rgba(0,0,0,.18);z-index:40;letter-spacing:-.01em}
+/* ── DETAIL OVERLAY ── */
+#detail{position:fixed;inset:0;z-index:30;pointer-events:none;display:flex;align-items:center;justify-content:center}
+#detail.on{pointer-events:all}
+.detail-bg{position:absolute;inset:0;background:rgba(26,25,22,.22);opacity:0;transition:opacity .2s;cursor:pointer}
+#detail.on .detail-bg{opacity:1}
+.detail-card{background:var(--surface-warm);border:1px solid rgba(184,134,11,.18);border-radius:16px;padding:26px 30px;width:460px;max-width:90vw;position:relative;z-index:1;transform:translateY(10px);opacity:0;transition:all .22s;box-shadow:0 8px 48px rgba(0,0,0,.12)}
+#detail.on .detail-card{transform:translateY(0);opacity:1}
+.dc-close{position:absolute;top:14px;right:16px;font-size:11px;color:var(--text-mute);cursor:pointer;opacity:.6;transition:opacity .13s}
+.dc-close:hover{opacity:1}
+.dc-title{font-family:var(--mono);font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:16px}
+.dc-row{display:flex;justify-content:space-between;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--border)}
+.dc-row:last-child{border-bottom:none}
+.dc-k{font-size:11px;color:var(--text-mute)}
+.dc-v{font-family:var(--mono);font-size:10px;color:var(--text-dim);letter-spacing:.02em}
+.dc-v.pending{color:var(--warn)}
+
+/* ── TOAST ── */
+#toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--text);color:rgba(255,252,246,.9);border-radius:8px;padding:9px 20px;font-size:11.5px;display:none;pointer-events:none;white-space:nowrap;box-shadow:0 4px 24px rgba(0,0,0,.18);z-index:50;letter-spacing:-.01em}
 #toast.on{display:block;animation:tIn .15s ease}
 @keyframes tIn{from{opacity:0;transform:translateX(-50%) translateY(5px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(0,0,0,.1);border-radius:4px}
 </style>
 </head>
 <body>
@@ -169,6 +213,10 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
   <div class="tb-field"><span class="tb-field-k">Operator</span><span class="tb-field-v">JM Tassy</span></div>
   <div class="tb-sep"></div>
   <div class="tb-field"><span class="tb-field-k">Mode</span><span class="tb-field-v">Building</span></div>
+  <div class="tb-sep"></div>
+  <div class="tb-field"><span class="tb-field-k">Branch</span><span class="tb-field-v" id="tb-branch-v">—</span></div>
+  <div class="tb-sep"></div>
+  <div class="tb-field"><span class="tb-field-k">Commit</span><span class="tb-field-v" id="tb-commit-v" style="font-family:var(--mono);font-size:10px;letter-spacing:.04em">—</span></div>
   <div class="tb-push">
     <span class="tb-badge demo">Demo</span>
     <span class="tb-badge auth">auth: false</span>
@@ -186,129 +234,134 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
   <div class="nav-item" onclick="navTo('ledger',this)">Ledger</div>
   <div class="nav-item" onclick="navTo('memory',this)">Memory</div>
   <div class="nav-item" onclick="navTo('agents',this)">Agents</div>
+  <div class="nav-sep-v"></div>
+  <div class="nav-item nav-focus" onclick="window.location.href='focus.html'">Focus ↗</div>
 </div>
 </div>
 
 <!-- STAGE -->
 <div id="stage">
 
-  <!-- SACRED GEOMETRY LAYER · Sri Yantra + Sephirotic map -->
-  <!-- ViewBox 1440×900 · Sri Yantra center (720,450) · Sephirotic hotspots -->
-  <!-- Hotspot map: Kether=PILOT · Chokmah=COCKPIT · Binah=TEMPLE · Tiphareth=HOME · Chesed=LEDGER · Geburah=MEMORY · Yesod=AGENTS -->
-  <svg id="geo-svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <!-- SACRED GEOMETRY · 3D canvas · mouse parallax -->
+  <canvas id="geo-canvas" aria-hidden="true"></canvas>
+  <svg id="geo-svg-REMOVED" style="display:none" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
     <defs>
       <filter id="geo-glow">
         <feGaussianBlur stdDeviation="4" result="b"/>
         <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
       </filter>
       <filter id="geo-engrave">
-        <feTurbulence type="turbulence" baseFrequency="0.9" numOctaves="3" result="n"/>
-        <feDisplacementMap in="SourceGraphic" in2="n" scale="0.6"/>
+        <feTurbulence type="turbulence" baseFrequency="0.85" numOctaves="3" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="0.7"/>
       </filter>
     </defs>
 
-    <!-- ── STRUCTURAL GEOMETRY (global breathing) ── -->
+    <!-- ── STRUCTURAL GEOMETRY ── -->
     <g class="geo-str" stroke="#b8860b" fill="none">
 
-      <!-- Ouroboros outer ring (dashed, engrave texture) -->
-      <circle cx="720" cy="450" r="400" stroke-width=".6" opacity=".35" stroke-dasharray="6 14" filter="url(#geo-engrave)"/>
-      <circle cx="720" cy="450" r="396" stroke-width=".25" opacity=".18"/>
+      <!-- Ouroboros outer ring -->
+      <circle cx="720" cy="450" r="398" stroke-width=".6" opacity=".32" stroke-dasharray="6 14" filter="url(#geo-engrave)"/>
+      <circle cx="720" cy="450" r="393" stroke-width=".2" opacity=".15"/>
 
-      <!-- Vesica Piscis (HELEN vessel mark, large) -->
-      <circle cx="570" cy="450" r="230" stroke-width=".3" opacity=".15"/>
-      <circle cx="870" cy="450" r="230" stroke-width=".3" opacity=".15"/>
+      <!-- Concentric rings -->
+      <circle cx="720" cy="450" r="310" stroke-width=".35" opacity=".35"/>
+      <circle cx="720" cy="450" r="228" stroke-width=".28" opacity=".3"/>
+      <circle cx="720" cy="450" r="148" stroke-width=".22" opacity=".28"/>
+      <circle cx="720" cy="450" r="72"  stroke-width=".18" opacity=".3"/>
 
-      <!-- ── SRI YANTRA · 4 Shiva up-triangles (gold, counter-rotate) ── -->
-      <g class="geo-slowrot-r" opacity=".65" filter="url(#geo-glow)" stroke="#c9a43a">
-        <polygon points="720,190 958,575 482,575"   stroke-width=".9" opacity=".75"/>
-        <polygon points="720,260 900,548 540,548"   stroke-width=".7" opacity=".6"/>
-        <polygon points="720,330 840,518 600,518"   stroke-width=".55" opacity=".48"/>
-        <polygon points="720,387 787,493 653,493"   stroke-width=".4" opacity=".35"/>
+      <!-- 12-petal Lotus inner (counter-rotating) -->
+      <g class="geo-slowrot-r" opacity=".45" transform-origin="720 450">
+        <g transform="translate(720,450)">
+          <ellipse cx="0" cy="-52" rx="26" ry="74" stroke-width=".5" opacity=".7"/>
+          <ellipse cx="0" cy="-52" rx="26" ry="74" transform="rotate(30)"  stroke-width=".5" opacity=".65"/>
+          <ellipse cx="0" cy="-52" rx="26" ry="74" transform="rotate(60)"  stroke-width=".5" opacity=".6"/>
+          <ellipse cx="0" cy="-52" rx="26" ry="74" transform="rotate(90)"  stroke-width=".5" opacity=".65"/>
+          <ellipse cx="0" cy="-52" rx="26" ry="74" transform="rotate(120)" stroke-width=".5" opacity=".6"/>
+          <ellipse cx="0" cy="-52" rx="26" ry="74" transform="rotate(150)" stroke-width=".5" opacity=".65"/>
+          <ellipse cx="0" cy="-52" rx="26" ry="74" transform="rotate(180)" stroke-width=".5" opacity=".7"/>
+          <ellipse cx="0" cy="-52" rx="26" ry="74" transform="rotate(210)" stroke-width=".5" opacity=".65"/>
+          <ellipse cx="0" cy="-52" rx="26" ry="74" transform="rotate(240)" stroke-width=".5" opacity=".6"/>
+          <ellipse cx="0" cy="-52" rx="26" ry="74" transform="rotate(270)" stroke-width=".5" opacity=".65"/>
+          <ellipse cx="0" cy="-52" rx="26" ry="74" transform="rotate(300)" stroke-width=".5" opacity=".6"/>
+          <ellipse cx="0" cy="-52" rx="26" ry="74" transform="rotate(330)" stroke-width=".5" opacity=".65"/>
+        </g>
       </g>
 
-      <!-- ── SRI YANTRA · 5 Shakti down-triangles (red/silver, rotate) ── -->
-      <g class="geo-slowrot" opacity=".6" stroke="rgba(160,30,30,.7)">
-        <polygon points="720,710 958,325 482,325"   stroke-width=".9" opacity=".75"/>
-        <polygon points="720,640 896,340 544,340"   stroke-width=".7" opacity=".6"/>
-        <polygon points="720,572 848,370 592,370"   stroke-width=".55" opacity=".48"/>
-        <polygon points="720,504 800,396 640,396"   stroke-width=".4" opacity=".35"/>
-        <polygon points="720,468 758,430 682,430"   stroke-width=".3" opacity=".22"/>
+      <!-- 12-petal Lotus outer (rotating) -->
+      <g class="geo-slowrot" opacity=".22" transform-origin="720 450">
+        <g transform="translate(720,450)">
+          <ellipse cx="0" cy="-130" rx="50" ry="170" stroke-width=".4" opacity=".7"/>
+          <ellipse cx="0" cy="-130" rx="50" ry="170" transform="rotate(30)"  stroke-width=".35"/>
+          <ellipse cx="0" cy="-130" rx="50" ry="170" transform="rotate(60)"  stroke-width=".35"/>
+          <ellipse cx="0" cy="-130" rx="50" ry="170" transform="rotate(90)"  stroke-width=".4"/>
+          <ellipse cx="0" cy="-130" rx="50" ry="170" transform="rotate(120)" stroke-width=".35"/>
+          <ellipse cx="0" cy="-130" rx="50" ry="170" transform="rotate(150)" stroke-width=".35"/>
+          <ellipse cx="0" cy="-130" rx="50" ry="170" transform="rotate(180)" stroke-width=".4"/>
+          <ellipse cx="0" cy="-130" rx="50" ry="170" transform="rotate(210)" stroke-width=".35"/>
+          <ellipse cx="0" cy="-130" rx="50" ry="170" transform="rotate(240)" stroke-width=".35"/>
+          <ellipse cx="0" cy="-130" rx="50" ry="170" transform="rotate(270)" stroke-width=".4"/>
+          <ellipse cx="0" cy="-130" rx="50" ry="170" transform="rotate(300)" stroke-width=".35"/>
+          <ellipse cx="0" cy="-130" rx="50" ry="170" transform="rotate(330)" stroke-width=".35"/>
+        </g>
       </g>
 
-      <!-- ── FLOWER OF LIFE · 7 circles (r=120) ── -->
-      <g class="geo-breathe" opacity=".38" stroke="#b8860b" stroke-width=".5">
-        <circle cx="720" cy="450" r="120"/>
-        <circle cx="840" cy="450" r="120"/>
-        <circle cx="600" cy="450" r="120"/>
-        <circle cx="780" cy="554" r="120"/>
-        <circle cx="660" cy="554" r="120"/>
-        <circle cx="780" cy="346" r="120"/>
-        <circle cx="660" cy="346" r="120"/>
+      <!-- Flower of Life — inner 7 (breathing) -->
+      <g class="geo-breathe" opacity=".42" stroke-width=".48">
+        <circle cx="720" cy="450" r="100"/>
+        <circle cx="820" cy="450" r="100"/>
+        <circle cx="620" cy="450" r="100"/>
+        <circle cx="770" cy="537" r="100"/>
+        <circle cx="670" cy="537" r="100"/>
+        <circle cx="770" cy="363" r="100"/>
+        <circle cx="670" cy="363" r="100"/>
       </g>
 
-      <!-- ── METATRON'S CUBE · connections between circle centers ── -->
-      <g class="geo-slowrot" opacity=".28" stroke="rgba(255,255,255,.5)" stroke-width=".5">
-        <line x1="720" y1="450" x2="840" y2="450"/>
-        <line x1="720" y1="450" x2="600" y2="450"/>
-        <line x1="720" y1="450" x2="780" y2="554"/>
-        <line x1="720" y1="450" x2="660" y2="554"/>
-        <line x1="720" y1="450" x2="780" y2="346"/>
-        <line x1="720" y1="450" x2="660" y2="346"/>
-        <line x1="840" y1="450" x2="780" y2="554"/>
-        <line x1="840" y1="450" x2="780" y2="346"/>
-        <line x1="600" y1="450" x2="660" y2="554"/>
-        <line x1="600" y1="450" x2="660" y2="346"/>
-        <line x1="780" y1="554" x2="660" y2="554"/>
-        <line x1="780" y1="346" x2="660" y2="346"/>
-        <line x1="840" y1="450" x2="600" y2="450"/>
-        <line x1="780" y1="554" x2="660" y2="346"/>
-        <line x1="660" y1="554" x2="780" y2="346"/>
+      <!-- Rose window — 6 large circles (slow rotate) -->
+      <g class="geo-slowrot-r" opacity=".3" stroke-width=".4" transform-origin="720 450">
+        <circle cx="720" cy="250" r="200"/>
+        <circle cx="893" cy="350" r="200"/>
+        <circle cx="893" cy="550" r="200"/>
+        <circle cx="720" cy="650" r="200"/>
+        <circle cx="547" cy="550" r="200"/>
+        <circle cx="547" cy="350" r="200"/>
       </g>
 
-      <!-- ── SEPHIROTIC PATHS (Tree of Life connections) ── -->
-      <g opacity=".22" stroke="#b8860b" stroke-width=".5">
-        <line x1="720" y1="110" x2="1040" y2="260"/>
-        <line x1="720" y1="110" x2="400" y2="260"/>
-        <line x1="720" y1="110" x2="720" y2="450"/>
-        <line x1="720" y1="450" x2="1040" y2="450"/>
-        <line x1="720" y1="450" x2="400" y2="450"/>
-        <line x1="720" y1="450" x2="720" y2="750"/>
-        <line x1="1040" y1="260" x2="1040" y2="450"/>
-        <line x1="400" y1="260" x2="400" y2="450"/>
-        <line x1="1040" y1="260" x2="720" y2="450"/>
-        <line x1="400" y1="260" x2="720" y2="450"/>
-        <line x1="1040" y1="450" x2="720" y2="750"/>
-        <line x1="400" y1="450" x2="720" y2="750"/>
+      <!-- Vesica Piscis -->
+      <circle cx="570" cy="450" r="220" stroke-width=".28" opacity=".18"/>
+      <circle cx="870" cy="450" r="220" stroke-width=".28" opacity=".18"/>
+
+      <!-- 12 outer radial dots -->
+      <g fill="#b8860b" opacity=".45">
+        <circle cx="720" cy="62" r="3"/>
+        <circle cx="916" cy="114" r="2.5"/>
+        <circle cx="1058" cy="252" r="2.5"/>
+        <circle cx="1110" cy="450" r="3"/>
+        <circle cx="1058" cy="648" r="2.5"/>
+        <circle cx="916" cy="786" r="2.5"/>
+        <circle cx="720" cy="838" r="3"/>
+        <circle cx="524" cy="786" r="2.5"/>
+        <circle cx="382" cy="648" r="2.5"/>
+        <circle cx="330" cy="450" r="3"/>
+        <circle cx="382" cy="252" r="2.5"/>
+        <circle cx="524" cy="114" r="2.5"/>
       </g>
 
-      <!-- ── BINDU inner rings ── -->
-      <circle cx="720" cy="450" r="14" stroke-width=".5" opacity=".45"/>
-      <circle cx="720" cy="450" r="6"  stroke-width=".8" opacity=".6" filter="url(#geo-glow)"/>
-
-      <!-- ── Cross-rose axis ── -->
-      <line x1="720" y1="50" x2="720" y2="850" stroke-width=".3" opacity=".2"/>
-      <line x1="50" y1="450" x2="1390" y2="450" stroke-width=".3" opacity=".2"/>
-
-      <!-- ── Enochian / Hermetic margin text ── -->
-      <g opacity=".14" font-family="Courier New" font-size="8" fill="rgba(184,134,11,.8)" letter-spacing="4">
-        <text x="30" y="240" transform="rotate(-90,30,240)">ΑΩ · ARCHE · TELOS · LOGOS · PNEUMA · NOUS · SOPHIA</text>
-        <text x="1413" y="660" transform="rotate(90,1413,660)">OM · TAT · SAT · AUM · SHRI · HREEM · KLEEM · SHREEM</text>
-        <text x="720" y="878" text-anchor="middle">VITRIOL · VISITA INTERIORA TERRAE RECTIFICANDO INVENIES OCCULTUM LAPIDEM</text>
-        <text x="720" y="26" text-anchor="middle">AS ABOVE · SO BELOW · AS WITHIN · SO WITHOUT · AS THE UNIVERSE · SO THE SOUL</text>
+      <!-- Cardinal + diagonal axes -->
+      <line x1="720" y1="80" x2="720" y2="820" stroke-width=".28" opacity=".18"/>
+      <line x1="80" y1="450" x2="1360" y2="450" stroke-width=".28" opacity=".18"/>
+      <g stroke-width=".18" opacity=".12">
+        <line x1="440" y1="170" x2="1000" y2="730"/>
+        <line x1="1000" y1="170" x2="440" y2="730"/>
       </g>
 
-      <!-- ── Pentagrams at 4 corners ── -->
-      <g opacity=".18" stroke="#b8860b" stroke-width=".5" fill="none">
-        <polygon points="80,100 72,124 96,108 64,108 88,124"/>
-        <polygon points="1360,100 1352,124 1376,108 1344,108 1368,124"/>
-        <polygon points="80,800 72,824 96,808 64,808 88,824"/>
-        <polygon points="1360,800 1352,824 1376,808 1344,808 1368,824"/>
-      </g>
+      <!-- Central bindu -->
+      <circle cx="720" cy="450" r="18" stroke-width=".4" opacity=".4"/>
+      <circle cx="720" cy="450" r="8"  stroke-width=".6" opacity=".55" filter="url(#geo-glow)"/>
 
-      <!-- ── Eye of Providence (top center) ── -->
-      <g transform="translate(720,46)" opacity=".28" stroke="#b8860b" fill="none">
-        <ellipse cx="0" cy="0" rx="22" ry="13" stroke-width=".6"/>
-        <circle cx="0" cy="0" r="5" fill="rgba(184,134,11,.2)" stroke-width=".5"/>
+      <!-- Eye of Providence -->
+      <g transform="translate(720,46)" opacity=".26" stroke="#b8860b">
+        <ellipse cx="0" cy="0" rx="22" ry="13" stroke-width=".6" fill="none"/>
+        <circle cx="0" cy="0" r="5" fill="rgba(184,134,11,.18)" stroke-width=".5"/>
         <circle cx="0" cy="0" r="1.8" fill="#b8860b"/>
         <line x1="0" y1="-15" x2="0" y2="-24" stroke-width=".4"/>
         <line x1="15" y1="-8" x2="24" y2="-13" stroke-width=".4"/>
@@ -318,183 +371,663 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
         <line x1="-15" y1="-8" x2="-24" y2="-13" stroke-width=".4"/>
       </g>
 
-      <!-- ── Phi spiral (golden ratio trace) ── -->
-      <g opacity=".12" stroke="#b8860b" stroke-width=".6" fill="none">
+      <!-- Phi spiral corner -->
+      <g opacity=".11" stroke-width=".6" fill="none">
         <path d="M 1380 820 A 220 220 0 0 0 1160 600 A 136 136 0 0 0 1024 736 A 84 84 0 0 0 1108 820 A 52 52 0 0 0 1056 768"/>
+      </g>
+
+      <!-- Hermetic margins -->
+      <g opacity=".13" font-family="Courier New" font-size="8" fill="rgba(184,134,11,.9)" letter-spacing="4">
+        <text x="28" y="240" transform="rotate(-90,28,240)">ΑΩ · ARCHE · TELOS · LOGOS · PNEUMA · NOUS · SOPHIA</text>
+        <text x="1414" y="660" transform="rotate(90,1414,660)">OM · TAT · SAT · AUM · SHRI · HREEM · KLEEM · SHREEM</text>
+        <text x="720" y="877" text-anchor="middle">VITRIOL · VISITA INTERIORA TERRAE RECTIFICANDO INVENIES OCCULTUM LAPIDEM</text>
+        <text x="720" y="25" text-anchor="middle">AS ABOVE · SO BELOW · AS WITHIN · SO WITHOUT · AS THE UNIVERSE · SO THE SOUL</text>
+      </g>
+
+      <!-- Corner pentagrams -->
+      <g opacity=".17" stroke="#b8860b" stroke-width=".5" fill="none">
+        <polygon points="80,100 72,124 96,108 64,108 88,124"/>
+        <polygon points="1360,100 1352,124 1376,108 1344,108 1368,124"/>
+        <polygon points="80,800 72,824 96,808 64,808 88,824"/>
+        <polygon points="1360,800 1352,824 1376,808 1344,808 1368,824"/>
       </g>
 
     </g><!-- /geo-str -->
 
-    <!-- ── SEPHIROTIC HOTSPOT NODES · semantic navigation ── -->
-    <!-- Kether=PILOT · Chokmah=COCKPIT · Binah=TEMPLE · Tiphareth=HOME · Chesed=LEDGER · Geburah=MEMORY · Yesod=AGENTS -->
+    <!-- ── METATRON WEB · FoL centers connected + spine to hotspot nodes ── -->
+    <g opacity=".22" stroke="#b8860b" stroke-width=".55" fill="none">
+      <!-- Inner 7 → all 21 pairs -->
+      <line x1="720" y1="450" x2="820" y2="450"/>
+      <line x1="720" y1="450" x2="770" y2="537"/>
+      <line x1="720" y1="450" x2="670" y2="537"/>
+      <line x1="720" y1="450" x2="620" y2="450"/>
+      <line x1="720" y1="450" x2="670" y2="363"/>
+      <line x1="720" y1="450" x2="770" y2="363"/>
+      <line x1="820" y1="450" x2="770" y2="537"/>
+      <line x1="820" y1="450" x2="670" y2="537"/>
+      <line x1="820" y1="450" x2="620" y2="450"/>
+      <line x1="820" y1="450" x2="670" y2="363"/>
+      <line x1="820" y1="450" x2="770" y2="363"/>
+      <line x1="770" y1="537" x2="670" y2="537"/>
+      <line x1="770" y1="537" x2="620" y2="450"/>
+      <line x1="770" y1="537" x2="670" y2="363"/>
+      <line x1="770" y1="537" x2="770" y2="363"/>
+      <line x1="670" y1="537" x2="620" y2="450"/>
+      <line x1="670" y1="537" x2="670" y2="363"/>
+      <line x1="670" y1="537" x2="770" y2="363"/>
+      <line x1="620" y1="450" x2="670" y2="363"/>
+      <line x1="620" y1="450" x2="770" y2="363"/>
+      <line x1="670" y1="363" x2="770" y2="363"/>
+      <!-- Spine: inner → outer hotspot nodes -->
+      <line x1="720" y1="363" x2="720" y2="250" opacity=".55"/>
+      <line x1="770" y1="363" x2="893" y2="350" opacity=".38"/>
+      <line x1="820" y1="450" x2="893" y2="350" opacity=".38"/>
+      <line x1="820" y1="450" x2="893" y2="550" opacity=".38"/>
+      <line x1="770" y1="537" x2="893" y2="550" opacity=".38"/>
+      <line x1="720" y1="537" x2="720" y2="650" opacity=".55"/>
+      <line x1="670" y1="537" x2="547" y2="550" opacity=".38"/>
+      <line x1="620" y1="450" x2="547" y2="550" opacity=".38"/>
+      <line x1="620" y1="450" x2="547" y2="350" opacity=".38"/>
+      <line x1="670" y1="363" x2="547" y2="350" opacity=".38"/>
+    </g>
+
+    <!-- ── NODE DOTS · FoL inner intersection glows ── -->
+    <g filter="url(#geo-glow)">
+      <circle cx="820" cy="450" r="3.2" fill="#b8860b" opacity=".55"/>
+      <circle cx="770" cy="537" r="3.2" fill="#b8860b" opacity=".5"/>
+      <circle cx="670" cy="537" r="3.2" fill="#b8860b" opacity=".5"/>
+      <circle cx="620" cy="450" r="3.2" fill="#b8860b" opacity=".55"/>
+      <circle cx="670" cy="363" r="3.2" fill="#b8860b" opacity=".5"/>
+      <circle cx="770" cy="363" r="3.2" fill="#b8860b" opacity=".5"/>
+    </g>
+
+    <!-- ── FLOATING ORBS ── -->
+    <g fill="#b8860b" filter="url(#geo-glow)">
+      <circle cx="340" cy="180" r="7"   opacity=".32"/>
+      <circle cx="1090" cy="140" r="5.5" opacity=".28"/>
+      <circle cx="220" cy="510" r="8"   opacity=".24"/>
+      <circle cx="1210" cy="480" r="6"  opacity=".3"/>
+      <circle cx="580" cy="790" r="6.5" opacity=".26"/>
+      <circle cx="870" cy="760" r="5"   opacity=".24"/>
+      <circle cx="1080" cy="640" r="7"  opacity=".28"/>
+      <circle cx="310" cy="670" r="5.5" opacity=".22"/>
+      <circle cx="1280" cy="280" r="5"  opacity=".26"/>
+      <circle cx="160" cy="360" r="6"   opacity=".2"/>
+      <circle cx="1340" cy="620" r="4.5" opacity=".22"/>
+      <circle cx="450" cy="100" r="5"   opacity=".24"/>
+      <circle cx="990" cy="810" r="5.5" opacity=".2"/>
+    </g>
+
+    <!-- ── SEMANTIC HOTSPOTS · Flower of Life satellite positions ── -->
     <g class="geo-nodes">
 
-      <!-- TIPHARETH · HOME (heart/beauty, center) -->
+      <!-- HOME · bindu center -->
       <g class="geo-hot active" onclick="navTo('home',null)">
-        <circle cx="720" cy="450" r="32" fill="transparent"/>
-        <circle cx="720" cy="450" r="5" class="geo-dot"/>
+        <circle cx="720" cy="450" r="34" fill="transparent"/>
+        <circle cx="720" cy="450" r="5"  class="geo-dot"/>
         <circle cx="720" cy="450" r="11" class="geo-dot-glow" filter="url(#geo-glow)"/>
-        <circle cx="720" cy="450" r="18" class="geo-ring"/>
-        <text class="geo-lbl" x="720" y="432" text-anchor="middle">HOME</text>
-        <text class="geo-sub" x="720" y="476" text-anchor="middle">Tiphareth · what now</text>
+        <circle cx="720" cy="450" r="20" class="geo-ring"/>
+        <text class="geo-lbl" x="720" y="428" text-anchor="middle">HOME</text>
+        <text class="geo-sub" x="720" y="480" text-anchor="middle">what now</text>
       </g>
 
-      <!-- KETHER · PILOT (crown, top) -->
+      <!-- PILOT · north -->
       <g class="geo-hot" onclick="navTo('pilot',null)">
-        <circle cx="720" cy="110" r="32" fill="transparent"/>
-        <circle cx="720" cy="110" r="4" class="geo-dot"/>
-        <circle cx="720" cy="110" r="9" class="geo-dot-glow" filter="url(#geo-glow)"/>
-        <circle cx="720" cy="110" r="16" class="geo-ring"/>
-        <text class="geo-lbl" x="720" y="68" text-anchor="middle">PILOT</text>
-        <text class="geo-sub" x="720" y="81" text-anchor="middle">Kether · source analysis</text>
+        <circle cx="720" cy="250" r="32" fill="transparent"/>
+        <circle cx="720" cy="250" r="4"  class="geo-dot"/>
+        <circle cx="720" cy="250" r="10" class="geo-dot-glow" filter="url(#geo-glow)"/>
+        <circle cx="720" cy="250" r="18" class="geo-ring"/>
+        <text class="geo-lbl" x="720" y="208" text-anchor="middle">PILOT</text>
+        <text class="geo-sub" x="720" y="222" text-anchor="middle">source analysis</text>
       </g>
 
-      <!-- CHOKMAH · COCKPIT (wisdom, top-right) -->
+      <!-- COCKPIT · northeast -->
       <g class="geo-hot" onclick="navTo('cockpit',null)">
-        <circle cx="1040" cy="260" r="32" fill="transparent"/>
-        <circle cx="1040" cy="260" r="4" class="geo-dot"/>
-        <circle cx="1040" cy="260" r="9" class="geo-dot-glow" filter="url(#geo-glow)"/>
-        <circle cx="1040" cy="260" r="16" class="geo-ring"/>
-        <text class="geo-lbl" x="1078" y="254" text-anchor="start">COCKPIT</text>
-        <text class="geo-sub" x="1078" y="268" text-anchor="start">Chokmah · operations</text>
+        <circle cx="893" cy="350" r="32" fill="transparent"/>
+        <circle cx="893" cy="350" r="4"  class="geo-dot"/>
+        <circle cx="893" cy="350" r="10" class="geo-dot-glow" filter="url(#geo-glow)"/>
+        <circle cx="893" cy="350" r="18" class="geo-ring"/>
+        <text class="geo-lbl" x="933" y="345" text-anchor="start">COCKPIT</text>
+        <text class="geo-sub" x="933" y="360" text-anchor="start">operations</text>
       </g>
 
-      <!-- BINAH · TEMPLE (understanding, top-left) -->
-      <g class="geo-hot" onclick="navTo('temple',null)">
-        <circle cx="400" cy="260" r="32" fill="transparent"/>
-        <circle cx="400" cy="260" r="4" class="geo-dot"/>
-        <circle cx="400" cy="260" r="9" class="geo-dot-glow" filter="url(#geo-glow)"/>
-        <circle cx="400" cy="260" r="16" class="geo-ring"/>
-        <text class="geo-lbl" x="362" y="254" text-anchor="end">TEMPLE</text>
-        <text class="geo-sub" x="362" y="268" text-anchor="end">Binah · reflection</text>
-      </g>
-
-      <!-- CHESED · LEDGER (mercy/record, right) -->
+      <!-- LEDGER · southeast -->
       <g class="geo-hot" onclick="navTo('ledger',null)">
-        <circle cx="1040" cy="450" r="32" fill="transparent"/>
-        <circle cx="1040" cy="450" r="4" class="geo-dot"/>
-        <circle cx="1040" cy="450" r="9" class="geo-dot-glow" filter="url(#geo-glow)"/>
-        <circle cx="1040" cy="450" r="16" class="geo-ring"/>
-        <text class="geo-lbl" x="1078" y="445" text-anchor="start">LEDGER</text>
-        <text class="geo-sub" x="1078" y="460" text-anchor="start">Chesed · 128 entries</text>
+        <circle cx="893" cy="550" r="32" fill="transparent"/>
+        <circle cx="893" cy="550" r="4"  class="geo-dot"/>
+        <circle cx="893" cy="550" r="10" class="geo-dot-glow" filter="url(#geo-glow)"/>
+        <circle cx="893" cy="550" r="18" class="geo-ring"/>
+        <text class="geo-lbl" x="933" y="545" text-anchor="start">LEDGER</text>
+        <text class="geo-sub geo-ledger-count" x="933" y="560" text-anchor="start">128 entries</text>
       </g>
 
-      <!-- GEBURAH · MEMORY (strength/past, left) -->
-      <g class="geo-hot" onclick="navTo('memory',null)">
-        <circle cx="400" cy="450" r="32" fill="transparent"/>
-        <circle cx="400" cy="450" r="4" class="geo-dot"/>
-        <circle cx="400" cy="450" r="9" class="geo-dot-glow" filter="url(#geo-glow)"/>
-        <circle cx="400" cy="450" r="16" class="geo-ring"/>
-        <text class="geo-lbl" x="362" y="445" text-anchor="end">MEMORY</text>
-        <text class="geo-sub" x="362" y="460" text-anchor="end">Geburah · context</text>
-      </g>
-
-      <!-- YESOD · AGENTS (foundation, bottom) -->
+      <!-- AGENTS · south -->
       <g class="geo-hot" onclick="navTo('agents',null)">
-        <circle cx="720" cy="750" r="32" fill="transparent"/>
-        <circle cx="720" cy="750" r="4" class="geo-dot"/>
-        <circle cx="720" cy="750" r="9" class="geo-dot-glow" filter="url(#geo-glow)"/>
-        <circle cx="720" cy="750" r="16" class="geo-ring"/>
-        <text class="geo-lbl" x="720" y="798" text-anchor="middle">AGENTS</text>
-        <text class="geo-sub" x="720" y="812" text-anchor="middle">Yesod · not yet built</text>
+        <circle cx="720" cy="650" r="32" fill="transparent"/>
+        <circle cx="720" cy="650" r="4"  class="geo-dot"/>
+        <circle cx="720" cy="650" r="10" class="geo-dot-glow" filter="url(#geo-glow)"/>
+        <circle cx="720" cy="650" r="18" class="geo-ring"/>
+        <text class="geo-lbl" x="720" y="700" text-anchor="middle">AGENTS</text>
+        <text class="geo-sub" x="720" y="714" text-anchor="middle">not yet built</text>
+      </g>
+
+      <!-- MEMORY · southwest -->
+      <g class="geo-hot" onclick="navTo('memory',null)">
+        <circle cx="547" cy="550" r="32" fill="transparent"/>
+        <circle cx="547" cy="550" r="4"  class="geo-dot"/>
+        <circle cx="547" cy="550" r="10" class="geo-dot-glow" filter="url(#geo-glow)"/>
+        <circle cx="547" cy="550" r="18" class="geo-ring"/>
+        <text class="geo-lbl" x="507" y="545" text-anchor="end">MEMORY</text>
+        <text class="geo-sub" x="507" y="560" text-anchor="end">context</text>
+      </g>
+
+      <!-- TEMPLE · northwest -->
+      <g class="geo-hot" onclick="navTo('temple',null)">
+        <circle cx="547" cy="350" r="32" fill="transparent"/>
+        <circle cx="547" cy="350" r="4"  class="geo-dot"/>
+        <circle cx="547" cy="350" r="10" class="geo-dot-glow" filter="url(#geo-glow)"/>
+        <circle cx="547" cy="350" r="18" class="geo-ring"/>
+        <text class="geo-lbl" x="507" y="345" text-anchor="end">TEMPLE</text>
+        <text class="geo-sub" x="507" y="360" text-anchor="end">reflection</text>
       </g>
 
     </g><!-- /geo-nodes -->
-  </svg><!-- /geo-svg -->
+  </svg><!-- /geo-svg-REMOVED -->
 
-  <!-- CONTENT (above geometry) -->
-  <div id="stage-content">
+  <!-- 3-COLUMN LAYOUT -->
+  <div id="layout">
 
-  <!-- VESSEL MARK -->
-  <div id="mark-wrap">
-    <div id="mark-ring"></div>
-    <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
-      <path d="M6 32 C16 13 48 13 58 32 C48 51 16 51 6 32Z" stroke="#c9940c" stroke-width="1.8"/>
-      <path d="M18 32 C25 24 39 24 46 32 C39 40 25 40 18 32Z" stroke="#c9940c" stroke-width="1.3" opacity=".6"/>
-      <circle cx="32" cy="32" r="2.8" fill="#c9940c"/>
-      <path d="M32 8 L32 17 M32 47 L32 56 M8 32 L17 32 M47 32 L56 32" stroke="#c9940c" stroke-width="1.1" opacity=".38"/>
-    </svg>
-  </div>
+    <!-- LEFT: surface navigation -->
+    <div id="col-left">
+      <div class="lnav-section">Surfaces</div>
 
-  <!-- HELEN'S VOICE -->
-  <div id="voice">
-    <div class="v-eyebrow" id="v-eyebrow">2026 · 05 · 10 &nbsp;·&nbsp; Building &nbsp;·&nbsp; Steady</div>
-    <div class="v-sit">HOME is close. One review away from ship.</div>
-    <div class="v-action">Review the surface now,<br>then decide.</div>
-    <div class="v-move">20 minutes · rate it · commit or revise. Nothing else matters first.</div>
-  </div>
+      <div class="lnav-item active" onclick="navTo('home',null)">
+        <span class="lnav-icon">⌂</span>
+        <div class="lnav-text">
+          <span class="lnav-name">Home</span>
+          <span class="lnav-state">Active</span>
+        </div>
+      </div>
+      <div class="lnav-item" onclick="navTo('pilot',null)">
+        <span class="lnav-icon">◎</span>
+        <div class="lnav-text">
+          <span class="lnav-name">Pilot</span>
+          <span class="lnav-state">Ready</span>
+        </div>
+      </div>
+      <div class="lnav-item" onclick="navTo('cockpit',null)">
+        <span class="lnav-icon">⊞</span>
+        <div class="lnav-text">
+          <span class="lnav-name">Cockpit</span>
+          <span class="lnav-state">In flight</span>
+        </div>
+      </div>
+      <div class="lnav-item" onclick="navTo('temple',null)">
+        <span class="lnav-icon">◇</span>
+        <div class="lnav-text">
+          <span class="lnav-name">Temple</span>
+          <span class="lnav-state">Not built</span>
+        </div>
+      </div>
+      <div class="lnav-item" onclick="navTo('ledger',null)">
+        <span class="lnav-icon">≡</span>
+        <div class="lnav-text">
+          <span class="lnav-name">Ledger</span>
+          <span class="lnav-state geo-ledger-count">128 entries</span>
+        </div>
+      </div>
+      <div class="lnav-item" onclick="navTo('memory',null)">
+        <span class="lnav-icon">○</span>
+        <div class="lnav-text">
+          <span class="lnav-name">Memory</span>
+          <span class="lnav-state">Not built</span>
+        </div>
+      </div>
+      <div class="lnav-item" onclick="navTo('agents',null)">
+        <span class="lnav-icon">⬡</span>
+        <div class="lnav-text">
+          <span class="lnav-name">Agents</span>
+          <span class="lnav-state">Not built</span>
+        </div>
+      </div>
 
-  <!-- CHIPS -->
-  <div class="chips">
-    <div class="chip linked" onclick="openChip('pilot')"><div class="chip-dot"></div>linked · STARSHIP_V3</div>
-    <div class="chip draft" onclick="openChip('source')"><div class="chip-dot"></div>source · helen2027.html</div>
-    <div class="chip saved" onclick="openChip('saved')"><div class="chip-dot"></div>saved · local draft</div>
-    <div class="chip mute" onclick="openChip('verified')"><div class="chip-dot"></div>auth: false · demo</div>
-  </div>
+      <div class="lnav-section" style="margin-top:auto;padding-top:12px;border-top:1px solid var(--border)">Mode</div>
+      <div class="lnav-item" onclick="window.location.href='focus.html'" style="opacity:.7">
+        <span class="lnav-icon">◎</span>
+        <div class="lnav-text">
+          <span class="lnav-name">Focus mode</span>
+          <span class="lnav-state">Minimal view</span>
+        </div>
+      </div>
+    </div><!-- /col-left -->
 
-  <!-- STATUS -->
-  <div id="status-row">
-    <div class="sr"><div class="sr-n prog">2</div><div class="sr-l">In progress</div></div>
-    <div class="sr"><div class="sr-n todo">3</div><div class="sr-l">To do</div></div>
-    <div class="sr"><div class="sr-n wait">3</div><div class="sr-l">Waiting</div></div>
-    <div class="sr"><div class="sr-n block">1</div><div class="sr-l">Blocked</div></div>
-  </div>
+    <!-- CENTER: WHAT NOW hero + situation + state cards -->
+    <div id="col-center">
 
-  <!-- SURFACE NAV -->
-  <div id="surfaces">
-    <div class="surf active" onclick="navTo('home',null)">
-      <span class="surf-icon">⌂</span>
-      <span class="surf-name">Home</span>
-      <span class="surf-state">Active</span>
-    </div>
-    <div class="surf" onclick="navTo('pilot',null)">
-      <span class="surf-icon">◎</span>
-      <span class="surf-name">Pilot</span>
-      <span class="surf-state">Ready</span>
-    </div>
-    <div class="surf" onclick="navTo('cockpit',null)">
-      <span class="surf-icon">⊞</span>
-      <span class="surf-name">Cockpit</span>
-      <span class="surf-state">In flight</span>
-    </div>
-    <div class="surf" onclick="navTo('temple',null)">
-      <span class="surf-icon">◇</span>
-      <span class="surf-name">Temple</span>
-      <span class="surf-state">Not built</span>
-    </div>
-    <div class="surf" onclick="navTo('ledger',null)">
-      <span class="surf-icon">≡</span>
-      <span class="surf-name">Ledger</span>
-      <span class="surf-state">128 entries</span>
-    </div>
-    <div class="surf" onclick="navTo('memory',null)">
-      <span class="surf-icon">○</span>
-      <span class="surf-name">Memory</span>
-      <span class="surf-state">Not built</span>
-    </div>
-  </div>
+      <!-- HERO CARD -->
+      <div class="hero-card" onclick="openDetail()">
+        <span class="hero-open">Open details ↗</span>
+        <div class="hero-meta">
+          <div class="hero-meta-item">
+            <span class="hero-meta-k">Object</span>
+            <span class="hero-meta-v">HELEN HOME</span>
+          </div>
+          <div class="hero-meta-sep"></div>
+          <div class="hero-meta-item">
+            <span class="hero-meta-k">Type</span>
+            <span class="hero-meta-v">Surface</span>
+          </div>
+          <div class="hero-meta-sep"></div>
+          <div class="hero-meta-item">
+            <span class="hero-meta-k">State</span>
+            <span class="hero-meta-v pending">Review pending</span>
+          </div>
+          <div class="hero-meta-sep"></div>
+          <div class="hero-meta-item">
+            <span class="hero-meta-k">Source</span>
+            <span class="hero-meta-v">helen2027.html</span>
+          </div>
+        </div>
+        <div class="hero-eyebrow" id="v-eyebrow">Building &nbsp;·&nbsp; Steady</div>
+        <div class="hero-sit">HOME is close. One review away from commit.</div>
+        <div class="hero-action">Review the HOME surface now.</div>
+        <div class="hero-sub">Rate it · commit or revise.<br>Nothing else matters first.</div>
+        <div class="hero-chips">
+          <span class="hchip linked" onclick="event.stopPropagation();window.location.href='starship.html'">
+            <span class="hchip-dot"></span>linked · STARSHIP_V3
+          </span>
+          <span class="hchip draft" onclick="event.stopPropagation();toast('Source: apps/helen-surface/helen2027.html')">
+            <span class="hchip-dot"></span>source · helen2027.html
+          </span>
+          <span class="hchip saved" onclick="event.stopPropagation();toast('Draft saved locally — not yet pushed')">
+            <span class="hchip-dot"></span>saved · local draft
+          </span>
+        </div>
+      </div><!-- /hero-card -->
 
-  </div><!-- /stage-content -->
+      <!-- SITUATION SUMMARY -->
+      <div class="sit-card">
+        <div class="sit-title">Situation</div>
+        <div class="sit-line">HELEN HOME is the current front door. One review remains before commit. Nothing irreversible is required now.</div>
+      </div>
+
+      <!-- STATE CARDS 2×2 -->
+      <div class="state-cards">
+
+        <!-- TO DO -->
+        <div class="state-card">
+          <div class="sc-header">
+            <span class="sc-n todo">3</span>
+            <span class="sc-label">To do</span>
+          </div>
+          <div class="sc-items">
+            <div class="sc-item">
+              <span class="sc-item-name">Rate helen2027 surface</span>
+              <div class="sc-item-chips">
+                <span class="sc-chip source">source</span>
+                <span class="sc-chip draft">draft</span>
+              </div>
+            </div>
+            <div class="sc-item">
+              <span class="sc-item-name">Countersign E11/E12</span>
+              <div class="sc-item-chips">
+                <span class="sc-chip linked">linked</span>
+              </div>
+            </div>
+            <div class="sc-item">
+              <span class="sc-item-name">Route 28 pre-claims</span>
+              <div class="sc-item-chips">
+                <span class="sc-chip source">source</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- IN PROGRESS -->
+        <div class="state-card">
+          <div class="sc-header">
+            <span class="sc-n prog">2</span>
+            <span class="sc-label">In progress</span>
+          </div>
+          <div class="sc-items">
+            <div class="sc-item">
+              <span class="sc-item-name">HELEN HOME polish pass</span>
+              <div class="sc-item-chips">
+                <span class="sc-chip source">source</span>
+                <span class="sc-chip linked">linked</span>
+              </div>
+            </div>
+            <div class="sc-item">
+              <span class="sc-item-name">Rothschild demo prep</span>
+              <div class="sc-item-chips">
+                <span class="sc-chip draft">draft</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SCHEDULED -->
+        <div class="state-card">
+          <div class="sc-header">
+            <span class="sc-n todo" style="opacity:.35">0</span>
+            <span class="sc-label">Scheduled</span>
+          </div>
+          <div class="sc-items">
+            <div class="sc-item">
+              <span class="sc-item-name" style="color:var(--text-mute);font-style:italic;font-size:10.5px">Nothing scheduled</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- WAITING · BLOCKED -->
+        <div class="state-card">
+          <div class="sc-header">
+            <span class="sc-n block">4</span>
+            <span class="sc-label">Waiting · blocked</span>
+          </div>
+          <div class="sc-items">
+            <div class="sc-item">
+              <span class="sc-item-name">E13 AUTORESEARCH</span>
+              <div class="sc-item-chips">
+                <span class="sc-chip blocked">blocked</span>
+              </div>
+            </div>
+            <div class="sc-item">
+              <span class="sc-item-name">MAYOR pre-claims ruling</span>
+              <div class="sc-item-chips">
+                <span class="sc-chip waiting">waiting</span>
+              </div>
+            </div>
+            <div class="sc-item">
+              <span class="sc-item-name">HAL grounding · Gate 2</span>
+              <div class="sc-item-chips">
+                <span class="sc-chip waiting">waiting</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /state-cards -->
+    </div><!-- /col-center -->
+
+    <!-- RIGHT: active object + ledger snapshot -->
+    <div id="col-right">
+
+      <div class="r-section">
+        <div class="r-title">Active Object</div>
+        <div class="r-object-card" onclick="openDetail()">
+          <div class="r-obj-name">HELEN HOME</div>
+          <div class="r-obj-type">Surface · helen2027.html</div>
+          <div class="r-obj-row">
+            <span class="r-obj-k">State</span>
+            <span class="r-obj-v pending">Review pending</span>
+          </div>
+          <div class="r-obj-row">
+            <span class="r-obj-k">Authority</span>
+            <span class="r-obj-v">false</span>
+          </div>
+          <div class="r-obj-row">
+            <span class="r-obj-k">Best next move</span>
+            <span class="r-obj-v">Rate it</span>
+          </div>
+          <div class="r-obj-open" onclick="openDetail()">Open details ↗</div>
+        </div>
+      </div>
+
+      <div class="r-section">
+        <div class="r-title">Ledger snapshot</div>
+        <div class="ledger-entry">
+          <div class="le-op">starship_v3 · shipped</div>
+          <div class="le-meta">surface commit · 5ca0d19</div>
+        </div>
+        <div class="ledger-entry">
+          <div class="le-op">geo_claim · filed</div>
+          <div class="le-meta">E05 sacred geometry · 5a7bb89</div>
+        </div>
+        <div class="ledger-entry">
+          <div class="le-op">autoresearch · e12</div>
+          <div class="le-meta">replay gate · pending countersign</div>
+        </div>
+        <div class="ledger-entry">
+          <div class="le-op">swarm · 28 pre-claims</div>
+          <div class="le-meta">queued · MAYOR routing</div>
+        </div>
+        <div class="le-total" id="le-total-live">128 entries total · append-only</div>
+      </div>
+
+    </div><!-- /col-right -->
+
+  </div><!-- /layout -->
 </div><!-- /stage -->
 
-<!-- BOTTOM INPUT -->
+<!-- BOTTOM -->
 <div id="bottom">
-  <input id="helen-input" type="text" placeholder="Ask HELEN — or type: next · status · play · pilot · cockpit · ship · help" onkeydown="if(event.key==='Enter')sendCmd()">
-  <button class="send-btn" onclick="sendCmd()">Ask →</button>
+  <div id="action-rail">
+    <button class="rail-primary" onclick="railAction('start')">Start review →</button>
+    <button class="rail-secondary" onclick="railAction('hold')">Hold</button>
+    <button class="rail-secondary" onclick="railAction('defer')">Defer</button>
+    <div class="rail-spacer"></div>
+    <span class="rail-context">Home · review pending · auth: false</span>
+  </div>
+  <div id="ask-bar">
+    <input id="helen-input" type="text" placeholder="Ask HELEN what to do next, what is blocked, or what to focus on." onkeydown="if(event.key==='Enter')sendCmd()">
+    <button class="send-btn" onclick="sendCmd()">Ask →</button>
+  </div>
+</div>
+
+<!-- DETAIL OVERLAY -->
+<div id="detail">
+  <div class="detail-bg" onclick="closeDetail()"></div>
+  <div class="detail-card">
+    <span class="dc-close" onclick="closeDetail()">Close ✕</span>
+    <div class="dc-title">Active Object · HELEN HOME</div>
+    <div class="dc-row"><span class="dc-k">Object</span><span class="dc-v">HELEN HOME</span></div>
+    <div class="dc-row"><span class="dc-k">Type</span><span class="dc-v">Surface</span></div>
+    <div class="dc-row"><span class="dc-k">State</span><span class="dc-v pending">Review pending</span></div>
+    <div class="dc-row"><span class="dc-k">Source</span><span class="dc-v">helen2027.html</span></div>
+    <div class="dc-row"><span class="dc-k">Authority</span><span class="dc-v">false</span></div>
+    <div class="dc-row"><span class="dc-k">Mode</span><span class="dc-v">Demo · Building</span></div>
+    <div class="dc-row"><span class="dc-k">Best next move</span><span class="dc-v">Rate the surface</span></div>
+    <div class="dc-row"><span class="dc-k">Irreversible?</span><span class="dc-v">Nothing required now</span></div>
+  </div>
 </div>
 
 <div id="toast"></div>
 
 <script>
+// ── 3D SACRED GEOMETRY BACKGROUND ────────────────────────────────────────────
+(function(){
+'use strict';
+const φ=(1+Math.sqrt(5))/2;
+
+function norm3(v){const l=Math.sqrt(v[0]**2+v[1]**2+v[2]**2);return[v[0]/l,v[1]/l,v[2]/l]}
+function rotX(v,a){const c=Math.cos(a),s=Math.sin(a);return[v[0],v[1]*c-v[2]*s,v[1]*s+v[2]*c]}
+function rotY(v,a){const c=Math.cos(a),s=Math.sin(a);return[v[0]*c+v[2]*s,v[1],-v[0]*s+v[2]*c]}
+function rotZ(v,a){const c=Math.cos(a),s=Math.sin(a);return[v[0]*c-v[1]*s,v[0]*s+v[1]*c,v[2]]}
+function proj(v,cx,cy,sc,fov=5){const z=v[2]+fov;return[cx+v[0]*sc*fov/z,cy+v[1]*sc*fov/z,z]}
+function edgesFromVerts(verts){
+  const n=verts.length;let m=Infinity;
+  for(let i=0;i<n;i++)for(let j=i+1;j<n;j++){const d=(verts[i][0]-verts[j][0])**2+(verts[i][1]-verts[j][1])**2+(verts[i][2]-verts[j][2])**2;if(d<m)m=d;}
+  const th=m*1.05,e=[];
+  for(let i=0;i<n;i++)for(let j=i+1;j<n;j++){const d=(verts[i][0]-verts[j][0])**2+(verts[i][1]-verts[j][1])**2+(verts[i][2]-verts[j][2])**2;if(d<=th)e.push([i,j]);}
+  return e;
+}
+function makeSolid(rv,re){const v=rv.map(norm3);return{v,e:re||edgesFromVerts(v)}}
+
+const SOLIDS={
+  tetrahedron:makeSolid([[1,1,1],[1,-1,-1],[-1,1,-1],[-1,-1,1]],[[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]]),
+  cube:makeSolid([[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]],[[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]]),
+  octahedron:makeSolid([[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]],[[0,2],[0,3],[0,4],[0,5],[1,2],[1,3],[1,4],[1,5],[2,4],[2,5],[3,4],[3,5]]),
+  icosahedron:makeSolid([[0,1,φ],[0,1,-φ],[0,-1,φ],[0,-1,-φ],[1,φ,0],[1,-φ,0],[-1,φ,0],[-1,-φ,0],[φ,0,1],[φ,0,-1],[-φ,0,1],[-φ,0,-1]]),
+  dodecahedron:makeSolid([[1,1,1],[1,1,-1],[1,-1,1],[1,-1,-1],[-1,1,1],[-1,1,-1],[-1,-1,1],[-1,-1,-1],[0,1/φ,φ],[0,1/φ,-φ],[0,-1/φ,φ],[0,-1/φ,-φ],[1/φ,φ,0],[1/φ,-φ,0],[-1/φ,φ,0],[-1/φ,-φ,0],[φ,0,1/φ],[φ,0,-1/φ],[-φ,0,1/φ],[-φ,0,-1/φ]]),
+};
+
+const NODES=[
+  {solid:'dodecahedron',color:'gold',scale:1.1,rx:.0006,ry:.001,rz:.0004,center:true,rx_a:0,ry_a:0,rz_a:0},
+  {solid:'tetrahedron', color:'cyan',scale:.72, rx:.0014,ry:.0008,rz:.001,angle:0,   rx_a:1,ry_a:.5,rz_a:.3},
+  {solid:'cube',        color:'cyan',scale:.68, rx:.0006,ry:.0016,rz:.0005,angle:60,  rx_a:.4,ry_a:1.2,rz_a:.8},
+  {solid:'octahedron',  color:'cyan',scale:.7,  rx:.001, ry:.0005,rz:.0014,angle:120, rx_a:.8,ry_a:.3,rz_a:1.1},
+  {solid:'icosahedron', color:'cyan',scale:.68, rx:.0009,ry:.0012,rz:.0007,angle:180, rx_a:.2,ry_a:.9,rz_a:.6},
+  {solid:'dodecahedron',color:'cyan',scale:.65, rx:.0008,ry:.001, rz:.0011,angle:240, rx_a:.7,ry_a:.4,rz_a:1.3},
+  {solid:'icosahedron', color:'cyan',scale:.68, rx:.0015,ry:.0006,rz:.0009,angle:300, rx_a:1.3,ry_a:.7,rz_a:.2},
+];
+
+const canvas=document.getElementById('geo-canvas');
+const ctx=canvas.getContext('2d');
+let W,H,CX,CY,R,dpr=1;
+
+// Mouse parallax (smooth)
+let mx=0,my=0,smx=0,smy=0;
+document.addEventListener('mousemove',e=>{
+  mx=(e.clientX/window.innerWidth)*2-1;
+  my=(e.clientY/window.innerHeight)*2-1;
+},{passive:true});
+
+function nodePos(angle){
+  const a=(angle-90)*Math.PI/180;
+  return[CX+R*Math.cos(a),CY+R*Math.sin(a)];
+}
+
+function resize(){
+  const stage=document.getElementById('stage');
+  const rect=stage.getBoundingClientRect();
+  dpr=devicePixelRatio||1;
+  W=canvas.width=rect.width*dpr;
+  H=canvas.height=rect.height*dpr;
+  canvas.style.width=rect.width+'px';
+  canvas.style.height=rect.height+'px';
+  CX=W/2; CY=H/2;
+  R=Math.min(W,H)*0.24;
+}
+
+function drawSolid(node,gx,gy){
+  const[px,py]=node.center?[CX,CY]:nodePos(node.angle);
+  const def=SOLIDS[node.solid];
+  const sc=(node.center?R*0.3:R*0.155)*node.scale;
+  const isGold=node.color==='gold';
+  const col=isGold?'rgba(201,148,12,.7)':'rgba(0,180,220,.6)';
+  const shad=isGold?'#c9940c':'#00ccee';
+
+  const rotd=def.v.map(v=>{
+    let r=rotX(v,gx); r=rotY(r,gy);
+    r=rotX(r,node.rx_a); r=rotY(r,node.ry_a); r=rotZ(r,node.rz_a);
+    return r;
+  });
+  const pr=rotd.map(v=>proj(v,px,py,sc));
+
+  const sortedE=def.e.map(e=>({e,z:(pr[e[0]][2]+pr[e[1]][2])/2})).sort((a,b)=>b.z-a.z);
+
+  ctx.save();
+  ctx.shadowBlur=(isGold?10:6)*dpr;
+  ctx.shadowColor=shad;
+  ctx.strokeStyle=col;
+  ctx.lineWidth=(isGold?1.2:.9)*dpr;
+
+  for(const{e,z}of sortedE){
+    ctx.globalAlpha=z<4.2?.18:.72;
+    ctx.beginPath();
+    ctx.moveTo(pr[e[0]][0],pr[e[0]][1]);
+    ctx.lineTo(pr[e[1]][0],pr[e[1]][1]);
+    ctx.stroke();
+  }
+  ctx.globalAlpha=.45;
+  ctx.fillStyle=col;
+  ctx.shadowBlur=5*dpr;
+  for(const[vx,vy]of pr){ctx.beginPath();ctx.arc(vx,vy,1.2*dpr,0,Math.PI*2);ctx.fill();}
+  ctx.restore();
+}
+
+function drawBg(){
+  ctx.clearRect(0,0,W,H);
+  ctx.save();
+  // Metatron connection lines
+  const pos=[{x:CX,y:CY},...NODES.slice(1).map(n=>{const[x,y]=nodePos(n.angle);return{x,y}})];
+  ctx.strokeStyle='rgba(184,134,11,.07)';
+  ctx.lineWidth=.5*dpr;
+  for(let i=0;i<pos.length;i++)for(let j=i+1;j<pos.length;j++){
+    ctx.beginPath();ctx.moveTo(pos[i].x,pos[i].y);ctx.lineTo(pos[j].x,pos[j].y);ctx.stroke();
+  }
+  // Concentric rings
+  [1.32,.95,.65,.42,.22].forEach((f,i)=>{
+    ctx.strokeStyle=`rgba(184,134,11,${.03+i*.02})`;
+    ctx.lineWidth=.5*dpr;
+    ctx.beginPath();ctx.arc(CX,CY,R*f,0,Math.PI*2);ctx.stroke();
+  });
+  // FoL circles
+  ctx.strokeStyle='rgba(184,134,11,.05)';
+  ctx.lineWidth=.4*dpr;
+  pos.forEach(({x,y})=>{ctx.beginPath();ctx.arc(x,y,R*.55,0,Math.PI*2);ctx.stroke();});
+  // Axis lines
+  ctx.strokeStyle='rgba(184,134,11,.06)';ctx.lineWidth=.3*dpr;
+  ctx.beginPath();ctx.moveTo(CX,CY-R*1.3);ctx.lineTo(CX,CY+R*1.3);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(CX-R*1.3,CY);ctx.lineTo(CX+R*1.3,CY);ctx.stroke();
+  ctx.restore();
+}
+
+function drawMark(t){
+  const p=.6+.4*Math.sin(t*.0008);
+  ctx.save();ctx.globalAlpha=p*.5;
+  ctx.strokeStyle='rgba(201,148,12,.8)';ctx.lineWidth=1.2*dpr;
+  ctx.shadowBlur=12*dpr;ctx.shadowColor='#c9940c';
+  const r=R*.055;
+  ctx.beginPath();ctx.moveTo(CX-r*2,CY);ctx.quadraticCurveTo(CX,CY-r*1.3,CX+r*2,CY);ctx.quadraticCurveTo(CX,CY+r*1.3,CX-r*2,CY);ctx.stroke();
+  ctx.fillStyle='rgba(201,148,12,.9)';ctx.beginPath();ctx.arc(CX,CY,r*.35,0,Math.PI*2);ctx.fill();
+  ctx.restore();
+}
+
+let last3d=0;
+function frame3d(t){
+  const dt=t-last3d; last3d=t;
+  smx+=(mx-smx)*.035; smy+=(my-smy)*.035;
+  const gx=smy*.35, gy=smx*.35;
+  NODES.forEach(n=>{n.rx_a+=n.rx*dt;n.ry_a+=n.ry*dt;n.rz_a+=n.rz*dt;});
+  drawBg();
+  drawMark(t);
+  const center=NODES[0], others=NODES.slice(1);
+  others.forEach(n=>drawSolid(n,gx,gy));
+  drawSolid(center,gx,gy);
+  requestAnimationFrame(frame3d);
+}
+
+const ro=new ResizeObserver(resize);
+ro.observe(document.getElementById('stage'));
+resize();
+requestAnimationFrame(frame3d);
+})();
+
+// ─────────────────────────────────────────────────────────────────────────────
 const SURFACE_MAP={
   home:'helen2027.html',
   pilot:'starship.html',
   cockpit:'index.html',
-  temple:null,
+  focus:'focus.html',
+  temple:'temple.html',
   ledger:null,
   memory:null,
   agents:null,
 };
+
+// ── Live state from helen_status_api.py (port 7001) ──────────────────────
+async function fetchStatus(){
+  try{
+    const r=await fetch('http://localhost:7001/api/status',{signal:AbortSignal.timeout(2000)});
+    if(!r.ok)return;
+    const d=await r.json();
+    if(d.branch){document.getElementById('tb-branch-v').textContent=d.branch;}
+    if(d.commit){document.getElementById('tb-commit-v').textContent=d.commit+(d.dirty?' · dirty':'');}
+    const lel=document.getElementById('le-total-live');
+    if(d.ledger_count!=null&&lel){
+      lel.textContent=d.ledger_count+' entries · append-only';
+      document.querySelectorAll('.geo-ledger-count').forEach(el=>el.textContent=d.ledger_count+' entries');
+    }
+    if(d.dirty!=null){
+      const badge=document.querySelector('.tb-badge.demo');
+      if(badge)badge.textContent=d.dirty?'Dirty':'Clean';
+    }
+  }catch(e){/* API not running — keep demo values */}
+}
+fetchStatus();
+setInterval(fetchStatus,10000);
 
 function navTo(key,pill){
   document.querySelectorAll('.nav-item').forEach(p=>p.classList.remove('active'));
@@ -504,11 +1037,17 @@ function navTo(key,pill){
   toast('Surface '+key.toUpperCase()+' — not yet built');
 }
 
-function openChip(type){
-  if(type==='pilot'){window.location.href='starship.html';return}
-  if(type==='source'){toast('Source: apps/helen-surface/helen2027.html');return}
-  if(type==='saved'){toast('Draft saved locally — not yet pushed to origin');return}
-  if(type==='verified'){toast('Demo mode · authority: false · no sovereign claim');return}
+function railAction(type){
+  if(type==='start'){toast('HELEN → Starting review. Open helen2027.html and rate it.');return}
+  if(type==='hold'){toast('HELEN → Held. Resume when ready. Nothing is lost.');return}
+  if(type==='defer'){toast('HELEN → Deferred. Will surface again at next session.');return}
+}
+
+function openDetail(){
+  document.getElementById('detail').classList.add('on');
+}
+function closeDetail(){
+  document.getElementById('detail').classList.remove('on');
 }
 
 function openMedia(){
@@ -529,16 +1068,21 @@ function sendCmd(){
     next:'Next: Review helen2027.html — rate it, commit or revise.',
     status:'2 in progress · 3 to do · 1 blocked (E13) · 3 waiting.',
     blocked:'E13 blocked — countersign E11/E12 peer-review first.',
-    ship:'Not yet — E11/E12 pending + 28 claims queued.',
-    focus:'Focus mode — 14:00 block. HELEN OS only. No admin.',
+    ship:'Not yet — review pending. Rate the surface first.',
+    focus:'Focus: Review HOME surface. 20 minutes. Nothing else.',
     help:'Commands: next · status · blocked · ship · focus · play · pilot · cockpit',
+    hold:'Held. Nothing lost. Resume when you are ready.',
+    defer:'Deferred. Will resurface at next session.',
   };
-  toast('HELEN → '+(r[key]||'Commands: next · status · blocked · ship · play · pilot · cockpit'));
+  toast('HELEN → '+(r[key]||'Commands: next · status · blocked · ship · focus · play · pilot · cockpit'));
 }
 
 function updateClock(){
   const n=new Date();
-  document.getElementById('tb-clock').textContent=n.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const d=n.toLocaleDateString('fr-FR',{year:'numeric',month:'2-digit',day:'2-digit'}).replace(/\//g,'·');
+  const t=n.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  document.getElementById('tb-clock').textContent=t;
+  document.getElementById('v-eyebrow').textContent=d+' · Building · Steady';
 }
 updateClock();setInterval(updateClock,1000);
 
