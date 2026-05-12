@@ -180,8 +180,27 @@ let mx=0.5, my=0.5, smx=0.5, smy=0.5;
 
 // ── POINTER V0 — dwell detection ─────────────────────────────────────────────
 let pHover=null, pDwellStart=null;
-let pReceipt=null; // node whose receipt card is showing
+let pReceipt=null;
 const DWELL_MS = 800;
+
+// Node-specific intents
+const INTENTS = {
+  helen:   {action:'Open operator dashboard',  desc:'Navigate to HELEN OS home surface',     nav:'helen2027.html'},
+  her:     {action:'Enter creative mode',       desc:'Activate generative synthesis layer',   nav:null},
+  hal:     {action:'Run gate validation',       desc:'Execute K8 · K-tau · LEGORACLE',       nav:'cockpit_v4.html'},
+  mayor:   {action:'Review proposals',          desc:'Open governance queue · 0 pending',     nav:null},
+  chronos: {action:'Schedule next epoch',       desc:'Set timer · next session in 24h',       nav:null},
+  aura:    {action:'Enter meditation mode',     desc:'Open symbolic temple · non-sovereign',  nav:null},
+  goblin:  {action:'Inspect last failures',     desc:'Recall heap · 0 open defects',         nav:null},
+  director:{action:'Launch video pipeline',     desc:'HELEN Director · 3-shot renderer',      nav:null},
+};
+
+// Receipt log + receipted state
+const RECEIPT_LOG = [];
+const RECEIPTED = new Set();
+
+// Button hit zones (canvas coords)
+let pBtnConfirm=null, pBtnReject=null;
 
 window.addEventListener('mousemove', e => {
   mx=e.clientX/window.innerWidth; my=e.clientY/window.innerHeight;
@@ -201,7 +220,27 @@ window.addEventListener('mousemove', e => {
   }
 });
 
-canvas.addEventListener('click', () => { pReceipt=null; });
+canvas.addEventListener('click', e => {
+  if(!pReceipt){return;}
+  const cr=canvas.getBoundingClientRect();
+  const cx=(e.clientX-cr.left)*devicePixelRatio;
+  const cy=(e.clientY-cr.top)*devicePixelRatio;
+  const inBox=b=>b&&cx>=b.x&&cx<=b.x+b.w&&cy>=b.y&&cy<=b.y+b.h;
+  if(inBox(pBtnConfirm)){
+    const n=pReceipt;
+    const intent=INTENTS[n.k]||{action:'activate',desc:'',nav:null};
+    RECEIPT_LOG.unshift({
+      ts:new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'}),
+      lbl:n.lbl, action:intent.action, col:COL[n.c]||'#00d4ff'
+    });
+    if(RECEIPT_LOG.length>4) RECEIPT_LOG.pop();
+    RECEIPTED.add(n.k);
+    pReceipt=null; pBtnConfirm=null; pBtnReject=null;
+    if(intent.nav) setTimeout(()=>window.location.href=intent.nav, 350);
+  } else {
+    pReceipt=null; pBtnConfirm=null; pBtnReject=null;
+  }
+});
 
 function drawDwellRing(n, progress) {
   const col=COL[n.c]||'#00d4ff';
@@ -227,7 +266,8 @@ function drawDwellRing(n, progress) {
 function drawReceiptCard(n) {
   const col=COL[n.c]||'#00d4ff';
   const dpr=devicePixelRatio;
-  const cw=220*dpr, ch=172*dpr, pad=12*dpr, lh=16*dpr;
+  const intent=INTENTS[n.k]||{action:'activate',desc:'non-sovereign action',nav:null};
+  const cw=240*dpr, ch=200*dpr, pad=12*dpr, lh=16*dpr;
 
   // Position: right of node, else left
   let rx=n.sx+R*0.28;
@@ -243,49 +283,108 @@ function drawReceiptCard(n) {
   ctx.setLineDash([]);
 
   // Card bg
-  ctx.globalAlpha=0.94;
-  ctx.fillStyle='#07070a';
+  ctx.globalAlpha=0.96;
+  ctx.fillStyle='rgba(7,7,12,.97)';
   ctx.strokeStyle=col; ctx.lineWidth=1*dpr;
-  ctx.shadowBlur=20; ctx.shadowColor=col;
+  ctx.shadowBlur=22; ctx.shadowColor=col;
   ctx.beginPath(); ctx.rect(rx,ry,cw,ch); ctx.fill(); ctx.stroke();
   ctx.shadowBlur=0;
 
   // Header
   let ly=ry+pad+9*dpr;
-  ctx.globalAlpha=0.95; ctx.textAlign='left';
-  ctx.font=`bold ${9*dpr}px 'Courier New'`; ctx.fillStyle=col;
-  ctx.fillText('INTENT DETECTED', rx+pad, ly); ly+=lh*0.9;
-  ctx.font=`bold ${11*dpr}px 'Courier New'`; ctx.fillStyle=col;
-  ctx.fillText(n.lbl, rx+pad, ly); ly+=lh*0.9;
+  ctx.globalAlpha=0.55; ctx.textAlign='left';
+  ctx.font=`${7.5*dpr}px 'Courier New'`; ctx.fillStyle=col;
+  ctx.fillText('INTENT DETECTED', rx+pad, ly); ly+=lh*0.85;
+
+  ctx.globalAlpha=0.95;
+  ctx.font=`bold ${12*dpr}px 'Courier New'`; ctx.fillStyle=col;
+  ctx.shadowBlur=8; ctx.shadowColor=col;
+  ctx.fillText(n.lbl, rx+pad, ly); ctx.shadowBlur=0; ly+=lh*0.90;
+
+  // Action line
+  ctx.globalAlpha=0.85;
+  ctx.font=`${8.5*dpr}px 'Courier New'`; ctx.fillStyle='rgba(0,255,136,.9)';
+  ctx.fillText('→ '+intent.action, rx+pad, ly); ly+=lh*0.80;
+
+  // Description
+  ctx.globalAlpha=0.40;
+  ctx.font=`${7*dpr}px 'Courier New'`; ctx.fillStyle=col;
+  ctx.fillText(intent.desc, rx+pad, ly); ly+=lh*0.70;
 
   // Divider
-  ctx.globalAlpha=0.20; ctx.beginPath();
-  ctx.moveTo(rx+pad,ly); ctx.lineTo(rx+cw-pad,ly); ctx.stroke(); ly+=lh*0.7;
+  ctx.globalAlpha=0.18; ctx.strokeStyle=col;
+  ctx.beginPath(); ctx.moveTo(rx+pad,ly); ctx.lineTo(rx+cw-pad,ly); ctx.stroke(); ly+=lh*0.65;
 
   // Rows
   const rows=[
-    ['ROLE',      n.role||n.lbl],
     ['AUTH',      'NONE'],
     ['CONFIDENCE','0.87'],
     ['REVERSIBLE','YES'],
-    ['SOURCE',    'cursor · dwell'],
     ['RECEIPT',   'PENDING'],
   ];
   ctx.font=`${7.5*dpr}px 'Courier New'`;
   for(const [k,v] of rows){
-    ctx.globalAlpha=0.42; ctx.fillStyle=col; ctx.textAlign='left';
+    ctx.globalAlpha=0.40; ctx.fillStyle=col; ctx.textAlign='left';
     ctx.fillText(k,rx+pad,ly);
-    ctx.globalAlpha=0.90;
-    const vc= v==='NONE'?'rgba(255,51,85,.9)':v==='PENDING'?'rgba(255,170,0,.9)':v==='YES'?'rgba(0,255,136,.9)':col;
+    ctx.globalAlpha=0.92;
+    const vc=v==='NONE'?'rgba(255,51,85,.9)':v==='PENDING'?'rgba(255,170,0,.9)':v==='YES'?'rgba(0,255,136,.9)':col;
     ctx.fillStyle=vc; ctx.textAlign='right';
     ctx.fillText(v,rx+cw-pad,ly);
     ly+=lh;
   }
 
-  // Dismiss hint
-  ctx.globalAlpha=0.22; ctx.font=`${6.5*dpr}px 'Courier New'`;
-  ctx.fillStyle=col; ctx.textAlign='center';
-  ctx.fillText('click anywhere to dismiss',rx+cw/2,ry+ch-8*dpr);
+  // Buttons
+  ly+=6*dpr;
+  const btnH=22*dpr, btnW=(cw-pad*2-8*dpr)/2;
+  const b1x=rx+pad, b2x=rx+pad+btnW+8*dpr;
+  pBtnConfirm={x:b1x,y:ly,w:btnW,h:btnH};
+  pBtnReject ={x:b2x,y:ly,w:btnW,h:btnH};
+
+  // CONFIRM button
+  ctx.globalAlpha=0.88;
+  ctx.fillStyle='rgba(0,255,136,.14)';
+  ctx.strokeStyle='rgba(0,255,136,.70)';
+  ctx.lineWidth=0.9*dpr;
+  ctx.shadowBlur=8; ctx.shadowColor='rgba(0,255,136,.5)';
+  ctx.beginPath(); ctx.rect(b1x,ly,btnW,btnH); ctx.fill(); ctx.stroke();
+  ctx.shadowBlur=0;
+  ctx.fillStyle='rgba(0,255,136,.95)';
+  ctx.font=`bold ${7.5*dpr}px 'Courier New'`; ctx.textAlign='center';
+  ctx.fillText('CONFIRM',b1x+btnW/2,ly+btnH/2+3*dpr);
+
+  // REJECT button
+  ctx.fillStyle='rgba(255,51,85,.10)';
+  ctx.strokeStyle='rgba(255,51,85,.45)';
+  ctx.lineWidth=0.9*dpr;
+  ctx.beginPath(); ctx.rect(b2x,ly,btnW,btnH); ctx.fill(); ctx.stroke();
+  ctx.fillStyle='rgba(255,51,85,.82)';
+  ctx.fillText('REJECT',b2x+btnW/2,ly+btnH/2+3*dpr);
+
+  ctx.restore();
+}
+
+// ── RECEIPT LOG ───────────────────────────────────────────────────────────────
+function drawReceiptLog() {
+  if(RECEIPT_LOG.length===0) return;
+  const dpr=devicePixelRatio, rowH=16*dpr, pad=8*dpr;
+  const panW=280*dpr, panH=RECEIPT_LOG.length*rowH+pad*2;
+  const panX=18*dpr, panY=H-40*dpr-panH;
+  ctx.save();
+  ctx.globalAlpha=0.90;
+  ctx.fillStyle='rgba(7,7,12,.92)';
+  ctx.strokeStyle='rgba(0,255,136,.18)';
+  ctx.lineWidth=0.5*dpr;
+  ctx.beginPath(); ctx.rect(panX,panY,panW,panH); ctx.fill(); ctx.stroke();
+  ctx.font=`${6.5*dpr}px 'Courier New'`;
+  RECEIPT_LOG.forEach((r,i)=>{
+    const y=panY+pad+(i+0.72)*rowH;
+    ctx.globalAlpha=0.35; ctx.fillStyle='rgba(0,255,136,.9)'; ctx.textAlign='left';
+    ctx.fillText('[RECEIPTED]',panX+pad,y);
+    ctx.globalAlpha=0.85; ctx.fillStyle=r.col;
+    ctx.fillText(`${r.lbl} → ${r.action}`,panX+pad+70*dpr,y);
+    ctx.globalAlpha=0.28; ctx.fillStyle='rgba(0,212,255,.7)'; ctx.textAlign='right';
+    ctx.fillText(r.ts,panX+panW-pad,y);
+  });
   ctx.restore();
 }
 
@@ -340,6 +439,16 @@ function drawSolid(n, gx, gy) {
   const dotR = (n.layer===0 ? 2.2 : n.layer===1 ? 1.6 : 1.0) * devicePixelRatio;
   for(const [vx,vy] of proj) {
     ctx.beginPath(); ctx.arc(vx,vy,dotR,0,Math.PI*2); ctx.fill();
+  }
+
+  // Receipted glow ring
+  if(RECEIPTED.has(n.k)){
+    ctx.strokeStyle='rgba(0,255,136,.55)';
+    ctx.lineWidth=1.8*devicePixelRatio;
+    ctx.shadowBlur=18; ctx.shadowColor='rgba(0,255,136,.6)';
+    ctx.globalAlpha=0.50;
+    const ringR=(n.layer===0?R*0.35:R*0.175)*n.sc*1.72;
+    ctx.beginPath(); ctx.arc(n.sx,n.sy,ringR,0,Math.PI*2); ctx.stroke();
   }
   ctx.restore();
 }
@@ -493,6 +602,7 @@ function frame(t) {
   // Pointer V0 overlays (always on top)
   if(pHover&&dwellProgress>0) drawDwellRing(pHover,dwellProgress);
   if(pReceipt) drawReceiptCard(pReceipt);
+  drawReceiptLog();
 
   requestAnimationFrame(frame);
 }
