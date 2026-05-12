@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HELEN OS — Semantic Cockpit</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#000;
+  --mg:#ff00cc;
+  --mg-dim:rgba(255,0,204,.45);
+  --mg-faint:rgba(255,0,204,.12);
+  --cy:#00e5ff;
+  --cy-dim:rgba(0,229,255,.5);
+  --cy-faint:rgba(0,229,255,.18);
+  --grn:#00ff88;
+  --amb:#ffaa00;
+  --red:#ff3355;
+  --pur:#bb88ff;
+  --wh:rgba(255,255,255,.88);
+  --mono:'Courier New',monospace;
+}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--cy);font-family:var(--mono);font-size:10px;-webkit-font-smoothing:antialiased}
+
+/* ── SHELL ── */
+#shell{display:grid;grid-template-rows:28px 1fr 36px 18px;height:100vh;width:100vw;overflow:hidden}
+
+/* ── STATUS BAR ── */
+#status-bar{border-bottom:1px solid var(--mg);background:#000;display:flex;align-items:center;padding:0 10px;gap:0;flex-shrink:0}
+.sb-seg{display:flex;align-items:center;gap:5px;padding:0 10px;border-right:1px solid var(--mg-faint);height:100%}
+.sb-seg:last-child{border-right:none;margin-left:auto}
+.sb-k{font-size:7.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mg-dim)}
+.sb-v{font-size:9px;letter-spacing:.06em;color:var(--cy)}
+.sb-v.ok{color:var(--grn)}
+.sb-v.warn{color:var(--amb)}
+.sb-v.false{color:var(--red)}
+.sb-dot{width:5px;height:5px;border-radius:50%;background:var(--grn);animation:blink 2s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ── MAIN 3-COLUMN ── */
+#main{display:grid;grid-template-columns:218px 1fr 218px;overflow:hidden;min-height:0}
+
+/* ── PANEL BASE ── */
+.panel{border-right:1px solid var(--mg-faint);display:flex;flex-direction:column;overflow:hidden;min-height:0}
+.panel:last-child{border-right:none;border-left:1px solid var(--mg-faint)}
+.panel-title{background:var(--mg);color:#000;font-size:8px;letter-spacing:.2em;text-transform:uppercase;padding:2px 7px;font-weight:700;flex-shrink:0;display:flex;justify-content:space-between;align-items:center}
+.panel-title .pt-count{font-size:7.5px;letter-spacing:.06em;opacity:.7}
+.panel-body{flex:1;overflow-y:auto;padding:6px 0;min-height:0}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:3px;background:transparent}::-webkit-scrollbar-thumb{background:var(--mg-faint)}
+
+/* ── STREAM SECTIONS ── */
+.stream-section{margin-bottom:4px}
+.ss-hdr{font-size:7.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--mg-dim);padding:3px 8px 2px;border-bottom:1px solid var(--mg-faint);display:flex;justify-content:space-between}
+.ss-hdr .ss-count{color:var(--mg-dim)}
+.stream-item{display:flex;align-items:center;justify-content:space-between;padding:3px 8px;cursor:pointer;transition:background .1s;gap:6px}
+.stream-item:hover{background:var(--mg-faint)}
+.stream-item.selected{background:rgba(255,0,204,.15)}
+.si-label{font-size:9px;color:var(--cy);letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
+.si-state{font-size:7.5px;letter-spacing:.08em;text-transform:uppercase;flex-shrink:0}
+.si-state.pending{color:var(--amb)}
+.si-state.shipped{color:var(--grn)}
+.si-state.canon{color:var(--cy)}
+.si-state.dirty{color:var(--red)}
+.si-state.live{color:var(--grn)}
+.si-state.todo{color:var(--cy-dim)}
+.si-state.blocked{color:var(--red)}
+.si-state.waiting{color:var(--amb)}
+.si-state.active{color:var(--pur)}
+.si-dot{width:4px;height:4px;border-radius:50%;flex-shrink:0}
+
+/* ── CENTER PANEL ── */
+#center-panel{display:flex;flex-direction:column;overflow:hidden;min-height:0;position:relative}
+.cp-title{background:var(--mg);color:#000;font-size:8px;letter-spacing:.2em;text-transform:uppercase;padding:2px 7px;font-weight:700;flex-shrink:0;display:flex;justify-content:space-between;align-items:center}
+#graph-wrap{flex:1;position:relative;min-height:0}
+#graph{width:100%;height:100%;display:block}
+#inspector{position:absolute;bottom:8px;left:8px;right:8px;border:1px solid var(--mg-dim);background:rgba(0,0,0,.92);padding:6px 8px;display:none}
+#inspector.on{display:block}
+.ins-title{font-size:7.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--mg);margin-bottom:5px}
+.ins-row{display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px solid rgba(255,0,204,.08)}
+.ins-row:last-child{border-bottom:none}
+.ins-k{font-size:8.5px;color:var(--cy-dim)}
+.ins-v{font-size:8.5px;color:var(--cy);font-weight:700;letter-spacing:.04em}
+
+/* ── RIGHT PANEL SECTIONS ── */
+.ledger-entry{display:flex;align-items:baseline;gap:5px;padding:2px 8px;border-bottom:1px solid rgba(255,0,204,.06);font-size:8.5px}
+.le-hash{color:var(--mg-dim);flex-shrink:0;letter-spacing:.03em}
+.le-op{color:var(--cy);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.le-st{flex-shrink:0;font-size:7.5px;letter-spacing:.07em}
+.le-st.ok{color:var(--grn)}
+.le-st.pending{color:var(--amb)}
+.verdict-row{display:flex;justify-content:space-between;align-items:center;padding:2px 8px;font-size:8.5px;border-bottom:1px solid rgba(255,0,204,.06)}
+.vr-label{color:var(--cy-dim)}
+.vr-v{font-size:8px;letter-spacing:.1em;text-transform:uppercase}
+.vr-v.pass{color:var(--grn)}
+.vr-v.fail{color:var(--red)}
+.vr-v.pending{color:var(--amb)}
+.reducer-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.rg-cell{padding:3px 8px;border-bottom:1px solid rgba(255,0,204,.06);border-right:1px solid rgba(255,0,204,.06)}
+.rg-cell:nth-child(2n){border-right:none}
+.rg-k{font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:var(--mg-dim)}
+.rg-v{font-size:10px;color:var(--cy);font-weight:300;line-height:1.2}
+.replay-row{padding:2px 8px;font-size:8.5px;color:var(--cy-dim);border-bottom:1px solid rgba(255,0,204,.06)}
+.replay-row .ok{color:var(--grn)}
+.replay-row .warn{color:var(--amb)}
+
+/* ── COMMAND RAIL ── */
+#cmd-rail{border-top:1px solid var(--mg);display:flex;align-items:center;padding:0 10px;gap:8px;background:#000;flex-shrink:0}
+.cmd-prompt{font-size:9px;letter-spacing:.04em;color:var(--mg-dim);flex-shrink:0}
+.cmd-btns{display:flex;gap:4px}
+.cmd-btn{font-family:var(--mono);font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;padding:2px 9px;border:1px solid var(--mg-dim);color:var(--cy);background:transparent;cursor:pointer;transition:all .1s}
+.cmd-btn:hover{background:var(--mg);color:#000;border-color:var(--mg)}
+.cmd-btn.primary{border-color:var(--cy-dim);color:var(--cy)}
+.cmd-btn.primary:hover{background:var(--cy);color:#000;border-color:var(--cy)}
+.cmd-spacer{flex:1}
+.cmd-meta{font-size:8px;color:var(--cy-faint);letter-spacing:.05em}
+.cmd-meta span{color:var(--mg-dim)}
+#cmd-input{flex:1;background:transparent;border:none;outline:none;font-family:var(--mono);font-size:9.5px;color:var(--cy);caret-color:var(--cy);max-width:280px;letter-spacing:.03em}
+#cmd-input::placeholder{color:rgba(0,229,255,.25)}
+
+/* ── NO_RECEIPT STRIP ── */
+#nr-strip{border-top:1px solid var(--mg-faint);display:flex;align-items:center;justify-content:space-between;padding:0 10px;background:#000;flex-shrink:0}
+.nr-left{font-size:7.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--mg-dim)}
+.nr-left strong{color:var(--mg)}
+.nr-right{font-size:7.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(0,229,255,.25)}
+
+/* ── TOAST ── */
+#toast{position:fixed;bottom:60px;left:50%;transform:translateX(-50%);background:var(--mg);color:#000;border-radius:0;padding:4px 16px;font-size:9px;letter-spacing:.12em;text-transform:uppercase;display:none;z-index:50;white-space:nowrap}
+#toast.on{display:block;animation:tIn .1s ease}
+@keyframes tIn{from{opacity:0;transform:translateX(-50%) translateY(4px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+</style>
+</head>
+<body>
+<div id="shell">
+
+<!-- STATUS BAR -->
+<div id="status-bar">
+  <div class="sb-seg">
+    <span class="sb-k">OS</span>
+    <span class="sb-v" style="color:var(--mg)">HELEN</span>
+    <span class="sb-v" style="color:var(--mg-dim);font-size:7.5px">v1.0</span>
+  </div>
+  <div class="sb-seg">
+    <span class="sb-k">Epoch</span>
+    <span class="sb-v" id="sb-epoch">—</span>
+  </div>
+  <div class="sb-seg">
+    <span class="sb-k">Continuity</span>
+    <span class="sb-v ok">1.000000</span>
+  </div>
+  <div class="sb-seg">
+    <span class="sb-k">Merkle root</span>
+    <span class="sb-v" id="sb-head" style="font-size:8.5px">—</span>
+  </div>
+  <div class="sb-seg">
+    <span class="sb-k">Ledger</span>
+    <span class="sb-v" id="sb-ledger">— entries</span>
+  </div>
+  <div class="sb-seg">
+    <span class="sb-k">Mode</span>
+    <span class="sb-v">WITNESS-FIRST</span>
+  </div>
+  <div class="sb-seg">
+    <span class="sb-dot"></span>
+    <span class="sb-k">Auth</span>
+    <span class="sb-v false">false</span>
+  </div>
+  <div class="sb-seg" style="gap:10px">
+    <span class="sb-k" style="cursor:pointer;color:var(--cy-dim)" onclick="window.location.href='helen2027.html'">← HOME</span>
+    <span id="sb-clock" class="sb-v" style="color:var(--cy-faint)">—</span>
+  </div>
+</div>
+
+<!-- MAIN 3 COLUMNS -->
+<div id="main">
+
+  <!-- LEFT: SEMANTIC OBJECT STREAM -->
+  <div class="panel" id="left-panel">
+    <div class="panel-title">Semantic Object Stream <span class="pt-count" id="stream-count">—</span></div>
+    <div class="panel-body" id="stream-body"></div>
+  </div>
+
+  <!-- CENTER: GRAVITY GRAPH -->
+  <div id="center-panel">
+    <div class="cp-title">
+      <span>Semantic Gravity Field</span>
+      <span style="font-size:7.5px;font-weight:400;opacity:.65" id="graph-status">— nodes — edges</span>
+    </div>
+    <div id="graph-wrap">
+      <canvas id="graph"></canvas>
+      <div id="inspector">
+        <div class="ins-title" id="ins-title">Object Inspector</div>
+        <div id="ins-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: SOVEREIGN LEDGER -->
+  <div class="panel" id="right-panel">
+    <div class="panel-title">Sovereign Ledger <span class="pt-count" id="ledger-count">—</span></div>
+    <div class="panel-body" id="ledger-body"></div>
+  </div>
+
+</div>
+
+<!-- COMMAND RAIL -->
+<div id="cmd-rail">
+  <span class="cmd-prompt">C:\HELEN&gt;</span>
+  <input id="cmd-input" type="text" placeholder="type command or query..." onkeydown="cmdKey(event)">
+  <div class="cmd-btns">
+    <button class="cmd-btn primary" onclick="cmd('PULL')">PULL</button>
+    <button class="cmd-btn" onclick="cmd('COMPOSE')">COMPOSE</button>
+    <button class="cmd-btn" onclick="cmd('VERIFY')">VERIFY</button>
+    <button class="cmd-btn" onclick="cmd('RECEIPT')">RECEIPT</button>
+    <button class="cmd-btn" onclick="cmd('FOCUS')">FOCUS</button>
+  </div>
+  <div class="cmd-spacer"></div>
+  <div class="cmd-meta">branch: <span id="cmd-branch">—</span> &nbsp;|&nbsp; head: <span id="cmd-head">—</span> &nbsp;|&nbsp; <span id="cmd-dirty">—</span></div>
+</div>
+
+<!-- NO_RECEIPT STRIP -->
+<div id="nr-strip">
+  <div class="nr-left"><strong>NO_RECEIPT</strong> = NO_SHIP &nbsp;[→]&nbsp; PROPOSER ≠ VALIDATOR &nbsp;[→]&nbsp; NO_HASH = NO_VOICE</div>
+  <div class="nr-right">HELEN OS — created by JM Tassy &nbsp;|&nbsp; authority: false &nbsp;|&nbsp; demo</div>
+</div>
+
+</div><!-- /shell -->
+<div id="toast"></div>
+
+<script>
+'use strict';
+
+// ── GRAPH DATA ────────────────────────────────────────────────────────────────
+const TYPE_COLOR = {
+  claim:  '#ff00cc',
+  memory: '#00e5ff',
+  source: '#00ff88',
+  task:   '#ffaa00',
+  skill:  '#bb88ff',
+};
+const STATE_COLOR = {
+  shipped:'#00ff88', canon:'#00e5ff', live:'#00ff88', active:'#bb88ff',
+  pending:'#ffaa00', todo:'rgba(0,229,255,.5)', dirty:'#ff3355',
+  blocked:'#ff3355', waiting:'#ffaa00',
+};
+
+const GNODES = [
+  {id:'c1',type:'claim', label:'E05_GEO',        state:'pending', x:0,   y:-60},
+  {id:'c2',type:'claim', label:'STARSHIP_V3',     state:'shipped', x:80,  y:-30},
+  {id:'c3',type:'claim', label:'HOME_POLISH',     state:'pending', x:-60, y:40},
+  {id:'m1',type:'memory',label:'gravure_9_10',    state:'canon',   x:90,  y:50},
+  {id:'m2',type:'memory',label:'warm_sand_9.2',   state:'canon',   x:-40, y:-80},
+  {id:'m3',type:'memory',label:'metatron_web',    state:'active',  x:60,  y:80},
+  {id:'s1',type:'source',label:'helen2027.html',  state:'dirty',   x:-90, y:10},
+  {id:'s2',type:'source',label:'temple.html',     state:'live',    x:20,  y:90},
+  {id:'s3',type:'source',label:'focus.html',      state:'live',    x:-20, y:70},
+  {id:'t1',type:'task',  label:'review_home',     state:'todo',    x:30,  y:-90},
+  {id:'t2',type:'task',  label:'countersign_E11', state:'blocked', x:-100,y:-20},
+  {id:'t3',type:'task',  label:'route_28_claims', state:'waiting', x:100, y:0},
+  {id:'sk1',type:'skill',label:'sacred_geometry', state:'active',  x:-30, y:-30},
+  {id:'sk2',type:'skill',label:'video_director',  state:'active',  x:50,  y:30},
+].map(n=>({...n, vx:0, vy:0}));
+
+const GEDGES = [
+  {a:'c1',b:'s1',rel:'source'},{a:'c1',b:'m1',rel:'receipt'},{a:'c1',b:'sk1',rel:'linked'},
+  {a:'c2',b:'s2',rel:'source'},{a:'c2',b:'m1',rel:'receipt'},
+  {a:'c3',b:'s1',rel:'source'},{a:'c3',b:'t1',rel:'linked'},{a:'c3',b:'m2',rel:'receipt'},
+  {a:'m2',b:'s1',rel:'receipt'},{a:'m3',b:'s2',rel:'linked'},
+  {a:'t1',b:'s1',rel:'linked'},{a:'t2',b:'c1',rel:'blocks'},
+  {a:'t3',b:'c1',rel:'linked'},{a:'t3',b:'c2',rel:'linked'},
+  {a:'sk1',b:'m3',rel:'linked'},{a:'sk2',b:'m1',rel:'linked'},
+  {a:'s3',b:'c3',rel:'source'},
+];
+
+const nodeMap = {};
+GNODES.forEach(n => nodeMap[n.id] = n);
+
+// ── FORCE SIMULATION ──────────────────────────────────────────────────────────
+function simStep() {
+  const REP=4000, SPR=0.025, REST=85, CG=0.006, DAMP=0.87;
+  for(let i=0;i<GNODES.length;i++) {
+    for(let j=i+1;j<GNODES.length;j++) {
+      const a=GNODES[i], b=GNODES[j];
+      const dx=b.x-a.x, dy=b.y-a.y, d2=dx*dx+dy*dy+1, d=Math.sqrt(d2);
+      const f=REP/d2;
+      a.vx-=f*dx/d; a.vy-=f*dy/d;
+      b.vx+=f*dx/d; b.vy+=f*dy/d;
+    }
+  }
+  for(const e of GEDGES) {
+    const a=nodeMap[e.a], b=nodeMap[e.b];
+    if(!a||!b) continue;
+    const dx=b.x-a.x, dy=b.y-a.y, d=Math.sqrt(dx*dx+dy*dy)||1;
+    const f=(d-REST)*SPR;
+    a.vx+=f*dx/d; a.vy+=f*dy/d;
+    b.vx-=f*dx/d; b.vy-=f*dy/d;
+  }
+  for(const n of GNODES) {
+    n.vx-=n.x*CG; n.vy-=n.y*CG;
+    n.vx*=DAMP; n.vy*=DAMP;
+    n.x+=n.vx; n.y+=n.vy;
+  }
+}
+
+// ── CANVAS RENDERER ───────────────────────────────────────────────────────────
+const canvas = document.getElementById('graph');
+const ctx = canvas.getContext('2d');
+let CW, CH, dpr=1;
+let selectedNode = null;
+
+function resizeGraph() {
+  const wrap = document.getElementById('graph-wrap');
+  const r = wrap.getBoundingClientRect();
+  dpr = devicePixelRatio || 1;
+  CW = canvas.width  = r.width  * dpr;
+  CH = canvas.height = r.height * dpr;
+  canvas.style.width  = r.width  + 'px';
+  canvas.style.height = r.height + 'px';
+}
+
+const EDGE_COLOR = {
+  receipt: 'rgba(0,229,255,.55)',
+  source:  'rgba(0,255,136,.45)',
+  linked:  'rgba(255,255,255,.18)',
+  blocks:  'rgba(255,51,85,.65)',
+};
+
+function drawGraph() {
+  ctx.clearRect(0, 0, CW, CH);
+  const ox = CW/2, oy = CH/2;
+
+  // Edges
+  for(const e of GEDGES) {
+    const a=nodeMap[e.a], b=nodeMap[e.b];
+    if(!a||!b) continue;
+    const ax=ox+a.x*dpr, ay=oy+a.y*dpr, bx=ox+b.x*dpr, by=oy+b.y*dpr;
+    ctx.save();
+    ctx.strokeStyle = EDGE_COLOR[e.rel] || 'rgba(255,255,255,.2)';
+    ctx.lineWidth = (e.rel==='blocks'?1.2:.7) * dpr;
+    if(e.rel==='blocks'){ctx.setLineDash([3*dpr,3*dpr]);}
+    ctx.shadowBlur = e.rel==='receipt'?4:0;
+    ctx.shadowColor = EDGE_COLOR[e.rel];
+    ctx.beginPath();
+    ctx.moveTo(ax, ay);
+    ctx.lineTo(bx, by);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+  }
+
+  // Nodes
+  for(const n of GNODES) {
+    const x=ox+n.x*dpr, y=oy+n.y*dpr;
+    const col = TYPE_COLOR[n.type] || '#fff';
+    const isSel = selectedNode && selectedNode.id === n.id;
+    const r = (isSel ? 7 : 5) * dpr;
+    ctx.save();
+    ctx.shadowBlur = isSel ? 16 : 6;
+    ctx.shadowColor = col;
+    ctx.fillStyle = isSel ? col : col.replace(/[^,]+\)$/, '.5)').replace('rgb(','rgba(') ;
+    // Solid fill for selected, dim for others
+    ctx.globalAlpha = isSel ? 1 : 0.75;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI*2);
+    ctx.fill();
+    if(isSel) {
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 1.2 * dpr;
+      ctx.globalAlpha = .6;
+      ctx.beginPath();
+      ctx.arc(x, y, r+3*dpr, 0, Math.PI*2);
+      ctx.stroke();
+    }
+    ctx.restore();
+
+    // Label
+    ctx.save();
+    ctx.font = `${7.5*dpr}px 'Courier New'`;
+    ctx.fillStyle = isSel ? '#fff' : 'rgba(0,229,255,.55)';
+    ctx.textAlign = 'center';
+    ctx.shadowBlur = isSel ? 8 : 0;
+    ctx.shadowColor = col;
+    ctx.fillText(n.label, x, y - r - 3*dpr);
+    ctx.restore();
+  }
+
+  // Pull-field rings around selected
+  if(selectedNode) {
+    const n=selectedNode;
+    const x=CW/2+n.x*dpr, y=CH/2+n.y*dpr;
+    const col=TYPE_COLOR[n.type]||'#fff';
+    ctx.save();
+    [1.8,2.8,4.0].forEach((f,i)=>{
+      ctx.strokeStyle = col.replace(')',`,${0.08-i*0.02})`).replace('rgb(','rgba(');
+      ctx.lineWidth=.5*dpr;
+      ctx.beginPath();ctx.arc(x,y,f*20*dpr,0,Math.PI*2);ctx.stroke();
+    });
+    ctx.restore();
+  }
+}
+
+// ── CLICK DETECTION ───────────────────────────────────────────────────────────
+canvas.addEventListener('click', e => {
+  const r = canvas.getBoundingClientRect();
+  const mx = (e.clientX - r.left) * dpr;
+  const my = (e.clientY - r.top)  * dpr;
+  const ox = CW/2, oy = CH/2;
+  let hit = null, bestD = Infinity;
+  for(const n of GNODES) {
+    const dx=ox+n.x*dpr-mx, dy=oy+n.y*dpr-my;
+    const d = Math.sqrt(dx*dx+dy*dy);
+    if(d < 14*dpr && d < bestD) { bestD=d; hit=n; }
+  }
+  if(hit) { selectedNode=hit; showInspector(hit); selectStreamItem(hit.id); }
+  else     { selectedNode=null; hideInspector(); clearStreamSelection(); }
+});
+
+function showInspector(n) {
+  const el = document.getElementById('inspector');
+  const title = document.getElementById('ins-title');
+  const body = document.getElementById('ins-body');
+  title.textContent = `${n.type.toUpperCase()} · ${n.label}`;
+  title.style.color = TYPE_COLOR[n.type] || 'var(--mg)';
+  const links = GEDGES.filter(e=>e.a===n.id||e.b===n.id);
+  body.innerHTML = [
+    {k:'ID', v:n.id},
+    {k:'Type', v:n.type},
+    {k:'State', v:n.state},
+    {k:'Connections', v:links.length + ' edges'},
+    {k:'Linked to', v:links.map(e=>e.a===n.id?e.b:e.a).join(' · ')||'—'},
+  ].map(r=>`<div class="ins-row"><span class="ins-k">${r.k}</span><span class="ins-v">${r.v}</span></div>`).join('');
+  el.classList.add('on');
+  document.getElementById('graph-status').textContent =
+    `${GNODES.length} nodes · ${GEDGES.length} edges · selected: ${n.label}`;
+}
+function hideInspector() {
+  document.getElementById('inspector').classList.remove('on');
+  document.getElementById('graph-status').textContent =
+    `${GNODES.length} nodes · ${GEDGES.length} edges`;
+}
+
+// ── LEFT PANEL: STREAM ────────────────────────────────────────────────────────
+const SECTIONS = [
+  {type:'claim',  label:'Claims'},
+  {type:'memory', label:'Memories'},
+  {type:'source', label:'Sources'},
+  {type:'task',   label:'Tasks'},
+  {type:'skill',  label:'Skills'},
+];
+
+function buildStream() {
+  const body = document.getElementById('stream-body');
+  body.innerHTML = '';
+  let total = 0;
+  for(const sec of SECTIONS) {
+    const items = GNODES.filter(n => n.type === sec.type);
+    if(!items.length) continue;
+    total += items.length;
+    const hdr = document.createElement('div');
+    hdr.className = 'stream-section';
+    hdr.innerHTML = `<div class="ss-hdr"><span>${sec.label}</span><span class="ss-count">${items.length}</span></div>`;
+    for(const n of items) {
+      const row = document.createElement('div');
+      row.className = 'stream-item';
+      row.id = 'si-' + n.id;
+      row.innerHTML = `<span class="si-dot" style="background:${TYPE_COLOR[n.type]}"></span><span class="si-label">${n.label}</span><span class="si-state ${n.state}">${n.state}</span>`;
+      row.onclick = () => { selectedNode=n; showInspector(n); selectStreamItem(n.id); };
+      hdr.appendChild(row);
+    }
+    body.appendChild(hdr);
+  }
+  document.getElementById('stream-count').textContent = total;
+}
+
+function selectStreamItem(id) {
+  document.querySelectorAll('.stream-item').forEach(el => el.classList.remove('selected'));
+  const el = document.getElementById('si-' + id);
+  if(el) { el.classList.add('selected'); el.scrollIntoView({block:'nearest'}); }
+}
+function clearStreamSelection() {
+  document.querySelectorAll('.stream-item').forEach(el => el.classList.remove('selected'));
+}
+
+// ── RIGHT PANEL: LEDGER ───────────────────────────────────────────────────────
+function buildLedger(live) {
+  const body = document.getElementById('ledger-body');
+  const lc = live?.ledger_count || '264';
+  document.getElementById('ledger-count').textContent = lc + ' entries';
+  const head = live?.commit || '—';
+  const branch = live?.branch || '—';
+  const dirty = live?.dirty;
+
+  body.innerHTML = '';
+
+  // Section builder
+  function section(title, count, html) {
+    return `<div class="panel-title" style="background:transparent;color:var(--mg-dim);font-size:7.5px;letter-spacing:.16em;border-bottom:1px solid var(--mg-faint);padding:2px 8px;display:flex;justify-content:space-between"><span>${title}</span><span style="opacity:.6">${count}</span></div>${html}`;
+  }
+
+  const receipts = `
+    <div class="ledger-entry"><span class="le-hash">${head.slice(0,7)}</span><span class="le-op">surface_commit</span><span class="le-st ok">OK</span></div>
+    <div class="ledger-entry"><span class="le-hash">5a7bb89</span><span class="le-op">E05_geo_claim</span><span class="le-st ok">OK</span></div>
+    <div class="ledger-entry"><span class="le-hash">55ee471</span><span class="le-op">helen2027_v1</span><span class="le-st ok">OK</span></div>
+    <div class="ledger-entry"><span class="le-hash">fade5b4</span><span class="le-op">HOME_9.2_ship</span><span class="le-st ok">OK</span></div>
+    <div class="ledger-entry"><span class="le-hash">5ca0d19</span><span class="le-op">starship_v3</span><span class="le-st ok">OK</span></div>
+  `;
+
+  const verdicts = `
+    <div class="verdict-row"><span class="vr-label">autoresearch_e12</span><span class="vr-v pass">PASS</span></div>
+    <div class="verdict-row"><span class="vr-label">wul_p1_validator</span><span class="vr-v pass">PASS</span></div>
+    <div class="verdict-row"><span class="vr-label">E11_e12_reconcile</span><span class="vr-v pending">PENDING</span></div>
+    <div class="verdict-row"><span class="vr-label">e13_autoresearch</span><span class="vr-v pending">BLOCKED</span></div>
+  `;
+
+  const reducer = `
+    <div class="reducer-grid">
+      <div class="rg-cell"><div class="rg-k">Epoch</div><div class="rg-v">12</div></div>
+      <div class="rg-cell"><div class="rg-k">Claims</div><div class="rg-v">28</div></div>
+      <div class="rg-cell"><div class="rg-k">Skills</div><div class="rg-v">51</div></div>
+      <div class="rg-cell"><div class="rg-k">Ledger</div><div class="rg-v">${lc}</div></div>
+      <div class="rg-cell"><div class="rg-k">Branch</div><div class="rg-v" style="font-size:8px">${branch}</div></div>
+      <div class="rg-cell"><div class="rg-k">Tree</div><div class="rg-v" style="color:${dirty?'var(--red)':'var(--grn)'};font-size:8px">${dirty?'DIRTY':'CLEAN'}</div></div>
+    </div>
+  `;
+
+  const replay = `
+    <div class="replay-row">Continuity: <span class="ok">1.000000</span></div>
+    <div class="replay-row">Divergence: <span class="ok">NONE</span></div>
+    <div class="replay-row">Chain integrity: <span class="ok">PASS</span></div>
+    <div class="replay-row">Ghost closures: <span class="warn">UNVERIFIED</span></div>
+  `;
+
+  body.innerHTML =
+    section('Latest Receipts', '5 of ' + lc, receipts) +
+    section('HAL Verdicts', '4', verdicts) +
+    section('Reducer State', '', reducer) +
+    section('Replay Integrity', '', replay);
+}
+
+// ── LIVE DATA ─────────────────────────────────────────────────────────────────
+let liveData = {};
+async function fetchLive() {
+  try {
+    const r = await fetch('http://localhost:7001/api/status', {signal:AbortSignal.timeout(1500)});
+    if(r.ok) {
+      liveData = await r.json();
+      applyLive();
+    }
+  } catch(e){}
+}
+
+function applyLive() {
+  const d = liveData;
+  if(d.ledger_count) document.getElementById('sb-ledger').textContent = d.ledger_count + ' entries';
+  if(d.commit) {
+    document.getElementById('sb-head').textContent = d.commit;
+    document.getElementById('cmd-head').textContent = d.commit;
+  }
+  if(d.branch) document.getElementById('cmd-branch').textContent = d.branch;
+  if(d.dirty != null) {
+    document.getElementById('cmd-dirty').textContent = d.dirty ? 'DIRTY' : 'CLEAN';
+    document.getElementById('cmd-dirty').style.color = d.dirty ? 'var(--red)' : 'var(--grn)';
+  }
+  buildLedger(d);
+}
+
+// ── COMMAND ───────────────────────────────────────────────────────────────────
+const CMD_RESP = {
+  PULL:    'PULL → fetching ledger state from origin…',
+  COMPOSE: 'COMPOSE → open claim composer. No claim active.',
+  VERIFY:  'VERIFY → running K8 + K-tau + K-rho gates…',
+  RECEIPT: 'RECEIPT → last receipt: ' + (liveData.commit||'pending'),
+  FOCUS:   () => { window.location.href='focus.html'; return null; },
+  HOME:    () => { window.location.href='helen2027.html'; return null; },
+  TEMPLE:  () => { window.location.href='temple.html'; return null; },
+  STATUS:  () => 'branch: '+(liveData.branch||'—')+' | head: '+(liveData.commit||'—')+' | ledger: '+(liveData.ledger_count||'—'),
+};
+
+function cmd(key) {
+  const k = key.toUpperCase().trim();
+  const res = CMD_RESP[k];
+  if(typeof res === 'function') { const r=res(); if(r) toast(r); }
+  else if(res) toast(res);
+  else toast('HELEN → unknown command: ' + k + ' · try PULL COMPOSE VERIFY RECEIPT');
+}
+
+function cmdKey(e) {
+  if(e.key !== 'Enter') return;
+  const val = document.getElementById('cmd-input').value.trim();
+  document.getElementById('cmd-input').value = '';
+  if(!val) return;
+  cmd(val.split(' ')[0]);
+}
+
+// ── EPOCH COUNTER ─────────────────────────────────────────────────────────────
+let epochStart = Date.now();
+function updateEpoch() {
+  const e = Math.floor((Date.now() - epochStart) / 1000);
+  document.getElementById('sb-epoch').textContent = String(e).padStart(6,'0');
+}
+
+// ── CLOCK ─────────────────────────────────────────────────────────────────────
+function updateClock() {
+  document.getElementById('sb-clock').textContent =
+    new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('on');
+  clearTimeout(t._t); t._t = setTimeout(()=>t.classList.remove('on'), 3200);
+}
+
+// ── ANIMATION LOOP ────────────────────────────────────────────────────────────
+function frame() {
+  simStep(); drawGraph();
+  requestAnimationFrame(frame);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+buildStream();
+buildLedger({});
+fetchLive();
+setInterval(fetchLive, 12000);
+setInterval(updateClock, 1000);
+setInterval(updateEpoch, 1000);
+updateClock(); updateEpoch();
+document.getElementById('graph-status').textContent = `${GNODES.length} nodes · ${GEDGES.length} edges`;
+
+const ro = new ResizeObserver(() => resizeGraph());
+ro.observe(document.getElementById('graph-wrap'));
+resizeGraph();
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
