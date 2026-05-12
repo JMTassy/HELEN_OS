@@ -50,6 +50,66 @@ def status():
         "authority":    False,
     })
 
+@app.route("/api/agents")
+def agents():
+    """Per-agent situational lines — one real sentence each. authority=false."""
+    branch = run(["git", "rev-parse", "--abbrev-ref", "HEAD"]) or "unknown"
+    commit = run(["git", "rev-parse", "--short", "HEAD"]) or "?"
+    dirty_raw = run(["git", "status", "--porcelain"])
+    dirty_word = "dirty" if dirty_raw else "clean"
+
+    ledger_count = 0
+    mayor_count = 0
+    if LEDGER.exists():
+        try:
+            lines = LEDGER.read_text(encoding="utf-8", errors="ignore").splitlines()
+            ledger_count = len(lines)
+            mayor_count = sum(1 for l in lines if '"mayor"' in l.lower() or '"MAYOR"' in l)
+        except Exception:
+            pass
+
+    skill_count = 0
+    if SKILLS.exists():
+        try:
+            skill_count = sum(1 for p in SKILLS.iterdir() if p.is_dir())
+        except Exception:
+            pass
+
+    aura_count = 0
+    aura_path = SOT / "temple/subsandbox/aura"
+    if aura_path.exists():
+        try:
+            aura_count = sum(1 for _ in aura_path.iterdir())
+        except Exception:
+            pass
+
+    goblin_path = SOT / "temple/subsandbox/goblin"
+    goblin_count = 0
+    if goblin_path.exists():
+        try:
+            goblin_count = sum(1 for _ in goblin_path.iterdir())
+        except Exception:
+            pass
+
+    autoresearch_status = "unknown"
+    ar_path = SOT / "docs/proposals"
+    if ar_path.exists():
+        ar_files = sorted(ar_path.glob("AUTORESEARCH*.md"), key=lambda p: p.stat().st_mtime)
+        if ar_files:
+            autoresearch_status = ar_files[-1].stem.replace("AUTORESEARCH_", "").replace("_", " ")
+
+    return jsonify({
+        "helen":    f"branch: {branch} · {commit} · {dirty_word}",
+        "her":      f"autoresearch: {autoresearch_status} · E13 blocked",
+        "hal":      f"idle · {skill_count} skills indexed · gate: pending",
+        "mayor":    f"{mayor_count} ledger entries signed · {ledger_count} total",
+        "chronos":  f"ledger: {ledger_count} entries · branch: {branch}",
+        "aura":     f"{aura_count} temple artifacts · non-sovereign",
+        "goblin":   f"{goblin_count} heap artifacts · recall active",
+        "director": "last pipeline: helen-director · 3-shot Kling",
+        "authority": False,
+    })
+
 @app.route("/api/health")
 def health():
     return jsonify({"ok": True, "authority": False})
