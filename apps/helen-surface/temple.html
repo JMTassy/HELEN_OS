@@ -3,52 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>HELEN OS — Temple · Sacred Geometry</title>
+<title>HELEN OS — Temple · Agent Orbits</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   --bg:#07070a;
   --cyan:#00d4ff;
-  --cyan-dim:rgba(0,212,255,.55);
-  --cyan-faint:rgba(0,212,255,.15);
   --gold:#c9940c;
-  --gold-dim:rgba(201,148,12,.55);
   --text:rgba(0,212,255,.85);
   --text-dim:rgba(0,212,255,.45);
   --text-mute:rgba(0,212,255,.22);
   --mono:'Courier New',monospace;
 }
 html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:var(--mono)}
-
-/* ── TOP BAR ── */
 #top{position:fixed;top:0;left:0;right:0;z-index:20;height:36px;border-bottom:1px solid rgba(0,212,255,.12);background:rgba(7,7,10,.92);display:flex;align-items:center;padding:0 20px;gap:0}
-.t-brand{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-dim);margin-right:20px;cursor:pointer}
+.t-brand{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(201,148,12,.6);margin-right:20px;cursor:pointer}
 .t-sep{width:1px;height:11px;background:rgba(0,212,255,.14);margin:0 14px}
-.t-title{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-dim)}
+.t-title{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim)}
 .t-push{margin-left:auto;display:flex;align-items:center;gap:12px}
-.t-badge{font-size:7px;letter-spacing:.12em;text-transform:uppercase;padding:2px 8px;border:1px solid rgba(0,212,255,.18);color:var(--text-mute);border-radius:2px}
-.t-back{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);cursor:pointer;padding:3px 10px;border:1px solid rgba(0,212,255,.16);border-radius:2px;transition:all .14s}
+.t-badge{font-size:7px;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border:1px solid rgba(0,212,255,.18);color:var(--text-mute);border-radius:2px}
+.t-back{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);cursor:pointer;padding:3px 10px;border:1px solid rgba(0,212,255,.16);border-radius:2px;transition:all .14s}
 .t-back:hover{color:var(--cyan);border-color:rgba(0,212,255,.4)}
 #t-clock{font-size:10px;color:var(--text-mute);letter-spacing:.04em}
-
-/* ── CANVAS ── */
-#c{position:fixed;inset:36px 0 0;display:block}
-
-/* ── LABELS (HTML overlay) ── */
-#labels{position:fixed;inset:36px 0 0;pointer-events:none;z-index:5}
-.lbl{position:absolute;transform:translate(-50%,-50%);text-align:center;pointer-events:all;cursor:pointer;transition:opacity .2s}
-.lbl-name{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan-dim);display:block;margin-bottom:2px}
-.lbl-role{font-size:7.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mute);display:block}
-.lbl:hover .lbl-name{color:var(--cyan)}
-.lbl:hover .lbl-role{color:var(--cyan-dim)}
-.lbl.center-lbl .lbl-name{color:var(--gold-dim);font-size:10px;letter-spacing:.2em}
-.lbl.center-lbl:hover .lbl-name{color:var(--gold)}
-
-/* ── INFO STRIP ── */
-#info-strip{position:fixed;bottom:0;left:0;right:0;height:36px;border-top:1px solid rgba(0,212,255,.1);background:rgba(7,7,10,.88);display:flex;align-items:center;padding:0 24px;gap:20px;z-index:10}
-.info-item{font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mute)}
-.info-item span{color:var(--cyan-dim)}
-.info-sep{width:1px;height:10px;background:rgba(0,212,255,.1)}
+#c{position:fixed;inset:36px 0 28px;display:block;width:100%;height:calc(100% - 64px)}
+#info-strip{position:fixed;bottom:0;left:0;right:0;height:28px;border-top:1px solid rgba(0,212,255,.08);background:rgba(7,7,10,.9);display:flex;align-items:center;padding:0 20px;gap:14px;z-index:10;overflow:hidden}
+.info-item{font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-mute);white-space:nowrap}
+.info-item span{color:rgba(0,212,255,.45)}
+.info-sep{width:1px;height:8px;background:rgba(0,212,255,.1);flex-shrink:0}
 </style>
 </head>
 <body>
@@ -56,7 +37,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 <div id="top">
   <div class="t-brand" onclick="window.location.href='helen2027.html'">HELEN OS</div>
   <div class="t-sep"></div>
-  <div class="t-title">Temple · Sacred Geometry Explorer</div>
+  <div class="t-title">Temple · Agent Orbits</div>
   <div class="t-push">
     <span class="t-badge">authority: false</span>
     <span class="t-badge">demo</span>
@@ -68,18 +49,21 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 </div>
 
 <canvas id="c"></canvas>
-<div id="labels"></div>
 
 <div id="info-strip">
   <div class="info-item">HER <span>Tetrahedron · Fire</span></div>
   <div class="info-sep"></div>
   <div class="info-item">HAL <span>Cube · Earth</span></div>
   <div class="info-sep"></div>
+  <div class="info-item">MAYOR <span>Dodecahedron · Aether</span></div>
+  <div class="info-sep"></div>
   <div class="info-item">CHRONOS <span>Octahedron · Air</span></div>
   <div class="info-sep"></div>
-  <div class="info-item">MEMORY <span>Icosahedron · Water</span></div>
+  <div class="info-item">AURA <span>Icosahedron · Water</span></div>
   <div class="info-sep"></div>
-  <div class="info-item">MAYOR <span>Dodecahedron · Aether</span></div>
+  <div class="info-item">GOBLIN <span>Tetrahedron · Recall</span></div>
+  <div class="info-sep"></div>
+  <div class="info-item">DIRECTOR <span>Cube · Script</span></div>
   <div class="info-sep"></div>
   <div class="info-item">NO_RECEIPT <span>= NO_SHIP</span></div>
 </div>
@@ -89,99 +73,94 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 
 // ── MATH ──────────────────────────────────────────────────────────────────────
 const φ = (1 + Math.sqrt(5)) / 2;
+function norm3(v){const l=Math.sqrt(v[0]**2+v[1]**2+v[2]**2);return[v[0]/l,v[1]/l,v[2]/l]}
+function rotX(v,a){const c=Math.cos(a),s=Math.sin(a);return[v[0],v[1]*c-v[2]*s,v[1]*s+v[2]*c]}
+function rotY(v,a){const c=Math.cos(a),s=Math.sin(a);return[v[0]*c+v[2]*s,v[1],-v[0]*s+v[2]*c]}
+function rotZ(v,a){const c=Math.cos(a),s=Math.sin(a);return[v[0]*c-v[1]*s,v[0]*s+v[1]*c,v[2]]}
+function project(v,cx,cy,sc,fov=5){const z=v[2]+fov;return[cx+v[0]*sc*fov/z,cy+v[1]*sc*fov/z,z]}
 
-function norm3(v) {
-  const l = Math.sqrt(v[0]**2 + v[1]**2 + v[2]**2);
-  return [v[0]/l, v[1]/l, v[2]/l];
-}
-function rotX(v, a) {
-  const c=Math.cos(a),s=Math.sin(a);
-  return [v[0], v[1]*c-v[2]*s, v[1]*s+v[2]*c];
-}
-function rotY(v, a) {
-  const c=Math.cos(a),s=Math.sin(a);
-  return [v[0]*c+v[2]*s, v[1], -v[0]*s+v[2]*c];
-}
-function rotZ(v, a) {
-  const c=Math.cos(a),s=Math.sin(a);
-  return [v[0]*c-v[1]*s, v[0]*s+v[1]*c, v[2]];
-}
-function project(v, cx, cy, scale, fov=5) {
-  const z = v[2] + fov;
-  return [cx + v[0]*scale*fov/z, cy + v[1]*scale*fov/z, z];
-}
-
-// Compute edges by nearest-neighbor distance
-function edgesFromVerts(verts) {
-  const n = verts.length;
-  let minD2 = Infinity;
-  for(let i=0;i<n;i++) for(let j=i+1;j<n;j++) {
-    const d2 = (verts[i][0]-verts[j][0])**2+(verts[i][1]-verts[j][1])**2+(verts[i][2]-verts[j][2])**2;
-    if(d2 < minD2) minD2 = d2;
+function edgesFromVerts(verts){
+  let minD2=Infinity;
+  for(let i=0;i<verts.length;i++)for(let j=i+1;j<verts.length;j++){
+    const d2=(verts[i][0]-verts[j][0])**2+(verts[i][1]-verts[j][1])**2+(verts[i][2]-verts[j][2])**2;
+    if(d2<minD2)minD2=d2;
   }
-  const thresh = minD2 * 1.05;
-  const edges = [];
-  for(let i=0;i<n;i++) for(let j=i+1;j<n;j++) {
-    const d2 = (verts[i][0]-verts[j][0])**2+(verts[i][1]-verts[j][1])**2+(verts[i][2]-verts[j][2])**2;
-    if(d2 <= thresh) edges.push([i,j]);
+  const t=minD2*1.05,e=[];
+  for(let i=0;i<verts.length;i++)for(let j=i+1;j<verts.length;j++){
+    const d2=(verts[i][0]-verts[j][0])**2+(verts[i][1]-verts[j][1])**2+(verts[i][2]-verts[j][2])**2;
+    if(d2<=t)e.push([i,j]);
   }
-  return edges;
+  return e;
 }
+function makeSolid(rv,re){const v=rv.map(norm3);return{verts:v,edges:re||edgesFromVerts(v)}}
 
-// ── PLATONIC SOLID DEFINITIONS ────────────────────────────────────────────────
-function makeSolid(rawVerts, rawEdges) {
-  const verts = rawVerts.map(norm3);
-  const edges = rawEdges || edgesFromVerts(verts);
-  return { verts, edges };
-}
-
+// ── PLATONIC SOLIDS ───────────────────────────────────────────────────────────
 const SOLIDS = {
-  tetrahedron: makeSolid(
-    [[1,1,1],[1,-1,-1],[-1,1,-1],[-1,-1,1]],
-    [[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]]
-  ),
-  cube: makeSolid(
-    [[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]],
-    [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]]
-  ),
-  octahedron: makeSolid(
-    [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]],
-    [[0,2],[0,3],[0,4],[0,5],[1,2],[1,3],[1,4],[1,5],[2,4],[2,5],[3,4],[3,5]]
-  ),
-  icosahedron: makeSolid(
-    [[0,1,φ],[0,1,-φ],[0,-1,φ],[0,-1,-φ],
-     [1,φ,0],[1,-φ,0],[-1,φ,0],[-1,-φ,0],
-     [φ,0,1],[φ,0,-1],[-φ,0,1],[-φ,0,-1]]
-  ),
-  dodecahedron: makeSolid(
-    [[1,1,1],[1,1,-1],[1,-1,1],[1,-1,-1],[-1,1,1],[-1,1,-1],[-1,-1,1],[-1,-1,-1],
-     [0,1/φ,φ],[0,1/φ,-φ],[0,-1/φ,φ],[0,-1/φ,-φ],
-     [1/φ,φ,0],[1/φ,-φ,0],[-1/φ,φ,0],[-1/φ,-φ,0],
-     [φ,0,1/φ],[φ,0,-1/φ],[-φ,0,1/φ],[-φ,0,-1/φ]]
-  ),
+  tetrahedron:  makeSolid([[1,1,1],[1,-1,-1],[-1,1,-1],[-1,-1,1]],[[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]]),
+  cube:         makeSolid([[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]],[[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]]),
+  octahedron:   makeSolid([[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]],[[0,2],[0,3],[0,4],[0,5],[1,2],[1,3],[1,4],[1,5],[2,4],[2,5],[3,4],[3,5]]),
+  icosahedron:  makeSolid([[0,1,φ],[0,1,-φ],[0,-1,φ],[0,-1,-φ],[1,φ,0],[1,-φ,0],[-1,φ,0],[-1,-φ,0],[φ,0,1],[φ,0,-1],[-φ,0,1],[-φ,0,-1]]),
+  dodecahedron: makeSolid([[1,1,1],[1,1,-1],[1,-1,1],[1,-1,-1],[-1,1,1],[-1,1,-1],[-1,-1,1],[-1,-1,-1],[0,1/φ,φ],[0,1/φ,-φ],[0,-1/φ,φ],[0,-1/φ,-φ],[1/φ,φ,0],[1/φ,-φ,0],[-1/φ,φ,0],[-1/φ,-φ,0],[φ,0,1/φ],[φ,0,-1/φ],[-φ,0,1/φ],[-φ,0,-1/φ]]),
+};
+
+// ── COLORS ────────────────────────────────────────────────────────────────────
+const COL = {
+  gold:       '#c9940c',
+  'gold-dim': 'rgba(201,148,12,.5)',
+  cyan:       '#00d4ff',
+  'cyan-dim': 'rgba(0,212,255,.42)',
+  purple:     '#bb88ff',
+  'pur-dim':  'rgba(187,136,255,.42)',
+  magenta:    '#ff00cc',
+  'mg-dim':   'rgba(255,0,204,.42)',
+  green:      '#00ff88',
+  'grn-dim':  'rgba(0,255,136,.42)',
 };
 
 // ── NODE DEFINITIONS ──────────────────────────────────────────────────────────
-// angle in degrees from top, clockwise
-function nodePos(cx, cy, r, angleDeg) {
-  const a = (angleDeg - 90) * Math.PI / 180;
-  return [cx + r * Math.cos(a), cy + r * Math.sin(a)];
-}
+const DEFS = [
+  // Layer 0 — HELEN kernel
+  {k:'helen',     lbl:'HELEN',    role:'Kernel',    solid:'dodecahedron', c:'gold',    sc:1.30, layer:0, rx:.0006,ry:.0011,rz:.0004, oR:0,    oS:0,       oP:0,             par:null},
 
-const NODES_DEF = [
-  { key:'mayor',   solid:'dodecahedron', label:'HELEN',   role:'Mayor · Aether',    color:'gold',  scale:1.3, rx:.0008, ry:.0013, rz:.0005, center:true },
-  { key:'her',     solid:'tetrahedron',  label:'PILOT',   role:'HER · Fire',         color:'cyan',  scale:.85, rx:.0015, ry:.0009, rz:.0012, angle:0   },
-  { key:'hal',     solid:'cube',         label:'COCKPIT', role:'HAL · Earth',        color:'cyan',  scale:.8,  rx:.0007, ry:.0018, rz:.0006, angle:60  },
-  { key:'ledger',  solid:'octahedron',   label:'LEDGER',  role:'Record · Balance',   color:'cyan',  scale:.82, rx:.0012, ry:.0006, rz:.0016, angle:120 },
-  { key:'memory',  solid:'icosahedron',  label:'MEMORY',  role:'Chronos · Water',    color:'cyan',  scale:.8,  rx:.001,  ry:.0014, rz:.0008, angle:180 },
-  { key:'temple',  solid:'dodecahedron', label:'TEMPLE',  role:'Mayor · Aether',     color:'cyan',  scale:.78, rx:.0009, ry:.0011, rz:.0013, angle:240 },
-  { key:'agents',  solid:'icosahedron',  label:'AGENTS',  role:'Flow · Potential',   color:'cyan',  scale:.8,  rx:.0016, ry:.0007, rz:.001,  angle:300 },
+  // Layer 1 — Subagents (7), orbit radius fraction of R
+  {k:'her',       lbl:'HER',      role:'Fire',      solid:'tetrahedron',  c:'cyan',    sc:0.78, layer:1, rx:.0140,ry:.0090,rz:.0110, oR:.60,  oS:.00065,  oP:0,             par:'helen'},
+  {k:'hal',       lbl:'HAL',      role:'Earth',     solid:'cube',         c:'cyan',    sc:0.72, layer:1, rx:.0080,ry:.0160,rz:.0060, oR:.60,  oS:.00055,  oP:Math.PI*2/7,   par:'helen'},
+  {k:'mayor',     lbl:'MAYOR',    role:'Aether',    solid:'dodecahedron', c:'gold',    sc:0.60, layer:1, rx:.0060,ry:.0100,rz:.0080, oR:.60,  oS:.00070,  oP:Math.PI*4/7,   par:'helen'},
+  {k:'chronos',   lbl:'CHRONOS',  role:'Air',       solid:'octahedron',   c:'cyan',    sc:0.75, layer:1, rx:.0120,ry:.0070,rz:.0150, oR:.60,  oS:.00050,  oP:Math.PI*6/7,   par:'helen'},
+  {k:'aura',      lbl:'AURA',     role:'Water',     solid:'icosahedron',  c:'purple',  sc:0.70, layer:1, rx:.0100,ry:.0130,rz:.0070, oR:.60,  oS:.00060,  oP:Math.PI*8/7,   par:'helen'},
+  {k:'goblin',    lbl:'GOBLIN',   role:'Recall',    solid:'tetrahedron',  c:'magenta', sc:0.62, layer:1, rx:.0150,ry:.0080,rz:.0120, oR:.60,  oS:.00080,  oP:Math.PI*10/7,  par:'helen'},
+  {k:'director',  lbl:'DIRECTOR', role:'Script',    solid:'cube',         c:'green',   sc:0.65, layer:1, rx:.0090,ry:.0140,rz:.0060, oR:.60,  oS:.00060,  oP:Math.PI*12/7,  par:'helen'},
+
+  // Layer 2 — Sub-sub agents (2 per subagent), orbit radius fraction of R
+  {k:'her_vox',   lbl:'VOICE',    role:'', solid:'octahedron',   c:'cyan-dim', sc:0.30, layer:2, rx:.022,ry:.018,rz:.014, oR:.17, oS:.0030, oP:0,        par:'her'},
+  {k:'her_mem',   lbl:'MEM',      role:'', solid:'icosahedron',  c:'cyan-dim', sc:0.27, layer:2, rx:.020,ry:.025,rz:.012, oR:.17, oS:.0025, oP:Math.PI,  par:'her'},
+  {k:'hal_gate',  lbl:'GATE',     role:'', solid:'cube',         c:'cyan-dim', sc:0.28, layer:2, rx:.025,ry:.016,rz:.018, oR:.17, oS:.0028, oP:0,        par:'hal'},
+  {k:'hal_verd',  lbl:'VERD',     role:'', solid:'tetrahedron',  c:'cyan-dim', sc:0.30, layer:2, rx:.018,ry:.022,rz:.015, oR:.17, oS:.0032, oP:Math.PI,  par:'hal'},
+  {k:'may_led',   lbl:'LEDGR',    role:'', solid:'dodecahedron', c:'gold-dim', sc:0.26, layer:2, rx:.020,ry:.018,rz:.012, oR:.17, oS:.0030, oP:0,        par:'mayor'},
+  {k:'may_key',   lbl:'KEYS',     role:'', solid:'cube',         c:'gold-dim', sc:0.24, layer:2, rx:.024,ry:.015,rz:.020, oR:.17, oS:.0025, oP:Math.PI,  par:'mayor'},
+  {k:'chr_ep',    lbl:'EPOCH',    role:'', solid:'octahedron',   c:'cyan-dim', sc:0.28, layer:2, rx:.022,ry:.020,rz:.014, oR:.17, oS:.0035, oP:0,        par:'chronos'},
+  {k:'chr_rp',    lbl:'RPLY',     role:'', solid:'tetrahedron',  c:'cyan-dim', sc:0.25, layer:2, rx:.018,ry:.016,rz:.022, oR:.17, oS:.0030, oP:Math.PI,  par:'chronos'},
+  {k:'aur_gr',    lbl:'GRIM',     role:'', solid:'icosahedron',  c:'pur-dim',  sc:0.27, layer:2, rx:.028,ry:.018,rz:.016, oR:.17, oS:.0040, oP:0,        par:'aura'},
+  {k:'aur_tm',    lbl:'TMPL',     role:'', solid:'tetrahedron',  c:'pur-dim',  sc:0.24, layer:2, rx:.020,ry:.024,rz:.012, oR:.17, oS:.0035, oP:Math.PI,  par:'aura'},
+  {k:'gob_rc',    lbl:'RCLL',     role:'', solid:'tetrahedron',  c:'mg-dim',   sc:0.27, layer:2, rx:.026,ry:.020,rz:.018, oR:.17, oS:.0040, oP:0,        par:'goblin'},
+  {k:'gob_hp',    lbl:'HEAP',     role:'', solid:'octahedron',   c:'mg-dim',   sc:0.24, layer:2, rx:.022,ry:.016,rz:.024, oR:.17, oS:.0035, oP:Math.PI,  par:'goblin'},
+  {k:'dir_sc',    lbl:'SCRPT',    role:'', solid:'cube',         c:'grn-dim',  sc:0.27, layer:2, rx:.022,ry:.018,rz:.014, oR:.17, oS:.0030, oP:0,        par:'director'},
+  {k:'dir_mn',    lbl:'MNTG',     role:'', solid:'icosahedron',  c:'grn-dim',  sc:0.24, layer:2, rx:.018,ry:.024,rz:.016, oR:.17, oS:.0028, oP:Math.PI,  par:'director'},
 ];
 
-// Runtime rotation state
-const nodes = NODES_DEF.map(d => ({...d, rx_a:Math.random()*Math.PI*2, ry_a:Math.random()*Math.PI*2, rz_a:Math.random()*Math.PI*2}));
+// Runtime state
+const NODES = DEFS.map(d => ({
+  ...d,
+  rx_a: Math.random()*Math.PI*2,
+  ry_a: Math.random()*Math.PI*2,
+  rz_a: Math.random()*Math.PI*2,
+  orb:  d.oP,
+  sx: 0, sy: 0,
+}));
+const NM = {};
+NODES.forEach(n => NM[n.k] = n);
 
-// ── CANVAS + RESIZE ───────────────────────────────────────────────────────────
+// ── CANVAS ────────────────────────────────────────────────────────────────────
 const canvas = document.getElementById('c');
 const ctx = canvas.getContext('2d');
 let W, H, CX, CY, R;
@@ -190,239 +169,219 @@ function resize() {
   const rect = canvas.getBoundingClientRect();
   W = canvas.width  = rect.width  * devicePixelRatio;
   H = canvas.height = rect.height * devicePixelRatio;
-  CX = W / 2;
-  CY = H / 2;
-  R = Math.min(W, H) * 0.28;
-  buildLabels();
+  CX = W/2; CY = H/2;
+  R = Math.min(W, H) * 0.295;
 }
+window.addEventListener('resize', resize);
+resize();
 
-// ── HTML LABELS ───────────────────────────────────────────────────────────────
-const labelsEl = document.getElementById('labels');
-function buildLabels() {
-  labelsEl.innerHTML = '';
-  const scaleF = 1 / devicePixelRatio;
-  nodes.forEach(n => {
-    const [x, y] = n.center ? [CX, CY] : nodePos(CX, CY, R, n.angle);
-    const el = document.createElement('div');
-    el.className = 'lbl' + (n.center ? ' center-lbl' : '');
-    const offsetY = n.center ? -R * 0.22 : (y < CY ? -52 : 52);
-    el.style.left  = (x * scaleF) + 'px';
-    el.style.top   = (y * scaleF + offsetY * scaleF) + 'px';
-    el.innerHTML = `<span class="lbl-name">${n.label}</span><span class="lbl-role">${n.role}</span>`;
-    el.onclick = () => {
-      if(n.key==='her'||n.key==='pilot') window.location.href='starship.html';
-      else if(n.key==='hal') window.location.href='index.html';
-      else if(n.key==='mayor') window.location.href='helen2027.html';
-      else window.location.href='helen2027.html';
-    };
-    labelsEl.appendChild(el);
-  });
+// ── MOUSE PARALLAX ────────────────────────────────────────────────────────────
+let mx=0.5, my=0.5, smx=0.5, smy=0.5;
+window.addEventListener('mousemove', e => { mx=e.clientX/window.innerWidth; my=e.clientY/window.innerHeight; });
+
+// ── POSITIONS ─────────────────────────────────────────────────────────────────
+function updatePositions() {
+  for(const n of NODES) {
+    if(n.layer === 0) {
+      n.sx = CX; n.sy = CY;
+    } else if(n.layer === 1) {
+      const r = R * n.oR;
+      n.sx = CX + r * Math.cos(n.orb);
+      n.sy = CY + r * Math.sin(n.orb);
+    } else {
+      const p = NM[n.par];
+      const r = R * n.oR;
+      n.sx = p.sx + r * Math.cos(n.orb);
+      n.sy = p.sy + r * Math.sin(n.orb);
+    }
+  }
 }
 
 // ── DRAW SOLID ────────────────────────────────────────────────────────────────
-function drawSolid(node) {
-  const [px, py] = node.center ? [CX, CY] : nodePos(CX, CY, R, node.angle);
-  const s  = node.solid;
-  const def = SOLIDS[s];
-  const scale = (node.center ? R * 0.38 : R * 0.19) * node.scale;
-  const isGold = node.color === 'gold';
-  const color  = isGold ? '#c9940c' : '#00d4ff';
-  const shadow = isGold ? '#c9940c' : '#00d4ff';
+function drawSolid(n, gx, gy) {
+  const def = SOLIDS[n.solid];
+  const baseR = n.layer===0 ? R*0.35 : n.layer===1 ? R*0.175 : R*0.063;
+  const sc = baseR * n.sc;
+  const col = COL[n.c] || '#00d4ff';
 
-  // Rotate vertices
   const rotated = def.verts.map(v => {
-    let r = rotX(v, node.rx_a);
-    r = rotY(r, node.ry_a);
-    r = rotZ(r, node.rz_a);
+    let r = rotX(v, n.rx_a + gx);
+    r = rotY(r, n.ry_a + gy);
+    r = rotZ(r, n.rz_a);
     return r;
   });
+  const proj = rotated.map(v => project(v, n.sx, n.sy, sc));
+  const sorted = def.edges.map(e => ({e, z:(proj[e[0]][2]+proj[e[1]][2])/2})).sort((a,b)=>b.z-a.z);
 
-  // Project to 2D
-  const projected = rotated.map(v => project(v, px, py, scale));
-
-  // Sort edges by average Z (painter's algorithm — back to front)
-  const sortedEdges = def.edges.map(e => ({
-    e,
-    z: (projected[e[0]][2] + projected[e[1]][2]) / 2
-  })).sort((a,b) => b.z - a.z);
-
-  // Draw
   ctx.save();
-  ctx.shadowBlur  = isGold ? 18 : 12;
-  ctx.shadowColor = shadow;
-  ctx.strokeStyle = color;
-  ctx.lineWidth   = (isGold ? 1.6 : 1.1) * devicePixelRatio;
-  ctx.globalAlpha = 1;
+  ctx.shadowBlur  = n.layer===0 ? 22 : n.layer===1 ? 13 : 5;
+  ctx.shadowColor = col;
+  ctx.strokeStyle = col;
+  ctx.lineWidth   = (n.layer===0 ? 1.7 : n.layer===1 ? 1.1 : 0.65) * devicePixelRatio;
 
-  for(const {e, z} of sortedEdges) {
-    const [ax, ay] = projected[e[0]];
-    const [bx, by] = projected[e[1]];
-    // Fade back edges slightly
-    ctx.globalAlpha = z < 4.2 ? 0.28 : 0.85;
-    ctx.beginPath();
-    ctx.moveTo(ax, ay);
-    ctx.lineTo(bx, by);
-    ctx.stroke();
+  for(const {e,z} of sorted) {
+    const [ax,ay]=proj[e[0]], [bx,by]=proj[e[1]];
+    ctx.globalAlpha = z < 4.2 ? 0.20 : (n.layer===2 ? 0.55 : 0.82);
+    ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by); ctx.stroke();
   }
-
-  // Vertex dots
-  ctx.globalAlpha = 0.6;
-  ctx.fillStyle = color;
-  ctx.shadowBlur = isGold ? 10 : 7;
-  for(const [vx, vy] of projected) {
-    ctx.beginPath();
-    ctx.arc(vx, vy, 1.5 * devicePixelRatio, 0, Math.PI*2);
-    ctx.fill();
+  ctx.fillStyle = col;
+  ctx.shadowBlur = n.layer===0 ? 12 : 5;
+  ctx.globalAlpha = 0.55;
+  const dotR = (n.layer===0 ? 2.2 : n.layer===1 ? 1.6 : 1.0) * devicePixelRatio;
+  for(const [vx,vy] of proj) {
+    ctx.beginPath(); ctx.arc(vx,vy,dotR,0,Math.PI*2); ctx.fill();
   }
   ctx.restore();
 }
 
-// ── DRAW METATRON BACKGROUND ──────────────────────────────────────────────────
-function drawBackground() {
-  ctx.clearRect(0, 0, W, H);
+// ── DRAW LABEL ────────────────────────────────────────────────────────────────
+function drawLabel(n) {
+  if(n.layer === 2) return;
+  const col = COL[n.c] || '#00d4ff';
+  const fs = n.layer===0 ? 11 : 8.5;
+  const yOff = (n.layer===0 ? -R*0.24 : -R*0.145) / devicePixelRatio;
 
-  // Outer ring
   ctx.save();
-  ctx.strokeStyle = 'rgba(0,212,255,.06)';
-  ctx.lineWidth = 0.8 * devicePixelRatio;
-  ctx.beginPath();
-  ctx.arc(CX, CY, R * 1.38, 0, Math.PI*2);
-  ctx.stroke();
+  ctx.font = `${fs * devicePixelRatio}px 'Courier New'`;
+  ctx.fillStyle = col;
+  ctx.textAlign = 'center';
+  ctx.globalAlpha = n.layer===0 ? 0.85 : 0.70;
+  ctx.shadowBlur = 7; ctx.shadowColor = col;
+  ctx.letterSpacing = '0.08em';
+  ctx.fillText(n.lbl, n.sx, n.sy + yOff * devicePixelRatio);
 
-  // Metatron lines — connect all 7 node positions
-  const positions = nodes.map(n =>
-    n.center ? [CX, CY] : nodePos(CX, CY, R, n.angle)
-  );
-  ctx.strokeStyle = 'rgba(0,212,255,.09)';
-  ctx.lineWidth = 0.6 * devicePixelRatio;
-  for(let i=0;i<positions.length;i++) {
-    for(let j=i+1;j<positions.length;j++) {
-      ctx.beginPath();
-      ctx.moveTo(positions[i][0], positions[i][1]);
-      ctx.lineTo(positions[j][0], positions[j][1]);
-      ctx.stroke();
-    }
+  if(n.role && n.layer===1) {
+    ctx.globalAlpha = 0.32;
+    ctx.shadowBlur = 0;
+    ctx.font = `${6.5 * devicePixelRatio}px 'Courier New'`;
+    ctx.fillText(n.role, n.sx, n.sy + (yOff + 13) * devicePixelRatio);
   }
+  ctx.restore();
+}
 
-  // Flower of Life circles
-  ctx.strokeStyle = 'rgba(0,212,255,.07)';
-  ctx.lineWidth = 0.7 * devicePixelRatio;
-  const fol = [{x:CX,y:CY}, ...nodes.slice(1).map(n => {const[x,y]=nodePos(CX,CY,R,n.angle);return{x,y}})];
-  const fr = R * 0.58;
-  fol.forEach(({x,y}) => {
-    ctx.beginPath();
-    ctx.arc(x, y, fr, 0, Math.PI*2);
-    ctx.stroke();
-  });
+// ── CONNECTIONS ───────────────────────────────────────────────────────────────
+function drawConnections() {
+  ctx.save();
+  for(const n of NODES) {
+    if(!n.par) continue;
+    const p = NM[n.par];
+    ctx.strokeStyle = COL[n.c] || '#00d4ff';
+    ctx.lineWidth = (n.layer===1 ? 0.5 : 0.35) * devicePixelRatio;
+    ctx.globalAlpha = n.layer===1 ? 0.10 : 0.06;
+    ctx.shadowBlur = 0;
+    ctx.beginPath(); ctx.moveTo(p.sx,p.sy); ctx.lineTo(n.sx,n.sy); ctx.stroke();
+  }
+  ctx.restore();
+}
+
+// ── BACKGROUND ────────────────────────────────────────────────────────────────
+function drawBackground() {
+  ctx.clearRect(0,0,W,H);
+  ctx.save();
+
+  // Orbit ring (dashed)
+  ctx.strokeStyle = 'rgba(0,212,255,.05)';
+  ctx.lineWidth = 0.5 * devicePixelRatio;
+  ctx.setLineDash([3*devicePixelRatio, 8*devicePixelRatio]);
+  ctx.beginPath(); ctx.arc(CX,CY,R*0.60,0,Math.PI*2); ctx.stroke();
+  ctx.setLineDash([]);
 
   // Concentric rings
-  [0.95, 0.7, 0.48, 0.24].forEach(f => {
-    ctx.strokeStyle = `rgba(0,212,255,${0.04 + f*0.04})`;
-    ctx.beginPath();
-    ctx.arc(CX, CY, R * f, 0, Math.PI*2);
-    ctx.stroke();
+  [1.05, 0.80, 0.55, 0.32, 0.14].forEach((f,i) => {
+    ctx.strokeStyle = `rgba(0,212,255,${0.025 + i*0.012})`;
+    ctx.lineWidth = 0.6 * devicePixelRatio;
+    ctx.beginPath(); ctx.arc(CX,CY,R*f,0,Math.PI*2); ctx.stroke();
   });
 
-  // Scattered star dots
-  ctx.fillStyle = 'rgba(0,212,255,.3)';
-  const dots = [[0.12,0.18],[0.85,0.14],[0.08,0.72],[0.9,0.78],[0.22,0.9],[0.78,0.88],
-                [0.05,0.44],[0.95,0.42],[0.5,0.05],[0.5,0.95],[0.38,0.12],[0.65,0.1]];
-  dots.forEach(([fx,fy]) => {
-    ctx.beginPath();
-    ctx.arc(W*fx, H*fy, 2.5*devicePixelRatio, 0, Math.PI*2);
-    ctx.fill();
+  // Background star dots
+  ctx.fillStyle = 'rgba(0,212,255,.22)';
+  [[.12,.18],[.85,.14],[.08,.72],[.9,.78],[.22,.9],[.78,.88],
+   [.05,.44],[.95,.42],[.5,.05],[.5,.95],[.38,.12],[.65,.1],[.28,.5],[.72,.52]].forEach(([fx,fy]) => {
+    ctx.beginPath(); ctx.arc(W*fx,H*fy,2*devicePixelRatio,0,Math.PI*2); ctx.fill();
   });
 
   ctx.restore();
 }
 
-// ── CENTRAL MARK ─────────────────────────────────────────────────────────────
+// ── EYE MARK ─────────────────────────────────────────────────────────────────
 function drawMark(t) {
-  const pulse = 0.7 + 0.3 * Math.sin(t * 0.0009);
+  const p = 0.7 + 0.3 * Math.sin(t * 0.0009);
+  const r = R * 0.052;
   ctx.save();
-  ctx.globalAlpha = pulse * 0.45;
+  ctx.globalAlpha = p * 0.5;
   ctx.strokeStyle = '#c9940c';
   ctx.lineWidth = 1.4 * devicePixelRatio;
-  ctx.shadowBlur = 14;
-  ctx.shadowColor = '#c9940c';
-  const r = R * 0.065;
-  // Vesica / eye shape
+  ctx.shadowBlur = 16; ctx.shadowColor = '#c9940c';
   ctx.beginPath();
-  ctx.moveTo(CX - r*2, CY);
-  ctx.quadraticCurveTo(CX, CY - r*1.2, CX + r*2, CY);
-  ctx.quadraticCurveTo(CX, CY + r*1.2, CX - r*2, CY);
+  ctx.moveTo(CX-r*2, CY);
+  ctx.quadraticCurveTo(CX, CY-r*1.2, CX+r*2, CY);
+  ctx.quadraticCurveTo(CX, CY+r*1.2, CX-r*2, CY);
   ctx.stroke();
-  ctx.beginPath();
-  ctx.arc(CX, CY, r*0.36, 0, Math.PI*2);
-  ctx.fillStyle = '#c9940c';
-  ctx.fill();
+  ctx.beginPath(); ctx.arc(CX,CY,r*.36,0,Math.PI*2);
+  ctx.fillStyle='#c9940c'; ctx.fill();
   ctx.restore();
 }
 
-// ── EPOCH / LEDGER DISPLAY ────────────────────────────────────────────────────
-let liveData = { ledger_count: '—', commit: '—', branch: '—' };
+// ── HUD ───────────────────────────────────────────────────────────────────────
+let live = {ledger_count:'—', commit:'—', branch:'—', dirty:false};
 async function fetchLive() {
-  try {
-    const r = await fetch('http://localhost:7001/api/status', {signal:AbortSignal.timeout(1500)});
-    if(r.ok) liveData = await r.json();
-  } catch(e){}
+  try{const r=await fetch('http://localhost:7001/api/status',{signal:AbortSignal.timeout(1500)});if(r.ok)live=await r.json();}catch(e){}
 }
-fetchLive();
-setInterval(fetchLive, 15000);
+fetchLive(); setInterval(fetchLive,15000);
 
 function drawHUD(t) {
-  const epoch = Math.floor(t / 8000) % 1000;
+  const ep = Math.floor(t/8000)%1000;
   ctx.save();
-  ctx.font = `${9*devicePixelRatio}px 'Courier New'`;
-  ctx.fillStyle = 'rgba(0,212,255,.28)';
-  ctx.letterSpacing = '0.1em';
-  // Top-left info
-  ctx.fillText(`EPOCH ${String(epoch).padStart(3,'0')} | BRANCH ${liveData.branch||'—'} | HEAD ${liveData.commit||'—'}${liveData.dirty?' · DIRTY':''}`, 18*devicePixelRatio, 58*devicePixelRatio);
-  ctx.fillText(`LEDGER ${liveData.ledger_count||'—'} ENTRIES | AUTHORITY: FALSE | WITNESS-FIRST`, 18*devicePixelRatio, 72*devicePixelRatio);
-  // Bottom-right prompt
+  ctx.font = `${8.5*devicePixelRatio}px 'Courier New'`;
+  ctx.fillStyle = 'rgba(0,212,255,.25)';
+  ctx.textAlign = 'left';
+  ctx.fillText(`EPOCH ${String(ep).padStart(3,'0')} | BRANCH ${live.branch||'—'} | HEAD ${live.commit||'—'}${live.dirty?' · DIRTY':''}`, 18*devicePixelRatio, 56*devicePixelRatio);
+  ctx.fillText(`LEDGER ${live.ledger_count||'—'} ENTRIES | AUTHORITY: FALSE | WITNESS-FIRST`, 18*devicePixelRatio, 70*devicePixelRatio);
   ctx.textAlign = 'right';
-  ctx.fillText('C:\\HELEN> NO_RECEIPT = NO_SHIP [→]', (W-18*devicePixelRatio), (H-50*devicePixelRatio));
+  ctx.fillText('C:\\HELEN> NO_RECEIPT = NO_SHIP [→]', W-18*devicePixelRatio, H-14*devicePixelRatio);
   ctx.restore();
 }
 
 // ── ANIMATION LOOP ────────────────────────────────────────────────────────────
-let last = 0;
+let last=0;
 function frame(t) {
-  const dt = t - last;
+  const dt = Math.min(t-last, 50);
   last = t;
 
-  // Update rotations
-  nodes.forEach(n => {
+  smx += (mx-smx) * 0.038;
+  smy += (my-smy) * 0.038;
+  const gx = (smy-0.5) * 0.38;
+  const gy = (smx-0.5) * 0.38;
+
+  for(const n of NODES) {
     n.rx_a += n.rx * dt;
     n.ry_a += n.ry * dt;
     n.rz_a += n.rz * dt;
-  });
+    n.orb  += n.oS * dt;
+  }
+
+  updatePositions();
 
   drawBackground();
   drawHUD(t);
+  drawConnections();
 
-  // Draw center solid last (on top)
-  const center = nodes.find(n => n.center);
-  const others = nodes.filter(n => !n.center);
-  others.forEach(drawSolid);
+  // Draw order: layer 2 (back) → layer 1 → eye mark → HELEN (front)
+  for(const n of NODES.filter(n=>n.layer===2)) drawSolid(n,gx,gy);
+  for(const n of NODES.filter(n=>n.layer===1)) { drawSolid(n,gx,gy); drawLabel(n); }
   drawMark(t);
-  drawSolid(center);
+  drawSolid(NM['helen'],gx,gy);
+  drawLabel(NM['helen']);
 
   requestAnimationFrame(frame);
 }
 
-// ── CLOCK ─────────────────────────────────────────────────────────────────────
-function updateClock() {
-  const n = new Date();
-  document.getElementById('t-clock').textContent =
-    n.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+// ── CLOCK + INIT ──────────────────────────────────────────────────────────────
+function updateClock(){
+  const n=new Date();
+  document.getElementById('t-clock').textContent=n.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
 }
-updateClock();
-setInterval(updateClock, 1000);
-
-// ── INIT ──────────────────────────────────────────────────────────────────────
-window.addEventListener('resize', () => { resize(); });
-resize();
+updateClock(); setInterval(updateClock,1000);
 requestAnimationFrame(frame);
 </script>
 </body>

@@ -318,6 +318,7 @@ const EDGE_COLOR = {
 };
 
 function drawGraph() {
+  if(!CW || !CH) { resizeGraph(); return; }
   ctx.clearRect(0, 0, CW, CH);
   const ox = CW/2, oy = CH/2;
 
@@ -622,8 +623,8 @@ document.getElementById('graph-status').textContent = `${GNODES.length} nodes ·
 
 const ro = new ResizeObserver(() => resizeGraph());
 ro.observe(document.getElementById('graph-wrap'));
-resizeGraph();
 requestAnimationFrame(frame);
+window.addEventListener('load', () => resizeGraph());
 </script>
 </body>
 </html>
