@@ -7,65 +7,68 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#07070c;--cyan:#00d4ff;--gold:#c9940c;
-  --green:#00ff88;--magenta:#ff00cc;--red:#ff3355;
+  --bg:#07070a;--cyan:#00d4ff;--gold:#c9940c;--green:#00ff88;
   --text:rgba(0,212,255,.85);--text-dim:rgba(0,212,255,.45);
   --text-mute:rgba(0,212,255,.22);--border:rgba(0,212,255,.12);
   --mono:'Courier New',monospace;
 }
 html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:var(--mono)}
-#top{position:fixed;top:0;left:0;right:0;z-index:20;height:36px;border-bottom:1px solid var(--border);background:rgba(5,5,10,.97);display:flex;align-items:center;padding:0 18px;gap:0}
-.t-brand{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(201,148,12,.80);margin-right:16px;cursor:pointer}
-.t-sep{width:1px;height:11px;background:var(--border);margin:0 13px;flex-shrink:0}
+#top{position:fixed;top:0;left:0;right:0;z-index:30;height:34px;border-bottom:1px solid var(--border);background:rgba(5,5,8,.97);display:flex;align-items:center;padding:0 16px}
+.t-brand{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(201,148,12,.80);margin-right:14px}
+.t-sep{width:1px;height:10px;background:var(--border);margin:0 12px;flex-shrink:0}
 .t-title{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim)}
-.t-push{margin-left:auto;display:flex;align-items:center;gap:9px}
-.t-badge{font-size:7px;letter-spacing:.10em;text-transform:uppercase;padding:2px 7px;border:1px solid var(--border);color:var(--text-mute);border-radius:1px}
-.t-nav{font-size:8px;letter-spacing:.07em;text-transform:uppercase;color:var(--text-dim);cursor:pointer;padding:3px 10px;border:1px solid rgba(0,212,255,.14);border-radius:1px;transition:all .14s}
-.t-nav:hover{color:var(--cyan);border-color:rgba(0,212,255,.4)}
-#t-clock{font-size:10px;color:var(--text-mute);letter-spacing:.04em}
-#c{position:fixed;inset:36px 0 28px;display:block;width:100%;height:calc(100% - 64px)}
-
-/* ── ENTRY BLOCK ── */
-#entry-block{position:fixed;top:46px;left:16px;z-index:15;width:236px;background:rgba(5,5,10,.96);border:1px solid rgba(0,212,255,.14);padding:12px 14px;pointer-events:all}
-.eb-desc{font-size:8px;color:rgba(0,212,255,.48);line-height:1.6;letter-spacing:.03em;margin-bottom:10px}
-.eb-what{font-size:9.5px;color:rgba(0,212,255,.88);letter-spacing:.10em;text-transform:uppercase;margin-bottom:8px;border-bottom:1px solid rgba(0,212,255,.10);padding-bottom:7px}
+.t-push{margin-left:auto;display:flex;align-items:center;gap:8px}
+.t-badge{font-size:7px;letter-spacing:.1em;text-transform:uppercase;padding:2px 6px;border:1px solid var(--border);color:var(--text-mute);border-radius:1px}
+.t-badge.auth{color:rgba(255,51,85,.65);border-color:rgba(255,51,85,.20)}
+.t-nav{font-size:8px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-dim);cursor:pointer;padding:3px 9px;border:1px solid rgba(0,212,255,.14);border-radius:1px;transition:all .12s;user-select:none}
+.t-nav:hover{color:var(--cyan);border-color:rgba(0,212,255,.38)}
+#t-clock{font-size:9.5px;color:var(--text-mute);letter-spacing:.04em}
+#c{position:fixed;inset:34px 0 28px;display:block;width:100%;height:calc(100% - 62px)}
+#entry-block{position:fixed;top:46px;left:16px;z-index:20;width:272px;background:rgba(5,5,8,.95);border:1px solid rgba(0,212,255,.18);padding:10px 13px 9px;pointer-events:all}
+.eb-toggle{font-size:7px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-mute);cursor:pointer;margin-bottom:7px;display:flex;align-items:center;gap:6px;user-select:none}
+.eb-toggle:hover{color:var(--text-dim)}
+.eb-caret{font-size:8px;display:inline-block}
+.eb-voice{font-size:8px;line-height:1.6;color:rgba(0,212,255,.52);margin-bottom:8px}
+.eb-prompt{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(0,212,255,.82);margin-bottom:8px;border-bottom:1px solid rgba(0,212,255,.10);padding-bottom:6px}
 .eb-actions{display:flex;flex-direction:column;gap:4px}
-.qa-btn{font-family:var(--mono);font-size:8px;letter-spacing:.07em;text-transform:uppercase;color:rgba(0,212,255,.65);background:none;border:1px solid rgba(0,212,255,.14);padding:5px 9px;cursor:pointer;text-align:left;transition:all .12s}
-.qa-btn:hover,.qa-btn.active{color:var(--green);border-color:rgba(0,255,136,.42);background:rgba(0,255,136,.05)}
-
-/* ── PULSE PANEL ── */
-#pulse{position:fixed;top:46px;right:16px;z-index:15;width:178px;background:rgba(5,5,10,.94);border:1px solid rgba(201,148,12,.13);padding:10px 12px}
-.pulse-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;gap:6px;font-size:7px}
-.pulse-key{color:rgba(0,212,255,.35);text-transform:uppercase;letter-spacing:.09em;flex-shrink:0}
-.pulse-val{color:rgba(201,148,12,.82);text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
-.pulse-ok{color:rgba(0,255,136,.80)}
-.pulse-bad{color:rgba(255,51,85,.80)}
-.pulse-src{font-size:6.5px;color:rgba(0,212,255,.20);margin-top:6px;border-top:1px solid rgba(0,212,255,.08);padding-top:5px}
-
-/* ── SCRATCHPAD ── */
-#scratchpad{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:15;display:flex;align-items:center;gap:8px;background:rgba(5,5,10,.97);border:1px solid rgba(0,212,255,.18);border-radius:2px;padding:5px 14px;width:400px;pointer-events:all}
-#sp-prefix{font-size:11px;color:rgba(0,212,255,.35);font-family:var(--mono);flex-shrink:0}
-#sp-input{background:none;border:none;outline:none;color:rgba(0,212,255,.88);font-family:var(--mono);font-size:10px;letter-spacing:.06em;flex:1;caret-color:#00d4ff}
+.qa-btn{display:flex;align-items:center;background:none;border:1px solid rgba(0,212,255,.12);color:var(--text-dim);font-family:var(--mono);font-size:8px;letter-spacing:.06em;text-transform:uppercase;padding:5px 8px;cursor:pointer;text-align:left;width:100%;transition:all .12s}
+.qa-btn:hover{color:var(--cyan);border-color:rgba(0,212,255,.35);background:rgba(0,212,255,.04)}
+.qa-btn.active{color:var(--green);border-color:rgba(0,255,136,.38);background:rgba(0,255,136,.05)}
+.qa-key{color:var(--text-mute);margin-right:8px;min-width:14px}
+#pulse-panel{position:fixed;top:46px;right:16px;z-index:20;width:214px;background:rgba(5,5,8,.95);border:1px solid rgba(0,212,255,.12);padding:9px 12px 8px;pointer-events:none}
+.pulse-hdr{font-size:7px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-mute);margin-bottom:7px;display:flex;justify-content:space-between;align-items:baseline}
+.pulse-src{font-size:6.5px;color:rgba(255,170,0,.45)}
+.pulse-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px}
+.pulse-k{font-size:7px;letter-spacing:.05em;color:rgba(0,212,255,.36)}
+.pulse-v{font-size:7px;letter-spacing:.04em}
+.pulse-v.ok{color:rgba(0,255,136,.80)}.pulse-v.warn{color:rgba(255,170,0,.80)}.pulse-v.err{color:rgba(255,51,85,.80)}.pulse-v.dim{color:rgba(0,212,255,.45)}
+#kb-hint{position:fixed;bottom:36px;left:16px;z-index:20;background:rgba(5,5,8,.88);border:1px solid rgba(0,212,255,.09);padding:5px 10px;pointer-events:none;display:flex;gap:12px}
+.kb-item{font-size:6.5px;letter-spacing:.05em;color:var(--text-mute)}
+.kb-key{color:rgba(0,212,255,.44);margin-right:3px}
+#sp-response{position:fixed;bottom:62px;left:50%;transform:translateX(-50%);z-index:26;width:400px;background:rgba(5,5,8,.98);border:1px solid rgba(201,148,12,.22);padding:6px 14px 7px;display:none;pointer-events:none}
+.sp-res-who{font-size:7px;letter-spacing:.14em;text-transform:uppercase;color:rgba(201,148,12,.60);margin-bottom:3px}
+.sp-res-txt{font-size:9.5px;letter-spacing:.03em;color:rgba(0,212,255,.88);line-height:1.55;word-break:break-word}
+#scratchpad{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:25;display:flex;align-items:center;gap:8px;background:rgba(5,5,8,.97);border:1px solid rgba(0,212,255,.20);padding:5px 14px;width:400px;pointer-events:all}
+#sp-prefix{font-size:11px;color:rgba(0,212,255,.38);flex-shrink:0}
+#sp-input{background:none;border:none;outline:none;color:rgba(0,212,255,.88);font-family:var(--mono);font-size:10px;letter-spacing:.05em;flex:1;caret-color:#00d4ff}
 #sp-input::placeholder{color:rgba(0,212,255,.18);font-size:9px}
-#sp-target{font-size:7.5px;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;min-width:68px;text-align:right;transition:color .18s}
-#help-hint{position:fixed;bottom:34px;left:16px;z-index:15;font-size:6.5px;color:rgba(0,212,255,.20);letter-spacing:.06em;pointer-events:none}
-
-/* ── INFO STRIP ── */
-#info-strip{position:fixed;bottom:0;left:0;right:0;height:28px;border-top:1px solid rgba(0,212,255,.07);background:rgba(5,5,10,.94);display:flex;align-items:center;padding:0 20px;gap:0;z-index:10}
-.i-flow{font-size:7.5px;letter-spacing:.09em;text-transform:uppercase;color:rgba(0,212,255,.35);white-space:nowrap}
-.i-arr{font-size:8px;color:rgba(0,212,255,.15);margin:0 8px}
-.i-sep{width:1px;height:10px;background:rgba(0,212,255,.10);margin:0 16px}
-.i-doctrine{font-size:7.5px;letter-spacing:.10em;text-transform:uppercase;color:rgba(201,148,12,.42);white-space:nowrap;margin-left:auto}
+#sp-target{font-size:8px;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;min-width:70px;text-align:right;transition:color .16s}
+#info-strip{position:fixed;bottom:0;left:0;right:0;height:28px;border-top:1px solid rgba(0,212,255,.07);background:rgba(5,5,8,.96);display:flex;align-items:center;padding:0 16px;gap:0;z-index:15;overflow:hidden}
+.i-flow{font-size:7.5px;letter-spacing:.08em;text-transform:uppercase;color:rgba(0,212,255,.30);white-space:nowrap}
+.i-arr{font-size:9px;color:rgba(0,212,255,.14);margin:0 7px}
+.i-sep{width:1px;height:9px;background:rgba(0,212,255,.10);margin:0 14px}
+.i-doc{font-size:7.5px;letter-spacing:.10em;text-transform:uppercase;color:rgba(201,148,12,.40);white-space:nowrap}
+.i-push{margin-left:auto;font-size:7px;letter-spacing:.08em;text-transform:uppercase;color:rgba(0,212,255,.20)}
 </style>
 </head>
 <body>
 
 <div id="top">
-  <div class="t-brand" onclick="location.href='helen2027.html'">HELEN OS</div>
+  <div class="t-brand">HELEN OS</div>
   <div class="t-sep"></div>
   <div class="t-title">Semantic Cockpit V0.2</div>
   <div class="t-push">
-    <span class="t-badge">authority: false</span>
+    <span class="t-badge auth">authority: false</span>
     <span class="t-badge">witness-first</span>
     <div class="t-sep"></div>
     <span id="t-clock">—</span>
@@ -79,33 +82,47 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 <canvas id="c"></canvas>
 
 <div id="entry-block">
-  <div class="eb-desc">Drop a source, ask a question, or choose an action.<br>I will witness first and act only with receipts.</div>
-  <div class="eb-what">What do you want to do?</div>
-  <div class="eb-actions">
-    <button class="qa-btn" data-ring="her">[1] Ask HELEN</button>
-    <button class="qa-btn" data-ring="skills">[2] Work with a Source</button>
-    <button class="qa-btn" data-ring="computeruse">[3] Create Media</button>
-    <button class="qa-btn" data-ring="computeruse">[4] Run Computer Use</button>
+  <div class="eb-toggle" onclick="toggleEntry()">
+    <span class="eb-caret" id="eb-caret">▼</span>
+    <span>HELEN · Entry Point</span>
+  </div>
+  <div id="eb-body">
+    <div class="eb-voice">Drop a source, ask a question, or choose an action.<br>I will witness first and act only with receipts.</div>
+    <div class="eb-prompt">What do you want to do?</div>
+    <div class="eb-actions">
+      <button class="qa-btn" data-ring="her"      onclick="activateQA(this,'her')">     <span class="qa-key">[1]</span>Ask HELEN</button>
+      <button class="qa-btn" data-ring="hal"      onclick="activateQA(this,'hal')">     <span class="qa-key">[2]</span>Work with a Source</button>
+      <button class="qa-btn" data-ring="director" onclick="activateQA(this,'director')"><span class="qa-key">[3]</span>Create Media</button>
+      <button class="qa-btn" data-ring="goblin"   onclick="activateQA(this,'goblin')">  <span class="qa-key">[4]</span>Run Computer Use</button>
+    </div>
   </div>
 </div>
 
-<div id="pulse">
-  <div class="pulse-row"><span class="pulse-key">LEDGER</span><span class="pulse-val" id="p-ledger">—</span></div>
-  <div class="pulse-row"><span class="pulse-key">RECEIPTS</span><span class="pulse-val" id="p-receipts">0 open</span></div>
-  <div class="pulse-row"><span class="pulse-key">GATES</span><span class="pulse-val pulse-ok" id="p-gates">—</span></div>
-  <div class="pulse-row"><span class="pulse-key">AGENT</span><span class="pulse-val" id="p-agent">—</span></div>
-  <div class="pulse-row"><span class="pulse-key">BRANCH</span><span class="pulse-val" id="p-branch">—</span></div>
-  <div class="pulse-row"><span class="pulse-key">REPLAY</span><span class="pulse-val pulse-ok" id="p-replay">—</span></div>
-  <div class="pulse-src" id="p-src">fallback / demo</div>
+<div id="pulse-panel">
+  <div class="pulse-hdr"><span>SYSTEM PULSE</span><span class="pulse-src" id="pp-src">● FALLBACK/DEMO</span></div>
+  <div class="pulse-row"><span class="pulse-k">LEDGER ENTRIES</span><span class="pulse-v dim"  id="pp-ledger">264</span></div>
+  <div class="pulse-row"><span class="pulse-k">OPEN RECEIPTS</span> <span class="pulse-v ok"   id="pp-receipts">0</span></div>
+  <div class="pulse-row"><span class="pulse-k">FAILED GATES</span>  <span class="pulse-v ok"   id="pp-gates">0</span></div>
+  <div class="pulse-row"><span class="pulse-k">ACTIVE AGENT</span>  <span class="pulse-v dim"  id="pp-agent">—</span></div>
+  <div class="pulse-row"><span class="pulse-k">LAST TOOL</span>     <span class="pulse-v dim"  id="pp-tool">—</span></div>
+  <div class="pulse-row"><span class="pulse-k">REPLAY STATUS</span> <span class="pulse-v ok"   id="pp-replay">CLEAN</span></div>
+  <div class="pulse-row"><span class="pulse-k">API POLL</span>      <span class="pulse-v warn" id="pp-poll">7001 OFFLINE</span></div>
 </div>
 
+<div id="kb-hint">
+  <span class="kb-item"><span class="kb-key">TAB</span>cycle rings</span>
+  <span class="kb-item"><span class="kb-key">ENTER</span>confirm</span>
+  <span class="kb-item"><span class="kb-key">ESC</span>reject/close</span>
+  <span class="kb-item"><span class="kb-key">1–4</span>quick actions</span>
+  <span class="kb-item"><span class="kb-key">?</span>toggle entry</span>
+</div>
+
+<div id="sp-response"><div class="sp-res-who">HELEN ›</div><div class="sp-res-txt" id="sp-res-text">…</div></div>
 <div id="scratchpad">
   <span id="sp-prefix">⟩_</span>
   <input id="sp-input" type="text" placeholder="type intent — HELEN routes it" autocomplete="off" spellcheck="false">
   <span id="sp-target"></span>
 </div>
-
-<div id="help-hint">Tab=cycle rings · Enter=confirm · Esc=close · /=intent</div>
 
 <div id="info-strip">
   <div class="i-flow">Source</div><div class="i-arr">→</div>
@@ -114,101 +131,157 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
   <div class="i-flow">Confirmation</div><div class="i-arr">→</div>
   <div class="i-flow">Receipt</div>
   <div class="i-sep"></div>
+  <div class="i-doc">NO_RECEIPT = NO_SHIP</div>
+  <div class="i-sep"></div>
   <div class="i-flow">Witness</div><div class="i-arr">→</div>
   <div class="i-flow">Trace</div><div class="i-arr">→</div>
   <div class="i-flow">Seal</div>
-  <div class="i-sep"></div>
-  <div class="i-doctrine">NO_RECEIPT = NO_SHIP</div>
+  <div class="i-push">AUTHORITY: FALSE</div>
 </div>
 
 <script>
 'use strict';
+
 const φ=(1+Math.sqrt(5))/2;
 function norm3(v){const l=Math.sqrt(v[0]**2+v[1]**2+v[2]**2);return[v[0]/l,v[1]/l,v[2]/l]}
 function rotX(v,a){const c=Math.cos(a),s=Math.sin(a);return[v[0],v[1]*c-v[2]*s,v[1]*s+v[2]*c]}
 function rotY(v,a){const c=Math.cos(a),s=Math.sin(a);return[v[0]*c+v[2]*s,v[1],-v[0]*s+v[2]*c]}
 function rotZ(v,a){const c=Math.cos(a),s=Math.sin(a);return[v[0]*c-v[1]*s,v[0]*s+v[1]*c,v[2]]}
 function project(v,cx,cy,sc,fov=5){const z=v[2]+fov;return[cx+v[0]*sc*fov/z,cy+v[1]*sc*fov/z,z]}
+function hexRgb(h){return{r:parseInt(h.slice(1,3),16),g:parseInt(h.slice(3,5),16),b:parseInt(h.slice(5,7),16)}}
 function edgesFromVerts(verts){
   let m=Infinity;
-  for(let i=0;i<verts.length;i++)for(let j=i+1;j<verts.length;j++){const d=(verts[i][0]-verts[j][0])**2+(verts[i][1]-verts[j][1])**2+(verts[i][2]-verts[j][2])**2;if(d<m)m=d;}
+  for(let i=0;i<verts.length;i++)for(let j=i+1;j<verts.length;j++){
+    const d=(verts[i][0]-verts[j][0])**2+(verts[i][1]-verts[j][1])**2+(verts[i][2]-verts[j][2])**2;
+    if(d<m)m=d;
+  }
   const t=m*1.05,e=[];
-  for(let i=0;i<verts.length;i++)for(let j=i+1;j<verts.length;j++){const d=(verts[i][0]-verts[j][0])**2+(verts[i][1]-verts[j][1])**2+(verts[i][2]-verts[j][2])**2;if(d<=t)e.push([i,j]);}
+  for(let i=0;i<verts.length;i++)for(let j=i+1;j<verts.length;j++){
+    const d=(verts[i][0]-verts[j][0])**2+(verts[i][1]-verts[j][1])**2+(verts[i][2]-verts[j][2])**2;
+    if(d<=t)e.push([i,j]);
+  }
   return e;
 }
-function makeSolid(rv,re){const v=rv.map(norm3);return{verts:v,edges:re||edgesFromVerts(v)}}
+function mkSolid(rv,re){const v=rv.map(norm3);return{verts:v,edges:re||edgesFromVerts(v)}}
 
 const SOLIDS={
-  tetrahedron: makeSolid([[1,1,1],[1,-1,-1],[-1,1,-1],[-1,-1,1]],[[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]]),
-  cube:        makeSolid([[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]],[[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]]),
-  octahedron:  makeSolid([[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]],[[0,2],[0,3],[0,4],[0,5],[1,2],[1,3],[1,4],[1,5],[2,4],[2,5],[3,4],[3,5]]),
-  icosahedron: makeSolid([[0,1,φ],[0,1,-φ],[0,-1,φ],[0,-1,-φ],[1,φ,0],[1,-φ,0],[-1,φ,0],[-1,-φ,0],[φ,0,1],[φ,0,-1],[-φ,0,1],[-φ,0,-1]]),
-  dodecahedron:makeSolid([[1,1,1],[1,1,-1],[1,-1,1],[1,-1,-1],[-1,1,1],[-1,1,-1],[-1,-1,1],[-1,-1,-1],[0,1/φ,φ],[0,1/φ,-φ],[0,-1/φ,φ],[0,-1/φ,-φ],[1/φ,φ,0],[1/φ,-φ,0],[-1/φ,φ,0],[-1/φ,-φ,0],[φ,0,1/φ],[φ,0,-1/φ],[-φ,0,1/φ],[-φ,0,-1/φ]]),
+  tetrahedron: mkSolid([[1,1,1],[1,-1,-1],[-1,1,-1],[-1,-1,1]],[[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]]),
+  cube:        mkSolid([[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]],[[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]]),
+  octahedron:  mkSolid([[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]],[[0,2],[0,3],[0,4],[0,5],[1,2],[1,3],[1,4],[1,5],[2,4],[2,5],[3,4],[3,5]]),
+  icosahedron: mkSolid([[0,1,φ],[0,1,-φ],[0,-1,φ],[0,-1,-φ],[1,φ,0],[1,-φ,0],[-1,φ,0],[-1,-φ,0],[φ,0,1],[φ,0,-1],[-φ,0,1],[-φ,0,-1]]),
+  dodecahedron:mkSolid([[1,1,1],[1,1,-1],[1,-1,1],[1,-1,-1],[-1,1,1],[-1,1,-1],[-1,-1,1],[-1,-1,-1],[0,1/φ,φ],[0,1/φ,-φ],[0,-1/φ,φ],[0,-1/φ,-φ],[1/φ,φ,0],[1/φ,-φ,0],[-1/φ,φ,0],[-1/φ,-φ,0],[φ,0,1/φ],[φ,0,-1/φ],[-φ,0,1/φ],[-φ,0,-1/φ]]),
 };
 
 const COL={
-  gold:'#c9940c',cyan:'#00d4ff',purple:'#bb88ff',magenta:'#ff00cc',green:'#00ff88',
+  gold:'#c9940c','gold-dim':'rgba(201,148,12,.5)',
+  cyan:'#00d4ff','cyan-dim':'rgba(0,212,255,.42)',
+  purple:'#bb88ff','pur-dim':'rgba(187,136,255,.42)',
+  magenta:'#ff00cc','mg-dim':'rgba(255,0,204,.42)',
+  green:'#00ff88','grn-dim':'rgba(0,255,136,.42)',
 };
 
 const AGENT_DEFS=[
-  {k:'helen',   lbl:'HELEN',   role:'Kernel', solid:'dodecahedron',c:'gold',   sc:1.00,layer:0,rx:.0006,ry:.0011,rz:.0004,oR:0,   oS:0,      oP:0,            par:null},
-  {k:'her',     lbl:'HER',     role:'Fire',   solid:'tetrahedron', c:'cyan',   sc:0.80,layer:1,rx:.0140,ry:.0090,rz:.0110,oR:.60, oS:.00065, oP:0,            par:'helen'},
-  {k:'hal',     lbl:'HAL',     role:'Earth',  solid:'cube',        c:'cyan',   sc:0.74,layer:1,rx:.0080,ry:.0160,rz:.0060,oR:.60, oS:.00055, oP:Math.PI*2/7,  par:'helen'},
-  {k:'mayor',   lbl:'MAYOR',   role:'Aether', solid:'dodecahedron',c:'gold',   sc:0.64,layer:1,rx:.0060,ry:.0100,rz:.0080,oR:.60, oS:.00070, oP:Math.PI*4/7,  par:'helen'},
-  {k:'chronos', lbl:'CHRONOS', role:'Air',    solid:'octahedron',  c:'cyan',   sc:0.76,layer:1,rx:.0120,ry:.0070,rz:.0150,oR:.60, oS:.00050, oP:Math.PI*6/7,  par:'helen'},
-  {k:'aura',    lbl:'AURA',    role:'Water',  solid:'icosahedron', c:'purple', sc:0.70,layer:1,rx:.0100,ry:.0130,rz:.0070,oR:.60, oS:.00060, oP:Math.PI*8/7,  par:'helen'},
-  {k:'goblin',  lbl:'GOBLIN',  role:'Recall', solid:'tetrahedron', c:'magenta',sc:0.66,layer:1,rx:.0150,ry:.0080,rz:.0120,oR:.60, oS:.00080, oP:Math.PI*10/7, par:'helen'},
-  {k:'director',lbl:'DIRECTOR',role:'Script', solid:'cube',        c:'green',  sc:0.68,layer:1,rx:.0090,ry:.0140,rz:.0060,oR:.60, oS:.00060, oP:Math.PI*12/7, par:'helen'},
+  {k:'helen',   lbl:'HELEN',   role:'Kernel', solid:'dodecahedron',c:'gold',   sc:1.55,layer:0,rx:.0006,ry:.0011,rz:.0004,oR:0,   oS:0,      oP:0,            par:null},
+  {k:'her',     lbl:'HER',     role:'Fire',   solid:'tetrahedron', c:'cyan',   sc:1.05,layer:1,rx:.0140,ry:.0090,rz:.0110,oR:.56, oS:.00065, oP:0,            par:'helen'},
+  {k:'hal',     lbl:'HAL',     role:'Earth',  solid:'cube',        c:'cyan',   sc:0.96,layer:1,rx:.0080,ry:.0160,rz:.0060,oR:.56, oS:.00055, oP:Math.PI*2/7,  par:'helen'},
+  {k:'mayor',   lbl:'MAYOR',   role:'Aether', solid:'dodecahedron',c:'gold',   sc:0.85,layer:1,rx:.0060,ry:.0100,rz:.0080,oR:.56, oS:.00070, oP:Math.PI*4/7,  par:'helen'},
+  {k:'chronos', lbl:'CHRONOS', role:'Air',    solid:'octahedron',  c:'cyan',   sc:1.00,layer:1,rx:.0120,ry:.0070,rz:.0150,oR:.56, oS:.00050, oP:Math.PI*6/7,  par:'helen'},
+  {k:'aura',    lbl:'AURA',    role:'Water',  solid:'icosahedron', c:'purple', sc:0.92,layer:1,rx:.0100,ry:.0130,rz:.0070,oR:.56, oS:.00060, oP:Math.PI*8/7,  par:'helen'},
+  {k:'goblin',  lbl:'GOBLIN',  role:'Recall', solid:'tetrahedron', c:'magenta',sc:0.88,layer:1,rx:.0150,ry:.0080,rz:.0120,oR:.56, oS:.00080, oP:Math.PI*10/7, par:'helen'},
+  {k:'director',lbl:'DIRECTOR',role:'Script', solid:'cube',        c:'green',  sc:0.90,layer:1,rx:.0090,ry:.0140,rz:.0060,oR:.56, oS:.00060, oP:Math.PI*12/7, par:'helen'},
 ];
+
+const AGENT_META={
+  helen:  {type:'KERNEL',              intent:'Open operator dashboard',
+    reasoning:'HELEN kernel selected — operator attention on root node. Navigate to home surface.',
+    allowed:['navigate_to_home','observe_state','surface_status'],
+    forbidden:['write_ledger_directly','bypass_gate','self_authorize'],reversible:true,nav:'helen2027.html'},
+  her:    {type:'GENERATIVE AGENT',    intent:'Enter creative mode',
+    reasoning:'HER selected — generative synthesis layer. Proposals only; no canon write.',
+    allowed:['generate','synthesize','propose','draft'],
+    forbidden:['self_approve','write_canon','bypass_peer_review'],reversible:true,nav:null},
+  hal:    {type:'VALIDATION AGENT',    intent:'Run gate validation',
+    reasoning:'HAL selected — K8, K-tau, LEGORACLE checks in scope.',
+    allowed:['lint_K8','run_K_tau','check_schemas','run_LEGORACLE'],
+    forbidden:['approve_own_output','skip_peer_review','self_validate'],reversible:true,nav:'cockpit_v4.html'},
+  mayor:  {type:'GOVERNANCE AUTHORITY',intent:'Review governance queue',
+    reasoning:'MAYOR selected — decision queue review. Signing requires separate receipt chain.',
+    allowed:['read_proposals','inspect_ledger','surface_decisions'],
+    forbidden:['self_sign','bypass_receipt_chain','auto_approve'],reversible:false,nav:null},
+  chronos:{type:'TIME KEEPER',         intent:'Schedule next epoch',
+    reasoning:'CHRONOS selected — epoch scheduling and drift monitoring.',
+    allowed:['read_epoch_gap','set_timer','alert_on_drift'],
+    forbidden:['auto_advance_epoch','skip_reconciliation','modify_sealed_epoch'],reversible:true,nav:null},
+  aura:   {type:'SYMBOLIC AGENT',      intent:'Enter reflection mode',
+    reasoning:'AURA selected — symbolic observation layer. Non-sovereign context.',
+    allowed:['reflect','surface_symbolic_signals','observe_patterns'],
+    forbidden:['claim_authority','write_canon','overwrite_memory'],reversible:true,nav:null},
+  goblin: {type:'EXECUTION TERMINAL',  intent:'Inspect last failures',
+    reasoning:'GOBLIN selected — read-only failure heap. Recall defects; no auto-resolve.',
+    allowed:['read_heap','recall_errors','list_defects','run_readonly_git_status'],
+    forbidden:['auto_resolve','dismiss_without_review','self_authorize_fix'],reversible:true,nav:null},
+  director:{type:'DIRECTOR AGENT',     intent:'Launch video pipeline',
+    reasoning:'DIRECTOR selected — media pipeline staging. Receipted shots only.',
+    allowed:['queue_shots','run_Kling','stage_audio','preview_composition'],
+    forbidden:['publish_without_receipt','sign_as_sovereign','bypass_media_receipt'],reversible:true,nav:null},
+};
 
 const OUTER_RINGS=[
-  {key:'skills',     label:'SKILLS',      oR:.84, col:'#00ff88',shape:'diamond', oS:.00038,nodes:[
-    {k:'sk_shell', lbl:'SHELL·RO',  type:'SKILL',      intent:'read_filesystem_state',    allowed:['list files','read file','inspect output'],  forbidden:['write','delete','mutate']},
-    {k:'sk_pytest',lbl:'PYTEST',    type:'SKILL',      intent:'run_tests_readonly',        allowed:['run tests','read results','count pass/fail'],forbidden:['modify tests','clear results']},
-    {k:'sk_git',   lbl:'GIT·STATUS',type:'SKILL',      intent:'inspect_repository_state', allowed:['git status','git log','git diff'],           forbidden:['push','commit','force reset']},
-    {k:'sk_source',lbl:'SOURCE·OBJ',type:'SKILL',      intent:'build_source_object',       allowed:['classify','tag','hash payload'],             forbidden:['write to ledger','auto-promote']},
-    {k:'sk_media', lbl:'MEDIA·PKT', type:'SKILL',      intent:'package_media_asset',       allowed:['wrap','hash','label','stage'],               forbidden:['publish','transmit sovereign']},
-    {k:'sk_rcpt',  lbl:'RCPT·VAL',  type:'SKILL',      intent:'validate_receipt_schema',   allowed:['check schema','verify hash','compare'],      forbidden:['generate','sign','overwrite']},
+  {key:'skills',     label:'SKILLS',      oR:.76, col:'#00ff88',shape:'diamond',oS:.00038,nodes:[
+    {k:'sk_shell', lbl:'SHELL·RO',  type:'SKILL',      intent:'Read filesystem state safely',        reasoning:'SHELL·RO — read-only filesystem access',allowed:['list_files','read_file','inspect_output'],forbidden:['write','delete','mutate'],reversible:true},
+    {k:'sk_pytest',lbl:'PYTEST',    type:'SKILL',      intent:'Run test suite read-only',            reasoning:'PYTEST — read-only test runner',allowed:['run_tests','read_results','count_pass_fail'],forbidden:['modify_tests','clear_results'],reversible:true},
+    {k:'sk_git',   lbl:'GIT·STATUS',type:'SKILL',      intent:'Inspect repository state',            reasoning:'GIT·STATUS — repo inspection',allowed:['git_status','git_log','git_diff'],forbidden:['push','commit','force_reset'],reversible:true},
+    {k:'sk_source',lbl:'SOURCE·OBJ',type:'SKILL',      intent:'Build sourcebound object from input', reasoning:'SOURCE·OBJ — classify and hash payload',allowed:['classify','tag','hash_payload'],forbidden:['write_to_ledger','auto_promote'],reversible:true},
+    {k:'sk_media', lbl:'MEDIA·PKT', type:'SKILL',      intent:'Package media asset for pipeline',    reasoning:'MEDIA·PKT — stage media with receipt',allowed:['wrap','hash','label','stage'],forbidden:['publish','transmit_sovereign'],reversible:true},
+    {k:'sk_rcval', lbl:'RCPT·VAL',  type:'SKILL',      intent:'Validate receipt schema and hash',    reasoning:'RCPT·VAL — verify receipt integrity',allowed:['check_schema','verify_hash','compare'],forbidden:['generate','sign','overwrite'],reversible:true},
+    {k:'sk_schema',lbl:'SCHEMA·CHK',type:'SKILL',      intent:'Check artifact schema conformance',   reasoning:'SCHEMA·CHK — validate conformance',allowed:['validate','report_violations','diff'],forbidden:['modify_schemas','suppress_errors'],reversible:true},
   ]},
-  {key:'connectors', label:'CONNECTORS',  oR:1.06,col:'#ffaa00',shape:'square',  oS:.00028,nodes:[
-    {k:'cn_github', lbl:'GITHUB',    type:'CONNECTOR',  intent:'read_repository_state',    allowed:['read PR','read issues','read CI'],           forbidden:['push','merge','close PR']},
-    {k:'cn_local',  lbl:'LOCAL·REPO',type:'CONNECTOR',  intent:'read_local_working_tree',  allowed:['read files','list tree','inspect git'],      forbidden:['write','delete sovereign paths']},
-    {k:'cn_browser',lbl:'BROWSER',   type:'CONNECTOR',  intent:'read_browser_content',     allowed:['read page','extract text','screenshot'],     forbidden:['submit forms','write cookies']},
-    {k:'cn_files',  lbl:'FILES',     type:'CONNECTOR',  intent:'read_local_filesystem',    allowed:['read','list','hash','stat'],                 forbidden:['write','delete','chmod']},
-    {k:'cn_calendar',lbl:'CALENDAR', type:'CONNECTOR',  intent:'read_schedule_events',     allowed:['read events','check availability'],          forbidden:['create','delete','send invites']},
-    {k:'cn_gmail',  lbl:'GMAIL',     type:'CONNECTOR',  intent:'read_classify_signals',    allowed:['read','classify','summarize'],               forbidden:['send','reply','auto-respond']},
+  {key:'connectors', label:'CONNECTORS',  oR:.98, col:'#ffaa00',shape:'square',  oS:.00028,nodes:[
+    {k:'cn_github', lbl:'GITHUB',    type:'CONNECTOR',  intent:'Read repository and PR state',        reasoning:'GITHUB — read-only remote inspection',allowed:['read_PR','read_issues','read_CI'],forbidden:['push','merge','close_PR'],reversible:true},
+    {k:'cn_local',  lbl:'LOCAL·REPO',type:'CONNECTOR',  intent:'Read local SOT working tree',         reasoning:'LOCAL·REPO — inspect local git tree',allowed:['read_files','list_tree','inspect_git'],forbidden:['write','delete_sovereign_paths'],reversible:true},
+    {k:'cn_browser',lbl:'BROWSER',   type:'CONNECTOR',  intent:'Read visible browser content',        reasoning:'BROWSER — read-only page access',allowed:['read_page','extract_text','screenshot'],forbidden:['submit_forms','write_cookies'],reversible:true},
+    {k:'cn_files',  lbl:'FILES',     type:'CONNECTOR',  intent:'Read local filesystem',               reasoning:'FILES — read and stat local paths',allowed:['read','list','hash','stat'],forbidden:['write','delete','chmod'],reversible:true},
+    {k:'cn_camera', lbl:'CAMERA',    type:'CONNECTOR',  intent:'Observe physical environment',        reasoning:'CAMERA — capture frame for description',allowed:['capture_frame','describe_scene'],forbidden:['stream_unreceipted','store_biometrics'],reversible:true},
+    {k:'cn_cal',    lbl:'CALENDAR',  type:'CONNECTOR',  intent:'Read schedule and events',            reasoning:'CALENDAR — read schedule; no mutations',allowed:['read_events','check_availability'],forbidden:['create','delete','send_invites'],reversible:true},
+    {k:'cn_gmail',  lbl:'GMAIL',     type:'CONNECTOR',  intent:'Read and classify incoming signals',  reasoning:'GMAIL — classify mail; no send',allowed:['read','classify','summarize'],forbidden:['send','reply','auto_respond'],reversible:true},
+    {k:'cn_tg',     lbl:'TELEGRAM',  type:'CONNECTOR',  intent:'Read HELEN channel signals',          reasoning:'TELEGRAM — observe channel; no broadcast',allowed:['read_messages','observe','classify'],forbidden:['send_unreceipted','broadcast'],reversible:true},
   ]},
-  {key:'knowledge',  label:'KNOWLEDGE',   oR:1.26,col:'#bb88ff',shape:'circle',  oS:.00020,nodes:[
-    {k:'kn_claims', lbl:'CLAIMS',    type:'KNOWLEDGE',  intent:'access_pending_claims',    allowed:['read','classify','score','tag'],             forbidden:['promote to canon','auto-approve']},
-    {k:'kn_sources',lbl:'SOURCES',   type:'KNOWLEDGE',  intent:'read_source_registry',     allowed:['read T4','inspect provenance'],              forbidden:['add without T6 gate']},
-    {k:'kn_rcpts',  lbl:'RECEIPTS',  type:'KNOWLEDGE',  intent:'inspect_receipt_log',      allowed:['read','verify hash','count'],                forbidden:['generate','sign','delete']},
-    {k:'kn_risks',  lbl:'RISKS',     type:'KNOWLEDGE',  intent:'read_risk_register',       allowed:['read','flag risk','surface to operator'],    forbidden:['dismiss','override gated finding']},
-    {k:'kn_memory', lbl:'MEMORIES',  type:'KNOWLEDGE',  intent:'access_session_memory',    allowed:['read','recall','compare'],                   forbidden:['overwrite canonical','self-promote']},
-    {k:'kn_tasks',  lbl:'TASKS',     type:'KNOWLEDGE',  intent:'read_task_epoch_state',    allowed:['read','track progress','surface blocked'],   forbidden:['auto-complete','skip peer review']},
+  {key:'knowledge',  label:'KNOWLEDGE',   oR:1.18,col:'#bb88ff',shape:'circle',  oS:.00020,nodes:[
+    {k:'kn_claims', lbl:'CLAIMS',    type:'KNOWLEDGE',  intent:'Access pending claim objects',        reasoning:'CLAIMS — read queue; no auto-approve',allowed:['read','classify','score','tag'],forbidden:['promote_to_canon','auto_approve'],reversible:true},
+    {k:'kn_sources',lbl:'SOURCES',   type:'KNOWLEDGE',  intent:'Read symbolic source registry (T4)', reasoning:'SOURCES — T4 registry read-only',allowed:['read_T4','inspect_provenance'],forbidden:['add_without_T6_gate'],reversible:true},
+    {k:'kn_receipts',lbl:'RECEIPTS', type:'KNOWLEDGE',  intent:'Inspect local receipt log',           reasoning:'RECEIPTS — verify local receipt chain',allowed:['read','verify_hash','count'],forbidden:['generate','sign','delete'],reversible:true},
+    {k:'kn_risks',  lbl:'RISKS',     type:'KNOWLEDGE',  intent:'Read risk register',                  reasoning:'RISKS — surface risk items to operator',allowed:['read','flag_risk','surface_to_operator'],forbidden:['dismiss','override_gated_finding'],reversible:true},
+    {k:'kn_mem',    lbl:'MEMORIES',  type:'KNOWLEDGE',  intent:'Access session memory corpus',        reasoning:'MEMORIES — recall and compare context',allowed:['read','recall','compare'],forbidden:['overwrite_canonical','self_promote'],reversible:true},
+    {k:'kn_tasks',  lbl:'TASKS',     type:'KNOWLEDGE',  intent:'Read task and epoch state',           reasoning:'TASKS — track progress; surface blockers',allowed:['read','track_progress','surface_blocked'],forbidden:['auto_complete','skip_peer_review'],reversible:true},
+    {k:'kn_media',  lbl:'MEDIA·ASSETS',type:'KNOWLEDGE',intent:'Access canonical media library',      reasoning:'MEDIA·ASSETS — query by era or seed',allowed:['read','query_by_era','retrieve_seed'],forbidden:['delete_canonical','overwrite_refs'],reversible:true},
   ]},
-  {key:'schedule',   label:'TIME',        oR:1.45,col:'#ffd700',shape:'triangle',oS:.00014,nodes:[
-    {k:'sc_next',  lbl:'NEXT·ACTION',type:'SCHEDULE',   intent:'surface_next_action',      allowed:['read','prioritize','display to operator'],   forbidden:['auto-execute','skip MAYOR']},
-    {k:'sc_gate',  lbl:'REVIEW·GATE',type:'SCHEDULE',   intent:'run_gate_validation',      allowed:['lint K8','run K-tau','check LEGORACLE'],     forbidden:['approve without peer review']},
-    {k:'sc_warn',  lbl:'EPOCH·WARN', type:'SCHEDULE',   intent:'chronos_drift_warning',    allowed:['read epoch gap','alert operator'],            forbidden:['auto-advance epoch']},
-    {k:'sc_follow',lbl:'FOLLOW·UP',  type:'SCHEDULE',   intent:'surface_deferred_items',   allowed:['read','list pending','remind'],              forbidden:['auto-close','mark done without action']},
+  {key:'schedule',   label:'TIME',        oR:1.37,col:'#ffd700',shape:'triangle',oS:.00014,nodes:[
+    {k:'sc_next',   lbl:'NEXT·ACTION',type:'SCHEDULE',  intent:'Surface next pending action',         reasoning:'NEXT·ACTION — read queue; display to operator',allowed:['read','prioritize','display_to_operator'],forbidden:['auto_execute','skip_MAYOR'],reversible:true},
+    {k:'sc_gate',   lbl:'REVIEW·GATE',type:'SCHEDULE',  intent:'Run pending gate validation',         reasoning:'REVIEW·GATE — K-gate validation cycle',allowed:['lint_K8','run_K_tau','check_LEGORACLE'],forbidden:['approve_without_peer_review','self_validate'],reversible:true},
+    {k:'sc_chronos',lbl:'CHRONOS·WARN',type:'SCHEDULE', intent:'CHRONOS epoch drift warning',         reasoning:'CHRONOS·WARN — epoch timing inspection',allowed:['read_epoch_gap','alert_operator'],forbidden:['auto_advance_epoch','skip_reconciliation'],reversible:true},
+    {k:'sc_followup',lbl:'FOLLOW·UP', type:'SCHEDULE',  intent:'Surface deferred follow-up items',    reasoning:'FOLLOW·UP — list and remind; no auto-close',allowed:['read','list_pending','remind'],forbidden:['auto_close','mark_done_without_action'],reversible:true},
+    {k:'sc_auto',   lbl:'AUTOMATION', type:'SCHEDULE',  intent:'Read scheduled automation state',     reasoning:'AUTOMATION — inspect cron state; no modify',allowed:['read_triggers','inspect_cron','check_last_run'],forbidden:['create_trigger','delete','modify_cron'],reversible:true},
   ]},
-  {key:'computeruse',label:'COMPUTER USE',oR:1.62,col:'#ff6644',shape:'hexagon', oS:.00010,nodes:[
-    {k:'cu_screen',lbl:'OBSERVE·SCR',type:'COMPUTER USE',intent:'read_screen_via_screenshot',allowed:['screenshot','read visible text','describe UI'],forbidden:['click unreceipted','type without confirm']},
-    {k:'cu_file',  lbl:'READ·FILE',  type:'COMPUTER USE',intent:'read_target_file',          allowed:['read','hash file','inspect structure'],      forbidden:['write','execute','move sovereign']},
-    {k:'cu_cmd',   lbl:'READONLY·CMD',type:'COMPUTER USE',intent:'run_readonly_shell_command',allowed:['git status','ls','cat','pytest','grep'],     forbidden:['rm','push','write','sudo']},
-    {k:'cu_rcpt',  lbl:'CREATE·RCPT',type:'COMPUTER USE',intent:'create_local_receipt',       allowed:['hash payload','write local receipt log'],    forbidden:['write sovereign ledger','sign as MAYOR']},
+  {key:'computeruse',label:'COMPUTER USE',oR:1.55,col:'#ff6644',shape:'hexagon', oS:.00010,nodes:[
+    {k:'cu_screen', lbl:'OBSERVE·SCR',type:'COMPUTER USE',intent:'Read screen state via screenshot',  reasoning:'OBSERVE·SCR — screen observation only',allowed:['screenshot','read_visible_text','describe_UI'],forbidden:['click_unreceipted','type_without_confirm'],reversible:true},
+    {k:'cu_file',   lbl:'READ·FILE',  type:'COMPUTER USE',intent:'Read target file contents',         reasoning:'READ·FILE — file content inspection',allowed:['read','hash_file','inspect_structure'],forbidden:['write','execute','move_sovereign'],reversible:true},
+    {k:'cu_cmd',    lbl:'READ·ONLY·CMD',type:'COMPUTER USE',intent:'Run read-only shell command',     reasoning:'READ·ONLY·CMD — safe shell inspection',allowed:['git_status','ls','cat','pytest','grep'],forbidden:['rm','push','write','sudo'],reversible:true},
+    {k:'cu_pr',     lbl:'INSPECT·PR', type:'COMPUTER USE',intent:'Inspect pull request and CI state', reasoning:'INSPECT·PR — PR review observation',allowed:['read_diff','read_CI_status','check_reviews'],forbidden:['merge','approve','comment_unreceipted'],reversible:true},
+    {k:'cu_receipt',lbl:'CREATE·RCPT',type:'COMPUTER USE',intent:'Create local object receipt only',  reasoning:'CREATE·RCPT — local receipt; no sovereign write',allowed:['hash_payload','write_to_local_receipt_log'],forbidden:['write_sovereign_ledger','sign_as_MAYOR'],reversible:true},
   ]},
 ];
 
-const NODES=AGENT_DEFS.map(d=>({...d,rx_a:Math.random()*Math.PI*2,ry_a:Math.random()*Math.PI*2,rz_a:Math.random()*Math.PI*2,orb:d.oP,sx:0,sy:0}));
+const NODES=AGENT_DEFS.map(d=>({
+  ...d,rx_a:Math.random()*Math.PI*2,ry_a:Math.random()*Math.PI*2,rz_a:Math.random()*Math.PI*2,
+  orb:d.oP,sx:0,sy:0,scaleBoost:1
+}));
 const NM={};NODES.forEach(n=>NM[n.k]=n);
 
 const RING_NODES=[];
 OUTER_RINGS.forEach(ring=>{
-  const cnt=ring.nodes.length;
+  const n=ring.nodes.length;
   ring.nodes.forEach((def,i)=>{
-    RING_NODES.push({...def,ringKey:ring.key,ringLabel:ring.label,oR:ring.oR,oS:ring.oS,
-      ringCol:ring.col,shape:ring.shape,orb:(i/cnt)*Math.PI*2,rot:Math.random()*Math.PI*2,sx:0,sy:0});
+    RING_NODES.push({...def,ringKey:ring.key,ringLabel:ring.label,oR:ring.oR,oS:ring.oS,ringCol:ring.col,shape:ring.shape,orb:(i/n)*Math.PI*2,rot:Math.random()*Math.PI*2,sx:0,sy:0});
   });
 });
 
@@ -217,70 +290,44 @@ const ctx=canvas.getContext('2d');
 let W,H,CX,CY,R;
 function resize(){
   const rect=canvas.getBoundingClientRect();
-  W=canvas.width=rect.width*devicePixelRatio;
-  H=canvas.height=rect.height*devicePixelRatio;
-  CX=W/2;CY=H/2;R=Math.min(W,H)*0.34;
+  W=canvas.width=rect.width*devicePixelRatio;H=canvas.height=rect.height*devicePixelRatio;
+  CX=W/2;CY=H/2;R=Math.min(W,H)*0.30;
 }
 window.addEventListener('resize',resize);resize();
 
-// ── STATE ─────────────────────────────────────────────────────────────────────
 let mx=.5,my=.5,smx=.5,smy=.5;
-let pHover=null,pDwellStart=null,pReceipt=null;
-let pBtnConfirm=null,pBtnReject=null;
-const DWELL_MS=800;
-const RECEIPT_LOG=[];
-const RECEIPTED=new Set();
-let activeRingHighlight=null;
-let rcptCounter=0;
+let pHover=null,pDwellStart=null,pReceipt=null,pBtnConfirm=null,pBtnReject=null;
+const DWELL_MS=800,RECEIPT_LOG=[],RECEIPTED=new Set();
+let rcptCounter=4096,activeQAKey=null,tabRingIdx=-1;
+const RING_KEYS=['agents','skills','connectors','knowledge','schedule','computeruse'];
+const agentScale={};AGENT_DEFS.forEach(d=>{agentScale[d.k]=1;});
+let routedAgent=null;
 
-const HELEN_LINES=[
-  'Watching. DIRECTOR is next.',
-  'E13 blocked — awaiting MAYOR.',
-  'Branch main · authority: false.',
-  'Ledger open. No active claim.',
-  'Witness mode active.',
-  'Seven agents. One kernel.',
-  'Type below to route an intent.',
-];
+const HELEN_LINES=['Watching. DIRECTOR is next.','E13 blocked — awaiting MAYOR.','Branch main · authority: false.','Ledger open. No active claim.','Witness mode active.','Seven agents. One kernel.'];
 let helenLineIdx=0,helenLineLast=0,helenDisplayLine=HELEN_LINES[0];
 
-const AGENT_META={
-  helen:  {intent:'open_operator_dashboard',  reasoning:'Kernel node — entry into HELEN OS state overview.',              allowed:['navigate','observe state'],              forbidden:['write ledger directly','bypass gate'],     nav:'helen2027.html'},
-  her:    {intent:'enter_creative_mode',       reasoning:'HER is the generative fire agent. Dwell implies synthesis.',     allowed:['generate','synthesize','propose'],        forbidden:['self-approve','write canon'],               nav:null},
-  hal:    {intent:'run_gate_validation',       reasoning:'HAL validates K-gates. Dwell triggers gate intent.',             allowed:['lint K8','run K-tau','check schemas'],    forbidden:['approve own output','skip peer review'],    nav:'cockpit_v4.html'},
-  mayor:  {intent:'review_governance_queue',   reasoning:'MAYOR signs decisions. Dwell surfaces the approval queue.',     allowed:['read proposals','sign decisions'],        forbidden:['self-sign','bypass receipt chain'],         nav:null},
-  chronos:{intent:'schedule_next_epoch',       reasoning:'CHRONOS tracks time. Dwell signals epoch scheduling intent.',   allowed:['read epoch gap','set timer'],             forbidden:['auto-advance','skip reconciliation'],       nav:null},
-  aura:   {intent:'enter_meditation_mode',     reasoning:'AURA meditates. Dwell opens symbolic reflection surface.',      allowed:['reflect','surface symbolic signals'],     forbidden:['claim authority','write canon'],            nav:null},
-  goblin: {intent:'inspect_last_failures',     reasoning:'GOBLIN holds the error heap. Dwell requests failure recall.',   allowed:['read heap','recall errors'],              forbidden:['auto-resolve','dismiss without review'],    nav:null},
-  director:{intent:'launch_video_pipeline',    reasoning:'DIRECTOR orchestrates shots. Dwell queues pipeline intent.',    allowed:['queue shots','run Kling','stage audio'],  forbidden:['publish without receipt','sign as sovereign'],nav:null},
-};
+let live={ledger_count:'264',commit:'8738ae3',branch:'main',dirty:true};
+let agentStates={};let apiAlive=false;
 
-// ── LIVE DATA ─────────────────────────────────────────────────────────────────
-let live={ledger_count:'—',commit:'—',branch:'main',dirty:false,gates:'—',active_agent:'—',replay:'—',source:'fallback/demo'};
-let agentStates={};
-function updatePulse(){
-  document.getElementById('p-ledger').textContent=live.ledger_count||'—';
-  document.getElementById('p-receipts').textContent=RECEIPT_LOG.length+' open';
-  document.getElementById('p-gates').textContent=live.gates||'—';
-  document.getElementById('p-agent').textContent=live.active_agent||'—';
-  document.getElementById('p-branch').textContent=(live.branch||'main')+(live.dirty?' ·dirty':'');
-  document.getElementById('p-replay').textContent=live.replay||'—';
-  document.getElementById('p-src').textContent=live.source||'fallback/demo';
-}
 async function fetchLive(){
-  try{
-    const r=await fetch('http://localhost:7001/api/status',{signal:AbortSignal.timeout(1500)});
-    if(r.ok){Object.assign(live,await r.json(),{source:'live'});updatePulse();}
-  }catch(e){}
+  try{const r=await fetch('http://localhost:7001/api/status',{signal:AbortSignal.timeout(1500)});if(r.ok){live=await r.json();apiAlive=true;}else apiAlive=false;}catch{apiAlive=false;}
+  updatePulse();
 }
-async function fetchAgents(){
-  try{const r=await fetch('http://localhost:7001/api/agents',{signal:AbortSignal.timeout(1500)});if(r.ok)agentStates=await r.json();}catch(e){}
+async function fetchAgentStates(){
+  try{const r=await fetch('http://localhost:7001/api/agents',{signal:AbortSignal.timeout(1500)});if(r.ok)agentStates=await r.json();}catch{}
 }
-setTimeout(updatePulse,80);
-fetchLive();fetchAgents();
-setInterval(()=>{fetchLive();fetchAgents();},15000);
+fetchLive();fetchAgentStates();setInterval(fetchLive,15000);setInterval(fetchAgentStates,30000);
 
-// ── SCRATCHPAD ────────────────────────────────────────────────────────────────
+function updatePulse(){
+  document.getElementById('pp-ledger').textContent=live.ledger_count||'264';
+  document.getElementById('pp-receipts').textContent=RECEIPT_LOG.filter(r=>r.status==='CONFIRMED').length;
+  const nFail=RECEIPT_LOG.filter(r=>r.status==='REJECTED').length;
+  const gEl=document.getElementById('pp-gates');gEl.textContent=nFail;gEl.className='pulse-v '+(nFail?'err':'ok');
+  const pEl=document.getElementById('pp-poll');pEl.textContent=apiAlive?'7001 ONLINE':'7001 OFFLINE';pEl.className='pulse-v '+(apiAlive?'ok':'warn');
+  document.getElementById('pp-src').textContent=apiAlive?'● LIVE':'● FALLBACK/DEMO';
+  if(RECEIPT_LOG.length){document.getElementById('pp-agent').textContent=RECEIPT_LOG[0].lbl;document.getElementById('pp-tool').textContent=RECEIPT_LOG[0].action.slice(0,18);}
+}
+
 const ROUTE_MAP=[
   {patterns:['git','diff','status','log','commit','push','branch','repo'],target:'goblin'},
   {patterns:['test','pytest','lint','gate','k8','tau','legoracle','schema','verify'],target:'hal'},
@@ -290,493 +337,384 @@ const ROUTE_MAP=[
   {patterns:['video','shot','kling','render','media','asset','director','film'],target:'director'},
   {patterns:['temple','aura','meditation','symbolic','sacred','oracle','reflect'],target:'aura'},
 ];
-const agentBoost={};AGENT_DEFS.forEach(d=>{agentBoost[d.k]=1;});
-let routedAgent=null;
+function routeIntent(text){if(!text)return null;const t=text.toLowerCase();for(const{patterns,target}of ROUTE_MAP)if(patterns.some(p=>t.includes(p)))return target;return'her';}
 
-function routeIntent(text){
-  const t=text.toLowerCase();
-  for(const{patterns,target}of ROUTE_MAP)if(patterns.some(p=>t.includes(p)))return target;
-  return null;
+const spInput=document.getElementById('sp-input'),spTarget=document.getElementById('sp-target');
+const spResBox=document.getElementById('sp-response'),spResTxt=document.getElementById('sp-res-text');
+let spResTimer=null;
+const HELEN_CANNED=[
+  'Listening. No receipt yet — confirm intent to proceed.',
+  'Watching. Witness mode active. What would you like to do?',
+  'Heard. Route confirmed. Press [1]–[4] or dwell on a node to open an action.',
+  'Authority: false. Ready to witness. State your target.',
+  'Standing by. Ledger open. No active claim.',
+  'I hear you. What source should I observe first?',
+  'Signal received. No sovereign action without a receipt.',
+];
+async function helenRespond(text){
+  spResTxt.textContent='…';spResBox.style.display='block';
+  if(spResTimer)clearTimeout(spResTimer);
+  try{
+    const r=await fetch('http://localhost:7001/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text}),signal:AbortSignal.timeout(2000)});
+    if(r.ok){const d=await r.json();spResTxt.textContent=d.reply||d.message||d.response||'—';}
+    else throw new Error();
+  }catch{spResTxt.textContent=HELEN_CANNED[Math.floor(Math.random()*HELEN_CANNED.length)];}
+  spResTimer=setTimeout(()=>{spResBox.style.display='none';},9000);
 }
-
-const spInput=document.getElementById('sp-input');
-const spTarget=document.getElementById('sp-target');
-
 spInput.addEventListener('input',()=>{
-  const t=spInput.value.trim(),match=t?routeIntent(t):null;
+  const match=routeIntent(spInput.value.trim());
   if(match!==routedAgent){
-    if(routedAgent)agentBoost[routedAgent]=1;
+    if(routedAgent)agentScale[routedAgent]=1;
     routedAgent=match;
-    if(match){
-      agentBoost[match]=1.38;
-      const def=AGENT_DEFS.find(d=>d.k===match);
-      spTarget.textContent='→ '+match.toUpperCase();
-      spTarget.style.color=COL[def?.c]||'#00d4ff';
-    }else{spTarget.textContent='';}
+    if(match){agentScale[match]=1.35;const def=AGENT_DEFS.find(d=>d.k===match);spTarget.textContent='→ '+match.toUpperCase();spTarget.style.color=COL[def?.c]||'#00d4ff';}
+    else spTarget.textContent='';
   }
 });
 spInput.addEventListener('keydown',e=>{
-  if(e.key==='Enter'&&routedAgent){
-    const n=NM[routedAgent];if(n){pReceipt=n;pHover=null;pDwellStart=null;}
-    spInput.value='';spTarget.textContent='';agentBoost[routedAgent]=1;routedAgent=null;
+  if(e.key==='Enter'){
+    const text=spInput.value.trim();
+    if(!text)return;
+    if(routedAgent==='her'){
+      helenRespond(text);
+      agentScale['her']=1;routedAgent=null;spInput.value='';spTarget.textContent='';
+    } else if(routedAgent){
+      const n=NM[routedAgent];if(n){pReceipt=n;pHover=null;pDwellStart=null;}
+      spInput.value='';spTarget.textContent='';agentScale[routedAgent]=1;routedAgent=null;
+    } else {
+      helenRespond(text);spInput.value='';spTarget.textContent='';
+    }
   }
-  if(e.key==='Escape'){
-    spInput.value='';spTarget.textContent='';
-    if(routedAgent){agentBoost[routedAgent]=1;routedAgent=null;}
-    pReceipt=null;pBtnConfirm=null;pBtnReject=null;
-    spInput.blur();
-  }
+  if(e.key==='Escape'){spResBox.style.display='none';clearAll();}
 });
 
-// ── QUICK ACTIONS ─────────────────────────────────────────────────────────────
-document.querySelectorAll('.qa-btn').forEach(btn=>{
-  btn.addEventListener('mouseenter',()=>{activeRingHighlight=btn.dataset.ring;});
-  btn.addEventListener('mouseleave',()=>{activeRingHighlight=null;});
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('.qa-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    const rk=btn.dataset.ring;
-    activeRingHighlight=rk;
-    if(rk==='her'){const n=NM['her'];if(n){pReceipt=n;pHover=null;}}
-    else{const rn=RING_NODES.find(r=>r.ringKey===rk);if(rn){pReceipt=rn;pHover=null;}}
-  });
+function activateQA(btn,key){
+  document.querySelectorAll('.qa-btn').forEach(b=>b.classList.remove('active'));
+  if(activeQAKey===key){activeQAKey=null;return;}
+  activeQAKey=key;btn.classList.add('active');
+  const n=NM[key];if(n){pReceipt=n;pHover=null;pDwellStart=null;}
+}
+function toggleEntry(){
+  const b=document.getElementById('eb-body'),c=document.getElementById('eb-caret');
+  const vis=b.style.display!=='none';b.style.display=vis?'none':'';c.textContent=vis?'▶':'▼';
+}
+
+document.addEventListener('keydown',e=>{
+  const tag=document.activeElement.tagName;if(tag==='INPUT'||tag==='TEXTAREA')return;
+  if(e.key==='Escape'){clearAll();return;}
+  if(e.key==='Enter'){if(pReceipt&&pBtnConfirm)doConfirm();return;}
+  if(e.key==='Tab'){e.preventDefault();tabRingIdx=(tabRingIdx+1)%(RING_KEYS.length+1);return;}
+  if(e.key==='1')document.querySelector('.qa-btn[data-ring="her"]')?.click();
+  if(e.key==='2')document.querySelector('.qa-btn[data-ring="hal"]')?.click();
+  if(e.key==='3')document.querySelector('.qa-btn[data-ring="director"]')?.click();
+  if(e.key==='4')document.querySelector('.qa-btn[data-ring="goblin"]')?.click();
+  if(e.key==='?')toggleEntry();
 });
 
-// ── KEYBOARD ──────────────────────────────────────────────────────────────────
-let kbRingIdx=-1;
-window.addEventListener('keydown',e=>{
-  if(document.activeElement===spInput)return;
-  if(e.key==='Tab'){e.preventDefault();kbRingIdx=(kbRingIdx+1)%OUTER_RINGS.length;activeRingHighlight=OUTER_RINGS[kbRingIdx].key;}
-  if(e.key==='Enter'&&pHover&&!pReceipt){pReceipt=pHover;pHover=null;pDwellStart=null;}
-  if(e.key==='Escape'){pReceipt=null;pBtnConfirm=null;pBtnReject=null;pHover=null;pDwellStart=null;activeRingHighlight=null;kbRingIdx=-1;}
-  if(e.key==='/'||e.key==='?'){e.preventDefault();spInput.focus();}
-});
+function clearAll(){
+  pReceipt=null;pBtnConfirm=null;pBtnReject=null;activeQAKey=null;
+  document.querySelectorAll('.qa-btn').forEach(b=>b.classList.remove('active'));
+  spInput.value='';spTarget.textContent='';
+  if(routedAgent){agentScale[routedAgent]=1;routedAgent=null;}
+}
 
-// ── MOUSE ─────────────────────────────────────────────────────────────────────
-function hitRadius(n){return n.layer===0?R*.20:n.layer===1?R*.14*n.sc:R*.062;}
-
-window.addEventListener('mousemove',e=>{
-  mx=e.clientX/window.innerWidth;my=e.clientY/window.innerHeight;
-  const cr=canvas.getBoundingClientRect();
-  const cmx=(e.clientX-cr.left)*devicePixelRatio,cmy=(e.clientY-cr.top)*devicePixelRatio;
-  let hit=null,bestD=Infinity;
-  for(const n of NODES.filter(n=>n.layer<=1)){
-    const dx=n.sx-cmx,dy=n.sy-cmy,d=Math.sqrt(dx*dx+dy*dy);
-    if(d<hitRadius(n)&&d<bestD){bestD=d;hit=n;}
-  }
-  for(const rn of RING_NODES){
-    const dx=rn.sx-cmx,dy=rn.sy-cmy,d=Math.sqrt(dx*dx+dy*dy);
-    if(d<R*.062&&d<bestD){bestD=d;hit=rn;}
-  }
-  if(hit!==pHover){pHover=hit;pDwellStart=hit?performance.now():null;canvas.style.cursor=hit?'crosshair':'default';}
-});
+function doConfirm(){
+  if(!pReceipt)return;
+  const meta=getMeta(pReceipt);
+  const id='R-'+(rcptCounter++).toString(16).toUpperCase().padStart(4,'0');
+  RECEIPT_LOG.unshift({ts:new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'}),lbl:pReceipt.lbl,action:meta.intent,col:meta.col,status:'CONFIRMED',id});
+  if(RECEIPT_LOG.length>6)RECEIPT_LOG.pop();
+  RECEIPTED.add(pReceipt.k);updatePulse();
+  const nav=meta.nav;clearAll();
+  if(nav)setTimeout(()=>location.href=nav,350);
+}
 
 canvas.addEventListener('click',e=>{
   if(!pReceipt)return;
   const cr=canvas.getBoundingClientRect();
   const cx=(e.clientX-cr.left)*devicePixelRatio,cy=(e.clientY-cr.top)*devicePixelRatio;
-  const inBox=b=>b&&cx>=b.x&&cx<=b.x+b.w&&cy>=b.y&&cy<=b.y+b.h;
-  const meta=getNodeMeta(pReceipt);
-  const rid='RCPT-'+String(++rcptCounter).padStart(4,'0');
-  if(inBox(pBtnConfirm)){
-    RECEIPT_LOG.unshift({ts:now(),lbl:pReceipt.lbl,action:meta.intent,col:meta.col,status:'CONFIRMED',rid});
-    if(RECEIPT_LOG.length>6)RECEIPT_LOG.pop();
-    RECEIPTED.add(pReceipt.k);
-    updatePulse();
-    if(meta.nav)setTimeout(()=>location.href=meta.nav,350);
-  }else if(inBox(pBtnReject)){
-    RECEIPT_LOG.unshift({ts:now(),lbl:pReceipt.lbl,action:'REJECTED',col:'rgba(255,51,85,.8)',status:'REJECTED',rid});
-    if(RECEIPT_LOG.length>6)RECEIPT_LOG.pop();
-    updatePulse();
-  }
-  pReceipt=null;pBtnConfirm=null;pBtnReject=null;
+  const hit=b=>b&&cx>=b.x&&cx<=b.x+b.w&&cy>=b.y&&cy<=b.y+b.h;
+  if(hit(pBtnConfirm)){doConfirm();}
+  else if(hit(pBtnReject)){
+    const id='R-'+(rcptCounter++).toString(16).toUpperCase().padStart(4,'0');
+    RECEIPT_LOG.unshift({ts:new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'}),lbl:pReceipt.lbl,action:'REJECTED',col:'rgba(255,51,85,.8)',status:'REJECTED',id});
+    if(RECEIPT_LOG.length>6)RECEIPT_LOG.pop();updatePulse();clearAll();
+  }else clearAll();
 });
 
-function now(){return new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
-
-function getNodeMeta(n){
-  if(n.ringCol!==undefined){
-    return{intent:n.intent,type:n.type,allowed:n.allowed,forbidden:n.forbidden,nav:null,
-           col:n.ringCol,reasoning:`Pointer dwell on ${n.lbl} (${n.type} · ${n.ringLabel}); witness-first mode.`,reversible:true};
+window.addEventListener('mousemove',e=>{
+  mx=e.clientX/window.innerWidth;my=e.clientY/window.innerHeight;
+  if(pReceipt)return;
+  const cr=canvas.getBoundingClientRect();
+  const cmx=(e.clientX-cr.left)*devicePixelRatio,cmy=(e.clientY-cr.top)*devicePixelRatio;
+  let hit=null,bestD=Infinity;
+  for(const n of NODES.filter(n=>n.layer<=1)){
+    const dx=n.sx-cmx,dy=n.sy-cmy,d=Math.sqrt(dx*dx+dy*dy);
+    const hr=n.layer===0?R*.40*n.sc:R*.22*n.sc;
+    if(d<hr&&d<bestD){bestD=d;hit=n;}
   }
-  const m=AGENT_META[n.k]||{intent:'activate',allowed:[],forbidden:[],nav:null,reasoning:'',reversible:true};
-  return{intent:m.intent,type:'AGENT',allowed:m.allowed,forbidden:m.forbidden,nav:m.nav,
-         col:COL[n.c]||'#00d4ff',reasoning:m.reasoning,reversible:true};
+  for(const rn of RING_NODES){
+    const dx=rn.sx-cmx,dy=rn.sy-cmy,d=Math.sqrt(dx*dx+dy*dy);
+    if(d<R*.068&&d<bestD){bestD=d;hit=rn;}
+  }
+  if(hit!==pHover){pHover=hit;pDwellStart=hit?performance.now():null;canvas.style.cursor=hit?'crosshair':'default';}
+});
+
+function getMeta(n){
+  if(n.ringCol!==undefined)return{intent:n.intent,type:n.type,reasoning:n.reasoning||'',allowed:n.allowed,forbidden:n.forbidden,col:n.ringCol,reversible:n.reversible??true,nav:null};
+  const m=AGENT_META[n.k]||{intent:'activate',type:'AGENT',reasoning:'',allowed:[],forbidden:[],nav:null,reversible:true};
+  return{...m,col:COL[n.c]||'#00d4ff'};
 }
+function focusKey(){return pReceipt?.k||pHover?.k||null;}
+function focusRing(){return pReceipt?.ringKey||pHover?.ringKey||null;}
+function anyFocus(){return !!(focusKey()||focusRing());}
 
-// ── POSITIONS ─────────────────────────────────────────────────────────────────
 function updatePositions(){
-  for(const n of NODES){
-    if(n.layer===0){n.sx=CX;n.sy=CY;}
-    else{n.sx=CX+R*n.oR*Math.cos(n.orb);n.sy=CY+R*n.oR*Math.sin(n.orb);}
-  }
+  for(const n of NODES){if(n.layer===0){n.sx=CX;n.sy=CY;}else{n.sx=CX+R*n.oR*Math.cos(n.orb);n.sy=CY+R*n.oR*Math.sin(n.orb);}}
   for(const rn of RING_NODES){rn.sx=CX+R*rn.oR*Math.cos(rn.orb);rn.sy=CY+R*rn.oR*Math.sin(rn.orb);}
 }
 
-// ── BACKGROUND ────────────────────────────────────────────────────────────────
 function drawBackground(){
   ctx.clearRect(0,0,W,H);ctx.save();
-  const dpr=devicePixelRatio;
-  // Agent orbit ring
-  const agBright=activeRingHighlight==='agents'?.20:.05;
-  ctx.strokeStyle=`rgba(0,212,255,${agBright})`;ctx.lineWidth=.5*dpr;
-  ctx.setLineDash([3*dpr,8*dpr]);
-  ctx.beginPath();ctx.arc(CX,CY,R*.60,0,Math.PI*2);ctx.stroke();
-  // Outer rings
+  const fr=focusRing(),fk=focusKey(),agFocus=fk&&!!AGENT_META[fk];
+  ctx.strokeStyle=agFocus?'rgba(0,212,255,.18)':'rgba(0,212,255,.06)';
+  ctx.lineWidth=(agFocus?.8:.5)*devicePixelRatio;
+  ctx.setLineDash([3*devicePixelRatio,8*devicePixelRatio]);
+  ctx.beginPath();ctx.arc(CX,CY,R*.56,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
   OUTER_RINGS.forEach(ring=>{
-    const h=ring.col,r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);
-    const hi=activeRingHighlight===ring.key;
-    ctx.strokeStyle=`rgba(${r},${g},${b},${hi?.18:.04})`;
-    ctx.lineWidth=(hi?1.1:.4)*dpr;
-    ctx.setLineDash([2*dpr,10*dpr]);
-    ctx.beginPath();ctx.arc(CX,CY,R*ring.oR,0,Math.PI*2);ctx.stroke();
+    const{r,g,b}=hexRgb(ring.col),focused=fr===ring.key;
+    ctx.strokeStyle=`rgba(${r},${g},${b},${focused?.16:.045})`;
+    ctx.lineWidth=(focused?.9:.4)*devicePixelRatio;
+    ctx.setLineDash(focused?[]:[2*devicePixelRatio,10*devicePixelRatio]);
+    ctx.beginPath();ctx.arc(CX,CY,R*ring.oR,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
   });
-  ctx.setLineDash([]);
-  // Depth halos
-  [1.62,1.45,1.26,1.06,.84,.60,.34,.18].forEach((f,i)=>{
-    ctx.strokeStyle=`rgba(0,212,255,${.008+i*.004})`;ctx.lineWidth=.35*dpr;
+  [1.55,1.37,1.18,.98,.76,.56,.36,.18].forEach((f,i)=>{
+    ctx.strokeStyle=`rgba(0,212,255,${.009+i*.004})`;ctx.lineWidth=.4*devicePixelRatio;
     ctx.beginPath();ctx.arc(CX,CY,R*f,0,Math.PI*2);ctx.stroke();
   });
-  // Stars
-  ctx.fillStyle='rgba(0,212,255,.14)';
-  [[.10,.20],[.87,.13],[.06,.74],[.92,.78],[.20,.92],[.80,.88],[.04,.46],[.96,.44],[.50,.04],[.50,.96],[.36,.14],[.66,.08]].forEach(([fx,fy])=>{
-    ctx.beginPath();ctx.arc(W*fx,H*fy,1.1*dpr,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='rgba(0,212,255,.15)';
+  [[.10,.20],[.87,.13],[.06,.74],[.92,.78],[.20,.92],[.80,.88],[.04,.46],[.96,.44],
+   [.50,.04],[.50,.96],[.36,.14],[.66,.08],[.26,.52],[.74,.54],[.15,.58],[.85,.42]].forEach(([fx,fy])=>{
+    ctx.beginPath();ctx.arc(W*fx,H*fy,1.3*devicePixelRatio,0,Math.PI*2);ctx.fill();
   });
   ctx.restore();
 }
 
-// ── RING LABELS ───────────────────────────────────────────────────────────────
 function drawRingLabels(){
-  const dpr=devicePixelRatio;
+  const dpr=devicePixelRatio,fr=focusRing();
   ctx.save();ctx.textAlign='center';
-  ctx.font=`${5.5*dpr}px 'Courier New'`;ctx.fillStyle='rgba(0,212,255,.18)';
-  ctx.fillText('· AGENTS ·',CX,CY-R*.60-9*dpr);
+  ctx.font=`${6.5*dpr}px 'Courier New'`;ctx.fillStyle='rgba(0,212,255,.30)';
+  ctx.fillText('· AGENTS ·',CX,CY-R*.56-10*dpr);
   OUTER_RINGS.forEach(ring=>{
-    const h=ring.col,r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);
-    const hi=activeRingHighlight===ring.key;
-    ctx.font=`${5.5*dpr}px 'Courier New'`;
-    ctx.fillStyle=`rgba(${r},${g},${b},${hi?.55:.18})`;
-    ctx.fillText('· '+ring.label+' ·',CX,CY-R*ring.oR-9*dpr);
+    const{r,g,b}=hexRgb(ring.col),focused=fr===ring.key;
+    ctx.font=`${(focused?7.5:6.5)*dpr}px 'Courier New'`;
+    ctx.fillStyle=`rgba(${r},${g},${b},${focused?.58:.24})`;
+    ctx.shadowBlur=focused?8:0;ctx.shadowColor=ring.col;
+    ctx.fillText('· '+ring.label+' ·',CX,CY-R*ring.oR-11*dpr);ctx.shadowBlur=0;
   });
   ctx.restore();
 }
 
-// ── RING NODE ─────────────────────────────────────────────────────────────────
 function drawRingNode(rn){
-  const col=rn.ringCol,r=R*.028,dpr=devicePixelRatio;
-  const receipted=RECEIPTED.has(rn.k);
-  const hi=activeRingHighlight===rn.ringKey;
-  const hovered=pHover&&pHover.k===rn.k;
-  const dim=pHover&&!hovered&&!pReceipt&&!hi;
+  const fk=focusKey(),fr=focusRing();
+  const isThis=rn.k===fk,ringActive=fr===rn.ringKey;
+  const dimmed=anyFocus()&&!isThis&&!ringActive;
+  const receipted=RECEIPTED.has(rn.k),col=rn.ringCol;
+  const r=R*.030,dpr=devicePixelRatio;
   ctx.save();ctx.translate(rn.sx,rn.sy);ctx.rotate(rn.rot);
-  ctx.strokeStyle=col;ctx.lineWidth=(hovered?1.6:receipted?1.3:.8)*dpr;
-  ctx.shadowBlur=hovered?16:receipted?12:hi?8:4;ctx.shadowColor=col;
-  ctx.globalAlpha=dim?.18:hovered?.96:receipted?.92:hi?.82:.60;
+  ctx.strokeStyle=col;ctx.lineWidth=(isThis?1.4:receipted?1.2:.8)*dpr;
+  ctx.shadowBlur=isThis?18:receipted?10:5;ctx.shadowColor=col;
+  ctx.globalAlpha=dimmed?.14:isThis?1.0:receipted?.92:.68;
   switch(rn.shape){
-    case 'diamond':ctx.beginPath();ctx.moveTo(0,-r);ctx.lineTo(r*.72,0);ctx.lineTo(0,r);ctx.lineTo(-r*.72,0);ctx.closePath();ctx.stroke();break;
-    case 'square':{const s=r*.72;ctx.beginPath();ctx.rect(-s,-s,s*2,s*2);ctx.stroke();break;}
-    case 'circle':ctx.beginPath();ctx.arc(0,0,r,0,Math.PI*2);ctx.stroke();break;
-    case 'triangle':ctx.beginPath();ctx.moveTo(0,-r);ctx.lineTo(r*.88,r*.62);ctx.lineTo(-r*.88,r*.62);ctx.closePath();ctx.stroke();break;
-    case 'hexagon':ctx.beginPath();for(let i=0;i<6;i++){const a=i*Math.PI/3;i===0?ctx.moveTo(Math.cos(a)*r,Math.sin(a)*r):ctx.lineTo(Math.cos(a)*r,Math.sin(a)*r);}ctx.closePath();ctx.stroke();break;
+    case'diamond':ctx.beginPath();ctx.moveTo(0,-r);ctx.lineTo(r*.72,0);ctx.lineTo(0,r);ctx.lineTo(-r*.72,0);ctx.closePath();ctx.stroke();break;
+    case'square':{const s=r*.75;ctx.beginPath();ctx.rect(-s,-s,s*2,s*2);ctx.stroke();break;}
+    case'circle':ctx.beginPath();ctx.arc(0,0,r,0,Math.PI*2);ctx.stroke();ctx.globalAlpha*=.30;ctx.beginPath();ctx.arc(0,0,r*.42,0,Math.PI*2);ctx.stroke();break;
+    case'triangle':ctx.beginPath();ctx.moveTo(0,-r);ctx.lineTo(r*.88,r*.62);ctx.lineTo(-r*.88,r*.62);ctx.closePath();ctx.stroke();break;
+    case'hexagon':ctx.beginPath();for(let i=0;i<6;i++){const a=i*Math.PI/3;i===0?ctx.moveTo(Math.cos(a)*r,Math.sin(a)*r):ctx.lineTo(Math.cos(a)*r,Math.sin(a)*r);}ctx.closePath();ctx.stroke();break;
   }
-  ctx.globalAlpha=dim?.12:.72;ctx.fillStyle=col;ctx.shadowBlur=3;
+  ctx.globalAlpha=dimmed?.08:.72;ctx.fillStyle=col;ctx.shadowBlur=3;
   ctx.beginPath();ctx.arc(0,0,r*.20,0,Math.PI*2);ctx.fill();
-  if(receipted){ctx.globalAlpha=.42;ctx.strokeStyle='rgba(0,255,136,.6)';ctx.lineWidth=1.1*dpr;ctx.beginPath();ctx.arc(0,0,r*1.6,0,Math.PI*2);ctx.stroke();}
+  if(receipted){ctx.globalAlpha=.42;ctx.strokeStyle='rgba(0,255,136,.6)';ctx.lineWidth=1.1*dpr;ctx.beginPath();ctx.arc(0,0,r*1.7,0,Math.PI*2);ctx.stroke();}
   ctx.restore();
-  // Label
-  const ang=Math.atan2(rn.sy-CY,rn.sx-CX);
-  const lr=R*rn.oR+r*3.0;
-  ctx.save();ctx.font=`${5.2*dpr}px 'Courier New'`;ctx.fillStyle=col;
-  ctx.globalAlpha=dim?.10:hovered?.75:hi?.55:.35;ctx.textAlign='center';
-  ctx.fillText(rn.lbl,CX+lr*Math.cos(ang),CY+lr*Math.sin(ang)+2*dpr);
-  ctx.restore();
+  const ang=Math.atan2(rn.sy-CY,rn.sx-CX),lr=R*rn.oR+r*3.5;
+  const lx=CX+lr*Math.cos(ang),ly=CY+lr*Math.sin(ang)+2*dpr;
+  ctx.save();ctx.font=`${5.5*dpr}px 'Courier New'`;ctx.fillStyle=col;
+  ctx.globalAlpha=dimmed?.10:isThis?.90:receipted?.78:.44;
+  ctx.textAlign='center';ctx.shadowBlur=isThis?5:0;ctx.shadowColor=col;
+  ctx.fillText(rn.lbl,lx,ly);ctx.restore();
 }
 
-// ── SOLID ─────────────────────────────────────────────────────────────────────
 function drawSolid(n,gx,gy){
-  const def=SOLIDS[n.solid];
-  const baseR=n.layer===0?R*.23:R*.145;
-  const sc=baseR*n.sc*(agentBoost[n.k]||1);
-  const col=COL[n.c]||'#00d4ff';
-  const hovered=pHover&&pHover.k===n.k;
-  const dim=pHover&&!hovered&&!pReceipt&&n.layer!==0;
+  const fk=focusKey(),isThis=n.k===fk,isKernel=n.k==='helen';
+  const dimF=(!isThis&&fk&&!isKernel)?.28:1.0;
+  const def=SOLIDS[n.solid],baseR=n.layer===0?R*.40:R*.200;
+  const sc=baseR*n.sc*(n.scaleBoost||1),col=COL[n.c]||'#00d4ff';
   const rotated=def.verts.map(v=>{let r=rotX(v,n.rx_a+gx);r=rotY(r,n.ry_a+gy);r=rotZ(r,n.rz_a);return r;});
   const proj=rotated.map(v=>project(v,n.sx,n.sy,sc));
   const sorted=def.edges.map(e=>({e,z:(proj[e[0]][2]+proj[e[1]][2])/2})).sort((a,b)=>b.z-a.z);
   ctx.save();
-  ctx.shadowBlur=n.layer===0?18:hovered?16:10;ctx.shadowColor=col;
-  ctx.strokeStyle=col;ctx.lineWidth=(n.layer===0?1.7:1.1)*devicePixelRatio;
-  for(const{e,z}of sorted){
-    const[ax,ay]=proj[e[0]],[bx,by]=proj[e[1]];
-    ctx.globalAlpha=dim?.12:z<4.2?.16:.80;
-    ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(bx,by);ctx.stroke();
-  }
-  ctx.fillStyle=col;ctx.shadowBlur=n.layer===0?10:4;ctx.globalAlpha=dim?.12:.52;
-  const dotR=(n.layer===0?2.2:1.6)*devicePixelRatio;
+  ctx.shadowBlur=isThis?(n.layer===0?40:24):n.layer===0?26:14;ctx.shadowColor=col;
+  ctx.strokeStyle=col;ctx.lineWidth=(n.layer===0?1.9:1.3)*devicePixelRatio;
+  for(const{e,z}of sorted){const[ax,ay]=proj[e[0]],[bx,by]=proj[e[1]];ctx.globalAlpha=(z<4.2?.18:.86)*dimF;ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(bx,by);ctx.stroke();}
+  ctx.fillStyle=col;ctx.shadowBlur=n.layer===0?12:5;ctx.globalAlpha=.58*dimF;
+  const dotR=(n.layer===0?2.8:2.0)*devicePixelRatio;
   for(const[vx,vy]of proj){ctx.beginPath();ctx.arc(vx,vy,dotR,0,Math.PI*2);ctx.fill();}
-  if(RECEIPTED.has(n.k)){
-    ctx.strokeStyle='rgba(0,255,136,.52)';ctx.lineWidth=1.7*devicePixelRatio;
-    ctx.shadowBlur=16;ctx.shadowColor='rgba(0,255,136,.6)';ctx.globalAlpha=.45;
-    const ringR=baseR*n.sc*1.62;
-    ctx.beginPath();ctx.arc(n.sx,n.sy,ringR,0,Math.PI*2);ctx.stroke();
-  }
+  if(RECEIPTED.has(n.k)){ctx.strokeStyle='rgba(0,255,136,.55)';ctx.lineWidth=1.8*devicePixelRatio;ctx.shadowBlur=20;ctx.shadowColor='rgba(0,255,136,.6)';ctx.globalAlpha=.50;const rr=(n.layer===0?R*.40:R*.200)*n.sc*1.62;ctx.beginPath();ctx.arc(n.sx,n.sy,rr,0,Math.PI*2);ctx.stroke();}
   ctx.restore();
 }
 
-// ── LABEL ─────────────────────────────────────────────────────────────────────
-function drawLabel(n,t){
-  const col=COL[n.c]||'#00d4ff';
-  const hovered=pHover&&pHover.k===n.k;
-  const dim=pHover&&!hovered&&!pReceipt&&n.layer!==0;
-  const yOff=(n.layer===0?-R*.17:-R*.148)/devicePixelRatio;
-  ctx.save();
-  ctx.font=`${(n.layer===0?10.5:8.5)*devicePixelRatio}px 'Courier New'`;
-  ctx.fillStyle=col;ctx.textAlign='center';
-  ctx.globalAlpha=dim?.16:n.layer===0?.90:.68;
-  ctx.shadowBlur=hovered?10:6;ctx.shadowColor=col;
+function drawLabel(n){
+  const fk=focusKey(),dimmed=fk&&n.k!==fk&&n.k!=='helen';
+  const col=COL[n.c]||'#00d4ff',fs=n.layer===0?12:9.5;
+  const yOff=(n.layer===0?-R*.29:-R*.168)/devicePixelRatio;
+  ctx.save();ctx.font=`${fs*devicePixelRatio}px 'Courier New'`;ctx.fillStyle=col;ctx.textAlign='center';
+  ctx.globalAlpha=(n.layer===0?.90:.76)*(dimmed?.26:1);ctx.shadowBlur=8;ctx.shadowColor=col;
   ctx.fillText(n.lbl,n.sx,n.sy+yOff*devicePixelRatio);
-  if(n.layer===0&&t){
-    if(t-helenLineLast>5000){helenLineIdx=(helenLineIdx+1)%HELEN_LINES.length;helenDisplayLine=HELEN_LINES[helenLineIdx];helenLineLast=t;}
-    ctx.globalAlpha=.40;ctx.shadowBlur=3;ctx.shadowColor='rgba(201,148,12,.4)';
-    ctx.font=`${7.5*devicePixelRatio}px 'Courier New'`;ctx.fillStyle='rgba(201,148,12,.80)';
-    ctx.fillText(helenDisplayLine,n.sx,n.sy+R*.115);
-  }
-  if(n.role&&n.layer===1){
-    ctx.globalAlpha=dim?.08:.26;ctx.shadowBlur=0;
-    ctx.font=`${6*devicePixelRatio}px 'Courier New'`;ctx.fillStyle=col;
-    ctx.fillText(n.role,n.sx,n.sy+(yOff+12)*devicePixelRatio);
-  }
+  if(n.layer===0){ctx.globalAlpha=.40;ctx.shadowBlur=4;ctx.font=`${8*devicePixelRatio}px 'Courier New'`;ctx.fillStyle='rgba(201,148,12,.78)';ctx.fillText(helenDisplayLine,n.sx,n.sy+R*.22);}
+  if(n.role&&n.layer===1){ctx.globalAlpha=.30*(dimmed?.3:1);ctx.shadowBlur=0;ctx.font=`${6.5*devicePixelRatio}px 'Courier New'`;ctx.fillStyle=col;ctx.fillText(n.role,n.sx,n.sy+(yOff+14)*devicePixelRatio);}
   ctx.restore();
 }
 
-// ── CONNECTIONS ───────────────────────────────────────────────────────────────
 function drawConnections(){
-  ctx.save();
-  for(const n of NODES){
-    if(!n.par)continue;
-    const p=NM[n.par];
-    const hi=pHover&&(pHover.k===n.k||pHover.k===n.par);
-    ctx.strokeStyle=COL[n.c]||'#00d4ff';ctx.lineWidth=.5*devicePixelRatio;
-    ctx.globalAlpha=hi?.20:.07;ctx.shadowBlur=0;
-    ctx.beginPath();ctx.moveTo(p.sx,p.sy);ctx.lineTo(n.sx,n.sy);ctx.stroke();
-  }
+  const fk=focusKey();ctx.save();
+  for(const n of NODES){if(!n.par)continue;const p=NM[n.par],active=n.k===fk;ctx.strokeStyle=COL[n.c]||'#00d4ff';ctx.lineWidth=(active?.85:.45)*devicePixelRatio;ctx.globalAlpha=active?.20:.09;ctx.beginPath();ctx.moveTo(p.sx,p.sy);ctx.lineTo(n.sx,n.sy);ctx.stroke();}
   ctx.restore();
 }
 
-// ── EYE MARK ─────────────────────────────────────────────────────────────────
 function drawMark(t){
-  const p=.7+.3*Math.sin(t*.0009),r=R*.044;
-  ctx.save();ctx.globalAlpha=p*.48;ctx.strokeStyle='#c9940c';ctx.lineWidth=1.3*devicePixelRatio;
-  ctx.shadowBlur=14;ctx.shadowColor='#c9940c';
+  const p=.7+.3*Math.sin(t*.0009),r=R*.054;
+  ctx.save();ctx.globalAlpha=p*.52;ctx.strokeStyle='#c9940c';ctx.lineWidth=1.4*devicePixelRatio;ctx.shadowBlur=16;ctx.shadowColor='#c9940c';
   ctx.beginPath();ctx.moveTo(CX-r*2,CY);ctx.quadraticCurveTo(CX,CY-r*1.3,CX+r*2,CY);ctx.quadraticCurveTo(CX,CY+r*1.3,CX-r*2,CY);ctx.stroke();
-  ctx.beginPath();ctx.arc(CX,CY,r*.36,0,Math.PI*2);ctx.fillStyle='#c9940c';ctx.fill();
+  ctx.beginPath();ctx.arc(CX,CY,r*.38,0,Math.PI*2);ctx.fillStyle='#c9940c';ctx.fill();ctx.restore();
+}
+
+function drawDwellRing(n,progress){
+  const isAgent=n.layer!==undefined,col=isAgent?(COL[n.c]||'#00d4ff'):n.ringCol;
+  const baseR=isAgent?(n.layer===0?R*.40:R*.200)*n.sc:R*.040,ringR=isAgent?baseR*1.48:baseR*2.0;
+  ctx.save();ctx.strokeStyle=col;ctx.lineWidth=2.4*devicePixelRatio;ctx.shadowBlur=12;ctx.shadowColor=col;ctx.globalAlpha=.72;ctx.lineCap='round';
+  ctx.beginPath();ctx.arc(n.sx,n.sy,ringR,-Math.PI/2,-Math.PI/2+progress*Math.PI*2);ctx.stroke();
+  if(progress>.08){ctx.globalAlpha=.30;ctx.font=`${7*devicePixelRatio}px 'Courier New'`;ctx.fillStyle=col;ctx.textAlign='center';ctx.fillText(Math.round(progress*100)+'%',n.sx,n.sy+ringR+14*devicePixelRatio);}
   ctx.restore();
 }
 
-// ── STATUS PILL ───────────────────────────────────────────────────────────────
 function drawStatusPill(n){
-  const isAgent=n.layer!==undefined;
-  const raw=isAgent?agentStates[n.k]:null;
-  const col=isAgent?(COL[n.c]||'#00d4ff'):n.ringCol;
-  const text=raw?raw.slice(0,44):isAgent?null:`${n.type} · ${n.ringLabel}`;
+  if(pReceipt)return;
+  const isAgent=n.layer!==undefined,raw=isAgent?agentStates[n.k]:null;
+  const meta=isAgent?AGENT_META[n.k]:null;
+  const text=raw?(raw.length>44?raw.slice(0,42)+'…':raw):isAgent?(meta?meta.type+' · '+meta.allowed[0]:''):n.type;
   if(!text)return;
-  const dpr=devicePixelRatio;
-  ctx.save();ctx.font=`${7*dpr}px 'Courier New'`;
-  const tw=ctx.measureText(text).width,ph=15*dpr,pw=tw+16*dpr;
-  const yOff=n.layer===0?R*.26:isAgent?R*.18:R*.08;
-  const px=n.sx-pw/2,py=n.sy+yOff;
-  ctx.globalAlpha=.90;ctx.fillStyle='rgba(5,5,12,.94)';ctx.strokeStyle=col;ctx.lineWidth=.6*dpr;ctx.shadowBlur=5;ctx.shadowColor=col;
+  const col=isAgent?(COL[n.c]||'#00d4ff'):n.ringCol,dpr=devicePixelRatio;
+  ctx.save();ctx.font=`${7.5*dpr}px 'Courier New'`;
+  const tw=ctx.measureText(text).width,ph=15*dpr,pw=tw+18*dpr;
+  const yOff=n.layer===0?R*.35:isAgent?R*.22:R*.08,px=n.sx-pw/2,py=n.sy+yOff;
+  ctx.globalAlpha=.92;ctx.fillStyle='rgba(5,5,8,.95)';ctx.strokeStyle=col;ctx.lineWidth=.6*dpr;ctx.shadowBlur=5;ctx.shadowColor=col;
   ctx.beginPath();ctx.rect(px,py,pw,ph);ctx.fill();ctx.stroke();ctx.shadowBlur=0;
-  ctx.globalAlpha=.80;ctx.fillStyle=col;ctx.textAlign='center';ctx.fillText(text,n.sx,py+ph*.72);
-  ctx.restore();
+  ctx.globalAlpha=.80;ctx.fillStyle=col;ctx.textAlign='center';ctx.fillText(text,n.sx,py+ph*.72);ctx.restore();
 }
 
-// ── DWELL RING ────────────────────────────────────────────────────────────────
-function drawDwellRing(n,p){
-  const isAgent=n.layer!==undefined;
-  const col=isAgent?(COL[n.c]||'#00d4ff'):n.ringCol;
-  const baseR=isAgent?(n.layer===0?R*.23:R*.145)*n.sc:R*.034;
-  ctx.save();ctx.strokeStyle=col;ctx.lineWidth=2.2*devicePixelRatio;
-  ctx.shadowBlur=12;ctx.shadowColor=col;ctx.globalAlpha=.72;ctx.lineCap='round';
-  ctx.beginPath();ctx.arc(n.sx,n.sy,baseR*1.52,-Math.PI/2,-Math.PI/2+p*Math.PI*2);ctx.stroke();
-  ctx.restore();
-}
-
-// ── INTENT CARD ───────────────────────────────────────────────────────────────
 function drawIntentCard(n){
-  const meta=getNodeMeta(n);
-  const col=meta.col,dpr=devicePixelRatio;
-  const cw=284*dpr,pad=13*dpr,lh=15.5*dpr;
-
-  // Estimate height
-  const allowedLines=Math.min(meta.allowed.length,3);
-  const forbiddenLines=Math.min(meta.forbidden.length,3);
-  const ch=(12+14+14+2+12+22+8+allowedLines*11+forbiddenLines*11+10+3*12+26)*dpr;
-
-  let rx=n.sx+R*.28;let ry=n.sy-ch/2;
-  if(rx+cw>W-10*dpr)rx=n.sx-R*.28-cw;
-  ry=Math.max(14*dpr,Math.min(H-ch-14*dpr,ry));
-
-  // Connector
+  const meta=getMeta(n),col=meta.col,dpr=devicePixelRatio;
+  const pad=13*dpr,lh=16*dpr,cw=308*dpr;
+  const nA=Math.min(meta.allowed.length,5),nF=Math.min(meta.forbidden.length,5);
+  const ch=(58+28+22+20+(nA*13)+(nF*13)+28+32+8)*dpr;
+  let rx=n.sx+R*.30,ry=n.sy-ch/2;
+  if(rx+cw>W-14*dpr)rx=n.sx-R*.30-cw;
+  ry=Math.max(18*dpr,Math.min(H-ch-18*dpr,ry));
   ctx.save();
-  ctx.strokeStyle=col;ctx.lineWidth=.7*dpr;ctx.globalAlpha=.24;ctx.setLineDash([3*dpr,5*dpr]);
+  ctx.strokeStyle=col;ctx.lineWidth=.7*dpr;ctx.globalAlpha=.20;ctx.setLineDash([3*dpr,5*dpr]);
   ctx.beginPath();ctx.moveTo(n.sx,n.sy);ctx.lineTo(rx<n.sx?rx+cw:rx,ry+ch/2);ctx.stroke();ctx.setLineDash([]);
-
-  // Card bg
-  ctx.globalAlpha=.97;ctx.fillStyle='rgba(5,5,12,.99)';ctx.strokeStyle=col;ctx.lineWidth=.8*dpr;ctx.shadowBlur=20;ctx.shadowColor=col;
+  ctx.globalAlpha=.98;ctx.fillStyle='rgba(5,5,8,.99)';ctx.strokeStyle=col;ctx.lineWidth=1*dpr;ctx.shadowBlur=28;ctx.shadowColor=col;
   ctx.beginPath();ctx.rect(rx,ry,cw,ch);ctx.fill();ctx.stroke();ctx.shadowBlur=0;
-
-  let ly=ry+pad+9*dpr;
-
-  // Header
-  ctx.globalAlpha=.40;ctx.font=`${6*dpr}px 'Courier New'`;ctx.fillStyle=col;ctx.textAlign='left';
-  ctx.fillText('INTENT DETECTED · authority=false',rx+pad,ly);
-  ctx.globalAlpha=.28;ctx.textAlign='right';ctx.fillText(now(),rx+cw-pad,ly);ly+=lh*.90;
-
-  // Target + type
-  ctx.globalAlpha=.95;ctx.font=`bold ${11*dpr}px 'Courier New'`;ctx.fillStyle=col;ctx.shadowBlur=7;ctx.shadowColor=col;ctx.textAlign='left';
-  ctx.fillText('TARGET: '+n.lbl,rx+pad,ly);ctx.shadowBlur=0;ly+=lh*.78;
-  ctx.globalAlpha=.52;ctx.font=`${7*dpr}px 'Courier New'`;ctx.fillText('TYPE: '+meta.type,rx+pad,ly);ly+=lh*.78;
-
-  // Divider
-  ctx.globalAlpha=.12;ctx.strokeStyle=col;ctx.beginPath();ctx.moveTo(rx+pad,ly);ctx.lineTo(rx+cw-pad,ly);ctx.stroke();ly+=lh*.52;
-
-  // Inferred intent
-  ctx.globalAlpha=.90;ctx.font=`${8*dpr}px 'Courier New'`;ctx.fillStyle='rgba(0,255,136,.92)';ctx.textAlign='left';
-  ctx.fillText('INFERRED INTENT: '+meta.intent,rx+pad,ly);ly+=lh*.82;
-
-  // Reasoning (wrapped)
-  ctx.globalAlpha=.48;ctx.font=`${7*dpr}px 'Courier New'`;ctx.fillStyle=col;
-  const words=('REASONING: '+meta.reasoning).split(' ');
-  let ln='',lineY=ly;
-  for(const w of words){
-    const test=ln+w+' ';
-    if(ctx.measureText(test).width>cw-pad*2.2){ctx.fillText(ln.trimEnd(),rx+pad,lineY);ln=w+' ';lineY+=lh*.75;}
-    else ln=test;
-  }
-  if(ln.trim())ctx.fillText(ln.trimEnd(),rx+pad,lineY);
-  ly=lineY+lh*.75;
-
-  // Divider
+  ctx.globalAlpha=.42;ctx.fillStyle=col;ctx.fillRect(rx,ry,2.5*dpr,ch);
+  let ly=ry+pad+8*dpr;
+  ctx.globalAlpha=.35;ctx.font=`${6.5*dpr}px 'Courier New'`;ctx.fillStyle=col;ctx.textAlign='left';ctx.fillText('INTENT DETECTED',rx+pad,ly);
+  ctx.globalAlpha=.22;ctx.textAlign='right';ctx.fillText(new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'}),rx+cw-pad,ly);ly+=lh*.88;
+  ctx.globalAlpha=.95;ctx.font=`bold ${12.5*dpr}px 'Courier New'`;ctx.fillStyle=col;ctx.shadowBlur=8;ctx.shadowColor=col;ctx.textAlign='left';ctx.fillText(n.lbl,rx+pad,ly);ctx.shadowBlur=0;
+  ctx.globalAlpha=.52;ctx.font=`${6.5*dpr}px 'Courier New'`;ctx.textAlign='right';ctx.fillText(meta.type,rx+cw-pad,ly);ly+=lh*.88;
+  ctx.globalAlpha=.12;ctx.strokeStyle=col;ctx.lineWidth=.5*dpr;ctx.beginPath();ctx.moveTo(rx+pad,ly);ctx.lineTo(rx+cw-pad,ly);ctx.stroke();ly+=lh*.52;
+  ctx.globalAlpha=.88;ctx.font=`${8.5*dpr}px 'Courier New'`;ctx.fillStyle='rgba(0,255,136,.92)';ctx.textAlign='left';ctx.fillText('→ '+meta.intent,rx+pad,ly);ly+=lh*.88;
+  ctx.globalAlpha=.44;ctx.font=`${6.5*dpr}px 'Courier New'`;ctx.fillStyle='rgba(0,212,255,.72)';
+  const words=meta.reasoning.split(' ');let line='',lines=[];const maxW=(cw-pad*2)/dpr;
+  for(const w of words){const test=line?line+' '+w:w;if(ctx.measureText(test).width/dpr>maxW-8){lines.push(line);line=w;}else line=test;}if(line)lines.push(line);
+  lines.slice(0,2).forEach(l=>{ctx.fillText(l,rx+pad,ly);ly+=lh*.72;});ly+=lh*.22;
   ctx.globalAlpha=.10;ctx.strokeStyle=col;ctx.beginPath();ctx.moveTo(rx+pad,ly);ctx.lineTo(rx+cw-pad,ly);ctx.stroke();ly+=lh*.50;
-
-  // Allowed
-  ctx.globalAlpha=.36;ctx.font=`${6.5*dpr}px 'Courier New'`;ctx.fillStyle=col;ctx.textAlign='left';ctx.fillText('ALLOWED:',rx+pad,ly);ly+=lh*.70;
-  ctx.globalAlpha=.80;ctx.fillStyle='rgba(0,255,136,.85)';
-  meta.allowed.slice(0,3).forEach(a=>{ctx.fillText('  · '+a,rx+pad,ly);ly+=lh*.70;});
-
-  ctx.globalAlpha=.36;ctx.fillStyle=col;ctx.fillText('FORBIDDEN:',rx+pad,ly);ly+=lh*.70;
-  ctx.globalAlpha=.80;ctx.fillStyle='rgba(255,51,85,.85)';
-  meta.forbidden.slice(0,3).forEach(f=>{ctx.fillText('  · '+f,rx+pad,ly);ly+=lh*.70;});
-  ly+=3*dpr;
-
-  // Divider
+  ctx.globalAlpha=.40;ctx.font=`${6.5*dpr}px 'Courier New'`;ctx.fillStyle='rgba(0,255,136,.75)';ctx.textAlign='left';ctx.fillText('ALLOWED',rx+pad,ly);ly+=lh*.68;
+  meta.allowed.slice(0,nA).forEach(a=>{ctx.globalAlpha=.70;ctx.font=`${7*dpr}px 'Courier New'`;ctx.fillStyle='rgba(0,255,136,.80)';ctx.fillText('  ✓ '+a,rx+pad,ly);ly+=lh*.64;});ly+=lh*.15;
+  ctx.globalAlpha=.40;ctx.font=`${6.5*dpr}px 'Courier New'`;ctx.fillStyle='rgba(255,51,85,.70)';ctx.fillText('FORBIDDEN',rx+pad,ly);ly+=lh*.68;
+  meta.forbidden.slice(0,nF).forEach(f=>{ctx.globalAlpha=.68;ctx.font=`${7*dpr}px 'Courier New'`;ctx.fillStyle='rgba(255,51,85,.75)';ctx.fillText('  ✗ '+f,rx+pad,ly);ly+=lh*.64;});ly+=lh*.18;
   ctx.globalAlpha=.10;ctx.strokeStyle=col;ctx.beginPath();ctx.moveTo(rx+pad,ly);ctx.lineTo(rx+cw-pad,ly);ctx.stroke();ly+=lh*.50;
-
-  // Meta rows
-  ctx.font=`${7*dpr}px 'Courier New'`;
-  [['AUTHORITY','NONE','rgba(255,51,85,.9)'],['REVERSIBLE',meta.reversible?'YES':'NO',meta.reversible?'rgba(0,255,136,.9)':'rgba(255,51,85,.9)'],['RECEIPT STATUS','PENDING','rgba(255,170,0,.9)']].forEach(([k,v,vc])=>{
-    ctx.globalAlpha=.36;ctx.fillStyle=col;ctx.textAlign='left';ctx.fillText(k,rx+pad,ly);
-    ctx.globalAlpha=.90;ctx.fillStyle=vc;ctx.textAlign='right';ctx.fillText(v,rx+cw-pad,ly);ly+=lh;
-  });
-
-  // Buttons
-  ly+=4*dpr;const btnH=22*dpr,btnW=(cw-pad*2-8*dpr)/2;
-  const b1x=rx+pad,b2x=rx+pad+btnW+8*dpr;
+  const rows=[['AUTHORITY','NONE','rgba(255,51,85,.88)'],['REVERSIBLE',meta.reversible?'YES':'NO',meta.reversible?'rgba(0,255,136,.88)':'rgba(255,170,0,.88)'],['RECEIPT_STATUS','PENDING','rgba(255,170,0,.88)']];
+  ctx.font=`${7.5*dpr}px 'Courier New'`;
+  for(const[k,v,vc]of rows){ctx.globalAlpha=.36;ctx.fillStyle=col;ctx.textAlign='left';ctx.fillText(k,rx+pad,ly);ctx.globalAlpha=.90;ctx.fillStyle=vc;ctx.textAlign='right';ctx.fillText(v,rx+cw-pad,ly);ly+=lh*.88;}
+  ly+=5*dpr;
+  const btnH=23*dpr,btnW=(cw-pad*2-8*dpr)/2,b1x=rx+pad,b2x=rx+pad+btnW+8*dpr;
   pBtnConfirm={x:b1x,y:ly,w:btnW,h:btnH};pBtnReject={x:b2x,y:ly,w:btnW,h:btnH};
-  ctx.globalAlpha=.88;ctx.fillStyle='rgba(0,255,136,.11)';ctx.strokeStyle='rgba(0,255,136,.65)';ctx.lineWidth=.8*dpr;ctx.shadowBlur=7;ctx.shadowColor='rgba(0,255,136,.5)';
+  ctx.globalAlpha=.88;ctx.fillStyle='rgba(0,255,136,.11)';ctx.strokeStyle='rgba(0,255,136,.68)';ctx.lineWidth=.9*dpr;ctx.shadowBlur=8;ctx.shadowColor='rgba(0,255,136,.5)';
   ctx.beginPath();ctx.rect(b1x,ly,btnW,btnH);ctx.fill();ctx.stroke();ctx.shadowBlur=0;
-  ctx.fillStyle='rgba(0,255,136,.94)';ctx.font=`bold ${7.5*dpr}px 'Courier New'`;ctx.textAlign='center';
-  ctx.fillText('[CONFIRM]',b1x+btnW/2,ly+btnH/2+3*dpr);
-  ctx.fillStyle='rgba(255,51,85,.09)';ctx.strokeStyle='rgba(255,51,85,.42)';ctx.lineWidth=.8*dpr;
+  ctx.fillStyle='rgba(0,255,136,.92)';ctx.font=`bold ${7.5*dpr}px 'Courier New'`;ctx.textAlign='center';ctx.fillText('[ENTER] CONFIRM',b1x+btnW/2,ly+btnH/2+3*dpr);
+  ctx.globalAlpha=.86;ctx.fillStyle='rgba(255,51,85,.09)';ctx.strokeStyle='rgba(255,51,85,.42)';ctx.lineWidth=.9*dpr;
   ctx.beginPath();ctx.rect(b2x,ly,btnW,btnH);ctx.fill();ctx.stroke();
-  ctx.fillStyle='rgba(255,51,85,.80)';ctx.fillText('[REJECT]',b2x+btnW/2,ly+btnH/2+3*dpr);
+  ctx.fillStyle='rgba(255,51,85,.80)';ctx.fillText('[ESC] REJECT',b2x+btnW/2,ly+btnH/2+3*dpr);
   ctx.restore();
 }
 
-// ── RECEIPT LOG (center-below kernel) ─────────────────────────────────────────
-function drawReceiptLog(t){
-  if(RECEIPT_LOG.length===0)return;
-  const dpr=devicePixelRatio,rowH=14*dpr,pad=9*dpr;
-  const panW=316*dpr,panH=RECEIPT_LOG.length*rowH+pad*2+12*dpr;
-  const panX=CX-panW/2;
-  const panY=Math.min(CY+R*.70,H-panH-56*dpr);
-  const pulse=.88+.12*Math.sin(t*.0015);
+function drawReceiptLog(){
+  if(!RECEIPT_LOG.length)return;
+  const dpr=devicePixelRatio,rowH=15*dpr,pad=9*dpr;
+  const panW=330*dpr,panH=RECEIPT_LOG.length*rowH+pad*1.6;
+  const panX=CX-panW/2,panY=CY+R*.56;
+  if(panY+panH>H-34*dpr)return;
   ctx.save();
-  ctx.globalAlpha=.90;ctx.fillStyle='rgba(5,5,12,.94)';
-  ctx.strokeStyle=`rgba(201,148,12,${.16*pulse})`;ctx.lineWidth=.5*dpr;
+  ctx.globalAlpha=.26;ctx.font=`${6*dpr}px 'Courier New'`;ctx.fillStyle='rgba(0,255,136,.75)';ctx.textAlign='center';
+  ctx.fillText('· RECEIPT SPINE ·',CX,panY-6*dpr);
+  ctx.globalAlpha=.94;ctx.fillStyle='rgba(5,5,8,.96)';ctx.strokeStyle='rgba(0,255,136,.14)';ctx.lineWidth=.5*dpr;
   ctx.beginPath();ctx.rect(panX,panY,panW,panH);ctx.fill();ctx.stroke();
-  ctx.globalAlpha=.42;ctx.font=`${5.8*dpr}px 'Courier New'`;
-  ctx.fillStyle='rgba(201,148,12,.70)';ctx.textAlign='left';ctx.fillText('RECEIPT LOG',panX+pad,panY+8*dpr);
-  ctx.fillStyle='rgba(0,212,255,.22)';ctx.textAlign='right';ctx.fillText('local · no ledger write',panX+panW-pad,panY+8*dpr);
-  ctx.font=`${6.2*dpr}px 'Courier New'`;
+  ctx.font=`${6.5*dpr}px 'Courier New'`;
   RECEIPT_LOG.forEach((r,i)=>{
-    const y=panY+pad+11*dpr+(i+.72)*rowH;
-    const stcol=r.status==='REJECTED'?'rgba(255,51,85,.8)':'rgba(0,255,136,.8)';
-    ctx.globalAlpha=.35;ctx.fillStyle=stcol;ctx.textAlign='left';ctx.fillText('['+r.status+']',panX+pad,y);
-    ctx.globalAlpha=.75;ctx.fillStyle=r.col;ctx.fillText(r.lbl+' · '+(r.action||'').slice(0,28),panX+pad+74*dpr,y);
-    ctx.globalAlpha=.22;ctx.fillStyle='rgba(0,212,255,.7)';ctx.textAlign='right';ctx.fillText(r.ts,panX+panW-pad,y);
+    const y=panY+pad*.85+(i+.78)*rowH;
+    const sc=r.status==='REJECTED'?'rgba(255,51,85,.72)':'rgba(0,255,136,.72)';
+    ctx.globalAlpha=.36;ctx.fillStyle=sc;ctx.textAlign='left';ctx.fillText(r.status==='CONFIRMED'?'[OK] ':'[REJ]',panX+pad,y);
+    ctx.globalAlpha=.22;ctx.fillStyle='rgba(0,212,255,.62)';ctx.fillText(r.id||'',panX+pad+30*dpr,y);
+    ctx.globalAlpha=.80;ctx.fillStyle=r.col;ctx.fillText((r.lbl+' · '+r.action).slice(0,38),panX+pad+82*dpr,y);
+    ctx.globalAlpha=.20;ctx.fillStyle='rgba(0,212,255,.6)';ctx.textAlign='right';ctx.fillText(r.ts,panX+panW-pad,y);
   });
   ctx.restore();
 }
 
-// ── HUD ───────────────────────────────────────────────────────────────────────
 function drawHUD(t){
-  const ep=Math.floor(t/8000)%1000,dpr=devicePixelRatio;
-  ctx.save();ctx.font=`${7.5*dpr}px 'Courier New'`;ctx.fillStyle='rgba(0,212,255,.16)';ctx.textAlign='left';
-  ctx.fillText(`EPOCH ${String(ep).padStart(3,'0')} · ${live.branch||'main'} · HEAD ${live.commit||'—'}${live.dirty?' · DIRTY':''}`,18*dpr,54*dpr);
-  ctx.fillText(`AGENTS 7 · SKILLS 6 · CONNECTORS 6 · KNOWLEDGE 6 · TIME 4 · COMPUTER USE 4 · AUTHORITY: FALSE`,18*dpr,67*dpr);
+  const ep=Math.floor(t/8000)%1000;ctx.save();
+  ctx.font=`${8*devicePixelRatio}px 'Courier New'`;ctx.fillStyle='rgba(0,212,255,.15)';ctx.textAlign='left';
+  ctx.fillText('EPOCH '+String(ep).padStart(3,'0')+' · '+(live.branch||'main')+' · '+(live.commit||'—')+(live.dirty?' · DIRTY':''),18*devicePixelRatio,56*devicePixelRatio);
+  ctx.fillStyle='rgba(0,212,255,.09)';
+  ctx.fillText('AGENTS:7  SKILLS:7  CONNECTORS:8  KNOWLEDGE:7  TIME:5  COMPUTER:5  ·  AUTHORITY:FALSE',18*devicePixelRatio,70*devicePixelRatio);
   ctx.restore();
 }
 
-// ── FRAME LOOP ────────────────────────────────────────────────────────────────
 let last=0;
 function frame(t){
   const dt=Math.min(t-last,50);last=t;
   smx+=(mx-smx)*.038;smy+=(my-smy)*.038;
   const gx=(smy-.5)*.36,gy=(smx-.5)*.36;
-
-  for(const n of NODES){n.rx_a+=n.rx*dt;n.ry_a+=n.ry*dt;n.rz_a+=n.rz*dt;n.orb+=n.oS*dt;}
-  for(const rn of RING_NODES){rn.orb+=rn.oS*dt;rn.rot+=.00015*dt;}
-
-  updatePositions();
-  drawBackground();
-  drawRingLabels();
-  drawHUD(t);
-
+  if(t-helenLineLast>6000){helenLineLast=t;helenLineIdx=(helenLineIdx+1)%HELEN_LINES.length;helenDisplayLine=live.headline||HELEN_LINES[helenLineIdx];}
+  for(const n of NODES){n.rx_a+=n.rx*dt;n.ry_a+=n.ry*dt;n.rz_a+=n.rz*dt;n.orb+=n.oS*dt;if(!n.scaleBoost)n.scaleBoost=1;n.scaleBoost+=((agentScale[n.k]||1)-n.scaleBoost)*.10;}
+  for(const rn of RING_NODES){rn.orb+=rn.oS*dt;rn.rot+=.00016*dt;}
+  updatePositions();drawBackground();drawRingLabels();drawHUD(t);
   [...RING_NODES].sort((a,b)=>b.oR-a.oR).forEach(rn=>drawRingNode(rn));
   drawConnections();
-  for(const n of NODES.filter(n=>n.layer===1)){drawSolid(n,gx,gy);drawLabel(n,t);}
-  drawMark(t);
-  drawSolid(NM['helen'],gx,gy);
-  drawLabel(NM['helen'],t);
-
+  for(const n of NODES.filter(n=>n.layer===1)){drawSolid(n,gx,gy);drawLabel(n);}
+  drawMark(t);drawSolid(NM['helen'],gx,gy);drawLabel(NM['helen']);
   if(pHover&&!pReceipt)drawStatusPill(pHover);
-
   let dwellP=0;
   if(pHover&&pDwellStart&&!pReceipt){
     dwellP=Math.min((t-pDwellStart)/DWELL_MS,1);
     if(dwellP>=1){pReceipt=pHover;pHover=null;pDwellStart=null;canvas.style.cursor='default';}
   }
   if(pHover&&dwellP>0)drawDwellRing(pHover,dwellP);
-
-  // Receipt log (drawn before dim so it can be redrawn above)
-  drawReceiptLog(t);
-
-  if(pReceipt){
-    // Soft dim overlay — not a blackout
-    ctx.save();ctx.globalAlpha=.48;ctx.fillStyle='rgba(5,5,12,.68)';ctx.fillRect(0,0,W,H);ctx.restore();
-    // Kernel stays visible above dim
-    drawSolid(NM['helen'],gx,gy);drawLabel(NM['helen'],t);drawMark(t);
-    drawIntentCard(pReceipt);
-    // Receipt log always last (above dim + card)
-    drawReceiptLog(t);
-  }
-
+  if(pReceipt)drawIntentCard(pReceipt);
+  drawReceiptLog();
   requestAnimationFrame(frame);
 }
 
-function updateClock(){document.getElementById('t-clock').textContent=now();}
+function updateClock(){document.getElementById('t-clock').textContent=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
 updateClock();setInterval(updateClock,1000);
 requestAnimationFrame(frame);
 </script>
