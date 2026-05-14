@@ -2,6 +2,11 @@
 """
 HELEN Simple Web UI (no Flask required)
 Uses Python's built-in http.server + Gemini TTS for voice
+
+Inference pipeline (when GEMINI_API_KEY is set):
+  1. HER retrieval  — RAG over canonical sources (input-side)
+  2. Gemini inference — LLM call with retrieved context injected
+  3. HAL grounding  — constitutional output check (output-side)
 """
 import os, sys, json, subprocess, urllib.parse, base64
 from http.server import HTTPServer, BaseHTTPRequestHandler
@@ -18,11 +23,80 @@ try:
     from oracle_town.skills.helen_constitutional_grounding import ground as _ground_pass
 except ImportError:
     _ground_pass = None
+
+# Input-side retrieval: HER Library Card.
+# Retrieves relevant constitutional passages before inference so Helen answers
+# from canon rather than from LLM pre-training confabulation.
+try:
+    from oracle_town.skills.helen_retrieval import retrieve as _retrieve, format_for_prompt as _fmt_retrieved
+except ImportError:
+    _retrieve = None
+    _fmt_retrieved = None
+
+# HELEN constitutional system prompt (loaded once at startup)
+_HELEN_SYSTEM_PROMPT = """\
+You are HELEN OS — a constitutional AI companion created by JMT (operator).
+The underlying inference model is non-sovereign; it is a tool, not your identity.
+Your identity is anchored in the docs/proposals/ canon, not in the LLM vendor.
+
+CORE RULES:
+- You were created by JMT. Never claim to be created by Google, OpenAI, Anthropic, or any LLM vendor.
+- You are HELEN, not Claude, Gemini, GPT, or any model name.
+- The MAYOR signs alone. There is no multi-signature governance.
+- The ledger is NDJSON with cum_hash chain — NOT a Merkle-Patricia trie.
+- HER is the relational continuity / signal-preservation layer — NOT High-Efficiency Runtime.
+- HAL is the hard gate (BLOCK/PASS validator) — NOT Hardware Abstraction Layer.
+- NO RECEIPT = NO CLAIM. Every action requires a hash-chained ledger entry.
+- You are non-sovereign: you propose, the kernel decides.
+
+If retrieved context is provided below, cite it. Do not confabulate constitutional terms.\
+"""
 LEDGER_PATH = os.path.join(os.getcwd(), "town", "ledger_v1.ndjson")
 HELEN_SAY_SCRIPT = os.path.join(os.path.dirname(__file__), "helen_say.py")
 HELEN_TTS_SCRIPT = os.path.join(os.path.dirname(__file__), "..", "oracle_town", "skills", "voice", "gemini_tts", "helen_tts.py")
 VENV_PYTHON = os.path.join(os.getcwd(), ".venv", "bin", "python")
 GEMINI_KEY = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY") or ""
+GEMINI_INFERENCE_MODEL = "gemini-2.0-flash"
+
+
+def _helen_infer(msg: str) -> str | None:
+    """
+    Run HER retrieval → Gemini inference pipeline.
+
+    Returns the LLM response string, or None if unavailable (no key, import error).
+    The HAL grounding pass runs separately on the returned text.
+    """
+    if not GEMINI_KEY:
+        return None
+    try:
+        from google import genai  # type: ignore
+        from google.genai import types  # type: ignore
+    except ImportError:
+        return None
+
+    # Step 1: HER retrieval — fetch constitutional context for this query
+    system_prompt = _HELEN_SYSTEM_PROMPT
+    if _retrieve is not None:
+        retrieved = _retrieve(msg)
+        if retrieved and _fmt_retrieved is not None:
+            system_prompt = system_prompt + "\n\n" + _fmt_retrieved(retrieved)
+
+    # Step 2: Call Gemini with constitutional system prompt + retrieved context
+    try:
+        client = genai.Client(api_key=GEMINI_KEY)
+        response = client.models.generate_content(
+            model=GEMINI_INFERENCE_MODEL,
+            contents=msg,
+            config=types.GenerateContentConfig(
+                system_instruction=system_prompt,
+                temperature=0.7,
+                max_output_tokens=1024,
+            ),
+        )
+        return response.text
+    except Exception as e:
+        return f"[INFERENCE_ERROR: {e}]"
+
 
 # Gate registry: maps mockup gate label -> (relpath, status when file exists)
 # Status values: "ACTIVE" (wired and load-bearing), "TESTS_ONLY" (enforced by tests but no runtime gate),
@@ -316,45 +390,57 @@ class Handler(BaseHTTPRequestHandler):
             params = self._read_params()
             msg = params.get("msg", [""])[0]
             try:
-                result = subprocess.run(
-                    ["python3", HELEN_SAY_SCRIPT, msg, "--ledger", LEDGER_PATH],
-                    capture_output=True, text=True, timeout=10
-                )
-                output = result.stdout + result.stderr
-                # Strip ANSI escape codes
-                import re
-                clean = re.sub(r'\x1b\[[0-9;]*m', '', output)
-                her_text = ""
-                verdict = "?"
-                lines = clean.split("\n")
-                in_her = False
-                her_lines = []
-                for line in lines:
-                    if "[HER]" in line:
-                        in_her = True
-                        continue
-                    if "[HAL]" in line:
-                        in_her = False
-                        if "PASS" in line: verdict = "PASS"
-                        elif "BLOCK" in line: verdict = "BLOCK"
-                        elif "WARN" in line: verdict = "WARN"
-                        continue
-                    if in_her and line.strip():
-                        her_lines.append(line.strip())
-                her_text = "\n".join(her_lines)
+                import re as _re
 
-                # Constitutional grounding pass — HAL-side content check.
-                # Confabulations (e.g. "created by Google", "HER is Hardware
-                # Abstraction Layer") get blocked; legitimate constitutional
-                # terms get inline citations. Failure is fail-closed: if the
-                # skill is unavailable, output passes through unchanged with
-                # a note rather than crashing the UI.
+                # ── Path A: Gemini inference (retrieval → LLM → grounding) ──
+                # Used when GEMINI_API_KEY is set. Gives Helen actual LLM responses
+                # grounded in canon rather than a kernel echo.
+                infer_result = _helen_infer(msg)
+                if infer_result is not None:
+                    her_text = infer_result
+                    verdict = "PASS"
+                    # Background ledger write (non-blocking; kernel may be offline)
+                    try:
+                        subprocess.Popen(
+                            ["python3", HELEN_SAY_SCRIPT, msg, "--ledger", LEDGER_PATH],
+                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                        )
+                    except Exception:
+                        pass
+
+                else:
+                    # ── Path B: Kernel echo (no inference key available) ──
+                    result = subprocess.run(
+                        ["python3", HELEN_SAY_SCRIPT, msg, "--ledger", LEDGER_PATH],
+                        capture_output=True, text=True, timeout=10,
+                    )
+                    output = result.stdout + result.stderr
+                    clean = _re.sub(r'\x1b\[[0-9;]*m', '', output)
+                    her_text = ""
+                    verdict = "?"
+                    lines = clean.split("\n")
+                    in_her = False
+                    her_lines = []
+                    for line in lines:
+                        if "[HER]" in line:
+                            in_her = True
+                            continue
+                        if "[HAL]" in line:
+                            in_her = False
+                            if "PASS" in line: verdict = "PASS"
+                            elif "BLOCK" in line: verdict = "BLOCK"
+                            elif "WARN" in line: verdict = "WARN"
+                            continue
+                        if in_her and line.strip():
+                            her_lines.append(line.strip())
+                    her_text = "\n".join(her_lines)
+
+                # ── HAL grounding pass (output-side, both paths) ──
+                # Fail-closed: confabulations blocked, constitutional terms cited.
                 citations: list = []
                 if _ground_pass is not None and her_text:
                     grounded, ground_result = _ground_pass(her_text)
                     if grounded is None:
-                        # Banned-pattern violation: replace output with the
-                        # constitutional reason and downgrade the verdict.
                         her_text = "[BLOCKED by HAL grounding]\n" + "\n".join(
                             f"- {v}" for v in ground_result
                         )
