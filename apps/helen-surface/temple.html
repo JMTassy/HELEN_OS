@@ -502,10 +502,17 @@ function drawBackground(){
   ctx.beginPath();ctx.arc(CX,CY,R*.56,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
   OUTER_RINGS.forEach(ring=>{
     const{r,g,b}=hexRgb(ring.col),focused=fr===ring.key;
-    ctx.strokeStyle=`rgba(${r},${g},${b},${focused?.16:.045})`;
-    ctx.lineWidth=(focused?.9:.4)*devicePixelRatio;
+    const ringHeat=RING_NODES.filter(rn=>rn.ringKey===ring.key)
+      .some(rn=>connectorBadges[rn.k]&&connectorBadges[rn.k].count>0);
+    const baseA=ringHeat?.10:.045;
+    if(ringHeat&&!focused){
+      ctx.shadowBlur=8*devicePixelRatio;ctx.shadowColor=`rgba(${r},${g},${b},.5)`;
+    }
+    ctx.strokeStyle=`rgba(${r},${g},${b},${focused?.16:baseA})`;
+    ctx.lineWidth=(focused?.9:ringHeat?.6:.4)*devicePixelRatio;
     ctx.setLineDash(focused?[]:[2*devicePixelRatio,10*devicePixelRatio]);
-    ctx.beginPath();ctx.arc(CX,CY,R*ring.oR,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+    ctx.beginPath();ctx.arc(CX,CY,R*ring.oR,0,Math.PI*2);ctx.stroke();
+    ctx.shadowBlur=0;ctx.setLineDash([]);
   });
   [1.55,1.37,1.18,.98,.76,.56,.36,.18].forEach((f,i)=>{
     ctx.strokeStyle=`rgba(0,212,255,${.009+i*.004})`;ctx.lineWidth=.4*devicePixelRatio;
