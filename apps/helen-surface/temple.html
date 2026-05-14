@@ -302,8 +302,17 @@ let rcptCounter=4096,activeQAKey=null,tabRingIdx=-1;
 const RING_KEYS=['agents','skills','connectors','knowledge','schedule','computeruse'];
 const agentScale={};AGENT_DEFS.forEach(d=>{agentScale[d.k]=1;});
 let routedAgent=null;
+let connectorBadges={};let badgePulseTs={};
 
 const HELEN_LINES=['Watching. DIRECTOR is next.','E13 blocked — awaiting MAYOR.','Branch main · authority: false.','Ledger open. No active claim.','Witness mode active.','Seven agents. One kernel.'];
+function buildHelenLine(){
+  const gm=connectorBadges['cn_gmail'],cal=connectorBadges['cn_cal'],gh=connectorBadges['cn_github'];
+  const parts=[];
+  if(gm&&gm.count>0)parts.push(gm.count+(gm.count===1?' mail':' mails'));
+  if(cal&&cal.label)parts.push(cal.label);
+  if(gh&&gh.count>0)parts.push(gh.count+' PR'+(gh.count===1?'':'s'));
+  return parts.length?parts.join(' · ')+' · witness-first.':HELEN_LINES[helenLineIdx];
+}
 let helenLineIdx=0,helenLineLast=0,helenDisplayLine=HELEN_LINES[0];
 
 let live={ledger_count:'264',commit:'8738ae3',branch:'main',dirty:true};
@@ -316,7 +325,18 @@ async function fetchLive(){
 async function fetchAgentStates(){
   try{const r=await fetch('http://localhost:7001/api/agents',{signal:AbortSignal.timeout(1500)});if(r.ok)agentStates=await r.json();}catch{}
 }
-fetchLive();fetchAgentStates();setInterval(fetchLive,15000);setInterval(fetchAgentStates,30000);
+async function fetchConnectorBadges(){
+  try{
+    const r=await fetch('http://localhost:7001/api/connectors',{signal:AbortSignal.timeout(1500)});
+    if(r.ok){
+      const d=await r.json();
+      Object.keys(d).forEach(k=>{if(JSON.stringify(connectorBadges[k])!==JSON.stringify(d[k]))badgePulseTs[k]=performance.now();});
+      connectorBadges=d;
+    }
+  }catch{}
+}
+fetchLive();fetchAgentStates();fetchConnectorBadges();
+setInterval(fetchLive,15000);setInterval(fetchAgentStates,30000);setInterval(fetchConnectorBadges,60000);
 
 function updatePulse(){
   document.getElementById('pp-ledger').textContent=live.ledger_count||'264';
@@ -541,6 +561,25 @@ function drawRingNode(rn){
   ctx.globalAlpha=dimmed?.10:isThis?.90:receipted?.78:.44;
   ctx.textAlign='center';ctx.shadowBlur=isThis?5:0;ctx.shadowColor=col;
   ctx.fillText(rn.lbl,lx,ly);ctx.restore();
+  const badge=connectorBadges[rn.k];
+  if(badge&&badge.count>0){
+    const bx=rn.sx+r*.92,by=rn.sy-r*.92;
+    const age=badgePulseTs[rn.k]?Math.min((performance.now()-badgePulseTs[rn.k])/1800,1):1;
+    const pulse=1-age;
+    const br=(r*.32+pulse*r*.14)*dpr/devicePixelRatio;
+    ctx.save();
+    ctx.globalAlpha=(dimmed?.22:.92)+pulse*.08;
+    ctx.fillStyle=`rgba(255,170,0,${0.86+pulse*.14})`;
+    ctx.shadowBlur=(5+pulse*12)*devicePixelRatio;ctx.shadowColor='#ffaa00';
+    ctx.beginPath();ctx.arc(bx,by,br*devicePixelRatio,0,Math.PI*2);ctx.fill();
+    ctx.shadowBlur=0;ctx.globalAlpha=(dimmed?.18:.95)+pulse*.05;
+    ctx.fillStyle='rgba(5,5,8,.98)';
+    const fs=Math.max(4.5,5.5-String(badge.count).length*.5);
+    ctx.font=`bold ${fs*devicePixelRatio}px 'Courier New'`;
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(badge.count>99?'99+':String(badge.count),bx,by);
+    ctx.textBaseline='alphabetic';ctx.restore();
+  }
 }
 
 function drawSolid(n,gx,gy){
@@ -694,7 +733,7 @@ function frame(t){
   const dt=Math.min(t-last,50);last=t;
   smx+=(mx-smx)*.038;smy+=(my-smy)*.038;
   const gx=(smy-.5)*.36,gy=(smx-.5)*.36;
-  if(t-helenLineLast>6000){helenLineLast=t;helenLineIdx=(helenLineIdx+1)%HELEN_LINES.length;helenDisplayLine=live.headline||HELEN_LINES[helenLineIdx];}
+  if(t-helenLineLast>6000){helenLineLast=t;helenLineIdx=(helenLineIdx+1)%HELEN_LINES.length;helenDisplayLine=live.headline||buildHelenLine();}
   for(const n of NODES){n.rx_a+=n.rx*dt;n.ry_a+=n.ry*dt;n.rz_a+=n.rz*dt;n.orb+=n.oS*dt;if(!n.scaleBoost)n.scaleBoost=1;n.scaleBoost+=((agentScale[n.k]||1)-n.scaleBoost)*.10;}
   for(const rn of RING_NODES){rn.orb+=rn.oS*dt;rn.rot+=.00016*dt;}
   updatePositions();drawBackground();drawRingLabels();drawHUD(t);
