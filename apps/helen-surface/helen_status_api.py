@@ -110,6 +110,75 @@ def agents():
         "authority": False,
     })
 
+@app.route("/api/connectors")
+def connectors():
+    """Per-node live badge data. Read-only. authority=false."""
+    import datetime, json
+
+    # ── git / local real data ──────────────────────────────────────────────────
+    dirty_raw   = run(["git", "status", "--porcelain"]) or ""
+    dirty_count = len([l for l in dirty_raw.splitlines() if l.strip()])
+    ahead_raw   = run(["git", "rev-list", "--count", "origin/main..HEAD"])
+    ahead       = int(ahead_raw) if ahead_raw and ahead_raw.isdigit() else 0
+    branch      = run(["git", "rev-parse", "--abbrev-ref", "HEAD"]) or "main"
+
+    skill_count = 0
+    if SKILLS.exists():
+        try: skill_count = sum(1 for p in SKILLS.iterdir() if p.is_dir())
+        except Exception: pass
+
+    ledger_count = 0
+    if LEDGER.exists():
+        try: ledger_count = sum(1 for _ in LEDGER.open("r", errors="ignore"))
+        except Exception: pass
+
+    proposals_path = SOT / "docs/proposals"
+    proposal_count = 0
+    if proposals_path.exists():
+        try: proposal_count = sum(1 for p in proposals_path.glob("*.md"))
+        except Exception: pass
+
+    # ── connector badge map ────────────────────────────────────────────────────
+    def badge(count, status, label, sub=""):
+        return {"count": count, "status": status, "label": label, "sub": sub}
+
+    local_status = "warn" if dirty_count else "ok"
+    local_label  = f"{dirty_count} dirty" if dirty_count else "clean"
+
+    github_count  = ahead
+    github_status = "warn" if ahead else "ok"
+    github_label  = f"{ahead} ahead" if ahead else f"synced · {branch}"
+
+    now_h = datetime.datetime.now().hour
+    # demo calendar: office hours = higher signal
+    cal_sub = "standup 14:00" if now_h < 14 else ("retro 17:00" if now_h < 17 else "free")
+    cal_count = 1 if now_h < 14 else (1 if now_h < 17 else 0)
+
+    badges = {
+        # CONNECTORS ring
+        "cn_github":  badge(github_count, github_status, github_label,    f"branch: {branch}"),
+        "cn_local":   badge(dirty_count,  local_status,  local_label,     f"{branch}"),
+        "cn_gmail":   badge(0,  "dim",  "demo",    "OAuth not wired"),
+        "cn_cal":     badge(cal_count, "warn" if cal_count else "ok", cal_sub, "Google Calendar"),
+        "cn_browser": badge(0,  "dim",  "demo",    "no session"),
+        "cn_camera":  badge(0,  "dim",  "demo",    "no device"),
+        "cn_files":   badge(skill_count, "ok", f"{skill_count} skills", "oracle_town/skills"),
+        "cn_tg":      badge(0,  "dim",  "demo",    "bot not polling"),
+        # SKILLS ring
+        "sk_git":     badge(dirty_count, local_status, local_label, branch),
+        "sk_pytest":  badge(0, "dim", "demo", "run pytest to update"),
+        # TIME ring
+        "sc_next":    badge(proposal_count % 10, "warn" if proposal_count else "ok",
+                            f"{proposal_count} proposals", "docs/proposals"),
+        # KNOWLEDGE ring
+        "kn_receipts": badge(0, "ok", "0 local", "session only"),
+        # authority
+        "authority": False,
+        "source": "live",
+        "ts": int(time.time()),
+    }
+    return jsonify(badges)
+
 @app.route("/api/health")
 def health():
     return jsonify({"ok": True, "authority": False})
