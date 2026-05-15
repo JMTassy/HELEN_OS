@@ -2,480 +2,339 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>HELEN OS — Home</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>HELEN OS · HOME</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#07070a;--cyan:#00d4ff;--gold:#c9940c;--green:#00ff88;
-  --text:rgba(0,212,255,.85);--text-dim:rgba(0,212,255,.45);
-  --text-mute:rgba(0,212,255,.22);--border:rgba(0,212,255,.12);
-  --mono:'Courier New',monospace;
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#050508;color:#00d4ff;font-family:'Courier New',monospace;height:100vh;display:flex;flex-direction:column;overflow:hidden;}
+
+/* ── BRIEF PANEL ─────────────────────────────────────────────────────────── */
+#brief{
+  flex:0 0 auto;padding:16px 28px 12px;
+  border-bottom:1px solid rgba(0,212,255,.10);
+  background:rgba(5,5,8,.97);z-index:10;
+  overflow-y:auto;max-height:46vh;
 }
-html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:var(--mono)}
+#brief-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px;}
+#brief-title{font-size:10px;letter-spacing:.20em;color:rgba(0,212,255,.38);text-transform:uppercase;}
+#brief-ts{font-size:9px;color:rgba(0,212,255,.22);letter-spacing:.10em;}
 
-/* ── TOP BAR ── */
-#top{position:fixed;top:0;left:0;right:0;z-index:30;height:34px;border-bottom:1px solid var(--border);background:rgba(5,5,8,.97);display:flex;align-items:center;padding:0 16px}
-.t-brand{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(201,148,12,.80);margin-right:14px}
-.t-sep{width:1px;height:10px;background:var(--border);margin:0 12px;flex-shrink:0}
-.t-title{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim)}
-.t-push{margin-left:auto;display:flex;align-items:center;gap:8px}
-.t-badge{font-size:7px;letter-spacing:.1em;text-transform:uppercase;padding:2px 6px;border:1px solid var(--border);color:var(--text-mute);border-radius:1px}
-.t-badge.auth{color:rgba(255,51,85,.65);border-color:rgba(255,51,85,.20)}
-.t-nav{font-size:8px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-dim);cursor:pointer;padding:3px 9px;border:1px solid rgba(0,212,255,.14);border-radius:1px;transition:all .12s;user-select:none}
-.t-nav:hover{color:var(--cyan);border-color:rgba(0,212,255,.38)}
-#t-clock{font-size:9.5px;color:var(--text-mute);letter-spacing:.04em}
+#mode-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+#mode-label{font-size:9px;color:rgba(0,212,255,.30);letter-spacing:.14em;}
+.mode-btn{
+  font-family:'Courier New',monospace;font-size:9px;letter-spacing:.14em;
+  border:1px solid rgba(0,212,255,.20);padding:3px 10px;cursor:pointer;
+  background:transparent;color:rgba(0,212,255,.38);text-transform:uppercase;transition:all .15s;
+}
+.mode-btn.active{background:rgba(0,212,255,.10);color:#00d4ff;border-color:rgba(0,212,255,.50);}
 
-/* ── BRIEF PANEL ── */
-#brief{position:fixed;top:34px;left:0;right:0;z-index:20;background:rgba(5,5,8,.98);border-bottom:1px solid rgba(0,212,255,.10)}
+#helen-brief-line{font-size:12px;color:#ffaa00;letter-spacing:.04em;margin-bottom:14px;padding-left:1px;}
 
-#brief-header{display:flex;align-items:center;padding:7px 18px 7px;border-bottom:1px solid rgba(0,212,255,.06);gap:12px;flex-shrink:0}
-.bh-label{font-size:6.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-mute);flex-shrink:0}
-.mode-toggle{display:flex;gap:3px}
-.mode-btn{font-size:7px;letter-spacing:.10em;text-transform:uppercase;padding:3px 11px;border:1px solid rgba(0,212,255,.12);color:var(--text-mute);background:none;font-family:var(--mono);cursor:pointer;transition:all .14s}
-.mode-btn.active{color:var(--cyan);border-color:rgba(0,212,255,.50);background:rgba(0,212,255,.05)}
-.mode-btn:hover:not(.active){color:var(--text-dim);border-color:rgba(0,212,255,.26)}
-.bh-sep{width:1px;height:11px;background:rgba(0,212,255,.08);flex-shrink:0}
+#debt-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+#debt-dot{
+  width:8px;height:8px;border-radius:50%;background:#ffaa00;
+  box-shadow:0 0 6px #ffaa00;flex-shrink:0;
+  animation:debt-pulse 2.2s ease-in-out infinite;
+}
+#debt-dot.zero{background:rgba(255,170,0,.18);box-shadow:none;animation:none;}
+@keyframes debt-pulse{0%,100%{box-shadow:0 0 4px #ffaa00;opacity:.7;}50%{box-shadow:0 0 14px #ffaa00;opacity:1;}}
+#debt-label{font-size:10px;color:#ffaa00;letter-spacing:.10em;}
+#debt-label.zero{color:rgba(255,170,0,.30);}
 
-#debt-widget{margin-left:auto;display:flex;align-items:center;gap:8px}
-.dw-label{font-size:6.5px;letter-spacing:.10em;text-transform:uppercase;color:rgba(255,170,0,.40)}
-#debt-num{font-size:14px;letter-spacing:.02em;color:rgba(255,170,0,.90);min-width:18px;text-align:center;transition:color .3s;line-height:1}
-#debt-num.zero{color:rgba(0,255,136,.70)}
-#dw-tag{font-size:6.5px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,170,0,.36);transition:color .3s}
-#dw-tag.zero{color:rgba(0,255,136,.32)}
-#dw-bar{width:52px;height:3px;background:rgba(255,170,0,.10);border-radius:1px;overflow:hidden}
-#dw-fill{height:100%;width:100%;background:rgba(255,170,0,.56);transition:width .4s ease,background .3s}
+#queue{display:flex;flex-direction:column;gap:5px;}
+.q-item{
+  display:flex;align-items:center;gap:10px;padding:6px 10px;
+  border:1px solid rgba(255,170,0,.15);background:rgba(255,170,0,.025);
+  transition:opacity .28s,transform .28s;
+}
+.q-item.confirmed{border-color:rgba(0,255,136,.25);background:rgba(0,255,136,.03);}
+.q-item.rejected{opacity:.25;}
+.q-item.out{opacity:0;transform:translateX(36px);}
+.q-bullet{color:#ffaa00;font-size:10px;flex-shrink:0;width:12px;}
+.q-brief{flex:1;font-size:10px;color:rgba(0,212,255,.78);letter-spacing:.03em;}
+.q-src{font-size:8px;color:rgba(0,212,255,.25);letter-spacing:.10em;flex-shrink:0;margin-right:6px;}
+.q-btns{display:flex;gap:5px;flex-shrink:0;}
+button.btn{
+  font-family:'Courier New',monospace;font-size:8px;letter-spacing:.12em;
+  border:1px solid;padding:2px 7px;cursor:pointer;background:transparent;
+  text-transform:uppercase;transition:background .12s;
+}
+.btn-c{color:#00ff88;border-color:rgba(0,255,136,.35);}
+.btn-c:hover{background:rgba(0,255,136,.10);}
+.btn-r{color:rgba(255,51,85,.65);border-color:rgba(255,51,85,.22);}
+.btn-r:hover{background:rgba(255,51,85,.07);}
+.btn:disabled{opacity:.30;cursor:default;}
+#queue-empty{font-size:10px;color:rgba(0,212,255,.25);letter-spacing:.08em;padding:5px 1px;display:none;}
 
-/* ── QUEUE ── */
-#brief-queue{padding:6px 12px 8px;display:flex;flex-direction:column;gap:4px}
-.proposal{display:grid;grid-template-columns:7px 42px 1fr 62px 100px;align-items:center;gap:10px;padding:6px 10px 6px 9px;border:1px solid rgba(0,212,255,.07);background:rgba(0,212,255,.012);transition:opacity .35s,background .2s}
-.proposal:hover:not(.done){background:rgba(0,212,255,.022);border-color:rgba(0,212,255,.14)}
-.proposal.done{opacity:.20;pointer-events:none}
-.p-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.p-dot.warn{background:rgba(255,170,0,.82)}
-.p-dot.info{background:rgba(0,212,255,.60)}
-.p-dot.ok{background:rgba(0,255,136,.62)}
-.p-id{font-size:6px;letter-spacing:.08em;color:var(--text-mute);text-align:right}
-.p-brief{font-size:7.5px;letter-spacing:.03em;color:rgba(0,212,255,.80);line-height:1.35}
-.p-target{font-size:6.5px;letter-spacing:.10em;text-transform:uppercase;color:rgba(201,148,12,.52);text-align:right}
-.p-actions{display:flex;gap:4px;justify-content:flex-end}
-.p-btn{font-size:6px;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border:1px solid;background:none;font-family:var(--mono);cursor:pointer;transition:all .12s}
-.p-btn.c{color:rgba(0,255,136,.72);border-color:rgba(0,255,136,.22)}
-.p-btn.c:hover{color:#00ff88;border-color:rgba(0,255,136,.58);background:rgba(0,255,136,.05)}
-.p-btn.r{color:rgba(255,51,85,.48);border-color:rgba(255,51,85,.14)}
-.p-btn.r:hover{color:rgba(255,51,85,.82);border-color:rgba(255,51,85,.40);background:rgba(255,51,85,.04)}
+#rcpt-strip{
+  display:flex;align-items:center;gap:14px;margin-top:9px;padding-top:7px;
+  border-top:1px solid rgba(0,212,255,.06);
+  font-size:8px;color:rgba(0,212,255,.28);letter-spacing:.10em;
+}
+.rcpt-dot{width:5px;height:5px;border-radius:50%;background:#ffaa00;flex-shrink:0;}
+.rcpt-dot.firing{animation:rcpt-fire .7s ease-out forwards;}
+@keyframes rcpt-fire{0%{background:#ffaa00;box-shadow:0 0 10px #ffaa00;transform:scale(2);}100%{background:rgba(255,170,0,.25);box-shadow:none;transform:scale(1);}}
+#rcpt-auth{margin-left:auto;color:rgba(0,212,255,.12);}
 
-/* ── CANVAS ── */
-#c{position:fixed;left:0;right:0;display:block;width:100%}
-
-/* ── INFO STRIP ── */
-#info-strip{position:fixed;bottom:0;left:0;right:0;height:28px;border-top:1px solid rgba(0,212,255,.07);background:rgba(5,5,8,.96);display:flex;align-items:center;padding:0 16px;gap:0;z-index:15;overflow:hidden}
-.i-flow{font-size:7.5px;letter-spacing:.08em;text-transform:uppercase;color:rgba(0,212,255,.28);white-space:nowrap}
-.i-arr{font-size:9px;color:rgba(0,212,255,.12);margin:0 7px}
-.i-sep{width:1px;height:9px;background:rgba(0,212,255,.09);margin:0 14px}
-#i-receipts{font-size:7.5px;letter-spacing:.06em;color:rgba(0,255,136,.48);white-space:nowrap;transition:color .3s}
-.i-push{margin-left:auto;font-size:7px;letter-spacing:.08em;text-transform:uppercase;color:rgba(0,212,255,.18)}
+/* ── ORBIT ─────────────────────────────────────────────────────────────── */
+#orbit-wrap{flex:1 1 auto;position:relative;overflow:hidden;}
+canvas{position:absolute;inset:0;width:100%;height:100%;}
+#nav{position:absolute;bottom:14px;right:18px;z-index:20;display:flex;gap:8px;}
+#nav a{
+  font-family:'Courier New',monospace;font-size:8px;letter-spacing:.14em;
+  color:rgba(0,212,255,.32);text-decoration:none;
+  border:1px solid rgba(0,212,255,.12);padding:4px 10px;
+  transition:color .15s,border-color .15s;
+}
+#nav a:hover{color:#00d4ff;border-color:rgba(0,212,255,.38);}
 </style>
 </head>
 <body>
 
-<div id="top">
-  <div class="t-brand">HELEN OS</div>
-  <div class="t-sep"></div>
-  <div class="t-title">Home · v0.1</div>
-  <div class="t-push">
-    <span class="t-badge auth">authority: false</span>
-    <span class="t-badge">witness-first</span>
-    <div class="t-sep"></div>
-    <span id="t-clock">—</span>
-    <div class="t-sep"></div>
-    <span class="t-nav" onclick="location.href='temple.html'">Cockpit ↗</span>
-    <span class="t-nav" onclick="location.href='helen2027.html'">Dashboard ↗</span>
-    <span class="t-nav" onclick="location.href='focus.html'">Focus ↗</span>
-  </div>
-</div>
-
 <div id="brief">
-  <div id="brief-header">
-    <span class="bh-label">Operator mode</span>
-    <div class="mode-toggle">
-      <button class="mode-btn" id="btn-focus" onclick="setMode('FOCUS')">FOCUS</button>
-      <button class="mode-btn active" id="btn-witness" onclick="setMode('WITNESS')">WITNESS</button>
-    </div>
-    <div class="bh-sep"></div>
-    <span class="bh-label">HELEN brief</span>
-    <div class="bh-sep"></div>
-    <span class="bh-label" id="brief-src" style="color:rgba(255,170,0,.38)">● DEMO</span>
-    <div id="debt-widget">
-      <span class="dw-label">Governance debt</span>
-      <span id="debt-num">3</span>
-      <span id="dw-tag">unreceipted</span>
-      <div id="dw-bar"><div id="dw-fill"></div></div>
-    </div>
+  <div id="brief-head">
+    <span id="brief-title">HELEN OS · HOME</span>
+    <span id="brief-ts"></span>
   </div>
-
-  <div id="brief-queue">
-    <div class="proposal" data-pid="P-001">
-      <div class="p-dot warn"></div>
-      <span class="p-id">P-001</span>
-      <span class="p-brief">AUTORESEARCH E12 — peer-review pending · E13 blocked · awaiting MAYOR ruling</span>
-      <span class="p-target">→ MAYOR</span>
-      <div class="p-actions">
-        <button class="p-btn c" onclick="confirmP('P-001')">CONFIRM</button>
-        <button class="p-btn r" onclick="rejectP('P-001')">REJECT</button>
-      </div>
-    </div>
-    <div class="proposal" data-pid="P-002">
-      <div class="p-dot info"></div>
-      <span class="p-id">P-002</span>
-      <span class="p-brief">GMAIL · 3 signals since last session · classification pending · no auto-respond</span>
-      <span class="p-target">→ GOBLIN</span>
-      <div class="p-actions">
-        <button class="p-btn c" onclick="confirmP('P-002')">CONFIRM</button>
-        <button class="p-btn r" onclick="rejectP('P-002')">REJECT</button>
-      </div>
-    </div>
-    <div class="proposal" data-pid="P-003">
-      <div class="p-dot ok"></div>
-      <span class="p-id">P-003</span>
-      <span class="p-brief">Branch main · clean · 0 failed gates · epoch drift 4d · ledger 264 entries</span>
-      <span class="p-target">→ CHRONOS</span>
-      <div class="p-actions">
-        <button class="p-btn c" onclick="confirmP('P-003')">CONFIRM</button>
-        <button class="p-btn r" onclick="rejectP('P-003')">REJECT</button>
-      </div>
-    </div>
+  <div id="mode-row">
+    <span id="mode-label">OPERATOR STATE</span>
+    <button class="mode-btn active" id="btn-focus" onclick="setMode('focus')">FOCUS</button>
+    <button class="mode-btn" id="btn-witness" onclick="setMode('witness')">WITNESS</button>
+  </div>
+  <div id="helen-brief-line">HELEN was working. Here is what she found.</div>
+  <div id="debt-row">
+    <div id="debt-dot"></div>
+    <span id="debt-label">2 unreceipted events · governance debt</span>
+  </div>
+  <div id="queue">
+    <div id="queue-empty">All clear. HELEN is watching. No pending decisions.</div>
+  </div>
+  <div id="rcpt-strip">
+    <div class="rcpt-dot" id="rcpt-dot"></div>
+    <span id="rcpt-count">0 receipts this session</span>
+    <span id="rcpt-last">no receipt yet</span>
+    <span id="rcpt-auth">authority: false · witness-first · NO_RECEIPT = NO_CLAIM</span>
   </div>
 </div>
 
-<canvas id="c"></canvas>
-
-<div id="info-strip">
-  <div class="i-flow">HELEN was already working</div>
-  <div class="i-arr">·</div>
-  <div class="i-flow">Home is where you review what she found</div>
-  <div class="i-sep"></div>
-  <span id="i-receipts">0 receipts this session</span>
-  <div class="i-sep"></div>
-  <div class="i-flow">NO_RECEIPT = NO_CLAIM</div>
-  <div class="i-push">AUTHORITY: FALSE</div>
+<div id="orbit-wrap">
+  <canvas id="c"></canvas>
+  <div id="nav">
+    <a href="temple.html">→ COCKPIT</a>
+  </div>
 </div>
 
 <script>
 'use strict';
 
-const φ=(1+Math.sqrt(5))/2;
-function norm3(v){const l=Math.sqrt(v[0]**2+v[1]**2+v[2]**2);return[v[0]/l,v[1]/l,v[2]/l]}
-function rotX(v,a){const c=Math.cos(a),s=Math.sin(a);return[v[0],v[1]*c-v[2]*s,v[1]*s+v[2]*c]}
-function rotY(v,a){const c=Math.cos(a),s=Math.sin(a);return[v[0]*c+v[2]*s,v[1],-v[0]*s+v[2]*c]}
-function rotZ(v,a){const c=Math.cos(a),s=Math.sin(a);return[v[0]*c-v[1]*s,v[0]*s+v[1]*c,v[2]]}
-function project(v,cx,cy,sc,fov=5){const z=v[2]+fov;return[cx+v[0]*sc*fov/z,cy+v[1]*sc*fov/z,z]}
-function edgesFromVerts(verts){
-  let m=Infinity;
-  for(let i=0;i<verts.length;i++)for(let j=i+1;j<verts.length;j++){
-    const d=(verts[i][0]-verts[j][0])**2+(verts[i][1]-verts[j][1])**2+(verts[i][2]-verts[j][2])**2;
-    if(d<m)m=d;
-  }
-  const t=m*1.05,e=[];
-  for(let i=0;i<verts.length;i++)for(let j=i+1;j<verts.length;j++){
-    const d=(verts[i][0]-verts[j][0])**2+(verts[i][1]-verts[j][1])**2+(verts[i][2]-verts[j][2])**2;
-    if(d<=t)e.push([i,j]);
-  }
-  return e;
+let operatorMode='focus';
+let debtCount=2;
+let rcptCount=0;
+let badges={};
+
+function updateTs(){
+  const n=new Date();
+  document.getElementById('brief-ts').textContent=
+    n.toISOString().slice(0,10)+' · '+n.toTimeString().slice(0,8);
 }
-function mkSolid(rv,re){const v=rv.map(norm3);return{verts:v,edges:re||edgesFromVerts(v)}}
-
-const SOLIDS={
-  tetrahedron: mkSolid([[1,1,1],[1,-1,-1],[-1,1,-1],[-1,-1,1]],[[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]]),
-  cube:        mkSolid([[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]],[[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]]),
-  octahedron:  mkSolid([[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]],[[0,2],[0,3],[0,4],[0,5],[1,2],[1,3],[1,4],[1,5],[2,4],[2,5],[3,4],[3,5]]),
-  icosahedron: mkSolid([[0,1,φ],[0,1,-φ],[0,-1,φ],[0,-1,-φ],[1,φ,0],[1,-φ,0],[-1,φ,0],[-1,-φ,0],[φ,0,1],[φ,0,-1],[-φ,0,1],[-φ,0,-1]]),
-  dodecahedron:mkSolid([[1,1,1],[1,1,-1],[1,-1,1],[1,-1,-1],[-1,1,1],[-1,1,-1],[-1,-1,1],[-1,-1,-1],[0,1/φ,φ],[0,1/φ,-φ],[0,-1/φ,φ],[0,-1/φ,-φ],[1/φ,φ,0],[1/φ,-φ,0],[-1/φ,φ,0],[-1/φ,-φ,0],[φ,0,1/φ],[φ,0,-1/φ],[-φ,0,1/φ],[-φ,0,-1/φ]]),
-};
-
-const COL={
-  gold:'#c9940c',cyan:'#00d4ff',purple:'#bb88ff',magenta:'#ff00cc',green:'#00ff88',
-};
-
-const AGENT_DEFS=[
-  {k:'helen',   lbl:'HELEN',   role:'Kernel', solid:'dodecahedron',c:'gold',   sc:1.55,layer:0,rx:.0006,ry:.0011,rz:.0004,oR:0,   oS:0,      oP:0},
-  {k:'her',     lbl:'HER',     role:'Fire',   solid:'tetrahedron', c:'cyan',   sc:1.05,layer:1,rx:.0140,ry:.0090,rz:.0110,oR:.56, oS:.00065, oP:0},
-  {k:'hal',     lbl:'HAL',     role:'Earth',  solid:'cube',        c:'cyan',   sc:0.96,layer:1,rx:.0080,ry:.0160,rz:.0060,oR:.56, oS:.00055, oP:Math.PI*2/7},
-  {k:'mayor',   lbl:'MAYOR',   role:'Aether', solid:'dodecahedron',c:'gold',   sc:0.85,layer:1,rx:.0060,ry:.0100,rz:.0080,oR:.56, oS:.00070, oP:Math.PI*4/7},
-  {k:'chronos', lbl:'CHRONOS', role:'Air',    solid:'octahedron',  c:'cyan',   sc:1.00,layer:1,rx:.0120,ry:.0070,rz:.0150,oR:.56, oS:.00050, oP:Math.PI*6/7},
-  {k:'aura',    lbl:'AURA',    role:'Water',  solid:'icosahedron', c:'purple', sc:0.92,layer:1,rx:.0100,ry:.0130,rz:.0070,oR:.56, oS:.00060, oP:Math.PI*8/7},
-  {k:'goblin',  lbl:'GOBLIN',  role:'Recall', solid:'tetrahedron', c:'magenta',sc:0.88,layer:1,rx:.0150,ry:.0080,rz:.0120,oR:.56, oS:.00080, oP:Math.PI*10/7},
-  {k:'director',lbl:'DIRECTOR',role:'Script', solid:'cube',        c:'green',  sc:0.90,layer:1,rx:.0090,ry:.0140,rz:.0060,oR:.56, oS:.00060, oP:Math.PI*12/7},
-];
-
-const FOCUS_DIM=new Set(['mayor','chronos','aura','goblin']);
-
-const NODES=AGENT_DEFS.map(d=>({
-  ...d,rx_a:Math.random()*Math.PI*2,ry_a:Math.random()*Math.PI*2,rz_a:Math.random()*Math.PI*2,orb:d.oP,sx:0,sy:0
-}));
-const NM={};NODES.forEach(n=>NM[n.k]=n);
-
-const canvas=document.getElementById('c');
-const ctx=canvas.getContext('2d');
-let W,H,CX,CY,R;
-
-function resize(){
-  const briefRect=document.getElementById('brief').getBoundingClientRect();
-  const topH=34,botH=28;
-  const canvasTop=topH+briefRect.height;
-  canvas.style.top=canvasTop+'px';
-  canvas.style.height=(window.innerHeight-canvasTop-botH)+'px';
-  const rect=canvas.getBoundingClientRect();
-  W=canvas.width=rect.width*devicePixelRatio;
-  H=canvas.height=rect.height*devicePixelRatio;
-  CX=W/2;CY=H/2;R=Math.min(W,H)*0.32;
-}
-window.addEventListener('resize',resize);
-
-// ── App state ──
-let operatorMode='WITNESS';
-let debtCount=3;
-const MAX_DEBT=3;
-let debtPulseTs=0;
-const RECEIPT_LOG=[];
-let rcptCounter=4096;
-let mx=.5,my=.5,smx=.5,smy=.5;
+updateTs();setInterval(updateTs,1000);
 
 function setMode(m){
   operatorMode=m;
-  document.getElementById('btn-focus').classList.toggle('active',m==='FOCUS');
-  document.getElementById('btn-witness').classList.toggle('active',m==='WITNESS');
+  document.getElementById('btn-focus').classList.toggle('active',m==='focus');
+  document.getElementById('btn-witness').classList.toggle('active',m==='witness');
 }
 
-function getModeAlpha(k){
-  if(k==='helen')return 1;
-  if(operatorMode==='FOCUS'&&FOCUS_DIM.has(k))return 0.18;
-  return 1;
+function fireReceipt(brief,src){
+  const ts=new Date();
+  const id='RCPT-'+(4096+rcptCount).toString(16).toUpperCase();
+  rcptCount++;
+  if(debtCount>0){debtCount--;updateDebt();}
+  document.getElementById('rcpt-count').textContent=rcptCount+' receipt'+(rcptCount===1?'':'s')+' this session';
+  document.getElementById('rcpt-last').textContent='last: '+ts.toTimeString().slice(0,8)+' · '+id+' · '+src;
+  const dot=document.getElementById('rcpt-dot');
+  dot.classList.remove('firing');void dot.offsetWidth;dot.classList.add('firing');
 }
 
-function confirmP(pid){
-  const el=document.querySelector(`[data-pid="${pid}"]`);
-  if(!el||el.classList.contains('done'))return;
-  el.classList.add('done');
-  debtCount=Math.max(0,debtCount-1);
-  debtPulseTs=performance.now();
-  const rid='R-'+(rcptCounter++).toString(16).toUpperCase().padStart(4,'0');
-  RECEIPT_LOG.unshift({id:rid,pid,status:'CONFIRMED',ts:new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'})});
-  refreshDebtUI();refreshReceiptStrip();
+function updateDebt(){
+  const dot=document.getElementById('debt-dot');
+  const lbl=document.getElementById('debt-label');
+  if(debtCount===0){
+    dot.classList.add('zero');lbl.classList.add('zero');
+    lbl.textContent='0 unreceipted events · governance clear';
+  } else {
+    dot.classList.remove('zero');lbl.classList.remove('zero');
+    lbl.textContent=debtCount+' unreceipted event'+(debtCount===1?'':'s')+' · governance debt';
+  }
 }
 
-function rejectP(pid){
-  const el=document.querySelector(`[data-pid="${pid}"]`);
-  if(!el||el.classList.contains('done'))return;
-  el.classList.add('done');
-  debtCount=Math.max(0,debtCount-1);
-  debtPulseTs=performance.now();
-  RECEIPT_LOG.unshift({id:'REJ-'+(rcptCounter++).toString(16).toUpperCase().padStart(4,'0'),pid,status:'REJECTED',ts:new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'})});
-  refreshDebtUI();refreshReceiptStrip();
+function makeQItem(id,brief,src){
+  const el=document.createElement('div');
+  el.className='q-item';el.id='qi-'+id;
+  el.innerHTML=
+    `<span class="q-bullet">▸</span>`+
+    `<span class="q-brief">${brief}</span>`+
+    `<span class="q-src">${src}</span>`+
+    `<div class="q-btns">`+
+      `<button class="btn btn-c">CONFIRM</button>`+
+      `<button class="btn btn-r">REJECT</button>`+
+    `</div>`;
+  el.querySelector('.btn-c').onclick=()=>confirmItem(el,brief,src);
+  el.querySelector('.btn-r').onclick=()=>rejectItem(el);
+  return el;
 }
 
-function refreshDebtUI(){
-  const numEl=document.getElementById('debt-num');
-  const tagEl=document.getElementById('dw-tag');
-  const fill=document.getElementById('dw-fill');
-  numEl.textContent=debtCount;
-  numEl.className=debtCount===0?'zero':'';
-  tagEl.textContent=debtCount===0?'cleared':'unreceipted';
-  tagEl.className=debtCount===0?'zero':'';
-  fill.style.width=Math.round((debtCount/MAX_DEBT)*100)+'%';
-  fill.style.background=debtCount===0?'rgba(0,255,136,.52)':'rgba(255,170,0,.58)';
+function confirmItem(el,brief,src){
+  fireReceipt(brief,src);
+  el.classList.add('confirmed');
+  el.querySelector('.q-bullet').textContent='✓';
+  el.querySelectorAll('button').forEach(b=>b.disabled=true);
+  setTimeout(()=>{el.classList.add('out');setTimeout(()=>{el.remove();checkEmpty();},300);},550);
 }
 
-function refreshReceiptStrip(){
-  const n=RECEIPT_LOG.filter(r=>r.status==='CONFIRMED').length;
-  const el=document.getElementById('i-receipts');
-  el.textContent=n+' receipt'+(n===1?'':'s')+' this session';
-  el.style.color=n>0?'rgba(0,255,136,.72)':'rgba(0,255,136,.48)';
+function rejectItem(el){
+  el.classList.add('rejected');
+  el.querySelector('.q-bullet').textContent='×';
+  el.querySelectorAll('button').forEach(b=>b.disabled=true);
+  setTimeout(()=>{el.classList.add('out');setTimeout(()=>{el.remove();checkEmpty();},300);},380);
 }
 
-async function fetchLiveData(){
+function checkEmpty(){
+  if(!document.querySelector('.q-item'))
+    document.getElementById('queue-empty').style.display='block';
+}
+
+function buildItems(b){
+  const items=[];
+  const loc=b.cn_local;
+  if(loc&&loc.count>0)
+    items.push({id:'local',brief:loc.count+' uncommitted file'+(loc.count===1?'':'s')+' · branch: '+(loc.sub||'main'),src:'GIT'});
+  const gh=b.cn_github;
+  if(gh&&gh.count>0)
+    items.push({id:'github',brief:gh.count+' unpushed commit'+(gh.count===1?'':'s')+' · '+(gh.label||'origin/main'),src:'GITHUB'});
+  const cal=b.cn_cal;
+  if(cal&&cal.count>0)
+    items.push({id:'cal',brief:'Upcoming: '+cal.label,src:'CALENDAR'});
+  const sk=b.cn_files;
+  if(sk&&sk.count>0)
+    items.push({id:'skills',brief:sk.count+' skills indexed · no gate pending',src:'SKILLS'});
+  items.push({id:'auto',brief:'AUTORESEARCH E12 shipped · E13 blocked — awaiting MAYOR countersign',src:'AUTORESEARCH'});
+  items.push({id:'debt',brief:debtCount+' unreceipted event'+(debtCount===1?'':'s')+' detected since last session',src:'LEDGER'});
+  return items;
+}
+
+function renderQueue(items){
+  const q=document.getElementById('queue');
+  q.querySelectorAll('.q-item').forEach(e=>e.remove());
+  const empty=document.getElementById('queue-empty');
+  if(!items.length){empty.style.display='block';return;}
+  empty.style.display='none';
+  items.forEach(item=>q.appendChild(makeQItem(item.id,item.brief,item.src)));
+}
+
+async function loadQueue(){
   try{
     const r=await fetch('http://localhost:7001/api/connectors',{signal:AbortSignal.timeout(1500)});
-    if(r.ok){
-      document.getElementById('brief-src').textContent='● LIVE';
-      document.getElementById('brief-src').style.color='rgba(0,255,136,.50)';
-    }
+    if(r.ok)badges=await r.json();
   }catch{}
+  renderQueue(buildItems(badges));
 }
-fetchLiveData();setInterval(fetchLiveData,60000);
+loadQueue();
 
-// ── Canvas ──
-function updatePositions(){
-  for(const n of NODES){
-    if(n.layer===0){n.sx=CX;n.sy=CY;}
-    else{n.sx=CX+R*n.oR*Math.cos(n.orb);n.sy=CY+R*n.oR*Math.sin(n.orb);}
-  }
+// ── Canvas ─────────────────────────────────────────────────────────────────
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+const dpr=window.devicePixelRatio||1;
+let W,H,CX,CY,R;
+
+function resize(){
+  const wrap=document.getElementById('orbit-wrap');
+  W=wrap.clientWidth*dpr;H=wrap.clientHeight*dpr;
+  canvas.width=W;canvas.height=H;
+  canvas.style.width=wrap.clientWidth+'px';
+  canvas.style.height=wrap.clientHeight+'px';
+  CX=W/2;CY=H/2;R=Math.min(W,H)*.34;
 }
+resize();window.addEventListener('resize',resize);
 
-function drawBackground(){
+const RINGS=[
+  {oR:.60,col:'#00d4ff',focusA:.09,witnessA:.09},
+  {oR:.74,col:'#6a4fff',focusA:.09,witnessA:.025},
+  {oR:.88,col:'#00d4ff',focusA:.025,witnessA:.09},
+  {oR:1.02,col:'#00ff88',focusA:.025,witnessA:.09},
+  {oR:1.16,col:'#ffaa00',focusA:.09,witnessA:.09},
+  {oR:1.30,col:'#ff6a00',focusA:.025,witnessA:.025},
+];
+
+function hexRgb(hex){const n=parseInt(hex.replace('#',''),16);return[(n>>16)&255,(n>>8)&255,n&255];}
+
+let t0=null;
+function frame(t){
+  if(!t0)t0=t;
+  const e=(t-t0)*.0001;
   ctx.clearRect(0,0,W,H);
-  ctx.save();
-  ctx.strokeStyle='rgba(0,212,255,.06)';ctx.lineWidth=.5*devicePixelRatio;
-  ctx.setLineDash([3*devicePixelRatio,8*devicePixelRatio]);
-  ctx.beginPath();ctx.arc(CX,CY,R*.56,0,Math.PI*2);ctx.stroke();
+
+  ctx.fillStyle='rgba(0,212,255,.11)';
+  [[.10,.20],[.87,.13],[.06,.74],[.92,.78],[.20,.92],[.80,.88],
+   [.04,.46],[.96,.44],[.50,.04],[.50,.96],[.36,.14],[.66,.08],
+   [.26,.52],[.74,.54],[.15,.58],[.85,.42]].forEach(([fx,fy])=>{
+    ctx.beginPath();ctx.arc(W*fx,H*fy,1.1*dpr,0,Math.PI*2);ctx.fill();
+  });
+
   ctx.setLineDash([]);
-  [1.0,.82,.64,.46,.28,.14].forEach((f,i)=>{
-    ctx.strokeStyle=`rgba(0,212,255,${.007+i*.003})`;ctx.lineWidth=.35*devicePixelRatio;
+  [1.55,1.37,1.18,.98,.76,.56,.36,.18].forEach((f,i)=>{
+    ctx.strokeStyle=`rgba(0,212,255,${.006+i*.0025})`;
+    ctx.lineWidth=.3*dpr;
     ctx.beginPath();ctx.arc(CX,CY,R*f,0,Math.PI*2);ctx.stroke();
   });
-  ctx.fillStyle='rgba(0,212,255,.12)';
-  [[.10,.20],[.87,.13],[.06,.74],[.92,.78],[.20,.92],[.80,.88],[.04,.46],[.96,.44],
-   [.50,.04],[.50,.96],[.36,.14],[.66,.08]].forEach(([fx,fy])=>{
-    ctx.beginPath();ctx.arc(W*fx,H*fy,1.2*devicePixelRatio,0,Math.PI*2);ctx.fill();
-  });
-  ctx.restore();
-}
 
-function drawDebtPressure(t){
-  if(debtCount<=0)return;
-  const age=debtPulseTs?(Math.min((t-debtPulseTs)/2400,1)):1;
-  const baseP=0.5+0.5*Math.sin(t*.0018);
-  const recentP=Math.max(0,1-age);
-  const pulse=baseP*.5+recentP*.5;
-  const intensity=Math.min(debtCount/MAX_DEBT,1);
-  const rr=R*.60+pulse*R*.05;
+  RINGS.forEach((ring,i)=>{
+    const{r,g,b}=hexRgb(ring.col);
+    const base=operatorMode==='focus'?ring.focusA:ring.witnessA;
+    const pulse=base+.015*Math.sin(e*(i+1)*.9);
+    ctx.strokeStyle=`rgba(${r},${g},${b},${pulse})`;
+    ctx.lineWidth=(base>.05?.55:.28)*dpr;
+    ctx.setLineDash([2*dpr,10*dpr]);
+    ctx.beginPath();ctx.arc(CX,CY,R*ring.oR,0,Math.PI*2);ctx.stroke();
+    ctx.setLineDash([]);
+  });
+
+  // governance debt → amber kernel pressure
+  const di=Math.min(debtCount/5,1);
+  const kp=.5+.5*Math.sin(e*2.4);
+  const kA=.10+di*.22+kp*(di*.10+.04);
+  const kRad=R*(.14+di*.06);
+  const kg=ctx.createRadialGradient(CX,CY,0,CX,CY,kRad*2.2);
+  kg.addColorStop(0,`rgba(255,170,0,${kA*1.8})`);
+  kg.addColorStop(.45,`rgba(255,170,0,${kA*.7})`);
+  kg.addColorStop(1,'rgba(255,170,0,0)');
+  ctx.fillStyle=kg;
+  ctx.beginPath();ctx.arc(CX,CY,kRad*2.2,0,Math.PI*2);ctx.fill();
+
   ctx.save();
-  ctx.strokeStyle='#c9940c';
-  ctx.lineWidth=(1.0+pulse*.8)*devicePixelRatio;
-  ctx.shadowBlur=14+pulse*16;ctx.shadowColor='rgba(201,148,12,.9)';
-  ctx.globalAlpha=(.22+pulse*.22)*intensity;
-  ctx.setLineDash([5*devicePixelRatio,8*devicePixelRatio]);
-  ctx.beginPath();ctx.arc(CX,CY,rr,0,Math.PI*2);ctx.stroke();
-  ctx.setLineDash([]);
+  ctx.globalAlpha=.55+di*.25+kp*.10;
+  ctx.fillStyle='#ffaa00';
+  ctx.shadowBlur=(8+di*16+kp*8)*dpr;ctx.shadowColor='#ffaa00';
+  ctx.beginPath();ctx.arc(CX,CY,3.5*dpr,0,Math.PI*2);ctx.fill();
   ctx.shadowBlur=0;
-  ctx.globalAlpha=(.38+pulse*.30)*intensity;
-  ctx.font=`${6.5*devicePixelRatio}px 'Courier New'`;
-  ctx.fillStyle='#c9940c';ctx.textAlign='center';
-  ctx.fillText('GOVERNANCE DEBT · '+debtCount+' UNRECEIPTED',CX,CY+rr+13*devicePixelRatio);
-  ctx.restore();
-}
-
-function drawMark(t){
-  const p=.7+.3*Math.sin(t*.0009),r=R*.052;
-  ctx.save();ctx.globalAlpha=p*.50;ctx.strokeStyle='#c9940c';ctx.lineWidth=1.3*devicePixelRatio;
-  ctx.shadowBlur=14;ctx.shadowColor='#c9940c';
-  ctx.beginPath();ctx.moveTo(CX-r*2,CY);ctx.quadraticCurveTo(CX,CY-r*1.3,CX+r*2,CY);ctx.quadraticCurveTo(CX,CY+r*1.3,CX-r*2,CY);ctx.stroke();
-  ctx.beginPath();ctx.arc(CX,CY,r*.36,0,Math.PI*2);ctx.fillStyle='#c9940c';ctx.fill();
-  ctx.restore();
-}
-
-function drawSolid(n,gx,gy){
-  const alpha=getModeAlpha(n.k);
-  const def=SOLIDS[n.solid];
-  const baseR=n.layer===0?R*.40:R*.200;
-  const sc=baseR*n.sc,col=COL[n.c]||'#00d4ff';
-  const rotated=def.verts.map(v=>{let r=rotX(v,n.rx_a+gx);r=rotY(r,n.ry_a+gy);r=rotZ(r,n.rz_a);return r;});
-  const proj=rotated.map(v=>project(v,n.sx,n.sy,sc));
-  const sorted=def.edges.map(e=>({e,z:(proj[e[0]][2]+proj[e[1]][2])/2})).sort((a,b)=>b.z-a.z);
-  ctx.save();
-  ctx.shadowBlur=n.layer===0?26:14;ctx.shadowColor=col;
-  ctx.strokeStyle=col;ctx.lineWidth=(n.layer===0?1.9:1.3)*devicePixelRatio;
-  for(const{e,z}of sorted){const[ax,ay]=proj[e[0]],[bx,by]=proj[e[1]];ctx.globalAlpha=(z<4.2?.18:.86)*alpha;ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(bx,by);ctx.stroke();}
-  ctx.fillStyle=col;ctx.shadowBlur=n.layer===0?12:5;ctx.globalAlpha=.58*alpha;
-  const dotR=(n.layer===0?2.8:2.0)*devicePixelRatio;
-  for(const[vx,vy]of proj){ctx.beginPath();ctx.arc(vx,vy,dotR,0,Math.PI*2);ctx.fill();}
-  ctx.restore();
-}
-
-function drawLabel(n){
-  const alpha=getModeAlpha(n.k);
-  const col=COL[n.c]||'#00d4ff';
-  const fs=n.layer===0?12:9;
-  const yOff=n.layer===0?-R*.30:-R*.168;
-  ctx.save();
-  ctx.font=`${fs*devicePixelRatio}px 'Courier New'`;ctx.fillStyle=col;ctx.textAlign='center';
-  ctx.globalAlpha=(n.layer===0?.90:.74)*alpha;ctx.shadowBlur=8;ctx.shadowColor=col;
-  ctx.fillText(n.lbl,n.sx,n.sy+yOff);
-  if(n.role&&n.layer===1){
-    ctx.globalAlpha=.28*alpha;ctx.shadowBlur=0;
-    ctx.font=`${6.5*devicePixelRatio}px 'Courier New'`;
-    ctx.fillText(n.role,n.sx,n.sy+yOff+13*devicePixelRatio);
-  }
-  if(n.layer===0){
-    ctx.globalAlpha=.36;ctx.shadowBlur=4;
-    ctx.font=`${7.5*devicePixelRatio}px 'Courier New'`;ctx.fillStyle='rgba(201,148,12,.78)';
-    const line=debtCount>0?`${debtCount} item${debtCount>1?'s':''} awaiting your gate`:'All items reviewed · ledger clear';
-    ctx.fillText(line,n.sx,n.sy+R*.22);
+  ctx.globalAlpha=.28+di*.20+kp*.05;
+  ctx.fillStyle='#ffaa00';
+  ctx.font=`${7.5*dpr}px 'Courier New'`;
+  ctx.textAlign='center';
+  ctx.fillText('HELEN',CX,CY-9*dpr);
+  if(debtCount>0){
+    ctx.font=`bold ${6.5*dpr}px 'Courier New'`;
+    ctx.fillStyle=`rgba(255,170,0,${.55+di*.35})`;
+    ctx.fillText(debtCount+' unreceipted',CX,CY+6*dpr);
+  } else {
+    ctx.font=`${6*dpr}px 'Courier New'`;
+    ctx.fillStyle='rgba(0,255,136,.38)';
+    ctx.fillText('clear',CX,CY+6*dpr);
   }
   ctx.restore();
-}
 
-function drawConnections(){
-  ctx.save();
-  for(const n of NODES){
-    if(!n.par)continue;
-    const p=NM[n.par],alpha=getModeAlpha(n.k);
-    ctx.strokeStyle=COL[n.c]||'#00d4ff';ctx.lineWidth=.45*devicePixelRatio;
-    ctx.globalAlpha=.09*alpha;
-    ctx.beginPath();ctx.moveTo(p.sx,p.sy);ctx.lineTo(n.sx,n.sy);ctx.stroke();
-  }
-  ctx.restore();
-}
-
-function drawReceiptFeed(t){
-  if(!RECEIPT_LOG.length)return;
-  const dpr=devicePixelRatio,rowH=13*dpr,pad=8*dpr;
-  const panW=280*dpr,panH=RECEIPT_LOG.length*rowH+pad*1.4;
-  const panX=CX-panW/2,panY=CY+R*.62;
-  if(panY+panH>H-8*dpr)return;
-  ctx.save();
-  ctx.globalAlpha=.22;ctx.font=`${5.5*dpr}px 'Courier New'`;ctx.fillStyle='rgba(0,255,136,.70)';ctx.textAlign='center';
-  ctx.fillText('· RECEIPT SPINE ·',CX,panY-5*dpr);
-  ctx.globalAlpha=.92;ctx.fillStyle='rgba(5,5,8,.96)';ctx.strokeStyle='rgba(0,255,136,.12)';ctx.lineWidth=.5*dpr;
-  ctx.beginPath();ctx.rect(panX,panY,panW,panH);ctx.fill();ctx.stroke();
-  ctx.font=`${6*dpr}px 'Courier New'`;
-  RECEIPT_LOG.forEach((r,i)=>{
-    const y=panY+pad*.8+(i+.75)*rowH;
-    const sc=r.status==='CONFIRMED'?'rgba(0,255,136,.70)':'rgba(255,51,85,.65)';
-    ctx.globalAlpha=.34;ctx.fillStyle=sc;ctx.textAlign='left';
-    ctx.fillText(r.status==='CONFIRMED'?'[OK]':'[REJ]',panX+pad,y);
-    ctx.globalAlpha=.72;ctx.fillStyle='rgba(0,212,255,.72)';
-    ctx.fillText(r.id+' · '+r.pid,panX+pad+28*dpr,y);
-    ctx.globalAlpha=.20;ctx.fillStyle='rgba(0,212,255,.50)';ctx.textAlign='right';
-    ctx.fillText(r.ts,panX+panW-pad,y);
-  });
-  ctx.restore();
-}
-
-function drawHUD(t){
-  const ep=Math.floor(t/8000)%1000;
-  ctx.save();ctx.font=`${7.5*devicePixelRatio}px 'Courier New'`;ctx.fillStyle='rgba(0,212,255,.13)';ctx.textAlign='left';
-  ctx.fillText('EPOCH '+String(ep).padStart(3,'0')+' · main · E13 BLOCKED',16*devicePixelRatio,44*devicePixelRatio);
-  ctx.restore();
-}
-
-let lastT=0;
-function frame(t){
-  const dt=Math.min(t-lastT,50);lastT=t;
-  smx+=(mx-smx)*.036;smy+=(my-smy)*.036;
-  const gx=(smy-.5)*.32,gy=(smx-.5)*.32;
-  for(const n of NODES){n.rx_a+=n.rx*dt;n.ry_a+=n.ry*dt;n.rz_a+=n.rz*dt;n.orb+=n.oS*dt;}
-  updatePositions();
-  drawBackground();
-  drawDebtPressure(t);
-  drawHUD(t);
-  drawConnections();
-  for(const n of NODES.filter(n=>n.layer===1)){drawSolid(n,gx,gy);drawLabel(n);}
-  drawMark(t);
-  drawSolid(NM['helen'],gx,gy);drawLabel(NM['helen']);
-  drawReceiptFeed(t);
   requestAnimationFrame(frame);
 }
-
-window.addEventListener('mousemove',e=>{mx=e.clientX/window.innerWidth;my=e.clientY/window.innerHeight;});
-
-function updateClock(){document.getElementById('t-clock').textContent=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
-updateClock();setInterval(updateClock,1000);
-
-// init
-resize();
-// re-measure brief after fonts settle
-setTimeout(resize,120);
 requestAnimationFrame(frame);
 </script>
 </body>
