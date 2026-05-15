@@ -10,16 +10,27 @@ body{background:#050508;color:#00d4ff;font-family:'Courier New',monospace;height
 
 /* ── BRIEF PANEL ─────────────────────────────────────────────────────────── */
 #brief{
-  flex:0 0 auto;padding:16px 28px 12px;
+  flex:0 0 auto;padding:14px 28px 10px;
   border-bottom:1px solid rgba(0,212,255,.10);
   background:rgba(5,5,8,.97);z-index:10;
-  overflow-y:auto;max-height:46vh;
+  overflow:hidden;
+  max-height:46vh;
+  transition:max-height .35s ease;
 }
-#brief-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px;}
+#brief.focus-mode{max-height:19vh;}
+
+#brief-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px;}
 #brief-title{font-size:10px;letter-spacing:.20em;color:rgba(0,212,255,.38);text-transform:uppercase;}
 #brief-ts{font-size:9px;color:rgba(0,212,255,.22);letter-spacing:.10em;}
 
-#mode-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+/* session delta */
+#session-delta{
+  font-size:9px;color:rgba(0,212,255,.30);letter-spacing:.07em;
+  margin-bottom:8px;padding-left:1px;border-left:2px solid rgba(0,212,255,.12);
+  padding-left:6px;
+}
+
+#mode-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
 #mode-label{font-size:9px;color:rgba(0,212,255,.30);letter-spacing:.14em;}
 .mode-btn{
   font-family:'Courier New',monospace;font-size:9px;letter-spacing:.14em;
@@ -28,9 +39,9 @@ body{background:#050508;color:#00d4ff;font-family:'Courier New',monospace;height
 }
 .mode-btn.active{background:rgba(0,212,255,.10);color:#00d4ff;border-color:rgba(0,212,255,.50);}
 
-#helen-brief-line{font-size:12px;color:#ffaa00;letter-spacing:.04em;margin-bottom:14px;padding-left:1px;}
+#helen-brief-line{font-size:11px;color:#ffaa00;letter-spacing:.04em;margin-bottom:10px;padding-left:1px;line-height:1.5;}
 
-#debt-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+#debt-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
 #debt-dot{
   width:8px;height:8px;border-radius:50%;background:#ffaa00;
   box-shadow:0 0 6px #ffaa00;flex-shrink:0;
@@ -41,15 +52,22 @@ body{background:#050508;color:#00d4ff;font-family:'Courier New',monospace;height
 #debt-label{font-size:10px;color:#ffaa00;letter-spacing:.10em;}
 #debt-label.zero{color:rgba(255,170,0,.30);}
 
-#queue{display:flex;flex-direction:column;gap:5px;}
+/* queue */
+#queue{display:flex;flex-direction:column;gap:4px;}
 .q-item{
-  display:flex;align-items:center;gap:10px;padding:6px 10px;
+  display:flex;align-items:center;gap:10px;padding:5px 10px;
   border:1px solid rgba(255,170,0,.15);background:rgba(255,170,0,.025);
-  transition:opacity .28s,transform .28s;
+  transition:opacity .28s,transform .28s,border-color .12s;
+  outline:none;
 }
+.q-item.kbd-active{border-color:rgba(0,212,255,.55);background:rgba(0,212,255,.04);}
+.q-item.kbd-active .q-brief{color:rgba(0,212,255,.98);}
 .q-item.confirmed{border-color:rgba(0,255,136,.25);background:rgba(0,255,136,.03);}
-.q-item.rejected{opacity:.25;}
+.q-item.rejected{opacity:.22;}
 .q-item.out{opacity:0;transform:translateX(36px);}
+/* focus-mode: hide all but first */
+#queue.focus-collapse .q-item:not(:first-of-type){display:none;}
+
 .q-bullet{color:#ffaa00;font-size:10px;flex-shrink:0;width:12px;}
 .q-brief{flex:1;font-size:10px;color:rgba(0,212,255,.78);letter-spacing:.03em;}
 .q-src{font-size:8px;color:rgba(0,212,255,.25);letter-spacing:.10em;flex-shrink:0;margin-right:6px;}
@@ -60,14 +78,21 @@ button.btn{
   text-transform:uppercase;transition:background .12s;
 }
 .btn-c{color:#00ff88;border-color:rgba(0,255,136,.35);}
-.btn-c:hover{background:rgba(0,255,136,.10);}
+.btn-c:hover,.btn-c.kbd-hl{background:rgba(0,255,136,.10);}
 .btn-r{color:rgba(255,51,85,.65);border-color:rgba(255,51,85,.22);}
-.btn-r:hover{background:rgba(255,51,85,.07);}
+.btn-r:hover,.btn-r.kbd-hl{background:rgba(255,51,85,.07);}
 .btn:disabled{opacity:.30;cursor:default;}
 #queue-empty{font-size:10px;color:rgba(0,212,255,.25);letter-spacing:.08em;padding:5px 1px;display:none;}
 
+/* processed tally */
+#processed-line{
+  font-size:8px;color:rgba(0,212,255,.22);letter-spacing:.10em;
+  margin-top:5px;display:none;
+}
+
+/* receipt strip */
 #rcpt-strip{
-  display:flex;align-items:center;gap:14px;margin-top:9px;padding-top:7px;
+  display:flex;align-items:center;gap:14px;margin-top:8px;padding-top:6px;
   border-top:1px solid rgba(0,212,255,.06);
   font-size:8px;color:rgba(0,212,255,.28);letter-spacing:.10em;
 }
@@ -75,6 +100,9 @@ button.btn{
 .rcpt-dot.firing{animation:rcpt-fire .7s ease-out forwards;}
 @keyframes rcpt-fire{0%{background:#ffaa00;box-shadow:0 0 10px #ffaa00;transform:scale(2);}100%{background:rgba(255,170,0,.25);box-shadow:none;transform:scale(1);}}
 #rcpt-auth{margin-left:auto;color:rgba(0,212,255,.12);}
+
+/* kbd hint */
+#kbd-hint{font-size:8px;color:rgba(0,212,255,.14);letter-spacing:.09em;margin-left:auto;}
 
 /* ── ORBIT ─────────────────────────────────────────────────────────────── */
 #orbit-wrap{flex:1 1 auto;position:relative;overflow:hidden;}
@@ -96,10 +124,12 @@ canvas{position:absolute;inset:0;width:100%;height:100%;}
     <span id="brief-title">HELEN OS · HOME</span>
     <span id="brief-ts"></span>
   </div>
+  <div id="session-delta">Last session: session start · computing signals…</div>
   <div id="mode-row">
     <span id="mode-label">OPERATOR STATE</span>
     <button class="mode-btn active" id="btn-focus" onclick="setMode('focus')">FOCUS</button>
     <button class="mode-btn" id="btn-witness" onclick="setMode('witness')">WITNESS</button>
+    <span id="kbd-hint">J/K navigate · Enter confirm · X reject</span>
   </div>
   <div id="helen-brief-line">HELEN was working. Here is what she found.</div>
   <div id="debt-row">
@@ -109,29 +139,37 @@ canvas{position:absolute;inset:0;width:100%;height:100%;}
   <div id="queue">
     <div id="queue-empty">All clear. HELEN is watching. No pending decisions.</div>
   </div>
+  <div id="processed-line"></div>
   <div id="rcpt-strip">
     <div class="rcpt-dot" id="rcpt-dot"></div>
     <span id="rcpt-count">0 receipts this session</span>
     <span id="rcpt-last">no receipt yet</span>
-    <span id="rcpt-auth">authority: false · witness-first · NO_RECEIPT = NO_CLAIM</span>
+    <span id="rcpt-auth">authority: false · NO_RECEIPT = NO_CLAIM</span>
   </div>
 </div>
 
 <div id="orbit-wrap">
   <canvas id="c"></canvas>
-  <div id="nav">
-    <a href="temple.html">→ COCKPIT</a>
-  </div>
+  <div id="nav"><a href="temple.html">→ COCKPIT</a></div>
 </div>
 
 <script>
 'use strict';
 
+// ── State ─────────────────────────────────────────────────────────────────
 let operatorMode='focus';
 let debtCount=2;
-let rcptCount=0;
+let rcptCount=0,confCount=0,rejCount=0;
 let badges={};
+let activeQIdx=-1;          // keyboard focus
+let activeRingIdx=-1;       // which orbit ring to highlight
+let confirmFlash=null;      // {ringIdx,ts} green flash on confirm
+let sessionStart=Date.now();
 
+// source → ring index in RINGS[]
+const SRC_RING={'GIT':1,'GITHUB':2,'CALENDAR':4,'SKILLS':1,'AUTORESEARCH':4,'LEDGER':-1};
+
+// ── Timestamp ─────────────────────────────────────────────────────────────
 function updateTs(){
   const n=new Date();
   document.getElementById('brief-ts').textContent=
@@ -139,23 +177,56 @@ function updateTs(){
 }
 updateTs();setInterval(updateTs,1000);
 
+// ── Session delta ─────────────────────────────────────────────────────────
+function updateSessionDelta(b){
+  const signals=Object.values(b).filter(v=>v&&typeof v==='object'&&v.count>0).length;
+  const h=new Date().getHours();
+  const tod=h<9?'early session':h<12?'morning':h<17?'afternoon':'evening';
+  document.getElementById('session-delta').textContent=
+    'Session start · '+tod+' · '+signals+' live signal'+(signals===1?'':'s')+' · 1 gate in progress · E13 blocked';
+}
+
+// ── Mode ──────────────────────────────────────────────────────────────────
 function setMode(m){
   operatorMode=m;
   document.getElementById('btn-focus').classList.toggle('active',m==='focus');
   document.getElementById('btn-witness').classList.toggle('active',m==='witness');
+  document.getElementById('brief').classList.toggle('focus-mode',m==='focus');
+  document.getElementById('queue').classList.toggle('focus-collapse',m==='focus');
+  if(m==='focus'&&activeQIdx>0)setQFocus(0);
 }
 
+// ── Live brief line ───────────────────────────────────────────────────────
+function buildBriefLine(b){
+  const parts=[];
+  const pending=document.querySelectorAll('.q-item').length;
+  if(pending>0)parts.push(pending+' pending decision'+(pending===1?'':'s'));
+  const loc=b.cn_local;
+  if(loc){parts.push(loc.count>0?loc.count+' uncommitted':'branch clean');}
+  if(debtCount>0)parts.push(debtCount+' unreceipted');
+  const gh=b.cn_github;
+  if(gh&&gh.count>0)parts.push(gh.count+' ahead of origin');
+  const cal=b.cn_cal;
+  if(cal&&cal.label&&cal.count>0)parts.push(cal.label);
+  parts.push('E13 blocked');
+  parts.push('no gates failed');
+  return parts.join(' · ');
+}
+
+// ── Receipt ───────────────────────────────────────────────────────────────
 function fireReceipt(brief,src){
   const ts=new Date();
   const id='RCPT-'+(4096+rcptCount).toString(16).toUpperCase();
-  rcptCount++;
+  rcptCount++;confCount++;
   if(debtCount>0){debtCount--;updateDebt();}
   document.getElementById('rcpt-count').textContent=rcptCount+' receipt'+(rcptCount===1?'':'s')+' this session';
   document.getElementById('rcpt-last').textContent='last: '+ts.toTimeString().slice(0,8)+' · '+id+' · '+src;
   const dot=document.getElementById('rcpt-dot');
   dot.classList.remove('firing');void dot.offsetWidth;dot.classList.add('firing');
+  updateProcessed();
 }
 
+// ── Debt ──────────────────────────────────────────────────────────────────
 function updateDebt(){
   const dot=document.getElementById('debt-dot');
   const lbl=document.getElementById('debt-label');
@@ -168,9 +239,111 @@ function updateDebt(){
   }
 }
 
+// ── Processed tally ───────────────────────────────────────────────────────
+function updateProcessed(){
+  const pending=document.querySelectorAll('.q-item').length;
+  const pl=document.getElementById('processed-line');
+  if(confCount+rejCount>0){
+    pl.style.display='block';
+    pl.textContent=confCount+' confirmed · '+rejCount+' rejected · '+pending+' pending';
+  }
+}
+
+// ── Queue keyboard focus ──────────────────────────────────────────────────
+function getQItems(){return[...document.querySelectorAll('.q-item:not(.out):not(.confirmed):not(.rejected)')];}
+
+function setQFocus(idx){
+  const items=getQItems();
+  items.forEach((el,i)=>el.classList.toggle('kbd-active',i===idx));
+  if(idx>=0&&idx<items.length){
+    activeQIdx=idx;
+    activeRingIdx=SRC_RING[items[idx].dataset.src]??-1;
+    items[idx].scrollIntoView({block:'nearest'});
+  } else {
+    activeQIdx=-1;activeRingIdx=-1;
+  }
+}
+
+function moveQFocus(dir){
+  const items=getQItems();
+  if(!items.length)return;
+  let next=activeQIdx+dir;
+  if(next<0)next=items.length-1;
+  if(next>=items.length)next=0;
+  setQFocus(next);
+}
+
+// ── Queue item actions ────────────────────────────────────────────────────
+function confirmItem(el,brief,src){
+  const ringIdx=SRC_RING[src]??-1;
+  fireReceipt(brief,src);
+  if(ringIdx>=0){confirmFlash={ringIdx,ts:performance.now()};}
+  el.classList.add('confirmed');
+  el.querySelector('.q-bullet').textContent='✓';
+  el.querySelectorAll('button').forEach(b=>b.disabled=true);
+  setTimeout(()=>{
+    el.classList.add('out');
+    setTimeout(()=>{
+      el.remove();checkEmpty();
+      const items=getQItems();
+      if(items.length)setQFocus(Math.min(activeQIdx,items.length-1));
+      else{activeQIdx=-1;activeRingIdx=-1;}
+      updateProcessed();
+      document.getElementById('helen-brief-line').textContent=buildBriefLine(badges);
+    },300);
+  },520);
+}
+
+function rejectItem(el){
+  rejCount++;
+  el.classList.add('rejected');
+  el.querySelector('.q-bullet').textContent='×';
+  el.querySelectorAll('button').forEach(b=>b.disabled=true);
+  setTimeout(()=>{
+    el.classList.add('out');
+    setTimeout(()=>{
+      el.remove();checkEmpty();
+      const items=getQItems();
+      if(items.length)setQFocus(Math.min(activeQIdx,items.length-1));
+      else{activeQIdx=-1;activeRingIdx=-1;}
+      updateProcessed();
+    },300);
+  },360);
+}
+
+function checkEmpty(){
+  if(!document.querySelector('.q-item'))
+    document.getElementById('queue-empty').style.display='block';
+}
+
+// ── Keyboard ──────────────────────────────────────────────────────────────
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
+  if(e.key==='j'||e.key==='ArrowDown'){e.preventDefault();moveQFocus(1);}
+  else if(e.key==='k'||e.key==='ArrowUp'){e.preventDefault();moveQFocus(-1);}
+  else if(e.key==='Enter'){
+    const items=getQItems();
+    if(activeQIdx>=0&&activeQIdx<items.length){
+      const el=items[activeQIdx];
+      confirmItem(el,el.querySelector('.q-brief').textContent,el.dataset.src);
+    }
+  }
+  else if(e.key==='x'||e.key==='X'){
+    const items=getQItems();
+    if(activeQIdx>=0&&activeQIdx<items.length)rejectItem(items[activeQIdx]);
+  }
+  else if(e.key==='Tab'){
+    e.preventDefault();
+    moveQFocus(e.shiftKey?-1:1);
+  }
+  else if(e.key==='f')setMode('focus');
+  else if(e.key==='w')setMode('witness');
+});
+
+// ── Build queue ───────────────────────────────────────────────────────────
 function makeQItem(id,brief,src){
   const el=document.createElement('div');
-  el.className='q-item';el.id='qi-'+id;
+  el.className='q-item';el.id='qi-'+id;el.dataset.src=src;
   el.innerHTML=
     `<span class="q-bullet">▸</span>`+
     `<span class="q-brief">${brief}</span>`+
@@ -181,27 +354,12 @@ function makeQItem(id,brief,src){
     `</div>`;
   el.querySelector('.btn-c').onclick=()=>confirmItem(el,brief,src);
   el.querySelector('.btn-r').onclick=()=>rejectItem(el);
+  el.addEventListener('mouseenter',()=>{
+    const items=getQItems();
+    const idx=items.indexOf(el);
+    if(idx>=0)setQFocus(idx);
+  });
   return el;
-}
-
-function confirmItem(el,brief,src){
-  fireReceipt(brief,src);
-  el.classList.add('confirmed');
-  el.querySelector('.q-bullet').textContent='✓';
-  el.querySelectorAll('button').forEach(b=>b.disabled=true);
-  setTimeout(()=>{el.classList.add('out');setTimeout(()=>{el.remove();checkEmpty();},300);},550);
-}
-
-function rejectItem(el){
-  el.classList.add('rejected');
-  el.querySelector('.q-bullet').textContent='×';
-  el.querySelectorAll('button').forEach(b=>b.disabled=true);
-  setTimeout(()=>{el.classList.add('out');setTimeout(()=>{el.remove();checkEmpty();},300);},380);
-}
-
-function checkEmpty(){
-  if(!document.querySelector('.q-item'))
-    document.getElementById('queue-empty').style.display='block';
 }
 
 function buildItems(b){
@@ -230,6 +388,7 @@ function renderQueue(items){
   if(!items.length){empty.style.display='block';return;}
   empty.style.display='none';
   items.forEach(item=>q.appendChild(makeQItem(item.id,item.brief,item.src)));
+  setQFocus(0);
 }
 
 async function loadQueue(){
@@ -237,7 +396,9 @@ async function loadQueue(){
     const r=await fetch('http://localhost:7001/api/connectors',{signal:AbortSignal.timeout(1500)});
     if(r.ok)badges=await r.json();
   }catch{}
+  updateSessionDelta(badges);
   renderQueue(buildItems(badges));
+  document.getElementById('helen-brief-line').textContent=buildBriefLine(badges);
 }
 loadQueue();
 
@@ -257,13 +418,14 @@ function resize(){
 }
 resize();window.addEventListener('resize',resize);
 
+// rings — index matches SRC_RING values
 const RINGS=[
-  {oR:.60,col:'#00d4ff',focusA:.09,witnessA:.09},
-  {oR:.74,col:'#6a4fff',focusA:.09,witnessA:.025},
-  {oR:.88,col:'#00d4ff',focusA:.025,witnessA:.09},
-  {oR:1.02,col:'#00ff88',focusA:.025,witnessA:.09},
-  {oR:1.16,col:'#ffaa00',focusA:.09,witnessA:.09},
-  {oR:1.30,col:'#ff6a00',focusA:.025,witnessA:.025},
+  {oR:.60,col:'#00d4ff',focusA:.09,witnessA:.09},  // 0 agents
+  {oR:.74,col:'#6a4fff',focusA:.09,witnessA:.025}, // 1 skills
+  {oR:.88,col:'#00d4ff',focusA:.025,witnessA:.09}, // 2 connectors
+  {oR:1.02,col:'#00ff88',focusA:.025,witnessA:.09},// 3 knowledge
+  {oR:1.16,col:'#ffaa00',focusA:.09,witnessA:.09}, // 4 schedule
+  {oR:1.30,col:'#ff6a00',focusA:.025,witnessA:.025},// 5 computeruse
 ];
 
 function hexRgb(hex){const n=parseInt(hex.replace('#',''),16);return[(n>>16)&255,(n>>8)&255,n&255];}
@@ -274,6 +436,7 @@ function frame(t){
   const e=(t-t0)*.0001;
   ctx.clearRect(0,0,W,H);
 
+  // starfield
   ctx.fillStyle='rgba(0,212,255,.11)';
   [[.10,.20],[.87,.13],[.06,.74],[.92,.78],[.20,.92],[.80,.88],
    [.04,.46],[.96,.44],[.50,.04],[.50,.96],[.36,.14],[.66,.08],
@@ -281,6 +444,7 @@ function frame(t){
     ctx.beginPath();ctx.arc(W*fx,H*fy,1.1*dpr,0,Math.PI*2);ctx.fill();
   });
 
+  // depth rings
   ctx.setLineDash([]);
   [1.55,1.37,1.18,.98,.76,.56,.36,.18].forEach((f,i)=>{
     ctx.strokeStyle=`rgba(0,212,255,${.006+i*.0025})`;
@@ -288,18 +452,37 @@ function frame(t){
     ctx.beginPath();ctx.arc(CX,CY,R*f,0,Math.PI*2);ctx.stroke();
   });
 
+  // orbital rings
+  const flashAge=confirmFlash?(t-confirmFlash.ts)/600:1;
   RINGS.forEach((ring,i)=>{
     const{r,g,b}=hexRgb(ring.col);
     const base=operatorMode==='focus'?ring.focusA:ring.witnessA;
-    const pulse=base+.015*Math.sin(e*(i+1)*.9);
-    ctx.strokeStyle=`rgba(${r},${g},${b},${pulse})`;
-    ctx.lineWidth=(base>.05?.55:.28)*dpr;
-    ctx.setLineDash([2*dpr,10*dpr]);
-    ctx.beginPath();ctx.arc(CX,CY,R*ring.oR,0,Math.PI*2);ctx.stroke();
-    ctx.setLineDash([]);
+    let alpha=base+.015*Math.sin(e*(i+1)*.9);
+    let lw=(base>.05?.55:.28)*dpr;
+
+    // queue-active ring: brighten
+    if(i===activeRingIdx){alpha=Math.max(alpha,.18+.06*Math.sin(e*4));lw=1.1*dpr;}
+
+    // confirm flash: green pulse
+    if(confirmFlash&&i===confirmFlash.ringIdx&&flashAge<1){
+      const gf=1-flashAge;
+      ctx.strokeStyle=`rgba(0,255,136,${.25+gf*.55})`;
+      ctx.lineWidth=(1.2+gf*.6)*dpr;
+      ctx.shadowBlur=(8+gf*18)*dpr;ctx.shadowColor='#00ff88';
+      ctx.setLineDash([]);
+      ctx.beginPath();ctx.arc(CX,CY,R*ring.oR,0,Math.PI*2);ctx.stroke();
+      ctx.shadowBlur=0;
+      if(flashAge>=1)confirmFlash=null;
+    } else {
+      ctx.strokeStyle=`rgba(${r},${g},${b},${alpha})`;
+      ctx.lineWidth=lw;
+      ctx.setLineDash([2*dpr,10*dpr]);
+      ctx.beginPath();ctx.arc(CX,CY,R*ring.oR,0,Math.PI*2);ctx.stroke();
+      ctx.setLineDash([]);
+    }
   });
 
-  // governance debt → amber kernel pressure
+  // debt → amber kernel pressure
   const di=Math.min(debtCount/5,1);
   const kp=.5+.5*Math.sin(e*2.4);
   const kA=.10+di*.22+kp*(di*.10+.04);
