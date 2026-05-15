@@ -6,102 +6,115 @@
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { background: #060810; color: #c9d1d9; font-family: ui-monospace, monospace; overflow: hidden; }
-canvas { display: block; }
-#ui {
+canvas { display: block; cursor: pointer; }
+
+#top {
   position: fixed; top: 0; left: 0; right: 0;
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 10px 20px; background: rgba(6,8,16,0.85);
-  border-bottom: 1px solid #1e2430; z-index: 10;
+  padding: 18px 0 8px 0; text-align: center; z-index: 10;
+  pointer-events: none;
 }
-#title { color: #c9d1d9; font-size: 12px; letter-spacing: 0.12em; }
-#title .sub { color: #484f58; margin-left: 12px; }
-#selector { display: flex; gap: 6px; }
-.btn {
-  padding: 4px 10px; border: 1px solid #30363d; border-radius: 3px;
-  background: transparent; color: #7d8590; cursor: pointer;
-  font-family: ui-monospace, monospace; font-size: 10px; letter-spacing: 0.06em;
-  transition: all 0.15s;
+#title {
+  font-size: 22px; letter-spacing: 0.35em; color: #d8d4c0;
+  font-family: Georgia, serif; font-weight: 300;
 }
-.btn .key { color: #484f58; margin-right: 6px; }
-.btn:hover { color: #c9d1d9; }
-.btn.active { color: #ffffff; }
-#info {
+#subtitle {
+  font-size: 10px; letter-spacing: 0.4em; color: #5a6270;
+  margin-top: 4px;
+}
+#banner {
+  font-size: 11px; letter-spacing: 0.32em; color: #8a7d5a;
+  margin-top: 18px;
+  font-family: Georgia, serif;
+}
+
+#bottom {
   position: fixed; bottom: 0; left: 0; right: 0;
-  padding: 10px 20px; background: rgba(6,8,16,0.85);
-  border-top: 1px solid #1e2430; z-index: 10;
-  display: flex; gap: 36px; align-items: center;
-  font-size: 10px; letter-spacing: 0.05em;
+  z-index: 10; pointer-events: none;
 }
-.stat { color: #484f58; }
-.stat span { color: #c9d1d9; margin-left: 6px; }
+#footer-tag {
+  text-align: center; font-size: 11px; letter-spacing: 0.4em;
+  color: #6a604a; padding: 8px 0;
+  font-family: Georgia, serif;
+}
+#info {
+  display: flex; gap: 32px; justify-content: center;
+  padding: 8px 20px 14px 20px;
+  font-size: 9px; letter-spacing: 0.12em; color: #2c333e;
+  border-top: 1px solid #14181f;
+}
+.stat span { color: #6a7280; margin-left: 6px; }
+
+/* Focus contract block (only visible in focus mode) */
 #contract {
-  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -75px);
-  text-align: center; pointer-events: none; z-index: 10; width: 90%; max-width: 720px;
+  position: fixed; top: 50%; left: 50%;
+  transform: translate(-50%, -100px);
+  text-align: center; pointer-events: none; z-index: 8;
+  width: 90%; max-width: 680px;
+  opacity: 0; transition: opacity 0.4s;
 }
-#solid-name { font-size: 26px; letter-spacing: 0.22em; transition: color 0.5s; }
-#solid-role { font-size: 11px; color: #7d8590; margin-top: 6px; letter-spacing: 0.14em; }
-#solid-law  { font-size: 10px; margin-top: 8px; letter-spacing: 0.06em; opacity: 0.85; transition: color 0.5s; }
-#inversion {
-  position: fixed; bottom: 38px; left: 50%; transform: translateX(-50%);
-  font-size: 9px; color: #2c333e; letter-spacing: 0.18em; z-index: 5;
+#contract.visible { opacity: 1; }
+#solid-name { font-size: 28px; letter-spacing: 0.28em; font-family: Georgia, serif; }
+#solid-role { font-size: 10px; color: #7d8590; margin-top: 8px; letter-spacing: 0.22em; }
+#solid-law  { font-size: 10px; margin-top: 10px; letter-spacing: 0.08em; opacity: 0.85; }
+
+#hint {
+  position: fixed; bottom: 52px; left: 50%; transform: translateX(-50%);
+  font-size: 9px; letter-spacing: 0.3em; color: #2c333e; z-index: 8;
+  pointer-events: none; transition: opacity 0.4s;
 }
 </style>
 </head>
 <body>
-<div id="ui">
-  <div id="title">HELEN OS<span class="sub">CONSTITUTIONAL COSMOGRAM — PLATONIC_INTERFACE_SEMANTICS_V1</span></div>
-  <div id="selector">
-    <button class="btn active" data-i="0"><span class="key">1</span>KERNEL</button>
-    <button class="btn" data-i="1"><span class="key">2</span>MEMORY</button>
-    <button class="btn" data-i="2"><span class="key">3</span>HAL</button>
-    <button class="btn" data-i="3"><span class="key">4</span>CONQUEST</button>
-    <button class="btn" data-i="4"><span class="key">5</span>AURA</button>
-  </div>
+<div id="top">
+  <div id="title">HELEN OS</div>
+  <div id="subtitle">A CONSTITUTIONAL INTERACTIVE INTERFACE</div>
+  <div id="banner">PERSPECTIVE CAN ROTATE.&nbsp;&nbsp;&nbsp;LAW REMAINS INVARIANT.</div>
 </div>
 
 <div id="contract">
-  <div id="solid-name">TETRAHEDRON</div>
-  <div id="solid-role">KERNEL — Sovereign Law</div>
-  <div id="solid-law">Irreducible. The kernel signs alone. NO RECEIPT = NO CLAIM.</div>
+  <div id="solid-name"></div>
+  <div id="solid-role"></div>
+  <div id="solid-law"></div>
 </div>
+
+<div id="hint">CLICK A FORM TO ENTER FOCUS · KEYS 1–5 · ESC TO RETURN</div>
 
 <canvas id="c"></canvas>
 
-<div id="inversion">austerity ← KERNEL · MEMORY · HAL · CONQUEST · AURA → ornament</div>
-
-<div id="info">
-  <div class="stat">FACES<span id="s-faces">—</span></div>
-  <div class="stat">VERTICES<span id="s-verts">—</span></div>
-  <div class="stat">EDGES<span id="s-edges">—</span></div>
-  <div class="stat">AUTHORITY<span id="s-auth">—</span></div>
-  <div class="stat">CANON<span id="s-canon">NO_SHIP</span></div>
-  <div class="stat">DOCTRINE<span>PLATONIC_INTERFACE_SEMANTICS_V1</span></div>
+<div id="bottom">
+  <div id="footer-tag">FIVE FORMS.&nbsp;&nbsp;&nbsp;ONE LAW.</div>
+  <div id="info">
+    <div class="stat">DOCTRINE<span>PLATONIC_INTERFACE_SEMANTICS_V1</span></div>
+    <div class="stat">CANON<span>NO_SHIP</span></div>
+    <div class="stat">AUTHORITY<span>NON_SOVEREIGN</span></div>
+    <div class="stat">MODE<span id="s-mode">ATLAS</span></div>
+  </div>
 </div>
 
 <script>
-// ── Constitutional canon (PLATONIC_INTERFACE_SEMANTICS_V1) ─────────────────
-// Solid-to-module mapping is doctrinal. Do not reorder or remap.
+// ── PLATONIC_INTERFACE_SEMANTICS_V1 — canonical mapping ───────────────────
+// Order is doctrinal: KERNEL must be index 0 (the sovereign core).
 const SOLIDS = [
   {
-    name: 'TETRAHEDRON',
-    role: 'KERNEL — Sovereign Law',
-    law: 'Irreducible. The kernel signs alone. NO RECEIPT = NO CLAIM.',
-    authority: 'SOVEREIGN',
-    color: '#e8e6d0',       // law-white — austere, near-monochrome
+    name: 'KERNEL', subtitle: 'TETRAHEDRON',
+    role: 'SOVEREIGN PRINCIPLE',
+    law: 'Minimal. Invariant. Final. The kernel signs alone. NO RECEIPT = NO CLAIM.',
+    color: '#e8c870',  // sovereign gold
     faces: 4, verts: 4, edges: 6,
+    authority: 'SOVEREIGN',
     vertices: () => {
       const s = 1;
-      return [[ s,  s,  s], [ s, -s, -s], [-s,  s, -s], [-s, -s,  s]];
+      return [[ s,  s,  s],[ s, -s, -s],[-s,  s, -s],[-s, -s,  s]];
     },
     triangles: [[0,1,2],[0,2,3],[0,3,1],[1,3,2]],
   },
   {
-    name: 'CUBE',
-    role: 'MEMORY FABRIC — Continuity Without Authority',
-    law: 'Addressable. Continuity without authority. Recall is not law.',
-    authority: 'NON_SOVEREIGN',
-    color: '#4a8fcc',       // archival blue
+    name: 'MEMORY FABRIC', subtitle: 'CUBE',
+    role: 'STRUCTURED RECORD',
+    law: 'Stable continuity. Addressable. Recall is not law.',
+    color: '#4a8fcc',  // archival blue
     faces: 6, verts: 8, edges: 12,
+    authority: 'NON_SOVEREIGN',
     vertices: () => {
       const h = 0.8;
       return [
@@ -116,12 +129,12 @@ const SOLIDS = [
     ],
   },
   {
-    name: 'OCTAHEDRON',
-    role: 'HAL — Admissibility Through Balance',
-    law: 'Balanced. Admissibility through opposition. PASS or BLOCK.',
-    authority: 'GATE',
-    color: '#d04040',       // verdict red
+    name: 'HAL EVALUATOR', subtitle: 'OCTAHEDRON',
+    role: 'CONSTITUTIONAL JUDGEMENT',
+    law: 'Balance. Measure. Admissibility through opposition. PASS or BLOCK.',
+    color: '#d04040',  // verdict red
     faces: 8, verts: 6, edges: 12,
+    authority: 'GATE',
     vertices: () => {
       const r = 1.1;
       return [[r,0,0],[-r,0,0],[0,r,0],[0,-r,0],[0,0,r],[0,0,-r]];
@@ -132,12 +145,12 @@ const SOLIDS = [
     ],
   },
   {
-    name: 'ICOSAHEDRON',
-    role: 'CONQUEST — Bounded Exploration',
-    law: 'Faceted. Bounded exploration. Reach without losing the center.',
-    authority: 'NON_SOVEREIGN',
-    color: '#8060c0',       // faceted violet
+    name: 'CONQUEST', subtitle: 'ICOSAHEDRON · SWARM EXPLORATION',
+    role: 'ADAPTIVE REACH',
+    law: 'Seek. Map. Extend. Bounded exploration. Reach without losing the center.',
+    color: '#5fa872',  // growth green
     faces: 20, verts: 12, edges: 30,
+    authority: 'NON_SOVEREIGN',
     vertices: () => {
       const phi = (1 + Math.sqrt(5)) / 2;
       const r = 0.9;
@@ -160,12 +173,12 @@ const SOLIDS = [
     ],
   },
   {
-    name: 'DODECAHEDRON',
-    role: 'AURA — Symbolic Coherence (No Authority)',
-    law: 'Cosmic. Symbolic coherence. Feeling without becoming law.',
-    authority: 'NON_SOVEREIGN',
-    color: '#d4a070',       // rose-gold — ceremonial
+    name: 'AURA', subtitle: 'DODECAHEDRON · SYMBOLIC ATLAS',
+    role: 'CULTURAL MEMORY',
+    law: 'Meaning. Pattern. Symbolic coherence. Feeling without becoming law.',
+    color: '#9c70d4',  // cosmic violet
     faces: 12, verts: 20, edges: 30,
+    authority: 'NON_SOVEREIGN',
     vertices: () => {
       const phi = (1 + Math.sqrt(5)) / 2;
       const a = 0.7, b = a / phi, c = a * phi;
@@ -188,68 +201,30 @@ const SOLIDS = [
   },
 ];
 
+// Atlas layout — KERNEL centered, others at corners (matches the canon)
+// idx → position fraction (x, y) and relative scale factor
+const ATLAS_LAYOUT = [
+  { idx: 0, fx: 0.50, fy: 0.52, scale: 0.075, label: 'below' }, // KERNEL center, smaller
+  { idx: 1, fx: 0.22, fy: 0.33, scale: 0.110, label: 'left'  }, // MEMORY top-left
+  { idx: 2, fx: 0.78, fy: 0.33, scale: 0.110, label: 'right' }, // HAL top-right
+  { idx: 3, fx: 0.22, fy: 0.72, scale: 0.110, label: 'left'  }, // CONQUEST bottom-left
+  { idx: 4, fx: 0.78, fy: 0.72, scale: 0.110, label: 'right' }, // AURA bottom-right
+];
+
 // ── State ──────────────────────────────────────────────────────────────────
 const canvas = document.getElementById('c');
 const ctx = canvas.getContext('2d');
 
-let current = 0;
-let previous = null;       // for crossfade
-let fadeT = 1;             // 0 = previous fully visible, 1 = current fully visible
-let rx = 0.4, ry = 0.3;
-let drx = 0, dry = 0.005;
+let mode = 'atlas';           // 'atlas' or 'focus'
+let modeT = 1;                // transition progress 0..1
+let focusIdx = 0;             // current solid in focus mode
+let rx = 0.42, ry = 0.35;
+let drx = 0, dry = 0.004;
 let dragging = false, lastX = 0, lastY = 0;
+let dragStartedOn = null;     // for click vs drag detection
+let mouseDownPos = null;
 
-function select(i) {
-  if (i === current && fadeT >= 1) return;
-  previous = current;
-  fadeT = 0;
-  current = i;
-  document.querySelectorAll('.btn').forEach(b => {
-    b.classList.toggle('active', +b.dataset.i === i);
-  });
-  const s = SOLIDS[i];
-  document.getElementById('solid-name').textContent = s.name;
-  document.getElementById('solid-role').textContent = s.role;
-  document.getElementById('solid-law').textContent = s.law;
-  document.getElementById('solid-name').style.color = s.color;
-  document.getElementById('solid-law').style.color = s.color;
-  document.getElementById('s-faces').textContent = s.faces;
-  document.getElementById('s-verts').textContent = s.verts;
-  document.getElementById('s-edges').textContent = s.edges;
-  document.getElementById('s-auth').textContent = s.authority;
-}
-
-// ── 3D helpers ─────────────────────────────────────────────────────────────
-function rotX(v, a) {
-  const [x,y,z] = v, c=Math.cos(a), s=Math.sin(a);
-  return [x, y*c-z*s, y*s+z*c];
-}
-function rotY(v, a) {
-  const [x,y,z] = v, c=Math.cos(a), s=Math.sin(a);
-  return [x*c+z*s, y, -x*s+z*c];
-}
-function project(v, cx, cy, scale) {
-  const z = v[2] + 3.5;
-  return [cx + v[0] / z * scale, cy + v[1] / z * scale, z];
-}
-function faceNormal(tri, verts) {
-  const a = verts[tri[0]], b = verts[tri[1]], c = verts[tri[2]];
-  const ab = [b[0]-a[0],b[1]-a[1],b[2]-a[2]];
-  const ac = [c[0]-a[0],c[1]-a[1],c[2]-a[2]];
-  return [
-    ab[1]*ac[2]-ab[2]*ac[1],
-    ab[2]*ac[0]-ab[0]*ac[2],
-    ab[0]*ac[1]-ab[1]*ac[0],
-  ];
-}
-
-function hexAlpha(hex, alpha) {
-  const r = parseInt(hex.slice(1,3),16);
-  const g = parseInt(hex.slice(3,5),16);
-  const b = parseInt(hex.slice(5,7),16);
-  return `rgba(${r},${g},${b},${alpha})`;
-}
-
+// ── Resize ─────────────────────────────────────────────────────────────────
 function resize() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -257,101 +232,224 @@ function resize() {
 window.addEventListener('resize', resize);
 resize();
 
-// ── Render one solid with given alpha ─────────────────────────────────────
-function renderSolid(sol, alpha, W, H, scale, cx, cy) {
+// ── 3D helpers ─────────────────────────────────────────────────────────────
+function rotX(v, a) { const [x,y,z]=v,c=Math.cos(a),s=Math.sin(a); return [x,y*c-z*s,y*s+z*c]; }
+function rotY(v, a) { const [x,y,z]=v,c=Math.cos(a),s=Math.sin(a); return [x*c+z*s,y,-x*s+z*c]; }
+function project(v, cx, cy, scale) {
+  const z = v[2] + 3.5;
+  return [cx + v[0] / z * scale, cy + v[1] / z * scale, z];
+}
+function faceNormal(tri, verts) {
+  const a=verts[tri[0]],b=verts[tri[1]],c=verts[tri[2]];
+  const ab=[b[0]-a[0],b[1]-a[1],b[2]-a[2]], ac=[c[0]-a[0],c[1]-a[1],c[2]-a[2]];
+  return [ab[1]*ac[2]-ab[2]*ac[1], ab[2]*ac[0]-ab[0]*ac[2], ab[0]*ac[1]-ab[1]*ac[0]];
+}
+function hexAlpha(hex, alpha) {
+  const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+// ── Render one solid at given (cx, cy, scale, alpha) ──────────────────────
+function renderSolid(sol, cx, cy, scale, alpha, highlight) {
   if (alpha <= 0.01) return;
 
   const verts3d = sol.vertices().map(v => rotX(rotY(v, ry), rx));
   const proj = verts3d.map(v => project(v, cx, cy, scale));
 
-  // Sort faces by depth (back-to-front)
   const sorted = sol.triangles.map((tri) => {
     const depth = (proj[tri[0]][2] + proj[tri[1]][2] + proj[tri[2]][2]) / 3;
     return {tri, depth};
   }).sort((a,b) => b.depth - a.depth);
 
-  // Fixed light
   const light = [0.4, 0.6, 1.0];
   const lLen = Math.sqrt(light[0]**2+light[1]**2+light[2]**2);
   const ln = light.map(x=>x/lLen);
+
+  // Subtle glow when highlighted (KERNEL always gets a gentle radiance)
+  if (highlight || sol.name === 'KERNEL') {
+    const glowR = scale * 1.2;
+    const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, glowR);
+    grd.addColorStop(0, hexAlpha(sol.color, 0.18 * alpha));
+    grd.addColorStop(1, 'transparent');
+    ctx.fillStyle = grd;
+    ctx.fillRect(cx - glowR, cy - glowR, glowR * 2, glowR * 2);
+  }
 
   for (const {tri} of sorted) {
     const n = faceNormal(tri, verts3d);
     const nLen = Math.sqrt(n[0]**2+n[1]**2+n[2]**2);
     if (nLen < 1e-6) continue;
-    const nn = n.map(x=>x/nLen);
+    const nn = n.map(x => x/nLen);
     const dot = nn[0]*ln[0]+nn[1]*ln[1]+nn[2]*ln[2];
     const facing = dot > 0;
 
-    const p0 = proj[tri[0]], p1 = proj[tri[1]], p2 = proj[tri[2]];
+    const p0=proj[tri[0]], p1=proj[tri[1]], p2=proj[tri[2]];
 
     if (facing) {
       const brightness = 0.15 + 0.65 * dot;
       ctx.beginPath();
-      ctx.moveTo(p0[0],p0[1]);
-      ctx.lineTo(p1[0],p1[1]);
-      ctx.lineTo(p2[0],p2[1]);
-      ctx.closePath();
-      ctx.fillStyle = hexAlpha(sol.color, brightness * 0.45 * alpha);
+      ctx.moveTo(p0[0],p0[1]); ctx.lineTo(p1[0],p1[1]); ctx.lineTo(p2[0],p2[1]); ctx.closePath();
+      ctx.fillStyle = hexAlpha(sol.color, brightness * 0.40 * alpha);
       ctx.fill();
     }
 
-    const edgeAlpha = (facing ? 0.8 : 0.12) * alpha;
+    const edgeAlpha = (facing ? 0.85 : 0.10) * alpha;
     ctx.beginPath();
-    ctx.moveTo(p0[0],p0[1]);
-    ctx.lineTo(p1[0],p1[1]);
-    ctx.lineTo(p2[0],p2[1]);
-    ctx.closePath();
+    ctx.moveTo(p0[0],p0[1]); ctx.lineTo(p1[0],p1[1]); ctx.lineTo(p2[0],p2[1]); ctx.closePath();
     ctx.strokeStyle = hexAlpha(sol.color, edgeAlpha);
     ctx.lineWidth = facing ? 1.2 : 0.5;
     ctx.stroke();
   }
 
-  // Vertex dots
   for (const [px,py] of proj) {
     ctx.beginPath();
-    ctx.arc(px, py, 3, 0, Math.PI*2);
-    ctx.fillStyle = hexAlpha(sol.color, 0.8 * alpha);
+    ctx.arc(px, py, 2.5, 0, Math.PI*2);
+    ctx.fillStyle = hexAlpha(sol.color, 0.85 * alpha);
     ctx.fill();
   }
 }
 
-// ── Draw frame ─────────────────────────────────────────────────────────────
+// ── Atlas labels ───────────────────────────────────────────────────────────
+function drawAtlasLabel(slot, sol, W, H, alpha) {
+  const cx = slot.fx * W, cy = slot.fy * H;
+  const scale = Math.min(W, H) * slot.scale;
+  let lx, ly, align;
+  if (slot.label === 'left')  { lx = cx - scale - 24; ly = cy; align = 'right'; }
+  else if (slot.label === 'right') { lx = cx + scale + 24; ly = cy; align = 'left'; }
+  else { lx = cx; ly = cy + scale + 30; align = 'center'; }
+
+  ctx.textAlign = align;
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = hexAlpha(sol.color, 0.95 * alpha);
+  ctx.font = '300 13px Georgia, serif';
+  ctx.fillText(sol.name, lx, ly);
+
+  ctx.fillStyle = hexAlpha('#7d8590', 0.7 * alpha);
+  ctx.font = '8px ui-monospace, monospace';
+  ctx.fillText(sol.subtitle, lx, ly + 14);
+
+  ctx.fillStyle = hexAlpha('#6a7280', 0.55 * alpha);
+  ctx.font = '8px ui-monospace, monospace';
+  ctx.fillText(sol.role, lx, ly + 26);
+}
+
+// ── Render frame ───────────────────────────────────────────────────────────
 function draw() {
   const W = canvas.width, H = canvas.height;
-  const scale = Math.min(W, H) * 0.32;
-  const cx = W/2, cy = H/2;
-
   ctx.clearRect(0,0,W,H);
 
-  const sol = SOLIDS[current];
-
-  // Background glow — driven by current solid's color
-  const grd = ctx.createRadialGradient(cx,cy,0,cx,cy,scale*0.9);
-  grd.addColorStop(0, hexAlpha(sol.color, 0.07));
-  grd.addColorStop(1, 'transparent');
-  ctx.fillStyle = grd;
-  ctx.fillRect(0,0,W,H);
-
-  // Crossfade alpha
-  if (fadeT < 1) fadeT = Math.min(1, fadeT + 0.05);
-
-  // Render previous (fading out) then current (fading in)
-  // Doctrine §5: solids do not morph. They crossfade.
-  if (previous !== null && fadeT < 1) {
-    renderSolid(SOLIDS[previous], 1 - fadeT, W, H, scale, cx, cy);
+  if (mode === 'atlas' || modeT < 1) {
+    // Atlas alpha: 1 when in atlas mode, fading out when entering focus
+    const atlasAlpha = mode === 'atlas' ? modeT : (1 - modeT);
+    for (const slot of ATLAS_LAYOUT) {
+      const sol = SOLIDS[slot.idx];
+      const cx = slot.fx * W, cy = slot.fy * H;
+      const scale = Math.min(W, H) * slot.scale;
+      renderSolid(sol, cx, cy, scale, atlasAlpha, slot.idx === 0);
+      drawAtlasLabel(slot, sol, W, H, atlasAlpha);
+    }
   }
-  renderSolid(sol, fadeT, W, H, scale, cx, cy);
 
+  if (mode === 'focus' || modeT < 1) {
+    const focusAlpha = mode === 'focus' ? modeT : (1 - modeT);
+    if (focusAlpha > 0.01) {
+      const sol = SOLIDS[focusIdx];
+      const cx = W/2, cy = H/2;
+      const scale = Math.min(W, H) * 0.32;
+      renderSolid(sol, cx, cy, scale, focusAlpha, true);
+    }
+  }
+
+  // Advance transition
+  if (modeT < 1) modeT = Math.min(1, modeT + 0.06);
+
+  // Auto-rotate (atlas + focus share rotation — same constitution)
   if (!dragging) {
     ry += dry;
     rx += drx;
   }
+
+  // UI sync (contract block visibility)
+  const contractEl = document.getElementById('contract');
+  if (mode === 'focus' && modeT > 0.4) {
+    contractEl.classList.add('visible');
+  } else {
+    contractEl.classList.remove('visible');
+  }
+  document.getElementById('hint').style.opacity = (mode === 'atlas') ? '1' : '0';
+}
+
+// ── Mode transitions ──────────────────────────────────────────────────────
+function enterFocus(idx) {
+  if (mode === 'focus' && focusIdx === idx) return;
+  focusIdx = idx;
+  const sol = SOLIDS[idx];
+  document.getElementById('solid-name').textContent = sol.name;
+  document.getElementById('solid-role').textContent = sol.role;
+  document.getElementById('solid-law').textContent = sol.law;
+  document.getElementById('solid-name').style.color = sol.color;
+  document.getElementById('solid-law').style.color = sol.color;
+  document.getElementById('s-mode').textContent = 'FOCUS · ' + sol.name;
+  if (mode !== 'focus') {
+    mode = 'focus';
+    modeT = 0;
+  } else {
+    modeT = 0; // crossfade between focuses too
+  }
+}
+
+function exitFocus() {
+  if (mode === 'atlas') return;
+  mode = 'atlas';
+  modeT = 0;
+  document.getElementById('s-mode').textContent = 'ATLAS';
+}
+
+// ── Hit-test atlas slots ──────────────────────────────────────────────────
+function hitAtlas(mx, my) {
+  const W = canvas.width, H = canvas.height;
+  for (const slot of ATLAS_LAYOUT) {
+    const cx = slot.fx * W, cy = slot.fy * H;
+    const r = Math.min(W, H) * slot.scale * 1.2;
+    const dx = mx - cx, dy = my - cy;
+    if (dx*dx + dy*dy < r*r) return slot.idx;
+  }
+  return -1;
 }
 
 // ── Input ──────────────────────────────────────────────────────────────────
-canvas.addEventListener('mousedown', e => { dragging=true; lastX=e.clientX; lastY=e.clientY; });
-window.addEventListener('mouseup', () => { dragging=false; dry=0.005; drx=0; });
+canvas.addEventListener('mousedown', e => {
+  dragging = true;
+  lastX = e.clientX; lastY = e.clientY;
+  mouseDownPos = { x: e.clientX, y: e.clientY };
+});
+
+window.addEventListener('mouseup', e => {
+  if (!dragging) return;
+  dragging = false;
+  // Click vs drag detection: small movement = click
+  if (mouseDownPos) {
+    const dx = e.clientX - mouseDownPos.x, dy = e.clientY - mouseDownPos.y;
+    const moved = Math.sqrt(dx*dx + dy*dy);
+    if (moved < 4) {
+      // It's a click
+      if (mode === 'atlas') {
+        const hit = hitAtlas(e.clientX, e.clientY);
+        if (hit >= 0) enterFocus(hit);
+      } else {
+        // Click outside focus solid bbox → exit
+        const W = canvas.width, H = canvas.height;
+        const cx = W/2, cy = H/2;
+        const r = Math.min(W, H) * 0.32 * 1.3;
+        const ddx = e.clientX - cx, ddy = e.clientY - cy;
+        if (ddx*ddx + ddy*ddy > r*r) exitFocus();
+      }
+    }
+  }
+  mouseDownPos = null;
+  dry = 0.004; drx = 0;
+});
+
 window.addEventListener('mousemove', e => {
   if (!dragging) return;
   const dx = e.clientX - lastX, dy = e.clientY - lastY;
@@ -360,16 +458,12 @@ window.addEventListener('mousemove', e => {
   lastX = e.clientX; lastY = e.clientY;
 });
 
-document.querySelectorAll('.btn').forEach(b => {
-  b.addEventListener('click', () => select(+b.dataset.i));
-});
-
 window.addEventListener('keydown', e => {
-  if (e.key >= '1' && e.key <= '5') select(+e.key - 1);
+  if (e.key >= '1' && e.key <= '5') enterFocus(+e.key - 1);
+  else if (e.key === 'Escape') exitFocus();
 });
 
 // ── Init ───────────────────────────────────────────────────────────────────
-select(0);
 function loop() { draw(); requestAnimationFrame(loop); }
 loop();
 </script>

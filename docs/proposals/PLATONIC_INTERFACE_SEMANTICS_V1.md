@@ -62,16 +62,17 @@ If the Kernel ever decorates itself, the doctrine is broken.
 
 Each solid has a hue tuned to its authority class:
 
-| Module      | Color      | Hex      | Reason                                  |
-| ----------- | ---------- | -------- | --------------------------------------- |
-| KERNEL      | law-white  | `#e8e6d0`| austere, near-monochrome — no flourish  |
-| MEMORY      | archival blue | `#4a8fcc` | calm, deep, storage hue              |
-| HAL         | verdict red| `#d04040`| opposition, judgment, gate-fire         |
-| CONQUEST    | faceted violet | `#8060c0` | rich combinatorial space            |
-| AURA        | rose-gold  | `#d4a070`| ceremonial, mythic, warm                |
+| Module      | Color           | Hex       | Reason                                     |
+| ----------- | --------------- | --------- | ------------------------------------------ |
+| KERNEL      | sovereign gold  | `#e8c870` | law radiates; smallest body, brightest hue |
+| MEMORY      | archival blue   | `#4a8fcc` | calm, deep, storage hue                    |
+| HAL         | verdict red     | `#d04040` | opposition, judgment, gate-fire            |
+| CONQUEST    | growth green    | `#5fa872` | living exploration, adaptive reach         |
+| AURA        | cosmic violet   | `#9c70d4` | symbolic mystery, ceremonial               |
 
-Saturation tracks ornament. KERNEL is desaturated by law; AURA is warm by
-function.
+The KERNEL's gold is doctrinally distinct from AURA's violet: gold is the
+**law-color of sovereignty**; violet is the **shell-color of meaning**. They
+must not be confused on any surface.
 
 ---
 
@@ -181,7 +182,45 @@ Until then: DRAFT_V0, NO_SHIP, APPEND_ONLY proposal.
 
 ---
 
-## §11. Why this matters
+## §12. Atlas View
+
+The canonical landing surface is the **atlas**: all five solids visible
+simultaneously in fixed positions.
+
+```
+       MEMORY              HAL
+       (cube)         (octahedron)
+
+                  KERNEL
+              (tetrahedron)
+              small · centered
+                · gold ·
+
+      CONQUEST              AURA
+   (icosahedron)       (dodecahedron)
+```
+
+- **KERNEL is centered and smallest.** The inversion principle is visible:
+  the body with the highest authority occupies the least space.
+- All solids share a common rotation. The user rotates the entire
+  constitution; each form is seen from the same perspective at all times.
+  This is the visible form of replay determinism.
+- **Click a solid → enter focus mode.** A single solid expands to fill the
+  view; the user inspects one constitutional aspect in depth.
+- **ESC or click outside → return to atlas.** The whole constitution
+  reappears, intact.
+
+### Canonical taglines
+
+- Header: **"PERSPECTIVE CAN ROTATE. LAW REMAINS INVARIANT."**
+- Footer: **"FIVE FORMS. ONE LAW."**
+
+These are doctrinal. They state the motion grammar (§5) and the unity
+principle (§2) in one line each.
+
+---
+
+## §13. Why this matters
 
 Most interfaces show **functions**.
 This one shows **orders of reality** inside the runtime.
