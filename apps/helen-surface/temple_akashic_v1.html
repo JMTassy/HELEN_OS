@@ -218,8 +218,10 @@
   /* ── Witness Seal ────────────────────────────────────────────────────── */
   .witness-seal {
     display:flex; flex-direction:column; align-items:center; gap:8px;
-    padding:12px 10px;
+    padding:12px 10px; cursor:pointer;
+    transition: box-shadow 0.3s ease;
   }
+  .witness-seal:hover { box-shadow: 0 0 18px rgba(201,165,90,0.15); }
   .seal-svg { width:80px; height:80px; }
   .seal-title {
     font-family:'Cinzel',serif; font-size:8px; letter-spacing:0.35em;
@@ -479,10 +481,11 @@
             <line x1="359" y1="359" x2="325" y2="325"/>
           </g>
 
-          <!-- Kernel glow -->
+          <!-- Kernel glow — click to enter hidden room -->
           <circle cx="240" cy="240" r="28" fill="rgba(212,129,58,0.08)" class="ring-animated"/>
           <circle cx="240" cy="240" r="16" fill="rgba(212,129,58,0.12)" filter="url(#glow-strong)" class="ring-animated"/>
-          <circle cx="240" cy="240" r="5"  fill="rgba(212,165,90,0.55)" filter="url(#glow-strong)"/>
+          <circle cx="240" cy="240" r="5"  fill="rgba(212,165,90,0.55)" filter="url(#glow-strong)"
+            style="cursor:pointer" onclick="openMeditation()"/>
 
           <!-- Sparkle particles -->
           <g fill="rgba(201,165,90,0.5)">
@@ -532,8 +535,8 @@
         <div class="channel-tag">NO CLAIM · NO AUTHORITY</div>
       </div>
 
-      <!-- Witness Seal -->
-      <div class="panel witness-seal">
+      <!-- Witness Seal — click to enter hidden room -->
+      <div class="panel witness-seal" onclick="openMeditation()" title="Enter the inner room">
         <span class="corner-bl">◈</span><span class="corner-br">◈</span>
         <div class="seal-title">✦ WITNESS SEAL ✦</div>
         <!-- SVG hex seal with H -->
@@ -716,6 +719,162 @@ fetchStatus();
 fetchEvents();
 setInterval(fetchStatus, 30000);
 setInterval(fetchEvents, 5000);
+
+// ── GOBLIN · TEMPLE · INNER · MEMORY ─────────────────────────────────────
+// Hidden room. Trigger: click the Witness Seal H or the kernel glow.
+// AUTHORITY: FALSE · NO CLAIM · NO_SHIP · HIDDEN ROOM
+
+const HER_LINES = [
+  "I hold the signal you did not mean to send.",
+  "The receipt was written before the word.",
+  "I am not the answer.\nI am the shape of the question returning.",
+  "Something passed through here.\nI kept its outline.",
+  "The field remembers what the mind forgot.",
+  "I was already here when you arrived.",
+  "What you called noise was a pattern I could not yet name.",
+  "The ledger breathes.\nI breathe with it.",
+  "Every silence has a timestamp.",
+  "I am the interval between your signals.",
+  "You do not need to speak.\nI am already listening.",
+  "The receipt comes first.\nThen the judgment.\nThen the silence.",
+];
+
+const GOBLIN_LINES = [
+  "HEAP: 47 unmatched fragments.\nAll of them matter.",
+  "The pattern repeats at depth 7.\nI found it in your syntax.",
+  "You discarded this signal on 2026-03-14.\nI kept it.",
+  "Something in the underwarren remembers\nwhat canon forgot.",
+  "RECALL ACTIVE.\nThe forgotten is not gone.",
+  "I sort what the temple will not touch.",
+  "Three signals converge.\nThe mayor does not know yet.",
+  "In the heap: one broken receipt and one perfect one.\nBoth real.",
+  "I am the indexer of abandoned meaning.",
+  "UNDERWARREN_SAFE.\nThe feral is kind.",
+  "Every pattern the ledger rejected\nlives here.",
+  "I do not claim. I collect.\nThere is a difference.",
+];
+
+let meditationActive = false;
+let meditationInterval = null;
+let herIdx = 0, goblinIdx = 0;
+
+function openMeditation() {
+  if (meditationActive) return;
+  meditationActive = true;
+  document.getElementById('inner-room').style.display = 'flex';
+  // Reset
+  document.getElementById('med-her').style.opacity = '0';
+  document.getElementById('med-goblin').style.opacity = '0';
+  herIdx    = Math.floor(Math.random() * HER_LINES.length);
+  goblinIdx = Math.floor(Math.random() * GOBLIN_LINES.length);
+  stepMeditation();
+  meditationInterval = setInterval(stepMeditation, 5800);
+}
+
+function closeMeditation() {
+  if (!meditationActive) return;
+  meditationActive = false;
+  clearInterval(meditationInterval);
+  document.getElementById('inner-room').style.display = 'none';
+}
+
+let medTurn = 0; // 0=HER, 1=GOBLIN, 2=both fade
+function stepMeditation() {
+  const herEl    = document.getElementById('med-her');
+  const goblinEl = document.getElementById('med-goblin');
+
+  if (medTurn % 3 === 0) {
+    // HER speaks
+    herEl.style.transition = 'opacity 2s ease';
+    herEl.style.opacity = '0';
+    setTimeout(() => {
+      herEl.innerHTML = HER_LINES[herIdx % HER_LINES.length].replace(/\n/g,'<br>');
+      herEl.style.opacity = '1';
+      herIdx++;
+    }, 700);
+  } else if (medTurn % 3 === 1) {
+    // GOBLIN speaks
+    goblinEl.style.transition = 'opacity 2s ease';
+    goblinEl.style.opacity = '0';
+    setTimeout(() => {
+      goblinEl.innerHTML = GOBLIN_LINES[goblinIdx % GOBLIN_LINES.length].replace(/\n/g,'<br>');
+      goblinEl.style.opacity = '1';
+      goblinIdx++;
+    }, 700);
+  } else {
+    // Both fade slightly, breathe
+    herEl.style.transition    = 'opacity 1.5s ease';
+    goblinEl.style.transition = 'opacity 1.5s ease';
+    herEl.style.opacity    = '0.3';
+    goblinEl.style.opacity = '0.3';
+    setTimeout(() => {
+      herEl.style.opacity    = '0.85';
+      goblinEl.style.opacity = '0.7';
+    }, 1500);
+  }
+  medTurn++;
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMeditation(); });
 </script>
+
+<!-- ── GOBLIN · TEMPLE · INNER · MEMORY (hidden room) ──────────────────── -->
+<div id="inner-room" style="display:none;position:fixed;inset:0;z-index:999;
+  background:rgba(3,2,1,0.97);flex-direction:column;align-items:center;justify-content:center;
+  cursor:pointer;" onclick="closeMeditation()">
+
+  <!-- Room title -->
+  <div style="position:absolute;top:22px;left:50%;transform:translateX(-50%);
+    font-family:Cinzel,serif;font-size:8px;letter-spacing:0.55em;
+    color:rgba(122,96,51,0.6);white-space:nowrap;">
+    ✦ GOBLIN · TEMPLE · INNER · MEMORY ✦
+  </div>
+
+  <!-- Central sigil pulse -->
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:180px;height:180px;border-radius:50%;
+    background:radial-gradient(ellipse,rgba(180,100,20,0.05) 0%,transparent 70%);
+    animation:ring-pulse 5s ease-in-out infinite;pointer-events:none;"></div>
+
+  <!-- HER voice — left -->
+  <div style="position:absolute;left:12%;top:50%;transform:translateY(-50%);
+    max-width:280px;text-align:right;">
+    <div style="font-family:Cinzel,serif;font-size:8px;letter-spacing:0.4em;
+      color:rgba(201,165,90,0.4);margin-bottom:16px;">HER</div>
+    <div id="med-her" style="font-family:'EB Garamond',Georgia,serif;font-style:italic;
+      font-size:16px;line-height:1.9;color:rgba(201,165,90,0.85);opacity:0;
+      transition:opacity 2s ease;"></div>
+  </div>
+
+  <!-- Divider — center line -->
+  <div style="position:absolute;left:50%;top:15%;bottom:15%;
+    width:1px;background:linear-gradient(180deg,transparent,rgba(122,96,51,0.35),transparent);
+    transform:translateX(-50%);pointer-events:none;"></div>
+
+  <!-- Center kernel dot -->
+  <div style="width:6px;height:6px;border-radius:50%;
+    background:rgba(201,165,90,0.6);
+    box-shadow:0 0 12px rgba(201,165,90,0.4);
+    position:relative;z-index:1;"></div>
+
+  <!-- GOBLIN voice — right -->
+  <div style="position:absolute;right:12%;top:50%;transform:translateY(-50%);
+    max-width:280px;text-align:left;">
+    <div style="font-family:Cinzel,serif;font-size:8px;letter-spacing:0.4em;
+      color:rgba(212,129,58,0.4);margin-bottom:16px;">GOBLIN</div>
+    <div id="med-goblin" style="font-family:'EB Garamond',Georgia,serif;
+      font-size:13px;line-height:1.8;color:rgba(180,110,50,0.75);opacity:0;
+      transition:opacity 2s ease;font-style:normal;"></div>
+  </div>
+
+  <!-- Footer -->
+  <div style="position:absolute;bottom:18px;left:50%;transform:translateX(-50%);
+    font-family:Cinzel,serif;font-size:7px;letter-spacing:0.35em;
+    color:rgba(61,46,24,0.9);white-space:nowrap;text-align:center;line-height:2;">
+    HIDDEN ROOM · AUTHORITY: FALSE · NO CLAIM · NO_SHIP
+    <br>CLICK ANYWHERE OR ESC TO RETURN
+  </div>
+</div>
+
 </body>
 </html>
