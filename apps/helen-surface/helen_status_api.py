@@ -3,10 +3,13 @@
 Port 7001. Returns git + ledger + skill JSON. Never writes anything.
 authority=false  canon=NO_SHIP  class=TOOL
 """
-from flask import Flask, jsonify
-import subprocess, pathlib, time
+from flask import Flask, jsonify, request
+import subprocess, pathlib, time, collections
 
 app = Flask(__name__)
+
+# ── In-memory event store (non-sovereign, max 50 events) ─────────────────────
+_EVENTS = collections.deque(maxlen=50)
 
 SOT    = pathlib.Path.home() / "Documents/GitHub/helen_os_v1"
 LEDGER = SOT / "town/ledger_v1.ndjson"
@@ -178,6 +181,32 @@ def connectors():
         "ts": int(time.time()),
     }
     return jsonify(badges)
+
+@app.route("/api/events", methods=["GET", "POST"])
+def events():
+    """Non-sovereign event bus. POST from helen_telegram.py; GET from cockpit.
+    GET ?since=<unix_ts> returns only events newer than that timestamp.
+    authority=false  sovereign=false  no ledger write."""
+    if request.method == "POST":
+        data = request.get_json(silent=True) or {}
+        ev = {
+            "source":    data.get("source", "UNKNOWN").upper()[:32],
+            "type":      data.get("type",   "text")[:16],
+            "brief":     data.get("brief",  "")[:200],
+            "user":      data.get("user",   "?")[:32],
+            "ts":        int(time.time()),
+            "authority": False,
+            "sovereign": False,
+        }
+        _EVENTS.append(ev)
+        return jsonify({"ok": True, "ts": ev["ts"]})
+    # GET
+    since = 0
+    try:
+        since = int(request.args.get("since", 0))
+    except (ValueError, TypeError):
+        pass
+    return jsonify([e for e in _EVENTS if e["ts"] > since] + [{"authority": False}])
 
 @app.route("/api/health")
 def health():

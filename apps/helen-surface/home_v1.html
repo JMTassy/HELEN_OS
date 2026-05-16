@@ -67,6 +67,10 @@ body{background:#050508;color:#00d4ff;font-family:'Courier New',monospace;height
 .q-item.out{opacity:0;transform:translateX(36px);}
 /* focus-mode: hide all but first */
 #queue.focus-collapse .q-item:not(:first-of-type){display:none;}
+/* live TELEGRAM items */
+.q-item.live-signal{border-color:rgba(0,212,255,.40);background:rgba(0,212,255,.06);animation:live-in .4s ease-out;}
+@keyframes live-in{from{opacity:0;transform:translateX(-18px);}to{opacity:1;transform:none;}}
+.q-item.live-signal .q-src{color:#00d4ff;}
 
 .q-bullet{color:#ffaa00;font-size:10px;flex-shrink:0;width:12px;}
 .q-brief{flex:1;font-size:10px;color:rgba(0,212,255,.78);letter-spacing:.03em;}
@@ -401,6 +405,43 @@ async function loadQueue(){
   document.getElementById('helen-brief-line').textContent=buildBriefLine(badges);
 }
 loadQueue();
+
+// ── Live event polling (5s) ───────────────────────────────────────────────
+let lastEventTs=Math.floor(Date.now()/1000)-5;
+const seenEvents=new Set();
+
+async function fetchEvents(){
+  try{
+    const r=await fetch(`http://localhost:7001/api/events?since=${lastEventTs}`,{signal:AbortSignal.timeout(1500)});
+    if(!r.ok)return;
+    const evs=await r.json();
+    evs.forEach(ev=>{
+      if(!ev.source||ev.authority===false&&!ev.ts)return; // skip auth sentinel
+      if(!ev.ts||seenEvents.has(ev.ts+ev.brief))return;
+      seenEvents.add(ev.ts+ev.brief);
+      lastEventTs=Math.max(lastEventTs,ev.ts);
+      injectLiveEvent(ev);
+    });
+  }catch{}
+}
+
+function injectLiveEvent(ev){
+  const id='live-'+ev.ts;
+  const typeTag=ev.type==='photo'?'[photo] ':ev.type==='voice'?'[voice] ':'';
+  const brief=`${typeTag}${ev.brief} · from ${ev.user||'?'}`;
+  const el=makeQItem(id,brief,ev.source||'SIGNAL');
+  el.classList.add('live-signal');
+  const q=document.getElementById('queue');
+  document.getElementById('queue-empty').style.display='none';
+  q.insertBefore(el,q.firstChild);
+  debtCount++;updateDebt();
+  document.getElementById('helen-brief-line').textContent=buildBriefLine(badges);
+  // auto-focus the new item
+  const items=getQItems();
+  setQFocus(0);
+}
+
+setInterval(fetchEvents,5000);fetchEvents();
 
 // ── Canvas ─────────────────────────────────────────────────────────────────
 const canvas=document.getElementById('c');

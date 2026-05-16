@@ -420,15 +420,37 @@ def cmd_video(chat_id: int, topic: str) -> None:
 
 # ─── Message Handler ──────────────────────────────────────────────────────────
 
+EVENTS_URL = os.getenv("HELEN_EVENTS_URL", "http://localhost:7001/api/events")
+
+def push_event(source: str, brief: str, user: str, ev_type: str = "text"):
+    """Non-sovereign push to cockpit event bus. Silent on failure."""
+    try:
+        import urllib.request as _ur, json as _j
+        body = _j.dumps({"source": source, "brief": brief, "user": user, "type": ev_type}).encode()
+        req  = _ur.Request(EVENTS_URL, data=body, headers={"Content-Type": "application/json"}, method="POST")
+        with _ur.urlopen(req, timeout=2):
+            pass
+    except Exception:
+        pass
+
+
 def handle_message(msg: dict):
     chat_id = msg["chat"]["id"]
     text = msg.get("text", "")
     user = msg.get("from", {}).get("first_name", "?")
 
+    # Photo signal — push to cockpit even without text
+    if msg.get("photo"):
+        caption = msg.get("caption", "") or "[photo]"
+        push_event("TELEGRAM", caption[:120], user, ev_type="photo")
+        print(f"  [{user}] [photo] {caption[:60]}")
+
     if not text:
         return
 
     print(f"  [{user}] {text}")
+    # Push all text messages as cockpit signals immediately (before kernel processing)
+    push_event("TELEGRAM", text[:120], user, ev_type="text")
 
     # Command routing — video
     if text.startswith("/video "):
