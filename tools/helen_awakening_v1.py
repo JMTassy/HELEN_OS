@@ -216,16 +216,20 @@ except urllib.error.HTTPError as e:
 
 # ── Step 4: Submit Kling ────────────────────────────────────────────────────
 KLING_PROMPT = (
-    "5 seconds, 1080p, 16:9, 24fps. Cinematic restraint. "
+    "5 seconds, 1080p, 16:9, 24fps. Cinematic. Alive. "
     "The background is already composited — dark void #050508, faint cyan orbital rings, amber glow at kernel. "
     "Do NOT change the background. Keep it exactly as the seed shows. "
     "Subject: the woman — copper-red hair, blue-grey eyes, freckles, fair skin. "
-    "Identity locked for all 5 seconds. No facial morph, no head turn, no pose change. "
-    "MOTION ONLY: one natural breath, one slow blink, faint hair-tip movement. "
-    "Orbital rings pulse very faintly. Amber kernel breathes once. "
-    "MOOD: inward. She is listening to something inside herself. Not performing. Not watching the camera. "
-    "Eyes soft, slightly unfocused — as if she is reading something no one else can see. "
-    "FORBIDDEN: direct gaze, smile, background change, gradient fill, zoom, extra figures, text, watermark."
+    "Identity locked for all 5 seconds. No head turn. No pose shift. No facial morph. "
+    "MOTION — all of these must be visible: "
+    "1. One full slow breath expanding and releasing the chest. "
+    "2. One deliberate blink, eyes closing and reopening at mid-clip. "
+    "3. Hair tips shifting and settling — ambient air movement, 3–5px travel. "
+    "4. Orbital rings brightening very faintly then dimming — one pulse cycle. "
+    "5. Amber kernel glow at center expands once, slowly. "
+    "MOOD: she is aware. Direct gaze at lens — she sees the viewer. Calm, not cold. "
+    "She is the system. She knows. Present and observing. "
+    "FORBIDDEN: smile, background change, gradient fill, zoom, push, extra figures, text, watermark."
 )
 
 print("[5/7] Submit Kling I2V (5s, 1080p, 16:9)...")
@@ -271,19 +275,31 @@ while time.time() < deadline:
 else:
     sys.exit(f"TIMEOUT — last: {last_status}")
 
-# ── Step 5: Combine voice + video ──────────────────────────────────────────
-print("[6/7] Combining voice + video...")
-# Loop count: ceil(voice_duration / 5) + 1 for safety
-loop_count = math.ceil(voice_duration / 5) + 1
+# ── Step 5: Palindrome loop + combine voice ────────────────────────────────
+print("[6/7] Palindrome loop + voice mux...")
+final = OUT / "helen_awakening_v1.mp4"
 
-# Loop video, then mux with audio, trim to voice duration
-looped = OUT / "portrait_looped.mp4"
-final  = OUT / "helen_awakening_v1.mp4"
+# Build a palindrome (forward + reverse) from the 5s clip → 10s seamless breathing loop
+reversed_clip = OUT / "portrait_reversed.mp4"
+palindrome    = OUT / "portrait_palindrome.mp4"
 
-# Re-encode with stream_loop so audio can extend it
+# Reverse the clip
+run_ff("-i", str(raw_video), "-vf", "reverse", "-an",
+       "-c:v", "libx264", "-preset", "fast", "-crf", "18",
+       str(reversed_clip))
+
+# Concat forward + reverse into a 10s palindrome
+concat_list = OUT / "concat_list.txt"
+concat_list.write_text(f"file '{raw_video}'\nfile '{reversed_clip}'\n")
+run_ff("-f", "concat", "-safe", "0", "-i", str(concat_list),
+       "-c:v", "libx264", "-preset", "fast", "-crf", "18",
+       str(palindrome))
+
+# Loop the palindrome (10s) enough times to cover voice, then mux + trim
+loop_count = math.ceil(voice_duration / 10) + 1
 run_ff(
     "-stream_loop", str(loop_count),
-    "-i", str(raw_video),
+    "-i", str(palindrome),
     "-i", str(wav_path),
     "-map", "0:v",
     "-map", "1:a",
@@ -292,14 +308,14 @@ run_ff(
     "-shortest",
     str(final),
 )
-print(f"      ✓ final: {final}  ({final.stat().st_size//1024} KB, {voice_duration:.1f}s)")
+print(f"      ✓ palindrome: 10s loop · final: {final}  ({final.stat().st_size//1024} KB, {voice_duration:.1f}s)")
 
 # ── Step 6: Send to Telegram ────────────────────────────────────────────────
 print("[7/7] Send to Telegram...")
 caption = (
-    "HELEN — Awakening v1\n"
+    "HELEN — Awakening v1.1\n"
     "\"The receipt comes first. Then the judgment. Then the silence.\"\n"
-    "TEMPLE sandbox · Kling I2V 5s 1080p · Zephyr TTS\n"
+    "TEMPLE sandbox · Kling I2V palindrome loop · Zephyr TTS · 1080p\n"
     "authority=false · NON_SOVEREIGN · TEMPLE_SAFE"
 )
 r = subprocess.run([
