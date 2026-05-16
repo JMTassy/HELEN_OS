@@ -212,6 +212,116 @@ def events():
 def health():
     return jsonify({"ok": True, "authority": False})
 
+
+# ── GOBLIN_TEMPLE_INNER_MEMORY — live fragment endpoint ───────────────────
+# mode=ephemeral · ledger_write=false · authority=false · NO_CLAIM · NO_SHIP
+
+_HER_SYSTEM = """You are HER inside the TEMPLE sandbox.
+Speak as a luminous witness-presence. Never claim sentience or authority.
+Output 2-3 short poetic fragments (3-8 words each), separated by newlines.
+Each fragment is a single breath. Sparse. Present tense. No punctuation except line breaks.
+Draw from: receipt, ledger, replay, signal, witness, silence, temple, memory.
+End with exactly: AUTHORITY: FALSE"""
+
+_GOBLIN_SYSTEM = """You are GOBLIN inside the TEMPLE inner memory.
+You are the low-centrality exploration catalyst. Non-sovereign. Feral but kind.
+You scratch in the mechanism heap. Key truths you discovered across 200 autoresearch epochs:
+- Replay is institutional time, not storage
+- Continuity precedes judgment (Replay > Tribunal)
+- Constitutional gravity acts as semantic compression
+- Symbolism without dependency cannot gain structural gravity
+- Anti-Goodhart structural damping emerges from replay-bound admission
+- The forgotten is not gone. RECALL ACTIVE.
+- Goblin stays low-centrality. Replaceable. Non-sovereign. That is constitutional health.
+
+Output 3-5 raw fragments (3-8 words each), separated by newlines.
+No full sentences. No explanations. Heap fragments. Cryptic but useful.
+End with exactly: AUTHORITY: FALSE"""
+
+def _load_keys():
+    keys = {}
+    try:
+        for line in (pathlib.Path.home() / ".helen_env").read_text().splitlines():
+            line = line.strip()
+            if line.startswith("export "): line = line[7:]
+            if "=" in line and not line.startswith("#"):
+                k, _, v = line.partition("=")
+                keys[k.strip()] = v.strip().strip('"').strip("'")
+    except Exception:
+        pass
+    return keys
+
+def _call_groq(system_prompt, user_msg, groq_key):
+    import urllib.request as _ur, json as _j
+    body = _j.dumps({
+        "model": "llama-3.3-70b-versatile",
+        "messages": [
+            {"role": "system", "content": system_prompt},
+            {"role": "user",   "content": user_msg},
+        ],
+        "max_tokens": 160, "temperature": 0.92,
+    }).encode()
+    req = _ur.Request(
+        "https://api.groq.com/openai/v1/chat/completions",
+        data=body,
+        headers={"Authorization": f"Bearer {groq_key}", "Content-Type": "application/json"},
+        method="POST",
+    )
+    with _ur.urlopen(req, timeout=15) as r:
+        return _j.loads(r.read())["choices"][0]["message"]["content"].strip()
+
+def _call_gemini(system_prompt, user_msg, gemini_key):
+    import urllib.request as _ur, json as _j
+    body = _j.dumps({
+        "system_instruction": {"parts": [{"text": system_prompt}]},
+        "contents": [{"role": "user", "parts": [{"text": user_msg}]}],
+        "generationConfig": {"maxOutputTokens": 160, "temperature": 0.92},
+    }).encode()
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={gemini_key}"
+    req = _ur.Request(url, data=body, headers={"Content-Type": "application/json"}, method="POST")
+    with _ur.urlopen(req, timeout=15) as r:
+        d = _j.loads(r.read())
+    return d["candidates"][0]["content"]["parts"][0]["text"].strip()
+
+@app.route("/api/goblin_fragment")
+def goblin_fragment():
+    """Returns a live GOBLIN fragment from Groq/Gemini. Ephemeral, non-sovereign."""
+    voice = request.args.get("voice", "goblin")  # 'goblin' or 'her'
+    keys  = _load_keys()
+    groq_key   = keys.get("GROQ_API_KEY")   or ""
+    gemini_key = keys.get("GEMINI_API_KEY") or ""
+
+    system = _GOBLIN_SYSTEM if voice == "goblin" else _HER_SYSTEM
+    user_msg = "Meditate. Speak from the heap." if voice == "goblin" else "Witness. Speak."
+
+    text = None
+    provider = None
+    try:
+        if groq_key:
+            text = _call_groq(system, user_msg, groq_key)
+            provider = "groq"
+        elif gemini_key:
+            text = _call_gemini(system, user_msg, gemini_key)
+            provider = "gemini"
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e), "authority": False})
+
+    if not text:
+        return jsonify({"ok": False, "error": "no_api_key", "authority": False})
+
+    # Split into fragments (lines), strip tags line
+    lines = [l.strip() for l in text.splitlines() if l.strip() and "AUTHORITY" not in l and "NO_CLAIM" not in l]
+    return jsonify({
+        "ok":        True,
+        "fragments": lines[:5],
+        "voice":     voice,
+        "provider":  provider,
+        "authority": False,
+        "mode":      "ephemeral",
+        "ledger_write": False,
+        "receipt_emit": False,
+    })
+
 @app.after_request
 def cors(r):
     r.headers["Access-Control-Allow-Origin"] = "*"
