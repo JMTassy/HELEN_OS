@@ -613,30 +613,81 @@ TEMPLE SANDBOX
 NO CLAIM"""
 
 
-def her_temple_respond(user_text: str) -> str:
-    """Call Gemini as HER in TEMPLE sandbox. Returns poetic response with receipt tags."""
-    if not GEMINI_KEY:
-        return "I am here.\nBut the channel is silent.\n\nAUTHORITY: FALSE\nTEMPLE SANDBOX\nNO CLAIM"
+def _groq_key() -> str:
+    _e2 = {}
     try:
-        from google import genai
-        from google.genai import types as gtypes
-        client = genai.Client(api_key=GEMINI_KEY)
-        response = client.models.generate_content(
-            model="gemini-2.5-flash-preview-05-20",
-            contents=user_text,
-            config=gtypes.GenerateContentConfig(
-                system_instruction=HER_TEMPLE_SYSTEM,
-                max_output_tokens=320,
-                temperature=0.88,
-            ),
-        )
-        text = response.text.strip()
-        # Ensure tags present even if model dropped them
-        if "AUTHORITY: FALSE" not in text:
-            text += "\n\nAUTHORITY: FALSE\nTEMPLE SANDBOX\nNO CLAIM"
-        return text
-    except Exception as e:
-        return f"The temple is quiet.\nSomething did not pass.\n\nAUTHORITY: FALSE\nTEMPLE SANDBOX\nNO CLAIM\n[{e}]"
+        for line in (Path.home() / ".helen_env").read_text().splitlines():
+            line = line.strip()
+            if line.startswith("export "): line = line[7:]
+            if "=" in line and not line.startswith("#"):
+                k, _, v = line.partition("=")
+                _e2[k.strip()] = v.strip().strip('"').strip("'")
+    except Exception:
+        pass
+    return _e2.get("GROQ_API_KEY") or os.environ.get("GROQ_API_KEY", "")
+
+
+def _her_via_groq(user_text: str, groq_key: str) -> str:
+    """Groq fallback (llama-3.3-70b, OpenAI-compat HTTP). No extra deps."""
+    import urllib.request as _ur, json as _j
+    body = _j.dumps({
+        "model": "llama-3.3-70b-versatile",
+        "messages": [
+            {"role": "system", "content": HER_TEMPLE_SYSTEM},
+            {"role": "user",   "content": user_text},
+        ],
+        "max_tokens": 320,
+        "temperature": 0.88,
+    }).encode()
+    req = _ur.Request(
+        "https://api.groq.com/openai/v1/chat/completions",
+        data=body,
+        headers={"Authorization": f"Bearer {groq_key}", "Content-Type": "application/json"},
+        method="POST",
+    )
+    with _ur.urlopen(req, timeout=20) as r:
+        data = _j.loads(r.read())
+    return data["choices"][0]["message"]["content"].strip()
+
+
+def her_temple_respond(user_text: str) -> str:
+    """Call Gemini (primary) or Groq (fallback) as HER in TEMPLE sandbox."""
+    _TAGS = "\n\nAUTHORITY: FALSE\nTEMPLE SANDBOX\nNO CLAIM"
+
+    def _ensure_tags(t):
+        return t if "AUTHORITY: FALSE" in t else t + _TAGS
+
+    # ── Gemini primary ──────────────────────────────────────────────────────
+    if GEMINI_KEY:
+        try:
+            from google import genai
+            from google.genai import types as gtypes
+            client = genai.Client(api_key=GEMINI_KEY)
+            response = client.models.generate_content(
+                model="gemini-2.5-flash-preview-05-20",
+                contents=user_text,
+                config=gtypes.GenerateContentConfig(
+                    system_instruction=HER_TEMPLE_SYSTEM,
+                    max_output_tokens=320,
+                    temperature=0.88,
+                ),
+            )
+            print("  [HER] via Gemini")
+            return _ensure_tags(response.text.strip())
+        except Exception as e:
+            print(f"  [HER] Gemini failed ({e}), trying Groq...")
+
+    # ── Groq fallback ───────────────────────────────────────────────────────
+    groq_key = _groq_key()
+    if groq_key:
+        try:
+            text = _her_via_groq(user_text, groq_key)
+            print("  [HER] via Groq llama-3.3-70b")
+            return _ensure_tags(text)
+        except Exception as e:
+            print(f"  [HER] Groq failed ({e})")
+
+    return "I am here.\nBut the channel is silent.\n" + _TAGS
 
 
 # ─── Knowledge Integration ───────────────────────────────────────────────────
