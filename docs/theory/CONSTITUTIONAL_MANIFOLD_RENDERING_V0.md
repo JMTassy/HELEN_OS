@@ -96,28 +96,187 @@ The trajectory itself becomes a first-class governed artifact.
 
 ## 7. Identity Gate
 
-Before any rendered identity can be considered for admission or external use, it must pass an **Identity Gate**:
+Before any rendered identity can be admitted to sovereign state or
+released externally, it must traverse a four-stage gate. The stages
+run in fixed order and **fail closed at the first violation**.
 
-- Cycle consistency check (Math → Face → Math)
-- Provenance verification
-- Risk and coherence scoring
-- Receipt completeness
+### 7.1 Gate ordering
 
-Only identities that pass the gate are eligible for further processing.
+```
+   render
+     │
+     ▼
+  G1  provenance verification     ┐
+     │                             │
+     ▼                             │
+  G2  receipt completeness         │  fail-fast:
+     │                             │  any violation
+     ▼                             │  → BLOCK with reason code
+  G3  cycle consistency           │
+     │                             │
+     ▼                             │
+  G4  risk + coherence scoring    ┘
+     │
+     ▼
+   verdict ∈ { ADMIT, BLOCK, QUARANTINE }
+```
+
+### 7.2 Stage criteria
+
+| ID  | Stage                   | Pass condition                                                  | On fail                                                |
+| --- | ----------------------- | --------------------------------------------------------------- | ------------------------------------------------------ |
+| G1  | Provenance verification | `render.source_hash ∈ canonical_sources` AND model is signed    | `BLOCK · UNKNOWN_PROVENANCE`                           |
+| G2  | Receipt completeness    | media_receipt has all fields (§9) AND `receipt.hash` verifies   | `BLOCK · INCOMPLETE_RECEIPT`                           |
+| G3  | Cycle consistency       | `d_cycle ≤ ε_admit` (§8)                                        | `BLOCK · CYCLE_VIOLATION` or `QUARANTINE` if in drift  |
+| G4  | Risk + coherence        | `risk ≤ τ_risk` AND `coherence ≥ τ_coh`                         | `BLOCK · POLICY_VIOLATION`                             |
+
+Stages are independent — G3 does not look at G4's signal and vice versa.
+Each stage produces its own typed sub-receipt.
+
+### 7.3 Authority
+
+The Identity Gate is **non-sovereign**. It does not write to the
+sovereign ledger. It produces a typed verdict (ADMIT / BLOCK / QUARANTINE)
+which the MAYOR may sign in a subsequent reducer admission step (§10).
+
+### 7.4 Gate receipt
+
+Every gate run emits a receipt regardless of verdict:
+
+```json
+{
+  "gate": "IDENTITY_GATE_V0",
+  "render_hash": "<sha256-of-rendered-output>",
+  "stages": {
+    "G1": { "pass": true,  "details": "source: docs/identity/helen_v2.json" },
+    "G2": { "pass": true,  "details": "all 6 fields present" },
+    "G3": { "pass": false, "d_cycle": 0.083, "tier_breakdown": {"T1": 0.04, "T2": 0.11, "T3": 0.02} },
+    "G4": { "skipped": true, "reason": "G3_FAILED" }
+  },
+  "verdict": "QUARANTINE",
+  "first_violation": "G3",
+  "timestamp": "<utc-iso>",
+  "kernel_hash": "<git-head>"
+}
+```
+
+The receipt is hash-chained into a sub-ledger reserved for identity-gate
+decisions. Even BLOCK verdicts leave receipts — the absence of a receipt
+is itself a constitutional violation.
+
+### 7.5 QUARANTINE semantics
+
+QUARANTINE is a soft state. The render is preserved with its receipt
+but is **not** admitted to sovereign state and **not** deleted. It can
+be revisited (re-run with adjusted tolerances, escalated to MAYOR for
+manual review, or used as a drift training sample). QUARANTINE exists
+because identity drift is often the signal of interest — destroying
+the evidence would destroy the diagnostic value.
 
 ---
 
 ## 8. Cycle Consistency
 
-A core requirement for trustworthy rendering:
+The cycle:
 
 \[
-\text{Math} \xrightarrow{\text{Render}} \text{Face} \xrightarrow{\text{Encode}} \text{Math}'
+\text{Math}_0 \xrightarrow{R} \text{Face} \xrightarrow{E} \text{Math}_1
 \]
 
-We require that \(\text{Math} \approx \text{Math}'\) within acceptable bounds, or that deviations are explicitly receipted and justified.
+where R is the Math→Face renderer (§4) and E is the Face→Math encoder
+(§3). We require `Math₀ ≈ Math₁` under a typed distance.
 
-Cycle consistency becomes a measurable constitutional property.
+### 8.1 The distance metric
+
+Cycle distance is tiered. Each tier measures a different aspect of
+identity preservation:
+
+| Tier | Quantity                              | Distance `d`                              | What it measures        |
+| ---- | ------------------------------------- | ----------------------------------------- | ----------------------- |
+| T1   | Manifold coordinate vector            | `‖Math₀ − Math₁‖₂ / ‖Math₀‖₂`             | structural identity     |
+| T2   | Identity embedding (face vector)      | `1 − cos(emb₀, emb₁)`                     | semantic identity       |
+| T3   | Trajectory continuity (over N steps)  | `Σᵢ d(Mathᵢ, M̂ᵢ) / N`                   | temporal identity       |
+
+Total cycle distance:
+
+\[
+d_{\text{cycle}} \;=\; w_1 \cdot d_{T1} \;+\; w_2 \cdot d_{T2} \;+\; w_3 \cdot d_{T3}
+\]
+
+Default weights `(w₁, w₂, w₃) = (0.3, 0.5, 0.2)`. The weights live in
+the policy ledger — changing them is itself a reducer-admitted event
+with a receipt.
+
+### 8.2 Tolerance bands
+
+Four bands govern how the gate treats a given `d_cycle`:
+
+| Band       | Range                       | Gate action                       |
+| ---------- | --------------------------- | --------------------------------- |
+| STRICT     | `d ≤ ε_strict = 0.02`       | ADMIT silently                    |
+| ADMIT      | `ε_strict < d ≤ ε_admit = 0.05` | ADMIT with deviation note       |
+| DRIFT      | `ε_admit < d ≤ ε_drift = 0.15`  | QUARANTINE (preserved, unsigned)|
+| VIOLATION  | `d > ε_drift`               | BLOCK · `CYCLE_VIOLATION`         |
+
+`ε_strict`, `ε_admit`, `ε_drift` are **policy values**. They live in
+the policy ledger and must be admitted by REDUCER before they take
+effect. Tightening them is reversible; loosening them requires explicit
+justification and an expiry.
+
+### 8.3 Justified deviations
+
+A deviation in the DRIFT band may be **explicitly receipted and
+justified** rather than auto-quarantined. The justification receipt
+must specify:
+
+- **source** — what caused the deviation (model drift, intentional
+  re-style, version bump, sensor noise, etc.)
+- **operator** — the identity authorizing the deviation
+- **scope** — single render? this trajectory? this model version?
+  (narrower scope is preferred)
+- **expiry** — UTC after which the deviation must be re-evaluated
+
+A justified deviation produces a `JUSTIFIED_DEVIATION_V0` receipt
+which the MAYOR may sign for ADMIT-with-justification. The original
+gate-receipt's QUARANTINE verdict is preserved; the justification does
+not overwrite it, it composes with it.
+
+### 8.4 Drift detection over trajectory
+
+For a trajectory of N steps, cumulative drift is:
+
+\[
+D_N \;=\; \sum_{i=1}^{N} d_{\text{cycle}}(i)
+\]
+
+A trajectory is **drifting** when:
+
+\[
+\frac{dD_N}{dN} \;>\; \delta_{\text{drift}}
+\]
+
+i.e. the per-step cycle distance is trending upward over a sliding
+window. This is the signal that the model is losing the identity even
+when each individual step passes the gate.
+
+Drift detection runs as a batch process across recent trajectories
+and emits a `TRAJECTORY_DRIFT_ALERT_V0` receipt when the slope
+threshold is crossed. The alert does not block any single render; it
+flags the trajectory as a whole for MAYOR review.
+
+### 8.5 What "≈" means in practice
+
+"≈" is not a single number. It is:
+
+- a **typed** comparison under three tiers (structural / semantic / temporal),
+- gated by **four tolerance bands** (STRICT / ADMIT / DRIFT / VIOLATION),
+- scored by a **weighted distance** with policy-admitted weights,
+- evaluated both **per-step** and **trajectory-wise**,
+- and producing **receipts whether it passes or fails**.
+
+The constitutional value of cycle consistency is not that it always
+passes. It is that every passage and every failure is recorded with
+the same rigor as a verdict.
 
 ---
 
