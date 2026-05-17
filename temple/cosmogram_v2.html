@@ -171,6 +171,34 @@ body {
   margin-top: 2px;
 }
 
+/* Face role labels (V2 face doctrine made visible) */
+.face-label {
+  position: absolute; z-index: 6;
+  font-family: ui-monospace, monospace;
+  font-size: 8px; letter-spacing: 0.18em;
+  pointer-events: auto; cursor: pointer;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  user-select: none;
+  text-shadow: 0 0 6px rgba(0,0,0,0.9);
+  transition: color 0.2s, text-shadow 0.2s;
+}
+.face-label .dot {
+  display: inline-block;
+  width: 4px; height: 4px;
+  background: currentColor; border-radius: 50%;
+  margin-right: 5px; vertical-align: middle;
+  box-shadow: 0 0 4px currentColor;
+}
+.face-label:hover {
+  text-shadow: 0 0 10px currentColor, 0 0 6px rgba(0,0,0,0.9);
+  filter: brightness(1.4);
+}
+.face-label.activated {
+  color: #fff !important;
+  text-shadow: 0 0 12px currentColor, 0 0 8px rgba(0,0,0,0.9);
+}
+
 /* RIGHT */
 #right {
   grid-area: right;
@@ -670,6 +698,46 @@ scene.add(sky);
 const rotGroup = new THREE.Group();
 sky.add(rotGroup);
 
+// Compute per-face centers and normals by clustering coplanar triangles.
+// For tetra/octa/icosa: 1 triangle = 1 face (trivial).
+// For cube: 2 triangles per face. For dodec: 3 triangles per face (fan).
+function computeFaceData(geometry) {
+  const pos = geometry.attributes.position;
+  const triFaceMap = [];   // triangle idx -> face idx
+  const faceCenters = [];
+  const faceNormals = [];
+  const faceCounts = [];
+
+  for (let t = 0; t * 3 < pos.count; t++) {
+    const v0 = new THREE.Vector3().fromBufferAttribute(pos, t*3);
+    const v1 = new THREE.Vector3().fromBufferAttribute(pos, t*3 + 1);
+    const v2 = new THREE.Vector3().fromBufferAttribute(pos, t*3 + 2);
+    const center = v0.clone().add(v1).add(v2).divideScalar(3);
+    const normal = new THREE.Vector3()
+      .crossVectors(v1.clone().sub(v0), v2.clone().sub(v0))
+      .normalize();
+
+    let faceIdx = -1;
+    for (let f = 0; f < faceNormals.length; f++) {
+      if (faceNormals[f].dot(normal) > 0.99) { faceIdx = f; break; }
+    }
+    if (faceIdx === -1) {
+      faceCenters.push(center.clone());
+      faceNormals.push(normal.clone());
+      faceCounts.push(1);
+      faceIdx = faceCenters.length - 1;
+    } else {
+      faceCenters[faceIdx].add(center);
+      faceCounts[faceIdx]++;
+    }
+    triFaceMap.push(faceIdx);
+  }
+  for (let i = 0; i < faceCenters.length; i++) {
+    faceCenters[i].divideScalar(faceCounts[i]);
+  }
+  return { triFaceMap, faceCenters, faceNormals };
+}
+
 // Build each solid
 function buildSolid(def) {
   let geo;
@@ -680,6 +748,7 @@ function buildSolid(def) {
     case 'dodecahedron':geo = new THREE.DodecahedronGeometry(def.radius); break;
     case 'icosahedron': geo = new THREE.IcosahedronGeometry(def.radius); break;
   }
+  const faceData = computeFaceData(geo);
   const group = new THREE.Group();
 
   // Faint fill
@@ -714,7 +783,7 @@ function buildSolid(def) {
   const glow = new THREE.Mesh(glowGeo, glowMat);
   group.add(glow);
 
-  return { group, fill, wire, glow, pts };
+  return { group, fill, wire, glow, pts, faceData };
 }
 
 // Place solids in the rotation group at canonical positions.
@@ -771,8 +840,45 @@ solidObjs.forEach((s, idx) => {
   s.panelEl = pan;
 });
 
+// ─── Face labels (V2 face doctrine) ─────────────────────────────────────
+// For each face of each solid, create a labelled marker. Only labels on
+// the active solid + front-facing faces are visible.
+const faceLabelEls = [];
+
+solidObjs.forEach((s, solidIdx) => {
+  const centers = s.faceData.faceCenters;
+  const normals = s.faceData.faceNormals;
+  const N = centers.length;
+  // The role array length should match face count; trim or fill as needed.
+  for (let f = 0; f < N; f++) {
+    const role = s.def.faces[f] || { i: f+1, role: '—', contract: '' };
+    const el = document.createElement('div');
+    el.className = 'face-label';
+    el.style.color = s.def.colorHex;
+    el.innerHTML = `<span class="dot"></span>${role.role}`;
+    el.title = role.contract || '';
+    el.dataset.solid = solidIdx;
+    el.dataset.face  = f;
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      activateFace(solidIdx, f);
+    });
+    labelsEl.appendChild(el);
+    faceLabelEls.push({
+      el,
+      solidIdx, faceIdx: f,
+      localCenter: centers[f].clone(),
+      localNormal: normals[f].clone(),
+      solidObj: s,
+    });
+  }
+});
+
 function positionOverlays() {
   const r = stage.getBoundingClientRect();
+  const camWorld = new THREE.Vector3();
+  camera.getWorldPosition(camWorld);
+
   for (const s of solidObjs) {
     // Project solid's world position to screen
     const p = s.group.position.clone();
@@ -797,6 +903,39 @@ function positionOverlays() {
     }
     s.panelEl.style.left = px + 'px';
     s.panelEl.style.top  = py + 'px';
+  }
+
+  // Position face labels. Push them slightly outside the surface and cull
+  // back-facing ones. Only the active solid shows its face labels — atlas
+  // mode would be 50 labels at once, which is illegible.
+  for (const fl of faceLabelEls) {
+    const showSolid = (fl.solidIdx === activeIdx);
+    if (!showSolid) { fl.el.style.display = 'none'; continue; }
+
+    // World-space center (pushed outward 1.18x for visibility)
+    const localOut = fl.localCenter.clone().multiplyScalar(1.18);
+    const worldCenter = fl.solidObj.group.localToWorld(localOut.clone());
+
+    // Face normal in world space
+    const worldNormal = fl.localNormal.clone()
+      .transformDirection(fl.solidObj.group.matrixWorld).normalize();
+
+    // Camera-to-face direction
+    const toCam = camWorld.clone().sub(worldCenter).normalize();
+    const facing = worldNormal.dot(toCam);
+
+    if (facing <= 0.05) { fl.el.style.display = 'none'; continue; }
+
+    // Project to screen
+    const proj = worldCenter.clone().project(camera);
+    if (proj.z > 1) { fl.el.style.display = 'none'; continue; }
+    const fx = (proj.x * 0.5 + 0.5) * r.width;
+    const fy = (-proj.y * 0.5 + 0.5) * r.height;
+
+    fl.el.style.display = 'block';
+    fl.el.style.left = fx + 'px';
+    fl.el.style.top  = fy + 'px';
+    fl.el.style.opacity = Math.min(1, facing * 2.2).toFixed(2);
   }
 }
 
@@ -837,11 +976,15 @@ canvas.addEventListener('click', e => {
   mouse.x = ((e.clientX - r.left) / r.width) * 2 - 1;
   mouse.y = -((e.clientY - r.top) / r.height) * 2 + 1;
   raycaster.setFromCamera(mouse, camera);
-  // Check intersection with each solid's fill mesh
   for (let i = 0; i < solidObjs.length; i++) {
     const hit = raycaster.intersectObject(solidObjs[i].fill);
     if (hit.length > 0) {
-      setActiveSolid(i);
+      // Triangle index → face index via the face data map
+      const triIdx = hit[0].faceIndex;
+      const triMap = solidObjs[i].faceData.triFaceMap;
+      const faceIdx = (triIdx !== undefined && triMap[triIdx] !== undefined) ? triMap[triIdx] : 0;
+      if (i !== activeIdx) setActiveSolid(i);
+      activateFace(i, faceIdx);
       return;
     }
   }
@@ -853,18 +996,30 @@ function setActiveSolid(idx) {
   document.querySelectorAll('.tab').forEach(t => {
     t.classList.toggle('active', +t.dataset.i === idx);
   });
-  // Update activation panel
-  document.getElementById('act-icon').textContent = ['◆','□','◇','◈','✦'][idx];
-  document.getElementById('act-icon').style.color = sol.colorHex;
-  document.getElementById('act-role').textContent = sol.faces[0].role;
-  document.getElementById('act-role').style.color = sol.colorHex;
-  document.getElementById('act-type').textContent = sol.role_class;
-  document.getElementById('act-domain').textContent = sol.name;
-  document.getElementById('activation').classList.add('visible');
+  // Default activation = solid's first face
+  activateFace(idx, 0);
   // Brighten the active solid
   for (let i = 0; i < solidObjs.length; i++) {
     solidObjs[i].wire.material.opacity = i === idx ? 1.0 : 0.45;
     solidObjs[i].glow.material.opacity = i === idx ? 0.45 : 0.15;
+  }
+}
+
+function activateFace(solidIdx, faceIdx) {
+  const sol = SOLIDS[solidIdx];
+  const role = sol.faces[faceIdx] || sol.faces[0];
+  document.getElementById('act-icon').textContent = ['◆','□','◇','◈','✦'][solidIdx];
+  document.getElementById('act-icon').style.color = sol.colorHex;
+  document.getElementById('act-role').textContent = role.role;
+  document.getElementById('act-role').style.color = sol.colorHex;
+  document.getElementById('act-type').textContent = sol.role_class;
+  document.getElementById('act-domain').textContent = sol.name;
+  document.getElementById('activation').classList.add('visible');
+
+  // Mark the activated face label
+  for (const fl of faceLabelEls) {
+    fl.el.classList.toggle('activated',
+      fl.solidIdx === solidIdx && fl.faceIdx === faceIdx);
   }
 }
 
