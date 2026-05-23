@@ -1,0 +1,135 @@
+{
+  "schema_name": "TRANCHE_SUB_RECEIPT_V1",
+  "schema_version": "1.0.0",
+  "tranche_id": "E22",
+  "parent_tranche": "E21-E23",
+  "audit_date": "2026-05-23",
+  "prior_tranche": "E21 (phantom-blocker audit, PROPOSED_SHIP)",
+  "hypothesis": "IF the second open seam named in E20.mayor_decision.post_ship_status.open_seams (Knowledge_Compiler_V2_ratification — '6 patches landed at commit 6eede55') is verified against this tree (helen-conquest, branch claude/launch-helen-os-0xZXH), THEN it is either (a) a real open work item with the named commit present and patches landed, or (b) a phantom seam from the parallel session that does not exist in this branch.",
+  "proposer": {"role": "agent", "identity": "claude-opus-4-7", "operating_role": "GOBLIN-as-HAL"},
+  "attestor": {"role": "ci-script", "identity": "git log + grep -r"},
+  "experiment": {
+    "artifact": null,
+    "action": "audit-only — verify whether commit 6eede55 exists in any branch and whether Knowledge_Compiler_V2 is referenced in source code",
+    "system_layer": "governance (audit, non-sovereign)",
+    "files_touched": 0,
+    "files_mutated": 0,
+    "schemas_touched": 0,
+    "emitters_touched": 0,
+    "kernel_touched": false
+  },
+  "metric": {
+    "name": "blocker_validity_classification",
+    "candidate_blocker": "Knowledge_Compiler_V2 ratification (6 patches at commit 6eede55)",
+    "source_of_candidate": "GOBLIN_RECEIPT_E21_PREP_V0 §5 Candidate B, derived from E20 mayor_decision.open_seams.Knowledge_Compiler_V2_ratification",
+    "commit_6eede55_exists_HEAD": false,
+    "commit_6eede55_exists_any_branch": false,
+    "knowledge_compiler_v2_in_source_code": false,
+    "knowledge_compiler_v2_only_in_governance_artifacts": true,
+    "knowledge_compiler_v2_artifact_locations": [
+      "GOVERNANCE/TRANCHE_RECEIPTS/E20-hal-mayor-ship-gate-V1.json (E20 itself)",
+      "GOVERNANCE/TRANCHE_RECEIPTS/E21-hal-phantom-blocker-audit-V1.json (E21 references E20)",
+      "docs/proposals/GOBLIN_RECEIPT_E21_PREP_V0.md (GOBLIN recon, derived from E20)"
+    ],
+    "classification": "PHANTOM_BLOCKER"
+  },
+  "tool_command_log_receipt": [
+    {
+      "tool": "Bash (git log)",
+      "command": "git log --oneline 6eede55 -1",
+      "log": "fatal: ambiguous argument '6eede55': unknown revision or path not in the working tree.",
+      "receipt": "Commit 6eede55 does not exist at HEAD."
+    },
+    {
+      "tool": "Bash (git log --all)",
+      "command": "git log --all --oneline | grep '6eede55'",
+      "log": "(empty output)",
+      "receipt": "Commit 6eede55 does not exist on ANY branch of this repo."
+    },
+    {
+      "tool": "Bash (grep -r)",
+      "command": "grep -r 'Knowledge_Compiler_V2\\|knowledge_compiler_v2' --include='*.md' --include='*.json' --include='*.py' -l",
+      "log": "3 files: E20 receipt, E21 receipt, GOBLIN_RECEIPT_E21_PREP",
+      "receipt": "Knowledge_Compiler_V2 appears ONLY in governance artifacts that reference E20 (transitively). No source code file mentions Knowledge_Compiler_V2. Not implemented in this tree."
+    },
+    {
+      "tool": "Bash (python)",
+      "command": "python -c 'import json; d=json.load(open(E20)); print(d.mayor_decision.post_ship_status.open_seams)'",
+      "log_summary": "Confirms E20.open_seams contains exactly two entries: SEAM-001-C12 and Knowledge_Compiler_V2_ratification. Both have now been audited as phantom in this tree.",
+      "receipt": "E20.open_seams = {phantom, phantom}."
+    }
+  ],
+  "buckets": {
+    "BLOCKER_CONFIRMED_PHANTOM": [
+      "Knowledge_Compiler_V2 ratification :: commit 6eede55 absent; no source code references"
+    ],
+    "BLOCKER_CONFIRMED_PHANTOM_PRIOR_EPOCH": [
+      "SEAM-001-C12 :: legacy schemas/ directory purge (audited in E21, see GOVERNANCE/TRANCHE_RECEIPTS/E21-hal-phantom-blocker-audit-V1.json)"
+    ]
+  },
+  "meta_finding": {
+    "name": "E20_OPEN_SEAMS_CROSS_SESSION_CONTAMINATION",
+    "claim": "E20.mayor_decision.post_ship_status.open_seams describes open seams in the parallel session (~/Documents/GitHub/helen_os_v1/, cum_hash b3415eb3edfb) and NOT in helen-conquest's tree.",
+    "evidence_rate": "2/2 seams confirmed phantom for this tree (E21 audit + E22 audit)",
+    "scope": "Limited to the open_seams field. Other E20 fields (HAL checks, regression rollup, cross_session_alignment) appear faithful to this tree's state at E20-close time.",
+    "implication": "Any future epoch that opens a hypothesis derived from E20.open_seams against this tree is operating on parallel-session evidence by default. Future epochs must independently verify candidate hypotheses against this tree before declaring them real blockers.",
+    "doctrinal_implication": "Tranche receipts authored across multiple parallel sessions need explicit per-field tree-attribution. Today, E20 attributes the WHOLE receipt to a tree (via cross_session_alignment) but specific fields like open_seams may describe the OTHER tree. This is a constitutional gap worth a separate proposal (suggest: CROSS_SESSION_FIELD_ATTRIBUTION_V0)."
+  },
+  "regression_check": {
+    "pre_pass_fail": "5/5 (schema_authority_guard); 362 collected + 18 collection errors (jsonschema missing in pytest python)",
+    "post_pass_fail": "5/5 (unchanged); 362 collected + 18 collection errors (unchanged — env not fixed this epoch)",
+    "delta_passing": 0,
+    "delta_failing": 0,
+    "rationale": "E22 is audit-only. No mutations. Environment blocker (jsonschema in pytest's uv-managed python) is out of scope for this epoch."
+  },
+  "decision_rule": {
+    "keep_conditions": [
+      "blocker_validity_classification == PHANTOM_BLOCKER",
+      "files_mutated == 0",
+      "delta_failing == 0",
+      "commit absence confirmed across all branches (not just HEAD)",
+      "source code grep finds zero implementation references"
+    ],
+    "reject_conditions": [
+      "commit 6eede55 exists on any branch",
+      "Knowledge_Compiler_V2 referenced in any source file",
+      "audit mutates any artifact"
+    ],
+    "decision": "KEEP"
+  },
+  "failure_model": {
+    "abbreviated_commit_collision": "6eede55 is a 7-char abbreviation. Could collide with a longer hash on another branch. Refuted by: `git log --all` returns empty for the prefix.",
+    "commit_pruned": "The commit existed and was garbage-collected. Possible but not testable from current state; would require operator confirmation of past git operations. Not refutable by GOBLIN.",
+    "renamed_concept": "Knowledge_Compiler_V2 may exist under a different name in this tree. Mitigated weakly by: only governance artifacts referencing E20 mention it; no implementation under any naming convention found.",
+    "private_branch": "Commit exists on a non-shared private branch. Out of scope; this audit covers the publicly-tracked repo."
+  },
+  "pull_contract_conformance": {
+    "one_hypothesis_per_loop": {"result": true, "observed": "Single hypothesis on Candidate B; binary outcome."},
+    "observable_signals_only": {"result": true, "observed": "git log + grep results only."},
+    "non_sovereign_layers_only": {"result": true, "observed": "Zero mutations."},
+    "unknowns_explicit": {"result": true, "observed": "failure_model enumerates four scenarios including one un-refutable case (commit_pruned)."},
+    "no_authority_claim": {"result": true, "observed": "proposer != attestor; no `authority: true`; no canon mutation."}
+  },
+  "consequences_for_next_epoch": {
+    "E23_input_requirements": [
+      "HER ruling on whether the meta_finding (E20_OPEN_SEAMS_CROSS_SESSION_CONTAMINATION) shifts AUTORESEARCH discipline going forward",
+      "HER ruling on whether to bottle CROSS_SESSION_FIELD_ATTRIBUTION_V0 as a new doctrinal proposal (would slot into the chiddush roadmap as an 11th item or fold into DOC_DRIFT_REGISTER_V0)",
+      "Fresh hypothesis from HER for E23 — derived from observable signals on THIS tree, not from E20.open_seams"
+    ],
+    "discouraged_path": "Do not propose E23 against an E20-derived seam without independent tree-truth verification. The 2/2 phantom rate suggests E20.open_seams is unreliable as a seed for this tree."
+  },
+  "halt_boundary": {
+    "role": "GOBLIN (acting in HAL audit mode)",
+    "sealed_statement": "E22 audit closed. Candidate B is phantom in this tree. Combined with E21, both E20 open_seams entries are now confirmed phantom for helen-conquest. The meta_finding stands.",
+    "resume_conditions": [
+      "HER ruling: does E22 ship as-is (KEEP verdict)?",
+      "HER ruling: how does the meta_finding (E20_OPEN_SEAMS_CROSS_SESSION_CONTAMINATION) propagate — doctrinal proposal CROSS_SESSION_FIELD_ATTRIBUTION_V0, fold into DOC_DRIFT_REGISTER_V0, or accept without doctrinal codification?",
+      "HER ruling: source of next hypothesis for E23 — fresh observable on this tree, or close the E21-E23 parent tranche now and re-rank for E24+?",
+      "Optional environment action: install jsonschema into pytest's uv-managed Python (`/root/.local/share/uv/tools/pytest/bin/python -m pip install jsonschema`) to unblock full regression coverage for E23+"
+    ],
+    "discipline_followed": "HALT_BOUNDARY_DISCIPLINE_V0 (commit 5d0e04e)"
+  },
+  "verdict": "PROPOSED_SHIP — awaiting HER + MAYOR re-rank per PULL halt discipline",
+  "proposed_closed_at": "2026-05-23T00:00:00Z",
+  "note": "E22 confirms what E21 suggested: E20.open_seams contains parallel-session blockers that have no analog in helen-conquest's tree. This is a 2/2 phantom rate. The meta_finding does NOT impeach E20's overall SHIP verdict — E20's HAL checks, regression rollup, and cross_session_alignment were faithful to this tree at the time. But the open_seams field, which is the forward-looking forward-attribution field, describes the OTHER tree's open work. Going forward, any seed for a new AUTORESEARCH epoch must come from observable signals on THIS tree, not from E20.open_seams. The chiddush implicit in this epoch: tranche-receipt cross-session contamination is per-field, not per-document; future doctrine should make per-field tree-attribution explicit. That doctrinal proposal is OUT OF SCOPE for E22 itself — flagged for HER ruling."
+}
