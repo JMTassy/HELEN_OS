@@ -1,0 +1,147 @@
+{
+  "schema_name": "TRANCHE_SUB_RECEIPT_V1",
+  "schema_version": "1.0.0",
+  "tranche_id": "E21",
+  "parent_tranche": "E21-E23",
+  "audit_date": "2026-05-23",
+  "prior_tranche": "E13-E22 (closed at E20)",
+  "hypothesis": "IF the audit candidate SEAM-001-C12 (legacy schemas/ directory purge) is verified against this tree (helen-conquest, branch claude/launch-helen-os-0xZXH), THEN it is either (a) a real open blocker with N>0 files at schemas/, or (b) a phantom blocker — the directory has never existed in this branch and the test it gates already passes.",
+  "proposer": {"role": "agent", "identity": "claude-opus-4-7", "operating_role": "GOBLIN-as-HAL"},
+  "attestor": {"role": "ci-script", "identity": "pytest helen_os/tests/test_schema_authority_guard.py"},
+  "experiment": {
+    "artifact": null,
+    "action": "audit-only — verify presence/absence of schemas/ in this branch's git tree and run the schema_authority_guard test suite",
+    "system_layer": "governance (audit, non-sovereign)",
+    "files_touched": 0,
+    "files_mutated": 0,
+    "schemas_touched": 0,
+    "emitters_touched": 0,
+    "kernel_touched": false
+  },
+  "metric": {
+    "name": "blocker_validity_classification",
+    "candidate_blocker": "SEAM-001-C12 (legacy schemas/ purge)",
+    "source_of_candidate": "GOBLIN_RECEIPT_E21_PREP_V0 §5 Candidate A, derived from E20 mayor_decision.open_seams",
+    "test_under_scrutiny": "helen_os/tests/test_schema_authority_guard.py::test_legacy_schemas_directory_is_purged",
+    "expected_state_per_E20": "FAIL (named as single remaining test failure in E20.remaining_failures)",
+    "observed_state_2026_05_23": "PASS (5/5 in schema_authority_guard suite)",
+    "git_ls_tree_HEAD_schemas": "empty (no entries)",
+    "git_ls_files_schemas": "empty (no tracked files)",
+    "git_log_schemas_history": "empty (no commits ever touched schemas/)",
+    "classification": "PHANTOM_BLOCKER"
+  },
+  "tool_command_log_receipt": [
+    {
+      "tool": "Bash (cat)",
+      "command": "cat GOVERNANCE/TRANCHE_RECEIPTS/E15-root-schemas-consumer-audit-V1.json",
+      "log_summary": "Read E15 receipt. Confirms 13 ORPHAN_ZERO_REF files were identified by E15 audit dated 2026-04-17.",
+      "receipt": "E15 baseline established; 13 files named."
+    },
+    {
+      "tool": "Bash (ls)",
+      "command": "ls schemas/",
+      "log": "ls: cannot access 'schemas/': No such file or directory",
+      "receipt": "Directory absent at HEAD."
+    },
+    {
+      "tool": "Bash (git ls-tree)",
+      "command": "git ls-tree HEAD schemas/",
+      "log": "(empty output)",
+      "receipt": "schemas/ not in HEAD tree."
+    },
+    {
+      "tool": "Bash (git ls-files)",
+      "command": "git ls-files schemas/",
+      "log": "(empty output)",
+      "receipt": "No file under schemas/ is tracked."
+    },
+    {
+      "tool": "Bash (git log)",
+      "command": "git log -- 'schemas/'",
+      "log": "(empty output)",
+      "receipt": "No commit on this branch has ever touched schemas/. Directory has never existed in this branch's history."
+    },
+    {
+      "tool": "Read",
+      "command": "Read helen_os/tests/test_schema_authority_guard.py",
+      "log_summary": "Lines 64-65: `if not LEGACY_SCHEMAS_DIR.exists(): return  # Already purged — good.`",
+      "receipt": "Test PASSES when directory is absent — that is the closure condition."
+    },
+    {
+      "tool": "Bash (pytest)",
+      "command": "PYTHONPATH=. /root/.local/bin/pytest helen_os/tests/test_schema_authority_guard.py -v",
+      "log": "5 passed in 0.30s — including test_legacy_schemas_directory_is_purged",
+      "receipt": "Empirical confirmation: the test E20 named as failing is currently passing in this tree."
+    }
+  ],
+  "buckets": {
+    "BLOCKER_CONFIRMED_PHANTOM": [
+      "SEAM-001-C12 :: legacy schemas/ directory purge"
+    ],
+    "BLOCKER_STILL_OPEN_PER_E20": [
+      "Knowledge_Compiler_V2 ratification (6 patches at commit 6eede55) — not audited this epoch"
+    ]
+  },
+  "cross_session_explanation": {
+    "finding": "E15-E20 receipts in this repo's GOVERNANCE/TRANCHE_RECEIPTS/ document audit work performed against a DIFFERENT tree than this branch.",
+    "evidence_1": "E20.cross_session_alignment.parallel_session_repo == '~/Documents/GitHub/helen_os_v1/' with cum_hash b3415eb3edfb",
+    "evidence_2": "E20.cross_session_alignment.divergence_reason: 'Different test corpora between the two trees.'",
+    "evidence_3": "E15 buckets enumerate 21+14+13=48 files under schemas/; git history of this branch shows 0 commits touching schemas/.",
+    "interpretation": "The E15 audit was conducted in helen_os_v1 (the parallel session). The receipt was filed in this repo (helen-conquest) as a cross-session record. In helen-conquest's own tree, schemas/ has never existed and the test it gates already passes.",
+    "implication_for_CLAUDE_md": "CLAUDE.md line: 'Root `schemas/` still has 19 files pending migration (classified; delete deferred)' is stale FOR THIS BRANCH. Accurate description of the parallel session at the time E15 was authored; not accurate for helen-conquest's tree today."
+  },
+  "regression_check": {
+    "pre_pass_fail": "5/5 (schema_authority_guard subset; full suite has 18 collection errors due to missing jsonschema dep — environment issue not regression)",
+    "post_pass_fail": "5/5 (unchanged; this is an audit, no mutations)",
+    "delta_passing": 0,
+    "delta_failing": 0,
+    "rationale": "E21 is audit-only. No schemas, emitters, kernel, or tests modified."
+  },
+  "decision_rule": {
+    "keep_conditions": [
+      "blocker_validity_classification == PHANTOM_BLOCKER",
+      "files_mutated == 0",
+      "delta_failing == 0",
+      "cross-session attribution evidence is concrete (specific cum_hash, specific repo path)"
+    ],
+    "reject_conditions": [
+      "any disk evidence that schemas/ ever existed in helen-conquest branch",
+      "the test under scrutiny actually fails in this tree",
+      "audit mutates any artifact"
+    ],
+    "decision": "KEEP"
+  },
+  "failure_model": {
+    "false_positive_phantom": "I am missing a stashed/uncommitted copy of schemas/ outside the git tree. Mitigated by: explicit `ls`, `git ls-tree`, `git ls-files`, `git log` all return empty independently.",
+    "false_negative_phantom": "schemas/ exists but at a different case-sensitivity or path. Mitigated by: find . -type d -name schemas was run and listed only NESTED schemas/ directories (helen_os/schemas, oracle_town/schemas, etc.) — never a root-level schemas/.",
+    "cross_session_misread": "E15 was authored in helen-conquest and ran against helen-conquest, and the directory was deleted between E15 and now. Refuted by: `git log -- schemas/` returns ZERO commits — if schemas/ ever existed in this branch, the deletion would show.",
+    "test_drift": "The test was modified between E20 close and now. Refuted by: line 64-65 explicit early-return-on-absent is part of the test's design, consistent with E15's deletion_proposal recommended_next_steps."
+  },
+  "pull_contract_conformance": {
+    "one_hypothesis_per_loop": {"result": true, "observed": "Single hypothesis stated; binary outcome (real blocker vs phantom)."},
+    "observable_signals_only": {"result": true, "observed": "All metrics are file presence/absence, git output, test pass/fail."},
+    "non_sovereign_layers_only": {"result": true, "observed": "Zero mutations; audit only."},
+    "unknowns_explicit": {"result": true, "observed": "failure_model enumerates four refutation scenarios."},
+    "no_authority_claim": {"result": true, "observed": "proposer != attestor; no `authority: true`; no canon mutation."}
+  },
+  "implications_for_E21_PREP": {
+    "candidate_A_status": "INVALIDATED for this tree — was authored against parallel session evidence",
+    "candidate_B_status": "Knowledge_Compiler_V2 ratification — not audited this epoch; may still be valid",
+    "candidate_C_status": "Operator-defined slot — unchanged",
+    "next_HAL_hypothesis_requires": "HER ruling on whether to (i) treat E21 as the closure of the phantom Candidate A and propose E22 against Candidate B, or (ii) re-baseline GOBLIN_RECEIPT_E21_PREP_V0 against actual disk state."
+  },
+  "halt_boundary": {
+    "role": "GOBLIN (acting in HAL audit mode)",
+    "sealed_statement": "E21 audit closed. Candidate A is phantom in this tree. No further mutations attempted.",
+    "resume_conditions": [
+      "HER ruling: does E21 ship as-is (KEEP verdict on phantom-blocker classification), or does it need MAYOR re-rank before another epoch opens?",
+      "HER ruling: does Candidate B (Knowledge_Compiler_V2 ratification) become the E22 hypothesis, or is a fresh hypothesis preferred?",
+      "Doc-drift action: amend CLAUDE.md lines about Root `schemas/` directory and lines 146/158 about E11/E12 reconciliation (per HER_HAL_BRAINSTORM C10 → roadmap #3 DOC_DRIFT_REGISTER_V0)",
+      "Environment action: install jsonschema (and likely other deps) before running full test suite — current environment cannot collect 18 of the helen_os tests"
+    ],
+    "discipline_followed": "HALT_BOUNDARY_DISCIPLINE_V0 (just bottled in commit 5d0e04e); this is the first receipt that explicitly cites the discipline."
+  },
+  "verdict": "PROPOSED_SHIP — awaiting HER + MAYOR re-rank per PULL halt discipline",
+  "proposed_closed_at": "2026-05-23T00:00:00Z",
+  "note": "E21 is the first audit epoch executed under GOBLIN role-binding (per operator clarification 2026-05-23). It demonstrates that GOBLIN-as-HAL can produce a tranche receipt with real observable signals without invoking the `helen autoresearch run` engine — by running the audit work directly through Tool+Command+Log+Receipt discipline. The finding (Candidate A is phantom in this tree) corrects a downstream artifact (GOBLIN_RECEIPT_E21_PREP_V0 §5 Candidate A) and a doctrinal artifact (CLAUDE.md schemas/ note). Neither correction is performed by this receipt — both are flagged in halt_boundary.resume_conditions for HER ruling. Cross-session evidence is explicit: E15 was authored against ~/Documents/GitHub/helen_os_v1/, not helen-conquest."
+}
