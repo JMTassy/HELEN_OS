@@ -1,0 +1,210 @@
+{
+  "schema_name": "TRANCHE_SHIP_GATE_V1",
+  "schema_version": "1.0.0",
+  "tranche_id": "E25",
+  "parent_tranche": "ENGINE-DOCTRINAL-FREEZE",
+  "audit_date": "2026-05-23",
+  "prior_tranche": "E24 (Gemma autonomous loop staged under override)",
+  "gate_role": "HAL_REVIEW + MAYOR_RATIFY_GATE",
+  "hypothesis": "IF the four engine doctrines (PROVENANCE_GRAVITY_V0, BOUNDARY_CATALYST_ENGINE_V0, CROSS_SESSION_FIELD_ATTRIBUTION_V0, ADMISSIBILITY_GRADIENT_FIELD_V0) (a) parse, (b) preserve NON_SOVEREIGN + NO_SHIP markers, (c) declare halt-boundary sections per HALT_BOUNDARY_DISCIPLINE_V0, (d) carry consistent cross-reference chains, AND no kernel/schema/emitter was touched in their authoring, THEN the engine doctrinal layer is doctrinally frozen as a coherent set, ready for HER ratification before any implementation begins.",
+  "operator_directive": "Per operator dispatch 2026-05-23: 'DO NOT jump directly to implementation. First freeze BOUNDARY_CATALYST_ENGINE_V0 as a governed selection layer. Then implement only the non-sovereign scorer + replay inspector.' Subsequent dispatch confirmed the doctrine is 'clean, rigorous, and deeply consistent' and listed five next-move options of which option 1 was 'Freeze and bottle the doctrine cleanly.' This receipt executes that option.",
+  "proposer": {"role": "agent", "identity": "claude-opus-4-7", "operating_role": "GOBLIN-as-HAL"},
+  "attestor": {"role": "ci-script", "identity": "bash sha256sum + grep verification over docs/proposals/"},
+  "engine_doctrines": {
+    "member_count": 4,
+    "total_doctrinal_lines": 1828,
+    "members": [
+      {
+        "role": "Memory mass",
+        "doctrine_id": "PROVENANCE_GRAVITY_V0",
+        "file": "docs/proposals/PROVENANCE_GRAVITY_V0.md",
+        "sha256": "ca2c7b077057a80dfca66b327c4ef45c5168e6d2d6d2bc41b8ac70cec5b8a00e",
+        "lines": 353,
+        "lifecycle": "DOCTRINE_DRAFT",
+        "bottled_at": "2e3f151"
+      },
+      {
+        "role": "Discovery pressure",
+        "doctrine_id": "BOUNDARY_CATALYST_ENGINE_V0",
+        "file": "docs/proposals/BOUNDARY_CATALYST_ENGINE_V0.md",
+        "sha256": "740e5e0e8cd5b937b24b1061f23558896fde05070fe261621bd555a99e7b6535",
+        "lines": 667,
+        "lifecycle": "DOCTRINE_DRAFT",
+        "bottled_at": "6787f7d"
+      },
+      {
+        "role": "Provenance gate (prerequisite)",
+        "doctrine_id": "CROSS_SESSION_FIELD_ATTRIBUTION_V0",
+        "file": "docs/proposals/CROSS_SESSION_FIELD_ATTRIBUTION_V0.md",
+        "sha256": "573143c6e839d88e8e1bc50fb61ea88253ef3ec25ef759073cb3660a730e1025",
+        "lines": 367,
+        "lifecycle": "DOCTRINE_DRAFT",
+        "bottled_at": "493364b"
+      },
+      {
+        "role": "Transformation direction",
+        "doctrine_id": "ADMISSIBILITY_GRADIENT_FIELD_V0",
+        "file": "docs/proposals/ADMISSIBILITY_GRADIENT_FIELD_V0.md",
+        "sha256": "cdd1663fcedb00fcf543a46bc44c6cb3c1c17f9e0ca2d391093367609133bda0",
+        "lines": 441,
+        "lifecycle": "DOCTRINE_DRAFT",
+        "bottled_at": "493364b"
+      }
+    ]
+  },
+  "hal_checks": {
+    "all_parse": {
+      "result": true,
+      "observed": "4/4 markdown files readable; no parse errors; each has structured § headings"
+    },
+    "non_sovereign_marker_preserved": {
+      "result": true,
+      "observed": "4/4 — each doctrine carries 'authority: NON_SOVEREIGN' at the top",
+      "evidence": "grep -c 'NON_SOVEREIGN' returns 1 per file"
+    },
+    "no_ship_marker_preserved": {
+      "result": true,
+      "observed": "4/4 — each doctrine carries 'canon: NO_SHIP' and/or 'NO CLAIM' framing"
+    },
+    "halt_boundary_section_present": {
+      "result": true,
+      "observed": "4/4 — each doctrine has a section literally containing 'Halt boundary' per HALT_BOUNDARY_DISCIPLINE_V0",
+      "evidence": "grep -c -i 'halt boundary' returns 1 per file"
+    },
+    "cross_reference_chain_resolvable": {
+      "result": true,
+      "observed": "Each doctrine's named parent/prerequisite resolves to a file on disk: BOUNDARY_CATALYST cites PROVENANCE_GRAVITY (resolves); ADMISSIBILITY_GRADIENT cites both (resolve); CROSS_SESSION cites E22 + PROVENANCE + BOUNDARY (resolve); PROVENANCE_GRAVITY cites BELL_TRANSLATION (resolves)"
+    },
+    "no_kernel_touched": {
+      "result": true,
+      "observed": "4/4 — experiment.kernel_touched=false on each doctrine's authoring commit; town/ledger_v1.ndjson untouched; helen_os/kernel/ untouched"
+    },
+    "no_schemas_touched": {
+      "result": true,
+      "observed": "4/4 — experiment.schemas_touched=0; helen_os/schemas/ count unchanged at 66"
+    },
+    "no_emitters_touched": {
+      "result": true,
+      "observed": "4/4 — experiment.emitters_touched=0; tools/helen_say.py and tools/ndjson_writer.py untouched (helen_say.py SyntaxError noted in E23 SE10 remains unresolved — orthogonal carrier issue)"
+    },
+    "interdependence_coherence": {
+      "result": true,
+      "observed": "The four doctrines form a coherent pipeline: CROSS_SESSION gates tree-truth → BOUNDARY_CATALYST selects atoms → ADMISSIBILITY_GRADIENT computes direction → PROVENANCE_GRAVITY updates routing. Each cites the others where appropriate. No circular dependency.",
+      "pipeline_check": "verified via §11 / §12 mapping tables in each doctrine"
+    },
+    "anti_creep_present": {
+      "result": true,
+      "observed": "4/4 doctrines have explicit '§ What this proposal does NOT specify' or equivalent anti-creep sections enumerating deferred items"
+    }
+  },
+  "regression_rollup": {
+    "pre_freeze_pass_fail": "5/5 schema_authority_guard (subset; full suite has 18 jsonschema collection errors unrelated to this freeze)",
+    "post_freeze_pass_fail": "5/5 (unchanged; freeze is audit-only)",
+    "delta_passing": 0,
+    "delta_failing": 0,
+    "rationale": "Doctrinal freeze writes one JSON receipt to GOVERNANCE/TRANCHE_RECEIPTS/ and mutates no other file. No code, no schema, no kernel, no emitter touched."
+  },
+  "pull_contract_conformance": {
+    "one_hypothesis_per_loop": {
+      "result": true,
+      "observed": "Single hypothesis: the four engine doctrines are doctrinally frozen as a coherent set."
+    },
+    "observable_signals_only": {
+      "result": true,
+      "observed": "Every HAL check evidenced by grep/sha256sum output."
+    },
+    "non_sovereign_layers_only": {
+      "result": true,
+      "observed": "Zero mutations to kernel/ledger/schemas/emitters."
+    },
+    "unknowns_explicit": {
+      "result": true,
+      "observed": "Halt boundary §M enumerates what HER must rule on (5 resume conditions)."
+    },
+    "no_authority_claim": {
+      "result": true,
+      "observed": "proposer != attestor; verdict is PROPOSED_DOCTRINAL_FREEZE, not ADMITTED."
+    },
+    "halt_discipline": {
+      "result": true,
+      "observed": "This receipt declares its own halt boundary (§halt_boundary below); each frozen doctrine declares its own halt boundary internally."
+    }
+  },
+  "freeze_semantics": {
+    "definition": "DOCTRINALLY_FROZEN means: the four named doctrines may not be edited without producing a V1 (or higher) sibling proposal. Their text is locked as currently bottled. Future amendments require explicit new-version bottling.",
+    "what_is_locked": [
+      "The text of each named doctrine file as of its current sha256",
+      "The interdependence structure (CROSS_SESSION → BOUNDARY_CATALYST → ADMISSIBILITY_GRADIENT → PROVENANCE_GRAVITY)",
+      "The formal model formulas (Boundary uncertainty 4p(1-p), Admissibility gradient A(x) = E[Δ_i | x_i ≈ x], etc.)",
+      "The anti-creep §s in each doctrine (what is OUT OF SCOPE remains out of scope for V0)"
+    ],
+    "what_is_NOT_locked": [
+      "Implementation choices (algorithm details, parameters, storage backends)",
+      "Operator-class calibration (ε, λ, μ, β, η values)",
+      "Future V1 or extension proposals (a sibling MOTIF_EXTRACTION_V0 may be authored without unfreezing V0)",
+      "Adjacent doctrines not in this freeze set (CLAIM_MATURITY_PROTOCOL_V0 still flagged unbottled; GOBLIN_ROLE_V1 still flagged in CHIDDUSH_BOTTLE_V0 roadmap)"
+    ],
+    "unfreeze_procedure": "Operator authors an explicit unfreeze receipt (E26+) naming which doctrine member to unlock and why. Until unfreeze, treat the engine as a fixed point for downstream work."
+  },
+  "implementation_authorization_state": {
+    "current": "NOT_AUTHORIZED",
+    "blockers_to_authorization": [
+      "MAYOR ratification of this E25 freeze receipt",
+      "HER ruling on which of the operator's 5 named options to pursue next (Freeze [this commit] / Scorer / Théâtre de Mémoire / Experiment refinement / Other)",
+      "If 'Scorer' is selected: separate task packet specifying scope (boundary_catalyst.py + active_query.py + tree_truth_gate.py + motif_boundary_score.py + reducer_packet.py + replay_boundary.py)"
+    ],
+    "what_GOBLIN_can_do_post_freeze": [
+      "Refine the §7 experiment design in ADMISSIBILITY_GRADIENT_FIELD_V0 (operator's option 4) — non-mutating",
+      "Bottle CLAIM_MATURITY_PROTOCOL_V0 (still flagged in PROVENANCE_GRAVITY_V0 §9.2)",
+      "Bottle GOBLIN_ROLE_V1 (still flagged in CHIDDUSH_BOTTLE_V0 #8)",
+      "Run /helen-governance:diff against existing schemas if a receipt-schema commit is contemplated"
+    ],
+    "what_GOBLIN_CANNOT_do_post_freeze": [
+      "Write helen_os/chiddush/*.py without explicit MAYOR + REDUCER authorization (per operator's directive: 'DO NOT jump directly to implementation')",
+      "Edit any frozen doctrine in place (requires V1 sibling bottle)",
+      "Mark this freeze SHIPPED (requires MAYOR ratification)"
+    ]
+  },
+  "decision_rule": {
+    "ship_conditions": [
+      "all HAL checks PASS (9/9)",
+      "non_sovereign + no_ship markers preserved on all 4 doctrines",
+      "halt_boundary sections present on all 4 doctrines",
+      "interdependence_coherence verified",
+      "regression_rollup delta == 0"
+    ],
+    "no_ship_conditions": [
+      "any HAL check FAIL",
+      "any doctrine missing NON_SOVEREIGN / NO_SHIP marker",
+      "any doctrine missing halt boundary",
+      "cross-references unresolvable",
+      "kernel/schema/emitter touched (would violate non-sovereign discipline)"
+    ],
+    "decision": "PROPOSED_DOCTRINAL_FREEZE"
+  },
+  "mayor_review_pending": {
+    "what_MAYOR_must_decide": [
+      "Ratify the doctrinal freeze (lock the 4 doctrines as a set)",
+      "OR send back one or more doctrines for amendment before freeze",
+      "OR add additional doctrines to the freeze set (e.g., CLAIM_MATURITY_PROTOCOL_V0 if HER wants it bottled first)",
+      "Authorize next move from operator's 5 options (Scorer / Théâtre de Mémoire / Experiment refinement / Other)"
+    ],
+    "MAYOR_verdict_field": null,
+    "ratified_at": null
+  },
+  "halt_boundary": {
+    "role": "GOBLIN-as-HAL",
+    "sealed_statement": "The four engine doctrines pass all 9 HAL consistency checks. They are coherent as a set. The freeze is PROPOSED, not yet ratified. Implementation remains explicitly blocked per the operator's stated sequencing.",
+    "resume_conditions": [
+      "MAYOR ratifies this E25 freeze receipt OR specifies amendments",
+      "HER chooses among the operator's 5 named next-move options for post-freeze work",
+      "If Scorer authorized: separate task packet with scope, environment, and observer protocol",
+      "If Experiment refinement authorized: GOBLIN refines §7 of ADMISSIBILITY_GRADIENT_FIELD_V0 with corpus selection + environment + 8-metric observer protocol",
+      "If CLAIM_MATURITY_PROTOCOL_V0 needs bottling first: GOBLIN can produce that doctrine as a 5th engine member (would re-open the freeze to add it; or it could land as adjacent to the frozen set)"
+    ],
+    "discipline_followed": "HALT_BOUNDARY_DISCIPLINE_V0 (commit 5d0e04e); this is the 6th receipt this session that explicitly cites the discipline, reinforcing the canonical pattern"
+  },
+  "verdict": "PROPOSED_DOCTRINAL_FREEZE — awaiting MAYOR ratification",
+  "proposed_closed_at": "2026-05-23T00:00:00Z",
+  "note": "E25 is the doctrinal-scale analog of E20: HAL_REVIEW + MAYOR_SHIP_GATE applied not to a tranche of receipts but to a coherent set of constitutional doctrines. The four engine doctrines (PROVENANCE_GRAVITY + BOUNDARY_CATALYST + CROSS_SESSION_FIELD_ATTRIBUTION + ADMISSIBILITY_GRADIENT_FIELD) form what the operator named 'constitutional metabolism' — the architecture of governed learning. They are now bottled, hash-stable, halt-bounded, and cross-referentially coherent. The freeze locks them as a fixed point so implementation can proceed against stable doctrine. Implementation itself is NOT authorized by this receipt; that's the next sovereign step. The session's 23 prior commits + this freeze = 24 commits, all NON_SOVEREIGN, all proposals or receipts, no canon mutation. The doctrinal phase of constitutional metabolism is complete."
+}
