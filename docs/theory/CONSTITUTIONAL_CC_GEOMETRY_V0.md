@@ -1,0 +1,509 @@
+# CONSTITUTIONAL_CC_GEOMETRY_V0
+
+**authority:** NON_SOVEREIGN
+**canon:** NO_SHIP
+**lifecycle:** TEMPLE_EXPLORATION
+**framing:** NO CLAIM
+**status:** Geometric semantics layer over the frozen engine
+**operator_directive:** "NEXT MOVE: CONSTITUTIONAL_CC_GEOMETRY_V0" (2026-05-23)
+**parent_theory:** `docs/theory/GEOMETRIC_FRAMEWORK_V0.md`
+**frozen_engine:** `GOVERNANCE/TRANCHE_RECEIPTS/E25-engine-doctrine-freeze-V1.json`
+**proposer:** claude-opus-4-7 acting as GOBLIN
+**attestor:** pending
+
+> **NO CLAIM disclaimer.** This artifact specifies the metric layer
+> (Carnot-Carathéodory geometry) interpretation of the frozen engine.
+> It is **interpretive overlay**, not a fifth engine doctrine. The
+> mathematics is real; the mapping is metaphor with named formal
+> targets. The engine freeze (E25) is NOT reopened — this bottle
+> modifies no engine member.
+
+---
+
+## §1. Purpose — the metric layer
+
+The engine doctrinal freeze (E25) sealed four doctrines that define
+**what the engine does**:
+
+```
+PROVENANCE_GRAVITY               memory mass
+BOUNDARY_CATALYST_ENGINE         discovery pressure
+ADMISSIBILITY_GRADIENT_FIELD     transformation direction
+CROSS_SESSION_FIELD_ATTRIBUTION  provenance gate (prerequisite)
+```
+
+What the four doctrines did NOT define was the **metric of admissible
+movement** — the space in which the engine *moves* and the cost
+function over that space.
+
+Per `GEOMETRIC_FRAMEWORK_V0`, Carnot-Carathéodory geometry provides
+exactly that: the language of constrained motion under bracket
+generation. This bottle specifies the CC interpretation explicitly,
+introduces formal objects (manifold, horizontal vector fields,
+forbidden directions, brackets), and names one new emergent property
+(Constitutional Holonomy) that the geometric framework reveals.
+
+---
+
+## §2. Why this is NOT a fifth engine doctrine
+
+The four engine doctrines are **operational**: they specify how
+receipts are weighted, how atoms are scored, how directions are
+learned, how attribution is verified. They prescribe actions.
+
+This bottle is **interpretive**: it specifies the geometric space
+in which the four operational doctrines move. It prescribes no
+new actions; it does not modify the weight function, the boundary
+score, the gradient, or the attribution.
+
+Reopening the freeze to add a fifth doctrine would invalidate the
+E25 lock. This bottle explicitly stays outside the locked set.
+
+**Compatibility check:**
+
+| Property | E25 freeze requirement | This bottle |
+| --- | --- | --- |
+| No edit to PROVENANCE_GRAVITY | required | satisfied (untouched) |
+| No edit to BOUNDARY_CATALYST | required | satisfied (untouched) |
+| No edit to ADMISSIBILITY_GRADIENT | required | satisfied (untouched) |
+| No edit to CROSS_SESSION_FIELD_ATTRIBUTION | required | satisfied (untouched) |
+| No engine-doctrine status promotion | required | satisfied (this is TEMPLE_EXPLORATION, not DOCTRINE) |
+| No code path activation | required | satisfied (no implementation requested) |
+
+Compatible.
+
+---
+
+## §3. The clean mapping (operator's table, preserved)
+
+```
+Horizontal distribution
+  = constitutionally allowed action directions
+
+Forbidden directions
+  = actions blocked by invariants
+
+Lie brackets
+  = composite receipt-mediated moves that unlock unreachable structure
+
+CC distance
+  = minimal constitutional effort to reach admissibility
+
+Sub-Riemannian geodesic
+  = shortest admissible transformation path from boundary atom to Reducer admission
+
+Abnormal geodesic
+  = path that appears efficient but violates hidden governance regularity
+
+Cut locus / conjugate point
+  = point where a motif stops being optimal and repeller signals rise
+```
+
+The mapping is consistent with `GEOMETRIC_FRAMEWORK_V0 §4` and
+extends it with explicit named objects below.
+
+---
+
+## §4. Formal objects
+
+### §4.1 The constitutional state manifold
+
+Each state $x \in \mathcal{M}$ is a tuple:
+
+```
+x = (proposal, claim_level, receipt_state, provenance, risk, reducer_margin)
+```
+
+Coordinates:
+
+| Coordinate | Range | Source |
+| --- | --- | --- |
+| `proposal` | feature vector $\phi(\cdot)$ | engine input |
+| `claim_level` | `{NO_CLAIM, DRAFT, HYPOTHESIS, EXPERIMENTALLY_SUPPORTED, HUMAN_VERIFIED, FORMALLY_VERIFIED}` | `CLAIM_MATURITY_PROTOCOL_V0` (still unbottled, flagged) |
+| `receipt_state` | ledger position hash | `town/ledger_v1.ndjson` |
+| `provenance` | `tree_truth_id` + `fields_tree_attribution` | `CROSS_SESSION_FIELD_ATTRIBUTION_V0` |
+| `risk` | $\in [0, 1]$, possibly multi-dimensional | engine policy |
+| `reducer_margin` | $m \in [-1, 1]$ | from receipt verdict |
+
+The manifold structure (smoothness, local charts, topology) is
+**not formally defined** in this bottle — that is a research target
+named in `GEOMETRIC_FRAMEWORK_V0 §6`.
+
+### §4.2 Horizontal vector fields (admissible action directions)
+
+The horizontal distribution $\mathcal{H}_x \subset T_x\mathcal{M}$
+is generated by the following named vector fields:
+
+```
+X_source        inspect source
+X_witness       produce HAL review  (creates a receipt atom)
+X_boundary      mark near-failure   (assigns boundary weight)
+X_replay        reconstruct trace   (validates against replay)
+X_mutate_safe   GOBLIN mutation     (non-sovereign, allowed variance)
+X_reduce        submit to Reducer   (initiates admission verdict)
+```
+
+Each generates a 1-parameter family of admissible moves. Composition
+along any of these fields is itself admissible. The exact differential
+form of each $X_i$ depends on the manifold construction (open).
+
+### §4.3 Forbidden vector fields (illegal, not expensive)
+
+```
+Y_self_authorize                 — claim authority without sovereign release
+Y_mutate_ledger_without_receipt  — bypass NO RECEIPT = NO CLAIM
+Y_claim_truth_without_admission  — assert canonical status pre-REDUCER
+Y_import_foreign_receipt_weight  — weight without CROSS_SESSION verification
+Y_skip_reducer                   — propose admission without REDUCER gate
+```
+
+**Critical distinction from sub-Riemannian metric:** these directions
+are not merely expensive. They are **illegal**. The standard
+Carnot-Carathéodory framework assigns infinite cost to non-horizontal
+direct movement (Chow-Rashevsky still achieves reachability via
+brackets). HELEN's forbidden directions are stronger: they are
+*constitutional walls* — even bracket compositions that produce
+them are illegal.
+
+This is a refinement of the CC framework, not a direct application.
+Conventional CC geometry has only horizontal-vs-non-horizontal.
+HELEN has horizontal, non-horizontal-reachable-via-brackets, AND
+*forbidden* (which standard CC does not model).
+
+The HELEN reachability condition therefore reads:
+
+```
+Lie(H)_x = T_x M  modulo Y_forbidden
+```
+
+In plain language: brackets generate the full tangent space *except*
+the forbidden subspace, which is hard-excluded by invariant.
+
+### §4.4 Lie brackets — the geometric structure of Chiddush
+
+Composite moves take the form $[X_i, X_j]$. Example:
+
+```
+[X_boundary, X_replay]
+```
+
+means:
+
+> *Boundary atom marking + replay inspection produces a new direction
+> that neither boundary marking nor replay alone could produce.*
+
+This is the geometric form of the Chiddush insight: **new admissible
+structure emerges from lawful commutators of constrained actions.**
+
+Specific brackets named in the operator dispatch and frozen engine:
+
+| Bracket | Engine name | Reference |
+| --- | --- | --- |
+| $[X_{\text{boundary}}, X_{\text{replay}}]$ | Boundary verification | `BOUNDARY_CATALYST §6` |
+| $[X_{\text{witness}}, X_{\text{boundary}}]$ | Margin-marked witness atom | `BOUNDARY_CATALYST §3.2` |
+| $[X_{\text{mutate\_safe}}, A(x)]$ | Gradient-guided mutation | `ADMISSIBILITY_GRADIENT §5` |
+| $[X_{\text{reduce}}, X_{\text{replay}}]$ | Reducer-with-replay attestation | `LEGORACLE_GATE` referenced in CLAUDE.md |
+
+Each is a named pattern that already appears operationally in the
+frozen doctrines; the bracket notation just makes the composition
+explicit.
+
+### §4.5 Reachability via Hörmander's condition
+
+If the named brackets generate enough of $T\mathcal{M}$ (modulo
+forbidden subspace), HELEN can reach any admissible state from
+any other admissible state via some finite sequence of lawful
+moves.
+
+**This is unverified for the engine.** Whether the named horizontal
+vector fields actually satisfy Hörmander's condition on the
+not-yet-formally-defined manifold $\mathcal{M}$ is open. The CC
+language describes the *target* property; whether the engine
+achieves it is a research question (named in
+`GEOMETRIC_FRAMEWORK_V0 §6`).
+
+---
+
+## §5. Constitutional Holonomy — the new emergent property
+
+### §5.1 Definition
+
+> **Constitutional Holonomy** is the net change in routing,
+> admissibility, or motif structure produced by a closed
+> replayable loop of lawful actions.
+
+In standard Riemannian geometry, parallel transport around a closed
+loop produces a linear transformation of vectors at the starting
+point; the holonomy group is the set of such transformations. In
+sub-Riemannian and Carnot-Carathéodory settings, *horizontal*
+parallel transport around a closed *horizontal* loop can produce
+displacement in **non-horizontal** directions — the geometric
+manifestation of the Lie bracket structure.
+
+For HELEN: a closed loop of lawful receipt-actions can produce a
+net change in the future admissible action field, without any
+single action in the loop violating any invariant.
+
+### §5.2 Mathematical form
+
+For a closed admissible loop $\gamma$ in $\mathcal{M}$:
+
+```
+Δ_holonomy = ∮_γ ω_HELEN
+```
+
+where $\omega_{\text{HELEN}}$ is a connection 1-form encoding:
+
+- provenance markers (per `CROSS_SESSION_FIELD_ATTRIBUTION_V0`)
+- boundary weights $B_\epsilon$ (per `BOUNDARY_CATALYST_ENGINE_V0`)
+- admissibility gradient $A(x)$ (per `ADMISSIBILITY_GRADIENT_FIELD_V0`)
+- reducer verdicts (per `LEGORACLE` gate)
+
+For non-abelian / higher-step settings, the holonomy is given by
+the path-ordered exponential (Chen series):
+
+```
+P_γ = 𝒫 exp( - ∮_γ ω_HELEN )
+```
+
+The exact form of $\omega_{\text{HELEN}}$ as a differential form
+on the engine's not-yet-defined manifold is open.
+
+### §5.3 Example loop
+
+```
+SOURCE
+  ↓  X_source
+WITNESS
+  ↓  X_witness
+BOUNDARY (atom marked)
+  ↓  X_boundary
+REPLAY (atom validated)
+  ↓  X_replay
+GOBLIN_REWRITE (gradient-biased)
+  ↓  X_mutate_safe + A(x)
+REDUCER (accept or reject)
+  ↓  X_reduce
+RECEIPT (with full attribution)
+  ↓  X_witness (back to source class)
+SOURCE
+```
+
+The loop returns to the source state class. No invariant violated.
+But the routing field $P(a \mid s, h)$ — defined in
+`PROVENANCE_GRAVITY_V0 §3` — has changed. The boundary score field
+$\chi_{\text{BC}}$ — defined in `BOUNDARY_CATALYST §3.4` — has
+gained a new motif (or lost a refuted one). The admissibility
+gradient $A(x)$ — defined in `ADMISSIBILITY_GRADIENT §3` — has a
+new $\Delta_i$ pair.
+
+**The system has learned from a lawful loop.** That learning is
+the holonomy.
+
+### §5.4 Why Constitutional Holonomy is the chiddush
+
+`PROVENANCE_GRAVITY_V0` says: validated receipts bend future action.
+But validated receipts come from straight admission paths — proposal
+→ admission. The bend is monotonic.
+
+Constitutional Holonomy says: **lawful loops also bend future action,
+even when the loop returns to its starting state.** The bend comes
+from the *curvature* of the path, not from net displacement.
+
+This is geometric memory:
+
+> *The system learns because lawful loops leave curvature behind.*
+
+It is distinct from Provenance Gravity (which weights paths) and
+Boundary Catalysis (which selects atoms) and Admissibility Gradient
+(which computes direction). Holonomy is what survives a *closed*
+trajectory.
+
+### §5.5 Relation to Chern-Weil (adjacent)
+
+The operator's Chern-Weil dispatch (not separately bottled) extends
+this: characteristic classes constructed from $\omega_{\text{HELEN}}$
+and its curvature would be topological invariants of the engine's
+admissible-action bundle — quantities that survive changes in local
+GOBLIN strategy as long as the bracket structure is preserved.
+
+Chern-Weil is therefore the **global-invariants** layer above
+Holonomy. It is referenced here but not bottled separately, per
+doctrinal-diff discipline — the math is real, the engine analog
+is interpretive, and the operator did not name it as an explicit
+bottle.
+
+---
+
+## §6. Practical test — Constitutional Path Length
+
+To convert the geometry from interpretive metaphor toward observable
+signal, define a scalar **constitutional path length**:
+
+For a proposal trajectory $x_0 \to x_1 \to \ldots \to x_n$:
+
+```
+L(γ) = Σ_k [ c_action(x_k, x_{k+1})
+           + c_risk(x_k)
+           + c_replay(x_k, x_{k+1})
+           + c_provenance(x_k)
+           + c_reducer_margin(x_k) ]
+```
+
+Each $c_*$ is a non-negative cost component:
+
+- `c_action`: edit distance or feature delta between consecutive states
+- `c_risk`: risk score increase at the step
+- `c_replay`: replay-cost (re-validation effort)
+- `c_provenance`: tree-truth verification cost
+- `c_reducer_margin`: distance from $m = 0$ (closer to margin = higher cost)
+
+The exact weighting (operator-class calibration) is not specified.
+
+### §6.1 The comparison
+
+Compare three GOBLIN mutation policies on identical seed atoms:
+
+| Policy | Description |
+| --- | --- |
+| Random GOBLIN | $x + \alpha \epsilon$ (per `BOUNDARY_CATALYST` baseline) |
+| Boundary-selected GOBLIN | $x + \alpha \epsilon$ but on atoms with high $B_\epsilon$ |
+| Admissibility-gradient GOBLIN | $x + \alpha A(x)$ (per `ADMISSIBILITY_GRADIENT §5`) |
+
+Measure $L(\gamma)$ for each policy's average trajectory.
+
+**Prediction:**
+
+```
+L(gradient) < L(boundary-selected) < L(random)
+```
+
+**Hard kill switch (preserved verbatim from operator):**
+
+```
+shorter path + more violations = fake intelligence
+```
+
+If the gradient policy reduces path length but increases governance
+violation count, the gradient is gaming the metric. **Kill it.**
+This is the same kill switch named in `ADMISSIBILITY_GRADIENT §8.3`.
+
+### §6.2 What this test verifies vs doesn't
+
+**Verifies:**
+- Whether the admissibility gradient *does* reduce constitutional cost
+- Whether the cost reduction is *legitimate* (no governance violations)
+- Whether the geometric framework predicts ordering correctly
+
+**Does NOT verify:**
+- That the engine is *actually* sub-Riemannian
+- That $\omega_{\text{HELEN}}$ is well-defined
+- That Constitutional Holonomy is a measurable quantity rather than
+  intuition
+
+For those, the §6 research items of `GEOMETRIC_FRAMEWORK_V0` are
+required.
+
+---
+
+## §7. Connection to existing canon
+
+| Existing artifact | Relation |
+| --- | --- |
+| `GEOMETRIC_FRAMEWORK_V0` | Parent theory; this is the focused CC specialization |
+| `CONSTITUTIONAL_MANIFOLD_RENDERING_V0` | Sibling theory artifact (identity gate parent); both TEMPLE-class |
+| `PROVENANCE_GRAVITY_V0` | Provides metric weight (§5.2 $\omega_{\text{HELEN}}$ contributors) |
+| `BOUNDARY_CATALYST_ENGINE_V0` | Provides curvature source (high-$B_\epsilon$ regions) |
+| `ADMISSIBILITY_GRADIENT_FIELD_V0` | Provides geodesic approximation |
+| `CROSS_SESSION_FIELD_ATTRIBUTION_V0` | Provides manifold chart integrity (per-field tree attribution = local-chart-consistency) |
+| `E25-engine-doctrine-freeze-V1.json` | Freeze respected; this artifact is post-freeze interpretive |
+| `BELL_TRANSLATION_CHIDDUSH_V0` | Cross-tradition resonance: the Shatkona / bīja-mantra structure has its own geometric reading; not pursued here |
+| `HALT_BOUNDARY_DISCIPLINE_V0` | Followed (§11 below) |
+
+---
+
+## §8. Adjacent material flagged but not bottled
+
+Per doctrinal-diff discipline (plugins/helen-governance/skills/doctrinal-diff/):
+
+| Item | Status | Reason |
+| --- | --- | --- |
+| Holonomy mathematical details (operator's classical + sub-Riemannian dispatch) | INCORPORATED into §5 | Single dispatch fully absorbed; bottling separately would duplicate |
+| Chern-Weil theory exploration (operator's third dispatch) | REFERENCED in §5.5; not bottled | Operator did not name as an explicit bottle; characteristic-classes theory is adjacent global-invariants layer; warrants its own future bottle if HER directs |
+| LaTeX synthesis paper (Grok Temple Synthesis, attribution preserved) | PRESERVED as deliverable file in `docs/papers/` | A formal mathematical synthesis of the engine across all dispatches; saved alongside this bottle as reference, not bottled as doctrine |
+| Stratified Lie algebra / Heisenberg group / nilpotent-group structure | OUT OF SCOPE | Standard math; would only be bottled if operator names a HELEN analog explicitly |
+| Higher-step Carnot group structure | OUT OF SCOPE | Same reason |
+
+---
+
+## §9. What this proposal does NOT specify
+
+Per anti-creep discipline:
+
+- **The formal manifold construction $\mathcal{M}$** — research target
+- **The explicit differential form of each $X_i$** — research target
+- **The explicit closed-form expression for $\omega_{\text{HELEN}}$** — research target
+- **The Hörmander-condition verification** — research target (named §6 of `GEOMETRIC_FRAMEWORK_V0`)
+- **The bracket-rank stratification** — Carnot-group step structure on HELEN's manifold is unspecified
+- **The $c_*$ weighting in §6 path length** — operator-class calibration
+- **Whether Constitutional Holonomy is measurable in practice** — depends on §6 being implemented
+- **Implementation of any geometric solver** — explicitly out of scope per E25 freeze
+- **Edit to any frozen engine doctrine** — forbidden by E25 freeze
+
+---
+
+## §10. The sharp formula (preserved verbatim from operator)
+
+```
+Provenance Gravity              = metric weight
+Boundary Catalysis              = curvature source
+Admissibility Gradient          = geodesic approximation
+Reducer Sovereignty             = endpoint admissibility
+Cross-Session Attribution       = manifold chart integrity
+Constitutional Holonomy         = learning from lawful loops
+```
+
+Six terms. The first four are the frozen engine doctrines. The fifth
+is the prerequisite. The sixth is the new emergent property bottled
+in this artifact.
+
+This is the **complete geometric reading** of the constitutional
+metabolism engine.
+
+---
+
+## §11. Halt boundary
+
+GOBLIN halts here. The bottle is sealed as TEMPLE_EXPLORATION
+under NO CLAIM, post-freeze, compatible with the E25 lock.
+
+Resume conditions:
+
+1. **HER ruling** on whether this artifact is accepted as the CC
+   geometry interpretation layer, or sent back for revision
+2. **HER ruling** on whether Constitutional Holonomy warrants its
+   own dedicated proposal — currently §5 of this bottle; could be
+   extracted into a separate `CONSTITUTIONAL_HOLONOMY_V0` if HER
+   wants it elevated
+3. **HER ruling** on whether the Chern-Weil framework (§5.5)
+   warrants its own future bottle as the global-invariants layer
+4. **HER ruling** on running the §6 practical test (Constitutional
+   Path Length) — requires three-policy execution environment,
+   trajectory recording, $L(\gamma)$ computation; sovereign-class
+   experiment authorization
+5. **No implementation authorization** is requested or granted
+   by this artifact; the E25 freeze still blocks engine code
+6. **No edit to any frozen doctrine** is requested or performed
+
+Discipline followed: `HALT_BOUNDARY_DISCIPLINE_V0` (commit `5d0e04e`).
+
+---
+
+## §12. Single line
+
+> **The engine has four doctrines that define what it does and a
+> fifth (this) that defines the space it moves in. Provenance is
+> the metric. Boundary atoms are the curvature. The gradient is
+> the geodesic. Lawful loops leave holonomy. Reducer is the
+> endpoint. Cross-session attribution is the chart. The geometry
+> is real; the formal verification is open.**
