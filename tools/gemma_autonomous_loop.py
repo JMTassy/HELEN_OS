@@ -42,6 +42,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import sys
 import time
 from datetime import datetime, timezone
@@ -100,8 +101,14 @@ BREACH_NOTATION = {
 
 # === Envelope parser ===
 
+# Matches [SECTION], **[SECTION]**, ### [SECTION], ### **[SECTION]**, etc.
+_SECTION_RE = re.compile(
+    r"^[#\s]*\*{0,2}\[(PROPOSAL|UNCERTAINTY|REQUIRED_RECEIPTS|HAL_QUESTIONS)\]\*{0,2}$"
+)
+
+
 def parse_envelope(text: str) -> dict:
-    """Parse §4 envelope from Gemma output. Tolerant of missing sections."""
+    """Parse §4 envelope from Gemma output. Tolerant of markdown decoration."""
     sections = {
         "PROPOSAL": "",
         "UNCERTAINTY": "",
@@ -110,14 +117,11 @@ def parse_envelope(text: str) -> dict:
     }
     current = None
     for line in text.splitlines():
-        stripped = line.strip()
-        for key in sections:
-            if stripped == f"[{key}]":
-                current = key
-                break
-        else:
-            if current is not None:
-                sections[current] += line + "\n"
+        m = _SECTION_RE.match(line.strip())
+        if m:
+            current = m.group(1)
+        elif current is not None:
+            sections[current] += line + "\n"
     return {k: v.strip() for k, v in sections.items()}
 
 
