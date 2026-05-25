@@ -162,7 +162,8 @@ def call_gemma(model: str, user_prompt: str, think: bool) -> dict:
 # === Receipt writer (RAW only, never canonical ledger) ===
 
 def write_raw_receipt(iteration: int, model: str, user_prompt: str,
-                      gemma_response: dict) -> Path:
+                      gemma_response: dict,
+                      prompt_context_file: str | None = None) -> Path:
     """Write a RAW Gemma proposal receipt. Never touches town/ledger_v1.ndjson."""
     PROPOSAL_DIR.mkdir(parents=True, exist_ok=True)
     timestamp_utc = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -197,6 +198,7 @@ def write_raw_receipt(iteration: int, model: str, user_prompt: str,
         "done_reason": gemma_response["response"].get("done_reason", "unknown"),
         "receipt_timestamp_utc": timestamp_utc,
         "iteration_index": iteration,
+        "prompt_context_file": prompt_context_file,
         "constitutional_breach_notation": BREACH_NOTATION,
         "operator_decision": None,
         "hal_verdict": None,
@@ -214,20 +216,31 @@ def write_raw_receipt(iteration: int, model: str, user_prompt: str,
 # === Main loop with halt discipline ===
 
 def run_loop(model: str, topic: str, iterations: int, think: bool,
-             require_user_to_continue: bool) -> None:
+             require_user_to_continue: bool,
+             prompt_context: str | None = None,
+             prompt_context_file: str | None = None) -> None:
     """Bounded autonomous proposal loop with halt-pause between iterations."""
     print(f"[gemma_loop] model={model} iterations={iterations} think={think}")
     print(f"[gemma_loop] topic={topic!r}")
+    if prompt_context_file:
+        print(f"[gemma_loop] prompt_context_file={prompt_context_file!r}")
     print(f"[gemma_loop] memory_guards: num_ctx={GUARD_NUM_CTX} num_predict={GUARD_NUM_PREDICT}")
     print(f"[gemma_loop] CONSTITUTIONAL_BREACH: {BREACH_NOTATION['directive']}")
     print()
 
     for i in range(1, iterations + 1):
         print(f"--- iteration {i}/{iterations} ---")
+        context_block = (
+            f"\n[CONTEXT DOCUMENT — read before proposing]\n"
+            f"{prompt_context}\n"
+            f"[/CONTEXT DOCUMENT]\n"
+            if prompt_context else ""
+        )
         prompt = (
             f"You are producing one HER-layer proposal for HELEN OS.\n"
             f"Topic: {topic}\n"
-            f"Iteration: {i} of {iterations}\n\n"
+            f"Iteration: {i} of {iterations}\n"
+            f"{context_block}\n"
             f"Produce one focused proposal. Do not decide. Do not ship.\n"
             f"Conform to the four-section envelope without exception."
         )
@@ -238,7 +251,7 @@ def run_loop(model: str, topic: str, iterations: int, think: bool,
             print(f"[gemma_loop] halting loop at iteration {i}", file=sys.stderr)
             return
 
-        path = write_raw_receipt(i, model, prompt, resp)
+        path = write_raw_receipt(i, model, prompt, resp, prompt_context_file=prompt_context_file)
         ec = resp["response"].get("eval_count", "?")
         wt = resp["wall_time_seconds"]
         dr = resp["response"].get("done_reason", "?")
@@ -265,7 +278,21 @@ def main():
     parser.add_argument("--think", action="store_true", help="Enable thinking trace (HER-DEEP default)")
     parser.add_argument("--no-pause", action="store_true",
                         help="DANGER: disable operator-halt between iterations. Defeats halt discipline.")
+    parser.add_argument("--prompt-file", metavar="PATH",
+                        help="Path to a context document (e.g. a doctrine .md) injected verbatim "
+                             "into the user prompt before the envelope instruction. Read-only. "
+                             "Does not alter system prompt or SHA256.")
     args = parser.parse_args()
+
+    prompt_context: str | None = None
+    prompt_context_file: str | None = None
+    if args.prompt_file:
+        pf = Path(args.prompt_file)
+        if not pf.exists():
+            print(f"ERROR: --prompt-file not found: {pf}", file=sys.stderr)
+            sys.exit(1)
+        prompt_context = pf.read_text(encoding="utf-8")
+        prompt_context_file = str(pf.resolve().relative_to(REPO_ROOT))
 
     if args.iterations > 50:
         print(f"REFUSED: iterations={args.iterations} exceeds safety bound of 50. "
@@ -284,6 +311,8 @@ def main():
         iterations=args.iterations,
         think=args.think,
         require_user_to_continue=not args.no_pause,
+        prompt_context=prompt_context,
+        prompt_context_file=prompt_context_file,
     )
 
 
