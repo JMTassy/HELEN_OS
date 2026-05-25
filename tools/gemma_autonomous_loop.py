@@ -235,7 +235,9 @@ def run_loop(model: str, topic: str, iterations: int, think: bool,
             f"output exactly the four-section envelope above.\n"
             f"\n[CONTEXT DOCUMENT — read before proposing]\n"
             f"{prompt_context}\n"
-            f"[/CONTEXT DOCUMENT]"
+            f"[/CONTEXT DOCUMENT]\n"
+            f"\nReminder: output exactly [PROPOSAL], [UNCERTAINTY], "
+            f"[REQUIRED_RECEIPTS], [HAL_QUESTIONS]. No other sections."
             if prompt_context else ""
         )
         prompt = (
@@ -243,11 +245,20 @@ def run_loop(model: str, topic: str, iterations: int, think: bool,
             f"Topic: {topic}\n"
             f"Iteration: {i} of {iterations}\n\n"
             f"Produce one focused proposal. Do not decide. Do not ship.\n"
-            f"Output exactly these four sections:\n\n"
+            f"You MUST output exactly these four sections, in this exact order:\n\n"
             f"[PROPOSAL]\n"
+            f"...\n\n"
             f"[UNCERTAINTY]\n"
+            f"...\n\n"
             f"[REQUIRED_RECEIPTS]\n"
+            f"...\n\n"
             f"[HAL_QUESTIONS]\n"
+            f"1. ...\n\n"
+            f"Forbidden:\n"
+            f"- Do NOT output [PROCESS OF THOUGHT].\n"
+            f"- Do NOT output analysis sections.\n"
+            f"- Do NOT output any section except the four listed above.\n"
+            f"- If uncertain, put uncertainty under [UNCERTAINTY], not a new section.\n"
             f"{context_block}"
         )
         try:
