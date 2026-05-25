@@ -2,19 +2,30 @@
 """
 review_cockpit.py
 
-Phase 7 operator review cockpit for GEMMA_PROPOSAL_RAW_V1 receipts.
+Operator review cockpit for GEMMA_PROPOSAL_RAW_V1 receipts.
 
-Reads GOVERNANCE/GEMMA_PROPOSALS/*.json in reverse-chronological order,
-renders a compact review card per receipt, and writes the operator's
-decision back into the same file's operator_decision field.
+Reads GOVERNANCE/GEMMA_PROPOSALS/*.json and/or GOVERNANCE/RALPH_PROPOSALS/*.json
+in reverse-chronological order, renders a compact review card per receipt, and
+writes the operator's decision back into the same file's operator_decision
+field. Optionally restricted to a queue subset (blocked / needs-hal /
+needs-operator) computed by the same classifier as review_queue.py.
 
 Hard constraints (enforced):
   - Operator path (A/R/P) writes operator_decision only.
   - HAL path (H) writes hal_verdict only.
   - Neither path mutates the other's field.
   - NEVER promote lifecycle_entry.
+  - NEVER mutate auto_promotion_ceiling.
   - NEVER touch town/ledger_v1.ndjson.
   - NEVER auto-ship. RAW stays RAW.
+
+Usage:
+  python tools/review_cockpit.py                                # gemma, all receipts
+  python tools/review_cockpit.py --source ralph                 # RALPH only
+  python tools/review_cockpit.py --source all                   # both
+  python tools/review_cockpit.py --source all --queue blocked
+  python tools/review_cockpit.py --source all --queue needs-hal
+  python tools/review_cockpit.py --source all --queue needs-operator
 
 Keys:
   A = operator: APPROVED_FOR_SANDBOX_ONLY
@@ -36,6 +47,24 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROPOSAL_DIR = REPO_ROOT / "GOVERNANCE" / "GEMMA_PROPOSALS"
+
+SOURCE_DIRS = {
+    "gemma": REPO_ROOT / "GOVERNANCE" / "GEMMA_PROPOSALS",
+    "ralph": REPO_ROOT / "GOVERNANCE" / "RALPH_PROPOSALS",
+}
+
+# Single source of truth for queue classification: import from review_queue
+# to guarantee the cockpit and the queue tool agree on what "blocked" means.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from review_queue import classify as _classify_receipt  # noqa: E402
+
+QUEUE_TO_CATEGORY = {
+    "blocked": "BLOCKED",
+    "needs-hal": "NEEDS_HAL",
+    "needs-operator": "NEEDS_OPERATOR",
+    "ready-sandbox": "READY_SANDBOX",
+    "rejected": "REJECTED",
+}
 
 STATUS_MAP = {
     "a": "APPROVED_FOR_SANDBOX_ONLY",
@@ -69,17 +98,31 @@ def _read_tolerant(path: Path) -> str:
     return raw.decode("utf-8", errors="replace")
 
 
-def load_receipts() -> list[tuple[Path, dict]]:
-    """Load all *.json receipts, sorted by receipt_timestamp_utc desc."""
-    files = sorted(PROPOSAL_DIR.glob("*.json"))
-    out: list[tuple[Path, dict]] = []
-    for f in files:
-        try:
-            data = json.loads(_read_tolerant(f))
-        except (json.JSONDecodeError, OSError) as exc:
-            print(f"[cockpit] skip {f.name}: {exc}", file=sys.stderr)
+def load_receipts(source: str = "gemma") -> list[tuple[Path, dict, str]]:
+    """Load receipts from named source ('gemma' | 'ralph' | 'all').
+
+    Returns tuples of (path, receipt, source_tag) sorted by
+    receipt_timestamp_utc descending across the combined corpus.
+    """
+    if source == "all":
+        source_names = list(SOURCE_DIRS.keys())
+    else:
+        source_names = [source]
+
+    out: list[tuple[Path, dict, str]] = []
+    for src_name in source_names:
+        src_dir = SOURCE_DIRS[src_name]
+        if not src_dir.exists():
+            print(f"[cockpit] directory not found, skipping: {src_dir}", file=sys.stderr)
             continue
-        out.append((f, data))
+        label = src_name.upper()
+        for f in sorted(src_dir.glob("*.json")):
+            try:
+                data = json.loads(_read_tolerant(f))
+            except (json.JSONDecodeError, OSError) as exc:
+                print(f"[cockpit] skip {f.name}: {exc}", file=sys.stderr)
+                continue
+            out.append((f, data, label))
     out.sort(key=lambda fd: fd[1].get("receipt_timestamp_utc", ""), reverse=True)
     return out
 
@@ -109,12 +152,13 @@ def hal_label(receipt: dict) -> str:
     return f"{hv.get('status', '?')} by {hv.get('reviewer', '?')} @ {hv.get('timestamp_utc', '?')}"
 
 
-def render_card(idx: int, total: int, path: Path, receipt: dict) -> None:
+def render_card(idx: int, total: int, path: Path, receipt: dict, source_tag: str = "") -> None:
     bar = "=" * 72
     sub = "-" * 72
+    src = f"[{source_tag}] " if source_tag else ""
     print()
     print(bar)
-    print(f"[{idx + 1}/{total}]  {path.name}")
+    print(f"[{idx + 1}/{total}]  {src}{path.name}")
     print(
         f"        model={receipt.get('model_id', '?')}  "
         f"tokens={receipt.get('tokens_consumed', '?')}  "
@@ -210,6 +254,18 @@ def write_hal_verdict(path: Path, receipt: dict, status: str, reviewer: str, not
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
+        "--source",
+        choices=["gemma", "ralph", "all"],
+        default="gemma",
+        help="receipt source: gemma (default), ralph, or all",
+    )
+    parser.add_argument(
+        "--queue",
+        choices=list(QUEUE_TO_CATEGORY.keys()),
+        default=None,
+        help="restrict to a queue category (uses review_queue.classify)",
+    )
+    parser.add_argument(
         "--reviewer",
         default="JM Tassy",
         help="Reviewer name written to operator_decision.reviewer",
@@ -221,20 +277,30 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    if not PROPOSAL_DIR.exists():
-        print(f"[cockpit] no proposal directory: {PROPOSAL_DIR}", file=sys.stderr)
-        return 1
+    receipts = load_receipts(args.source)
 
-    receipts = load_receipts()
     if args.undecided_only:
         receipts = [r for r in receipts if not r[1].get("operator_decision")]
 
+    if args.queue is not None:
+        required_cat = QUEUE_TO_CATEGORY[args.queue]
+        receipts = [r for r in receipts if required_cat in _classify_receipt(r[1])]
+
     if not receipts:
-        print("[cockpit] no receipts to review.")
+        scope = f"source={args.source}"
+        if args.queue:
+            scope += f" queue={args.queue}"
+        print(f"[cockpit] no receipts to review ({scope}).")
         return 0
 
     total = len(receipts)
-    print(f"[cockpit] {total} receipt(s) loaded. operator={args.reviewer}")
+    scope_parts = [f"source={args.source}"]
+    if args.queue:
+        scope_parts.append(f"queue={args.queue}")
+    print(
+        f"[cockpit] {total} receipt(s) loaded. {' '.join(scope_parts)}  "
+        f"operator={args.reviewer}"
+    )
     print(
         "[cockpit] keys: A=approve_sandbox  R=reject  P=park  "
         "H=hal_verdict  V=view  S=skip  Q=quit"
@@ -242,8 +308,8 @@ def main() -> int:
 
     i = 0
     while i < total:
-        path, receipt = receipts[i]
-        render_card(i, total, path, receipt)
+        path, receipt, source_tag = receipts[i]
+        render_card(i, total, path, receipt, source_tag)
         choice = input("> ").strip().lower()
 
         if choice == "q":
