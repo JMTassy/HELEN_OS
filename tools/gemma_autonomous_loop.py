@@ -204,7 +204,10 @@ def write_raw_receipt(iteration: int, model: str, user_prompt: str,
 
     filename = f"gemma_proposal_{timestamp_utc.replace(':', '-')}_iter{iteration:03d}.json"
     path = PROPOSAL_DIR / filename
-    path.write_text(json.dumps(receipt, indent=2, ensure_ascii=False))
+    path.write_text(
+        json.dumps(receipt, indent=2, ensure_ascii=False),
+        encoding="utf-8",
+    )
     return path
 
 
