@@ -288,6 +288,10 @@ def main():
                         help="Path to a context document (e.g. a doctrine .md) injected verbatim "
                              "into the user prompt before the envelope instruction. Read-only. "
                              "Does not alter system prompt or SHA256.")
+    parser.add_argument("--prompt-file-chars", metavar="N", type=int, default=None,
+                        help="Truncate injected context to at most N characters. "
+                             "Use when the context document exceeds the model's effective "
+                             "context window (num_ctx=2048). No default — full doc if omitted.")
     args = parser.parse_args()
 
     prompt_context: str | None = None
@@ -299,6 +303,10 @@ def main():
             sys.exit(1)
         prompt_context = pf.read_text(encoding="utf-8")
         prompt_context_file = str(pf.resolve().relative_to(REPO_ROOT))
+        if args.prompt_file_chars is not None and len(prompt_context) > args.prompt_file_chars:
+            print(f"[gemma_loop] truncating prompt_context {len(prompt_context)} -> {args.prompt_file_chars} chars",
+                  file=sys.stderr)
+            prompt_context = prompt_context[:args.prompt_file_chars]
 
     if args.iterations > 50:
         print(f"REFUSED: iterations={args.iterations} exceeds safety bound of 50. "
