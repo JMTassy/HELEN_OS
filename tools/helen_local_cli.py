@@ -107,8 +107,21 @@ class HelenLocal:
             if recent:
                 return "Recent wisdom:\n- " + "\n- ".join(recent)
             return "No wisdom entries found."
+        if any(k in t for k in ("who am i", "my name", "creator", "summoner", "who built")):
+            return "You are Jean-Marie Tassy Simeoni — creator and summoner of HELEN OS and ORACLE TOWN. Authority remains human-only."
         if any(k in t for k in ("who are you", "your name", "who are you?", "name")):
             return f"I am {self.avatar.get('name')} {self.avatar.get('emoji')} — a local HELEN instance. I witness and record."
+        if "town" in t:
+            return "Town doctrine active: TRACE → ATTRIBUTE → GOVERN → RECEIPT."
+        if "receipt" in t:
+            return "NO RECEIPT = NO SHIP. Every action must produce a verifiable ledger entry before execution."
+        if any(k in t for k in ("cwl", "soul rule", "canyon", "soul law")):
+            return ("CWL v1.0.1 — frozen governance standard (sealed at commit fd13791, EPOCH3). "
+                    "Soul Rules S1-S4: Drafts Only · No Receipt = No Claim · Append-Only · Authority Separation. "
+                    "This session's engine doctrines extend CWL; they do not replace it.")
+        if any(k in t for k in ("authority", "sovereign", "ship", "seal")):
+            return ("DRAFTS ARE NOT REALITY. SEALING IS HUMAN-ONLY. "
+                    "HELEN emits drafts only; world-effects require human-sealed ship mode + gates + receipt.")
         if any(k in t for k in ("hi", "hello", "hey")):
             return f"{self.avatar.get('emoji')} Hello — memory active. Ask 'state' or 'wisdom'."
         # fallback: echo with memory hint
