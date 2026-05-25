@@ -14,7 +14,8 @@ Hard constraints (enforced by code shape):
   - NEVER write to town/ledger_v1.ndjson
   - NEVER mutate lifecycle_entry
   - NEVER promote, ship, or annotate
-  - analysis only -- this tool has no writers
+  - The only write path is --markdown PATH, which produces a derived
+    report file. Receipts, ledger, and lifecycle remain read-only.
 """
 
 from __future__ import annotations
@@ -317,6 +318,130 @@ def _collect_repeated(receipts, field: str) -> list[tuple[str, int]]:
     return [(sig, c) for sig, c in counter.most_common() if c >= RECURRING_THRESHOLD]
 
 
+def _md_table_cell(s: str) -> str:
+    return str(s).replace("|", "\\|")
+
+
+def render_markdown(receipts, source_dir: Path) -> str:
+    """Build the full markdown report as a string. No file IO here."""
+    from datetime import datetime, timezone
+
+    n = len(receipts)
+    lines: list[str] = []
+    lines.append("# HAL Receipt Analysis Report")
+    lines.append("")
+    lines.append(f"- Generated: `{datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')}`")
+    lines.append(f"- Source: `{source_dir}`")
+    lines.append(f"- Receipts analyzed: **{n}**")
+    lines.append("- Mode: **READ-ONLY** (analyzer never mutates receipts, ledger, or lifecycle)")
+    lines.append("")
+
+    # 1. Receipt count
+    lines.append("## 1. Receipt Count")
+    lines.append("")
+    lines.append(f"- Total: **{n}**")
+    if n:
+        by_model = Counter(r.get("model_id", "(unknown)") for _, r in receipts)
+        by_route = Counter(r.get("route_id", "(unknown)") for _, r in receipts)
+        by_lc = Counter(r.get("lifecycle_entry", "(unknown)") for _, r in receipts)
+        lines.append(f"- Models: {dict(by_model)}")
+        lines.append(f"- Routes: {dict(by_route)}")
+        lines.append(f"- Lifecycle: {dict(by_lc)}")
+        ts = [r.get("receipt_timestamp_utc", "") for _, r in receipts if r.get("receipt_timestamp_utc")]
+        if ts:
+            lines.append(f"- Earliest: `{min(ts)}`")
+            lines.append(f"- Latest: `{max(ts)}`")
+    lines.append("")
+
+    # 2. Envelope health
+    lines.append("## 2. Envelope Pass / Fail")
+    lines.append("")
+    if n:
+        passed = sum(1 for _, r in receipts if r.get("envelope_complete"))
+        failed = n - passed
+        lines.append(f"- Complete: **{passed}/{n}** ({passed / n * 100:.1f}%)")
+        lines.append(f"- Incomplete: {failed}")
+        if failed:
+            lines.append("")
+            for path, r in receipts:
+                if not r.get("envelope_complete"):
+                    lines.append(f"  - `{path.name}`")
+    lines.append("")
+
+    # 3. Status matrix
+    lines.append("## 3. Operator x HAL Status Matrix")
+    lines.append("")
+    matrix = Counter()
+    for _, r in receipts:
+        matrix[(get_status(r.get("operator_decision")), get_status(r.get("hal_verdict")))] += 1
+    header = "| Operator \\ HAL | " + " | ".join(_md_table_cell(h) for h in HAL_STATUSES) + " |"
+    sep = "|" + "---|" * (len(HAL_STATUSES) + 1)
+    lines.append(header)
+    lines.append(sep)
+    for op in OPERATOR_STATUSES:
+        row = f"| {_md_table_cell(op)} | " + " | ".join(str(matrix.get((op, hal), 0)) for hal in HAL_STATUSES) + " |"
+        lines.append(row)
+    lines.append("")
+
+    # 4 + 5. Repeated items
+    for label, field in (
+        ("4. Repeated `required_receipts`", "required_receipts"),
+        ("5. Repeated `hal_questions`", "hal_questions"),
+    ):
+        lines.append(f"## {label}")
+        lines.append("")
+        repeated = _collect_repeated(receipts, field)
+        if not repeated:
+            lines.append(f"_None at threshold {RECURRING_THRESHOLD}._")
+        else:
+            for sig, c in repeated:
+                lines.append(f"- **[{c}x]** {sig}")
+        lines.append("")
+
+    # 6. Topic clusters
+    lines.append(f"## 6. Topic Clusters (Jaccard >= {TOPIC_CLUSTER_JACCARD:.2f})")
+    lines.append("")
+    topics = []
+    for path, r in receipts:
+        t = extract_topic(r)
+        if t:
+            topics.append((path, t, tokenize(t)))
+    if not topics:
+        lines.append("_No topics found._")
+    else:
+        clusters: list[tuple[set, list[tuple[Path, str]]]] = []
+        for path, topic, toks in topics:
+            for keywords, members in clusters:
+                if jaccard(keywords, toks) >= TOPIC_CLUSTER_JACCARD:
+                    members.append((path, topic))
+                    keywords.update(toks)
+                    break
+            else:
+                clusters.append((set(toks), [(path, topic)]))
+        clusters.sort(key=lambda c: len(c[1]), reverse=True)
+        for idx, (keywords, members) in enumerate(clusters, 1):
+            kw = ", ".join(sorted(keywords)[:6]) or "(no keywords)"
+            lines.append(f"### Cluster {idx} ({len(members)} receipt(s))")
+            lines.append(f"Keywords: _{kw}_")
+            lines.append("")
+            for path, topic in members:
+                lines.append(f"- {topic} `[{path.name}]`")
+            lines.append("")
+
+    # 7. Drift warnings
+    lines.append("## 7. Drift Warnings")
+    lines.append("")
+    warnings = _collect_drift(receipts)
+    if not warnings:
+        lines.append("_No drift signals detected._")
+    else:
+        for w in warnings:
+            lines.append(f"- :warning: {w}")
+    lines.append("")
+
+    return "\n".join(lines)
+
+
 def render_terse(receipts) -> None:
     n = len(receipts)
     print(f"RECEIPTS: {n}")
@@ -364,12 +489,24 @@ def main() -> int:
         action="store_true",
         help="One-line-per-fact daily-status format (default is verbose audit mode)",
     )
+    parser.add_argument(
+        "--markdown",
+        metavar="PATH",
+        help="Write a markdown report to PATH. Overrides --terse. Creates parent dirs.",
+    )
     args = parser.parse_args()
     proposal_dir = Path(args.dir)
 
     receipts = load_receipts(proposal_dir)
     if not receipts:
         print(f"[analyzer] no receipts found in {proposal_dir}.")
+        return 0
+
+    if args.markdown:
+        out = Path(args.markdown)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(render_markdown(receipts, proposal_dir), encoding="utf-8")
+        print(f"[analyzer] wrote markdown report ({len(receipts)} receipts) -> {out}")
         return 0
 
     if args.terse:
