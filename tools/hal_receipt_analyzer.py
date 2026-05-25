@@ -4,10 +4,21 @@ hal_receipt_analyzer.py
 
 Cross-receipt governance analyzer for GEMMA_PROPOSAL_RAW_V1 receipts.
 
-Reads all *.json receipts in GOVERNANCE/GEMMA_PROPOSALS/ and emits a
-read-only report: counts, envelope health, operator/HAL status matrix,
-repeated required_receipts, repeated HAL questions, topic clusters,
-and drift warnings.
+Reads receipts from GOVERNANCE/GEMMA_PROPOSALS/ and/or
+GOVERNANCE/RALPH_PROPOSALS/ and emits a read-only report: counts,
+envelope health, operator/HAL status matrix, repeated required_receipts,
+repeated HAL questions, topic clusters, and drift warnings.
+
+Sources:
+  --source gemma   GOVERNANCE/GEMMA_PROPOSALS  (default)
+  --source ralph   GOVERNANCE/RALPH_PROPOSALS
+  --source all     both combined
+  --dir PATH       explicit override; takes precedence over --source
+
+Usage:
+  python tools/hal_receipt_analyzer.py                       # gemma, verbose
+  python tools/hal_receipt_analyzer.py --source all --terse  # unified daily status
+  python tools/hal_receipt_analyzer.py --source ralph --markdown reports/ralph.md
 
 Hard constraints (enforced by code shape):
   - NEVER write to receipt files
@@ -29,6 +40,16 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PROPOSAL_DIR = REPO_ROOT / "GOVERNANCE" / "GEMMA_PROPOSALS"
+
+SOURCE_DIRS = {
+    "gemma": REPO_ROOT / "GOVERNANCE" / "GEMMA_PROPOSALS",
+    "ralph": REPO_ROOT / "GOVERNANCE" / "RALPH_PROPOSALS",
+}
+SOURCE_LABELS = {
+    "gemma": "GEMMA",
+    "ralph": "RALPH",
+    "all": "GEMMA + RALPH",
+}
 
 OPERATOR_STATUSES = ("APPROVED_FOR_SANDBOX_ONLY", "REJECTED", "PENDING_REVIEW", "(none)")
 HAL_STATUSES = ("PASS", "FAIL", "NEEDS_MORE_RECEIPTS", "(none)")
@@ -67,6 +88,29 @@ def load_receipts(proposal_dir: Path) -> list[tuple[Path, dict]]:
             print(f"[analyzer] skip {f.name}: {exc}", file=sys.stderr)
     out.sort(key=lambda fd: fd[1].get("receipt_timestamp_utc", ""))
     return out
+
+
+def load_receipts_for_source(source: str) -> list[tuple[Path, dict]]:
+    """Load receipts from named source ('gemma' | 'ralph' | 'all').
+
+    Returns the same shape as load_receipts(), with entries sorted by
+    receipt_timestamp_utc ascending across the combined corpus. Source
+    tags are not attached -- analyzer renderers aggregate across receipts
+    and do not need per-row provenance.
+    """
+    if source == "all":
+        names = list(SOURCE_DIRS.keys())
+    else:
+        names = [source]
+    combined: list[tuple[Path, dict]] = []
+    for name in names:
+        src_dir = SOURCE_DIRS[name]
+        if not src_dir.exists():
+            print(f"[analyzer] directory not found, skipping: {src_dir}", file=sys.stderr)
+            continue
+        combined.extend(load_receipts(src_dir))
+    combined.sort(key=lambda fd: fd[1].get("receipt_timestamp_utc", ""))
+    return combined
 
 
 def get_status(field) -> str:
@@ -322,8 +366,12 @@ def _md_table_cell(s: str) -> str:
     return str(s).replace("|", "\\|")
 
 
-def render_markdown(receipts, source_dir: Path) -> str:
-    """Build the full markdown report as a string. No file IO here."""
+def render_markdown(receipts, source_label) -> str:
+    """Build the full markdown report as a string. No file IO here.
+
+    source_label may be a Path (explicit --dir) or a string (named source
+    like 'GEMMA + RALPH'). Rendered as-is in the report header.
+    """
     from datetime import datetime, timezone
 
     n = len(receipts)
@@ -331,7 +379,7 @@ def render_markdown(receipts, source_dir: Path) -> str:
     lines.append("# HAL Receipt Analysis Report")
     lines.append("")
     lines.append(f"- Generated: `{datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')}`")
-    lines.append(f"- Source: `{source_dir}`")
+    lines.append(f"- Source: `{source_label}`")
     lines.append(f"- Receipts analyzed: **{n}**")
     lines.append("- Mode: **READ-ONLY** (analyzer never mutates receipts, ledger, or lifecycle)")
     lines.append("")
@@ -480,9 +528,15 @@ def render_terse(receipts) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
+        "--source",
+        choices=["gemma", "ralph", "all"],
+        default="gemma",
+        help="receipt source corpus: gemma (default), ralph, or all",
+    )
+    parser.add_argument(
         "--dir",
-        default=str(DEFAULT_PROPOSAL_DIR),
-        help="proposal directory to analyze",
+        default=None,
+        help="explicit proposal directory (overrides --source when provided)",
     )
     parser.add_argument(
         "--terse",
@@ -495,17 +549,22 @@ def main() -> int:
         help="Write a markdown report to PATH. Overrides --terse. Creates parent dirs.",
     )
     args = parser.parse_args()
-    proposal_dir = Path(args.dir)
 
-    receipts = load_receipts(proposal_dir)
+    if args.dir is not None:
+        receipts = load_receipts(Path(args.dir))
+        source_label = args.dir
+    else:
+        receipts = load_receipts_for_source(args.source)
+        source_label = SOURCE_LABELS[args.source]
+
     if not receipts:
-        print(f"[analyzer] no receipts found in {proposal_dir}.")
+        print(f"[analyzer] no receipts found ({source_label}).")
         return 0
 
     if args.markdown:
         out = Path(args.markdown)
         out.parent.mkdir(parents=True, exist_ok=True)
-        out.write_text(render_markdown(receipts, proposal_dir), encoding="utf-8")
+        out.write_text(render_markdown(receipts, source_label), encoding="utf-8")
         print(f"[analyzer] wrote markdown report ({len(receipts)} receipts) -> {out}")
         return 0
 
@@ -513,7 +572,7 @@ def main() -> int:
         render_terse(receipts)
         return 0
 
-    print(f"[analyzer] {len(receipts)} receipt(s) loaded from {proposal_dir}")
+    print(f"[analyzer] {len(receipts)} receipt(s) loaded from {source_label}")
     print("[analyzer] mode: READ-ONLY  (no writes, no promotion, no ledger touch)")
     render_count(receipts)
     render_envelope(receipts)
