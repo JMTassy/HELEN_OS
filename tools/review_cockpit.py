@@ -9,17 +9,19 @@ renders a compact review card per receipt, and writes the operator's
 decision back into the same file's operator_decision field.
 
 Hard constraints (enforced):
-  - NEVER mutate hal_verdict
-  - NEVER promote lifecycle_entry
-  - NEVER touch town/ledger_v1.ndjson
-  - NEVER auto-ship
-  - RAW stays RAW (operator decision is annotation, not promotion)
+  - Operator path (A/R/P) writes operator_decision only.
+  - HAL path (H) writes hal_verdict only.
+  - Neither path mutates the other's field.
+  - NEVER promote lifecycle_entry.
+  - NEVER touch town/ledger_v1.ndjson.
+  - NEVER auto-ship. RAW stays RAW.
 
 Keys:
-  A = APPROVED_FOR_SANDBOX_ONLY
-  R = REJECTED
-  P = PENDING_REVIEW
-  V = view full envelope (no decision)
+  A = operator: APPROVED_FOR_SANDBOX_ONLY
+  R = operator: REJECTED
+  P = operator: PENDING_REVIEW
+  H = HAL verdict (sub-prompt: PASS / FAIL / NEEDS_MORE_RECEIPTS)
+  V = view full envelope (no write)
   S = skip (no write)
   Q = quit
 """
@@ -39,6 +41,12 @@ STATUS_MAP = {
     "a": "APPROVED_FOR_SANDBOX_ONLY",
     "r": "REJECTED",
     "p": "PENDING_REVIEW",
+}
+
+HAL_STATUS_MAP = {
+    "p": "PASS",
+    "f": "FAIL",
+    "n": "NEEDS_MORE_RECEIPTS",
 }
 
 EXCERPT_CHARS = 240
@@ -92,6 +100,15 @@ def decision_label(receipt: dict) -> str:
     return f"{od.get('status', '?')} by {od.get('reviewer', '?')} @ {od.get('timestamp_utc', '?')}"
 
 
+def hal_label(receipt: dict) -> str:
+    hv = receipt.get("hal_verdict")
+    if not hv:
+        return "(none)"
+    if isinstance(hv, str):
+        return hv
+    return f"{hv.get('status', '?')} by {hv.get('reviewer', '?')} @ {hv.get('timestamp_utc', '?')}"
+
+
 def render_card(idx: int, total: int, path: Path, receipt: dict) -> None:
     bar = "=" * 72
     sub = "-" * 72
@@ -109,10 +126,9 @@ def render_card(idx: int, total: int, path: Path, receipt: dict) -> None:
         f"authority={receipt.get('route_authority', '?')}"
     )
     env_ok = "YES" if receipt.get("envelope_complete") else "NO"
-    hal = receipt.get("hal_verdict") or "(none)"
     print(
         f"        envelope_complete={env_ok}  "
-        f"hal_verdict={hal}  "
+        f"hal_verdict={hal_label(receipt)}  "
         f"decision={decision_label(receipt)}"
     )
     print(sub)
@@ -157,7 +173,29 @@ def render_full(receipt: dict) -> None:
 
 
 def write_decision(path: Path, receipt: dict, status: str, reviewer: str, notes: str) -> None:
+    """Operator path: writes operator_decision only.
+
+    Does NOT touch hal_verdict, lifecycle_entry, or any other field.
+    """
     receipt["operator_decision"] = {
+        "status": status,
+        "reviewer": reviewer,
+        "timestamp_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "notes": notes,
+    }
+    path.write_text(
+        json.dumps(receipt, indent=2, ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+
+def write_hal_verdict(path: Path, receipt: dict, status: str, reviewer: str, notes: str) -> None:
+    """HAL path: writes hal_verdict only.
+
+    Does NOT touch operator_decision, lifecycle_entry, auto_promotion_ceiling,
+    or any other field. HAL cannot promote, ship, or override operator.
+    """
+    receipt["hal_verdict"] = {
         "status": status,
         "reviewer": reviewer,
         "timestamp_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -196,8 +234,11 @@ def main() -> int:
         return 0
 
     total = len(receipts)
-    print(f"[cockpit] {total} receipt(s) loaded. reviewer={args.reviewer}")
-    print("[cockpit] keys: A=approve_sandbox  R=reject  P=park  V=view  S=skip  Q=quit")
+    print(f"[cockpit] {total} receipt(s) loaded. operator={args.reviewer}")
+    print(
+        "[cockpit] keys: A=approve_sandbox  R=reject  P=park  "
+        "H=hal_verdict  V=view  S=skip  Q=quit"
+    )
 
     i = 0
     while i < total:
@@ -220,7 +261,18 @@ def main() -> int:
             print(f"[cockpit] wrote operator_decision={STATUS_MAP[choice]} -> {path.name}")
             i += 1
             continue
-        print("[cockpit] unknown key. use A/R/P/V/S/Q.")
+        if choice == "h":
+            print("HAL verdict: P=PASS  F=FAIL  N=NEEDS_MORE_RECEIPTS")
+            hv_choice = input("HAL> ").strip().lower()
+            if hv_choice not in HAL_STATUS_MAP:
+                print("[cockpit] invalid HAL verdict. use P/F/N.")
+                continue
+            notes = input("HAL notes (enter to skip): ").strip()
+            write_hal_verdict(path, receipt, HAL_STATUS_MAP[hv_choice], "HAL", notes)
+            print(f"[cockpit] wrote hal_verdict={HAL_STATUS_MAP[hv_choice]} -> {path.name}")
+            i += 1
+            continue
+        print("[cockpit] unknown key. use A/R/P/H/V/S/Q.")
 
     print("[cockpit] end of queue.")
     return 0
