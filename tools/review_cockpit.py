@@ -216,39 +216,86 @@ def render_full(receipt: dict) -> None:
     print(bar)
 
 
-def write_decision(path: Path, receipt: dict, status: str, reviewer: str, notes: str) -> None:
+def _load_current_receipt(path: Path) -> dict:
+    """Re-read the receipt from disk immediately before write.
+
+    Required by RECEIPT_SAFE_MUTATION_PROTOCOL_V0 §6 #2: writes must
+    not be based on a stale in-memory snapshot, because another cockpit
+    session may have annotated the other lane since this session loaded.
+    Without this read, concurrent annotations silently clobber each
+    other (T6 replay-divergent rewrite).
+    """
+    return json.loads(_read_tolerant(path))
+
+
+def _write_receipt(path: Path, receipt: dict) -> None:
+    path.write_text(
+        json.dumps(receipt, indent=2, ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+
+def _append_annotation_event(receipt: dict, lane: str, previous,
+                              next_value: dict, actor: str) -> None:
+    """Append an audit-trail entry for every lane write.
+
+    annotation_events is an append-only list. Each entry records the
+    pre-write value, the post-write value, the actor, the tool, and
+    the wall-clock timestamp. Restores per-lane replayability even
+    though current schema fields are mutable.
+    """
+    receipt.setdefault("annotation_events", []).append({
+        "lane": lane,
+        "previous": previous,
+        "next": next_value,
+        "actor": actor,
+        "tool": "review_cockpit.py",
+        "timestamp_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+    })
+
+
+def write_decision(path: Path, _receipt: dict, status: str, reviewer: str, notes: str) -> None:
     """Operator path: writes operator_decision only.
 
-    Does NOT touch hal_verdict, lifecycle_entry, or any other field.
+    Re-reads from disk first (§6 #2) and appends an annotation_events
+    entry. Does NOT touch hal_verdict, lifecycle_entry, or any other
+    field. The in-memory ``_receipt`` argument is intentionally
+    ignored; the on-disk state is the only source of truth for the
+    write.
     """
-    receipt["operator_decision"] = {
+    receipt = _load_current_receipt(path)
+    previous = receipt.get("operator_decision")
+    next_value = {
         "status": status,
         "reviewer": reviewer,
         "timestamp_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "notes": notes,
     }
-    path.write_text(
-        json.dumps(receipt, indent=2, ensure_ascii=False),
-        encoding="utf-8",
-    )
+    receipt["operator_decision"] = next_value
+    _append_annotation_event(receipt, "operator_decision", previous, next_value, reviewer)
+    _write_receipt(path, receipt)
 
 
-def write_hal_verdict(path: Path, receipt: dict, status: str, reviewer: str, notes: str) -> None:
+def write_hal_verdict(path: Path, _receipt: dict, status: str, reviewer: str, notes: str) -> None:
     """HAL path: writes hal_verdict only.
 
-    Does NOT touch operator_decision, lifecycle_entry, auto_promotion_ceiling,
-    or any other field. HAL cannot promote, ship, or override operator.
+    Re-reads from disk first (§6 #2) and appends an annotation_events
+    entry. Does NOT touch operator_decision, lifecycle_entry,
+    auto_promotion_ceiling, or any other field. HAL cannot promote,
+    ship, or override operator. The in-memory ``_receipt`` argument
+    is intentionally ignored.
     """
-    receipt["hal_verdict"] = {
+    receipt = _load_current_receipt(path)
+    previous = receipt.get("hal_verdict")
+    next_value = {
         "status": status,
         "reviewer": reviewer,
         "timestamp_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "notes": notes,
     }
-    path.write_text(
-        json.dumps(receipt, indent=2, ensure_ascii=False),
-        encoding="utf-8",
-    )
+    receipt["hal_verdict"] = next_value
+    _append_annotation_event(receipt, "hal_verdict", previous, next_value, reviewer)
+    _write_receipt(path, receipt)
 
 
 def main() -> int:
