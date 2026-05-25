@@ -231,18 +231,24 @@ def run_loop(model: str, topic: str, iterations: int, think: bool,
     for i in range(1, iterations + 1):
         print(f"--- iteration {i}/{iterations} ---")
         context_block = (
+            f"\nUse the context as reference only. Regardless of context length, "
+            f"output exactly the four-section envelope above.\n"
             f"\n[CONTEXT DOCUMENT — read before proposing]\n"
             f"{prompt_context}\n"
-            f"[/CONTEXT DOCUMENT]\n"
+            f"[/CONTEXT DOCUMENT]"
             if prompt_context else ""
         )
         prompt = (
             f"You are producing one HER-layer proposal for HELEN OS.\n"
             f"Topic: {topic}\n"
-            f"Iteration: {i} of {iterations}\n"
-            f"{context_block}\n"
+            f"Iteration: {i} of {iterations}\n\n"
             f"Produce one focused proposal. Do not decide. Do not ship.\n"
-            f"Conform to the four-section envelope without exception."
+            f"Output exactly these four sections:\n\n"
+            f"[PROPOSAL]\n"
+            f"[UNCERTAINTY]\n"
+            f"[REQUIRED_RECEIPTS]\n"
+            f"[HAL_QUESTIONS]\n"
+            f"{context_block}"
         )
         try:
             resp = call_gemma(model=model, user_prompt=prompt, think=think)
