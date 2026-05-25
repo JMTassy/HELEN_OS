@@ -108,6 +108,9 @@ ARTIFACT_RE = re.compile(r"\b([A-Z][A-Z0-9]+(?:_[A-Z0-9]+)+(?:_V\d+)?)\b")
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RECEIPT_PATH = REPO_ROOT / "GOVERNANCE" / "TRANCHE_RECEIPTS" / "E26-recursive-holonomy-test-V1.json"
+SCRAMBLE_RECEIPT_PATH = REPO_ROOT / "GOVERNANCE" / "TRANCHE_RECEIPTS" / "E27-scramble-stress-test-V1.json"
+SCRAMBLES = 30                  # number of scrambled trials in stress test
+SWAPS_PER_EDGE = 10             # markov-chain edge-swap multiplier
 
 
 # ============================================================================
@@ -293,6 +296,276 @@ def verify_topology_survives_tag_strip(commits: list[str]) -> bool:
     _, n1, e1, _ = path1_routing(commits)
     n2, e2, _ = build_corpus_graph(commits)
     return n1 == n2 and e1 == e2
+
+
+# ============================================================================
+# Scramble stress test — preserve nodes + boundary tags + degree distribution,
+# destroy citation topology. Tests whether the +8.15σ from E26 is topology-
+# driven (real curvature) or just boundary-marker-density driven (paint).
+# ============================================================================
+
+def edge_swap(edges: set[tuple[str, str]], n_swaps: int, rng: random.Random) -> tuple[set[tuple[str, str]], int]:
+    """Markov-chain edge swap preserving in-degree AND out-degree of every node.
+    Pick two edges (a,b), (c,d); if (a,d) and (c,b) are valid (no self-loops,
+    no duplicates), swap. Repeat n_swaps times.
+    Returns (new_edge_set, actual_swaps_done)."""
+    edges_list = list(edges)
+    edge_set = set(edges_list)
+    swaps_done = 0
+    attempts = 0
+    max_attempts = n_swaps * 100
+    while swaps_done < n_swaps and attempts < max_attempts:
+        attempts += 1
+        if len(edges_list) < 2:
+            break
+        i = rng.randrange(len(edges_list))
+        j = rng.randrange(len(edges_list))
+        if i == j:
+            continue
+        u1, v1 = edges_list[i]
+        u2, v2 = edges_list[j]
+        # Avoid self-loops
+        if u1 == v2 or u2 == v1:
+            continue
+        new1 = (u1, v2)
+        new2 = (u2, v1)
+        # Avoid duplicates
+        if new1 in edge_set or new2 in edge_set:
+            continue
+        # Perform swap
+        edge_set.discard((u1, v1))
+        edge_set.discard((u2, v2))
+        edge_set.add(new1)
+        edge_set.add(new2)
+        edges_list[i] = new1
+        edges_list[j] = new2
+        swaps_done += 1
+    return set(edges_list), swaps_done
+
+
+def compute_holonomy_with_edges(
+    nodes: set[str],
+    edges: set[tuple[str, str]],
+    boundary_nodes: set[str],
+) -> float:
+    """Recompute Z given an arbitrary (possibly scrambled) edge set, fixed boundary set."""
+    rv1 = pagerank(nodes, edges)
+    weights = {(u, v): (BOUNDARY_MULTIPLIER if v in boundary_nodes else 1.0) for (u, v) in edges}
+    rv2 = pagerank(nodes, edges, weights)
+    return total_variation(rv1, rv2)
+
+
+def run_scramble_stress(session_commits: list[str], n_scrambles: int = SCRAMBLES) -> dict:
+    """Build session corpus once; run n_scrambles edge-randomized trials with same nodes+boundary."""
+    print(f"[scramble] extracting session corpus...")
+    nodes, edges, boundary_nodes = build_corpus_graph(session_commits)
+    print(f"  nodes        = {len(nodes)}")
+    print(f"  edges        = {len(edges)}")
+    print(f"  boundary     = {len(boundary_nodes)}")
+
+    # Compute baseline Z on actual session corpus (should match E26)
+    z_baseline = compute_holonomy_with_edges(nodes, edges, boundary_nodes)
+    print(f"  z_baseline   = {z_baseline:.6f}  (sanity-check vs E26 = 0.058403)")
+
+    rng = random.Random(RNG_SEED + 1000)  # different seed than null model
+    n_swaps = SWAPS_PER_EDGE * len(edges)
+    print(f"[scramble] running {n_scrambles} trials with {n_swaps} swaps each...")
+
+    scrambled_zs: list[float] = []
+    swaps_done_total = []
+    for trial in range(n_scrambles):
+        scrambled_edges, swaps_done = edge_swap(edges, n_swaps, rng)
+        swaps_done_total.append(swaps_done)
+        z_scrambled = compute_holonomy_with_edges(nodes, scrambled_edges, boundary_nodes)
+        scrambled_zs.append(z_scrambled)
+        if trial < 5 or trial == n_scrambles - 1:
+            print(f"  trial {trial:02d}: Z={z_scrambled:.6f}  swaps={swaps_done}")
+
+    scrambled_mean = statistics.mean(scrambled_zs)
+    scrambled_std = statistics.stdev(scrambled_zs) if len(scrambled_zs) > 1 else 0.0
+    return {
+        "z_baseline": z_baseline,
+        "scrambled_zs": scrambled_zs,
+        "scrambled_mean": scrambled_mean,
+        "scrambled_std": scrambled_std,
+        "n_swaps_per_trial": n_swaps,
+        "swaps_done_per_trial": swaps_done_total,
+        "nodes": len(nodes),
+        "edges": len(edges),
+        "boundary": len(boundary_nodes),
+    }
+
+
+def main_scramble() -> int:
+    print(f"[E27 SCRAMBLE STRESS TEST] session range: {SESSION_START}..{SESSION_END}")
+    session_commits = get_commits(SESSION_START, SESSION_END)
+    print(f"[setup] session has {len(session_commits)} commits")
+
+    # Need E26's known values for comparison
+    E26_Z_SESSION = 0.058403
+    E26_NULL_MEAN = 0.006137
+    E26_NULL_STD = 0.006410
+
+    s = run_scramble_stress(session_commits, n_scrambles=SCRAMBLES)
+
+    print(f"\n[scramble stats]")
+    print(f"  z_baseline (recomputed)  = {s['z_baseline']:.6f}")
+    print(f"  E26 Z_session (recorded) = {E26_Z_SESSION:.6f}")
+    print(f"  scrambled_mean           = {s['scrambled_mean']:.6f}")
+    print(f"  scrambled_std            = {s['scrambled_std']:.6f}")
+    print(f"  E26 null_mean            = {E26_NULL_MEAN:.6f}")
+    print(f"  E26 null_std             = {E26_NULL_STD:.6f}")
+
+    # The decisive comparison: where does scrambled mean fall?
+    # Closer to E26 session Z → paint dominates → metric is paint-counting
+    # Closer to E26 null mean → topology dominates → metric measures structure
+    distance_to_session = abs(s["scrambled_mean"] - E26_Z_SESSION)
+    distance_to_null = abs(s["scrambled_mean"] - E26_NULL_MEAN)
+    closer_to = "session" if distance_to_session < distance_to_null else "null"
+
+    # How many σ is scrambled_mean from session_Z and from null_mean?
+    if s["scrambled_std"] > 0:
+        sigma_from_session = (E26_Z_SESSION - s["scrambled_mean"]) / s["scrambled_std"]
+    else:
+        sigma_from_session = float("inf") if s["scrambled_mean"] < E26_Z_SESSION else 0.0
+
+    # Topology test verdict:
+    # If scrambled mean is statistically indistinguishable from session_Z (paint dominates), REJECT topology claim.
+    # If scrambled mean drops significantly below session_Z (closer to null), KEEP topology claim.
+    topology_preserved = closer_to == "null" and sigma_from_session > 3.0
+
+    print(f"\n[verdict]")
+    print(f"  distance(scrambled_mean → E26 session)  = {distance_to_session:.6f}")
+    print(f"  distance(scrambled_mean → E26 null)     = {distance_to_null:.6f}")
+    print(f"  scrambled_mean is closer to             = {closer_to.upper()}")
+    print(f"  σ-distance (session_Z above scrambled)  = +{sigma_from_session:.3f}")
+    print(f"  topology_preserved                       = {topology_preserved}")
+
+    if topology_preserved:
+        verdict = "TOPOLOGY_LOAD_BEARING"
+        interpretation = (
+            "Scrambling the edges (preserving nodes + boundary tags + degree distribution) "
+            "collapses Z toward the null mean. The +8.15σ measured in E26 was driven by "
+            "the actual citation/parent structure, not just boundary-marker density. "
+            "Topology bends the routing distribution; the metric measures real curvature. "
+            "E26 verdict ratified by ablation."
+        )
+    elif closer_to == "session":
+        verdict = "PAINT_DOMINATES"
+        interpretation = (
+            "Scrambling does NOT collapse Z; the metric returns nearly the same value with "
+            "random edges as with the actual citation graph. This means E26's +8.15σ was "
+            "driven primarily by boundary-marker density × the weighting scheme, not by "
+            "topological structure. The metric is sophisticated grep. Recalibrate before "
+            "trusting further bracket tests."
+        )
+    else:
+        verdict = "INCONCLUSIVE"
+        interpretation = (
+            "Scrambling shifts Z toward null but not by a statistically significant margin "
+            "(σ-distance ≤ 3.0). The topology contributes some but not most of the signal. "
+            "Further ablation needed."
+        )
+
+    print(f"  VERDICT = {verdict}")
+
+    receipt = {
+        "schema_name": "TRANCHE_SUB_RECEIPT_V1",
+        "schema_version": "1.0.0",
+        "tranche_id": "E27",
+        "parent_tranche": "DIAGNOSTIC_CHAIN_ABLATION",
+        "audit_date": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+        "test_name": "SCRAMBLE_STRESS_TEST_V0",
+        "ablates": "E26-recursive-holonomy-test-V1.json",
+        "constitutional_posture": {
+            "authority": "NON_SOVEREIGN",
+            "claim": "NO_CLAIM",
+            "engine_mutation": "FORBIDDEN_AND_NOT_PERFORMED",
+            "mode": "MEASURE_ONLY",
+            "e25_freeze_respected": True,
+        },
+        "hypothesis": (
+            "If E26's +8.15σ holonomy signal is topology-driven (real curvature), then "
+            "scrambling the citation edges while preserving the node set, boundary-atom "
+            "tags, and per-node degree distribution should collapse Z toward the null "
+            "mean. If E26's signal is paint-driven (boundary-marker density × weighting), "
+            "the scrambled Z should remain near 0.058403."
+        ),
+        "proposer": {"role": "agent", "identity": "claude-opus-4-7", "operating_role": "GOBLIN-under-HER-ablation-request"},
+        "attestor": {"role": "ci-script", "identity": "scripts/recursive_holonomy_test.py --mode=scramble"},
+        "method": {
+            "preserves": ["node set", "boundary-atom assignments", "per-node in-degree", "per-node out-degree"],
+            "destroys": ["citation topology", "parent/child commit lineage", "actual edge endpoints"],
+            "algorithm": "Markov-chain edge-swap: pick two edges (a,b),(c,d); swap to (a,d),(c,b) iff no self-loops and no duplicates; repeat 10·|E| swaps per trial",
+            "trials": SCRAMBLES,
+            "swaps_target_per_trial": s["n_swaps_per_trial"],
+            "swaps_done_per_trial": s["swaps_done_per_trial"],
+            "rng_seed": RNG_SEED + 1000,
+        },
+        "corpus": {
+            "session_range": f"{SESSION_START}..{SESSION_END}",
+            "commit_count": len(session_commits),
+            "nodes": s["nodes"],
+            "edges": s["edges"],
+            "boundary_atoms": s["boundary"],
+        },
+        "results": {
+            "z_baseline_recomputed": s["z_baseline"],
+            "scrambled_zs": s["scrambled_zs"],
+            "scrambled_mean": s["scrambled_mean"],
+            "scrambled_std": s["scrambled_std"],
+        },
+        "comparison_to_E26": {
+            "e26_z_session": E26_Z_SESSION,
+            "e26_null_mean": E26_NULL_MEAN,
+            "e26_null_std": E26_NULL_STD,
+            "distance_scrambled_to_session": distance_to_session,
+            "distance_scrambled_to_null": distance_to_null,
+            "scrambled_mean_closer_to": closer_to,
+            "sigma_distance_session_above_scrambled": sigma_from_session,
+            "topology_preserved": topology_preserved,
+        },
+        "verdict": verdict,
+        "interpretation": interpretation,
+        "implications_for_E26": (
+            "E26 verdict KEEP is RATIFIED by ablation. The +8.15σ from E26 is not an artifact of paint."
+            if verdict == "TOPOLOGY_LOAD_BEARING" else
+            "E26 verdict KEEP is INVALIDATED by ablation. The +8.15σ is mostly paint-counting; the metric needs recalibration before further bracket tests."
+            if verdict == "PAINT_DOMINATES" else
+            "E26 verdict KEEP is PARTIALLY SUPPORTED by ablation. Topology contributes some signal but not enough to fully ratify."
+        ),
+        "honest_scope_caveats": [
+            "The scramble preserves degree distribution but not higher-order structure (e.g., triangle counts, motif distributions). A more conservative null would preserve more.",
+            "BOUNDARY_MULTIPLIER (2.0), BOUNDARY_THRESHOLD (3), and the boundary marker set were inherited from E26 unchanged; sensitivity not tested here.",
+            "Edge-swap reaches stationary distribution after O(|E|) swaps; we use 10·|E| which is standard but not formally proven sufficient for this graph size.",
+            "If verdict is TOPOLOGY_LOAD_BEARING, that proves the citation structure matters for THIS one bracket. Generalization to other brackets remains untested.",
+        ],
+        "halt_boundary": {
+            "role": "GOBLIN-under-HER-ablation-request",
+            "sealed_statement": "E27 ablation test of E26's KEEP verdict. The scramble result determines whether E26 ratifies or recalibrates.",
+            "resume_conditions": [
+                "MAYOR ratifies E26 + E27 jointly (if E27 verdict = TOPOLOGY_LOAD_BEARING)",
+                "OR HER ruling to recalibrate boundary scheme and re-run E26 (if E27 verdict = PAINT_DOMINATES)",
+                "OR HER ruling on further ablations needed (if E27 verdict = INCONCLUSIVE)",
+                "HER ruling on whether to proceed to STRATIFIED multi-layer test only after E27 ratifies E26",
+            ],
+            "discipline_followed": "HALT_BOUNDARY_DISCIPLINE_V0 (commit 5d0e04e)",
+        },
+        "verdict_status": "PROPOSED_SHIP — awaiting MAYOR ratification of both E26 and E27",
+        "note": (
+            "E27 attacks the exact vulnerability E26 §honest_scope_caveats named: is the metric "
+            "measuring topology or just counting boundary markers? The scramble preserves the "
+            "paint while destroying the canvas structure. If Z drops to null, the canvas was "
+            "load-bearing. If Z survives, the paint was doing all the work and we built a "
+            "rigorous grep counter."
+        ),
+    }
+
+    SCRAMBLE_RECEIPT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    SCRAMBLE_RECEIPT_PATH.write_text(json.dumps(receipt, indent=2, ensure_ascii=False))
+    print(f"\n[receipt] wrote {SCRAMBLE_RECEIPT_PATH}")
+    print(f"[receipt] verdict = {verdict}")
+    return 0
 
 
 # ============================================================================
@@ -497,4 +770,6 @@ def main() -> int:
 
 
 if __name__ == "__main__":
+    if len(sys.argv) > 1 and sys.argv[1] in ("--scramble", "--mode=scramble"):
+        sys.exit(main_scramble())
     sys.exit(main())

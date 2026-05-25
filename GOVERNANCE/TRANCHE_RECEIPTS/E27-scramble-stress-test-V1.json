@@ -1,0 +1,151 @@
+{
+  "schema_name": "TRANCHE_SUB_RECEIPT_V1",
+  "schema_version": "1.0.0",
+  "tranche_id": "E27",
+  "parent_tranche": "DIAGNOSTIC_CHAIN_ABLATION",
+  "audit_date": "2026-05-25",
+  "test_name": "SCRAMBLE_STRESS_TEST_V0",
+  "ablates": "E26-recursive-holonomy-test-V1.json",
+  "constitutional_posture": {
+    "authority": "NON_SOVEREIGN",
+    "claim": "NO_CLAIM",
+    "engine_mutation": "FORBIDDEN_AND_NOT_PERFORMED",
+    "mode": "MEASURE_ONLY",
+    "e25_freeze_respected": true
+  },
+  "hypothesis": "If E26's +8.15σ holonomy signal is topology-driven (real curvature), then scrambling the citation edges while preserving the node set, boundary-atom tags, and per-node degree distribution should collapse Z toward the null mean. If E26's signal is paint-driven (boundary-marker density × weighting), the scrambled Z should remain near 0.058403.",
+  "proposer": {
+    "role": "agent",
+    "identity": "claude-opus-4-7",
+    "operating_role": "GOBLIN-under-HER-ablation-request"
+  },
+  "attestor": {
+    "role": "ci-script",
+    "identity": "scripts/recursive_holonomy_test.py --mode=scramble"
+  },
+  "method": {
+    "preserves": [
+      "node set",
+      "boundary-atom assignments",
+      "per-node in-degree",
+      "per-node out-degree"
+    ],
+    "destroys": [
+      "citation topology",
+      "parent/child commit lineage",
+      "actual edge endpoints"
+    ],
+    "algorithm": "Markov-chain edge-swap: pick two edges (a,b),(c,d); swap to (a,d),(c,b) iff no self-loops and no duplicates; repeat 10·|E| swaps per trial",
+    "trials": 30,
+    "swaps_target_per_trial": 1130,
+    "swaps_done_per_trial": [
+      1130,
+      1130,
+      1130,
+      1130,
+      1130,
+      1130,
+      1130,
+      1130,
+      1130,
+      1130,
+      1130,
+      1130,
+      1130,
+      1130,
+      1130,
+      1130,
+      1130,
+      1130,
+      1130,
+      1130,
+      1130,
+      1130,
+      1130,
+      1130,
+      1130,
+      1130,
+      1130,
+      1130,
+      1130,
+      1130
+    ],
+    "rng_seed": 1000
+  },
+  "corpus": {
+    "session_range": "7065b18..8d7e7ba",
+    "commit_count": 31,
+    "nodes": 33,
+    "edges": 113,
+    "boundary_atoms": 25
+  },
+  "results": {
+    "z_baseline_recomputed": 0.058402808832105406,
+    "scrambled_zs": [
+      0.06507937087172323,
+      0.07189510784280438,
+      0.06733701473410376,
+      0.08412832689433582,
+      0.07075926204895455,
+      0.09296075007701449,
+      0.04895899912620275,
+      0.05575940533737999,
+      0.07588619736255606,
+      0.05970388000643578,
+      0.05769252289198931,
+      0.0491787113299747,
+      0.06049697757995327,
+      0.04725408040599594,
+      0.06182885079710206,
+      0.05784886824412719,
+      0.08591667797916683,
+      0.0719124052459217,
+      0.07065221476588569,
+      0.07635870714331133,
+      0.05851467733953936,
+      0.0448093388813804,
+      0.07090584862671677,
+      0.06669970419352927,
+      0.055072631088959406,
+      0.06028260854161164,
+      0.04756327510771066,
+      0.06558450106931274,
+      0.04352161622896107,
+      0.04659133127254103
+    ],
+    "scrambled_mean": 0.06303846210117338,
+    "scrambled_std": 0.012685783457060217
+  },
+  "comparison_to_E26": {
+    "e26_z_session": 0.058403,
+    "e26_null_mean": 0.006137,
+    "e26_null_std": 0.00641,
+    "distance_scrambled_to_session": 0.004635462101173382,
+    "distance_scrambled_to_null": 0.056901462101173375,
+    "scrambled_mean_closer_to": "session",
+    "sigma_distance_session_above_scrambled": -0.36540605606771065,
+    "topology_preserved": false
+  },
+  "verdict": "PAINT_DOMINATES",
+  "interpretation": "Scrambling does NOT collapse Z; the metric returns nearly the same value with random edges as with the actual citation graph. This means E26's +8.15σ was driven primarily by boundary-marker density × the weighting scheme, not by topological structure. The metric is sophisticated grep. Recalibrate before trusting further bracket tests.",
+  "implications_for_E26": "E26 verdict KEEP is INVALIDATED by ablation. The +8.15σ is mostly paint-counting; the metric needs recalibration before further bracket tests.",
+  "honest_scope_caveats": [
+    "The scramble preserves degree distribution but not higher-order structure (e.g., triangle counts, motif distributions). A more conservative null would preserve more.",
+    "BOUNDARY_MULTIPLIER (2.0), BOUNDARY_THRESHOLD (3), and the boundary marker set were inherited from E26 unchanged; sensitivity not tested here.",
+    "Edge-swap reaches stationary distribution after O(|E|) swaps; we use 10·|E| which is standard but not formally proven sufficient for this graph size.",
+    "If verdict is TOPOLOGY_LOAD_BEARING, that proves the citation structure matters for THIS one bracket. Generalization to other brackets remains untested."
+  ],
+  "halt_boundary": {
+    "role": "GOBLIN-under-HER-ablation-request",
+    "sealed_statement": "E27 ablation test of E26's KEEP verdict. The scramble result determines whether E26 ratifies or recalibrates.",
+    "resume_conditions": [
+      "MAYOR ratifies E26 + E27 jointly (if E27 verdict = TOPOLOGY_LOAD_BEARING)",
+      "OR HER ruling to recalibrate boundary scheme and re-run E26 (if E27 verdict = PAINT_DOMINATES)",
+      "OR HER ruling on further ablations needed (if E27 verdict = INCONCLUSIVE)",
+      "HER ruling on whether to proceed to STRATIFIED multi-layer test only after E27 ratifies E26"
+    ],
+    "discipline_followed": "HALT_BOUNDARY_DISCIPLINE_V0 (commit 5d0e04e)"
+  },
+  "verdict_status": "PROPOSED_SHIP — awaiting MAYOR ratification of both E26 and E27",
+  "note": "E27 attacks the exact vulnerability E26 §honest_scope_caveats named: is the metric measuring topology or just counting boundary markers? The scramble preserves the paint while destroying the canvas structure. If Z drops to null, the canvas was load-bearing. If Z survives, the paint was doing all the work and we built a rigorous grep counter."
+}
