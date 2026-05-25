@@ -1,0 +1,39 @@
+{
+  "schema_name": "GEMMA_PROPOSAL_RAW_V1",
+  "schema_version": "1.0.0",
+  "route_id": "gemma4_her",
+  "route_authority": "NON_SOVEREIGN",
+  "lifecycle_entry": "RAW",
+  "auto_promotion_ceiling": "RAW",
+  "model_id": "gemma4",
+  "system_prompt_sha256": "752bfcfbab273c98027695d041004f8353186f11d05ecb27ebd59c8c1603840e",
+  "prompt_text": "You are producing one HER-layer proposal for HELEN OS.\nTopic: parser regression smoke test\nIteration: 1 of 1\n\nProduce one focused proposal. Do not decide. Do not ship.\nConform to the four-section envelope without exception.",
+  "envelope_complete": true,
+  "proposal_text": "The implementation of a dedicated Parser Regression Smoke Test suite is proposed to validate the core structural integrity and basic functional syntax mapping of the parsing engine following any significant model or grammar update. This smoke test must prioritize speed and maximal coverage of historically critical paths rather than deep coverage. The suite should comprise three mandatory components: (1) Minimal Valid Input Corpus: A set of 50-100 known, syntactically correct, and diverse inputs (e.g., handling different data types, sequence lengths, and structural nesting). (2) Boundary Case Validation: A suite of 20-30 inputs designed specifically to induce known historical failure modes (e.g., malformed delimiters, deeply nested recursion, handling null/empty inputs). (3) Semantic Mapping Sanity Checks: A small set of inputs paired with expected, deterministic output structures, confirming that the parser correctly maps recognized grammar elements to downstream semantic layers. This ensures that while the parser structure is validated, the data flow remains intact.",
+  "uncertainty_text": "The primary uncertainty resides in the definition of the 'acceptable failure rate' for a regression test. It is unknown whether the smoke test scope should prioritize *speed* (risking the omission of complex, rare edge cases) or *completeness* (risking an overly long run time that discourages integration). Furthermore, there is uncertainty regarding whether the test inputs should be statically defined by the engineering team, or if they should be dynamically generated based on the current grammar specification (a process that requires dependency on the grammar compiler state). Finally, we lack clarity on whether test failures should halt the entire CI/CD pipeline (hard failure) or simply flag a warning for immediate human review (soft failure).",
+  "required_receipts": "1.  **Canonical Grammar Specification (vX.Y):** The definitive, version-locked source file used to construct the current parser ruleset.\n2.  **Historical Failure Corpus (HFC):** A curated archive of at least 50 previously identified inputs that caused parsing failures in prior iterations, paired with their required correct behavior.\n3.  **Performance Baseline Metric:** A stable, measured execution time threshold (T_max) for the current smoke test suite that can guide resource allocation and scope refinement.\n4.  **Acceptance Criteria Document (ACD):** A documented agreement on which types of parsing failures (e.g., semantic misinterpretation vs. purely syntactic failure) constitute a mandatory regression failure.",
+  "hal_questions": "1.  Should the regression smoke test be designed to validate only the structural recognition layer (syntax) or must it also include validation of the immediate semantic mapping layer (meaning)?\n2.  Is the test suite intended to be comprehensive (testing the full grammar derived from the source) or highly targeted (testing only the areas most recently modified)?\n3.  What is the required resolution path for a failure: Should the test mandate a hotfix rollback (hard failure) or is a detailed failure report sufficient for manual patch authorization (soft failure)?",
+  "raw_response_text": null,
+  "memory_guards": {
+    "num_ctx": 2048,
+    "num_predict": 1500,
+    "stream": false
+  },
+  "tokens_consumed": 1296,
+  "wall_time_seconds": 19.255,
+  "done_reason": "stop",
+  "receipt_timestamp_utc": "2026-05-25T20:22:41Z",
+  "iteration_index": 1,
+  "constitutional_breach_notation": {
+    "directive": "HER override of GEMMA_HER_AMPLIFIER_V1 HOLD status, 2026-05-23",
+    "breached_invariants": [
+      "GEMMA_HER_AMPLIFIER_V1 §7: forbids Gemma in autonomy loops",
+      "GEMMA_HER_AMPLIFIER_V1 §9: default verb HOLD until operator unholds"
+    ],
+    "operator_authorization": "AskUserQuestion 2026-05-23, selected 'Override' option with explicit NOT recommended text",
+    "ship_class": "RAW_UNDER_OVERRIDE",
+    "invalidation_clause": "Future audits MAY invalidate these proposals without prejudice"
+  },
+  "operator_decision": null,
+  "hal_verdict": null
+}
