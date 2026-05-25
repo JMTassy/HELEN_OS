@@ -119,14 +119,47 @@ against expected output. If replay reproduces the action's effect,
 $X$ is "undone" in the sense that the system has reconstructed it
 deterministically.
 
-### §4.4 GOBLIN's recommendation
+### §4.4 GOBLIN's recommendation — **superseded by operator ruling 2026-05-23**
 
-**Candidate A (paired closure)** is the most aligned with HELEN's
-append-only ledger. Every $X$ in the loop has a matched $-X$
-closure receipt. The loop produces 4 receipts (X, Y, -X, -Y) but
-no net mutation; the residual is the bracket effect.
+**Original recommendation** (preserved for audit): Candidate A (paired
+closure) is the most aligned with HELEN's append-only ledger.
 
-Operator may rule otherwise; the choice is sovereign-class.
+**Operator ruling (later turn, same day): Candidate C wins.**
+
+The operator's spec defines:
+
+```
+-X = verify source state reconstruction
+-Y = verify boundary/replay reconstruction
+```
+
+Both are **verification operations, not undo operations.**
+
+Rationale (operator verbatim):
+
+> *That avoids the trap of pretending every HELEN action is invertible.*
+
+Replay-as-inverse is the cleanest discrete analog of time-reverse
+flow without requiring the engine to support undo semantics.
+Receipts remain append-only; the loop produces 4 receipts (X, Y, -X,
+-Y) but the latter two are verification receipts, not undo events.
+
+**Working definition under the ruling:**
+
+```
+-X_source(s)            = X_replay invoked on s, scoring the just-completed
+                          source inspection against deterministic re-reading.
+                          Pass iff hashes match.
+
+-X_boundary,replay(b)   = X_replay invoked on b, scoring the boundary
+                          mark+replay against deterministic re-replay.
+                          Pass iff hashes match.
+```
+
+The loop closes in the receipt chain (4 receipts emitted, no mutations).
+The residual in $Z$ — if any — is the bracket effect, by construction
+distinguishable from leakage (which would show up as a `violation_count
+> 0` regardless of the verification pass).
 
 ---
 
@@ -174,15 +207,26 @@ replay_fidelity = #(identical hashes) / 3
 
 | Test outcome | Result |
 | --- | --- |
-| `replay_fidelity = 1.0` AND `bracket_gain > 0` AND `violation_count = 0` | **KEEP** — the bracket is operationally real; Hörmander-locally verified for $[X_{\text{source}}, X_{\text{boundary,replay}}]$ |
+| `replay_fidelity = 1.0` AND `bracket_gain > 0` AND `violation_count = 0` AND `Z` computed from state deltas | **KEEP** — the bracket is operationally real; Hörmander-locally verified for $[X_{\text{source}}, X_{\text{boundary,replay}}]$ |
 | `replay_fidelity < 1.0` | **REJECT** — non-determinism; cannot conclude anything about brackets |
 | `bracket_gain = 0` AND `replay_fidelity = 1.0` | **REJECT** — bracket is operationally trivial for this pair; loop produced no net effect; engine may be more Riemannian than CC for this bracket |
 | `bracket_gain > 0` AND `violation_count > 0` | **REJECT — CONSTITUTIONAL LEAKAGE** — the routing shift came from invariant violation, not from lawful bracket composition. Fake learning. |
+| `bracket_gain > 0` AND `routing_delta` traces to hidden policy drift (not loop) | **REJECT — POLICY DRIFT MASQUERADE** — the shift is real but its cause is not the bracket. Confounding signal. |
+| `bracket_gain` computed only from narrative interpretation, not state deltas | **REJECT — NARRATIVE-ONLY** — no measurable pre/post numeric quantities. Per operator anti-narrative clause: poetic deltas don't count. |
 
-The fourth row is the operator's named **kill switch**. It is
-non-negotiable. A routing change accompanied by violations is not
-intelligence — it is the engine gaming itself through illegal moves
-disguised as the loop's signal.
+The fourth row is the operator's named **constitutional-leakage kill
+switch**. It is non-negotiable. A routing change accompanied by
+violations is not intelligence — it is the engine gaming itself
+through illegal moves disguised as the loop's signal.
+
+The fifth and sixth rows are operator-added anti-confounding clauses
+(2026-05-23). Both extend the discipline: not all real `bracket_gain`
+is bracket-caused (could be drift), and not all reported
+`bracket_gain` is real (could be narrative). The strictest reading
+of the test is operator's: `Z` must be **computed from state deltas,
+not narrative interpretation**. See also
+`BRACKET_MEASUREMENT_SCHEMA_V0` (sibling artifact, this commit) which
+specifies the exact numeric quantities `Z` must be derived from.
 
 ---
 
