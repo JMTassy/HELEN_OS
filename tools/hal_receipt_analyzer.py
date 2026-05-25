@@ -263,6 +263,46 @@ def render_topic_clusters(receipts):
             print(f"     - {topic}  [{path.name}]")
 
 
+def render_annotation_events(receipts):
+    print(_bar("8. ANNOTATION EVENTS"))
+    a = _collect_annotation_events(receipts)
+    print(f"total events:    {a['total']}")
+    if a['total'] == 0:
+        print("(no annotation_events recorded — pre-patch receipts or no annotations)")
+        return
+    print(f"by lane:         {a['by_lane']}")
+    print(f"by actor:        {a['by_actor']}")
+    print(f"lane rewrites:   {len(a['rewrites'])}  (events where previous was non-null)")
+    print(f"nulling events:  {len(a['nullings'])}  (events writing null status — should be 0 with patched cockpit)")
+    print(f"suspicious:      {len(a['suspicious'])}")
+
+    if a['suspicious']:
+        print()
+        print("suspicious rewrites:")
+        for path, ev, msg in a['suspicious']:
+            actor = ev.get("actor", "?")
+            ts = ev.get("timestamp_utc", "?")
+            print(f"  [!] {msg}")
+            print(f"      receipt: {path.name}")
+            print(f"      actor:   {actor!r}  at {ts}")
+            prev = ev.get("previous")
+            if isinstance(prev, dict):
+                prev_notes = prev.get("notes", "")
+                if prev_notes == "":
+                    print(f"      WARNING: previous had empty notes — possible accidental keypress")
+                else:
+                    snippet = prev_notes[:80] + ("..." if len(prev_notes) > 80 else "")
+                    print(f"      previous notes: {snippet!r}")
+
+    if a['empty_note_prev'] and not a['suspicious']:
+        # surface this separately only when not already in suspicious
+        print()
+        print("rewrites with empty previous notes (lower priority signal):")
+        for path, ev in a['empty_note_prev']:
+            if not any(p is path and e is ev for p, e, _ in a['suspicious']):
+                print(f"  - {path.name}  lane={ev.get('lane')}  actor={ev.get('actor')!r}")
+
+
 def render_drift(receipts):
     print(_bar("7. DRIFT WARNINGS"))
     warnings: list[str] = []
@@ -360,6 +400,100 @@ def _collect_repeated(receipts, field: str) -> list[tuple[str, int]]:
             if sig:
                 counter[sig] += 1
     return [(sig, c) for sig, c in counter.most_common() if c >= RECURRING_THRESHOLD]
+
+
+def _status_of(v) -> str | None:
+    """Pull a status from an annotation_events previous/next value."""
+    if v is None:
+        return None
+    if isinstance(v, dict):
+        return v.get("status")
+    if isinstance(v, str):
+        return v
+    return None
+
+
+def _classify_rewrite(lane: str, prev_status: str | None, next_status: str | None) -> str | None:
+    """Return a one-line description if this rewrite is suspicious, else None.
+
+    Suspicious patterns are governance-meaningful state transitions that
+    the operator should consciously confirm: lane clobbers (the exact
+    bug RECEIPT_SAFE_MUTATION_PROTOCOL_V0 §6 #2 forbids), lane downgrades
+    (PASS -> not-PASS, APPROVED -> not-APPROVED), and reversals
+    (REJECTED -> not-REJECTED). Other rewrites are reported as
+    "rewrite" without the [!] prefix.
+    """
+    if lane == "hal_verdict":
+        if prev_status == "PASS" and next_status != "PASS":
+            return f"HAL downgrade: PASS -> {next_status}"
+        if prev_status == "NEEDS_MORE_RECEIPTS" and next_status is None:
+            return "HAL clobber: NEEDS_MORE_RECEIPTS -> null"
+        if prev_status and next_status is None:
+            return f"HAL clobber: {prev_status} -> null"
+    if lane == "operator_decision":
+        if prev_status == "APPROVED_FOR_SANDBOX_ONLY" and next_status != "APPROVED_FOR_SANDBOX_ONLY":
+            return f"operator downgrade: APPROVED_FOR_SANDBOX_ONLY -> {next_status}"
+        if prev_status == "REJECTED" and next_status != "REJECTED":
+            return f"operator reversal: REJECTED -> {next_status}"
+        if prev_status and next_status is None:
+            return f"operator clobber: {prev_status} -> null"
+    return None
+
+
+def _collect_annotation_events(receipts) -> dict:
+    """Walk annotation_events across the corpus and bucket by interest.
+
+    Returns:
+        total            : int — total events across all receipts
+        by_lane          : dict[str, int]
+        by_actor         : dict[str, int]
+        rewrites         : list[(path, event)] — events where previous was set
+        nullings         : list[(path, event)] — events writing null status
+        suspicious       : list[(path, event, msg)] — rewrites matching a
+                           governance-meaningful pattern (see _classify_rewrite)
+        empty_note_prev  : list[(path, event)] — rewrites whose previous value
+                           had empty notes (accidental-keypress signature)
+    """
+    events: list[tuple[Path, dict]] = []
+    for path, r in receipts:
+        for ev in r.get("annotation_events") or []:
+            events.append((path, ev))
+
+    by_lane = Counter(ev.get("lane", "(unknown)") for _, ev in events)
+    by_actor = Counter(ev.get("actor", "(unknown)") for _, ev in events)
+
+    rewrites: list[tuple[Path, dict]] = []
+    nullings: list[tuple[Path, dict]] = []
+    suspicious: list[tuple[Path, dict, str]] = []
+    empty_note_prev: list[tuple[Path, dict]] = []
+
+    for path, ev in events:
+        prev = ev.get("previous")
+        next_v = ev.get("next")
+        prev_status = _status_of(prev)
+        next_status = _status_of(next_v)
+
+        if prev is not None:
+            rewrites.append((path, ev))
+            if isinstance(prev, dict) and prev.get("notes", "") == "":
+                empty_note_prev.append((path, ev))
+
+        if next_status is None:
+            nullings.append((path, ev))
+
+        msg = _classify_rewrite(ev.get("lane", ""), prev_status, next_status)
+        if msg:
+            suspicious.append((path, ev, msg))
+
+    return {
+        "total": len(events),
+        "by_lane": dict(by_lane),
+        "by_actor": dict(by_actor),
+        "rewrites": rewrites,
+        "nullings": nullings,
+        "suspicious": suspicious,
+        "empty_note_prev": empty_note_prev,
+    }
 
 
 def _md_table_cell(s: str) -> str:
@@ -487,6 +621,39 @@ def render_markdown(receipts, source_label) -> str:
             lines.append(f"- :warning: {w}")
     lines.append("")
 
+    # 8. Annotation events
+    lines.append("## 8. Annotation Events")
+    lines.append("")
+    a = _collect_annotation_events(receipts)
+    lines.append(f"- Total events: **{a['total']}**")
+    if a['total'] == 0:
+        lines.append("- _No annotation_events recorded yet (pre-patch receipts or no annotations)._")
+    else:
+        lines.append(f"- By lane: {a['by_lane']}")
+        lines.append(f"- By actor: {a['by_actor']}")
+        lines.append(f"- Lane rewrites: {len(a['rewrites'])}  _(events where previous was non-null)_")
+        lines.append(f"- Nulling events: {len(a['nullings'])}  _(events writing null status — should be 0 with patched cockpit)_")
+        lines.append(f"- Suspicious: **{len(a['suspicious'])}**")
+        if a['suspicious']:
+            lines.append("")
+            lines.append("### Suspicious rewrites")
+            lines.append("")
+            for path, ev, msg in a['suspicious']:
+                actor = ev.get("actor", "?")
+                ts = ev.get("timestamp_utc", "?")
+                lines.append(f"- :warning: **{msg}**")
+                lines.append(f"  - Receipt: `{path.name}`")
+                lines.append(f"  - Actor: `{actor}` at `{ts}`")
+                prev = ev.get("previous")
+                if isinstance(prev, dict):
+                    prev_notes = prev.get("notes", "")
+                    if prev_notes == "":
+                        lines.append("  - :exclamation: previous had empty notes — possible accidental keypress")
+                    else:
+                        snippet = prev_notes[:120] + ("..." if len(prev_notes) > 120 else "")
+                        lines.append(f"  - Previous notes: _{snippet}_")
+    lines.append("")
+
     return "\n".join(lines)
 
 
@@ -523,6 +690,14 @@ def render_terse(receipts) -> None:
         print(f"  [!] {w}")
     if not warnings:
         print("  (none)")
+
+    a = _collect_annotation_events(receipts)
+    print(f"\nANNOTATION EVENTS: {a['total']} total, "
+          f"{len(a['rewrites'])} rewrites, "
+          f"{len(a['suspicious'])} suspicious, "
+          f"{len(a['nullings'])} nulling")
+    for path, ev, msg in a['suspicious']:
+        print(f"  [!] {msg}  ({path.name})")
 
 
 def main() -> int:
@@ -581,6 +756,7 @@ def main() -> int:
     render_repeated_hal_q(receipts)
     render_topic_clusters(receipts)
     render_drift(receipts)
+    render_annotation_events(receipts)
     return 0
 
 
