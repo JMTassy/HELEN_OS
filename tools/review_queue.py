@@ -2,7 +2,7 @@
 """
 review_queue.py
 
-Read-only operational queue over local GEMMA_PROPOSALS.
+Read-only operational queue over local GEMMA_PROPOSALS and/or RALPH_PROPOSALS.
 
 Classifies each receipt into governance categories and lets the operator
 filter the working set. Used to answer "what do I need to act on now?"
@@ -14,8 +14,15 @@ Categories (a receipt may belong to several):
   READY_SANDBOX   operator APPROVED_FOR_SANDBOX_ONLY + HAL PASS
   REJECTED        operator REJECTED or HAL FAIL
 
+Sources:
+  --source gemma  GOVERNANCE/GEMMA_PROPOSALS  (default)
+  --source ralph  GOVERNANCE/RALPH_PROPOSALS
+  --source all    both combined
+
 Usage:
-  python tools/review_queue.py                        # full summary
+  python tools/review_queue.py                        # full summary (gemma)
+  python tools/review_queue.py --source ralph         # RALPH proposals only
+  python tools/review_queue.py --source all           # both combined
   python tools/review_queue.py --needs-operator       # filter
   python tools/review_queue.py --needs-hal
   python tools/review_queue.py --blocked
@@ -47,6 +54,12 @@ from hal_receipt_analyzer import (  # noqa: E402
     load_receipts,
 )
 
+REPO_ROOT = Path(__file__).resolve().parents[1]
+SOURCE_DIRS = {
+    "gemma": REPO_ROOT / "GOVERNANCE" / "GEMMA_PROPOSALS",
+    "ralph": REPO_ROOT / "GOVERNANCE" / "RALPH_PROPOSALS",
+}
+
 CATEGORIES = ("NEEDS_OPERATOR", "NEEDS_HAL", "BLOCKED", "READY_SANDBOX", "REJECTED")
 
 
@@ -68,42 +81,45 @@ def classify(receipt: dict) -> set[str]:
     return cats
 
 
-def _line(path: Path, receipt: dict) -> str:
+def _line(path: Path, receipt: dict, source_tag: str = "") -> str:
     t = receipt.get("receipt_timestamp_utc", "????-??-??T??:??:??Z")
     topic = (extract_topic(receipt) or "(no topic)")[:48]
     op = get_status(receipt.get("operator_decision"))
     hal = get_status(receipt.get("hal_verdict"))
     env = "envOK" if receipt.get("envelope_complete") else "envFAIL"
-    return f"{t}  {env}  op={op}  hal={hal}  topic='{topic}'  ({path.name})"
+    prefix = f"[{source_tag}] " if source_tag else ""
+    return f"{prefix}{t}  {env}  op={op}  hal={hal}  topic='{topic}'  ({path.name})"
 
 
-def render_summary(receipts) -> None:
-    by_cat: dict[str, list[tuple[Path, dict]]] = defaultdict(list)
-    for path, r in receipts:
+def render_summary(tagged_receipts: list[tuple[Path, dict, str]]) -> None:
+    by_cat: dict[str, list[tuple[Path, dict, str]]] = defaultdict(list)
+    for path, r, src in tagged_receipts:
         for cat in classify(r):
-            by_cat[cat].append((path, r))
-    print(f"=== REVIEW QUEUE  ({len(receipts)} receipt(s) total) ===\n")
+            by_cat[cat].append((path, r, src))
+    print(f"=== REVIEW QUEUE  ({len(tagged_receipts)} receipt(s) total) ===\n")
     for cat in CATEGORIES:
         items = by_cat.get(cat, [])
         print(f"[{cat}]  {len(items)}")
-        for path, r in items:
-            print(f"  - {_line(path, r)}")
+        for path, r, src in items:
+            print(f"  - {_line(path, r, src)}")
         if not items:
             print("  (empty)")
         print()
 
 
-def render_filtered(filtered: list[tuple[Path, dict, set[str]]]) -> None:
+def render_filtered(filtered: list[tuple[Path, dict, str, set[str]]]) -> None:
     if not filtered:
         print("(no matching receipts)")
         return
     print(f"=== {len(filtered)} matching receipt(s) ===\n")
-    for path, r, cats in filtered:
+    for path, r, src, cats in filtered:
         tag = ",".join(sorted(cats)) or "(no category)"
-        print(f"  {_line(path, r)}  [{tag}]")
+        print(f"  {_line(path, r, src)}  [{tag}]")
 
 
-def apply_filters(receipts, args) -> list[tuple[Path, dict, set[str]]]:
+def apply_filters(
+    tagged_receipts: list[tuple[Path, dict, str]], args
+) -> list[tuple[Path, dict, str, set[str]]]:
     """AND-combine the active filters. Topic is a case-insensitive substring."""
     active = {
         "NEEDS_OPERATOR": args.needs_operator,
@@ -115,8 +131,8 @@ def apply_filters(receipts, args) -> list[tuple[Path, dict, set[str]]]:
     required_cats = {c for c, on in active.items() if on}
     topic_needle = args.topic.lower() if args.topic else None
 
-    out: list[tuple[Path, dict, set[str]]] = []
-    for path, r in receipts:
+    out: list[tuple[Path, dict, str, set[str]]] = []
+    for path, r, src in tagged_receipts:
         cats = classify(r)
         if required_cats and not required_cats.issubset(cats):
             continue
@@ -124,16 +140,41 @@ def apply_filters(receipts, args) -> list[tuple[Path, dict, set[str]]]:
             topic = extract_topic(r).lower()
             if topic_needle not in topic:
                 continue
-        out.append((path, r, cats))
+        out.append((path, r, src, cats))
     return out
+
+
+def _load_tagged(source: str) -> list[tuple[Path, dict, str]]:
+    """Load receipts from the named source(s), tagging each with its source label."""
+    if source == "all":
+        sources = list(SOURCE_DIRS.keys())
+    else:
+        sources = [source]
+
+    tagged: list[tuple[Path, dict, str]] = []
+    for src_name in sources:
+        src_dir = SOURCE_DIRS[src_name]
+        if not src_dir.exists():
+            print(f"[queue] directory not found, skipping: {src_dir}", file=__import__("sys").stderr)
+            continue
+        label = src_name.upper()
+        for path, receipt in load_receipts(src_dir):
+            tagged.append((path, receipt, label))
+    return tagged
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
+        "--source",
+        choices=["gemma", "ralph", "all"],
+        default="gemma",
+        help="receipt source: gemma (default), ralph, or all",
+    )
+    parser.add_argument(
         "--dir",
-        default=str(DEFAULT_PROPOSAL_DIR),
-        help="proposal directory to scan",
+        default=None,
+        help="explicit proposal directory (overrides --source)",
     )
     parser.add_argument("--needs-operator", action="store_true",
                         help="operator_decision is null")
@@ -149,9 +190,16 @@ def main() -> int:
                         help="case-insensitive substring filter on topic")
     args = parser.parse_args()
 
-    receipts = load_receipts(Path(args.dir))
-    if not receipts:
-        print(f"[queue] no receipts found in {args.dir}.")
+    if args.dir is not None:
+        raw = load_receipts(Path(args.dir))
+        tagged = [(p, r, "CUSTOM") for p, r in raw]
+        label = args.dir
+    else:
+        tagged = _load_tagged(args.source)
+        label = args.source
+
+    if not tagged:
+        print(f"[queue] no receipts found (source={label}).")
         return 0
 
     has_filter = any([
@@ -160,9 +208,9 @@ def main() -> int:
     ])
 
     if has_filter:
-        render_filtered(apply_filters(receipts, args))
+        render_filtered(apply_filters(tagged, args))
     else:
-        render_summary(receipts)
+        render_summary(tagged)
     return 0
 
 
