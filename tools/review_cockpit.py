@@ -26,6 +26,7 @@ Usage:
   python tools/review_cockpit.py --source all --queue blocked
   python tools/review_cockpit.py --source all --queue needs-hal
   python tools/review_cockpit.py --source all --queue needs-operator
+  python tools/review_cockpit.py --source all --queue suspicious   # audit anomalies
 
 Keys:
   A = operator: APPROVED_FOR_SANDBOX_ONLY
@@ -53,10 +54,14 @@ SOURCE_DIRS = {
     "ralph": REPO_ROOT / "GOVERNANCE" / "RALPH_PROPOSALS",
 }
 
-# Single source of truth for queue classification: import from review_queue
-# to guarantee the cockpit and the queue tool agree on what "blocked" means.
+# Single source of truth for queue classification and suspicious-event
+# detection: import from review_queue so all three tools (analyzer, queue,
+# cockpit) cannot drift on the definition of either.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from review_queue import classify as _classify_receipt  # noqa: E402
+from review_queue import (  # noqa: E402
+    classify as _classify_receipt,
+    suspicious_events,
+)
 
 QUEUE_TO_CATEGORY = {
     "blocked": "BLOCKED",
@@ -65,6 +70,11 @@ QUEUE_TO_CATEGORY = {
     "ready-sandbox": "READY_SANDBOX",
     "rejected": "REJECTED",
 }
+
+# 'suspicious' is a meta-queue keyed off annotation_events history, not
+# off current-state classify() lanes. Listed alongside QUEUE_TO_CATEGORY
+# in argparse choices but resolved with a different filter in main().
+SUSPICIOUS_QUEUE = "suspicious"
 
 STATUS_MAP = {
     "a": "APPROVED_FOR_SANDBOX_ONLY",
@@ -175,6 +185,18 @@ def render_card(idx: int, total: int, path: Path, receipt: dict, source_tag: str
         f"hal_verdict={hal_label(receipt)}  "
         f"decision={decision_label(receipt)}"
     )
+    sus = suspicious_events(receipt)
+    if sus:
+        print(sub)
+        print("AUDIT WARNING:")
+        for ev, msg in sus:
+            actor = ev.get("actor", "?")
+            ts = ev.get("timestamp_utc", "?")
+            print(f"  - {msg}")
+            print(f"      actor={actor!r}  at {ts}")
+            prev = ev.get("previous")
+            if isinstance(prev, dict) and prev.get("notes", "") == "":
+                print(f"      previous had empty notes — possible accidental keypress")
     print(sub)
     prompt = receipt.get("prompt_text", "")
     topic_line = next(
@@ -308,9 +330,12 @@ def main() -> int:
     )
     parser.add_argument(
         "--queue",
-        choices=list(QUEUE_TO_CATEGORY.keys()),
+        choices=list(QUEUE_TO_CATEGORY.keys()) + [SUSPICIOUS_QUEUE],
         default=None,
-        help="restrict to a queue category (uses review_queue.classify)",
+        help="restrict to a queue category. Governance categories "
+             "(blocked/needs-hal/needs-operator/ready-sandbox/rejected) use "
+             "review_queue.classify on current lanes. 'suspicious' uses "
+             "annotation_events audit history and is orthogonal to lane state.",
     )
     parser.add_argument(
         "--reviewer",
@@ -330,8 +355,12 @@ def main() -> int:
         receipts = [r for r in receipts if not r[1].get("operator_decision")]
 
     if args.queue is not None:
-        required_cat = QUEUE_TO_CATEGORY[args.queue]
-        receipts = [r for r in receipts if required_cat in _classify_receipt(r[1])]
+        if args.queue == SUSPICIOUS_QUEUE:
+            # Audit-history filter — orthogonal to current-state lanes.
+            receipts = [r for r in receipts if suspicious_events(r[1])]
+        else:
+            required_cat = QUEUE_TO_CATEGORY[args.queue]
+            receipts = [r for r in receipts if required_cat in _classify_receipt(r[1])]
 
     if not receipts:
         scope = f"source={args.source}"
