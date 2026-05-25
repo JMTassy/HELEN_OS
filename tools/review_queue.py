@@ -28,6 +28,8 @@ Usage:
   python tools/review_queue.py --blocked
   python tools/review_queue.py --ready-sandbox
   python tools/review_queue.py --rejected
+  python tools/review_queue.py --suspicious               # audit-trail signal
+  python tools/review_queue.py --source all --suspicious  # cross-source
   python tools/review_queue.py --topic parser         # substring on topic
   python tools/review_queue.py --blocked --topic parser   # combinable (AND)
 
@@ -49,10 +51,41 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from hal_receipt_analyzer import (  # noqa: E402
     DEFAULT_PROPOSAL_DIR,
+    _classify_rewrite,
+    _status_of,
     extract_topic,
     get_status,
     load_receipts,
 )
+
+
+def suspicious_events(receipt: dict) -> list[tuple[dict, str]]:
+    """Return (event, message) pairs for suspicious annotation_events.
+
+    Uses the same _classify_rewrite primitive as
+    hal_receipt_analyzer's Section 8 so the queue and the analyzer
+    cannot drift on the definition of "suspicious."
+    """
+    out: list[tuple[dict, str]] = []
+    for ev in receipt.get("annotation_events") or []:
+        prev_status = _status_of(ev.get("previous"))
+        next_status = _status_of(ev.get("next"))
+        msg = _classify_rewrite(ev.get("lane", ""), prev_status, next_status)
+        if msg:
+            out.append((ev, msg))
+    return out
+
+
+def _render_suspicious_events(receipt: dict, indent: str = "    ") -> None:
+    """Print suspicious events for a single receipt with empty-notes warnings."""
+    for ev, msg in suspicious_events(receipt):
+        actor = ev.get("actor", "?")
+        ts = ev.get("timestamp_utc", "?")
+        print(f"{indent}[!] {msg}")
+        print(f"{indent}    actor={actor!r}  at {ts}")
+        prev = ev.get("previous")
+        if isinstance(prev, dict) and prev.get("notes", "") == "":
+            print(f"{indent}    previous had empty notes — possible accidental keypress")
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SOURCE_DIRS = {
@@ -106,6 +139,18 @@ def render_summary(tagged_receipts: list[tuple[Path, dict, str]]) -> None:
             print("  (empty)")
         print()
 
+    # SUSPICIOUS is a meta-category derived from annotation_events, not from
+    # current lane state. Always shown so operators can see audit-trail drift
+    # even when it doesn't overlap a governance category.
+    suspicious = [(p, r, src) for p, r, src in tagged_receipts if suspicious_events(r)]
+    print(f"[SUSPICIOUS]  {len(suspicious)}")
+    for path, r, src in suspicious:
+        print(f"  - {_line(path, r, src)}")
+        _render_suspicious_events(r, indent="      ")
+    if not suspicious:
+        print("  (empty)")
+    print()
+
 
 def render_filtered(filtered: list[tuple[Path, dict, str, set[str]]]) -> None:
     if not filtered:
@@ -115,6 +160,7 @@ def render_filtered(filtered: list[tuple[Path, dict, str, set[str]]]) -> None:
     for path, r, src, cats in filtered:
         tag = ",".join(sorted(cats)) or "(no category)"
         print(f"  {_line(path, r, src)}  [{tag}]")
+        _render_suspicious_events(r, indent="    ")
 
 
 def apply_filters(
@@ -140,6 +186,8 @@ def apply_filters(
             topic = extract_topic(r).lower()
             if topic_needle not in topic:
                 continue
+        if args.suspicious and not suspicious_events(r):
+            continue
         out.append((path, r, src, cats))
     return out
 
@@ -186,6 +234,9 @@ def main() -> int:
                         help="operator APPROVED_FOR_SANDBOX_ONLY + HAL PASS")
     parser.add_argument("--rejected", action="store_true",
                         help="operator REJECTED or HAL FAIL")
+    parser.add_argument("--suspicious", action="store_true",
+                        help="receipts with >=1 suspicious annotation_event "
+                             "(lane clobber, downgrade, reversal, or empty-notes rewrite)")
     parser.add_argument("--topic", metavar="STR",
                         help="case-insensitive substring filter on topic")
     args = parser.parse_args()
@@ -204,7 +255,7 @@ def main() -> int:
 
     has_filter = any([
         args.needs_operator, args.needs_hal, args.blocked,
-        args.ready_sandbox, args.rejected, bool(args.topic),
+        args.ready_sandbox, args.rejected, args.suspicious, bool(args.topic),
     ])
 
     if has_filter:
