@@ -218,8 +218,15 @@ def write_raw_receipt(iteration: int, model: str, user_prompt: str,
 def run_loop(model: str, topic: str, iterations: int, think: bool,
              require_user_to_continue: bool,
              prompt_context: str | None = None,
-             prompt_context_file: str | None = None) -> None:
-    """Bounded autonomous proposal loop with halt-pause between iterations."""
+             prompt_context_file: str | None = None) -> int:
+    """Bounded autonomous proposal loop with halt-pause between iterations.
+
+    Return codes:
+        0  loop completed all iterations, OR operator halted via Ctrl-C
+        1  fatal Ollama / network / serialization error during call_gemma
+
+    Any non-zero exit is a wrapper signal: stop, do not launch the next batch.
+    """
     print(f"[gemma_loop] model={model} iterations={iterations} think={think}")
     print(f"[gemma_loop] topic={topic!r}")
     if prompt_context_file:
@@ -271,10 +278,19 @@ def run_loop(model: str, topic: str, iterations: int, think: bool,
         )
         try:
             resp = call_gemma(model=model, user_prompt=prompt, think=think)
-        except httpx.HTTPError as exc:
-            print(f"[gemma_loop] ERROR calling Ollama: {exc}", file=sys.stderr)
-            print(f"[gemma_loop] halting loop at iteration {i}", file=sys.stderr)
-            return
+        except Exception as exc:
+            # Broadened from httpx.HTTPError per orchestrator-failure-semantics
+            # fix (2026-05-26): Ollama timeouts can surface as httpx.HTTPError,
+            # ConnectionError, TimeoutError, JSONDecodeError, etc. Catch them
+            # all and exit NON-ZERO so a wrapper script's $LASTEXITCODE check
+            # actually fires. KeyboardInterrupt is NOT caught here (it derives
+            # from BaseException, not Exception) so operator Ctrl-C still
+            # propagates cleanly.
+            print(f"[gemma_loop] FATAL ERROR calling Ollama: {exc}",
+                  file=sys.stderr, flush=True)
+            print(f"[gemma_loop] halting loop at iteration {i}",
+                  file=sys.stderr, flush=True)
+            return 1
 
         path = write_raw_receipt(i, model, prompt, resp, prompt_context_file=prompt_context_file)
         ec = resp["response"].get("eval_count", "?")
@@ -288,12 +304,15 @@ def run_loop(model: str, topic: str, iterations: int, think: bool,
                 input()
             except KeyboardInterrupt:
                 print(f"\n[gemma_loop] operator halt at iteration {i}")
-                return
+                # Operator-initiated stop is NOT a failure. Exit 0 so the
+                # wrapper distinguishes clean op-halt from Ollama failure.
+                return 0
 
     print(f"[gemma_loop] complete — {iterations} iterations, halt boundary reached")
+    return 0
 
 
-def main():
+def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--model", default="qwen3.5:9b",
                         help="Ollama model. Default: qwen3.5:9b (HER-FAST, confirmed). "
@@ -338,7 +357,7 @@ def main():
               file=sys.stderr)
         sys.exit(2)
 
-    run_loop(
+    return run_loop(
         model=args.model,
         topic=args.topic,
         iterations=args.iterations,
@@ -350,4 +369,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
