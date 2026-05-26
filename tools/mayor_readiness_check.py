@@ -131,6 +131,14 @@ def load_object_metadata(path: Path, kind: str) -> dict:
 
 def check_valid_receipts(meta: dict, kind: str) -> tuple[str, str]:
     """§3 conjunct 1: receipt fields valid + lifecycle RAW + authority False."""
+    if kind == "doctrine_markdown":
+        # A doctrine markdown is NOT an M2 receipt envelope. It cannot
+        # itself carry envelope_complete / authority / receipt_hash.
+        # Admitting a doctrine requires a separate receipt that wraps it.
+        return "MISSING_SUPPORTING_RECEIPT", (
+            "object is doctrine_markdown; needs a separate M2 receipt envelope "
+            "to be admittable")
+
     lifecycle = meta.get("lifecycle_entry") or meta.get("lifecycle") or ""
     lifecycle_str = str(lifecycle).upper()
     if not lifecycle_str:
@@ -138,23 +146,26 @@ def check_valid_receipts(meta: dict, kind: str) -> tuple[str, str]:
     if "RAW" not in lifecycle_str and "DRAFT" not in lifecycle_str:
         return "FAIL", f"lifecycle is not RAW or DRAFT: {lifecycle!r}"
 
-    if kind == "m2_receipt_json":
-        if not meta.get("envelope_complete"):
-            return "FAIL", "envelope_complete is false"
-        # Authority must be structurally false on every M2 receipt
-        if meta.get("authority") not in (False, None):
-            return "FAIL", f"authority is not False: {meta.get('authority')!r}"
+    if not meta.get("envelope_complete"):
+        return "FAIL", "envelope_complete is false"
+    # Authority must be structurally false on every M2 receipt
+    if meta.get("authority") not in (False, None):
+        return "FAIL", f"authority is not False: {meta.get('authority')!r}"
 
     return "PASS", f"lifecycle={lifecycle!r}"
 
 
-def check_hal_pass(meta: dict) -> tuple[str, str]:
+def check_hal_pass(meta: dict, kind: str) -> tuple[str, str]:
     """§3 conjunct 2 / §5: hal_verdict.status == PASS with non-trivial notes."""
+    if kind == "doctrine_markdown":
+        return "MISSING_SUPPORTING_RECEIPT", (
+            "object is doctrine_markdown; no hal_verdict field exists. "
+            "Needs a separate receipt carrying HAL review.")
     hal = meta.get("hal_verdict")
     if not hal:
         return "FAIL", "no hal_verdict written (HAL has not reviewed)"
     if isinstance(hal, str):
-        return "FAIL", f"hal_verdict is a bare string, not a structured dict"
+        return "FAIL", "hal_verdict is a bare string, not a structured dict"
     status = hal.get("status")
     if status != "PASS":
         return "FAIL", f"hal_verdict.status = {status!r} (need 'PASS')"
@@ -165,8 +176,12 @@ def check_hal_pass(meta: dict) -> tuple[str, str]:
     return "PASS", f"HAL PASS by {hal.get('reviewer', '?')!r}, notes={len(notes)} chars"
 
 
-def check_operator_intent(meta: dict) -> tuple[str, str]:
+def check_operator_intent(meta: dict, kind: str) -> tuple[str, str]:
     """§3 conjunct 3 / §6: operator_decision.status == APPROVED_FOR_SANDBOX_ONLY."""
+    if kind == "doctrine_markdown":
+        return "MISSING_SUPPORTING_RECEIPT", (
+            "object is doctrine_markdown; no operator_decision field exists. "
+            "Needs a separate receipt carrying operator intent.")
     op = meta.get("operator_decision")
     if not op:
         return "FAIL", "no operator_decision written"
@@ -183,17 +198,23 @@ def check_operator_intent(meta: dict) -> tuple[str, str]:
     return "PASS", f"operator APPROVED by {op.get('reviewer', '?')!r}, notes={len(notes)} chars"
 
 
-def check_replay_pass(meta: dict) -> tuple[str, str]:
+def check_replay_pass(meta: dict, kind: str) -> tuple[str, str]:
     """§3 conjunct 4 / §8: REPLAY_ATTESTATION_V1 receipt exists for this object."""
     # V0 fact: the REPLAY_ATTESTATION_V1 schema is referenced by
     # MAYOR_ADMISSION_PROTOCOL_V0 §4.4 but has not been drafted.
     # Therefore no replay receipt can exist for any object yet.
-    return "FAIL", ("REPLAY_ATTESTATION_V1 schema not yet drafted; "
-                    "no replay receipt possible for any object in V0")
+    return "MISSING", ("REPLAY_ATTESTATION_V1 schema not yet drafted; "
+                       "no replay receipt possible for any object in V0")
 
 
-def check_no_suspicious_events(meta: dict) -> tuple[str, str]:
+def check_no_suspicious_events(meta: dict, kind: str) -> tuple[str, str]:
     """§3 conjunct 5 / §7: annotation_events has no UNRESOLVED suspicious entries."""
+    if kind == "doctrine_markdown":
+        # A markdown doctrine has no annotation_events field by construction.
+        # Status is genuinely UNKNOWN — not vacuously PASS.
+        return "UNKNOWN_NO_RECEIPT_OBJECT", (
+            "object is doctrine_markdown; no annotation_events field exists. "
+            "Audit-trail evaluation requires a wrapping receipt.")
     events = meta.get("annotation_events") or []
     if not events:
         # No events at all — vacuously satisfies "no unresolved suspicious"
@@ -240,7 +261,7 @@ def check_no_suspicious_events(meta: dict) -> tuple[str, str]:
                    f"all resolved")
 
 
-def check_mayor_seal_possible() -> tuple[str, str]:
+def check_mayor_seal_possible(kind: str) -> tuple[str, str]:
     """§3 conjunct 6 / §9: MAYOR identity exists and could produce a seal.
 
     Under §13.3 default this is structurally impossible.
@@ -292,7 +313,7 @@ def check_system_prerequisites() -> dict:
             f"— under §13.3 default it must NOT exist"
         )
     else:
-        out["admitted_canon_ledger"] = "ABSENT (correct under §13.3 default)"
+        out["admitted_canon_ledger"] = "ABSENT_OK_UNDER_13_3"
 
     # mayor_admission.py tool
     if MAYOR_ADMISSION_TOOL.exists():
@@ -321,7 +342,27 @@ def main() -> int:
         help="Path to the candidate object (markdown doctrine or JSON receipt). "
              "Relative paths resolve against the repo root.",
     )
+    # Forbidden flags — registered explicitly so the rejection message is
+    # informative rather than the generic argparse "unrecognized arguments".
+    # Any of these triggers exit code 2 (refusal, not parse error).
+    for forbidden in ("--seal", "--admit", "--bootstrap", "--override"):
+        parser.add_argument(forbidden, action="store_true", help=argparse.SUPPRESS)
+
     args = parser.parse_args()
+
+    # Refuse forbidden flags BEFORE doing any work.
+    forbidden_set = []
+    if getattr(args, "seal", False):      forbidden_set.append("--seal")
+    if getattr(args, "admit", False):     forbidden_set.append("--admit")
+    if getattr(args, "bootstrap", False): forbidden_set.append("--bootstrap")
+    if getattr(args, "override", False):  forbidden_set.append("--override")
+    if forbidden_set:
+        print(f"REFUSED: forbidden flag(s) in V0: {', '.join(forbidden_set)}",
+              file=sys.stderr)
+        print("This tool is the shadow of the crown, not the crown.",
+              file=sys.stderr)
+        print("READINESS IS NOT ADMISSION.", file=sys.stderr)
+        return 2
 
     raw_path = Path(args.object)
     path = raw_path if raw_path.is_absolute() else (REPO_ROOT / raw_path)
@@ -331,9 +372,9 @@ def main() -> int:
     print("MAYOR READINESS CHECK V0")
     print("READINESS IS NOT ADMISSION.")
     print(bar)
-    print(f"object:     {args.object}")
-    print(f"resolved:   {path}")
-    print(f"kind:       {kind}")
+    print(f"object:       {args.object}")
+    print(f"resolved:     {path}")
+    print(f"object_kind:  {kind}")
 
     if kind == "missing":
         print()
@@ -368,14 +409,14 @@ def main() -> int:
 
     conjuncts: list[tuple[str, tuple[str, str]]] = [
         ("valid_receipts",       check_valid_receipts(meta, kind)),
-        ("HAL_PASS",             check_hal_pass(meta)),
-        ("operator_intent",      check_operator_intent(meta)),
-        ("replay_pass",          check_replay_pass(meta)),
-        ("no_suspicious_events", check_no_suspicious_events(meta)),
-        ("MAYOR_SEAL_possible",  check_mayor_seal_possible()),
+        ("HAL_PASS",             check_hal_pass(meta, kind)),
+        ("operator_intent",      check_operator_intent(meta, kind)),
+        ("replay_pass",          check_replay_pass(meta, kind)),
+        ("no_suspicious_events", check_no_suspicious_events(meta, kind)),
+        ("MAYOR_SEAL_possible",  check_mayor_seal_possible(kind)),
     ]
     for name, (status, reason) in conjuncts:
-        print(f"  {name:24s} {status:8s} — {reason}")
+        print(f"  {name:24s} {status:26s} — {reason}")
 
     # ── Verdict ────────────────────────────────────────────────────────
     print()
