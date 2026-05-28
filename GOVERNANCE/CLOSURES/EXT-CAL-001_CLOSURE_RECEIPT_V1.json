@@ -1,0 +1,21 @@
+{
+  "receipt_type": "CLOSURE_RECEIPT_V1",
+  "task_id": "EXT-CAL-001",
+  "task_type": "calendar_brief",
+  "source": "Google Calendar, read-only",
+  "date": "2026-05-29 Europe/Paris",
+  "source_hash": "sha256:c3e3ecf13a2d82cc302159dde05b62fc4b9a1f3e2c80995eb21de1a9531bc5ab",
+  "output_hash": "sha256:5434ba15ab51b809a55d52a6279b62e0eaafb32a2ce975eed1878a24c92bb936",
+  "governance_verdict": "APPROVE_READ_ONLY",
+  "authority": false,
+  "claim": "NO_CLAIM",
+  "admitted": false,
+  "ledger_mutation": false,
+  "calendar_mutation": false,
+  "operator_value": "day brief produced",
+  "next_operator_action": "decide whether to attend / RSVP manually if desired",
+  "sealed_at": "2026-05-28T22:17:37.854551Z",
+  "attestor_session": "helen-os-jmtc / Hermes",
+  "cross_session_note": "Receipt produced in helen-os-jmtc session; durably recorded here per operator instruction 2026-05-28.",
+  "frontier_closes": "NEXT_FRONTIER_ISSUE_V0.md"
+}

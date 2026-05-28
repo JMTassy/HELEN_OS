@@ -2,12 +2,12 @@
 
 **External Task Metabolism as the first real HELEN test**
 
-**Status:** FORMAL_DRAFT
+**Status:** FIRST_CONTACT_ACHIEVED
 **Authority:** NON_SOVEREIGN
 **Claim:** NO_CLAIM
 **Ledger mutation:** FORBIDDEN unless reducer-admitted
 **Proposer:** operator (Jean-Marie Tassy Simeoni)
-**Attestor:** pending HAL
+**Attestor:** Hermes (helen-os-jmtc session, 2026-05-28T22:17:37Z)
 **Supersedes (informal predecessor):** `OUTSIDE_WORK_FRONTIER_V0.md`
 **Purpose:** define the first step beyond self-referential HELEN development.
 
@@ -361,6 +361,24 @@ the OS becomes real.
 
 ---
 
-*Status as of 2026-05-28: NEXT_FRONTIER_ISSUE named formally with*
-*pipeline, theorem, schemas, and LaTeX insert. First contact has not yet*
-*happened. Awaiting one external $x$.*
+---
+
+## §13. First Contact — closed
+
+**Task:** EXT-CAL-001 (calendar brief, read-only Google Calendar)
+**Session:** helen-os-jmtc / Hermes, 2026-05-28T22:17:37Z
+**Receipt:** `GOVERNANCE/CLOSURES/EXT-CAL-001_CLOSURE_RECEIPT_V1.json`
+
+```
+source_hash   sha256:c3e3ecf13a2d82cc302159dde05b62fc4b9a1f3e2c80995eb21de1a9531bc5ab
+output_hash   sha256:5434ba15ab51b809a55d52a6279b62e0eaafb32a2ce975eed1878a24c92bb936
+governance_verdict   APPROVE_READ_ONLY
+authority=false  |  claim=NO_CLAIM  |  admitted=false
+ledger_mutation=false  |  calendar_mutation=false
+```
+
+The existential quantifier in §4 is satisfied. HELEN carried one real
+external task through C→G→E and left an honest closure receipt.
+
+*First contact: 2026-05-28T22:17:37Z.*
+*Frontier issue closed.*
