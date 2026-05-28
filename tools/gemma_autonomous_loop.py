@@ -168,9 +168,37 @@ def write_raw_receipt(iteration: int, model: str, user_prompt: str,
     PROPOSAL_DIR.mkdir(parents=True, exist_ok=True)
     timestamp_utc = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
-    full_text = gemma_response["response"]["message"]["content"]
+    # LOCAL_MODEL_ADAPTER_V0 — thinking-channel guard for Ollama /api/chat.
+    # Ollama separates chain-of-thought into message.thinking; final response
+    # goes into message.content. Some thinking models route the entire token
+    # budget into .thinking and leave .content empty ("thinking_starvation").
+    # Detect this and fall back to .thinking so the envelope is not silently lost.
+    _msg = gemma_response["response"].get("message", {})
+    content_raw = (_msg.get("content") or "").strip()
+    thinking_raw = (_msg.get("thinking") or "").strip()
+
+    if content_raw:
+        full_text = content_raw
+        thinking_channel = "content"
+    elif thinking_raw:
+        # thinking_starvation: model put the envelope in .thinking instead of
+        # .content. Treat it as soft fallback — log and continue. The receipt
+        # will carry thinking_starvation=True so audits can flag these.
+        print(
+            f"[gemma_loop] WARNING: thinking_starvation — content empty, "
+            f"falling back to thinking channel (len={len(thinking_raw)})",
+            flush=True,
+        )
+        full_text = thinking_raw
+        thinking_channel = "thinking_fallback"
+    else:
+        # Both empty: genuine empty response. Write a failed receipt rather
+        # than crashing so the PROPOSAL_DIR audit trail is preserved.
+        full_text = ""
+        thinking_channel = "empty"
+
     parsed = parse_envelope(full_text)
-    envelope_ok = envelope_complete(parsed)
+    envelope_ok = envelope_complete(parsed) and bool(full_text)
 
     receipt = {
         "schema_name": "GEMMA_PROPOSAL_RAW_V1",
@@ -183,6 +211,7 @@ def write_raw_receipt(iteration: int, model: str, user_prompt: str,
         "system_prompt_sha256": SYSTEM_PROMPT_SHA256,
         "prompt_text": user_prompt,
         "envelope_complete": envelope_ok,
+        "thinking_channel": thinking_channel,
         "proposal_text": parsed["PROPOSAL"],
         "uncertainty_text": parsed["UNCERTAINTY"],
         "required_receipts": parsed["REQUIRED_RECEIPTS"],
@@ -296,7 +325,14 @@ def run_loop(model: str, topic: str, iterations: int, think: bool,
         ec = resp["response"].get("eval_count", "?")
         wt = resp["wall_time_seconds"]
         dr = resp["response"].get("done_reason", "?")
-        print(f"[gemma_loop] wrote {path.name} tokens={ec} wall={wt}s done={dr}")
+        # Read back the thinking_channel field to surface in stdout
+        try:
+            _rcpt = json.loads(path.read_text(encoding="utf-8"))
+            tc = _rcpt.get("thinking_channel", "unknown")
+            env = "COMPLETE" if _rcpt.get("envelope_complete") else "INCOMPLETE"
+        except Exception:
+            tc, env = "?", "?"
+        print(f"[gemma_loop] wrote {path.name} tokens={ec} wall={wt}s done={dr} channel={tc} envelope={env}")
 
         if i < iterations and require_user_to_continue:
             print(f"[gemma_loop] HALT — review receipt then press Enter to continue, Ctrl-C to stop")
