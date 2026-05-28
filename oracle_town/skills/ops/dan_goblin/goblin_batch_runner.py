@@ -41,7 +41,10 @@ EPOCH_SCHEMA_VERSION = "GOBLIN_EPOCH_V1"
 OPENAI_MODEL = "gpt-4o-mini"
 ANTHROPIC_MODEL = "claude-haiku-4-5-20251001"
 XAI_MODEL = "grok-3-mini"
+OLLAMA_MODEL = "qwen3:14b"  # recommended reducer; also qwen3.5:9b
 DRY_RUN_MODEL = "deterministic-seed-v0"
+
+OLLAMA_BASE_URL = "http://localhost:11434"
 
 # ── HAL thresholds ────────────────────────────────────────────────────────────
 
@@ -57,12 +60,14 @@ _BACKEND_API_PATH = {
     "openai": "chat.completions",
     "anthropic": "messages",
     "xai": "chat.completions",
+    "ollama": "chat.completions",
     "dry_run": "dry_run",
 }
 _BACKEND_API_VER = {
     "openai": "v1",
     "anthropic": "2023-06-01",
     "xai": "v1",
+    "ollama": "v1",
     "dry_run": "v0",
 }
 
@@ -113,12 +118,14 @@ Output ONLY valid JSON with these exact fields:
 
 # ── API call ──────────────────────────────────────────────────────────────────
 
-def call_llm(system: str, user: str, provider: str = "openai") -> tuple[str, str]:
+def call_llm(system: str, user: str, provider: str = "openai", ollama_model: str = OLLAMA_MODEL) -> tuple[str, str]:
     """Returns (content, model_used)."""
     if provider == "openai":
         return _call_openai(system, user), OPENAI_MODEL
     if provider == "xai":
         return _call_xai(system, user), XAI_MODEL
+    if provider == "ollama":
+        return _call_ollama(system, user, model=ollama_model), ollama_model
     return _call_anthropic(system, user), ANTHROPIC_MODEL
 
 
@@ -185,6 +192,70 @@ def _call_anthropic(system: str, user: str, model: str = ANTHROPIC_MODEL) -> str
     )
     resp.raise_for_status()
     return resp.json()["content"][0]["text"]
+
+
+def _call_ollama(system: str, user: str, model: str = OLLAMA_MODEL) -> str:
+    """LOCAL_MODEL_ADAPTER_V0 — Ollama /v1/chat/completions with reasoning-channel guard.
+
+    Contract:
+      content_required      — message.content must be non-empty for JSON tasks
+      reasoning_never_final — message.reasoning is chain-of-thought, never the final answer
+      schema_validate_or_fail — caller must parse result as JSON or raise
+      FAIL_CLOSED           — empty content after full token budget = reasoning_starvation error
+
+    Reasoning models (qwen3, gemma4) can route their entire token budget into
+    message.reasoning while message.content stays "". Detect and reject this case
+    explicitly rather than silently returning empty string to the JSON parser.
+    """
+    import urllib.error
+    import urllib.request
+
+    body = json.dumps({
+        "model": model,
+        "max_tokens": 1200,
+        "temperature": 0.0,
+        "messages": [
+            {"role": "system", "content": system},
+            {"role": "user", "content": user},
+        ],
+    }).encode()
+    req = urllib.request.Request(
+        f"{OLLAMA_BASE_URL}/v1/chat/completions",
+        data=body,
+        headers={"Content-Type": "application/json"},
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=120) as resp:
+            data = json.loads(resp.read().decode())
+    except urllib.error.URLError as e:
+        raise RuntimeError(f"Ollama unreachable at {OLLAMA_BASE_URL}: {e}") from e
+
+    choice = data.get("choices", [{}])[0]
+    message = choice.get("message", {})
+    content = (message.get("content") or "").strip()
+    reasoning = (message.get("reasoning") or "").strip()
+    finish_reason = choice.get("finish_reason", "")
+
+    if not content:
+        usage = data.get("usage", {})
+        completion_tokens = usage.get("completion_tokens", 0)
+        if reasoning or completion_tokens > 0:
+            # reasoning channel consumed the budget; content channel is empty
+            raise RuntimeError(
+                f"LOCAL_MODEL_ADAPTER_V0 FAIL_CLOSED: reasoning_starvation — "
+                f"model={model} finish_reason={finish_reason!r} "
+                f"completion_tokens={completion_tokens} "
+                f"reasoning_len={len(reasoning)} content_len=0. "
+                f"Use a non-reasoning model (e.g. qwen3.5:9b) or add "
+                f"'/no_think' suffix to the user prompt."
+            )
+        raise RuntimeError(
+            f"LOCAL_MODEL_ADAPTER_V0 FAIL_CLOSED: empty content — "
+            f"model={model} finish_reason={finish_reason!r}"
+        )
+
+    return content
 
 
 def parse_json_response(raw: str) -> dict:
@@ -360,6 +431,16 @@ def make_tranche_receipt(
 
 # ── main ──────────────────────────────────────────────────────────────────────
 
+def _resolve_model(provider: str, ollama_model: str = OLLAMA_MODEL) -> str:
+    return {
+        "openai": OPENAI_MODEL,
+        "xai": XAI_MODEL,
+        "anthropic": ANTHROPIC_MODEL,
+        "ollama": ollama_model,
+        "dry_run": DRY_RUN_MODEL,
+    }.get(provider, ANTHROPIC_MODEL)
+
+
 def run_batch(
     mission: str,
     tranche_size: int = 30,
@@ -368,6 +449,7 @@ def run_batch(
     dry_run: bool = False,
     delay: float = 0.5,
     provider: str = "openai",
+    ollama_model: str = OLLAMA_MODEL,
 ) -> None:
     BATCHES_DIR.mkdir(parents=True, exist_ok=True)
     RECEIPTS_DIR.mkdir(parents=True, exist_ok=True)
@@ -406,6 +488,7 @@ def run_batch(
                     GOBLIN_SYSTEM,
                     f"Mission: {mission}\nEpoch index: {epoch_index}\nGenerate a unique insight different from previous epochs.",
                     provider=provider,
+                    ollama_model=ollama_model,
                 )
                 ep_provider = provider
                 goblin = parse_json_response(goblin_raw)
@@ -414,6 +497,7 @@ def run_batch(
                     HER_SYSTEM,
                     f"Mission: {mission}\nGOBLIN statement: {goblin['statement']}\nEmbedded claim: {goblin['embedded_claim']}",
                     provider=provider,
+                    ollama_model=ollama_model,
                 )
                 her = parse_json_response(her_raw)
 
@@ -449,7 +533,7 @@ def run_batch(
                 "authority": "NON_SOVEREIGN",
                 "canon": "NO_SHIP",
                 "provider": provider if not dry_run else "dry_run",
-                "model": OPENAI_MODEL if provider == "openai" else XAI_MODEL if provider == "xai" else ANTHROPIC_MODEL if provider == "anthropic" else DRY_RUN_MODEL,
+                "model": _resolve_model(provider if not dry_run else "dry_run", ollama_model),
             }
             epochs.append(failed_entry)
             with open(output_file, "a") as f:
@@ -457,7 +541,7 @@ def run_batch(
 
     # ── tranche receipt ───────────────────────────────────────────────────────
     tranche_provider = "dry_run" if dry_run else provider
-    tranche_model = DRY_RUN_MODEL if dry_run else (OPENAI_MODEL if provider == "openai" else XAI_MODEL if provider == "xai" else ANTHROPIC_MODEL)
+    tranche_model = _resolve_model(tranche_provider, ollama_model)
     receipt = make_tranche_receipt(
         batch_id, tranche_index, mission,
         [e for e in epochs if e.get("status") != "FAILED"],
@@ -504,7 +588,10 @@ if __name__ == "__main__":
     parser.add_argument("--batch-id", default=None)
     parser.add_argument("--dry-run", action="store_true", help="Skip API calls, use seed data")
     parser.add_argument("--delay", type=float, default=0.5, help="Seconds between API calls")
-    parser.add_argument("--provider", default="xai", choices=["openai", "anthropic", "xai"])
+    parser.add_argument("--provider", default="xai", choices=["openai", "anthropic", "xai", "ollama"])
+    parser.add_argument("--ollama-model", default=OLLAMA_MODEL,
+                        help=f"Ollama model for --provider ollama (default: {OLLAMA_MODEL}). "
+                             "Use a non-reasoning model or append /no_think to avoid reasoning_starvation.")
     args = parser.parse_args()
 
     source_env = Path.home() / ".helen_env"
@@ -525,4 +612,5 @@ if __name__ == "__main__":
         dry_run=args.dry_run,
         delay=args.delay,
         provider=args.provider,
+        ollama_model=args.ollama_model,
     )
