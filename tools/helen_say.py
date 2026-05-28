@@ -253,7 +253,11 @@ def main():
     if op_type == "dialog" and kernel_resp.get("decision") == "ACCEPT":
         try:
             # Execute macOS dialog via osascript
-            dialog_cmd = f'display dialog "{msg.replace('"', '\\"')}" buttons {{"OK"}} default button 1'
+            # Note: escape extracted to a variable so the f-string parser
+            # is not confused by single-quote nesting inside the .replace()
+            # call (Python 3.11+ tokenizer fails on the inline form).
+            escaped_msg = msg.replace('"', '\\"')
+            dialog_cmd = f'display dialog "{escaped_msg}" buttons {{"OK"}} default button 1'
             subprocess.run(["osascript", "-e", dialog_cmd], check=False, timeout=10)
         except Exception as e:
             print(f"[WARN] Dialog execution failed: {e}", file=sys.stderr)

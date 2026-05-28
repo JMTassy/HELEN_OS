@@ -1,0 +1,20 @@
+{
+  "entities": {
+    "oracle_town_001": {
+      "type": "project",
+      "name": "ORACLE TOWN",
+      "status": "active",
+      "tags": ["governance", "deterministic", "os"],
+      "created_run": 1,
+      "last_seen_run": 173,
+      "links_count": 0
+    }
+  },
+  "relationships": [],
+  "metadata": {
+    "version": "1.0",
+    "last_updated_run": 173,
+    "canonical_hash": "sha256:init",
+    "sorted_keys": true
+  }
+}

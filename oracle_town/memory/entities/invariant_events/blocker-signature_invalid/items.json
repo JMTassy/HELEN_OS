@@ -1,0 +1,17 @@
+[
+  {
+    "category": "constraint_violation",
+    "confidence": 1.0,
+    "entity_slug": "blocker-signature_invalid",
+    "entity_type": "invariant_events",
+    "evidence": {
+      "claim_id": "CLM_026",
+      "reason": "SIGNATURE_INVALID"
+    },
+    "fact": "Blocking reason SIGNATURE_INVALID triggered",
+    "id": "blocker-signature_invalid-7c67b337cd01",
+    "source": "test_cycle_output",
+    "status": "active",
+    "timestamp": "2026-01-28T21:36:29"
+  }
+]

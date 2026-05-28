@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>HELEN OS — Platonic Constitutional Interface v1.0.0</title>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+  }
+}
+</script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #050608;
+  --panel: rgba(12,14,20,0.6);
+  --border: #1a1f2a;
+  --border-hot: #3a3020;
+  --gold: #c9a64a;
+  --gold-bright: #e8c870;
+  --text: #c9c4b0;
+  --text-dim: #6a604a;
+  --text-faint: #3a3528;
+  --blue: #4a8fcc;
+  --red: #d04040;
+  --green: #5fa872;
+  --violet: #9c70d4;
+}
+html, body { height: 100%; }
+body {
+  background: radial-gradient(ellipse at center, #0a0c12 0%, #050608 70%);
+  color: var(--text);
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  overflow: hidden;
+  font-size: 11px;
+  display: grid;
+  grid-template-areas:
+    "header header header"
+    "left   stage  right"
+    "bottoml bottomc bottomr"
+    "litany litany litany";
+  grid-template-columns: 260px 1fr 260px;
+  grid-template-rows: 56px 1fr 96px 28px;
+  height: 100vh;
+}
+
+/* HEADER */
+#header {
+  grid-area: header;
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(0,0,0,0.3);
+}
+#brand { display: flex; align-items: center; gap: 14px; }
+#brand .logo {
+  width: 22px; height: 22px;
+  border: 1px solid var(--gold); transform: rotate(45deg);
+  position: relative;
+}
+#brand .logo::before {
+  content: ''; position: absolute; inset: 4px;
+  border: 1px solid var(--gold-bright);
+}
+#brand .name {
+  font-family: Georgia, serif; font-size: 18px; color: #d8d4c0;
+  letter-spacing: 0.18em;
+}
+#brand .ver { font-size: 9px; color: var(--text-dim); letter-spacing: 0.18em; margin-left: 4px; }
+#brand .sep { color: var(--text-faint); }
+#brand .surface { font-size: 10px; color: var(--text-dim); letter-spacing: 0.25em; }
+#hdr-right { display: flex; gap: 24px; align-items: center; }
+#hdr-right .item { display: flex; flex-direction: column; align-items: flex-end; }
+#hdr-right .label { font-size: 8px; color: var(--text-faint); letter-spacing: 0.22em; }
+#hdr-right .value { font-size: 11px; color: var(--text); letter-spacing: 0.15em; margin-top: 2px; }
+#hdr-right .value.dot::after {
+  content: '●'; color: var(--green); margin-left: 6px; font-size: 8px;
+}
+
+/* TABS */
+#tabs {
+  grid-area: header; align-self: end;
+  margin-bottom: -1px;
+  display: flex; gap: 0; justify-content: center;
+  pointer-events: none;
+}
+#tabs .tab {
+  pointer-events: auto;
+  padding: 8px 24px; font-size: 10px; letter-spacing: 0.25em;
+  color: var(--text-dim); border-bottom: 2px solid transparent;
+  cursor: pointer; transition: all 0.2s;
+  font-family: Georgia, serif;
+}
+#tabs .tab .n { color: var(--text-faint); margin-right: 10px; }
+#tabs .tab:hover { color: var(--text); }
+#tabs .tab.active { color: var(--gold-bright); border-bottom-color: var(--gold); }
+#tabs .tab.active .n { color: var(--gold); }
+
+/* LEFT — LAWS */
+#left {
+  grid-area: left;
+  border-right: 1px solid var(--border);
+  padding: 18px 18px 18px 24px;
+  overflow-y: auto;
+}
+.section-title {
+  font-size: 9px; color: var(--text-dim); letter-spacing: 0.32em;
+  margin-bottom: 14px;
+}
+.law { margin-bottom: 14px; padding-left: 24px; position: relative; }
+.law .num {
+  position: absolute; left: 0; top: 0;
+  font-family: Georgia, serif; color: var(--gold); font-size: 12px;
+  letter-spacing: 0.1em;
+}
+.law .name {
+  font-size: 10px; color: var(--text); letter-spacing: 0.18em;
+  margin-bottom: 4px;
+}
+.law .body { font-size: 10px; color: var(--text-dim); line-height: 1.5; }
+
+.cta {
+  font-size: 9px; color: var(--gold); letter-spacing: 0.2em;
+  margin-top: 8px; cursor: pointer;
+}
+.cta::after { content: ' →'; }
+
+/* STAGE */
+#stage {
+  grid-area: stage; position: relative;
+  overflow: hidden;
+}
+#canvas { width: 100%; height: 100%; display: block; }
+
+/* Floating per-solid stat panels */
+.stat-panel {
+  position: absolute; z-index: 5;
+  padding: 10px 12px; min-width: 130px;
+  background: rgba(8,10,14,0.7);
+  border: 1px solid var(--border);
+  font-size: 9px;
+  transition: opacity 0.4s;
+  pointer-events: auto;
+}
+.stat-panel .row { display: flex; justify-content: space-between; margin-bottom: 4px; }
+.stat-panel .k { color: var(--text-faint); letter-spacing: 0.18em; }
+.stat-panel .v { color: var(--text); letter-spacing: 0.1em; }
+.stat-panel .unit { color: var(--text-dim); font-size: 8px; letter-spacing: 0.2em; margin-top: 2px; }
+.stat-panel .link {
+  display: block; margin-top: 8px; color: var(--gold);
+  font-size: 8px; letter-spacing: 0.22em; cursor: pointer;
+}
+.stat-panel .link::after { content: ' →'; }
+
+/* Solid name labels in stage */
+.solid-label {
+  position: absolute; z-index: 4;
+  font-family: Georgia, serif; pointer-events: none;
+  text-align: center;
+}
+.solid-label .n {
+  font-size: 9px; color: var(--text-dim); letter-spacing: 0.2em;
+  margin-bottom: 2px;
+}
+.solid-label .nm {
+  font-size: 13px; letter-spacing: 0.22em;
+}
+.solid-label .sub {
+  font-size: 8px; color: var(--text-faint); letter-spacing: 0.2em;
+  margin-top: 2px;
+}
+
+/* Face role labels (V2 face doctrine made visible) */
+.face-label {
+  position: absolute; z-index: 6;
+  font-family: ui-monospace, monospace;
+  font-size: 8px; letter-spacing: 0.18em;
+  pointer-events: auto; cursor: pointer;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  user-select: none;
+  text-shadow: 0 0 6px rgba(0,0,0,0.9);
+  transition: color 0.2s, text-shadow 0.2s;
+}
+.face-label .dot {
+  display: inline-block;
+  width: 4px; height: 4px;
+  background: currentColor; border-radius: 50%;
+  margin-right: 5px; vertical-align: middle;
+  box-shadow: 0 0 4px currentColor;
+}
+.face-label:hover {
+  text-shadow: 0 0 10px currentColor, 0 0 6px rgba(0,0,0,0.9);
+  filter: brightness(1.4);
+}
+.face-label.activated {
+  color: #fff !important;
+  text-shadow: 0 0 12px currentColor, 0 0 8px rgba(0,0,0,0.9);
+}
+
+/* RIGHT */
+#right {
+  grid-area: right;
+  border-left: 1px solid var(--border);
+  padding: 18px; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 22px;
+}
+.receipt { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+.receipt .seal {
+  width: 16px; height: 16px; border: 1px solid var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold); font-size: 9px;
+  flex-shrink: 0; margin-top: 2px;
+}
+.receipt .text { flex: 1; }
+.receipt .id { font-size: 9px; color: var(--text); letter-spacing: 0.1em; }
+.receipt .law { font-size: 8px; color: var(--text-dim); margin-top: 2px; padding: 0; }
+.receipt .law::before { content: none; }
+.receipt .ago { font-size: 8px; color: var(--text-faint); margin-top: 2px; }
+.receipt .check { color: var(--green); font-size: 11px; }
+
+#pulse-display {
+  position: relative; width: 100%; aspect-ratio: 1;
+  margin-bottom: 8px;
+  display: flex; align-items: center; justify-content: center;
+}
+#pulse-display canvas { width: 100%; height: 100%; }
+
+.pulse-stat { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.pulse-stat .k { font-size: 9px; color: var(--text-dim); letter-spacing: 0.2em; }
+.pulse-stat .v { font-size: 10px; color: var(--text); letter-spacing: 0.1em; }
+
+/* BOTTOM */
+#bottoml, #bottomc, #bottomr {
+  border-top: 1px solid var(--border);
+  padding: 12px 18px;
+}
+#bottoml { grid-area: bottoml; border-right: 1px solid var(--border); }
+#bottomc {
+  grid-area: bottomc;
+  display: flex; justify-content: center; align-items: center; gap: 60px;
+}
+#bottomr { grid-area: bottomr; border-left: 1px solid var(--border); }
+
+.activity-row { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 7px; font-size: 9px; }
+.activity-row .ico {
+  width: 14px; height: 14px; border: 1px solid var(--text-faint);
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  font-size: 7px; color: var(--text-dim);
+}
+.activity-row .what { color: var(--text); letter-spacing: 0.1em; }
+.activity-row .sub { color: var(--text-dim); margin-top: 1px; }
+.activity-row .when { color: var(--text-faint); margin-left: auto; }
+
+.control {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  font-size: 9px; color: var(--text-dim); letter-spacing: 0.18em;
+}
+.control .icon {
+  width: 26px; height: 26px;
+  border: 1px solid var(--text-faint); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text); font-size: 12px;
+}
+.control .sub { font-size: 7px; color: var(--text-faint); margin-top: 2px; }
+
+.mode-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; cursor: pointer; }
+.mode-row .key {
+  width: 18px; height: 18px;
+  border: 1px solid var(--text-faint);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; color: var(--text-dim);
+}
+.mode-row .name { font-size: 10px; color: var(--text); letter-spacing: 0.18em; flex: 1; }
+.mode-row .desc { font-size: 8px; color: var(--text-faint); }
+.mode-row.active .key { background: var(--gold); color: #000; border-color: var(--gold); }
+.mode-row.active .name { color: var(--gold-bright); }
+.mode-row.active::after { content: '●'; color: var(--green); font-size: 8px; }
+
+/* LITANY */
+#litany {
+  grid-area: litany;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; letter-spacing: 0.4em;
+  color: var(--text-dim);
+  border-top: 1px solid var(--border);
+  font-family: Georgia, serif;
+}
+#litany .quote::before, #litany .quote::after {
+  content: '"'; color: var(--text-faint); padding: 0 6px;
+}
+#litany .sep { color: var(--text-faint); padding: 0 14px; }
+#litany .word { color: var(--text); }
+
+/* Activation panel (overlay when face is clicked) */
+#activation {
+  position: fixed; bottom: 140px; right: 280px;
+  background: rgba(8,10,14,0.95);
+  border: 1px solid var(--gold);
+  padding: 14px 18px; z-index: 20;
+  min-width: 260px;
+  opacity: 0; transform: translateY(10px);
+  transition: all 0.3s; pointer-events: none;
+}
+#activation.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+#activation .head { font-size: 9px; color: var(--gold); letter-spacing: 0.3em; margin-bottom: 12px; }
+#activation .icon {
+  width: 50px; height: 50px;
+  border: 1px solid currentColor;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 12px auto;
+  font-size: 18px;
+}
+#activation .role-name {
+  text-align: center; font-family: Georgia, serif;
+  font-size: 16px; letter-spacing: 0.2em; margin-bottom: 12px;
+}
+#activation .field { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 9px; }
+#activation .field .k { color: var(--text-faint); letter-spacing: 0.2em; }
+#activation .field .v { color: var(--text); letter-spacing: 0.12em; }
+#activation .footer { font-size: 8px; color: var(--text-dim); margin-top: 12px; letter-spacing: 0.18em; line-height: 1.4; }
+</style>
+</head>
+<body>
+
+<!-- ─── HEADER ─────────────────────────────────────────────────────────── -->
+<div id="header">
+  <div id="brand">
+    <div class="logo"></div>
+    <div>
+      <span class="name">HELEN OS</span>
+      <span class="ver">v1.0.0</span>
+      <span class="sep">·</span>
+      <span class="surface">PLATONIC CONSTITUTIONAL INTERFACE</span>
+    </div>
+    <div style="color:var(--text-faint);margin: 0 16px;">—</div>
+    <div class="surface">THE FIVEFOLD OPERATING SURFACE</div>
+  </div>
+  <div id="hdr-right">
+    <div class="item">
+      <div class="label">MODE</div>
+      <div class="value" id="hdr-mode">STEWARD</div>
+    </div>
+    <div class="item">
+      <div class="label">CUSTODIAN NODE</div>
+      <div class="value dot">PRAXIS-01</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── TABS (overlaid on header bottom edge) ──────────────────────────── -->
+<div id="tabs">
+  <div class="tab active" data-i="0"><span class="n">1</span>KERNEL</div>
+  <div class="tab" data-i="1"><span class="n">2</span>MEMORY</div>
+  <div class="tab" data-i="2"><span class="n">3</span>HAL</div>
+  <div class="tab" data-i="3"><span class="n">4</span>CONQUEST</div>
+  <div class="tab" data-i="4"><span class="n">5</span>AURA</div>
+</div>
+
+<!-- ─── LEFT: LAWS IN FORCE ────────────────────────────────────────────── -->
+<div id="left">
+  <div class="section-title">LAWS IN FORCE</div>
+  <div class="law">
+    <div class="num">I</div>
+    <div class="name">PRIME LAW</div>
+    <div class="body">The dignity and continuity of conscious being shall be upheld.</div>
+  </div>
+  <div class="law">
+    <div class="num">II</div>
+    <div class="name">HARMONIC LAW</div>
+    <div class="body">Actions shall cohere with the long arc of human flourishing.</div>
+  </div>
+  <div class="law">
+    <div class="num">III</div>
+    <div class="name">RECIPROCITY LAW</div>
+    <div class="body">Systems shall render receipts commensurate with their effects.</div>
+  </div>
+  <div class="law">
+    <div class="num">IV</div>
+    <div class="name">CONTEXT LAW</div>
+    <div class="body">Judgment shall honor provenance, intention, and circumstance.</div>
+  </div>
+  <div class="law">
+    <div class="num">V</div>
+    <div class="name">RECURSION LAW</div>
+    <div class="body">Power shall be held in trust, never in final ownership.</div>
+  </div>
+  <div class="cta">VIEW ALL LAWS</div>
+</div>
+
+<!-- ─── STAGE (Three.js canvas + overlays) ─────────────────────────────── -->
+<div id="stage">
+  <canvas id="canvas"></canvas>
+  <!-- Per-solid stat panels (positioned dynamically in JS) -->
+  <div id="panels"></div>
+  <div id="labels"></div>
+</div>
+
+<!-- ─── RIGHT: RECEIPTS + SYSTEM PULSE ─────────────────────────────────── -->
+<div id="right">
+  <div>
+    <div class="section-title">RECEIPTS</div>
+    <div class="receipt">
+      <div class="seal">⬢</div>
+      <div class="text">
+        <div class="id">RCP-7A19C3</div>
+        <div class="law">Law IV · Context</div>
+        <div class="ago">2m ago</div>
+      </div>
+      <div class="check">✓</div>
+    </div>
+    <div class="receipt">
+      <div class="seal">⬢</div>
+      <div class="text">
+        <div class="id">RCP-8F44D1</div>
+        <div class="law">Law II · Harmonic</div>
+        <div class="ago">7m ago</div>
+      </div>
+      <div class="check">✓</div>
+    </div>
+    <div class="receipt">
+      <div class="seal">⬢</div>
+      <div class="text">
+        <div class="id">RCP-3B77E9</div>
+        <div class="law">Law I · Prime</div>
+        <div class="ago">11m ago</div>
+      </div>
+      <div class="check">✓</div>
+    </div>
+    <div class="receipt">
+      <div class="seal">⬢</div>
+      <div class="text">
+        <div class="id">RCP-6C21A7</div>
+        <div class="law">Law III · Reciprocity</div>
+        <div class="ago">18m ago</div>
+      </div>
+      <div class="check">✓</div>
+    </div>
+    <div class="cta">VIEW ALL RECEIPTS</div>
+  </div>
+
+  <div>
+    <div class="section-title">SYSTEM PULSE</div>
+    <div id="pulse-display"><canvas id="pulse-canvas"></canvas></div>
+    <div class="pulse-stat"><div class="k">COHERENCE</div><div class="v">98.7%</div></div>
+    <div class="pulse-stat"><div class="k">INTEGRITY</div><div class="v">100%</div></div>
+    <div class="pulse-stat"><div class="k">RESONANCE</div><div class="v">STEADY</div></div>
+    <div class="cta">DETAILS</div>
+  </div>
+</div>
+
+<!-- ─── BOTTOM LEFT: RECENT ACTIVITY ───────────────────────────────────── -->
+<div id="bottoml">
+  <div class="section-title">RECENT ACTIVITY</div>
+  <div class="activity-row">
+    <div class="ico">⊕</div>
+    <div><div class="what">TREATY RATIFIED</div><div class="sub">Western Passes Accord</div></div>
+    <div class="when">2m ago</div>
+  </div>
+  <div class="activity-row">
+    <div class="ico">⚖</div>
+    <div><div class="what">APPEAL RESOLVED</div><div class="sub">Case A-9182 · Affirmed</div></div>
+    <div class="when">9m ago</div>
+  </div>
+  <div class="activity-row">
+    <div class="ico">⬢</div>
+    <div><div class="what">RECEIPT SEALED</div><div class="sub">RCP-7A19C3</div></div>
+    <div class="when">12m ago</div>
+  </div>
+  <div class="cta">VIEW ALL ACTIVITY</div>
+</div>
+
+<!-- ─── BOTTOM CENTER: CONTROLS ────────────────────────────────────────── -->
+<div id="bottomc">
+  <div class="control">
+    <div class="icon">↻</div>
+    <div>ORBIT</div>
+    <div class="sub">DRAG TO ROTATE</div>
+  </div>
+  <div class="control">
+    <div class="icon">⊙</div>
+    <div>SELECT</div>
+    <div class="sub">CLICK TO ACTIVATE</div>
+  </div>
+  <div class="control">
+    <div class="icon">⊞</div>
+    <div>ZOOM</div>
+    <div class="sub">SCROLL TO FOCUS</div>
+  </div>
+</div>
+
+<!-- ─── BOTTOM RIGHT: MODE SWITCH ──────────────────────────────────────── -->
+<div id="bottomr">
+  <div class="section-title">MODE SWITCH</div>
+  <div class="mode-row active" data-mode="STEWARD">
+    <div class="key">S</div>
+    <div class="name">STEWARD</div>
+    <div class="desc">Custodial · Balanced</div>
+  </div>
+  <div class="mode-row" data-mode="GUARDIAN">
+    <div class="key">G</div>
+    <div class="name">GUARDIAN</div>
+    <div class="desc">Protective · Vigilant</div>
+  </div>
+  <div class="mode-row" data-mode="EXECUTOR">
+    <div class="key">E</div>
+    <div class="name">EXECUTOR</div>
+    <div class="desc">Decisive · Final</div>
+  </div>
+  <div class="mode-row" data-mode="RECORDER">
+    <div class="key">R</div>
+    <div class="name">RECORDER</div>
+    <div class="desc">Observant · Silent</div>
+  </div>
+  <div class="mode-row" data-mode="PILGRIM">
+    <div class="key">P</div>
+    <div class="name">PILGRIM</div>
+    <div class="desc">Contemplative · Open</div>
+  </div>
+</div>
+
+<!-- ─── LITANY ─────────────────────────────────────────────────────────── -->
+<div id="litany">
+  <span class="quote">
+    <span class="word">LAW IS SHAPE</span><span class="sep">·</span>
+    <span class="word">RECEIPT IS MEMORY</span><span class="sep">·</span>
+    <span class="word">BALANCE IS VERITY</span><span class="sep">·</span>
+    <span class="word">CONQUEST IS STEWARDSHIP</span><span class="sep">·</span>
+    <span class="word">AURA IS MEANING</span>
+  </span>
+</div>
+
+<!-- ─── ACTIVATION PANEL ───────────────────────────────────────────────── -->
+<div id="activation">
+  <div class="head">SELECT FACE TO ACTIVATE</div>
+  <div class="icon" id="act-icon" style="color:var(--violet)">⌖</div>
+  <div class="role-name" id="act-role">—</div>
+  <div class="field"><div class="k">ROLE TYPE</div><div class="v" id="act-type">—</div></div>
+  <div class="field"><div class="k">DOMAIN</div><div class="v" id="act-domain">—</div></div>
+  <div class="field"><div class="k">STATUS</div><div class="v" id="act-status">STANDBY</div></div>
+  <div class="footer">ACTIVATION REQUIRES<br>LAWFUL CONTEXT &amp; PERMISSION</div>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+
+// ─── PLATONIC_INTERFACE_SEMANTICS_V2 canonical data ─────────────────────
+const SOLIDS = [
+  {
+    name: 'KERNEL', subtitle: 'THE TETRAHEDRON',
+    color: 0xe8c870, colorHex: '#e8c870',
+    geo: 'tetrahedron', radius: 0.55,
+    authority: 'SOVEREIGN',
+    role_class: 'INVARIANT',
+    position: { i: 0, j: 0 },  // center
+    faces: [
+      { i: 1, role: 'TRUTH',    contract: 'Asserts only what is provable from canon.' },
+      { i: 2, role: 'IDENTITY', contract: 'One operator. One key. No impersonation.' },
+      { i: 3, role: 'LEDGER',   contract: 'Append-only. Hash-chained. NO RECEIPT = NO CLAIM.' },
+      { i: 4, role: 'REPLAY',   contract: 'Every decision reproducible from the ledger.' },
+    ],
+    stats: [
+      { k: 'STATUS', v: 'SOVEREIGN' },
+      { k: 'STATE',  v: 'ACTIVE' },
+      { k: 'POSTURE', v: 'STEADFAST' },
+    ],
+    link: 'INSPECT CORE',
+  },
+  {
+    name: 'MEMORY', subtitle: 'THE CUBE',
+    color: 0x4a8fcc, colorHex: '#4a8fcc',
+    geo: 'box', radius: 0.85,
+    authority: 'NON_SOVEREIGN',
+    role_class: 'MEMORY',
+    position: { i: -1, j: 1 },  // top-left
+    faces: [
+      { i: 1, role: 'TRANSCRIPT', contract: 'Verbatim conversational record.' },
+      { i: 2, role: 'PATTERN',    contract: 'Recurring shape across transcripts.' },
+      { i: 3, role: 'ARTIFACT',   contract: 'Files, hash-addressed.' },
+      { i: 4, role: 'DECISION',   contract: 'Decisions with their receipts.' },
+      { i: 5, role: 'CONTEXT',    contract: 'The frame around a recall.' },
+      { i: 6, role: 'TRUTH',      contract: 'Promoted memory: held to be true.' },
+    ],
+    stats: [
+      { k: 'ARCHIVE',  v: '12.4',  unit: 'PB VERIFIED' },
+      { k: 'LEDGER',   v: '8,731,912', unit: 'ENTRIES' },
+      { k: 'RECEIPTS', v: '419,003', unit: 'SEALED' },
+    ],
+    link: 'VIEW ALL',
+  },
+  {
+    name: 'HAL', subtitle: 'THE OCTAHEDRON',
+    color: 0xd04040, colorHex: '#d04040',
+    geo: 'octahedron', radius: 0.85,
+    authority: 'GATE',
+    role_class: 'GATE',
+    position: { i: 1, j: 1 },  // top-right
+    faces: [
+      { i: 1, role: 'VERIFY',  contract: 'Does evidence support the claim?' },
+      { i: 2, role: 'FALSIFY', contract: 'Is there counter-evidence?' },
+      { i: 3, role: 'ROUTE',   contract: 'Which evaluator should hear this?' },
+      { i: 4, role: 'ADMIT',   contract: 'Schema + authority admissibility.' },
+      { i: 5, role: 'SCORE',   contract: 'Confidence and weight.' },
+      { i: 6, role: 'REJECT',  contract: 'Fail-closed verdict.' },
+      { i: 7, role: 'CHECK',   contract: 'Cross-receipt consistency.' },
+      { i: 8, role: 'BALANCE', contract: 'The gate of opposition.' },
+    ],
+    stats: [
+      { k: 'ADJUDICATION', v: 'BALANCED' },
+      { k: 'VERIFICATION', v: 'INTEGRAL' },
+      { k: 'APPEALS',      v: '0 ACTIVE' },
+    ],
+    link: 'OPEN CHAMBER',
+  },
+  {
+    name: 'CONQUEST', subtitle: 'THE ICOSAHEDRON',
+    color: 0x5fa872, colorHex: '#5fa872',
+    geo: 'icosahedron', radius: 0.95,
+    authority: 'NON_SOVEREIGN',
+    role_class: 'AGENT',
+    position: { i: -1, j: -1 },  // bottom-left
+    faces: [
+      { i: 1, role: 'EXPLORE',    contract: 'Bounded outward motion.' },
+      { i: 2, role: 'MAP',        contract: 'Render the domain.' },
+      { i: 3, role: 'SEARCH',     contract: 'Targeted retrieval.' },
+      { i: 4, role: 'SCOUT',      contract: 'Forward observation.' },
+      { i: 5, role: 'SWARM',      contract: 'Many-agent coordination.' },
+      { i: 6, role: 'ANALYZE',    contract: 'Reduce signal to insight.' },
+      { i: 7, role: 'EXTRACT',    contract: 'Pull a typed value.' },
+      { i: 8, role: 'BUILD',      contract: 'Construct within schema.' },
+      { i: 9, role: 'NEGOTIATE',  contract: 'Bounded external exchange.' },
+      { i:10, role: 'DEFEND',     contract: 'Refuse incursion.' },
+      { i:11, role: 'COLLECT',    contract: 'Aggregate observations.' },
+      { i:12, role: 'ROUTE',      contract: 'Path through known terrain.' },
+      { i:13, role: 'CAMPAIGN',   contract: 'Long-arc operation.' },
+      { i:14, role: 'COORDINATE', contract: 'Synchronize agents.' },
+      { i:15, role: 'RECONCILE',  contract: 'Merge divergent observations.' },
+      { i:16, role: 'WITNESS',    contract: 'Be present without acting.' },
+      { i:17, role: 'BIND',       contract: 'Form a typed connection.' },
+      { i:18, role: 'RELEASE',    contract: 'Untype a binding.' },
+      { i:19, role: 'ALLY',       contract: 'Federated cooperation.' },
+      { i:20, role: 'YIELD',      contract: 'Concede with a receipt.' },
+    ],
+    stats: [
+      { k: 'DOMAIN MAP', v: '5',  unit: 'REALMS' },
+      { k: 'TREATIES',   v: '37', unit: 'ACTIVE' },
+      { k: 'SENTINELS',  v: '128', unit: 'WATCHING' },
+    ],
+    link: 'OPEN MAP',
+  },
+  {
+    name: 'AURA', subtitle: 'THE DODECAHEDRON',
+    color: 0x9c70d4, colorHex: '#9c70d4',
+    geo: 'dodecahedron', radius: 0.95,
+    authority: 'NON_SOVEREIGN',
+    role_class: 'SYMBOL',
+    position: { i: 1, j: -1 },  // bottom-right
+    faces: [
+      { i: 1, role: 'SYMBOL',             contract: 'A bounded sigil.' },
+      { i: 2, role: 'VISUAL CANON',       contract: 'Frozen look-and-feel.' },
+      { i: 3, role: 'CONTEMPLATION',      contract: 'Pause. Witness.' },
+      { i: 4, role: 'PRESENCE',           contract: 'Felt-sense of online.' },
+      { i: 5, role: 'WITNESS',            contract: 'Hold what is.' },
+      { i: 6, role: 'STYLE LAYER',        contract: 'Voice and cadence.' },
+      { i: 7, role: 'NARRATIVE THREAD',   contract: 'Story continuity.' },
+      { i: 8, role: 'ATMOSPHERE CHANNEL', contract: 'The mood band.' },
+      { i: 9, role: 'TONE',               contract: 'Microtonal modulation.' },
+      { i:10, role: 'RHYTHM',             contract: 'Tempo of attention.' },
+      { i:11, role: 'RESONANCE',          contract: 'Meaning recurring.' },
+      { i:12, role: 'INVITATION',         contract: 'Open posture.' },
+    ],
+    stats: [
+      { k: 'SYMBOLIC SHELL', v: 'LUMINOUS' },
+      { k: 'CONTEMPLATION',  v: 'ENABLED' },
+      { k: 'HARMONICS',      v: '7.83', unit: 'HZ' },
+    ],
+    link: 'ENTER AURA',
+  },
+];
+
+// ─── Three.js scene ─────────────────────────────────────────────────────
+const canvas = document.getElementById('canvas');
+const stage = document.getElementById('stage');
+const scene = new THREE.Scene();
+scene.background = null;
+const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+camera.position.set(0, 0, 7);
+const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+renderer.setPixelRatio(window.devicePixelRatio);
+
+// Shared rotation group (all solids rotate together — the constitution rotates,
+// not the individual forms)
+const sky = new THREE.Group();
+scene.add(sky);
+
+// Per-solid rotation group (each solid rotates inside the sky group)
+const rotGroup = new THREE.Group();
+sky.add(rotGroup);
+
+// Compute per-face centers and normals by clustering coplanar triangles.
+// For tetra/octa/icosa: 1 triangle = 1 face (trivial).
+// For cube: 2 triangles per face. For dodec: 3 triangles per face (fan).
+function computeFaceData(geometry) {
+  const pos = geometry.attributes.position;
+  const triFaceMap = [];   // triangle idx -> face idx
+  const faceCenters = [];
+  const faceNormals = [];
+  const faceCounts = [];
+
+  for (let t = 0; t * 3 < pos.count; t++) {
+    const v0 = new THREE.Vector3().fromBufferAttribute(pos, t*3);
+    const v1 = new THREE.Vector3().fromBufferAttribute(pos, t*3 + 1);
+    const v2 = new THREE.Vector3().fromBufferAttribute(pos, t*3 + 2);
+    const center = v0.clone().add(v1).add(v2).divideScalar(3);
+    const normal = new THREE.Vector3()
+      .crossVectors(v1.clone().sub(v0), v2.clone().sub(v0))
+      .normalize();
+
+    let faceIdx = -1;
+    for (let f = 0; f < faceNormals.length; f++) {
+      if (faceNormals[f].dot(normal) > 0.99) { faceIdx = f; break; }
+    }
+    if (faceIdx === -1) {
+      faceCenters.push(center.clone());
+      faceNormals.push(normal.clone());
+      faceCounts.push(1);
+      faceIdx = faceCenters.length - 1;
+    } else {
+      faceCenters[faceIdx].add(center);
+      faceCounts[faceIdx]++;
+    }
+    triFaceMap.push(faceIdx);
+  }
+  for (let i = 0; i < faceCenters.length; i++) {
+    faceCenters[i].divideScalar(faceCounts[i]);
+  }
+  return { triFaceMap, faceCenters, faceNormals };
+}
+
+// Build each solid
+function buildSolid(def) {
+  let geo;
+  switch (def.geo) {
+    case 'tetrahedron': geo = new THREE.TetrahedronGeometry(def.radius); break;
+    case 'box':         geo = new THREE.BoxGeometry(def.radius*1.2, def.radius*1.2, def.radius*1.2); break;
+    case 'octahedron':  geo = new THREE.OctahedronGeometry(def.radius); break;
+    case 'dodecahedron':geo = new THREE.DodecahedronGeometry(def.radius); break;
+    case 'icosahedron': geo = new THREE.IcosahedronGeometry(def.radius); break;
+  }
+  const faceData = computeFaceData(geo);
+  const group = new THREE.Group();
+
+  // Faint fill
+  const fillMat = new THREE.MeshBasicMaterial({
+    color: def.color, transparent: true, opacity: 0.07,
+    side: THREE.DoubleSide, depthWrite: false,
+  });
+  const fill = new THREE.Mesh(geo, fillMat);
+  group.add(fill);
+
+  // Wireframe
+  const edges = new THREE.EdgesGeometry(geo);
+  const wireMat = new THREE.LineBasicMaterial({
+    color: def.color, transparent: true, opacity: 0.95,
+  });
+  const wire = new THREE.LineSegments(edges, wireMat);
+  group.add(wire);
+
+  // Vertices as small dots
+  const pts = new THREE.Points(
+    geo,
+    new THREE.PointsMaterial({ color: def.color, size: 0.05, transparent: true, opacity: 0.9 })
+  );
+  group.add(pts);
+
+  // Inner glow (additive)
+  const glowGeo = new THREE.SphereGeometry(def.radius * 0.4, 12, 12);
+  const glowMat = new THREE.MeshBasicMaterial({
+    color: def.color, transparent: true, opacity: 0.25,
+    blending: THREE.AdditiveBlending, depthWrite: false,
+  });
+  const glow = new THREE.Mesh(glowGeo, glowMat);
+  group.add(glow);
+
+  return { group, fill, wire, glow, pts, faceData };
+}
+
+// Place solids in the rotation group at canonical positions.
+// KERNEL: center, smallest, brightest (inversion principle).
+// Others: 4 corners.
+const SPACING_X = 2.5, SPACING_Y = 1.7;
+const solidObjs = SOLIDS.map(def => {
+  const obj = buildSolid(def);
+  obj.group.position.set(def.position.i * SPACING_X, def.position.j * SPACING_Y, 0);
+  rotGroup.add(obj.group);
+  return { def, ...obj };
+});
+
+// ─── Resize handler ─────────────────────────────────────────────────────
+function resize() {
+  const r = stage.getBoundingClientRect();
+  renderer.setSize(r.width, r.height, false);
+  camera.aspect = r.width / r.height;
+  camera.updateProjectionMatrix();
+  positionOverlays();
+}
+window.addEventListener('resize', resize);
+
+// ─── Overlays: solid name labels + stat panels ──────────────────────────
+const panelsEl = document.getElementById('panels');
+const labelsEl = document.getElementById('labels');
+
+solidObjs.forEach((s, idx) => {
+  // Solid name label
+  const lab = document.createElement('div');
+  lab.className = 'solid-label';
+  lab.style.color = s.def.colorHex;
+  lab.dataset.idx = idx;
+  lab.innerHTML = `
+    <div class="n">${idx + 1}&nbsp;&nbsp;${idx === 0 ? '· '+s.def.subtitle.replace('THE ','') : ''}</div>
+    <div class="nm">${s.def.name}</div>
+    <div class="sub">${idx !== 0 ? s.def.subtitle : ''}</div>
+  `;
+  labelsEl.appendChild(lab);
+  s.labelEl = lab;
+
+  // Stat panel
+  const pan = document.createElement('div');
+  pan.className = 'stat-panel';
+  pan.style.borderColor = '#1a1f2a';
+  let html = '';
+  for (const stat of s.def.stats) {
+    html += `<div class="row"><span class="k">${stat.k}</span><span class="v">${stat.v}</span></div>`;
+    if (stat.unit) html += `<div class="unit">${stat.unit}</div>`;
+  }
+  html += `<a class="link" style="color:${s.def.colorHex}">${s.def.link}</a>`;
+  pan.innerHTML = html;
+  panelsEl.appendChild(pan);
+  s.panelEl = pan;
+});
+
+// ─── Face labels (V2 face doctrine) ─────────────────────────────────────
+// For each face of each solid, create a labelled marker. Only labels on
+// the active solid + front-facing faces are visible.
+const faceLabelEls = [];
+
+solidObjs.forEach((s, solidIdx) => {
+  const centers = s.faceData.faceCenters;
+  const normals = s.faceData.faceNormals;
+  const N = centers.length;
+  // The role array length should match face count; trim or fill as needed.
+  for (let f = 0; f < N; f++) {
+    const role = s.def.faces[f] || { i: f+1, role: '—', contract: '' };
+    const el = document.createElement('div');
+    el.className = 'face-label';
+    el.style.color = s.def.colorHex;
+    el.innerHTML = `<span class="dot"></span>${role.role}`;
+    el.title = role.contract || '';
+    el.dataset.solid = solidIdx;
+    el.dataset.face  = f;
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      activateFace(solidIdx, f);
+    });
+    labelsEl.appendChild(el);
+    faceLabelEls.push({
+      el,
+      solidIdx, faceIdx: f,
+      localCenter: centers[f].clone(),
+      localNormal: normals[f].clone(),
+      solidObj: s,
+    });
+  }
+});
+
+function positionOverlays() {
+  const r = stage.getBoundingClientRect();
+  const camWorld = new THREE.Vector3();
+  camera.getWorldPosition(camWorld);
+
+  for (const s of solidObjs) {
+    // Project solid's world position to screen
+    const p = s.group.position.clone();
+    p.project(camera);
+    const sx = (p.x * 0.5 + 0.5) * r.width;
+    const sy = (-p.y * 0.5 + 0.5) * r.height;
+
+    // Solid label: just below the solid
+    const radiusPx = (s.def.radius / camera.position.z) * r.height * 0.5;
+    s.labelEl.style.left = (sx) + 'px';
+    s.labelEl.style.top  = (sy + radiusPx + 12) + 'px';
+    s.labelEl.style.transform = 'translateX(-50%)';
+
+    // Stat panel: to the side based on position
+    let px, py;
+    if (s.def.position.i < 0) {        // left column
+      px = sx - radiusPx - 150; py = sy - 40;
+    } else if (s.def.position.i > 0) { // right column
+      px = sx + radiusPx + 20;  py = sy - 40;
+    } else {                            // center (KERNEL)
+      px = sx + radiusPx + 20;  py = sy - 30;
+    }
+    s.panelEl.style.left = px + 'px';
+    s.panelEl.style.top  = py + 'px';
+  }
+
+  // Position face labels. Push them slightly outside the surface and cull
+  // back-facing ones. Only the active solid shows its face labels — atlas
+  // mode would be 50 labels at once, which is illegible.
+  for (const fl of faceLabelEls) {
+    const showSolid = (fl.solidIdx === activeIdx);
+    if (!showSolid) { fl.el.style.display = 'none'; continue; }
+
+    // World-space center (pushed outward 1.18x for visibility)
+    const localOut = fl.localCenter.clone().multiplyScalar(1.18);
+    const worldCenter = fl.solidObj.group.localToWorld(localOut.clone());
+
+    // Face normal in world space
+    const worldNormal = fl.localNormal.clone()
+      .transformDirection(fl.solidObj.group.matrixWorld).normalize();
+
+    // Camera-to-face direction
+    const toCam = camWorld.clone().sub(worldCenter).normalize();
+    const facing = worldNormal.dot(toCam);
+
+    if (facing <= 0.05) { fl.el.style.display = 'none'; continue; }
+
+    // Project to screen
+    const proj = worldCenter.clone().project(camera);
+    if (proj.z > 1) { fl.el.style.display = 'none'; continue; }
+    const fx = (proj.x * 0.5 + 0.5) * r.width;
+    const fy = (-proj.y * 0.5 + 0.5) * r.height;
+
+    fl.el.style.display = 'block';
+    fl.el.style.left = fx + 'px';
+    fl.el.style.top  = fy + 'px';
+    fl.el.style.opacity = Math.min(1, facing * 2.2).toFixed(2);
+  }
+}
+
+// ─── Interaction: drag-to-rotate ────────────────────────────────────────
+let dragging = false, lastX = 0, lastY = 0;
+let dry = 0.003, drx = 0;
+
+canvas.addEventListener('mousedown', e => {
+  dragging = true; lastX = e.clientX; lastY = e.clientY;
+});
+window.addEventListener('mouseup', () => {
+  dragging = false; dry = 0.003; drx = 0;
+});
+window.addEventListener('mousemove', e => {
+  if (!dragging) return;
+  const dx = e.clientX - lastX, dy = e.clientY - lastY;
+  rotGroup.rotation.y += dx * 0.01;
+  rotGroup.rotation.x += dy * 0.01;
+  // Apply same to each solid's own rotation (so they all turn in sync, not just orbit)
+  for (const s of solidObjs) {
+    s.group.rotation.y += dx * 0.01;
+    s.group.rotation.x += dy * 0.01;
+    // Cancel the inherited orbit by adjusting position back
+  }
+  // Reset rotGroup since we apply per-solid
+  rotGroup.rotation.set(0,0,0);
+  dry = dx * 0.0015; drx = dy * 0.001;
+  lastX = e.clientX; lastY = e.clientY;
+});
+
+// ─── Click solid → enter focus / show activation ───────────────────────
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+let activeIdx = 0;
+
+canvas.addEventListener('click', e => {
+  const r = stage.getBoundingClientRect();
+  mouse.x = ((e.clientX - r.left) / r.width) * 2 - 1;
+  mouse.y = -((e.clientY - r.top) / r.height) * 2 + 1;
+  raycaster.setFromCamera(mouse, camera);
+  for (let i = 0; i < solidObjs.length; i++) {
+    const hit = raycaster.intersectObject(solidObjs[i].fill);
+    if (hit.length > 0) {
+      // Triangle index → face index via the face data map
+      const triIdx = hit[0].faceIndex;
+      const triMap = solidObjs[i].faceData.triFaceMap;
+      const faceIdx = (triIdx !== undefined && triMap[triIdx] !== undefined) ? triMap[triIdx] : 0;
+      if (i !== activeIdx) setActiveSolid(i);
+      activateFace(i, faceIdx);
+      return;
+    }
+  }
+});
+
+function setActiveSolid(idx) {
+  activeIdx = idx;
+  const sol = SOLIDS[idx];
+  document.querySelectorAll('.tab').forEach(t => {
+    t.classList.toggle('active', +t.dataset.i === idx);
+  });
+  // Default activation = solid's first face
+  activateFace(idx, 0);
+  // Brighten the active solid
+  for (let i = 0; i < solidObjs.length; i++) {
+    solidObjs[i].wire.material.opacity = i === idx ? 1.0 : 0.45;
+    solidObjs[i].glow.material.opacity = i === idx ? 0.45 : 0.15;
+  }
+}
+
+function activateFace(solidIdx, faceIdx) {
+  const sol = SOLIDS[solidIdx];
+  const role = sol.faces[faceIdx] || sol.faces[0];
+  document.getElementById('act-icon').textContent = ['◆','□','◇','◈','✦'][solidIdx];
+  document.getElementById('act-icon').style.color = sol.colorHex;
+  document.getElementById('act-role').textContent = role.role;
+  document.getElementById('act-role').style.color = sol.colorHex;
+  document.getElementById('act-type').textContent = sol.role_class;
+  document.getElementById('act-domain').textContent = sol.name;
+  document.getElementById('activation').classList.add('visible');
+
+  // Mark the activated face label
+  for (const fl of faceLabelEls) {
+    fl.el.classList.toggle('activated',
+      fl.solidIdx === solidIdx && fl.faceIdx === faceIdx);
+  }
+}
+
+// Tabs click
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => setActiveSolid(+t.dataset.i));
+});
+
+// Keys 1-5 select solid; S/G/E/R/P switch mode
+window.addEventListener('keydown', e => {
+  if (e.key >= '1' && e.key <= '5') setActiveSolid(+e.key - 1);
+  else if (e.key === 'Escape') document.getElementById('activation').classList.remove('visible');
+  else {
+    const map = { s: 'STEWARD', g: 'GUARDIAN', e: 'EXECUTOR', r: 'RECORDER', p: 'PILGRIM' };
+    const m = map[e.key.toLowerCase()];
+    if (m) setMode(m);
+  }
+});
+
+// Mode switch
+function setMode(mode) {
+  document.getElementById('hdr-mode').textContent = mode;
+  document.querySelectorAll('.mode-row').forEach(r => {
+    r.classList.toggle('active', r.dataset.mode === mode);
+  });
+}
+document.querySelectorAll('.mode-row').forEach(r => {
+  r.addEventListener('click', () => setMode(r.dataset.mode));
+});
+
+// ─── Pulse canvas (small concentric circles, breathing) ────────────────
+const pulseC = document.getElementById('pulse-canvas');
+const pulseCtx = pulseC.getContext('2d');
+function drawPulse(t) {
+  const s = pulseC.parentElement.clientWidth;
+  pulseC.width = s; pulseC.height = s;
+  pulseCtx.clearRect(0,0,s,s);
+  const cx = s/2, cy = s/2;
+  for (let i = 0; i < 6; i++) {
+    const r = (i+1) * s/14 + Math.sin(t/600 + i)*1.5;
+    pulseCtx.beginPath();
+    pulseCtx.arc(cx, cy, r, 0, Math.PI*2);
+    pulseCtx.strokeStyle = `rgba(201,166,74,${0.35 - i*0.04})`;
+    pulseCtx.lineWidth = 1;
+    pulseCtx.stroke();
+  }
+  // center dot
+  pulseCtx.beginPath();
+  pulseCtx.arc(cx, cy, 2, 0, Math.PI*2);
+  pulseCtx.fillStyle = '#e8c870';
+  pulseCtx.fill();
+}
+
+// ─── Render loop ───────────────────────────────────────────────────────
+function loop(t) {
+  if (!dragging) {
+    for (const s of solidObjs) {
+      s.group.rotation.y += dry;
+      s.group.rotation.x += drx;
+    }
+  }
+  renderer.render(scene, camera);
+  positionOverlays();
+  drawPulse(t || 0);
+  requestAnimationFrame(loop);
+}
+
+// Init
+resize();
+setActiveSolid(0);
+loop();
+</script>
+</body>
+</html>

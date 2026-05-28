@@ -1,0 +1,17 @@
+[
+  {
+    "category": "constraint_violation",
+    "confidence": 1.0,
+    "entity_slug": "blocker-key_attestor_not_allowlisted",
+    "entity_type": "invariant_events",
+    "evidence": {
+      "claim_id": "CLM_004",
+      "reason": "KEY_ATTESTOR_NOT_ALLOWLISTED"
+    },
+    "fact": "Blocking reason KEY_ATTESTOR_NOT_ALLOWLISTED triggered",
+    "id": "blocker-key_attestor_not_allowlisted-0fce73049cd3",
+    "source": "test_cycle_output",
+    "status": "active",
+    "timestamp": "2026-01-28T21:36:29"
+  }
+]

@@ -1,0 +1,17 @@
+[
+  {
+    "category": "pattern_failure",
+    "confidence": 1.0,
+    "entity_slug": "TEST_WEEK_03_20260211-CLM_012",
+    "entity_type": "decisions",
+    "evidence": {
+      "claim_id": "CLM_012",
+      "run_id": "TEST_WEEK_03_20260211"
+    },
+    "fact": "Decision: NO_SHIP for CLM_012",
+    "id": "TEST_WEEK_03_20260211-CLM_012-999160c3e927",
+    "source": "test_cycle_output",
+    "status": "active",
+    "timestamp": "2026-01-28T21:36:29"
+  }
+]

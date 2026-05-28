@@ -33,6 +33,15 @@ try:
 except ImportError:
     # Fallbacks for autonomous operation if pathing is weird
     MemoryKernel = None
+
+# HER Library Card: input-side retrieval (pre-inference RAG)
+_REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(_REPO_ROOT))
+try:
+    from oracle_town.skills.helen_retrieval import retrieve as _rag_retrieve, format_for_prompt as _rag_fmt
+except ImportError:
+    _rag_retrieve = None
+    _rag_fmt = None
     OllamaAdapter = None
     def get_dynamic_prompt(kernel=None): return "You are HELEN OS."
 
@@ -371,10 +380,15 @@ def main() -> int:
 
                 is_hybrid = cfg.get("adapter", {}).get("type") == "hybrid"
                 full_system = f"{get_dynamic_prompt(vm, hybrid=is_hybrid)}\n\n[BOOTSTRAP_CONTEXT]\n{bootstrap_text}"
+
+                # HER Library Card: inject retrieved canonical context pre-inference
+                if _rag_retrieve is not None and _rag_fmt is not None:
+                    retrieved = _rag_retrieve(user_text)
+                    if retrieved:
+                        full_system += "\n\n" + _rag_fmt(retrieved)
+
                 context = [{"metadata": {"role": "system"}, "content": full_system}] + history
 
-
-                
                 response = adapter.generate(user_text, context)
                 print(f"\nHELEN: {response}")
 

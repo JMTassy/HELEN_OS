@@ -114,18 +114,26 @@ class OllamaClient(BaseAPIClient):
         max_tokens: int = 2048,
         temperature: float = 0.7,
         stream: bool = False,
+        model: Optional[str] = None,
+        think: Optional[bool] = None,
+        num_ctx: Optional[int] = None,
     ) -> str:
         """Query Ollama model asynchronously"""
         async with aiohttp.ClientSession() as session:
-            payload = {
-                "model": self.model,
+            options: Dict[str, Any] = {
+                "temperature": temperature,
+                "num_predict": max_tokens,
+            }
+            if num_ctx is not None:
+                options["num_ctx"] = num_ctx
+            payload: Dict[str, Any] = {
+                "model": model or self.model,
                 "prompt": prompt,
                 "stream": False,
-                "options": {
-                    "temperature": temperature,
-                    "num_predict": max_tokens,
-                },
+                "options": options,
             }
+            if think is not None:
+                payload["think"] = think
 
             try:
                 async with session.post(self.endpoint, json=payload) as resp:
@@ -144,9 +152,17 @@ class OllamaClient(BaseAPIClient):
         max_tokens: int = 2048,
         temperature: float = 0.7,
         stream: bool = False,
+        model: Optional[str] = None,
+        think: Optional[bool] = None,
+        num_ctx: Optional[int] = None,
     ) -> str:
         """Query Ollama model synchronously"""
-        return asyncio.run(self.query_async(prompt, max_tokens, temperature, stream))
+        return asyncio.run(
+            self.query_async(
+                prompt, max_tokens, temperature, stream,
+                model=model, think=think, num_ctx=num_ctx,
+            )
+        )
 
     async def stream_async(
         self,

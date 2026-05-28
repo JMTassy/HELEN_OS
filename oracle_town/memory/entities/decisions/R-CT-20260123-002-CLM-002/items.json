@@ -1,0 +1,17 @@
+[
+  {
+    "category": "pattern_failure",
+    "confidence": 1.0,
+    "entity_slug": "R-CT-20260123-002-CLM-002",
+    "entity_type": "decisions",
+    "evidence": {
+      "claim_id": "CLM-002",
+      "run_id": "R-CT-20260123-002"
+    },
+    "fact": "Decision: NO_SHIP for CLM-002",
+    "id": "R-CT-20260123-002-CLM-002-b1fbce83bfe4",
+    "source": "cycle_output",
+    "status": "active",
+    "timestamp": "2026-01-28T21:09:01"
+  }
+]

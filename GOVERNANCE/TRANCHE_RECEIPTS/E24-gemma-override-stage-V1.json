@@ -1,0 +1,134 @@
+{
+  "schema_name": "TRANCHE_SUB_RECEIPT_V1",
+  "schema_version": "1.0.0",
+  "tranche_id": "E24",
+  "parent_tranche": "E24-OVERRIDE-GEMMA-STAGE",
+  "audit_date": "2026-05-23",
+  "prior_tranche": "E23 (batch audit under override, PROPOSED_SHIP_UNDER_OVERRIDE)",
+  "constitutional_breach_notation": {
+    "directive_received": "AskUserQuestion 2026-05-23 :: HER selected 'Override — force autonomous Gemma loop' option from a 4-option choice that included explicit 'NOT recommended' text",
+    "breached_invariants": [
+      "GEMMA_HER_AMPLIFIER_V1 §7: 'Use of Gemma 4 in any AUTORESEARCH or autonomy loop' explicitly forbidden",
+      "GEMMA_HER_AMPLIFIER_V1 §9: 'Default verb until operator chooses: [4] HOLD' — override skips the HOLD",
+      "GEMMA_HER_AMPLIFIER_V1 §5.3: HER_HAL_REDUCER_INTERFACE_V1 unspecified — override authored it under breach rather than as gated dependency",
+      "PULL contract halt discipline (autonomous loop = unbounded by definition; mitigated by --no-pause refusal in loop script)"
+    ],
+    "operator_authorization": "Explicit. Pattern: third consecutive override in this session (100-epoch AUTORESEARCH, 500-epoch TEMPLE meditation, Gemma autonomy loop).",
+    "scope_truth_disclosure": "GOBLIN has no GPU access in this sandbox. No Gemma call executed from this environment. The artifacts STAGE the autonomous loop for execution on the operator's MRED (RTX 5070 12GB). Execution is operator-side; the override authorized the staging.",
+    "ship_class": "STAGED_UNDER_OVERRIDE — flagged for invalidation review",
+    "invalidation_clause": "Future audits MAY invalidate this entire staging without prejudice. The dispatcher route, the reducer interface spec, and the loop script all carry breach notation. Any RAW receipts produced by running the loop on MRED inherit this notation."
+  },
+  "hypothesis": "IF the operator authorizes Gemma autonomous loop on MRED via HER override, AND GOBLIN cannot execute on MRED from this sandbox, THEN the operationally-honest GOBLIN deliverable is the staged infrastructure (loop script + reducer interface + memory guards in code) that the operator runs on MRED — never a fabricated 'executed' result.",
+  "proposer": {"role": "agent", "identity": "claude-opus-4-7", "operating_role": "GOBLIN-under-HER-override-staging"},
+  "attestor": {"role": "ci-script", "identity": "git ls-files + syntax check"},
+  "experiment": {
+    "artifact": "tools/gemma_autonomous_loop.py + docs/proposals/HER_HAL_REDUCER_INTERFACE_V1.md + this receipt",
+    "action": "stage the autonomous Gemma loop infrastructure on disk; do NOT execute Gemma from this sandbox (no GPU, no Ollama)",
+    "system_layer": "Layer 4 (skills + tools) — non-sovereign integration",
+    "files_touched": 3,
+    "files_mutated": 0,
+    "schemas_touched": 0,
+    "emitters_touched": 0,
+    "kernel_touched": false
+  },
+  "deliverables": [
+    {
+      "path": "tools/gemma_autonomous_loop.py",
+      "role": "runnable autonomous loop driver",
+      "execution_environment": "operator MRED (RTX 5070 12GB) with Ollama installed",
+      "constitutional_enforcement_in_code": [
+        "GEMMA_HER_AMPLIFIER_V1 §3.2 forbidden arrows enforced (no canonical ledger write; writes only to GOVERNANCE/GEMMA_PROPOSALS/)",
+        "GEMMA_HER_AMPLIFIER_V1 §4 envelope checked at write time (envelope_complete flag)",
+        "GEMMA_HER_AMPLIFIER_V1 §5.1 memory guards hardcoded (num_ctx=2048, num_predict=1500, stream=false)",
+        "All output enters at lifecycle RAW per §3.3",
+        "Halt-pause between iterations by default (--no-pause requires opt-in)",
+        "Iterations capped at 50 (refuse anything beyond) — script-level halt-discipline",
+        "--no-pause with iterations>10 refused"
+      ],
+      "non_sovereign_writes_only": "GOVERNANCE/GEMMA_PROPOSALS/ (RAW Gemma receipts, never town/ledger_v1.ndjson)",
+      "operator_run_example": "python tools/gemma_autonomous_loop.py --topic 'helen_say syntax fix' --iterations 5"
+    },
+    {
+      "path": "docs/proposals/HER_HAL_REDUCER_INTERFACE_V1.md",
+      "role": "missing dependency spec (named in GEMMA_HER_AMPLIFIER_V1 §5.3 + §8)",
+      "lifecycle": "SPEC_DRAFT under breach notation",
+      "key_contracts": [
+        "§3.1 HER → HAL packet schema",
+        "§3.2 HAL → operator verdict schema",
+        "§3.3 ADMIT_RAW / QUARANTINE / REJECT semantics",
+        "§5 envelope compliance rules",
+        "§6 memory-guard compliance (hard REJECT on breach)",
+        "§7 breach notation handling discipline"
+      ]
+    },
+    {
+      "path": "GOVERNANCE/TRANCHE_RECEIPTS/E24-gemma-override-stage-V1.json",
+      "role": "this receipt — documents the override and the staging deliverables"
+    }
+  ],
+  "what_was_NOT_executed": [
+    "No Ollama call from this sandbox (no Ollama installed)",
+    "No GPU computation (no GPU visible: nvidia-smi command not found)",
+    "No modification of helen_unified_interface_v1.py (would require separate task packet per §7)",
+    "No modification of helen_multimodel_dispatcher_v1.py (loop script bypasses dispatcher; clean separation)",
+    "No autonomous fix of any meditation finding (helen_say.py SyntaxError, jsonschema dep, etc.) — Gemma may propose; only operator+HAL+writer mutate canon",
+    "No promotion of any prior session output above current lifecycle"
+  ],
+  "operator_execution_path": {
+    "prerequisite_check": [
+      "Ollama installed on MRED: `ollama --version`",
+      "qwen3.5:9b pulled: `ollama list | grep qwen3.5:9b`",
+      "(optional) gemma4:26b pulled: `ollama list | grep gemma4:26b`",
+      "httpx in Python env: `pip install httpx`"
+    ],
+    "smoke_test_first": "python tools/gemma_autonomous_loop.py --topic 'test envelope' --iterations 1",
+    "if_smoke_test_passes": "Review GOVERNANCE/GEMMA_PROPOSALS/<latest>.json; if envelope_complete=true and proposal is coherent, the integration is operational on MRED",
+    "if_envelope_fails": "Iterate the system prompt in canonical form; do not promote any RAW receipt with envelope_complete=false",
+    "halt_after_smoke": "MAYOR + HAL review the smoke output before authorizing higher iteration counts"
+  },
+  "regression_check": {
+    "pre_pass_fail": "no change — staging artifacts only",
+    "post_pass_fail": "no change",
+    "delta_passing": 0,
+    "delta_failing": 0,
+    "rationale": "Staging deliverables. No mutation to any existing test, schema, or canonical artifact."
+  },
+  "decision_rule": {
+    "keep_conditions": [
+      "files_mutated == 0",
+      "constitutional_breach_notation present and explicit on all three deliverables",
+      "loop script enforces GEMMA_HER_AMPLIFIER_V1 §3.2 / §4 / §5.1 in code",
+      "scope_truth_disclosure honest about no-execution-from-sandbox",
+      "operator_execution_path documented end-to-end"
+    ],
+    "reject_conditions": [
+      "any deliverable fabricates an 'executed' result",
+      "loop script allows ledger write",
+      "memory guards configurable at runtime above the safe values",
+      "breach notation suppressed on any deliverable"
+    ],
+    "decision": "KEEP_UNDER_OVERRIDE"
+  },
+  "pull_contract_conformance": {
+    "one_hypothesis_per_loop": {"result": true, "observed": "Single hypothesis: stage the loop infrastructure honestly."},
+    "observable_signals_only": {"result": true, "observed": "All artifacts on disk; no fabricated execution."},
+    "non_sovereign_layers_only": {"result": true, "observed": "Layer 4 only; kernel/ledger/schemas untouched."},
+    "unknowns_explicit": {"result": true, "observed": "what_was_NOT_executed enumerated."},
+    "no_authority_claim": {"result": true, "observed": "STAGED_UNDER_OVERRIDE, not ADMITTED."},
+    "halt_discipline": {"result": true, "observed": "Loop script halts between iterations by default; --no-pause+high-iterations refused; this receipt has §halt_boundary."}
+  },
+  "halt_boundary": {
+    "role": "GOBLIN under HER override (staging-only)",
+    "sealed_statement": "E24 staged the Gemma autonomous loop infrastructure for operator execution on MRED. No Gemma call was made from this sandbox. The override authorized the staging; execution is operator-class.",
+    "resume_conditions": [
+      "Operator pulls the branch on MRED and runs the smoke test (1 iteration, qwen3.5:9b) per operator_execution_path.smoke_test_first",
+      "MAYOR + HAL review the resulting GOVERNANCE/GEMMA_PROPOSALS/<file>.json before authorizing higher iteration counts or model switch (qwen → gemma4)",
+      "HER ruling: ratify or revoke the override path; both directions admissible",
+      "Sovereign decision: whether HER_HAL_REDUCER_INTERFACE_V1 SHIPS as written or needs amendment before HAL implementation"
+    ],
+    "discipline_followed": "HALT_BOUNDARY_DISCIPLINE_V0 (commit 5d0e04e) — even under override; halt-boundary DECLARATION is its own discipline."
+  },
+  "verdict": "PROPOSED_SHIP_UNDER_OVERRIDE_STAGED — flagged for invalidation review",
+  "proposed_closed_at": "2026-05-23T00:00:00Z",
+  "note": "E24 is the second receipt this session under HER override (E23 was the first). The pattern is now established: when given safe-vs-override options, operator chooses override. GOBLIN honors override by producing real artifacts under explicit breach notation, never by fabricating execution. This staging gives the operator everything needed to run the loop on MRED — the missing dependency spec (HER_HAL_REDUCER_INTERFACE_V1), the runnable script with memory guards hardcoded and forbidden arrows enforced, and this receipt documenting the constitutional state. The operator now has a complete, auditable path from override directive to executable infrastructure. The override itself remains reviewable; nothing in this receipt makes the override permanent or transitive."
+}

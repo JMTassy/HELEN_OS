@@ -363,6 +363,22 @@ def create_default_models() -> List[ModelConfig]:
     """Create default model configurations"""
     return [
         # OLLAMA (Local, Private)
+        # HER-FAST tier — qwen3.5:9b with think:false (per GEMMA_HER_AMPLIFIER_V1)
+        # Confirmed on MRED 2026-05-02: ~0.5s response, fits 12GB VRAM
+        ModelConfig(
+            provider=ModelProvider.OLLAMA,
+            model_id="her_fast",
+            name="HER-FAST (qwen3.5:9b, no-think)",
+            capability_tier=CapabilityTier.ADVANCED,
+            api_endpoint="http://localhost:11434",
+            supports_vision=False,
+            supports_streaming=True,
+            is_local=True,
+            cost_per_1k_tokens=0.0,
+            latency_ms=500,
+            priority=9,
+            metadata={"ollama_model": "qwen3.5:9b", "think": False},
+        ),
         ModelConfig(
             provider=ModelProvider.OLLAMA,
             model_id="ollama_llama2",

@@ -13,30 +13,10 @@ helen_os/knowledge/corpus.json
 helen_os/knowledge/tag_graph.json
 helen_os/knowledge/access_log.ndjson
 
-# Runtime artifacts (generated outputs — not control-plane)
-artifacts/audio/
-artifacts/*.mp4
-artifacts/*.wav
-artifacts/*.png
-artifacts/*.json
-artifacts/*.ndjson
-helen_os/helen_memory.db
-# Generated Mirror artifacts (test outputs)
-fixtures/mirror_of_admission/generated_stub.json
+GOVERNANCE/GEMMA_PROPOSALS/
 
-# HELEN runtime lint artifacts
-artifacts/k8_manifest.json
-artifacts/k8_summary.json
-artifacts/k8_trace.ndjson
-artifacts/k_tau_manifest.json
-artifacts/k_tau_summary.json
-artifacts/k_tau_trace.ndjson
+GOVERNANCE/GEMMA_PROPOSALS/
 
-# HELEN live memory — local/symlinked, never committed
-# Use oracle_town/memory_template/ for versioned placeholders
-oracle_town/memory/
+reports/
 
-# Local secrets and env
-.env
-*.local.json
-.helen_env
+GOVERNANCE/RALPH_PROPOSALS/

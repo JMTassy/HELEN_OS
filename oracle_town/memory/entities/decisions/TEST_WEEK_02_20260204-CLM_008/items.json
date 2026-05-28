@@ -1,0 +1,17 @@
+[
+  {
+    "category": "pattern_success",
+    "confidence": 1.0,
+    "entity_slug": "TEST_WEEK_02_20260204-CLM_008",
+    "entity_type": "decisions",
+    "evidence": {
+      "claim_id": "CLM_008",
+      "run_id": "TEST_WEEK_02_20260204"
+    },
+    "fact": "Decision: SHIP for CLM_008",
+    "id": "TEST_WEEK_02_20260204-CLM_008-99cdd07d4305",
+    "source": "test_cycle_output",
+    "status": "active",
+    "timestamp": "2026-01-28T21:36:29"
+  }
+]

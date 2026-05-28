@@ -1,0 +1,255 @@
+# Oracle Town Memory System - Setup Guide
+
+Self-observing governance memory using Moltbot's 3-layer architecture.
+
+## Quick Start
+
+### 1. Verify Folder Structure
+```bash
+ls -la oracle_town/memory/
+```
+
+You should see:
+```
+memory/
+  daily/                          # Raw cycle logs
+  entities/
+    decisions/                    # Decision outcomes
+    invariant_events/             # K-violations
+    lane_performance/             # Lane metrics
+    emergence_signals/            # Convergence detection
+    proposal_archetypes/          # Future: proposal types
+  tacit/
+    heuristics.md                 # Learned best practices
+    rules_of_thumb.md             # Practical wisdom
+  tools/
+    __init__.py
+    cycle_observer.py             # Real-time extractor
+    weekly_synthesizer.py         # Summarizer
+    memory_lookup.py              # Advisory API
+  meta/
+    fact_schema.json              # Data schema
+    checkpoints.json              # Extraction checkpoints
+  SETUP.md                        # This file
+```
+
+### 2. Set Up Cron Jobs
+
+#### Real-Time Extraction (Every 30 Minutes)
+
+```bash
+crontab -e
+```
+
+Add:
+```cron
+# Oracle Town: Real-time fact extraction every 30 minutes
+*/30 * * * * cd /path/to/JMT\ CONSULTING\ -\ Releve\ 24 && python3 oracle_town/memory/tools/cycle_observer.py --scan-runs >> oracle_town/memory/meta/extraction.log 2>&1
+```
+
+Replace `/path/to/JMT\ CONSULTING\ -\ Releve\ 24` with your actual path.
+
+**Example:**
+```cron
+*/30 * * * * cd /Users/jean-marietassy/Desktop/JMT\ CONSULTING\ -\ Releve\ 24 && python3 oracle_town/memory/tools/cycle_observer.py --scan-runs >> oracle_town/memory/meta/extraction.log 2>&1
+```
+
+#### Weekly Synthesis (Sundays at 3:10 AM)
+
+```bash
+crontab -e
+```
+
+Add:
+```cron
+# Oracle Town: Weekly memory synthesis (Sunday 03:10)
+10 3 * * 0 cd /path/to/JMT\ CONSULTING\ -\ Releve\ 24 && python3 oracle_town/memory/tools/weekly_synthesizer.py >> oracle_town/memory/meta/synthesis.log 2>&1
+```
+
+**Example:**
+```cron
+10 3 * * 0 cd /Users/jean-marietassy/Desktop/JMT\ CONSULTING\ -\ Releve\ 24 && python3 oracle_town/memory/tools/weekly_synthesizer.py >> oracle_town/memory/meta/synthesis.log 2>&1
+```
+
+### 3. Manual Testing
+
+#### Test Real-Time Extraction
+```bash
+cd /Users/jean-marietassy/Desktop/JMT\ CONSULTING\ -\ Releve\ 24
+python3 oracle_town/memory/tools/cycle_observer.py --scan-runs
+```
+
+Expected output:
+```json
+{
+  "cycle_num": 1,
+  "facts_added": 5,
+  "facts_superseded": 0,
+  "entities_touched": ["decisions", "invariant_events"],
+  "daily_log": "oracle_town/memory/daily/cycle-001.json"
+}
+```
+
+#### Test Weekly Synthesis
+```bash
+cd /Users/jean-marietassy/Desktop/JMT\ CONSULTING\ -\ Releve\ 24
+python3 oracle_town/memory/tools/weekly_synthesizer.py
+```
+
+Expected output:
+```json
+{
+  "timestamp": "2026-01-28T...",
+  "entities_processed": 5,
+  "summaries_regenerated": 5,
+  "facts_superseded": 0,
+  "contradictions_found": 0
+}
+```
+
+#### Test Memory Lookup API
+```bash
+cd /Users/jean-marietassy/Desktop/JMT\ CONSULTING\ -\ Releve\ 24
+python3 oracle_town/memory/tools/memory_lookup.py --demo
+```
+
+This prints the full advisory context that would be available to a mayor decision.
+
+### 4. Integration with Governance
+
+#### Day 2+ Mayors Can Access Memory
+
+In your mayor or orchestrator code:
+
+```python
+from oracle_town.memory.tools import MemoryLookup
+
+# Create lookup instance
+lookup = MemoryLookup()
+
+# Get advisory context
+advisory = lookup.get_advisory_context()
+
+# Use heuristics (advisory only, never overrides K-Invariants)
+heuristics = advisory["heuristics"]
+recent_decisions = advisory["recent_decisions"]
+invariant_violations = advisory["invariant_violations"]
+
+# Pass to LLM as system context (optional)
+system_prompt = f"""
+You are a mayor making governance decisions.
+
+IMPORTANT: This memory is advisory only. You cannot:
+- Override K-Invariants
+- Ignore blocking reasons
+- Assume memory is complete
+
+Available heuristics:
+{heuristics}
+
+Recent decision patterns:
+{[d['fact'] for d in recent_decisions]}
+"""
+```
+
+## Architecture
+
+### Layer 1: Knowledge Graph
+**Location:** `memory/entities/{entity_type}/{entity_slug}/`
+
+Each entity has:
+- `items.json` — Append-only array of facts
+- `summary.md` — Regenerated weekly, shows active facts only
+
+Facts never deleted, only superseded:
+```json
+{
+  "id": "quorum-abc123",
+  "fact": "Quorum-by-class with N=2 succeeded",
+  "timestamp": "2026-01-28T...",
+  "status": "active",
+  "category": "pattern_success",
+  "confidence": 1.0,
+  "evidence": { "run_id": "RUN_A" }
+}
+```
+
+### Layer 2: Daily Logs
+**Location:** `memory/daily/cycle-{NNN}.json`
+
+Raw cycle outputs:
+```json
+{
+  "cycle_num": 1,
+  "timestamp": "2026-01-28T...",
+  "decision": "SHIP",
+  "facts_extracted": 5,
+  "entities_touched": ["decisions", "invariant_events"]
+}
+```
+
+### Layer 3: Tacit Knowledge
+**Location:** `memory/tacit/`
+
+- `heuristics.md` — Learned best practices (autogenerated weekly)
+- `rules_of_thumb.md` — Practical wisdom (human + AI maintained)
+
+## Safety Constraints
+
+✅ **Guaranteed:**
+- Memory cannot override K-Invariants
+- All decisions are logged for audit
+- Facts are immutable (never rewritten, only superseded)
+- Checksums verify reproducibility
+- Heuristics fade if contradicted by evidence
+
+⛔ **Forbidden:**
+- Using memory to approve a NO_SHIP decision unilaterally
+- Deleting historical facts
+- Using confidence scores as tiebreakers
+- Assuming memory is complete
+
+## Cost Model
+
+- **Real-time extraction:** ~$0.02 per cycle (lightweight)
+- **Weekly synthesis:** ~$0.10 per week (deeper analysis)
+- **Total overhead:** <1% of governance cost
+
+## Troubleshooting
+
+### Extraction doesn't run
+```bash
+# Check cron logs
+log stream --predicate 'process == "cron"' --level debug
+
+# Or check our logs
+tail -f oracle_town/memory/meta/extraction.log
+```
+
+### Facts not appearing
+```bash
+# Manually test
+python3 oracle_town/memory/tools/cycle_observer.py --scan-runs
+
+# Check checkpoints
+cat oracle_town/memory/meta/checkpoints.json
+```
+
+### Synthesis failing
+```bash
+# Run with error output visible
+python3 oracle_town/memory/tools/weekly_synthesizer.py
+```
+
+## Next Steps
+
+1. **Run extraction now:** `python3 oracle_town/memory/tools/cycle_observer.py --scan-runs`
+2. **Set up cron jobs** (see section 2 above)
+3. **Try memory lookup demo:** `python3 oracle_town/memory/tools/memory_lookup.py --demo`
+4. **Integrate with your mayor** (see section 4 above)
+
+## References
+
+- **Moltbot 3-layer memory:** https://github.com/moltbot/moltbot
+- **Oracle Town K-Invariants:** oracle_town/core/mayor_rsm.py
+- **Decision schema:** oracle_town/schemas/decision_record.schema.json

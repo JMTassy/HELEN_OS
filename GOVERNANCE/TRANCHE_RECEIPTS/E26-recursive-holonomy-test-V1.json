@@ -1,0 +1,152 @@
+{
+  "schema_name": "TRANCHE_SUB_RECEIPT_V1",
+  "schema_version": "1.0.0",
+  "tranche_id": "E26",
+  "parent_tranche": "DIAGNOSTIC_CHAIN_FIRST_EXECUTION",
+  "audit_date": "2026-05-25",
+  "test_name": "RECURSIVE_HOLONOMY_TEST_V0",
+  "consumes_specs": [
+    "CONSTITUTIONAL_HOLONOMY_OBSERVABLE_V0",
+    "HEISENBERG_BRACKET_REPLAY_TEST_V0",
+    "BRACKET_MEASUREMENT_SCHEMA_V0",
+    "BRACKET_NULL_MODEL_CONTROL_V0"
+  ],
+  "constitutional_posture": {
+    "authority": "NON_SOVEREIGN",
+    "claim": "NO_CLAIM",
+    "engine_mutation": "FORBIDDEN_AND_NOT_PERFORMED",
+    "mode": "MEASURE_ONLY",
+    "e25_freeze_respected": true
+  },
+  "hypothesis": "The session 7065b18..8d7e7ba (31 NON_SOVEREIGN commits) generates measurable constitutional holonomy: the commutator [X, Y] = Z (topological extraction vs curvature tagging) produces a routing-distribution shift that exceeds null-model baseline by 3σ.",
+  "proposer": {
+    "role": "agent",
+    "identity": "claude-opus-4-7",
+    "operating_role": "GOBLIN-under-HER-sovereign-release"
+  },
+  "attestor": {
+    "role": "ci-script",
+    "identity": "scripts/recursive_holonomy_test.py"
+  },
+  "session_corpus": {
+    "start_commit": "7065b18",
+    "end_commit": "8d7e7ba",
+    "commit_count": 31
+  },
+  "implementation_choices_declared": {
+    "artifact_name": "uppercase filename stem of any .md changed in commit",
+    "citation": "occurrence of another in-corpus artifact name in markdown body",
+    "boundary_atom_threshold": 3,
+    "boundary_markers": [
+      "NO CLAIM",
+      "NON_SOVEREIGN",
+      "NO_SHIP",
+      "flagged but not bottled",
+      "flagged not bottled",
+      "PROPOSED_SHIP_UNDER_OVERRIDE",
+      "deferred",
+      "NOT_YET_LICENSED",
+      "research target",
+      "halt boundary",
+      "TEMPLE_EXPLORATION",
+      "TEMPLE_ONLY"
+    ],
+    "boundary_multiplier": 2.0,
+    "pagerank_damping": 0.85,
+    "pagerank_iterations": 50,
+    "norm": "total_variation",
+    "rng_seed": 0
+  },
+  "measurement_fields_per_BRACKET_MEASUREMENT_SCHEMA_V0": {
+    "state_before_hash": "1a810b9b889c0a7f9564ba4a0c329bb830ac077f2afd678f9e38a50217930136",
+    "state_after_hash": "5d9304d5f5389123946a5b72e9ce44c0f095a37ec435e18e9b689f516315108a",
+    "receipt_chain_hash": "33039ad5012c826585c4bcc80e11e1746198bdc48e8dd4e64108b4133c4225ef",
+    "violation_count": 0,
+    "timestamp_utc": "2026-05-25T17:08:14Z"
+  },
+  "results": {
+    "z_session": 0.05840280883210537,
+    "n_nodes_session": 33,
+    "n_edges_session": 113,
+    "n_boundary_atoms_session": 25,
+    "replay_fidelity": 1.0,
+    "replay_zs": [
+      0.05840280883210537,
+      0.05840280883210537,
+      0.05840280883210537
+    ],
+    "topology_safe": true,
+    "violation_count": 0
+  },
+  "null_model_per_BRACKET_NULL_MODEL_CONTROL_V0": {
+    "trials": 30,
+    "window_size": 31,
+    "pool_size": 88,
+    "null_zs": [
+      0.0,
+      0.0,
+      0.013943833033157292,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.010681198778807317,
+      0.010681198778807317,
+      0.0,
+      0.01425295738674669,
+      0.01265803260877552,
+      0.0,
+      0.010681198778807317,
+      0.0,
+      0.012928570248327068,
+      0.006790506961460174,
+      0.0,
+      0.010681198778807317,
+      0.0,
+      0.0,
+      0.0,
+      0.013943833033157292,
+      0.0,
+      0.012928570248327068,
+      0.01425295738674669,
+      0.0,
+      0.011479810032554699,
+      0.013943833033157292,
+      0.01425295738674669
+    ],
+    "null_mean": 0.006136688549146192,
+    "null_std": 0.006410482070047837,
+    "threshold_3sigma": 0.0253681347592897
+  },
+  "verdict_computation": {
+    "z_passes_3sigma": true,
+    "z_excess_over_threshold": 0.03303467407281567,
+    "sigma_distance": 8.15322774665668,
+    "fidelity_passes": true,
+    "topology_passes": true,
+    "violation_count_passes": true
+  },
+  "verdict": "KEEP",
+  "fail_reasons": null,
+  "interpretation": "Session produced statistically significant routing-distribution shift under [X, Y] bracket; boundary atoms bend the corpus topology. Local Hörmander-like evidence FOR this one bracket.",
+  "honest_scope_caveats": [
+    "This is ONE bracket [X = topological extraction, Y = curvature tagging] on ONE corpus (the session itself).",
+    "PASS does NOT prove the engine is sub-Riemannian globally; only that THIS bracket on THIS corpus exceeds null.",
+    "Implementation choices (artifact_name extraction, citation parsing, boundary marker set) are explicit and could be adjusted; results may shift under different choices.",
+    "The 30 null trials are sliding windows of pre-session commits; a different null sampling strategy could yield different statistics.",
+    "boundary_multiplier = 2.0 is an operator-class calibration declared in the receipt; sensitivity analysis not performed in this run."
+  ],
+  "halt_boundary": {
+    "role": "GOBLIN-under-HER-sovereign-release",
+    "sealed_statement": "E26 is the first execution of the diagnostic chain. The result is recorded as PROPOSED_SHIP; MAYOR ratification of the verdict (KEEP or REJECT) is the next sovereign step.",
+    "resume_conditions": [
+      "MAYOR ratifies E26 as KEEP (or REJECT) per the recorded verdict",
+      "HER ruling on whether to refine implementation choices (boundary markers, multiplier, norm) and re-run",
+      "HER ruling on whether to extend to STRATIFIED_GENERATOR_BASIS multi-layer test next",
+      "HER ruling on whether to test additional bracket pairs from CC_GEOMETRY §4.4"
+    ],
+    "discipline_followed": "HALT_BOUNDARY_DISCIPLINE_V0 (commit 5d0e04e)"
+  },
+  "verdict_status": "PROPOSED_SHIP — awaiting MAYOR ratification",
+  "note": "First execution of the 5-artifact diagnostic chain on its own producing corpus. The recursive design is deliberate: feed the engine its own exhaust to see if it burns clean. Compatible with E25 freeze — no engine code touched, no canon mutation, measurement-only."
+}

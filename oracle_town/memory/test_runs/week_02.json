@@ -1,0 +1,79 @@
+{
+  "decisions": [
+    {
+      "blocking_reasons": [],
+      "claim_id": "CLM_005",
+      "decision": "SHIP",
+      "timestamp": "2026-02-04T00:00:00"
+    },
+    {
+      "blocking_reasons": [],
+      "claim_id": "CLM_006",
+      "decision": "SHIP",
+      "timestamp": "2026-02-04T01:00:00"
+    },
+    {
+      "blocking_reasons": [
+        "EVIDENCE_MISSING"
+      ],
+      "claim_id": "CLM_007",
+      "decision": "NO_SHIP",
+      "timestamp": "2026-02-04T02:00:00"
+    },
+    {
+      "blocking_reasons": [],
+      "claim_id": "CLM_008",
+      "decision": "SHIP",
+      "timestamp": "2026-02-04T03:00:00"
+    }
+  ],
+  "metadata": {
+    "generated_at": "2026-01-28T21:36:26",
+    "note": "This is a test cycle. Not production data.",
+    "test_harness_version": "1.0"
+  },
+  "proposals": [
+    {
+      "claim_id": "CLM_005",
+      "complexity": "high",
+      "lanes": [
+        "stability",
+        "evidence"
+      ],
+      "timestamp": "2026-02-04T00:00:00",
+      "type": "structural"
+    },
+    {
+      "claim_id": "CLM_006",
+      "complexity": "high",
+      "lanes": [
+        "stability"
+      ],
+      "timestamp": "2026-02-04T01:00:00",
+      "type": "structural"
+    },
+    {
+      "claim_id": "CLM_007",
+      "complexity": "low",
+      "lanes": [
+        "velocity"
+      ],
+      "timestamp": "2026-02-04T02:00:00",
+      "type": "operational"
+    },
+    {
+      "claim_id": "CLM_008",
+      "complexity": "medium",
+      "lanes": [
+        "integrity",
+        "stability"
+      ],
+      "timestamp": "2026-02-04T03:00:00",
+      "type": "policy"
+    }
+  ],
+  "run_id": "TEST_WEEK_02_20260204",
+  "timestamp": "2026-02-04T00:00:00",
+  "type": "TEST_RUN",
+  "week_num": 2
+}

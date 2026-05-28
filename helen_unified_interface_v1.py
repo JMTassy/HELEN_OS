@@ -159,11 +159,22 @@ class HELENMultiModel:
                     temperature,
                 )
             else:
+                # Pass per-model metadata (Ollama-specific: real model name + think + num_ctx)
+                meta = decision.model_config.metadata or {}
+                extra: Dict[str, Any] = {}
+                if decision.model_config.provider.value == "ollama":
+                    if "ollama_model" in meta:
+                        extra["model"] = meta["ollama_model"]
+                    if "think" in meta:
+                        extra["think"] = meta["think"]
+                    if "num_ctx" in meta:
+                        extra["num_ctx"] = meta["num_ctx"]
                 response_text = client.query(
                     prompt,
                     max_tokens=max_tokens,
                     temperature=temperature,
                     stream=False,
+                    **extra,
                 )
 
             # Record response
@@ -422,6 +433,24 @@ Examples:
             print(f"📦 Selected: {decision.model_config.name}")
             print(f"   Reason: {decision.reason}")
             print(f"   Confidence: {decision.confidence:.0%}\n")
+
+            helen_node_context = (
+                "SYSTEM CONTEXT - HELEN LOCAL NODE\n"
+                "You are operating inside the user's local HELEN OS node.\n"
+                "Architecture:\n"
+                "- Windows host runs Ollama with NVIDIA RTX 5070 GPU acceleration.\n"
+                "- WSL2 Ubuntu runs the HELEN repository and Python interface.\n"
+                "- Active interface: helen_unified_interface_v1.\n"
+                "- Active backend: Ollama HTTP API at http://127.0.0.1:11434.\n"
+                "- Active local model: gemma3:12b.\n"
+                "- Repository path: ~/helen-conquest.\n"
+                "- Mode: local-first, private, zero cloud cost unless external API keys added.\n"
+                "Behavior:\n"
+                "- Do not claim to be a generic remote HELEN network node.\n"
+                "- When asked about this HELEN node, refer to the local MRED/WSL2/Ollama/Gemma/RTX setup.\n"
+                "- Be precise, operational, and concise. Do not ask the user for logs you already have above.\n"
+            )
+            prompt = helen_node_context + "\nUSER REQUEST:\n" + prompt
 
             response = self.helen.query(prompt, task_type=task_type, stream=True)
         except Exception as e:

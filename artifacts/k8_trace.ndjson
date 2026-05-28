@@ -1,0 +1,3 @@
+{"schema": "K8_TRACE_V1", "run_id": "RALPH-PRE", "invariant": "mu_NDWRAP", "mu": 1.0, "files": [], "detail": "ok"}
+{"schema": "K8_TRACE_V1", "run_id": "RALPH-PRE", "invariant": "mu_NDARTIFACT", "mu": 1.0, "files": [], "detail": "ok"}
+{"schema": "K8_TRACE_V1", "run_id": "RALPH-PRE", "invariant": "mu_NDLEDGER", "mu": 1.0, "files": [], "detail": "ok (14 ND entries verified)"}

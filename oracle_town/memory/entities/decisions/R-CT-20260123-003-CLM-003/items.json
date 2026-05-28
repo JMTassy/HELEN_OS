@@ -1,0 +1,17 @@
+[
+  {
+    "category": "pattern_success",
+    "confidence": 1.0,
+    "entity_slug": "R-CT-20260123-003-CLM-003",
+    "entity_type": "decisions",
+    "evidence": {
+      "claim_id": "CLM-003",
+      "run_id": "R-CT-20260123-003"
+    },
+    "fact": "Decision: SHIP for CLM-003",
+    "id": "R-CT-20260123-003-CLM-003-26b0972c669b",
+    "source": "cycle_output",
+    "status": "active",
+    "timestamp": "2026-01-28T21:09:01"
+  }
+]

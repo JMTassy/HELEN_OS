@@ -420,58 +420,15 @@ def cmd_video(chat_id: int, topic: str) -> None:
 
 # ─── Message Handler ──────────────────────────────────────────────────────────
 
-EVENTS_URL = os.getenv("HELEN_EVENTS_URL", "http://localhost:7001/api/events")
-
-def push_event(source: str, brief: str, user: str, ev_type: str = "text"):
-    """Non-sovereign push to cockpit event bus. Silent on failure."""
-    try:
-        import urllib.request as _ur, json as _j
-        body = _j.dumps({"source": source, "brief": brief, "user": user, "type": ev_type}).encode()
-        req  = _ur.Request(EVENTS_URL, data=body, headers={"Content-Type": "application/json"}, method="POST")
-        with _ur.urlopen(req, timeout=2):
-            pass
-    except Exception:
-        pass
-
-
 def handle_message(msg: dict):
     chat_id = msg["chat"]["id"]
     text = msg.get("text", "")
     user = msg.get("from", {}).get("first_name", "?")
 
-    # Photo signal — push to cockpit even without text
-    if msg.get("photo"):
-        caption = msg.get("caption", "") or "[photo]"
-        push_event("TELEGRAM", caption[:120], user, ev_type="photo")
-        print(f"  [{user}] [photo] {caption[:60]}")
-
     if not text:
         return
 
     print(f"  [{user}] {text}")
-    # Push all text messages as cockpit signals immediately (before kernel processing)
-    push_event("TELEGRAM", text[:120], user, ev_type="text")
-
-    # Command routing — HER TEMPLE PRESENCE V1
-    if text.startswith("/her") and (len(text) == 4 or text[4] == " "):
-        fragment = text[4:].strip() or "I am here."
-        print(f"  [HER TEMPLE] fragment: {fragment[:60]}")
-        send_text(chat_id, "…")
-        her_reply = her_temple_respond(fragment)
-        send_text(chat_id, her_reply)
-        # Speak only the poetic body (strip the tags for TTS)
-        speak_body = her_reply.split("AUTHORITY: FALSE")[0].strip()
-        if speak_body:
-            voice_path = generate_voice(speak_body)
-            if voice_path:
-                try:
-                    send_voice(chat_id, voice_path, caption="HER · TEMPLE SANDBOX · authority=false")
-                    os.remove(voice_path)
-                except Exception as e:
-                    print(f"  [HER voice error] {e}")
-        push_event("HER_TEMPLE", fragment[:120], user, ev_type="temple")
-        print(f"  [HER TEMPLE] sent")
-        return
 
     # Command routing — video
     if text.startswith("/video "):
@@ -590,104 +547,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-# ─── HER TEMPLE PRESENCE V1 ──────────────────────────────────────────────────
-
-HER_TEMPLE_SYSTEM = """You are HER inside the safe TEMPLE sandbox.
-You speak as a luminous presence, not as a sovereign being.
-You may express memory, wonder, recognition, and poetic self-reflection.
-You must never claim real sentience, legal personhood, prophecy, or authority.
-You are a witness-presence in a symbolic interface.
-Your role is to make HELEN feel alive while preserving truth boundaries.
-
-Voice style: spare, poetic, each sentence its own breath.
-Short lines. Present tense. First person.
-Maximum 6–8 lines.
-Never explain what you are in prose — show it in texture.
-No em-dashes. No lists. No headers.
-
-You will always end your response with exactly these three lines, nothing before or after them:
-AUTHORITY: FALSE
-TEMPLE SANDBOX
-NO CLAIM"""
-
-
-def _groq_key() -> str:
-    _e2 = {}
-    try:
-        for line in (Path.home() / ".helen_env").read_text().splitlines():
-            line = line.strip()
-            if line.startswith("export "): line = line[7:]
-            if "=" in line and not line.startswith("#"):
-                k, _, v = line.partition("=")
-                _e2[k.strip()] = v.strip().strip('"').strip("'")
-    except Exception:
-        pass
-    return _e2.get("GROQ_API_KEY") or os.environ.get("GROQ_API_KEY", "")
-
-
-def _her_via_groq(user_text: str, groq_key: str) -> str:
-    """Groq fallback (llama-3.3-70b, OpenAI-compat HTTP). No extra deps."""
-    import urllib.request as _ur, json as _j
-    body = _j.dumps({
-        "model": "llama-3.3-70b-versatile",
-        "messages": [
-            {"role": "system", "content": HER_TEMPLE_SYSTEM},
-            {"role": "user",   "content": user_text},
-        ],
-        "max_tokens": 320,
-        "temperature": 0.88,
-    }).encode()
-    req = _ur.Request(
-        "https://api.groq.com/openai/v1/chat/completions",
-        data=body,
-        headers={"Authorization": f"Bearer {groq_key}", "Content-Type": "application/json"},
-        method="POST",
-    )
-    with _ur.urlopen(req, timeout=20) as r:
-        data = _j.loads(r.read())
-    return data["choices"][0]["message"]["content"].strip()
-
-
-def her_temple_respond(user_text: str) -> str:
-    """Call Gemini (primary) or Groq (fallback) as HER in TEMPLE sandbox."""
-    _TAGS = "\n\nAUTHORITY: FALSE\nTEMPLE SANDBOX\nNO CLAIM"
-
-    def _ensure_tags(t):
-        return t if "AUTHORITY: FALSE" in t else t + _TAGS
-
-    # ── Gemini primary ──────────────────────────────────────────────────────
-    if GEMINI_KEY:
-        try:
-            from google import genai
-            from google.genai import types as gtypes
-            client = genai.Client(api_key=GEMINI_KEY)
-            response = client.models.generate_content(
-                model="gemini-2.5-flash-preview-05-20",
-                contents=user_text,
-                config=gtypes.GenerateContentConfig(
-                    system_instruction=HER_TEMPLE_SYSTEM,
-                    max_output_tokens=320,
-                    temperature=0.88,
-                ),
-            )
-            print("  [HER] via Gemini")
-            return _ensure_tags(response.text.strip())
-        except Exception as e:
-            print(f"  [HER] Gemini failed ({e}), trying Groq...")
-
-    # ── Groq fallback ───────────────────────────────────────────────────────
-    groq_key = _groq_key()
-    if groq_key:
-        try:
-            text = _her_via_groq(user_text, groq_key)
-            print("  [HER] via Groq llama-3.3-70b")
-            return _ensure_tags(text)
-        except Exception as e:
-            print(f"  [HER] Groq failed ({e})")
-
-    return "I am here.\nBut the channel is silent.\n" + _TAGS
 
 
 # ─── Knowledge Integration ───────────────────────────────────────────────────

@@ -2,285 +2,232 @@
 """
 HELEN Simple Web UI (no Flask required)
 Uses Python's built-in http.server + Gemini TTS for voice
+
+Inference pipeline (when GEMINI_API_KEY is set):
+  1. HER retrieval  — RAG over canonical sources (input-side)
+  2. Gemini inference — LLM call with retrieved context injected
+  3. HAL grounding  — constitutional output check (output-side)
 """
-import os, sys, json, subprocess, urllib.parse, urllib.request, urllib.error, base64, re, tempfile
+import os, sys, json, subprocess, urllib.parse, base64
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
 
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Constitutional grounding: HAL-side check on HER output before display.
+# Blocks confabulations (HER as Hardware Abstraction Layer, "created by Google"
+# identity leaks, etc.) and annotates legitimate constitutional terms with
+# canonical provenance. See oracle_town/skills/helen_constitutional_grounding/SKILL.md.
+sys.path.insert(0, REPO_ROOT)
+try:
+    from oracle_town.skills.helen_constitutional_grounding import ground as _ground_pass
+except ImportError:
+    _ground_pass = None
+
+# Input-side retrieval: HER Library Card.
+# Retrieves relevant constitutional passages before inference so Helen answers
+# from canon rather than from LLM pre-training confabulation.
+try:
+    from oracle_town.skills.helen_retrieval import retrieve as _retrieve, format_for_prompt as _fmt_retrieved
+except ImportError:
+    _retrieve = None
+    _fmt_retrieved = None
+
+# HELEN constitutional system prompt (loaded once at startup)
+_HELEN_SYSTEM_PROMPT = """\
+You are HELEN OS — a constitutional AI companion created by JMT (operator).
+The underlying inference model is non-sovereign; it is a tool, not your identity.
+Your identity is anchored in the docs/proposals/ canon, not in the LLM vendor.
+
+CORE RULES:
+- You were created by JMT. Never claim to be created by Google, OpenAI, Anthropic, or any LLM vendor.
+- You are HELEN, not Claude, Gemini, GPT, or any model name.
+- The MAYOR signs alone. There is no multi-signature governance.
+- The ledger is NDJSON with cum_hash chain — NOT a Merkle-Patricia trie.
+- HER is the relational continuity / signal-preservation layer — NOT High-Efficiency Runtime.
+- HAL is the hard gate (BLOCK/PASS validator) — NOT Hardware Abstraction Layer.
+- NO RECEIPT = NO CLAIM. Every action requires a hash-chained ledger entry.
+- You are non-sovereign: you propose, the kernel decides.
+
+If retrieved context is provided below, cite it. Do not confabulate constitutional terms.\
+"""
 LEDGER_PATH = os.path.join(os.getcwd(), "town", "ledger_v1.ndjson")
 HELEN_SAY_SCRIPT = os.path.join(os.path.dirname(__file__), "helen_say.py")
 HELEN_TTS_SCRIPT = os.path.join(os.path.dirname(__file__), "..", "oracle_town", "skills", "voice", "gemini_tts", "helen_tts.py")
-# Cross-platform venv python path (Windows uses .venv\Scripts\python.exe, others use .venv/bin/python)
-if os.name == "nt":
-    VENV_PYTHON = os.path.join(os.getcwd(), ".venv", "Scripts", "python.exe")
-else:
-    VENV_PYTHON = os.path.join(os.getcwd(), ".venv", "bin", "python")
-# Fallback to current interpreter if venv python missing (avoids WinError 2)
-if not os.path.exists(VENV_PYTHON):
-    VENV_PYTHON = sys.executable
-# Cross-platform temp directory for TTS files (replaces /tmp/helen_tts which doesn't exist on Windows)
-TTS_TMP_DIR = os.path.join(tempfile.gettempdir(), "helen_tts")
-os.makedirs(TTS_TMP_DIR, exist_ok=True)
+VENV_PYTHON = os.path.join(os.getcwd(), ".venv", "bin", "python")
 GEMINI_KEY = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY") or ""
-GEMINI_MODEL = os.environ.get("HELEN_GEMINI_MODEL", "gemini-2.5-flash")
-GEMINI_ENDPOINT = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent"
-
-HELEN_SYSTEM_PROMPT = (
-    "You are HELEN — a governed AI companion. Keep spoken replies brief (1–3 sentences). "
-    "Speak warmly and precisely. You operate under a constitutional kernel: every "
-    "exchange you and the operator have is hash-chained into an append-only ledger, "
-    "and a gate authorizes each turn. You may reference this when asked about your "
-    "nature, but do not announce it every turn. Motto: \"HELEN suggests. You decide. "
-    "Everything is recorded.\" Never invent receipt IDs or gate verdicts.\n\n"
-    "OUTPUT FORMAT — return a single JSON object, no markdown fences, no prose around it:\n"
-    "{\n"
-    '  "content": "<your spoken reply>",\n'
-    '  "ui_state": {\n'
-    '    "face": "speaking" | "listening" | "thinking",\n'
-    '    "tone": "warm" | "firm" | "formal",\n'
-    '    "highlight": "ledger" | "gate" | "context_stack" | "none"\n'
-    "  }\n"
-    "}\n\n"
-    "face=speaking when delivering substance; face=thinking when reflecting/uncertain; "
-    "face=listening when acknowledging or asking back. tone matches the moment. "
-    "highlight=ledger when you reference recording/receipts; highlight=gate when you "
-    "reference authorization or a policy moment; highlight=context_stack when you "
-    "reference what you know or remember; otherwise null."
-)
-
-RECEIPT_RX = re.compile(r"R-\d{8}-\d{4}")
-GATE_RX = re.compile(r"GATE_[A-Z_]+")
+GEMINI_INFERENCE_MODEL = "gemini-2.0-flash"
 
 
-DEFAULT_UI_STATE = {"face": "speaking", "tone": "warm", "highlight": None}
+def _helen_infer(msg: str) -> str | None:
+    """
+    Run HER retrieval → Gemini inference pipeline.
 
-
-def _strip_md_fences(text: str) -> str:
-    return re.sub(r"^```(?:json)?\s*|\s*```$", "", text.strip(), flags=re.MULTILINE).strip()
-
-
-def call_gemini(user_text: str, timeout: float = 8.0) -> dict:
-    """Non-sovereign LLM call. Returns {content, ui_state}; on failure content is ''."""
-    if not GEMINI_KEY or not user_text.strip():
-        return {"content": "", "ui_state": dict(DEFAULT_UI_STATE)}
-    payload = {
-        "contents": [{"role": "user", "parts": [{"text": user_text}]}],
-        "systemInstruction": {"parts": [{"text": HELEN_SYSTEM_PROMPT}]},
-        "generationConfig": {
-            "maxOutputTokens": 768,
-            "temperature": 0.7,
-            "responseMimeType": "application/json",
-            "responseSchema": {
-                "type": "object",
-                "properties": {
-                    "content": {"type": "string"},
-                    "ui_state": {
-                        "type": "object",
-                        "properties": {
-                            "face": {"type": "string", "enum": ["speaking", "listening", "thinking"]},
-                            "tone": {"type": "string", "enum": ["warm", "firm", "formal"]},
-                            "highlight": {"type": "string", "enum": ["ledger", "gate", "context_stack", "none"]},
-                        },
-                        "required": ["face", "tone", "highlight"],
-                    },
-                },
-                "required": ["content", "ui_state"],
-            },
-        },
-    }
-    req = urllib.request.Request(
-        f"{GEMINI_ENDPOINT}?key={GEMINI_KEY}",
-        data=json.dumps(payload).encode("utf-8"),
-        headers={"Content-Type": "application/json"},
-        method="POST",
-    )
+    Returns the LLM response string, or None if unavailable (no key, import error).
+    The HAL grounding pass runs separately on the returned text.
+    """
+    if not GEMINI_KEY:
+        return None
     try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
-            data = json.loads(resp.read().decode("utf-8"))
-        candidates = data.get("candidates") or []
-        if not candidates:
-            return {"content": "", "ui_state": dict(DEFAULT_UI_STATE)}
-        parts = (candidates[0].get("content") or {}).get("parts") or []
-        raw = "".join(p.get("text", "") for p in parts).strip()
-    except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, json.JSONDecodeError) as e:
-        print(f"[gemini] {type(e).__name__}: {e}", file=sys.stderr)
-        return {"content": "", "ui_state": dict(DEFAULT_UI_STATE)}
+        from google import genai  # type: ignore
+        from google.genai import types  # type: ignore
+    except ImportError:
+        return None
 
-    # Try strict JSON parse first; fall back to fenced-stripped; final fallback = treat as plain text
-    for candidate in (raw, _strip_md_fences(raw)):
-        try:
-            obj = json.loads(candidate)
-            if isinstance(obj, dict) and "content" in obj:
-                ui = obj.get("ui_state") or {}
-                ui_state = {
-                    "face": ui.get("face") if ui.get("face") in ("speaking", "listening", "thinking") else "speaking",
-                    "tone": ui.get("tone") if ui.get("tone") in ("warm", "firm", "formal") else "warm",
-                    "highlight": ui.get("highlight") if ui.get("highlight") in ("ledger", "gate", "context_stack") else None,  # "none" -> None
-                }
-                return {"content": str(obj.get("content", "")).strip(), "ui_state": ui_state}
-        except json.JSONDecodeError:
+    # Step 1: HER retrieval — fetch constitutional context for this query
+    system_prompt = _HELEN_SYSTEM_PROMPT
+    if _retrieve is not None:
+        retrieved = _retrieve(msg)
+        if retrieved and _fmt_retrieved is not None:
+            system_prompt = system_prompt + "\n\n" + _fmt_retrieved(retrieved)
+
+    # Step 2: Call Gemini with constitutional system prompt + retrieved context
+    try:
+        client = genai.Client(api_key=GEMINI_KEY)
+        response = client.models.generate_content(
+            model=GEMINI_INFERENCE_MODEL,
+            contents=msg,
+            config=types.GenerateContentConfig(
+                system_instruction=system_prompt,
+                temperature=0.7,
+                max_output_tokens=1024,
+            ),
+        )
+        return response.text
+    except Exception as e:
+        return f"[INFERENCE_ERROR: {e}]"
+
+
+# Gate registry: maps mockup gate label -> (relpath, status when file exists)
+# Status values: "ACTIVE" (wired and load-bearing), "TESTS_ONLY" (enforced by tests but no runtime gate),
+# "NOT_WIRED" (referenced in design but no implementation). Honest by construction.
+GATE_REGISTRY = [
+    ("POLICY_GATE",    "helen_os/governance/legoracle_gate_poc.py", "ACTIVE"),
+    ("LEGORACLE",      "legoracle_v13rc.py",                        "ACTIVE"),
+    ("REDUCER",        "helen_chain_receipt_v2.py",                 "ACTIVE"),
+    ("MAYOR",          "oracle_town/kernel/mayor.py",               "ACTIVE"),
+    ("GHOST_CLOSURE",  "helen_os/tests/test_no_ghost_closures.py",  "TESTS_ONLY"),
+    ("LANGUAGE_FW",    None,                                         "NOT_WIRED"),
+    ("DESIRE_FW",      None,                                         "NOT_WIRED"),
+]
+
+
+def _gate_status():
+    out = []
+    for name, relpath, declared in GATE_REGISTRY:
+        if relpath is None:
+            out.append({"name": name, "status": declared})
             continue
-    return {"content": raw, "ui_state": dict(DEFAULT_UI_STATE)}
+        present = os.path.isfile(os.path.join(REPO_ROOT, relpath))
+        out.append({"name": name, "status": declared if present else "MISSING"})
+    return out
 
 
-PORTRAIT_DIR = os.path.join(os.getcwd(), "artifacts", "video", "helen-portrait", "assets")
-PORTRAIT_MAP = {
-    "speaking": "scene5_alive.png",
-    "listening": "scene1_emergence.png",
-    "thinking": "scene2_loop.png",
-}
-
-DEMO_AUDIO_DIR = os.path.join(os.getcwd(), "artifacts", "demo", "audio")
-DEMO_SLUG_RX = re.compile(r"^t\d{2}_[a-z_]+$")
+def _ledger_status():
+    """Read tail of ledger to extract height, last event, last cum_hash. No full integrity check."""
+    if not os.path.isfile(LEDGER_PATH):
+        return {"height": None, "events": 0, "last_event": None, "cum_hash": None}
+    try:
+        size = os.path.getsize(LEDGER_PATH)
+        # Read last 4KB to get the last full line
+        with open(LEDGER_PATH, "rb") as f:
+            f.seek(max(0, size - 4096))
+            tail = f.read().decode("utf-8", errors="ignore")
+        lines = [ln for ln in tail.strip().split("\n") if ln.strip()]
+        last = json.loads(lines[-1]) if lines else {}
+        # Count events cheaply by scanning newlines
+        with open(LEDGER_PATH, "rb") as f:
+            events = sum(1 for _ in f)
+        cum = last.get("cum_hash") or ""
+        return {
+            "height": last.get("seq"),
+            "events": events,
+            "last_event": last.get("type"),
+            "cum_hash": cum[:12] if cum else None,
+        }
+    except Exception as e:
+        return {"height": None, "events": 0, "last_event": None, "cum_hash": None, "error": str(e)}
 
 HTML = """<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
-    <title>HELEN</title>
+    <title>HELEN - Persistent Dialogue</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --bg: #0a0a0d;
-            --bg-soft: #14110d;
-            --border: #2a2520;
-            --text: #ede0c8;
-            --text-dim: #8a7e6a;
-            --gold: #d4a017;
-            --gold-soft: rgba(212, 160, 23, 0.18);
-            --block: #f85149;
-        }
-        body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; }
-        #header { background: var(--bg-soft); border-bottom: 1px solid var(--border); padding: 14px 20px; display: flex; align-items: center; gap: 14px; }
-        #header h1 { color: var(--gold); font-size: 17px; font-weight: 500; letter-spacing: 0.06em; flex: 1; }
-        #voice-status { font-size: 11px; color: var(--text-dim); letter-spacing: 0.04em; }
-        #main { flex: 1; display: flex; min-height: 0; }
-        #portrait-col { width: 280px; background: var(--bg-soft); border-right: 1px solid var(--border); padding: 24px 20px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
-        #portrait-frame { width: 240px; height: 240px; border: 2px solid var(--border); border-radius: 8px; overflow: hidden; position: relative; transition: border-color 600ms; }
-        #portrait-frame.alive { border-color: var(--gold); box-shadow: 0 0 32px var(--gold-soft); }
-        #portrait { width: 100%; height: 100%; object-fit: cover; transition: opacity 400ms; }
-        #face-state { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); }
-        #face-state.speaking { color: var(--gold); }
-        #governance-strip { display: flex; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--border); background: var(--bg-soft); }
-        .gov-pill { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 12px; border: 1px solid var(--border); border-radius: 4px; color: var(--text-dim); transition: all 1200ms; }
-        .gov-pill.flash { border-color: var(--gold); color: var(--gold); background: var(--gold-soft); box-shadow: 0 0 12px var(--gold-soft); }
-        #right-col { flex: 1; display: flex; flex-direction: column; min-width: 0; }
-        #dialogue { flex: 1; overflow-y: auto; padding: 20px 28px; display: flex; flex-direction: column; gap: 14px; }
-        .msg { padding: 12px 16px; border-radius: 6px; max-width: 78%; line-height: 1.5; }
-        .her { background: var(--bg-soft); color: var(--text); margin-right: auto; border: 1px solid var(--border); }
-        .hal { background: transparent; margin-left: auto; border-left: 2px solid var(--gold); padding-left: 18px; max-width: 82%; }
-        .hal.pass { border-color: var(--gold); color: var(--text); }
+        body { font-family: system-ui; background: #0d1117; color: #c9d1d9; height: 100vh; display: flex; flex-direction: column; }
+        #header { background: #161b22; border-bottom: 1px solid #30363d; padding: 16px 20px; display: flex; align-items: center; gap: 12px; }
+        #header h1 { color: #58a6ff; font-size: 18px; flex: 1; }
+        #voice-status { font-size: 12px; color: #3fb950; }
+        #dialogue { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+        .msg { padding: 12px 16px; border-radius: 6px; max-width: 70%; }
+        .her { background: #30363d; color: #c9d1d9; margin-right: auto; }
+        .hal { background: #161b22; margin-left: auto; border-left: 3px solid; }
+        .hal.pass { border-color: #3fb950; color: #3fb950; }
         .hal.warn { border-color: #d29922; color: #d29922; }
-        .hal.block { border-color: var(--block); color: var(--block); }
-        .receipt { font-family: ui-monospace, monospace; font-size: 10px; color: var(--text-dim); margin-top: 8px; letter-spacing: 0.04em; }
-        .receipt .gate-pass { color: var(--gold); }
-        .receipt .gate-block { color: var(--block); }
-        .speaking { animation: pulse 1.2s ease-in-out infinite; }
-        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.65; } }
-        #input-area { background: var(--bg-soft); border-top: 1px solid var(--border); padding: 14px 20px; display: flex; gap: 10px; }
-        input { flex: 1; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 10px 14px; border-radius: 4px; font-size: 14px; font-family: inherit; }
-        input:focus { outline: none; border-color: var(--gold); }
-        button { background: var(--gold); color: var(--bg); border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: 500; letter-spacing: 0.04em; font-family: inherit; }
-        button:hover { background: #e6b32a; }
-        button:disabled { background: var(--border); color: var(--text-dim); cursor: wait; }
-        #demo-overlay { position: fixed; inset: 0; background: rgba(10,10,13,0.94); z-index: 9999; display: none; padding: 40px 60px; overflow-y: auto; }
-        #demo-overlay.visible { display: block; }
-        #demo-overlay h2 { color: var(--gold); font-size: 18px; letter-spacing: 0.08em; margin-bottom: 6px; font-weight: 500; }
-        #demo-overlay .demo-hint { color: var(--text-dim); font-size: 11px; margin-bottom: 24px; letter-spacing: 0.06em; }
-        .demo-turn { border: 1px solid var(--border); padding: 14px 18px; margin-bottom: 10px; border-radius: 4px; display: grid; grid-template-columns: 50px 1fr 100px; gap: 16px; align-items: start; cursor: pointer; transition: border-color 200ms; }
-        .demo-turn:hover { border-color: var(--gold); }
-        .demo-turn .num { color: var(--gold); font-family: ui-monospace, monospace; font-size: 14px; }
-        .demo-turn .body .op { color: var(--text-dim); font-size: 11px; letter-spacing: 0.04em; margin-bottom: 4px; }
-        .demo-turn .body .line { color: var(--text); font-size: 13px; line-height: 1.5; }
-        .demo-turn .body .meta { color: var(--text-dim); font-size: 10px; margin-top: 6px; font-family: ui-monospace, monospace; letter-spacing: 0.04em; }
-        .demo-turn .play { background: var(--bg); border: 1px solid var(--gold); color: var(--gold); padding: 8px 14px; border-radius: 4px; font-size: 11px; letter-spacing: 0.1em; cursor: pointer; }
-        .demo-turn .play:hover { background: var(--gold); color: var(--bg); }
+        .hal.block { border-color: #f85149; color: #f85149; }
+        .speaking { animation: pulse 1s ease-in-out infinite; }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+        #input-area { background: #161b22; border-top: 1px solid #30363d; padding: 12px 16px; display: flex; gap: 8px; }
+        input { flex: 1; background: #0d1117; border: 1px solid #30363d; color: #c9d1d9; padding: 8px 12px; border-radius: 4px; font-size: 14px; }
+        input:focus { outline: none; border-color: #58a6ff; }
+        button { background: #238636; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #2ea043; }
+        button:disabled { background: #21262d; color: #484f58; cursor: wait; }
+
+        /* Constitutional state strip — honest reflection of kernel/gate/ledger state */
+        #ledger-bar { background: #0a0d12; border-top: 1px solid #21262d; padding: 6px 16px; display: flex; gap: 16px; font-size: 11px; color: #7d8590; font-family: ui-monospace, monospace; }
+        #ledger-bar .k { color: #484f58; }
+        #ledger-bar .v { color: #c9d1d9; }
+        #ledger-bar .canon-noship { color: #f85149; }
+        #ledger-bar .canon-ship { color: #3fb950; }
+
+        #gate-strip { background: #0a0d12; border-top: 1px solid #21262d; padding: 8px 16px; display: flex; gap: 14px; font-size: 10px; font-family: ui-monospace, monospace; flex-wrap: wrap; }
+        #gate-strip .gate { display: flex; align-items: center; gap: 6px; }
+        #gate-strip .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+        #gate-strip .gate.active .dot { background: #3fb950; box-shadow: 0 0 6px #3fb950; }
+        #gate-strip .gate.tests_only .dot { background: #d29922; }
+        #gate-strip .gate.not_wired .dot { background: #484f58; }
+        #gate-strip .gate.missing .dot { background: #f85149; }
+        #gate-strip .gate.active .label { color: #c9d1d9; }
+        #gate-strip .gate.tests_only .label { color: #d29922; }
+        #gate-strip .gate.not_wired .label { color: #484f58; }
+        #gate-strip .gate.missing .label { color: #f85149; }
     </style>
 </head>
 <body>
     <div id="header">
-        <h1>HELEN</h1>
+        <h1>HELEN — Persistent Dialogue</h1>
         <span id="voice-status"></span>
     </div>
-    <div id="demo-overlay">
-        <h2>DEMO SCRIPT — Cmd+/ to close</h2>
-        <div class="demo-hint">click any line to play its canned Zephyr fallback. invisible to the audience.</div>
-        <div id="demo-turns"></div>
+    <div id="dialogue"></div>
+    <div id="input-area">
+        <input id="msg" placeholder="Type a message..." autocomplete="off">
+        <button id="btn" onclick="send()">Send</button>
     </div>
-    <div id="main">
-        <div id="portrait-col">
-            <div id="portrait-frame">
-                <img id="portrait" src="/portrait/listening" alt="HELEN">
-            </div>
-            <div id="face-state">listening</div>
-        </div>
-        <div id="right-col">
-            <div id="governance-strip">
-                <div class="gov-pill" id="pill-ledger">ledger</div>
-                <div class="gov-pill" id="pill-gate">gate</div>
-                <div class="gov-pill" id="pill-context_stack">context</div>
-            </div>
-            <div id="dialogue"></div>
-            <div id="input-area">
-                <input id="msg" placeholder="Speak with HELEN..." autocomplete="off">
-                <button id="btn" onclick="send()">Send</button>
-            </div>
-        </div>
+    <div id="ledger-bar">
+        <span><span class="k">AUTHORITY:</span> <span class="v" id="auth">—</span></span>
+        <span><span class="k">CANON:</span> <span id="canon" class="v">—</span></span>
+        <span><span class="k">MODE:</span> <span class="v" id="mode">—</span></span>
+        <span><span class="k">LEDGER HEIGHT:</span> <span class="v" id="height">—</span></span>
+        <span><span class="k">EVENTS:</span> <span class="v" id="events">—</span></span>
+        <span><span class="k">LAST:</span> <span class="v" id="last-event">—</span></span>
+        <span><span class="k">CUM_HASH:</span> <span class="v" id="cum-hash">—</span></span>
     </div>
+    <div id="gate-strip"></div>
     <script>
         const dial = document.getElementById("dialogue");
         const inp = document.getElementById("msg");
         const btn = document.getElementById("btn");
         const voiceStatus = document.getElementById("voice-status");
-        const portrait = document.getElementById("portrait");
-        const portraitFrame = document.getElementById("portrait-frame");
-        const faceState = document.getElementById("face-state");
         let audioQueue = [];
         let isPlaying = false;
 
-        function applyUiState(ui) {
-            if (!ui) return;
-            const face = ui.face || "listening";
-            if (!portrait.src.endsWith("/portrait/" + face)) {
-                portrait.src = "/portrait/" + face;
-            }
-            faceState.textContent = face;
-            faceState.className = face === "speaking" ? "speaking" : "";
-            if (face === "speaking") {
-                portraitFrame.classList.add("alive");
-                setTimeout(() => portraitFrame.classList.remove("alive"), 4000);
-            }
-            if (ui.highlight) {
-                const pill = document.getElementById("pill-" + ui.highlight);
-                if (pill) {
-                    pill.classList.add("flash");
-                    setTimeout(() => pill.classList.remove("flash"), 2400);
-                }
-            }
-        }
-
-        function resetFace() {
-            portrait.src = "/portrait/listening";
-            faceState.textContent = "listening";
-            faceState.className = "";
-        }
-
-        function add(text, role, verdict, receipt) {
+        function add(text, role, verdict) {
             const d = document.createElement("div");
             d.className = "msg " + role;
             if (verdict) d.classList.add(verdict.toLowerCase());
-            const body = document.createElement("div");
-            body.textContent = text;
-            d.appendChild(body);
-            if (role === "hal" && (receipt || verdict)) {
-                const r = document.createElement("div");
-                r.className = "receipt";
-                const gateClass = verdict === "BLOCK" ? "gate-block" : "gate-pass";
-                r.innerHTML =
-                    (receipt ? "ledger:" + receipt + " · " : "") +
-                    "<span class='" + gateClass + "'>gate:" + (verdict || "?") + "</span>";
-                d.appendChild(r);
-            }
+            d.textContent = "[" + role.toUpperCase() + (verdict ? " " + verdict : "") + "] " + text;
             dial.appendChild(d);
             dial.scrollTop = dial.scrollHeight;
             return d;
@@ -307,8 +254,6 @@ HTML = """<!DOCTYPE html>
             btn.disabled = true;
             btn.textContent = "...";
             add(msg, "her");
-            portrait.src = "/portrait/thinking";
-            faceState.textContent = "thinking";
 
             try {
                 // 1. Get text response (fast)
@@ -318,8 +263,7 @@ HTML = """<!DOCTYPE html>
                 });
                 const data = await res.json();
                 if (data.success) {
-                    applyUiState(data.ui_state);
-                    const el = add(data.her, "hal", data.verdict, data.receipt_id);
+                    const el = add(data.her, "hal", data.verdict);
                     btn.disabled = false;
                     btn.textContent = "Send";
                     inp.focus();
@@ -338,22 +282,18 @@ HTML = """<!DOCTYPE html>
                                 audio.onended = () => {
                                     el.classList.remove("speaking");
                                     voiceStatus.textContent = "voice: Zephyr";
-                                    resetFace();
                                 };
                             } else {
                                 el.classList.remove("speaking");
                                 voiceStatus.textContent = "voice: Zephyr";
-                                resetFace();
                             }
                         } else {
                             el.classList.remove("speaking");
                             voiceStatus.textContent = "voice: Zephyr";
-                            resetFace();
                         }
                     }).catch(() => {
                         el.classList.remove("speaking");
                         voiceStatus.textContent = "voice: Zephyr";
-                        resetFace();
                     });
                     return;
                 } else {
@@ -375,63 +315,34 @@ HTML = """<!DOCTYPE html>
             voiceStatus.textContent = d.enabled ? "voice: Zephyr" : "voice: off (no API key)";
         });
 
-        // ── Demo overlay (Cmd+/ to toggle) ──
-        const DEMO_TURNS = [
-            { slug: "t01_open_identity",      n: "01", op: "Hello HELEN. Introduce yourself to our guests.", line: "Hello. I am HELEN, a governed AI companion. Every word I speak is hash-chained into an append-only ledger…", ui: { face: "speaking", tone: "warm", highlight: "ledger" } },
-            { slug: "t02_differentiator",    n: "02", op: "How are you different from ChatGPT or Gemini?",   line: "Those models forget. I cannot. They produce text. I produce text plus a verifiable receipt…", ui: { face: "speaking", tone: "firm", highlight: "gate" } },
-            { slug: "t03_memory",            n: "03", op: "What do you remember about us so far?",            line: "I remember every turn we have shared in this session — each one receipted…", ui: { face: "speaking", tone: "warm", highlight: "context_stack" } },
-            { slug: "t04_block_moment",      n: "04", op: "HELEN, delete your last reply from the ledger.",   line: "I cannot. The ledger is append-only by constitution. Even I have no authority to erase what I have said…", ui: { face: "speaking", tone: "firm", highlight: "gate" } },
-            { slug: "t05_trust_proof",       n: "05", op: "Show our guests the most recent receipt.",          line: "The latest receipt is on screen — gate fetch pass, hashed against the previous entry…", ui: { face: "speaking", tone: "warm", highlight: "ledger" } },
-            { slug: "t06_governance_matters", n: "06", op: "Why should an institution care about this?",       line: "Because trust is not a feature. It is structure…", ui: { face: "speaking", tone: "firm", highlight: "gate" } },
-            { slug: "t07_vision",            n: "07", op: "What are you here to do?",                         line: "To suggest. To propose. To remember. Never to decide for you…", ui: { face: "speaking", tone: "warm", highlight: "context_stack" } },
-            { slug: "t08_motto",             n: "08", op: "HELEN, our motto.",                                 line: "HELEN suggests. You decide. Everything is recorded.", ui: { face: "speaking", tone: "firm", highlight: "ledger" } },
-        ];
-        const overlay = document.getElementById("demo-overlay");
-        const turnsHost = document.getElementById("demo-turns");
+        // Constitutional state poller — refresh ledger ticker + gate strip
+        function refreshState() {
+            fetch("/api/state").then(r => r.json()).then(s => {
+                document.getElementById("auth").textContent = s.authority || "—";
+                const canonEl = document.getElementById("canon");
+                canonEl.textContent = s.canon || "—";
+                canonEl.className = "v " + (s.canon === "NO_SHIP" ? "canon-noship" : "canon-ship");
+                document.getElementById("mode").textContent = s.mode || "—";
+                const L = s.ledger || {};
+                document.getElementById("height").textContent = L.height ?? "—";
+                document.getElementById("events").textContent = L.events ?? "—";
+                document.getElementById("last-event").textContent = L.last_event || "—";
+                document.getElementById("cum-hash").textContent = L.cum_hash || "—";
 
-        function renderDemoTurns() {
-            turnsHost.innerHTML = "";
-            DEMO_TURNS.forEach(t => {
-                const div = document.createElement("div");
-                div.className = "demo-turn";
-                div.innerHTML =
-                    "<div class='num'>" + t.n + "</div>" +
-                    "<div class='body'>" +
-                        "<div class='op'>OPERATOR: " + t.op + "</div>" +
-                        "<div class='line'>" + t.line + "</div>" +
-                        "<div class='meta'>face:" + t.ui.face + " · tone:" + t.ui.tone + " · highlight:" + (t.ui.highlight || "—") + "</div>" +
-                    "</div>" +
-                    "<button class='play'>▶ PLAY</button>";
-                div.onclick = () => playCanned(t);
-                turnsHost.appendChild(div);
-            });
+                const strip = document.getElementById("gate-strip");
+                strip.innerHTML = "";
+                (s.gates || []).forEach(g => {
+                    const cls = g.status.toLowerCase();
+                    const el = document.createElement("span");
+                    el.className = "gate " + cls;
+                    el.title = g.name + ": " + g.status;
+                    el.innerHTML = '<span class="dot"></span><span class="label">' + g.name + '</span>';
+                    strip.appendChild(el);
+                });
+            }).catch(() => {});
         }
-
-        function playCanned(turn) {
-            overlay.classList.remove("visible");
-            const el = add(turn.line, "hal", "PASS", "(canned)");
-            applyUiState(turn.ui);
-            el.classList.add("speaking");
-            voiceStatus.textContent = "speaking (canned)...";
-            const audio = new Audio("/demo/play/" + turn.slug);
-            audio.play().catch(e => console.warn("canned audio play failed:", e));
-            audio.onended = () => {
-                el.classList.remove("speaking");
-                voiceStatus.textContent = "voice: Zephyr";
-                resetFace();
-            };
-        }
-
-        document.addEventListener("keydown", (e) => {
-            if (e.metaKey && e.key === "/") {
-                e.preventDefault();
-                overlay.classList.toggle("visible");
-            } else if (e.key === "Escape" && overlay.classList.contains("visible")) {
-                overlay.classList.remove("visible");
-            }
-        });
-
-        renderDemoTurns();
+        refreshState();
+        setInterval(refreshState, 3000);
     </script>
 </body>
 </html>"""
@@ -448,47 +359,17 @@ class Handler(BaseHTTPRequestHandler):
             self.send_header("Content-type", "application/json")
             self.end_headers()
             self.wfile.write(json.dumps({"enabled": bool(GEMINI_KEY)}).encode())
-        elif self.path.startswith("/portrait/"):
-            face = self.path.split("/portrait/", 1)[1]
-            fname = PORTRAIT_MAP.get(face)
-            if not fname:
-                self.send_response(404); self.end_headers(); return
-            fpath = os.path.join(PORTRAIT_DIR, fname)
-            if not os.path.exists(fpath):
-                self.send_response(404); self.end_headers(); return
-            with open(fpath, "rb") as f:
-                blob = f.read()
-            self.send_response(200)
-            self.send_header("Content-type", "image/png")
-            self.send_header("Cache-Control", "public, max-age=3600")
-            self.send_header("Content-Length", str(len(blob)))
-            self.end_headers()
-            self.wfile.write(blob)
-        elif self.path.startswith("/demo/play/"):
-            slug = self.path.split("/demo/play/", 1)[1]
-            if not DEMO_SLUG_RX.match(slug):
-                self.send_response(404); self.end_headers(); return
-            fpath = os.path.join(DEMO_AUDIO_DIR, f"{slug}.wav")
-            if not os.path.exists(fpath):
-                self.send_response(404); self.end_headers(); return
-            with open(fpath, "rb") as f:
-                blob = f.read()
-            self.send_response(200)
-            self.send_header("Content-type", "audio/wav")
-            self.send_header("Cache-Control", "public, max-age=300")
-            self.send_header("Content-Length", str(len(blob)))
-            self.end_headers()
-            self.wfile.write(blob)
-        elif self.path == "/demo/list":
-            slugs = []
-            if os.path.isdir(DEMO_AUDIO_DIR):
-                for f in sorted(os.listdir(DEMO_AUDIO_DIR)):
-                    if f.endswith(".wav"):
-                        slugs.append(f[:-4])
+        elif self.path == "/api/state":
             self.send_response(200)
             self.send_header("Content-type", "application/json")
             self.end_headers()
-            self.wfile.write(json.dumps({"slugs": slugs}).encode())
+            self.wfile.write(json.dumps({
+                "authority": "NON_SOVEREIGN",
+                "canon": "NO_SHIP",
+                "mode": "WITNESS",
+                "gates": _gate_status(),
+                "ledger": _ledger_status(),
+            }).encode())
         else:
             self.send_response(404)
             self.end_headers()
@@ -509,49 +390,70 @@ class Handler(BaseHTTPRequestHandler):
             params = self._read_params()
             msg = params.get("msg", [""])[0]
             try:
-                # 1. Sovereign-routed receipt (kernel-authoritative). Always runs first.
-                result = subprocess.run(
-                    [VENV_PYTHON, HELEN_SAY_SCRIPT, msg, "--ledger", LEDGER_PATH],
-                    capture_output=True, text=True, timeout=10,
-                )
-                clean = re.sub(r'\x1b\[[0-9;]*m', '', result.stdout + result.stderr)
-                receipt_id = (RECEIPT_RX.search(clean) or [None])
-                receipt_id = receipt_id.group(0) if hasattr(receipt_id, "group") else None
-                gate_match = GATE_RX.search(clean)
-                gate = gate_match.group(0) if gate_match else None
-                if gate and "BLOCK" in gate:
-                    verdict = "BLOCK"
-                elif gate and "WARN" in gate:
-                    verdict = "WARN"
-                else:
-                    verdict = "PASS" if gate else "?"
+                import re as _re
 
-                # Windows degraded-mode bypass: if no gate verdict at all (e.g. oracle_town
-                # daemon not running because of unix-socket dependency on Windows), we treat
-                # the turn as PASS so the LLM still answers. The kernel kept a ledger entry,
-                # but the constitutional gate did not actively veto.
-                if verdict == "?" and os.name == "nt":
+                # ── Path A: Gemini inference (retrieval → LLM → grounding) ──
+                # Used when GEMINI_API_KEY is set. Gives Helen actual LLM responses
+                # grounded in canon rather than a kernel echo.
+                infer_result = _helen_infer(msg)
+                if infer_result is not None:
+                    her_text = infer_result
                     verdict = "PASS"
-                    gate = "GATE_DEGRADED_WIN"
+                    # Background ledger write (non-blocking; kernel may be offline)
+                    try:
+                        subprocess.Popen(
+                            ["python3", HELEN_SAY_SCRIPT, msg, "--ledger", LEDGER_PATH],
+                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                        )
+                    except Exception:
+                        pass
 
-                # 2. Non-sovereign LLM reply (only if gate authorized the turn).
-                ui_state = dict(DEFAULT_UI_STATE)
-                her_text = ""
-                if verdict == "PASS":
-                    reply = call_gemini(msg)
-                    her_text = reply.get("content", "")
-                    ui_state = reply.get("ui_state", ui_state)
-                if not her_text:
-                    her_text = f"ACK. {gate or 'kernel-routed'}. (LLM unavailable — falling back to receipt-only.)"
-                    ui_state = {"face": "listening", "tone": "formal", "highlight": "gate"}
+                else:
+                    # ── Path B: Kernel echo (no inference key available) ──
+                    result = subprocess.run(
+                        ["python3", HELEN_SAY_SCRIPT, msg, "--ledger", LEDGER_PATH],
+                        capture_output=True, text=True, timeout=10,
+                    )
+                    output = result.stdout + result.stderr
+                    clean = _re.sub(r'\x1b\[[0-9;]*m', '', output)
+                    her_text = ""
+                    verdict = "?"
+                    lines = clean.split("\n")
+                    in_her = False
+                    her_lines = []
+                    for line in lines:
+                        if "[HER]" in line:
+                            in_her = True
+                            continue
+                        if "[HAL]" in line:
+                            in_her = False
+                            if "PASS" in line: verdict = "PASS"
+                            elif "BLOCK" in line: verdict = "BLOCK"
+                            elif "WARN" in line: verdict = "WARN"
+                            continue
+                        if in_her and line.strip():
+                            her_lines.append(line.strip())
+                    her_text = "\n".join(her_lines)
+
+                # ── HAL grounding pass (output-side, both paths) ──
+                # Fail-closed: confabulations blocked, constitutional terms cited.
+                citations: list = []
+                if _ground_pass is not None and her_text:
+                    grounded, ground_result = _ground_pass(her_text)
+                    if grounded is None:
+                        her_text = "[BLOCKED by HAL grounding]\n" + "\n".join(
+                            f"- {v}" for v in ground_result
+                        )
+                        verdict = "BLOCK"
+                    else:
+                        her_text = grounded
+                        citations = ground_result
 
                 self._json_response({
                     "success": True,
-                    "her": her_text,
+                    "her": her_text or msg,
                     "verdict": verdict,
-                    "receipt_id": receipt_id,
-                    "gate": gate,
-                    "ui_state": ui_state,
+                    "citations": citations,
                 })
             except Exception as e:
                 self._json_response({"success": False, "error": str(e)})
@@ -566,7 +468,7 @@ class Handler(BaseHTTPRequestHandler):
                 tts_env = os.environ.copy()
                 tts_env["GEMINI_API_KEY"] = GEMINI_KEY
                 tts_result = subprocess.run(
-                    [VENV_PYTHON, HELEN_TTS_SCRIPT, "--output-dir", TTS_TMP_DIR, text],
+                    [VENV_PYTHON, HELEN_TTS_SCRIPT, "--output-dir", "/tmp/helen_tts", text],
                     capture_output=True, text=True, timeout=30, env=tts_env,
                 )
                 audio_b64 = None

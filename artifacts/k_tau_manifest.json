@@ -1,0 +1,77 @@
+{
+  "schema_version": "K_TAU_MANIFEST_V1",
+  "run_id": "RUN-KTAU-LOCAL",
+  "scope": {
+    "agentic_paths": [
+      "kernel/",
+      "oracle_town/",
+      "ORACLEbot/",
+      "plugins/",
+      "LNSA.py",
+      "HELEN.md",
+      "HELEN_REACTIVATION_SUMMARY.md"
+    ],
+    "non_agentic_paths": [
+      "docs/",
+      "paper/",
+      "README",
+      "CONQUEST_",
+      "content/",
+      "street1.html",
+      "tests/"
+    ],
+    "change_detector": "git_diff"
+  },
+  "audit": {
+    "delta_audit": 0.0
+  },
+  "environment": {
+    "commit": "049f0d63686bcf15d7cd71cae5b17892c166def4",
+    "platform": "macOS-26.2-arm64-arm-64bit-Mach-O",
+    "python_version": "3.14.3"
+  },
+  "invariants": {
+    "mu_BOUNDARY": {
+      "forbid_import_globs": [
+        "requests",
+        "httpx",
+        "openai",
+        "anthropic",
+        "boto3",
+        "subprocess",
+        "socket"
+      ]
+    },
+    "mu_IO": {
+      "allow_write_roots": [
+        "artifacts/",
+        "receipts/"
+      ]
+    },
+    "mu_DETERMINISM": {
+      "forbid_time_calls": [
+        "time.time(",
+        "datetime.now(",
+        "date.today(",
+        "perf_counter("
+      ],
+      "forbid_unseeded_random": [
+        "random.random(",
+        "random.randint(",
+        "np.random",
+        "numpy.random"
+      ]
+    },
+    "mu_ALLOWLIST": {
+      "tool_registry_files": [
+        "plugins/",
+        "oracle_town/core/"
+      ]
+    },
+    "mu_SCHEMA": {
+      "schema_dirs": [
+        "schemas/"
+      ]
+    }
+  }
+}

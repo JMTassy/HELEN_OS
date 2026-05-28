@@ -1,0 +1,81 @@
+{
+  "decisions": [
+    {
+      "blocking_reasons": [],
+      "claim_id": "CLM_029",
+      "decision": "SHIP",
+      "timestamp": "2026-03-18T00:00:00"
+    },
+    {
+      "blocking_reasons": [],
+      "claim_id": "CLM_030",
+      "decision": "SHIP",
+      "timestamp": "2026-03-18T01:00:00"
+    },
+    {
+      "blocking_reasons": [],
+      "claim_id": "CLM_031",
+      "decision": "SHIP",
+      "timestamp": "2026-03-18T02:00:00"
+    },
+    {
+      "blocking_reasons": [
+        "EVIDENCE_MISSING"
+      ],
+      "claim_id": "CLM_032",
+      "decision": "NO_SHIP",
+      "timestamp": "2026-03-18T03:00:00"
+    }
+  ],
+  "metadata": {
+    "generated_at": "2026-01-28T21:36:26",
+    "note": "This is a test cycle. Not production data.",
+    "test_harness_version": "1.0"
+  },
+  "proposals": [
+    {
+      "claim_id": "CLM_029",
+      "complexity": "high",
+      "lanes": [
+        "stability",
+        "democracy"
+      ],
+      "timestamp": "2026-03-18T00:00:00",
+      "type": "structural"
+    },
+    {
+      "claim_id": "CLM_030",
+      "complexity": "low",
+      "lanes": [
+        "stability",
+        "velocity"
+      ],
+      "timestamp": "2026-03-18T01:00:00",
+      "type": "operational"
+    },
+    {
+      "claim_id": "CLM_031",
+      "complexity": "medium",
+      "lanes": [
+        "stability",
+        "integrity"
+      ],
+      "timestamp": "2026-03-18T02:00:00",
+      "type": "policy"
+    },
+    {
+      "claim_id": "CLM_032",
+      "complexity": "high",
+      "lanes": [
+        "creativity",
+        "stability"
+      ],
+      "timestamp": "2026-03-18T03:00:00",
+      "type": "experimental"
+    }
+  ],
+  "run_id": "TEST_WEEK_08_20260318",
+  "timestamp": "2026-03-18T00:00:00",
+  "type": "TEST_RUN",
+  "week_num": 8
+}

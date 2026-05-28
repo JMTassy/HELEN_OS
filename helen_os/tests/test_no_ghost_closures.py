@@ -54,9 +54,28 @@ def _observe_artifact(artifact_path_str: str) -> tuple[str, Path]:
 
 
 def _collect_closures() -> list[Path]:
+    """
+    Return closures that are not retracted by a later receipt.
+
+    The `retracts` field already encodes the supersession chain. A closure named
+    in any other closure's `retracts` is historical — preserved on disk for
+    audit, but not current truth. Validate only the leaf of each chain.
+    """
     if not CLOSURES_DIR.is_dir():
         return []
-    return sorted(CLOSURES_DIR.glob("*.json"))
+    all_closures = sorted(CLOSURES_DIR.glob("*.json"))
+
+    retracted_names: set[str] = set()
+    for p in all_closures:
+        try:
+            data = json.loads(p.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        retracted_path = data.get("retracts")
+        if retracted_path:
+            retracted_names.add(Path(retracted_path).name)
+
+    return [p for p in all_closures if p.name not in retracted_names]
 
 
 _CLOSURES = _collect_closures()

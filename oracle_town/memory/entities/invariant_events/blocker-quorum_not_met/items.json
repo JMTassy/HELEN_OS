@@ -1,0 +1,17 @@
+[
+  {
+    "category": "constraint_violation",
+    "confidence": 1.0,
+    "entity_slug": "blocker-quorum_not_met",
+    "entity_type": "invariant_events",
+    "evidence": {
+      "claim_id": "CLM_003",
+      "reason": "QUORUM_NOT_MET"
+    },
+    "fact": "Blocking reason QUORUM_NOT_MET triggered",
+    "id": "blocker-quorum_not_met-a3ed9c3df063",
+    "source": "test_cycle_output",
+    "status": "active",
+    "timestamp": "2026-01-28T21:36:29"
+  }
+]

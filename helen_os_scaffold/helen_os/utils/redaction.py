@@ -24,6 +24,7 @@ PATH_PATTERN = re.compile(
 )
 API_KEY_PATTERN = re.compile(r"(Bearer|Authorization|api[_-]?key|token)[:\s=]+([^\s,\]]+)", re.IGNORECASE)
 SECRET_MARKERS = re.compile(r"(password|secret|private[_-]?key|credential)[:\s=]+([^\s,\]]+)", re.IGNORECASE)
+OPENAI_KEY_PATTERN = re.compile(r"\bsk-[A-Za-z0-9]{3,}\b")  # OpenAI-style API keys
 
 
 def redact_secrets(text: str) -> str:
@@ -66,6 +67,11 @@ def sanitize_output_for_airi(text: str) -> Tuple[str, list]:
 
     # 1. Redact secrets first
     text = redact_secrets(text)
+
+    # 1a. Redact OpenAI-style API keys
+    if OPENAI_KEY_PATTERN.search(text):
+        text = OPENAI_KEY_PATTERN.sub("[REDACTED]", text)
+        redactions.append("api_key:openai_style")
 
     # 2. Strip authority tokens (case-insensitive)
     if AUTHORITY_PATTERN.search(text):

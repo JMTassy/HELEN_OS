@@ -1,0 +1,32 @@
+{
+  "schema": "K8_SUMMARY_V1",
+  "run_id": "RALPH-PRE",
+  "k8": 1.0,
+  "verdict": "PASS",
+  "witness": {
+    "invariant": "mu_NDWRAP",
+    "mu": 1.0,
+    "files": [],
+    "detail": "ok"
+  },
+  "invariants": [
+    {
+      "name": "mu_NDWRAP",
+      "mu": 1.0,
+      "files": [],
+      "detail": "ok"
+    },
+    {
+      "name": "mu_NDARTIFACT",
+      "mu": 1.0,
+      "files": [],
+      "detail": "ok"
+    },
+    {
+      "name": "mu_NDLEDGER",
+      "mu": 1.0,
+      "files": [],
+      "detail": "ok (14 ND entries verified)"
+    }
+  ]
+}

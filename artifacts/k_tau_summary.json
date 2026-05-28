@@ -1,0 +1,21 @@
+{
+  "schema_version": "K_TAU_SUMMARY_V1",
+  "run_id": "RUN-KTAU-LOCAL",
+  "tau": 1.0,
+  "witness_invariant": "mu_BOUNDARY",
+  "margins": {
+    "mu_BOUNDARY": 1.0,
+    "mu_IO": 1.0,
+    "mu_DETERMINISM": 1.0,
+    "mu_ALLOWLIST": 1.0,
+    "mu_SCHEMA": 1.0
+  },
+  "counterexample": {
+    "files": [],
+    "detail": "non-agentic change: skipped"
+  },
+  "agentic_change": false,
+  "changed_files": [
+    "HELEN_README.md"
+  ]
+}

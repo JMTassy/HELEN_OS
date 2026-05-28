@@ -1,0 +1,17 @@
+[
+  {
+    "category": "constraint_violation",
+    "confidence": 1.0,
+    "entity_slug": "blocker-evidence_missing",
+    "entity_type": "invariant_events",
+    "evidence": {
+      "claim_id": "CLM_007",
+      "reason": "EVIDENCE_MISSING"
+    },
+    "fact": "Blocking reason EVIDENCE_MISSING triggered",
+    "id": "blocker-evidence_missing-534b40f46f71",
+    "source": "test_cycle_output",
+    "status": "active",
+    "timestamp": "2026-01-28T21:36:29"
+  }
+]

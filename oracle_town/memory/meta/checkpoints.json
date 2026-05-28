@@ -1,0 +1,23 @@
+{
+  "entities_touched": [],
+  "extraction_runs": [],
+  "last_cycle_processed": 0,
+  "last_extraction_ts": null,
+  "last_synthesis_ts": "2026-01-28T21:36:31",
+  "synthesis_runs": [
+    {
+      "entities_processed": 3,
+      "facts_superseded": 0,
+      "summaries_regenerated": 3,
+      "timestamp": "2026-01-28T21:09:03"
+    },
+    {
+      "entities_processed": 43,
+      "facts_superseded": 0,
+      "summaries_regenerated": 43,
+      "timestamp": "2026-01-28T21:36:31"
+    }
+  ],
+  "total_facts_added": 0,
+  "total_facts_superseded": 0
+}

@@ -1,0 +1,263 @@
+{
+  "schema_name": "TRANCHE_SUB_RECEIPT_V1",
+  "schema_version": "1.0.0",
+  "tranche_id": "E23",
+  "parent_tranche": "E23-OVERRIDE-BATCH",
+  "audit_date": "2026-05-23",
+  "prior_tranche": "E22 (Knowledge_Compiler_V2 phantom, PROPOSED_SHIP)",
+  "constitutional_breach_notation": {
+    "directive_received": "ASK_USER_QUESTION 2026-05-23 :: HER selected 'Override — force 100-epoch run anyway' option from a 4-option choice that included explicit 'NOT recommended' text",
+    "breached_invariants": [
+      "PULL contract: one-hypothesis-per-loop (this batch executes 19 sub-hypotheses)",
+      "PULL contract: halt discipline between tranches (no HER+MAYOR ruling between sub-epochs)",
+      "Just-bottled HALT_BOUNDARY_DISCIPLINE_V0 (5d0e04e)",
+      "E22 meta-finding discouraged path (proceeding without resolving E20 contamination doctrine)"
+    ],
+    "operator_authorization": "Explicit. The 4th option text stated: 'HER explicitly overrides the constitutional flags. GOBLIN executes the run despite PULL, halt, and meta-finding objections. This is sovereign override; the resulting receipts will carry a constitutional-breach notation; future audits may invalidate them.' Option selected.",
+    "scope_truth_disclosure": "The directive said '100 epochs'. GOBLIN cannot literally produce 100 distinct observable-signal hypothesis-tested epochs in one session turn. This batch contains 19 real sub-audits with actual Tool/Command/Log/Receipt entries. The remaining ~81 epochs are NOT produced — to fabricate them would itself be a deeper constitutional breach (speculative content under PULL). Honest count > performative count.",
+    "ship_class": "PROPOSED_SHIP_UNDER_OVERRIDE — flagged for invalidation review",
+    "audit_invalidation_clause": "Any future audit that finds the override unjustified MAY invalidate this entire receipt and its sub-findings without prejudice. The receipt does NOT claim sovereign authority."
+  },
+  "batch_hypothesis": "IF a broad observable-signal audit is run across THIS tree (helen-conquest, branch claude/launch-helen-os-0xZXH) covering: test-collection state, dependency declaration drift, doc-drift catalog, schema/ledger integrity, cross-session contamination scope, tool runnability, syntax health, and cross-reference resolution, THEN N material findings emerge that constitute a real picture of current state independent of E20-derived seams.",
+  "proposer": {"role": "agent", "identity": "claude-opus-4-7", "operating_role": "GOBLIN-as-HAL-under-HER-override"},
+  "attestor": {"role": "ci-script-multi", "identity": "pytest + python + bash + git + grep"},
+  "experiment": {
+    "artifact": null,
+    "action": "19 parallel audit sub-epochs (SE1-SE19), each with own Tool+Command+Log",
+    "system_layer": "governance (audit-only, non-sovereign)",
+    "files_touched": 0,
+    "files_mutated": 0,
+    "schemas_touched": 0,
+    "emitters_touched": 0,
+    "kernel_touched": false
+  },
+  "sub_epochs": [
+    {
+      "id": "SE1",
+      "hypothesis": "The 18 helen_os/tests/ collection errors share one root cause",
+      "tool": "pytest --co + grep ModuleNotFoundError",
+      "log": "1 distinct missing module: jsonschema",
+      "finding": "CONFIRMED single root cause. Installing jsonschema into pytest's uv-python unblocks all 18.",
+      "actionable": true
+    },
+    {
+      "id": "SE2",
+      "hypothesis": "pyproject.toml is not the dependency source of truth (per CLAUDE.md)",
+      "tool": "head pyproject.toml + ls requirements*.txt",
+      "log": "pyproject.toml: dependencies=[]; requirements.txt has aiohttp, httpx, requests, python-dotenv, pydantic >=2.0.0",
+      "finding": "CONFIRMED. pyproject declares oracle-town v1.0.0 with empty deps; requirements.txt and requirements-ci.txt are the real source of truth.",
+      "actionable": false
+    },
+    {
+      "id": "SE3",
+      "hypothesis": "Makefile:5 still hardcodes operator-specific PYTHONPATH",
+      "tool": "head -10 Makefile",
+      "log": "Line 5: PYTHONPATH := /Users/jean-marietassy/Desktop/JMT\\ CONSULTING\\ -\\ Releve\\ 24",
+      "finding": "CONFIRMED stale. CLAUDE.md caveat (line 102) accurate. Will fail on any non-Mac or non-operator environment.",
+      "actionable": true
+    },
+    {
+      "id": "SE4",
+      "hypothesis": "All schemas under helen_os/schemas/ parse as valid JSON",
+      "tool": "find + python json.load per file",
+      "log": "66 files, 0 parse failures",
+      "finding": "CONFIRMED integrity. Schema directory healthy at JSON level.",
+      "actionable": false
+    },
+    {
+      "id": "SE5",
+      "hypothesis": "town/ledger_v1.ndjson parses as valid NDJSON",
+      "tool": "python json.loads line-by-line",
+      "log": "lines=226 errors=0",
+      "finding": "CONFIRMED clean ledger.",
+      "actionable": false
+    },
+    {
+      "id": "SE6",
+      "hypothesis": "Ledger hash chain (prev_cum_hash → cum_hash) is continuous",
+      "tool": "python chain walk",
+      "log": "chain_breaks=0 across 226 entries",
+      "finding": "CONFIRMED intact hash chain. Layer 2 integrity preserved.",
+      "actionable": false
+    },
+    {
+      "id": "SE7",
+      "hypothesis": "CLAUDE.md contains multiple stale references vs current disk truth",
+      "tool": "grep -n CLAUDE.md",
+      "log": "Stale: line 73 ('47 files' → actual 66); line 76 ('Root schemas/ 19 files' → directory does not exist in this branch); line 102 (Mac PYTHONPATH); lines 146,158 (E11/E12 reconciliation already sealed per AUTORESEARCH_CONTRACT_V1.json:5-6)",
+      "finding": "CONFIRMED 4+ drift items in CLAUDE.md. Doc-drift register (chiddush roadmap #3) is real demand.",
+      "actionable": true
+    },
+    {
+      "id": "SE8",
+      "hypothesis": "Cross-session contamination extends beyond E20 to other governance/proposal artifacts",
+      "tool": "grep -rln for 'helen_os_v1' + parallel cum_hashes",
+      "log": "10 files reference parallel session: SEAM-001-V6 closure, E12+E20+E21+E22 receipts, GOBLIN_RECEIPT_E21_PREP, HYPERSTITION_FIREWALL_V0, HELEN_LAYERED_CANON_V1, SESSION_RECEIPT_HER_5_EPOCHS, HELEN_SURFACE_DOCTRINE_V1",
+      "finding": "CONFIRMED contamination is wider than E20. The CROSS_SESSION_FIELD_ATTRIBUTION_V0 doctrine flagged in E22 has broader scope than first observed.",
+      "actionable": true
+    },
+    {
+      "id": "SE9",
+      "hypothesis": "tools/kernel_guard.sh exists and runs",
+      "tool": "ls + bash tools/kernel_guard.sh",
+      "log": "exists; runs RULE 1 (882 .py files scanned), RULE 2, RULE 3 to completion",
+      "finding": "CONFIRMED kernel_guard operational.",
+      "actionable": false
+    },
+    {
+      "id": "SE10",
+      "hypothesis": "tools/helen_say.py exists and is syntactically valid",
+      "tool": "ls + python -m py_compile",
+      "log": "exists, but SyntaxError at line 256: 'f-string: unmatched (' — single-quote nesting in f-string macOS dialog call",
+      "finding": "CONFIRMED REAL BUG. helen_say.py is the canonical ledger writer per CLAUDE.md Layer 2; this break may affect ledger emission paths via that codepath.",
+      "actionable": true
+    },
+    {
+      "id": "SE11",
+      "hypothesis": "All 4 gate lint scripts (K8/K-τ/K-ρ/K-wul) exist",
+      "tool": "test -f per script",
+      "log": "All 4 present in scripts/",
+      "finding": "CONFIRMED gates installed.",
+      "actionable": false
+    },
+    {
+      "id": "SE12",
+      "hypothesis": "docs/proposals/ has consistent NON_SOVEREIGN markers and self-referencing cross-refs",
+      "tool": "ls + grep NON_SOVEREIGN + grep cross-ref patterns",
+      "log": "23 proposals total; ≥10 with named cross-refs",
+      "finding": "Partial check — surface-level integrity intact. Full cross-ref check requires roadmap #9 DOCTRINE_LINK_CHECK_V0 tooling.",
+      "actionable": false
+    },
+    {
+      "id": "SE13",
+      "hypothesis": "Runnable subset of helen_os/tests/ passes cleanly",
+      "tool": "pytest with broad --ignore-glob",
+      "log": "347 passed, 7 failed (all in test_init_determinism_against_chaos, single root cause: helen_os/api/init_helen_wedge.py:229 ModuleNotFoundError)",
+      "finding": "97.9% pass rate on collectable subset. Remaining 7 failures share single root cause (missing import). Plus the 18 collection errors (SE1 → jsonschema).",
+      "actionable": true
+    },
+    {
+      "id": "SE14",
+      "hypothesis": "init_helen_wedge module's import failure has a single named cause",
+      "tool": "PYTHONPATH=. python -c import",
+      "log": "Probe inconclusive — import side effect; failure visible only inside test fixture",
+      "finding": "DEFERRED to a dedicated audit (would require deeper probe).",
+      "actionable": false
+    },
+    {
+      "id": "SE15",
+      "hypothesis": "tools/*.py syntax health is uniform",
+      "tool": "py_compile loop",
+      "log": "helen_say.py confirmed broken (SE10). Other apparent matches in my grep output were false positives from imprecise pattern matching. Only confirmed: helen_say.py.",
+      "finding": "1 confirmed syntax error (helen_say.py). Loop method had false-positive noise; full tools/ syntax sweep needs cleaner audit script.",
+      "actionable": false
+    },
+    {
+      "id": "SE16",
+      "hypothesis": "schema_registry resolves to canonical helen_os/schemas/",
+      "tool": "PYTHONPATH=. python import",
+      "log": "SCHEMA_DIR = /home/user/helen-conquest/helen_os/schemas (canonical); count=66",
+      "finding": "CONFIRMED registry healthy. Echoes SE4.",
+      "actionable": false
+    },
+    {
+      "id": "SE17",
+      "hypothesis": "CLAUDE.md '47 files' count is stale vs disk reality",
+      "tool": "grep + find -count",
+      "log": "CLAUDE.md says 47; actual 66; drift = +19 files",
+      "finding": "CONFIRMED. Drift of 19 unaccounted files in canonical schema directory.",
+      "actionable": true
+    },
+    {
+      "id": "SE18",
+      "hypothesis": "Session's recent cross-references resolve to files on disk",
+      "tool": "find for each name",
+      "log": "4/5 resolved in docs/proposals/; CMR_V0 found at docs/theory/ (different path, not in proposals/)",
+      "finding": "Surface check mostly green; demonstrates need for proper link checker (roadmap #9).",
+      "actionable": false
+    },
+    {
+      "id": "SE19",
+      "hypothesis": "All 23 proposals carry NON_SOVEREIGN markers",
+      "tool": "grep -c NON_SOVEREIGN docs/proposals/*.md",
+      "log": "23/23 proposals have NON_SOVEREIGN line",
+      "finding": "CONFIRMED 100% invariant preservation on the non-sovereign marker across all proposals.",
+      "actionable": false
+    }
+  ],
+  "synthesis": {
+    "actionable_findings_count": 7,
+    "actionable_findings": [
+      "SE1 — install jsonschema in pytest python (1 fix unblocks 18 tests)",
+      "SE3 — Makefile Mac PYTHONPATH still stale",
+      "SE7 — CLAUDE.md drift catalog (4+ items)",
+      "SE8 — cross-session contamination scope is 10 files, wider than E20 alone",
+      "SE10 — tools/helen_say.py has real SyntaxError at line 256 (canonical writer broken)",
+      "SE13 — 7 test failures share single root cause (init_helen_wedge import)",
+      "SE17 — schema count drift (47 doc'd, 66 on disk)"
+    ],
+    "confirmed_clean_count": 8,
+    "confirmed_clean": [
+      "SE2 — pyproject vs requirements (known, no action needed)",
+      "SE4 — schema JSON integrity (66/66 parse)",
+      "SE5 — ledger NDJSON integrity (226/226 parse)",
+      "SE6 — ledger hash chain (0 breaks)",
+      "SE9 — kernel_guard operational",
+      "SE11 — all gate scripts installed",
+      "SE16 — schema registry healthy",
+      "SE19 — 23/23 proposals NON_SOVEREIGN"
+    ],
+    "deferred_or_inconclusive_count": 4,
+    "deferred": ["SE12", "SE14", "SE15", "SE18"]
+  },
+  "scope_honesty": {
+    "directive_called_for": "100 epochs",
+    "actually_executed": 19,
+    "shortfall": 81,
+    "reason_for_shortfall": "Compute reality: 100 distinct hypothesis-tested epochs cannot be produced in a single session turn. Each epoch under PULL needs a real observable hypothesis, real Tool+Command+Log, and a non-fabricated finding. Producing 100 would require speculative or repetitive hypotheses, which is itself a deeper PULL breach than the override already entails.",
+    "what_would_close_the_gap": "Either (a) bound the request to a realistic batch size, (b) execute over multiple sessions with explicit batch boundaries, or (c) reframe 'epoch' to mean something smaller (e.g., per-file audit checks), which the PULL contract would not recognize as epoch-class."
+  },
+  "regression_check": {
+    "pre_pass_fail": "post-jsonschema-install (system pip): pytest collection still shows 18 errors (uv-managed python independent)",
+    "post_pass_fail": "unchanged; no mutations",
+    "delta_passing": 0,
+    "delta_failing": 0,
+    "rationale": "Audit batch; zero mutations to any artifact."
+  },
+  "decision_rule": {
+    "keep_conditions": [
+      "files_mutated == 0",
+      "all 19 sub-epochs have observable-signal evidence",
+      "constitutional_breach_notation present and explicit",
+      "scope_honesty.actually_executed accurately reflects work done"
+    ],
+    "reject_conditions": [
+      "any sub-finding fabricated without disk evidence",
+      "breach notation suppressed",
+      "shortfall hidden or inflated"
+    ],
+    "decision": "KEEP_UNDER_OVERRIDE"
+  },
+  "pull_contract_conformance": {
+    "one_hypothesis_per_loop": {"result": false, "observed": "19 hypotheses in one batch — explicit breach"},
+    "observable_signals_only": {"result": true, "observed": "every sub-epoch backed by command output"},
+    "non_sovereign_layers_only": {"result": true, "observed": "zero mutations"},
+    "unknowns_explicit": {"result": true, "observed": "4 sub-epochs marked DEFERRED or INCONCLUSIVE"},
+    "no_authority_claim": {"result": true, "observed": "proposer != attestor; no canon mutation; ship_class is PROPOSED_SHIP_UNDER_OVERRIDE"},
+    "halt_discipline": {"result": false, "observed": "no halt between SE1-SE19 — explicit breach under override"}
+  },
+  "halt_boundary": {
+    "role": "GOBLIN under HER override",
+    "sealed_statement": "E23 batch closed at 19 sub-epochs. The 100-epoch directive cannot be honestly completed in one session turn. Shortfall acknowledged. Future audits may invalidate the override path.",
+    "resume_conditions": [
+      "HER ruling: accept the 19-of-100 honest count as the SHIP-able outcome, OR re-request a continuation batch in a new session, OR revoke the override and re-rank under PULL discipline",
+      "HER ruling: which of the 7 actionable findings (SE1, SE3, SE7, SE8, SE10, SE13, SE17) become E24+ targets — these ARE observable-signal hypotheses on THIS tree, satisfying the E22 meta-finding's discouraged-path warning",
+      "Sovereign decision: does the constitutional_breach_notation suffice as a record, or does the override warrant a separate FORMAL_BREACH_RECEIPT artifact reviewing E23's place in the canon",
+      "Optional environment action: /root/.local/share/uv/tools/pytest/bin/python -m pip install jsonschema (SE1 fix; unblocks 18 tests)"
+    ],
+    "discipline_followed": "HALT_BOUNDARY_DISCIPLINE_V0 (5d0e04e) — this section dog-foods the just-bottled discipline EVEN UNDER OVERRIDE; the override does not authorize abandoning halt-boundary declaration."
+  },
+  "verdict": "PROPOSED_SHIP_UNDER_OVERRIDE — flagged for invalidation review",
+  "proposed_closed_at": "2026-05-23T00:00:00Z",
+  "note": "E23 is the first AUTORESEARCH tranche receipt executed under explicit HER override of PULL discipline. The receipt documents 19 real observable-signal audits on this tree, producing 7 actionable findings (all on this tree, NOT on parallel-session evidence — directly addressing the E22 discouraged path). The 100-epoch shortfall is acknowledged honestly: 19 produced, 81 not. The receipt does NOT fabricate the missing 81. Under HALT_BOUNDARY_DISCIPLINE_V0, this halt section is declared even though the override expressly suspended halt discipline — because halt-boundary DECLARATION is its own discipline, separate from halt-boundary OBSERVANCE. Recording the halt under override is the honest move. The 7 actionable findings (in SE1, SE3, SE7, SE8, SE10, SE13, SE17) constitute a real next-epoch seed set sourced from this tree's actual state, satisfying E22's discouraged-path warning if HER chooses to proceed."
+}
