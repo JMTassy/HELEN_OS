@@ -17,5 +17,7 @@
   "sealed_at": "2026-05-28T22:17:37.854551Z",
   "attestor_session": "helen-os-jmtc / Hermes",
   "cross_session_note": "Receipt produced in helen-os-jmtc session; durably recorded here per operator instruction 2026-05-28.",
-  "frontier_closes": "NEXT_FRONTIER_ISSUE_V0.md"
+  "frontier_closes": "NEXT_FRONTIER_ISSUE_V0.md",
+  "hermes_receipt_sha256": "sha256:de02d23c62e006d9704670f20b4062b7d58da693df9f5d0f47f9623da9a9ada6",
+  "hermes_receipt_path": "/home/helen-os-jmtc/.hermes/receipts/external_tasks/EXT-CAL-001/closure_receipt.json"
 }
