@@ -3,12 +3,14 @@
 **authority:** NON_SOVEREIGN
 **canon:** NO_SHIP
 **lifecycle:** FRONTIER_ISSUE
-**status:** Named — not yet bottled
+**status:** SUPERSEDED — formal version is `NEXT_FRONTIER_ISSUE_V0.md`
 **proposer:** claude-sonnet-4-6 (GOBLIN, acting non-sovereign)
 **attestor:** pending HAL
 **origin_finding:** helen-os-JMTC session 2026-05-28 — two independent
   Claude Code runs reached identical diagnosis
 **parent_context:** `CHIDDUSH_BOTTLE_V0.md` (Tier 5 unlocked)
+**superseded_by:** `NEXT_FRONTIER_ISSUE_V0.md` (operator-authored, formal
+  with pipeline C→G→E, theorem, schemas, LaTeX insert)
 
 ---
 
