@@ -1,0 +1,86 @@
+{
+  "receipt_type": "PROVENANCE_TRACE_V0",
+  "trace_id": "OBSIDIAN_BRIDGE_SYNTHESIS_V0",
+  "traced_at": "2026-05-29T15:10:46Z",
+  "tree": "claude/launch-helen-os-0xZXH",
+  "session": "helen-conquest / Claude Code 2026-05-29",
+
+  "claim": "TRACE_ONLY",
+  "authority": "operator",
+  "admitted": false,
+  "ledger_mutation": false,
+  "doctrine_admission": false,
+
+  "artifact_description": "Obsidian-HELEN bridge design docs (7 files). Pipeline: Capture → Process → Connect → Produce → Receipt → Archive. Contribution Rate as sole metric. OUTPUT_RECEIPT_V1 schema bridging both systems. Writing Activator identified as HELEN's gap.",
+
+  "artifact_files": [
+    {
+      "path": "docs/design/obsidian-bridge/CLAUDE.md",
+      "hash": "sha256:9f0b76cfc789cdaae89907f2ab376c7cae55a8c23838b9af6ae7d974c2bf5c78",
+      "role": "vault orientation template (operator-fillable)"
+    },
+    {
+      "path": "docs/design/obsidian-bridge/HELEN_OBSIDIAN_CLAUDE.md",
+      "hash": "sha256:0978cbd02d41f8bd1b661612b72eb420c0e0b8aa510092ad79f2ff09b2cb6d2c",
+      "role": "role mapping, OUTPUT_RECEIPT_V1 schema, halt rules"
+    },
+    {
+      "path": "docs/design/obsidian-bridge/workflows/01_daily_processing.md",
+      "hash": "sha256:9d090d4f929fd5f7919edce9aed66153cc939d0b9faf81f71354998eee4e50ab",
+      "role": "Capture → Process with HAL gate"
+    },
+    {
+      "path": "docs/design/obsidian-bridge/workflows/02_decision_feeder.md",
+      "hash": "sha256:12c38b3a6f0ed75fd6d73660a990678e13b3d2618fec0bd47c79cc39dbcf9429",
+      "role": "Active → decision brief (never OUTPUT)"
+    },
+    {
+      "path": "docs/design/obsidian-bridge/workflows/03_writing_activator.md",
+      "hash": "sha256:58b8ba804671a03537191603ba70b86d6f845c3fca38821128301f35aea62364",
+      "role": "pre-draft retrieval — HELEN gap workflow"
+    },
+    {
+      "path": "docs/design/obsidian-bridge/workflows/04_connection_surface.md",
+      "hash": "sha256:ecaa44d5fdd071de7884fbc1ea9400518ea262590b04b1837c957ee534135871",
+      "role": "Connect weekly — CHIDDUSH analog"
+    },
+    {
+      "path": "docs/design/obsidian-bridge/workflows/05_output_generator.md",
+      "hash": "sha256:1e0fd0daa7b0f1488b245014666b4e2c9da1f14972b710f55b96b94cc2388059",
+      "role": "Produce → Receipt — sole OUTPUT writer"
+    }
+  ],
+
+  "synthesis_origin": {
+    "source_type": "cross_session_operator_instruction",
+    "operator_session": "helen-conquest / 2026-05-29",
+    "parallel_session_input": "helen-os-JMTC (mvp/arnaud) flagged this same synthesis as TRACE_ONLY / NO_CLAIM in their tree — correctly, as HELEN internal anchors cited (GOVERNANCE/CLOSURES, reduce_promotion_packet, NEXT_FRONTIER receipts, LEGORACLE gate) do NOT exist in that tree.",
+    "tree_truth_resolution": "All cited HELEN anchors verified PRESENT in this tree (claude/launch-helen-os-0xZXH): GOVERNANCE/CLOSURES/ exists, skill_promotion_reducer.py::reduce_promotion_packet exists, docs/frontiers/NEXT_FRONTIER_ISSUE_V1.md exists, legoracle_gate_poc.py exists. Parallel session refusal was honest for their tree; cross-tree contamination does not apply here.",
+    "cross_tree_contamination_note": "helen-os-JMTC session correctly applied External-origin discipline. Their absence of anchors ≠ this tree's absence. No fabricated references in these artifacts."
+  },
+
+  "genuine_synthesis_claim": "HELEN's receipt discipline (NO RECEIPT = NO CLAIM) and Obsidian's output-velocity metabolism are structurally isomorphic at the Produce → Receipt stage. The gap: HELEN generates and governs abundantly but tracks no 'which receipts actually fed output.' Contribution Rate is the missing measurement. Writing Activator (03_writing_activator.md) is HELEN's gap workflow: retrieval-first, generation-second.",
+
+  "what_was_not_done": [
+    "No Obsidian vault scaffolded (no real vault path provided)",
+    "No 00_CAPTURE / 01_ACTIVE / 03_OUTPUT directories created",
+    "No HELEN-internal doctrine modified",
+    "No claim admitted to ledger",
+    "No Phase-3 override invoked"
+  ],
+
+  "operator_next_actions": [
+    "(b) Provide real vault path + override phrase → copy bridge to 04_SYSTEM/, fill bracketed fields",
+    "(c) Stand pat — design docs remain in docs/design/obsidian-bridge/ as specs only",
+    "Ignore — trace recorded, no follow-up required"
+  ],
+
+  "halt_boundary": {
+    "section": "Halt boundary",
+    "status": "HALTED — operator decides vault deployment",
+    "required_to_resume": [
+      "Real Obsidian vault path on disk",
+      "Override phrase authorizing Phase-3 scaffold build"
+    ]
+  }
+}
