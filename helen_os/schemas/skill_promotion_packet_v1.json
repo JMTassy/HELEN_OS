@@ -51,7 +51,9 @@
         "additionalProperties": false
       }
     },
-    "transfer_evidence": {"type": "object"}
+    "transfer_evidence": {"type": "object"},
+    "human_seal": {"type": ["string", "null"]},
+    "override": {"type": "boolean"}
   },
   "required": [
     "schema_name",
@@ -63,7 +65,9 @@
     "capability_manifest_sha256",
     "doctrine_surface",
     "evaluation",
-    "receipts"
+    "receipts",
+    "human_seal",
+    "override"
   ],
   "additionalProperties": false
 }

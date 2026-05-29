@@ -23,13 +23,15 @@ def reduce_promotion_packet(
     """
     Pure reduction function: packet + state → decision.
 
-    Enforces exactly 6 gates in order:
+    Enforces exactly 8 gates in order:
     1. Schema validity
     2. Receipt presence
     3. Receipt integrity
     4. Parent capability
     5. Doctrine match
     6. Evaluation pass threshold
+    7. Override forbidden (clean admission requires override: false)
+    8. Human seal present (non-null operator initials required)
     """
     # Gate 1: Schema validity
     valid, err = validate_schema("SKILL_PROMOTION_PACKET_V1", "1.0.0", packet)
@@ -70,6 +72,18 @@ def reduce_promotion_packet(
     if not packet["evaluation"]["passed"]:
         return ReductionResult(
             "REJECTED", ReasonCode.ERR_THRESHOLD_NOT_MET.value
+        )
+
+    # Gate 7: Override forbidden — clean admission cannot use override path
+    if packet.get("override", False):
+        return ReductionResult(
+            "REJECTED", ReasonCode.ERR_OVERRIDE_FORBIDDEN.value
+        )
+
+    # Gate 8: Human seal required — operator initials must be present and non-null
+    if not packet.get("human_seal"):
+        return ReductionResult(
+            "REJECTED", ReasonCode.ERR_HUMAN_SEAL_MISSING.value
         )
 
     # Bonus gate: Transfer requirement

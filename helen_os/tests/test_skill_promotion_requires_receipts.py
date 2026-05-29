@@ -42,6 +42,8 @@ def _make_valid_packet():
             "passed": True,
         },
         "receipts": [_make_valid_receipt()],
+        "human_seal": "JM",
+        "override": False,
     }
 
 
@@ -153,6 +155,26 @@ def test_transfer_required_but_missing_quarantined():
     result = reduce_promotion_packet(packet, state)
     assert result.decision == "QUARANTINED"
     assert result.reason_code == ReasonCode.OK_QUARANTINED.value
+
+
+def test_override_forbidden_rejected():
+    """Packet with override=True is REJECTED — clean admission forbids override path."""
+    packet = _make_valid_packet()
+    packet["override"] = True
+    state = _make_valid_state()
+    result = reduce_promotion_packet(packet, state)
+    assert result.decision == "REJECTED"
+    assert result.reason_code == ReasonCode.ERR_OVERRIDE_FORBIDDEN.value
+
+
+def test_human_seal_missing_rejected():
+    """Packet with human_seal=None is REJECTED — operator initials are required."""
+    packet = _make_valid_packet()
+    packet["human_seal"] = None
+    state = _make_valid_state()
+    result = reduce_promotion_packet(packet, state)
+    assert result.decision == "REJECTED"
+    assert result.reason_code == ReasonCode.ERR_HUMAN_SEAL_MISSING.value
 
 
 def test_transfer_required_with_evidence_admitted():
