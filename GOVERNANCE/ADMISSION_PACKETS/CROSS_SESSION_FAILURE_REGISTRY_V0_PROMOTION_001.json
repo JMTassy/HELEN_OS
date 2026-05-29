@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "receipt_type": "SKILL_PROMOTION_ADMISSION_V1",
+    "admitted_at": "2026-05-29T19:30:44Z",
+    "tree": "claude/launch-helen-os-0xZXH",
+    "session": "helen-conquest / Claude Code 2026-05-29",
+    "frontier_closes": "docs/frontiers/NEXT_FRONTIER_ISSUE_V1.md §3 CleanAdmit",
+    "gates_passed": 8,
+    "gate_sequence": [
+      "ERR_SCHEMA_INVALID (pass)",
+      "ERR_RECEIPT_MISSING (pass)",
+      "ERR_RECEIPT_HASH_MISMATCH (pass)",
+      "ERR_CAPABILITY_DRIFT (pass)",
+      "ERR_DOCTRINE_CONFLICT (pass)",
+      "ERR_THRESHOLD_NOT_MET (pass)",
+      "ERR_OVERRIDE_FORBIDDEN (pass)",
+      "ERR_HUMAN_SEAL_MISSING (pass)"
+    ],
+    "two_pass_verified": true,
+    "pass_1": {
+      "human_seal": null,
+      "decision": "REJECTED",
+      "reason_code": "ERR_HUMAN_SEAL_MISSING",
+      "gate_8_fired": true
+    },
+    "pass_2": {
+      "human_seal": "JM",
+      "decision": "ADMITTED",
+      "reason_code": "OK_ADMITTED"
+    },
+    "hash_scheme_note": "verify_hash strips 'sha256' field then hashes full receipt body (receipt_id + payload). sha256_prefixed(receipt_body) not sha256_prefixed(payload)."
+  },
+  "packet": {
+    "schema_name": "SKILL_PROMOTION_PACKET_V1",
+    "schema_version": "1.0.0",
+    "packet_id": "CROSS_SESSION_FAILURE_REGISTRY_V0_PROMOTION_001",
+    "skill_id": "CROSS_SESSION_FAILURE_REGISTRY_V0",
+    "candidate_version": "1.0.0",
+    "lineage": {
+      "parent_skill_id": "skill.base",
+      "parent_version": "0.9.0",
+      "proposal_sha256": "sha256:a2249e8a6f0269af9b22ecd872ca2a2929aaff5d989ed79fa28ff507845f13d5"
+    },
+    "capability_manifest_sha256": "sha256:4f72556f3fab3e7346b1f8b81fa848abe548e0c19a75f8a5755ec31174ea037e",
+    "doctrine_surface": {
+      "law_surface_version": "v1",
+      "transfer_required": false
+    },
+    "evaluation": {
+      "threshold_name": "autoresearch_confidence",
+      "threshold_value": 0.85,
+      "observed_value": 0.95,
+      "passed": true
+    },
+    "receipts": [
+      {
+        "receipt_id": "E12_AUTORESEARCH_RECEIPT_2026-05-29",
+        "payload": {
+          "epoch": 12,
+          "run_date": "2026-05-29",
+          "receipt_hash_jmtc": "dde5825d",
+          "hypothesis": "Cross-session failure-mode registry that indexes structural failure modes (Scope Bleed, Implicit Assumption, Temporal Ambiguity) for diagnostic purposes.",
+          "surviving_mechanism": "Read-only, cross-session indexing structural failure modes for diagnostic purposes.",
+          "confidence": 0.95,
+          "verdict": "APPROVE",
+          "sovereignty_violations": [],
+          "authority": false,
+          "posture": "NON_SOVEREIGN"
+        },
+        "sha256": "sha256:b6d447732ee6917c03c57758d664445ebeb678fcab3eb4f5d16c6ab5b18833e5"
+      }
+    ],
+    "human_seal": "JM",
+    "override": false
+  },
+  "capability_manifest": {
+    "skill_id": "CROSS_SESSION_FAILURE_REGISTRY_V0",
+    "version": "1.0.0",
+    "description": "Read-only cross-session registry indexing structural failure modes.",
+    "authority": "NON_SOVEREIGN",
+    "access_pattern": "read-only",
+    "mutation_target": "none"
+  },
+  "cross_session_provenance": {
+    "source_session": "helen-os-JMTC / mvp/arnaud",
+    "epoch": 12,
+    "jmtc_receipt_hash": "dde5825d",
+    "jmtc_run_date": "2026-05-29T18:13:00Z",
+    "disambiguation_note": "results.ndjson held two epoch-12 records (May-16 REQUEST_CHANGES/0.6 and May-29 APPROVE/0.95). Correct record is May-29 / dde5825d. Anchored on receipt_hash + timestamp.",
+    "tree_truth_verified": true
+  }
+}
