@@ -103,7 +103,7 @@ Commands:
 - `Makefile:5` hardcodes `PYTHONPATH` to an operator-specific Mac path (`/Users/jean-marietassy/Desktop/JMT CONSULTING - Releve 24`). Tests fail to import modules on any other host until this is replaced.
 - **18 collection errors** in `helen_os/tests/` if pytest's Python lacks `jsonschema`. On systems using `uv`-managed pytest (e.g. `/root/.local/bin/pytest` backed by `/root/.local/share/uv/tools/pytest/bin/python`), install into THAT Python: `<uv-pytest-python> -m pip install jsonschema`.
 - **7 deterministic failures** in `test_init_determinism_against_chaos` share root cause `helen_os/api/init_helen_wedge.py:229 ModuleNotFoundError`. Open carrier issue.
-- **`tools/helen_say.py` has a SyntaxError at line 256** (f-string unmatched paren in a macOS dialog code path). The canonical Layer 2 writer is broken; until fixed, callers that import this module fail at import time. Possible silent emission bypass since file timestamp 2026-04-26.
+- **`tools/helen_say.py` SyntaxError at line 256** (f-string unmatched paren in a macOS dialog code path) — **REPAIRED in this tree** (`claude/launch-helen-os-0xZXH`), verified 2026-05-29: `py_compile` and `import` both pass; fix extracts the escape into `escaped_msg` (lines 254–260). May still be broken in the parallel `helen-os-jmtc` tree; cross-tree status not verified.
 
 ## Running HELEN
 
