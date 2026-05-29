@@ -82,6 +82,7 @@ AUTORESEARCH operates under PULL-mode:
 - `additionalProperties: false` on all constitutional schemas — forbidden fields rejected at schema level
 - Proposer ≠ Validator — peer_review enforces K2/Rule 3
 - Termination is sacred — SHIP or ABORT only, no open-ended pauses
+- **Governance edit rule** — direct edits to `helen_os/governance/**` and `helen_os/schemas/**` require a prior proposal in `docs/proposals/` with operator authorization. Gate additions count as governance contract changes. (`docs/proposals/HUMAN_SEAL_OVERRIDE_GATES_V1.md` retroactively satisfies this rule for commit `284b347`.)
 
 ## Test Suite
 
