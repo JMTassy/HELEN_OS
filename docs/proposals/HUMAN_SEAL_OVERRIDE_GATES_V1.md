@@ -310,6 +310,42 @@ by override, not by exception — by adding the gate.
 
 ---
 
+## §13. Independent evidence — Horn D was a known failure class
+
+Added 2026-05-30 from a TEMPLE meditation (`docs/chiddush/X_TOKEN_TEMPLE_MEDITATION_V0.md`,
+TRACE_ONLY). External corroboration that Horn D was not a HELEN-specific
+oversight but an instance of a general, mathematically-characterized
+failure mode.
+
+The X-Token paper (NVIDIA, arXiv:2605.21699) proves **Proposition 1**:
+in a partition-based loss, for every uncommon logit `j`,
+
+```
+∂L_common/∂z_j = pS[j] · M_C(T) ≥ 0
+```
+
+The common-KL term gradient-**suppresses every token it does not
+explicitly name** — purely through full-vocabulary softmax
+normalization, independent of the ground-truth label. A variable omitted
+from the partition is not neutral; it is silently driven down.
+
+**The structural parallel to Horn D:** before `284b347`, the reducer's
+Gates 1–6 ran on a schema that did not *name* `human_seal`. Unsealed
+packets passed not because the seal was forgiven, but because the seal
+was never a variable in the decision surface. An omitted authority field
+is not neutral — it is silently admitted. Gate 8 makes the omitted
+variable explicit, exactly as P-KL makes suppressed tokens explicit by
+projecting them into the loss.
+
+This is a TRACE_ONLY observation. The X-Token paper is external and
+non-canonical to HELEN. It does not justify the gate (operator
+authorization does that — §3). It corroborates that the gate closes a
+recognized class of failure: **partitions that omit a variable still
+suppress it.** The fix in both domains is the same shape — name the
+variable, put it in the decision surface.
+
+---
+
 ## Halt boundary
 
 **Status:** COMPLETE — no further action required from this document.
