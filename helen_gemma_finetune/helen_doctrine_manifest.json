@@ -1,0 +1,37 @@
+{
+  "dataset": "helen_doctrine_sft.jsonl",
+  "total": 114,
+  "dataset_sha256": "aee92c180c3fcdb9",
+  "layers": {
+    "curated_invariants": 15,
+    "plugin_code": 52,
+    "doctrine_concepts": 55
+  },
+  "sources": [
+    "KERNEL_V2.md",
+    "SOUL.md",
+    "HELEN.md",
+    "KERNEL_K_TAU_RULE.md",
+    "ARTIFACT_LIFECYCLE_V1.md",
+    "ARCHITECTURE_V2.md",
+    "HELEN_PRIMER.md",
+    "HELEN_DESIGN.md",
+    "docs/proposals/HELEN_DAN_RALPH_V0.md",
+    "GOVERNANCE/INDEX.md",
+    "helen_os_scaffold/helen_os/plugins/jmt_frameworks.py",
+    "helen_os_scaffold/helen_os/plugins/jmt_retrieval.py",
+    "tools/validate_hash_chain.py",
+    "tools/validate_verdict_payload.py",
+    "tools/validate_receipt_linkage.py",
+    "tools/validate_seal_v1.py",
+    "tools/validate_turn_schema.py",
+    "tools/test_meta_invariance.py",
+    "scripts/helen_rho_lint.py",
+    "scripts/helen_k_tau_lint.py"
+  ],
+  "excluded": [
+    "worktree duplicates",
+    "Releve 24 private PDFs/financials",
+    "chat logs"
+  ]
+}

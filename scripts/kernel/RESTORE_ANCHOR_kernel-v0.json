@@ -1,0 +1,14 @@
+{
+  "schema": "RESTORE_ANCHOR_V0",
+  "authority": false,
+  "claim": "NO_CLAIM",
+  "tag": "kernel-v0",
+  "cold_restore": {
+    "repo": "JMTassy/conquest-oracle-town",
+    "branch": "claude/gallant-khayyam",
+    "commit": "ce16b6036cd3d26a10c9aec8760eceadbb0666f7",
+    "ledger_checksum": "sha256:aff1330fe79eeed9"
+  },
+  "test_command": "python3 -m pytest tests/kernel tests/eval -q",
+  "verified": "cold-restore: clean checkout at kernel-v0 -> 24/24 tests pass"
+}

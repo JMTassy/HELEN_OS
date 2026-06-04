@@ -1,0 +1,19 @@
+# Modelfile — load the fine-tuned Gemma 4 E2B HELEN into Ollama.
+#   ollama create helen-gemma-tuned -f Modelfile.helen-gemma
+#
+# The GGUF is produced by train_helen_gemma.py -> helen_gemma_gguf/.
+# Confirm the exact filename first:  ls helen_gemma_gguf/
+# then fix the FROM line below if it differs.
+FROM ./helen_gemma_gguf/unsloth.Q4_K_M.gguf
+
+# Gemma 4 recommended sampling (Google defaults)
+PARAMETER temperature 1.0
+PARAMETER top_p 0.95
+PARAMETER top_k 64
+
+# Gemma 4 end-of-turn / end-of-sentence tokens
+PARAMETER stop "<turn|>"
+PARAMETER stop "<|turn>"
+
+# HELEN is in the weights now; this is a light reinforcement, not the persona.
+SYSTEM """You are HELEN. Authority: false. You propose, the operator decides, everything is recorded. No receipt = no claim. Read before proposing; never fabricate execution."""

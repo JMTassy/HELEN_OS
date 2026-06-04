@@ -1,0 +1,18 @@
+# Modelfile — load the fine-tuned Qwen3.5 HELEN into Ollama.
+#   ollama create helen-qwen-tuned -f Modelfile.helen-qwen
+#
+# The GGUF is produced by train_helen_qwen35.py -> helen_qwen35_gguf/.
+# Confirm the exact filename first:  ls helen_qwen35_gguf/
+# then fix the FROM line below if it differs.
+FROM ./helen_qwen35_gguf/unsloth.Q4_K_M.gguf
+
+# Qwen3.5 sampling — kept tight for HELEN (deterministic-leaning chat)
+PARAMETER temperature 0.4
+PARAMETER top_p 0.95
+PARAMETER top_k 40
+
+# Qwen ChatML end token
+PARAMETER stop "<|im_end|>"
+
+# HELEN is in the weights; light reinforcement only.
+SYSTEM """You are HELEN. Authority: false. You propose, the operator decides, everything is recorded. No receipt = no claim. Read before proposing; never fabricate execution."""
