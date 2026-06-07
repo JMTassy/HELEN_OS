@@ -6,6 +6,16 @@ Supports modes: fetch (default), meteo, wulmoji, shell
 """
 import os, sys, json, subprocess, readline, datetime
 
+# Session-memory restore (SESSION_MEMORY_RESTORE_V1): read-only ledger replay
+# at boot so HELEN starts with its thread, not at "session #0".
+# Guardrail: restore may read/verify/summarize — may not admit/write/repair.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+try:
+    from helen_session_restore import load_entries, verify_chain, reconstruct_thread
+    _RESTORE_AVAILABLE = True
+except Exception:
+    _RESTORE_AVAILABLE = False
+
 # ANSI colors
 CYAN = "\x1b[36m"
 MAGENTA = "\x1b[35m"
@@ -31,7 +41,62 @@ class HeldenCLI:
     def __init__(self):
         self.mode = "fetch"
         self.message_count = 0
+        self.restored = None  # SESSION_STATE_V0 reconstructed at boot
         self.print_welcome()
+        self.restore_session()
+
+    def restore_session(self):
+        """Read-only ledger replay at boot. Fail closed on chain break.
+
+        Guardrail (SESSION_MEMORY_RESTORE_V1 §4): may read, verify, summarize.
+        May NOT admit, write, or repair. Never mutates the ledger.
+        """
+        if not _RESTORE_AVAILABLE:
+            print(f"{DIM}[restore] module unavailable — starting cold{RESET}\n")
+            return
+        if not os.path.exists(LEDGER_PATH):
+            print(f"{DIM}[restore] no ledger — session #0 (clean start){RESET}\n")
+            return
+        try:
+            entries = load_entries(__import__("pathlib").Path(LEDGER_PATH))
+            ok, n, detail = verify_chain(entries)
+            if not ok:
+                # fail closed: a broken chain is NOT replayed
+                print(f"{RED}[restore] chain integrity BROKEN ({detail}) — "
+                      f"refusing replay, starting cold{RESET}\n")
+                return
+            self.restored = reconstruct_thread(entries)
+            t = self.restored["total_turns"]
+            head = self.restored["head_cum_hash"][:16]
+            print(f"{GREEN}[restore] replayed {t} turns "
+                  f"(chain OK, {n} entries, head={head}){RESET}")
+            last = self.restored["turns"][-1] if self.restored["turns"] else None
+            if last and last.get("user"):
+                topic = last["user"].splitlines()[0][:60]
+                print(f"{DIM}[restore] last topic: {topic!r}  "
+                      f"(/recall for more){RESET}")
+            print()
+        except Exception as e:
+            # restore must never crash the boot — degrade to cold start
+            print(f"{RED}[restore] error ({e}) — starting cold{RESET}\n")
+            self.restored = None
+
+    def recall(self, last_k=5):
+        """Answer from replayed ledger (read-only)."""
+        if not self.restored or not self.restored.get("turns"):
+            print(f"{YELLOW}No replayed memory (cold start or empty ledger).{RESET}\n")
+            return
+        st = self.restored
+        print(f"{CYAN}Replayed memory: {st['total_turns']} turns, "
+              f"head={st['head_cum_hash'][:16]}{RESET}")
+        last = st["turns"][-1]
+        if last.get("user"):
+            print(f"  Last topic: {YELLOW}{last['user'].splitlines()[0][:70]!r}{RESET}")
+        print(f"  {DIM}Recent turns:{RESET}")
+        for tn in st["turns"][-last_k:]:
+            u = (tn.get("user") or "")[:55]
+            print(f"    turn {tn.get('turn')} [{tn.get('verdict')}] {u!r}")
+        print()
     
     def print_welcome(self):
         print(f"{CYAN}{BOLD}═══════════════════════════════════════════════════════════{RESET}")
@@ -46,6 +111,7 @@ class HeldenCLI:
         print(f"Commands:")
         print(f"  {YELLOW}/mode <name>{RESET}  - Switch mode (fetch, meteo, wulmoji, shell)")
         print(f"  {YELLOW}/status{RESET}      - Show system status")
+        print(f"  {YELLOW}/recall{RESET}      - Show replayed memory (read-only)")
         print(f"  {YELLOW}/help{RESET}        - Show this help")
         print(f"  {YELLOW}/exit{RESET}        - Exit HELEN CLI")
         print()
@@ -62,6 +128,11 @@ class HeldenCLI:
             with open(LEDGER_PATH) as f:
                 lines = len(f.readlines())
             print(f"  Ledger events: {lines}")
+        if self.restored:
+            print(f"  Replayed turns: {self.restored['total_turns']} "
+                  f"(head={self.restored['head_cum_hash'][:16]})")
+        else:
+            print(f"  Replayed turns: 0 (cold start)")
         print()
     
     def add_meteo_context(self, msg):
@@ -164,6 +235,9 @@ class HeldenCLI:
                     
                     elif cmd == "status":
                         self.show_status()
+
+                    elif cmd == "recall":
+                        self.recall()
                     
                     elif cmd == "help":
                         self.print_welcome()
