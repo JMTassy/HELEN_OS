@@ -102,8 +102,72 @@ def reconstruct_thread(entries: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def restore_chat_log(chat_log_path: Path, last_k: int = 20) -> dict[str, Any]:
+    """
+    Restore last K turns from the Mac CLI's plain chat log (helen_chat.ndjson).
+
+    Mac-shape (NOT hash-chained — boot.py:238 log_turn writes plain entries):
+        {"ts": "...", "role": "user|helen", "content": "...", "model": "..."}
+
+    No chain integrity claimed. No receipts. Honest read of role/content lines,
+    deduplicated by ts, suitable for seeding a chat history on boot.
+
+    Returns SESSION_STATE_CHAT_LOG_V0 with:
+      - turns_restored: list of {"role": "user|assistant", "content": "..."}
+        (role normalized: helen->assistant) — ready to extend `history` with.
+      - total_lines: total parseable lines in the log
+      - skipped: lines that failed to parse
+    """
+    if not chat_log_path.exists():
+        return {
+            "schema": "SESSION_STATE_CHAT_LOG_V0",
+            "authority": False,
+            "claim": "NO_CLAIM",
+            "integrity": "NONE — chat log is not hash-chained",
+            "total_lines": 0,
+            "skipped": 0,
+            "turns_restored": [],
+            "note": f"chat log not found: {chat_log_path}",
+        }
+
+    turns: list[dict[str, str]] = []
+    skipped = 0
+    total = 0
+    with open(chat_log_path, encoding="utf-8", errors="replace") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            total += 1
+            try:
+                e = json.loads(line)
+            except Exception:
+                skipped += 1
+                continue
+            role = e.get("role")
+            content = e.get("content")
+            if not role or not content:
+                skipped += 1
+                continue
+            # normalize: "helen" -> "assistant" for OpenAI/Ollama chat shape
+            norm_role = "assistant" if role.lower() in ("helen", "assistant") else "user"
+            turns.append({"role": norm_role, "content": content})
+
+    restored = turns[-last_k:] if last_k > 0 else turns
+    return {
+        "schema": "SESSION_STATE_CHAT_LOG_V0",
+        "authority": False,
+        "claim": "NO_CLAIM",
+        "integrity": "NONE — chat log is not hash-chained (Mac log shape)",
+        "total_lines": total,
+        "skipped": skipped,
+        "turns_restored": restored,
+    }
+
+
 def main() -> int:
     ledger_path = DEFAULT_LEDGER
+    chat_log_path: Path | None = None
     last_k = 5
     args = sys.argv[1:]
     i = 0
@@ -111,9 +175,31 @@ def main() -> int:
         a = args[i]
         if a == "--last" and i + 1 < len(args):
             last_k = int(args[i + 1]); i += 2; continue
+        if a == "--chat-log" and i + 1 < len(args):
+            chat_log_path = Path(args[i + 1]); i += 2; continue
         if not a.startswith("--"):
             ledger_path = Path(a)
         i += 1
+
+    # --chat-log mode: Mac-shape plain role/content NDJSON, no chain integrity
+    if chat_log_path is not None:
+        state = restore_chat_log(chat_log_path, last_k=last_k)
+        print("=" * 60)
+        print("HELEN CHAT-LOG RESTORE  (read-only · no chain integrity claimed)")
+        print("=" * 60)
+        print(f"chat log:     {chat_log_path}")
+        print(f"integrity:    {state['integrity']}")
+        print(f"total lines:  {state['total_lines']}")
+        print(f"skipped:      {state['skipped']}")
+        print(f"restored:     {len(state['turns_restored'])} turns (last {last_k})")
+        if "note" in state:
+            print(f"note:         {state['note']}")
+        print()
+        print(f"--- last {min(last_k, 5)} turns (preview) ---")
+        for t in state["turns_restored"][-5:]:
+            first = t["content"].splitlines()[0][:70]
+            print(f"  [{t['role']}] {first!r}")
+        return 0
 
     if not ledger_path.exists():
         print(f"[restore] ledger not found: {ledger_path}", file=sys.stderr)
