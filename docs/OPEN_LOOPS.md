@@ -30,22 +30,24 @@ Goal: G=(V,E), V = V_M ∪ V_C ∪ V_I, edges within + across corpora.
 
 ## ⭐ THE ONE NEXT ACTION (do only this)
 
-**On the Mac, in your shell:**
+**On the Mac — is `helen-corpus-private` a skeleton or the canonical corpus?**
 
 ```bash
-WT="/Users/jean-marietassy/Desktop/JMT CONSULTING - Releve 24/.claude/worktrees/gallant-khayyam"
-cd "$WT" && git fetch anchor
-git checkout anchor/claude/launch-helen-os-0xZXH -- tools/helen_manifest.py
-python3 tools/helen_manifest.py \
-  --roots ~/Desktop ~/Documents ~/helen-os ~/helen_os_scaffold ~/.helen \
-  --out helen_manifest_v1.json
+cd ~/Desktop/helen-corpus-private
+find corpus -type f | wc -l
+find corpus_txt -type f | wc -l
+ls corpus | head -20
+ls corpus_txt | head -20
 ```
 
-**Why this one:** it's JM's own named next action. It builds `helen_manifest_v1.json`
-— every artifact classified MATHS/CONSTITUTION/IDENTITY, with duplicates surfaced
-(the sprawl as a number). Read-only. One command. Paste the summary back.
+**Why this one (JM's call):** runtime is proven (Hermes). The next thing to prove
+is whether a canonical corpus already exists or is just a repo skeleton. Inspect
+BEFORE running the manifest broadly — you scan what's there before classifying it.
+Read-only. Paste the counts.
 
-*(One action. When it's done → mark CANONICAL docs → graph edges → RAG from canonical.)*
+**Immediate follow-on (do NOT skip ahead to it):** once we see the counts, run
+`helen_manifest.py` (tool ready, `74f801e`) over the real corpus roots → classify
+MATHS/CONSTITUTION/IDENTITY → mark CANONICAL → graph edges → RAG from canonical.
 
 ## THE 7-DAY PLAN (JM's — recorded so it survives frontier #N+1)
 
@@ -69,25 +71,37 @@ ONLY THEN consider LoRA.
 - First clean-gate ADMITTED packet (real cargo) — `6a7a865`
 - Replay-on-boot wired in this tree's CLI — `f87a3c8`
 - Horn B audit: ledger is V0, guard is blind — `92b1915`
-- The whole carrier toolchain — built + self-tested (see PARKED)
+- **Canonical RUNTIME identified = Hermes** (2026-06-08, evidence-closed by JM):
+  binary `~/.local/bin/hermes` · source `~/.hermes/hermes-agent/` ·
+  approval `~/.hermes/hermes-agent/tools/approval.py` (per-session state, smart
+  approval, allowlists). The runtime question is SETTLED.
 
-## 🟡 BUILT, NOT INSTALLED (the loop that keeps not closing)
+## 🟡 STANDALONE TOOLS — VALID (runtime-agnostic libraries)
 
-All on the branch. **All sit unused because none is on the Mac runtime.**
-This is the bottleneck, named honestly:
+These are importable into ANY runtime, including Hermes. They survive the runtime
+finding. **Not yet wired into Hermes** (wiring needs `~/.hermes/hermes-agent/` source):
 
-| Tool | Commit | Installs the fix for |
+| Tool | Commit | Library for |
 |---|---|---|
-| `apply_helen_grounding.sh` | `b9d6a15` | $HOME paths, "can't access", schema drift, session #0 |
-| `helen_kernel_context.py` | `7d97db6` | runtime grounding (capability-contract R1) |
-| `helen_action_schema.py` | `1ccc290` | write{text}, read_clipboard, empty run_command |
-| `helen_session_restore.py` | `5490566`/`05d1f81` | memory across sessions |
-| `helen_local_rag.py` | `fe37286` | cited code lookup (RAG) |
+| `helen_kernel_context.py` | `7d97db6` | runtime grounding probe |
+| `helen_action_schema.py` | `1ccc290` | action validate/repair |
+| `helen_session_restore.py` | `5490566`/`05d1f81` | memory restore (incl. chat-log shape) |
+| `helen_local_rag.py` | `fe37286` | cited code/corpus lookup |
 | `helen_image_corpus.py` | `8e9211c` | screenshots/PDFs → corpus |
-| `helen_math_inventory.py` | `b956188` | MATHS_CORE inventory + manifest |
-| PATCH D (approval loop) | `e1d538f` | "ok go" not executing — **needs Hermes approval.py first** |
+| `helen_manifest.py` | `74f801e` | tri-corpus classify + manifest |
 
-→ **Install order, once runtime is confirmed:** grounding → schema → restore → rag.
+## 🔴 INVALID TARGET — RETIRED (wrong runtime)
+
+JM's runtime evidence (Hermes) retires every patch that wired `boot.py`/`helen_cli.py`:
+
+| Retired | Commit | Why invalid |
+|---|---|---|
+| `apply_helen_grounding.sh` | `b9d6a15` | wires helen_cli.py/boot.py, not Hermes |
+| PATCH A/B/C (grounding/schema/restore wiring) | `3f8d81b` | same — wrong runtime |
+| PATCH D (approval loop) | `e1d538f` | helen_cli.py cmd_approve ≠ Hermes approval.py |
+
+→ **Re-do as:** wire the VALID standalone tools into Hermes — requires reading
+`~/.hermes/hermes-agent/` source first. PARKED to SEEDS (JM chose corpus track).
 
 ## 🔵 DECISIONS PENDING (JM's call, parked — not dropped)
 
@@ -98,11 +112,14 @@ This is the bottleneck, named honestly:
 
 ## 🟣 SEEDS (TRACE_ONLY — do not let these become frontiers yet)
 
-- Gemma4-12B LoRA on math corpus → **step 6 of 6.** Blocked on: corpus not built.
+- **Wire the 6 valid tools into Hermes** → needs `~/.hermes/hermes-agent/` source read.
+- **"ok go" approval bug** → re-diagnose against Hermes `tools/approval.py` (NOT
+  PATCH D — that targeted the wrong runtime).
+- Gemma4-12B LoRA on math corpus → **step 6 of 6.** Blocked on: canonical corpus.
 - Gemma-4 MTP speculative decoding → verified real (`eb03a54`), deferred.
 - Vision fix (PIL / VLM check) → diagnosed, not fixed.
 - Jester Garden → gated behind capability contract (your own rule).
-- Obsidian bridge, HELEN_SOUL persona, RUNTIME_CAPABILITY_CONTRACT → specced, await canonical runtime.
+- Obsidian bridge, HELEN_SOUL persona, RUNTIME_CAPABILITY_CONTRACT → specced, await Hermes wiring.
 
 ---
 
