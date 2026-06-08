@@ -6,26 +6,60 @@
 > #N+1 never erases the open loops from frontier #N.
 > Rule: **close a loop, or park it here — never just drop it.**
 
-**Last updated:** 2026-06-08 · **Branch:** `claude/launch-helen-os-0xZXH` @ `b956188`
+**Last updated:** 2026-06-08 · **Branch:** `claude/launch-helen-os-0xZXH` @ `74f801e`
+
+---
+
+## THE INSIGHT (JM, 2026-06-08 — supersedes the "discipline" diagnosis)
+
+Not "you generate faster than you close." Deeper: **you generate at 5 abstraction
+levels at once** (maths → formal systems → agents → products → narrative). The
+failure is **compression, not discipline.** And the corpus DOES exist — it is
+**not canonicalized.** Too much, not nothing — the better problem.
+
+**HELEN has THREE corpora, not one:**
+```
+MATHS_CORE        — Riemann, Finite-Band, Σ-SEED, QPGL, ΦΛΩΣ, Hypocoercivity, Langlands
+CONSTITUTION_CORE — HELEN OS, Oracle Town, HAL, ledger, receipts, WUL, kernel, governance
+IDENTITY_CORE     — Math→Face, character, director, avatar, doctrine, video, voice
+```
+Goal: G=(V,E), V = V_M ∪ V_C ∪ V_I, edges within + across corpora.
+**31 HELENs become ONE graph; each HELEN a view over it.**
 
 ---
 
 ## ⭐ THE ONE NEXT ACTION (do only this)
 
-**On the Mac, in your shell (NOT inside HELEN):**
+**On the Mac, in your shell:**
 
 ```bash
-which hermes; type hermes
-ls -la ~/.hermes/hermes-agent/
-sed -n '1,80p' ~/.hermes/hermes-agent/tools/approval.py
+WT="/Users/jean-marietassy/Desktop/JMT CONSULTING - Releve 24/.claude/worktrees/gallant-khayyam"
+cd "$WT" && git fetch anchor
+git checkout anchor/claude/launch-helen-os-0xZXH -- tools/helen_manifest.py
+python3 tools/helen_manifest.py \
+  --roots ~/Desktop ~/Documents ~/helen-os ~/helen_os_scaffold ~/.helen \
+  --out helen_manifest_v1.json
 ```
 
-**Why this one:** everything else is blocked on a single unknown — *which program is HELEN?*
-You run `hermes`. The patches built this session target `helen_cli.py` (a tree you
-may not run). Until we see what `hermes` executes, no patch and no training is
-grounded. This is 3 read-only commands. Paste the output. That's the whole task.
+**Why this one:** it's JM's own named next action. It builds `helen_manifest_v1.json`
+— every artifact classified MATHS/CONSTITUTION/IDENTITY, with duplicates surfaced
+(the sprawl as a number). Read-only. One command. Paste the summary back.
 
-*(One action. Not four. When it's done, this file updates to the next one action.)*
+*(One action. When it's done → mark CANONICAL docs → graph edges → RAG from canonical.)*
+
+## THE 7-DAY PLAN (JM's — recorded so it survives frontier #N+1)
+
+```
+D1-2  build helen_manifest_v1.json          ← THE ONE ACTION (tool ready: 74f801e)
+D3    classify every artifact MATHS/CONSTITUTION/IDENTITY   (manifest does this)
+D4    mark CANONICAL docs                    (operator sets status RAW→CANONICAL)
+D5    build graph edges (depends_on)         (operator-marked; Frontier 3)
+D6    RAG index from CANONICAL only          (helen_local_rag over canon subset)
+D7    Hermes answers the graph with citations:
+        "what theorem depends on Σ-SEED?"  "latest canonical Finite-Band paper?"
+        "which doctrine references Math→Face?"
+ONLY THEN consider LoRA.
+```
 
 ---
 
