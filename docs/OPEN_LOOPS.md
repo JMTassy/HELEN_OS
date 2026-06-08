@@ -20,14 +20,19 @@ DONE
 - 6 standalone tools: committed to helen-conquest (runtime-agnostic, not yet wired)
 
 OPEN
-- core.py:188: fix verified by REDUCER; NOT confirmed saved+compiled on Mac ← THE UNKNOWN
-- CONSTITUTION crown: REDUCER-verified, waiting for human declaration (step 4)
+- CONSTITUTION crown: STAGED in CANON/CONSTITUTION/cognitive_kernel/ (7 files, fix
+  applied, compile+gates PASS). Awaiting operator's one-word declaration. ← step 4, one word away
 - IDENTITY crown: not started (step 5)
 - helen-corpus-private main: MATHS crown local-only, push pending
 - governance corpus: corpus/01 + corpus_txt untracked in helen-corpus-private
 
 BLOCKED
-- Everything except core.py:188 confirmation. That is the only gate.
+- IDENTITY (step 5) waits on CONSTITUTION declaration. Everything else → SEEDS.
+
+DISSOLVED (2026-06-08): the live core.py:188 hunt across mac/geforce/hermes. HELEN-the-
+chatbot CANNOT execute shell commands (confirmed by HELEN itself). The crown needs a
+verified canonical SOURCE, not a live running copy. REDUCER holds verified files; staged
+them in CANON. Copies sync FROM canon. No live-machine command required to crown.
 ```
 
 NOTE: Any session showing 100% on KERNEL/MEMORY/LEDGER/RESOLVERS/SKILLS/COCKPIT is
