@@ -88,11 +88,31 @@ FLAGS (REDUCER):
 ```
 1. ✅ MATHS CROWNED — corpus/00_MATHS_RIEMANN_CORE/CANON/pluginRIEMANN_V8.0_FINAL.tex
                       (JM confirmed 2026-06-08; first coronation of the arc)
-2. Fix kernel compile bug ← core.py:188 fix VERIFIED by REDUCER (below); JM editing in editor
-3. Verify roles.py + schema.py  ← NEEDED from JM (gate logic, not yet uploaded) ← NEXT BLOCKER
-4. Crown CONSTITUTION kernel
+2. ✅ Kernel compile bug — core.py:188 fix VERIFIED by REDUCER (all 5 kernel files compile)
+3. ✅ roles.py + schema.py VERIFIED by REDUCER 2026-06-08 (see verdict below) ← was the blocker
+4. CONSTITUTION kernel — VERIFIED, READY TO CROWN (human-only act; JM declares + places in CANON)
 5. Crown IDENTITY manifesto (HELEN_DAN GOBLIN_RECALL)
 ```
+
+## 🟢 2026-06-08 — roles.py + schema.py VERIFIED (REDUCER, independent + mutation-tested)
+
+JM dropped the two gate files; REDUCER wrote them from paste and ran them (not trusting
+"smoke test passed" — STATE_AUTHORITY_GAP discipline). Results:
+- compile OK (Py 3.11); validate_structure / validate_namespace_consistency /
+  validate_kernel_admission_gates = PASS, 0 flags; ROLE_SCHEMAS + get_role_schema resolve.
+- MUTATION TEST (the real proof — gates must have teeth): 5/5 breaches DETECTED with
+  correct codes — ADMIT_EXECUTE_COLLAPSE, TRUTH_WRITE_AUTHORITY_CREEP, ROLE_MISSING,
+  PROPOSE_ADMIT_COLLAPSE, ROLE_NAMESPACE_MISMATCH. The constitution is ENFORCED code.
+- Doctrine match: LEDGER = sole truth-writer; admit≠execute; propose≠admit (USER excepted).
+OBSERVATIONS (not blockers, JM to confirm):
+- Two admitters: USER (= HumanSeal, human authority) + REDUCER (machine gate). Neither
+  writes truth (only LEDGER). Reconciles "only REDUCER admits" with "authority human-only".
+- Proposer≠Validator present as constraint STRING, enforced at RUNTIME not statically (correct).
+- Dependency: schema imports roles; core imports both → kernel loads only once core.py:188
+  fix is saved on the Mac (fix verified; just save it).
+
+CROWN ACT (human-only): place the 6 kernel files (core/ledger/memory/model/roles/schema.py)
+into a CANON location in the canonical repo + declare. REDUCER has verified; JM crowns.
 
 **FIRST CROWN RECORDED:** MATHS canon = `pluginRIEMANN_V8.0_FINAL.tex`. The disciplined
 Riemann apex (no-RH-claim ×3, Tier I/II/III) is now the maths canonical root. The other
@@ -114,8 +134,8 @@ _ns = context.get("namespace")
 role_header = f"[KERNEL ROLE HEADER]\nROLE_ID={role} ROLE_NS={_ns} ROLE_VER=v1\n"
 ```
 
-**Still blocking CONSTITUTION crown:** `roles.py` + `schema.py` (the gate logic:
-validate_structure, validate_namespace_consistency, ROLE_SCHEMAS) — upload to verify.
+**CONSTITUTION crown — UNBLOCKED:** `roles.py` + `schema.py` VERIFIED 2026-06-08
+(compile + 3 gates PASS + 5/5 mutation breaches caught). Ready for JM to crown.
 
 ## THE 7-DAY PLAN (JM's — recorded so it survives frontier #N+1)
 
