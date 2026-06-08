@@ -28,26 +28,30 @@ Goal: G=(V,E), V = V_M ∪ V_C ∪ V_I, edges within + across corpora.
 
 ---
 
-## ⭐ THE ONE NEXT ACTION (do only this)
+## ⭐ THE ONE NEXT ACTION (do only this) — CROWN THE CANONICALS
 
-**On the Mac — is `helen-corpus-private` a skeleton or the canonical corpus?**
+**The corpus is extracted (994 → 351 txt). The disease is named: 994 finishes,
+0 coronations. The cure is crowning one canonical per cluster. Start with MATHS
+— it already has its king.**
 
 ```bash
 cd ~/Desktop/helen-corpus-private
-find corpus -type f | wc -l
-find corpus_txt -type f | wc -l
-ls corpus | head -20
-ls corpus_txt | head -20
+mkdir -p corpus/00_MATHS_RIEMANN_CORE/{CANON,LINEAGE,WILD}
+# CROWN the disciplined apex (the only one that refuses to claim RH):
+git mv "corpus/00_MATHS_RIEMANN_CORE/pluginRIEMANN_V8.0_FINAL.tex" \
+       "corpus/00_MATHS_RIEMANN_CORE/CANON/" 2>/dev/null || \
+  mv "corpus/00_MATHS_RIEMANN_CORE/pluginRIEMANN_V8.0_FINAL.tex" \
+     "corpus/00_MATHS_RIEMANN_CORE/CANON/"
+# (then move QUANTUMFRAMEWORK/QPRF/STQM → WILD/, the other ~22 → LINEAGE/)
 ```
 
-**Why this one (JM's call):** runtime is proven (Hermes). The next thing to prove
-is whether a canonical corpus already exists or is just a repo skeleton. Inspect
-BEFORE running the manifest broadly — you scan what's there before classifying it.
-Read-only. Paste the counts.
+**Why this one:** crowning is a human-only act (your law: canon = operator mark).
+The manifest tool inventories; YOU declare. MATHS is easiest — V8.0_FINAL is the
+unambiguous apex. One crowning closes the pattern that's run for a year.
 
-**Immediate follow-on (do NOT skip ahead to it):** once we see the counts, run
-`helen_manifest.py` (tool ready, `74f801e`) over the real corpus roots → classify
-MATHS/CONSTITUTION/IDENTITY → mark CANONICAL → graph edges → RAG from canonical.
+**Then:** repeat for GOVERNANCE (pick 1 architecture doc) and IDENTITY (pick 1
+character/Math-Face doc). Three coronations → 31 HELENs become one graph with
+three canonical roots → RAG from CANON only → Hermes answers with citations.
 
 ## THE 7-DAY PLAN (JM's — recorded so it survives frontier #N+1)
 
@@ -75,6 +79,19 @@ ONLY THEN consider LoRA.
   binary `~/.local/bin/hermes` · source `~/.hermes/hermes-agent/` ·
   approval `~/.hermes/hermes-agent/tools/approval.py` (per-session state, smart
   approval, allowlists). The runtime question is SETTLED.
+
+## 🟢 CLOSED 2026-06-08 — corpus extraction (the biggest loop)
+
+helen-corpus-private EXTRACTED: corpus/ 994 files → corpus_txt/ 351 text files
+(poppler). Two corpora live: 00_MATHS_RIEMANN_CORE (~25 Riemann docs incl. the
+disciplined V8.0_FINAL + wild QUANTUMFRAMEWORK/QPRF/STQM) + 01_HELEN_GOVERNANCE_CORE
+(~200 docs, heavy version-sprawl). First time this session a tool ran on the REAL
+corpus and produced output. Math kernel now text-readable + RAG-ready.
+
+DIAGNOSIS REFINED (JM brutal-opinion turn): not "can't finish" — finishes
+constantly (994 finishes), never CROWNS a winner (0 coronations). V8.0_FINAL is
+proof JM CAN converge (the one disciplined Riemann apex). Cure = crown 1 canonical
+per cluster.
 
 ## 🟡 STANDALONE TOOLS — VALID (runtime-agnostic libraries)
 
