@@ -83,6 +83,34 @@ FLAGS (REDUCER):
 - DECISION: kernel namespaces (math/world/project) differ from corpus triad
   (MATHS/CONSTITUTION/IDENTITY). Align, or 4th taxonomy? Operator's one-sentence call.
 
+## ⭐ THE CROWN ORDER (JM ruling 2026-06-08) — in progress
+
+```
+1. MATHS crown V8         ← JM running `mv V8.0_FINAL → CANON/` on Mac (confirm: ls CANON/)
+2. Fix kernel compile bug ← core.py:188 fix VERIFIED by REDUCER (below)
+3. Verify roles.py + schema.py  ← NEEDED from JM (gate logic, not yet uploaded)
+4. Crown CONSTITUTION kernel
+5. Crown IDENTITY manifesto (HELEN_DAN GOBLIN_RECALL)
+```
+
+**NAMESPACE RULING (settled, no conflict):**
+```
+math/world/project          = RUNTIME namespace (kernel execution layer)
+MATHS/CONSTITUTION/IDENTITY  = CORPUS canon namespace (knowledge layer)
+Different layers. Orthogonal. Not a 4th taxonomy. No reconciliation needed.
+```
+
+**core.py:188 FIX — VERIFIED by REDUCER on Python 3.11:**
+before = SyntaxError (f-string unmatched paren); after = all 4 files compile OK.
+Portable (works 3.11+, not just 3.12). Apply on Mac:
+```python
+_ns = context.get("namespace")
+role_header = f"[KERNEL ROLE HEADER]\nROLE_ID={role} ROLE_NS={_ns} ROLE_VER=v1\n"
+```
+
+**Still blocking CONSTITUTION crown:** `roles.py` + `schema.py` (the gate logic:
+validate_structure, validate_namespace_consistency, ROLE_SCHEMAS) — upload to verify.
+
 ## THE 7-DAY PLAN (JM's — recorded so it survives frontier #N+1)
 
 ```
