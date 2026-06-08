@@ -6,7 +6,33 @@
 > #N+1 never erases the open loops from frontier #N.
 > Rule: **close a loop, or park it here — never just drop it.**
 
-**Last updated:** 2026-06-08 · **Branch:** `claude/launch-helen-os-0xZXH` @ `74f801e`
+**Last updated:** 2026-06-08 · **Branch:** `claude/launch-helen-os-0xZXH` @ `59b03f5`
+
+## MINIMUM STATE VECTOR (cross-session sync format — ChatGPT / Claude / Hermes / git)
+
+```
+DONE
+- MATHS crown: pluginRIEMANN_V8.0_FINAL.tex → CANON/ (d5c0231, helen-corpus-private)
+- core.py:188 fix: verified by REDUCER on Python 3.11 (extract _ns, then f-string)
+- roles.py + schema.py: compile + 3 gates PASS + 5/5 mutation breaches caught
+- Hermes runtime identified: ~/.local/bin/hermes + tools/approval.py
+- Execution frontier crossed: /approve → run_command → receipt (grounding caveat noted)
+- 6 standalone tools: committed to helen-conquest (runtime-agnostic, not yet wired)
+
+OPEN
+- core.py:188: fix verified by REDUCER; NOT confirmed saved+compiled on Mac ← THE UNKNOWN
+- CONSTITUTION crown: REDUCER-verified, waiting for human declaration (step 4)
+- IDENTITY crown: not started (step 5)
+- helen-corpus-private main: MATHS crown local-only, push pending
+- governance corpus: corpus/01 + corpus_txt untracked in helen-corpus-private
+
+BLOCKED
+- Everything except core.py:188 confirmation. That is the only gate.
+```
+
+NOTE: Any session showing 100% on KERNEL/MEMORY/LEDGER/RESOLVERS/SKILLS/COCKPIT is
+showing DESIRED STATE, not verified state. Verified state is the DONE list above.
+Hermes at 71% context / 9h46m — treat anything Hermes-only as at risk of compaction.
 
 ---
 
