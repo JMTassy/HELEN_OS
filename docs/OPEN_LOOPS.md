@@ -156,6 +156,29 @@ constantly (994 finishes), never CROWNS a winner (0 coronations). V8.0_FINAL is
 proof JM CAN converge (the one disciplined Riemann apex). Cure = crown 1 canonical
 per cluster.
 
+## 🟢 2026-06-08 — EXECUTION FRONTIER CROSSED (with caveat)
+
+Hermes executed an action end-to-end: Proposal → /approve appr_fa9b048a015e →
+run_command ok=True → receipt sha256:7f6ae639bea3b698. The "ok go doesn't execute"
+loop is RESOLVED via Hermes's own /approve. Gate held (queued→approved→ran);
+authority=false intact; action receipted (NO RECEIPT = NO CLAIM honored).
+
+CAVEAT (the grounding bug, at the git layer): HELEN ran git in its cwd
+(gallant-khayyam worktree), NOT ~/Desktop/helen-corpus-private. Result: commit
+b767e2d "corpus: governance + extracted txt" actually committed the 5 grounding
+TOOLS (wrong files), on the wrong branch, with a mislabeled message. Ungrounded
+action = mislabeled action. This is EXACTLY why KERNEL_CONTEXT/repo_root matters —
+proven by the irony that the mislabeled commit's contents ARE the grounding tools.
+
+ACTUAL STATE (both repos):
+- helen-corpus-private @ main d5c0231: MATHS crown REAL + safe (V8 in CANON/, 83 files)
+- gallant-khayyam b767e2d: mislabeled tool commit, harmless but wrong
+- corpus/01_HELEN_GOVERNANCE_CORE + corpus_txt: STILL untracked in helen-corpus-private
+  (the intended governance commit never happened)
+
+RULE ADDED: do NOT let HELEN run git until grounded. Run repo commands in operator
+shell, in the correct directory. Execution works; grounding-of-execution does not yet.
+
 ## 🟡 STANDALONE TOOLS — VALID (runtime-agnostic libraries)
 
 These are importable into ANY runtime, including Hermes. They survive the runtime
