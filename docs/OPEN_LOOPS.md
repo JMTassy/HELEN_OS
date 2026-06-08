@@ -105,9 +105,10 @@ MATHS/CONSTITUTION/IDENTITY  = CORPUS canon namespace (knowledge layer)
 Different layers. Orthogonal. Not a 4th taxonomy. No reconciliation needed.
 ```
 
-**core.py:188 FIX — VERIFIED by REDUCER on Python 3.11:**
-before = SyntaxError (f-string unmatched paren); after = all 4 files compile OK.
-Portable (works 3.11+, not just 3.12). Apply on Mac:
+**core.py:188 FIX — VERIFIED by REDUCER on Python 3.11 (RE-CONFIRMED 2026-06-08):**
+Compile sweep of the 5 uploaded kernel files: ledger/memory/model/main = OK as-is;
+core.py = SyntaxError (f-string unmatched paren) until the one-line fix, then OK.
+After fix → all 5 compile. Portable (works 3.11+, not just 3.12). Apply on Mac:
 ```python
 _ns = context.get("namespace")
 role_header = f"[KERNEL ROLE HEADER]\nROLE_ID={role} ROLE_NS={_ns} ROLE_VER=v1\n"
