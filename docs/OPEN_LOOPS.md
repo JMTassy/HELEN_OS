@@ -53,6 +53,36 @@ unambiguous apex. One crowning closes the pattern that's run for a year.
 character/Math-Face doc). Three coronations → 31 HELENs become one graph with
 three canonical roots → RAG from CANON only → Hermes answers with citations.
 
+## 🟢 2026-06-08 — THE THREE CROWNS may now exist (HER drop, REDUCER verified)
+
+JM dropped a clean Cognitive Kernel (core/ledger/memory/model.py — "Phase 1A L1")
++ the HELEN_DAN GOBLIN_RECALL manifesto image. This is NOT sprawl — it's the
+compression. Candidate canonicals, one per corpus:
+
+| Corpus | Canonical candidate | REDUCER verdict |
+|---|---|---|
+| MATHS | pluginRIEMANN_V8.0_FINAL.tex | crowned (disciplined, read) |
+| CONSTITUTION | Cognitive Kernel (core/ledger/memory/model) | STRONG — primitives verified, see flags |
+| IDENTITY | HELEN_DAN GOBLIN_RECALL manifesto | STRONG — single coherent doctrine |
+
+Cognitive Kernel — VERIFIED (ran ledger.py + memory.py):
+- ledger.py: hash-chain valid, deterministic digest stable. D0 contract (timestamps
+  = metadata, EXCLUDED from identity hash; canonicalize_for_hash single source of
+  truth) = the V0/V1 + Horn B lesson DONE RIGHT in ~140 lines.
+- memory.py: namespace isolation (math/world/project), no cross-mutation, invalid
+  namespace caught. = three-corpora insight as enforced code.
+- core.py: S0 seed contract (seed=H(query+role+namespace)) deterministic.
+
+FLAGS (REDUCER):
+- BUG core.py:188 — f-string nested double-quote, SyntaxError on Python <3.12
+  (same class as helen_say.py). Fix: extract context.get("namespace") to a var.
+- Determinism PROVEN for MockModel, ASPIRATIONAL for Mistral (model.py:67 admits
+  "seed may not be used by Ollama"). Docstring "Deterministic Mistral" overclaims.
+- roles.py + schema.py imported, NOT uploaded — gate logic (validate_structure,
+  validate_namespace_consistency) unverified.
+- DECISION: kernel namespaces (math/world/project) differ from corpus triad
+  (MATHS/CONSTITUTION/IDENTITY). Align, or 4th taxonomy? Operator's one-sentence call.
+
 ## THE 7-DAY PLAN (JM's — recorded so it survives frontier #N+1)
 
 ```
