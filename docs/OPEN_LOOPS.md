@@ -83,15 +83,20 @@ FLAGS (REDUCER):
 - DECISION: kernel namespaces (math/world/project) differ from corpus triad
   (MATHS/CONSTITUTION/IDENTITY). Align, or 4th taxonomy? Operator's one-sentence call.
 
-## ⭐ THE CROWN ORDER (JM ruling 2026-06-08) — in progress
+## ⭐ THE CROWN ORDER (JM ruling 2026-06-08)
 
 ```
-1. MATHS crown V8         ← JM running `mv V8.0_FINAL → CANON/` on Mac (confirm: ls CANON/)
-2. Fix kernel compile bug ← core.py:188 fix VERIFIED by REDUCER (below)
-3. Verify roles.py + schema.py  ← NEEDED from JM (gate logic, not yet uploaded)
+1. ✅ MATHS CROWNED — corpus/00_MATHS_RIEMANN_CORE/CANON/pluginRIEMANN_V8.0_FINAL.tex
+                      (JM confirmed 2026-06-08; first coronation of the arc)
+2. Fix kernel compile bug ← core.py:188 fix VERIFIED by REDUCER (below); JM editing in editor
+3. Verify roles.py + schema.py  ← NEEDED from JM (gate logic, not yet uploaded) ← NEXT BLOCKER
 4. Crown CONSTITUTION kernel
 5. Crown IDENTITY manifesto (HELEN_DAN GOBLIN_RECALL)
 ```
+
+**FIRST CROWN RECORDED:** MATHS canon = `pluginRIEMANN_V8.0_FINAL.tex`. The disciplined
+Riemann apex (no-RH-claim ×3, Tier I/II/III) is now the maths canonical root. The other
+~24 Riemann iterations → LINEAGE/WILD. One real victory: 994 finishes, now 1 crown.
 
 **NAMESPACE RULING (settled, no conflict):**
 ```
