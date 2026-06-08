@@ -13,16 +13,16 @@
 ```
 DONE
 - MATHS crown: pluginRIEMANN_V8.0_FINAL.tex → CANON/ (d5c0231, helen-corpus-private)
-- core.py:188 fix: verified by REDUCER on Python 3.11 (extract _ns, then f-string)
+- CONSTITUTION crown: Cognitive Kernel (7 files) → CANON/CONSTITUTION/cognitive_kernel/
+  crowned_at: 2026-06-08T13:21:35Z · commit: b479829 · receipt: CONSTITUTION_CROWN_RECEIPT.md
+- core.py:188 fix: applied + verified (Python 3.11 clean)
 - roles.py + schema.py: compile + 3 gates PASS + 5/5 mutation breaches caught
 - Hermes runtime identified: ~/.local/bin/hermes + tools/approval.py
 - Execution frontier crossed: /approve → run_command → receipt (grounding caveat noted)
 - 6 standalone tools: committed to helen-conquest (runtime-agnostic, not yet wired)
 
 OPEN
-- CONSTITUTION crown: STAGED in CANON/CONSTITUTION/cognitive_kernel/ (7 files, fix
-  applied, compile+gates PASS). Awaiting operator's one-word declaration. ← step 4, one word away
-- IDENTITY crown: not started (step 5)
+- IDENTITY crown: not started (step 5) ← THE ONE NEXT ACTION
 - helen-corpus-private main: MATHS crown local-only, push pending
 - governance corpus: corpus/01 + corpus_txt untracked in helen-corpus-private
 
@@ -117,12 +117,12 @@ FLAGS (REDUCER):
 ## ⭐ THE CROWN ORDER (JM ruling 2026-06-08)
 
 ```
-1. ✅ MATHS CROWNED — corpus/00_MATHS_RIEMANN_CORE/CANON/pluginRIEMANN_V8.0_FINAL.tex
-                      (JM confirmed 2026-06-08; first coronation of the arc)
-2. ✅ Kernel compile bug — core.py:188 fix VERIFIED by REDUCER (all 5 kernel files compile)
-3. ✅ roles.py + schema.py VERIFIED by REDUCER 2026-06-08 (see verdict below) ← was the blocker
-4. CONSTITUTION kernel — VERIFIED, READY TO CROWN (human-only act; JM declares + places in CANON)
-5. Crown IDENTITY manifesto (HELEN_DAN GOBLIN_RECALL)
+1. ✅ MATHS CROWNED       — pluginRIEMANN_V8.0_FINAL.tex (d5c0231, helen-corpus-private)
+2. ✅ Kernel compile bug  — core.py:188 fix verified + applied in CANON copy
+3. ✅ roles + schema      — compile + gates PASS + 5/5 mutation breaches caught
+4. ✅ CONSTITUTION CROWNED — Cognitive Kernel (b479829, 2026-06-08T13:21:35Z)
+                             CANON/CONSTITUTION/cognitive_kernel/ · receipt: CONSTITUTION_CROWN_RECEIPT.md
+5. 👑 IDENTITY — Crown HELEN_DAN GOBLIN_RECALL manifesto  ← THE ONE NEXT ACTION
 ```
 
 ## 🟢 2026-06-08 — roles.py + schema.py VERIFIED (REDUCER, independent + mutation-tested)

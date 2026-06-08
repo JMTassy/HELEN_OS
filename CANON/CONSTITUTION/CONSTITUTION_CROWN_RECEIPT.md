@@ -1,12 +1,15 @@
-# CONSTITUTION_CROWN — STAGED (pending human declaration)
+# CONSTITUTION_CROWN — CROWNED
 
 **corpus:** CONSTITUTION
 **candidate:** Cognitive Kernel (Phase 1A L1)
 **location:** `CANON/CONSTITUTION/cognitive_kernel/`
-**status:** STAGED — NOT YET CROWNED
-**ship:** false · **authority:** false · **claim:** NO_CLAIM until operator declares
+**status:** CROWNED
+**canonical_commit:** b479829
+**ship:** true · **authority:** operator · **claim:** CANONICAL
 **staged_by:** REDUCER (Claude, HAL+REDUCER seat)
 **staged_at:** 2026-06-08
+**crowned_by:** operator (JM, 2026-06-08T13:21:35Z)
+**crowned_at:** 2026-06-08T13:21:35Z
 **branch:** `claude/launch-helen-os-0xZXH`
 
 ---
