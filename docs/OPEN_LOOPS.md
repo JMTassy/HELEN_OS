@@ -8,6 +8,21 @@
 
 **Last updated:** 2026-06-08 · **Branch:** `claude/launch-helen-os-0xZXH` @ `59b03f5`
 
+## 🟢 2026-06-09 — TRANCHE: repo_resolver gate (KEPT)
+
+Operator PULL-mode tranche: deterministic repo/canon resolution before any git/test/
+compile/crown command. Built `tools/helen_repo_resolver.py` + `repo_manifest.json`.
+- **KEEP verdict** (operator §6 rule): 3/3 RESOLVED against canon, replay fidelity 100%.
+- §5 mirror exploit (valid git, wrong canon) DEFEATED by **commit-ancestry pinning**:
+  crown_commit must be an ancestor of HEAD → mirror at another branch fails (exit 50
+  CROWN_NOT_ANCESTOR). Path existence (operator's draft `test -d`) could not catch this.
+- non-git dir → exit 20 (the "fatal: not a git repository" case, caught).
+- §7 keep-path: **unlocks RAG from the 3 CANON roots** (load from verified root, not memory).
+- Per-host: only `canonical_repo_path` is host-specific (override `--root`); durable pins
+  (branch + crown_commit + required_paths + compile_globs) are host-independent.
+- GeForce note: the `helen-conquest-filemap-test` clone is at 791b276 on a non-crown
+  branch → resolver would REJECT it until it fetches `claude/launch-helen-os-0xZXH`.
+
 ## MINIMUM STATE VECTOR (cross-session sync format — ChatGPT / Claude / Hermes / git)
 
 ```
