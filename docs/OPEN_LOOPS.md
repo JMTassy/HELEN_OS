@@ -47,12 +47,20 @@ FINGERPRINT NUANCE (read this before panicking about drift):
   pins to committed state). Cross-HEAD differences are correct behavior; diff HEADs first.
 
 THE OUTSTANDING CONDITIONAL — gates both tranches:
-  GeForce clone /mnt/c/Users/jeanm/...helen-conquest-filemap-test  @ 791b276 (non-crown)
-  Required: git fetch + checkout claude/launch-helen-os-0xZXH, then
-    python3 tools/helen_repo_resolver.py --manifest repo_manifest.json --root "$(git rev-parse --show-toplevel)"  # x3, want same fp
-    python3 tools/helen_canon_loader.py verify --manifest repo_manifest.json --root "$(git rev-parse --show-toplevel)"  # want 20/20
-  Paste 3 fingerprints + verify line → CONDITIONALLY ACCEPTED → KEEP → RAG opens.
-  By operator's own rule: until those bytes exist, RAG stays closed.
+  GeForce REAL RUN #1 (2026-06-09, worktree @ 82eee95) — PARTIAL, found a real bug:
+    ✅ crown b47982 ancestor=True  (the §5 lineage proof HELD on real hardware)
+    ✅ replay_fingerprint 59c20baf… x3  (determinism held)
+    ✅ required_paths + syntax PASSED
+    ✗ wrong_top_level — manifest had MY sandbox path hard-pinned (FIXED: removed)
+    ✗ wrong_branch — detached worktree reports branch=HEAD (FIXED: pin removed;
+       crown-ancestry is stronger lineage proof than branch-name anyway)
+  → manifest fixed (expected_branch + expected_top_level dropped as hard pins).
+  RE-RUN NEEDED on GeForce after `git pull` (HEAD must include the manifest fix):
+    cd <the worktree>; git pull / re-add worktree at latest; TOP="$(git rev-parse --show-toplevel)"
+    python3 tools/helen_repo_resolver.py --manifest repo_manifest.json --root "$TOP"  # x3 → expect PASS
+    python3 tools/helen_canon_loader.py verify --manifest repo_manifest.json --root "$TOP"  # expect 20/20
+  Expect PASS now (crown-ancestry + required_paths + syntax all already passed; the only
+  two failures were the host-pins now removed). PASS x3 + 20/20 → KEEP → RAG opens.
 
 NEXT TRANCHE (after GeForce real-run): Day 4 verification_manifest.
   Same pattern, one layer up: validation_status → validation_receipt carrying
