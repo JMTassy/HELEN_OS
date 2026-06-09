@@ -2,20 +2,21 @@
   "schema": "HELEN_REPO_MANIFEST_V1",
   "authority": false,
   "claim": "NO_CLAIM",
-  "_note": "canonical_repo_path is the only host-specific field — override per machine with --root. The durable, host-independent pins are expected_branch + crown_commit + required_paths + compile_globs. crown_commit is the IDENTITY-crown commit; the resolver requires it to be an ANCESTOR of HEAD (the §5 mirror-exploit defense), so forward commits still pass.",
+  "_note": "Only canonical_repo_path + expected_top_level are host-specific (override --root / regenerate per machine). Durable host-independent pins: expected_branch + canonical_crown_commit + required_paths + syntax_globs. canonical_crown_commit must be an ANCESTOR of HEAD (the §5 mirror-exploit defense), so forward commits still PASS.",
   "canonical_repo_path": "/home/user/helen-conquest",
+  "expected_top_level": "/home/user/helen-conquest",
   "expected_branch": "claude/launch-helen-os-0xZXH",
-  "crown_commit": "b5011da8ed2ed3045355066f93466cef5c1683f8",
+  "canonical_crown_commit": "b47982959a46769b4d1a8b3a8a90693d7e37bee7",
   "required_paths": [
     "CANON/CONSTITUTION/cognitive_kernel",
     "CANON/CONSTITUTION/CONSTITUTION_CROWN_RECEIPT.md",
     "CANON/IDENTITY/HELEN_GOBLIN_MANIFESTO_V1.md",
     "CANON/IDENTITY/IDENTITY_CROWN_RECEIPT.md"
   ],
-  "compile_globs": [
+  "syntax_globs": [
     "CANON/CONSTITUTION/cognitive_kernel/*.py"
   ],
   "cross_repo_pointers": {
-    "MATHS": "helen-corpus-private :: corpus/00_MATHS_RIEMANN_CORE/CANON/pluginRIEMANN_V8.0_FINAL.tex (d5c0231) — a different repo; resolve separately"
+    "MATHS": "helen-corpus-private :: corpus/00_MATHS_RIEMANN_CORE/CANON/pluginRIEMANN_V8.0_FINAL.tex (d5c0231) — different repo; resolve separately"
   }
 }
