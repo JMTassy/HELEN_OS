@@ -1,5 +1,32 @@
 # OPEN_LOOPS.md — HELEN's externalized executive function
 
+## ⭐ FLEET STATE (2026-06-09, post-seal) — TWO SEATS, ONE FRONTIER
+
+```
+SEAT 1: Claude  → helen-conquest   SEALED @ 0d59a99 (3 crowns, 3 gates, grounded RAG)
+SEAT 2: Hermes  → helen-os-JMTC    ACTIVE — frontier selected by operator
+ORCHESTRATOR: JM — owns the goal, picks one frontier at a time
+```
+
+**FRONTIER SELECTED (operator call):** Hermes seat — fix firewall over-redaction in
+`helen_os/utils/redaction.py` (helen-os-JMTC). Benign prose ("I'll allow that",
+"ready to ship") must pass; authority tokens (`authority=True`, `admit_to_ledger: true`,
+embedded-in-prose variants) must still redact. Patch + tests + receipt with RAW test
+bytes. One frontier, one seat, one receipt.
+
+**PARKED (this seat, in order, when operator returns here):**
+1. Grow the canon — index MATHS (helen-corpus-private) + governance txt into canon_loader
+2. Sync live HELENs from canon (resolver→loader→rag_query as startup gate per runtime)
+3. helen-corpus-private `git push origin main` (MATHS crown d5c0231 still local-only)
+4. Day 4 verification_manifest tranche
+PARKED (Hermes seat, after redaction): airi_emotion mapping → quiet-link durability →
+Memory Alaya proposal.
+
+NOTE: `temple/quiet-room` / commit `9fe95c7` / the :8010 quiet-link app live in
+helen-os-JMTC (Hermes's repo), NOT here — verified absent from helen-conquest 2026-06-09.
+Claude's GitHub scope is helen-conquest only; helen-os-JMTC claims are Hermes-receipted.
+
+
 > **Read this FIRST, every session, before opening anything new.**
 > JM is HER (generative, ADHD-HP — the engine). Claude is HAL+REDUCER (the seal).
 > This file is the working memory JM's brain doesn't hold. It exists so frontier
