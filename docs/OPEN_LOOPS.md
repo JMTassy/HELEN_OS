@@ -46,21 +46,21 @@ FINGERPRINT NUANCE (read this before panicking about drift):
   NOT "same fp forever". When HEAD advances, fp advances too — by design (the resolver
   pins to committed state). Cross-HEAD differences are correct behavior; diff HEADs first.
 
-THE OUTSTANDING CONDITIONAL — gates both tranches:
-  GeForce REAL RUN #1 (2026-06-09, worktree @ 82eee95) — PARTIAL, found a real bug:
-    ✅ crown b47982 ancestor=True  (the §5 lineage proof HELD on real hardware)
-    ✅ replay_fingerprint 59c20baf… x3  (determinism held)
-    ✅ required_paths + syntax PASSED
-    ✗ wrong_top_level — manifest had MY sandbox path hard-pinned (FIXED: removed)
-    ✗ wrong_branch — detached worktree reports branch=HEAD (FIXED: pin removed;
-       crown-ancestry is stronger lineage proof than branch-name anyway)
-  → manifest fixed (expected_branch + expected_top_level dropped as hard pins).
-  RE-RUN NEEDED on GeForce after `git pull` (HEAD must include the manifest fix):
-    cd <the worktree>; git pull / re-add worktree at latest; TOP="$(git rev-parse --show-toplevel)"
-    python3 tools/helen_repo_resolver.py --manifest repo_manifest.json --root "$TOP"  # x3 → expect PASS
-    python3 tools/helen_canon_loader.py verify --manifest repo_manifest.json --root "$TOP"  # expect 20/20
-  Expect PASS now (crown-ancestry + required_paths + syntax all already passed; the only
-  two failures were the host-pins now removed). PASS x3 + 20/20 → KEEP → RAG opens.
+THE OUTSTANDING CONDITIONAL — RESOLVED 2026-06-09 (GeForce REAL RUN PASSED):
+  GeForce worktree @ 0ff2bf5 (origin/claude/launch-helen-os-0xZXH):
+    ✅ HELEN_REPO_RESOLVED x3
+    ✅ replay_fingerprint 943a9c83502263e5 IDENTICAL x3 (determinism on real hw)
+    ✅ crown b47982 ancestor=True (the §5 lineage proof, real hw)
+    ✅ canon_loader verify: retrieval_replay_success = 20/20 = 100% → KEEP
+  Tranches KEPT (real-hw confirmed):
+    repo_resolver  → KEEP
+    canon_loader   → KEEP
+  RAG is now ADMITTED by operator §6 rule. Three layers of NO-CLAIM-WITHOUT-RECEIPT
+  active: repo (crown ancestry) · memory (blob_hash from HEAD) · claim (ledger receipt).
+  History — first GeForce attempt @ 82eee95 found a real portability bug (manifest
+  hard-pinned dev paths); fix at 0ff2bf5 dropped the host-pins; second attempt PASSED.
+  Lesson: synthetic-only KEEP would have missed it. The gate paid for itself on first
+  real contact.
 
 NEXT TRANCHE (after GeForce real-run): Day 4 verification_manifest.
   Same pattern, one layer up: validation_status → validation_receipt carrying
