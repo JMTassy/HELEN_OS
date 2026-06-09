@@ -1,13 +1,16 @@
-# IDENTITY_CROWN — STAGED (pending human declaration)
+# IDENTITY_CROWN — CROWNED
 
 **corpus:** IDENTITY
 **candidate:** HELEN_GOBLIN_MANIFESTO_V1 (the GOBLIN salvage-engine doctrine)
 **location:** `CANON/IDENTITY/HELEN_GOBLIN_MANIFESTO_V1.md` (text) + source PNG posters (visual seal)
-**status:** STAGED — NOT YET CROWNED
-**ship:** false · **authority:** false · **claim:** NO_CLAIM until operator declares
+**status:** CROWNED
+**ship:** true · **authority:** operator · **claim:** CANONICAL
 **staged_by:** REDUCER (Claude, HAL+REDUCER seat)
 **staged_at:** 2026-06-09T11:24:50Z
+**crowned_by:** operator (JM, 2026-06-09T11:26:44Z)
+**crowned_at:** 2026-06-09T11:26:44Z
 **branch:** `claude/launch-helen-os-0xZXH`
+**side-effect:** closes GOBLIN_ROLE_V1 (CHIDDUSH_BOTTLE_V0 roadmap #8)
 
 ---
 

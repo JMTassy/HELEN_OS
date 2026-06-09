@@ -11,23 +11,27 @@
 ## MINIMUM STATE VECTOR (cross-session sync format — ChatGPT / Claude / Hermes / git)
 
 ```
-DONE
+DONE — ⭐ THREE-CROWN ARC COMPLETE (994 finishes → 3 crowns)
 - MATHS crown: pluginRIEMANN_V8.0_FINAL.tex → CANON/ (d5c0231, helen-corpus-private)
 - CONSTITUTION crown: Cognitive Kernel (7 files) → CANON/CONSTITUTION/cognitive_kernel/
   crowned_at: 2026-06-08T13:21:35Z · commit: b479829 · receipt: CONSTITUTION_CROWN_RECEIPT.md
+- IDENTITY crown: HELEN_GOBLIN_MANIFESTO_V1 → CANON/IDENTITY/
+  crowned_at: 2026-06-09T11:26:44Z · receipt: IDENTITY_CROWN_RECEIPT.md
+  (REDUCER-verified coherence + HAL claim-scan clean; closes GOBLIN_ROLE_V1 roadmap #8)
 - core.py:188 fix: applied + verified (Python 3.11 clean)
 - roles.py + schema.py: compile + 3 gates PASS + 5/5 mutation breaches caught
 - Hermes runtime identified: ~/.local/bin/hermes + tools/approval.py
 - Execution frontier crossed: /approve → run_command → receipt (grounding caveat noted)
 - 6 standalone tools: committed to helen-conquest (runtime-agnostic, not yet wired)
 
-OPEN
-- IDENTITY crown: not started (step 5) ← THE ONE NEXT ACTION
-- helen-corpus-private main: MATHS crown local-only, push pending
+OPEN (post-arc — all SEEDS-tier, operator picks the next frontier)
+- helen-corpus-private main: MATHS crown local-only, push pending (operator shell)
 - governance corpus: corpus/01 + corpus_txt untracked in helen-corpus-private
+- RAG from the 3 CANON roots → then (step 6) LoRA / MTP acceleration
+- sync live HELENs FROM canon (the crown rule); BENIGN_FORK resolution
 
 BLOCKED
-- IDENTITY (step 5) waits on CONSTITUTION declaration. Everything else → SEEDS.
+- nothing. The crown arc is closed. Next frontier is the operator's free choice.
 
 DISSOLVED (2026-06-08): the live core.py:188 hunt across mac/geforce/hermes. HELEN-the-
 chatbot CANNOT execute shell commands (confirmed by HELEN itself). The crown needs a
@@ -122,7 +126,11 @@ FLAGS (REDUCER):
 3. ✅ roles + schema      — compile + gates PASS + 5/5 mutation breaches caught
 4. ✅ CONSTITUTION CROWNED — Cognitive Kernel (b479829, 2026-06-08T13:21:35Z)
                              CANON/CONSTITUTION/cognitive_kernel/ · receipt: CONSTITUTION_CROWN_RECEIPT.md
-5. 👑 IDENTITY — Crown HELEN_DAN GOBLIN_RECALL manifesto  ← THE ONE NEXT ACTION
+5. ✅ IDENTITY CROWNED     — HELEN_GOBLIN_MANIFESTO_V1 (2026-06-09T11:26:44Z)
+                             CANON/IDENTITY/ · receipt: IDENTITY_CROWN_RECEIPT.md
+
+⭐ ARC COMPLETE: 3 corpora, 3 canonical roots. The graph G=(V,E) has its roots.
+   31 HELENs can now be views over MATHS ∪ CONSTITUTION ∪ IDENTITY.
 ```
 
 ## 🟢 2026-06-08 — roles.py + schema.py VERIFIED (REDUCER, independent + mutation-tested)
