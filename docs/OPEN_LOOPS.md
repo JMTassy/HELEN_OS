@@ -8,6 +8,22 @@
 
 **Last updated:** 2026-06-08 · **Branch:** `claude/launch-helen-os-0xZXH` @ `59b03f5`
 
+## 🟢 2026-06-09 — TRANCHE: canon_loader (gated RAG ingestion) — KEPT (logic)
+
+Operator PULL-mode tranche #2: no CANON chunk enters RAG unless loaded through a passing
+repo_resolver receipt + stamped with full git provenance. Built `tools/helen_canon_loader.py`
+(index/verify) + `canon_manifest_index.jsonl`.
+- **§6 met locally:** canon_chunk_provenance_coverage = 39/39 = 100%; retrieval_replay_success
+  = 20/20 = 100%; every chunk carries file_path + blob_hash + line_range + HEAD + crown + fingerprint.
+- **§5 "semantic memory laundering" DEFEATED:** chunks cut from the COMMITTED blob
+  (`git show HEAD:path`), per-chunk blob_hash pinned. Injected stale chunk → REJECT (exit 3,
+  blob_match=False). The mirror exploit at the memory layer, caught.
+- Gating: index/verify run ONLY if resolver returns PASS (no PASS → no index).
+- Read-only: git plumbing + hashlib; no writes, no network, no LLM.
+- STATUS: canon_loader logic KEPT; full RAG unlock still gated on the resolver's REAL
+  GeForce run (resolver = CONDITIONALLY ACCEPTED). Indexed CONSTITUTION + IDENTITY (10 files);
+  MATHS is cross-repo (helen-corpus-private) — index separately there.
+
 ## 🟢 2026-06-09 — TRANCHE: repo_resolver gate (KEPT)
 
 Operator PULL-mode tranche: deterministic repo/canon resolution before any git/test/
