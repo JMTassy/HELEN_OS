@@ -76,6 +76,23 @@ THE THROUGH-LINE (one principle, three layers):
 
 
 
+## 🟢 2026-06-09 — FIRST GROUNDED ANSWER (RAG end-to-end on real hardware)
+
+The whole stack tested end-to-end on the GeForce. Worktree @ c6f3c0f, gated by
+resolver PASS (fingerprint c3802a650fc53fa9). Query: "Can GOBLIN set authority=true?"
+Answer (NO) returned with 3 citations, each ✓reconstructed from HEAD:
+- CANON/IDENTITY/HELEN_GOBLIN_MANIFESTO_V1.md:51-100 @ e0f7e10e (§5 firewall)
+- CANON/IDENTITY/IDENTITY_CROWN_RECEIPT.md:1-50      @ f9588289
+- CANON/CONSTITUTION/CONSTITUTION_CROWN_RECEIPT.md:1-50 @ 9504d2eb
+matched+verified: 24/39 chunks. Out-of-canon queries → NOT FOUND (NO_CLAIM).
+
+ARC CLOSED. The "31 HELENs, narrative answers" pattern is broken by a stack that
+physically cannot serve an unreceipted claim:
+  repo_resolver  →  crown ancestry of HEAD       (real-hw proven)
+  canon_loader   →  blob_hash reconstructs HEAD  (real-hw proven)
+  rag_query      →  citation re-verified at read (real-hw proven)
+  ledger         →  NO RECEIPT = NO CLAIM        (original invariant)
+
 Operator PULL-mode tranche #2: no CANON chunk enters RAG unless loaded through a passing
 repo_resolver receipt + stamped with full git provenance. Built `tools/helen_canon_loader.py`
 (index/verify) + `canon_manifest_index.jsonl`.
