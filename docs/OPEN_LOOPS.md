@@ -8,7 +8,65 @@
 
 **Last updated:** 2026-06-08 · **Branch:** `claude/launch-helen-os-0xZXH` @ `59b03f5`
 
-## 🟢 2026-06-09 — TRANCHE: canon_loader (gated RAG ingestion) — KEPT (logic)
+## CROSS-SESSION SYNC SEED (2026-06-09 — durable, pin-able, no narrative)
+
+Any session (ChatGPT / Claude / Hermes / a fresh window) reading this file gets the
+full state from these hashes alone. No memory required.
+
+```
+helen-conquest @ claude/launch-helen-os-0xZXH
+
+CROWNS (3/3, arc complete):
+  MATHS         d5c0231  pluginRIEMANN_V8.0_FINAL.tex  (in helen-corpus-private, different repo)
+  CONSTITUTION  b479829  CANON/CONSTITUTION/cognitive_kernel/ (7 files, gates mutation-tested)
+  IDENTITY      b5011da  CANON/IDENTITY/HELEN_GOBLIN_MANIFESTO_V1.md (coherence-verified)
+
+TRANCHES KEPT (logic) — CONDITIONALLY ACCEPTED pending GeForce real-run:
+  repo_resolver    929cec3 → tightened 655da78 (read-only: in-memory compile, no __pycache__)
+                   tools/helen_repo_resolver.py + repo_manifest.json
+                   PASS x3, same fingerprint, exploit → exit 50 CROWN_NOT_ANCESTOR
+  canon_loader     4326c53
+                   tools/helen_canon_loader.py + canon_manifest_index.jsonl
+                   coverage 39/39 = 100%, replay 20/20 = 100%, laundering → REJECT exit 3
+
+DURABLE PINS (host-independent — same on every machine):
+  expected_branch          = claude/launch-helen-os-0xZXH
+  canonical_crown_commit   = b47982959a46769b4d1a8b3a8a90693d7e37bee7
+  required_paths           = CANON/CONSTITUTION/cognitive_kernel,
+                             CANON/CONSTITUTION/CONSTITUTION_CROWN_RECEIPT.md,
+                             CANON/IDENTITY/HELEN_GOBLIN_MANIFESTO_V1.md,
+                             CANON/IDENTITY/IDENTITY_CROWN_RECEIPT.md
+  syntax_globs             = CANON/CONSTITUTION/cognitive_kernel/*.py
+
+HOST-SPECIFIC (override per machine):
+  canonical_repo_path / expected_top_level    use --root <local toplevel>
+
+FINGERPRINT NUANCE (read this before panicking about drift):
+  replay_fingerprint is a function of HEAD. Determinism = "PASS x3 same fp WITHIN a HEAD",
+  NOT "same fp forever". When HEAD advances, fp advances too — by design (the resolver
+  pins to committed state). Cross-HEAD differences are correct behavior; diff HEADs first.
+
+THE OUTSTANDING CONDITIONAL — gates both tranches:
+  GeForce clone /mnt/c/Users/jeanm/...helen-conquest-filemap-test  @ 791b276 (non-crown)
+  Required: git fetch + checkout claude/launch-helen-os-0xZXH, then
+    python3 tools/helen_repo_resolver.py --manifest repo_manifest.json --root "$(git rev-parse --show-toplevel)"  # x3, want same fp
+    python3 tools/helen_canon_loader.py verify --manifest repo_manifest.json --root "$(git rev-parse --show-toplevel)"  # want 20/20
+  Paste 3 fingerprints + verify line → CONDITIONALLY ACCEPTED → KEEP → RAG opens.
+  By operator's own rule: until those bytes exist, RAG stays closed.
+
+NEXT TRANCHE (after GeForce real-run): Day 4 verification_manifest.
+  Same pattern, one layer up: validation_status → validation_receipt carrying
+  (validator_version, rule_set_hash, input_schema_version, failure_reasons, validated_at).
+  Mirrors how repo_resolver upgraded path-existence into a fingerprinted report.
+
+THE THROUGH-LINE (one principle, three layers):
+  REPO   layer →  crown_commit must be an ancestor of HEAD    (mirror exploit)
+  MEMORY layer →  blob_hash must reconstruct from HEAD         (laundering exploit)
+  CLAIM  layer →  NO RECEIPT = NO CLAIM                         (original invariant)
+  Each defense: don't trust the narrative; reconstruct from the pinned artifact.
+```
+
+
 
 Operator PULL-mode tranche #2: no CANON chunk enters RAG unless loaded through a passing
 repo_resolver receipt + stamped with full git provenance. Built `tools/helen_canon_loader.py`
