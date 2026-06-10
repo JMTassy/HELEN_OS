@@ -1,0 +1,35 @@
+[
+  {
+    "session_id": "gt_session_001",
+    "description": "Operator context: active AUTORESEARCH + LEGORACLE reconciliation",
+    "top_threads": [
+      "thread_autoresearch_e11_e12_reconciliation",
+      "thread_legoracle_replay_gate",
+      "thread_k_tau_claim_type",
+      "thread_hal_epoch_routing",
+      "thread_executor_sandbox"
+    ]
+  },
+  {
+    "session_id": "gt_session_002",
+    "description": "Operator context: DAN_GOBLIN HD-002 aura_score implementation",
+    "top_threads": [
+      "thread_dan_goblin_hd002",
+      "thread_aura_score_design",
+      "thread_executor_sandbox",
+      "thread_ledger_receipt_chain",
+      "thread_autoresearch_e11_e12_reconciliation"
+    ]
+  },
+  {
+    "session_id": "gt_session_003",
+    "description": "Operator context: claim type gate pre-dispatch wiring",
+    "top_threads": [
+      "thread_k_tau_claim_type",
+      "thread_claim_type_policy",
+      "thread_executor_sandbox",
+      "thread_hal_epoch_routing",
+      "thread_dan_goblin_hd002"
+    ]
+  }
+]

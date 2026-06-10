@@ -20,6 +20,10 @@ import sys, os, json, time, argparse, hashlib
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from hal_driver import HalDriver
 
+# repo root on path so helen_kernel imports resolve
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from helen_kernel.gates.claim_type_policy import pre_dispatch_guard
+
 HAL_SYSTEM = (
     "You are HAL — the strict, non-sovereign gate agent of HELEN OS. "
     "You evaluate hypotheses with precision and no sentiment. "
@@ -41,7 +45,22 @@ def parse_verdict(text: str) -> str:
     return 'UNKNOWN'
 
 
-def run_epoch(epoch_id: str, task: str) -> dict:
+def run_epoch(epoch_id: str, task: str, claim_type: str = "PROPOSAL") -> dict:
+    dispatch = {"family": "hal", "op": "epoch", "claim_type": claim_type}
+    block = pre_dispatch_guard(dispatch)
+    if block:
+        return {
+            "epoch":     epoch_id,
+            "status":    "BLOCKED",
+            "gate":      "K_TAU",
+            "reason":    block["reason"],
+            "operation": block["operation"],
+            "requested_claim_type": block["requested_claim_type"],
+            "allowed_claim_types":  block["allowed_claim_types"],
+            "authority": False,
+            "sovereign": False,
+        }
+
     hal = HalDriver()
     ts  = int(time.time())
 
@@ -98,6 +117,8 @@ def main() -> None:
     ap = argparse.ArgumentParser(description='HAL epoch runner — non-sovereign')
     ap.add_argument('--epoch', default='E00',   help='Epoch ID, e.g. E01')
     ap.add_argument('--task',  default=None,    help='Task / hypothesis string')
+    ap.add_argument('--claim-type', default='PROPOSAL', dest='claim_type',
+                    help='Declared claim type (default: PROPOSAL)')
     ap.add_argument('--json',  action='store_true', help='Output JSON only (machine-readable)')
     args = ap.parse_args()
 
@@ -107,7 +128,7 @@ def main() -> None:
     if not task:
         ap.error('Provide --task "..." or pipe task via stdin')
 
-    result = run_epoch(args.epoch, task)
+    result = run_epoch(args.epoch, task, claim_type=args.claim_type)
 
     if args.json:
         print(json.dumps(result, indent=2))

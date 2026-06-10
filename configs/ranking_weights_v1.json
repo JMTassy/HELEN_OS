@@ -1,0 +1,14 @@
+{
+  "recency_weight": 0.40,
+  "relevance_weight": 0.40,
+  "coherence_weight": 0.20,
+  "compression_threshold": 0.70,
+  "routing_score_floor": 0.30,
+  "_meta": {
+    "version": "v1",
+    "status": "NON_SOVEREIGN",
+    "authority": "NONE",
+    "mutability": "MUTABLE_by_autoresearch_only",
+    "immutable_paths": ["reducer", "ledger", "replay", "schemas", "memory_identity"]
+  }
+}
