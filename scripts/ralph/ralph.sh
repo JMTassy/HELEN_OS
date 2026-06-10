@@ -47,7 +47,7 @@ while [[ $# -gt 0 ]]; do
       ;;
     *) echo "Unknown arg: $1" >&2; exit 1 ;;
   esac
-  shift
+  [[ $# -gt 0 ]] && shift || true
 done
 
 # ── close mode ────────────────────────────────────────────────────────────────
@@ -84,8 +84,25 @@ print(json.dumps(manifest))
 PYEOF
   ARTIFACTS_JSON="$($VENV /tmp/ralph_manifest.py "${DAN_ROOT}" "${SOT_ROOT}")"
 
+  # Read story's allowed_paths to scope the test run
+  cat > /tmp/ralph_test_paths.py <<'PYEOF'
+import json, sys
+prd_file, story_id = sys.argv[1], sys.argv[2]
+data = json.load(open(prd_file))
+for s in data["userStories"]:
+    if s["id"] == story_id:
+        paths = [p for p in s.get("allowed_paths", [])
+                 if p.startswith("experiments/") or p.startswith("helen_os/tests")]
+        print(" ".join(paths) if paths else "experiments/")
+        break
+else:
+    print("experiments/")
+PYEOF
+  TEST_PATHS="$($VENV /tmp/ralph_test_paths.py "${PRD_FILE}" "${STORY_ID}")"
+  TEST_CMD_STR="pytest ${TEST_PATHS} -q --tb=no"
+
   # Run tests and capture result
-  TEST_CMD="PYTHONPATH=${SOT_ROOT} ${VENV} -m pytest experiments/ -q --tb=no 2>&1"
+  TEST_CMD="PYTHONPATH=${SOT_ROOT} ${VENV} -m ${TEST_CMD_STR} 2>&1"
   TEST_OUT="$(eval "${TEST_CMD}" | tail -5 || true)"
   PASSED="$(echo "${TEST_OUT}" | grep -oE '[0-9]+ passed' | grep -oE '[0-9]+' | head -1 || echo 0)"
   FAILED_CT="$(echo "${TEST_OUT}" | grep -oE '[0-9]+ failed' | grep -oE '[0-9]+' | head -1 || echo 0)"
@@ -109,7 +126,7 @@ PYEOF
 import sys, json, hashlib
 
 story_id, epoch_id, outcome, failure_field, passed, failed_ct, total, \
-    test_out, artifacts_json, commit_hash_val, receipt_file, timestamp = sys.argv[1:]
+    test_out, artifacts_json, commit_hash_val, receipt_file, timestamp, test_cmd_str = sys.argv[1:]
 
 receipt = {
     "receipt_id": "",
@@ -125,7 +142,7 @@ receipt = {
         "passed": int(passed),
         "failed": int(failed_ct),
         "total": int(total),
-        "command": "pytest experiments/ -q --tb=no",
+        "command": test_cmd_str,
         "stdout_tail": test_out
     },
     "screenshots": [],
@@ -146,7 +163,7 @@ PYEOF
     "${STORY_ID}" "${EPOCH_ID}" "${CLOSE_OUTCOME}" "${CLOSE_FAILURE_TYPE}" \
     "${PASSED:-0}" "${FAILED_CT:-0}" "${TOTAL}" \
     "${TEST_OUT}" "${ARTIFACTS_JSON}" "${COMMIT_HASH}" \
-    "${RECEIPT_FILE}" "${TIMESTAMP}"
+    "${RECEIPT_FILE}" "${TIMESTAMP}" "${TEST_CMD_STR}"
 
   # Update story status in prd.json
   NEW_STATUS="done"

@@ -44,8 +44,8 @@ Non-sovereign sandbox. Status: NON_SOVEREIGN / NO_SHIP. Structure:
 
 ## Repository Identity
 
-- **Canonical GitHub repo:** `https://github.com/JMTassy/HELEN_OS.git`
-- **Local working tree:** `~/Documents/GitHub/helen_os_v1`
+- **Canonical GitHub repo:** `https://github.com/JMTassy/helen-conquest.git` (remotes `origin` and `helen-conquest` both point here)
+- **Local working tree:** `~/Documents/GitHub/helen_os_v1` — the SOT. All other on-disk HELEN copies are drift (see `~/CLAUDE.md` directory map).
 
 ## Architecture Layers
 
@@ -92,6 +92,21 @@ Non-sovereign sandbox. Status: NON_SOVEREIGN / NO_SHIP. Structure:
 - `schemas/helen_dan/prd.schema.json` + `receipt.schema.json` — DAN schemas (in root `schemas/`, not yet migrated to `helen_os/schemas/`)
 - `docs/proposals/HELEN_DAN_RALPH_V0.md` — core doctrine; `docs/proposals/DAN_GOBLIN.md` — operating card
 - **GOBLIN MODE** (`docs/proposals/HELEN_DAN_GOBLIN_RECALL_MODE_V0_1.md`): creative recovery dialect; UNDERWARREN_SAFE; NON_SOVEREIGN; "feral but kind, strange but useful"; THE HEAP MAY SPEAK, THE LEDGER MUST VERIFY
+
+### Operator Surface Layer (`apps/helen-surface/`)
+Non-sovereign HTML cockpit + status API — the operator-facing UI that frames HELEN's receipted work. None of it is load-bearing on the kernel; it reads live state and renders it.
+- `home_v1.html` — receipted-agency HOME: proposal queue first (top), orbital kernel below; "first interaction = decision, not navigation"
+- `helen2027.html` — radical-simplicity HOME (warm sand palette, UZIK typography; operator-scored 9.2/10)
+- `temple.html` / `temple_akashic_v1.html` — Semantic Cockpit V0.2 (orbital Platonic solids, dwell detection, receipt spine, live connector badges)
+- `cockpit_v4.html`, `focus.html`, `starship.html`, `index.html`, `goblin/` — additional surfaces
+- `helen_status_api.py` — serves `/api/agents`, `/api/connectors` (Gmail/Calendar/GitHub amber-dot badges), live ring-heat data
+- Surface doctrine: HELEN is an embodied protagonist the interface *frames*, never a generic AI hologram. Dwell = constitutional act; spatial distance = permission tier.
+
+### SOURCEBOUND OBJECT OS (`src/helen_sourcebound_object.py`)
+Executable primitive: every object is bound to its source bytes with a receipt (`SOURCEBOUND_OBJECT_RECEIPT_V0`). Created via `tools/helen_object.py` (`helen object create`). Contract at `docs/protocols/SOURCEBOUND_OBJECT_OS_V0.md`; tests `tests/test_helen_sourcebound_object.py` + `tests/test_helen_object_cli.py`. Implements the "ADMISSIBLE OBJECT COMPUTING" doctrine.
+
+### Non-sovereign HAL inference (`tools/hal_driver.py`, `tools/run_hal_epoch.py`)
+Local HAL-role inference driver and epoch runner. Per-agent model assignment is specified in `docs/spec/MODEL_ROUTING_V1.md` (role-fit routing). Local runtime currently targets Ollama `qwen3.6`. Non-sovereign — produces proposals, not verdicts.
 
 ### WUL Packet Validator (P1 compile-time)
 - `src/wul_packet_validator.py` — validates WUL inter-agent packets before any action layer; **fails closed**
@@ -253,7 +268,20 @@ Multiple chat entry points exist; they are **not interchangeable**.
 - `town/ledger_v1.ndjson` may show as dirty in `git status` due to live kernel daemon writes. Do not stash, do not commit, do not edit — sovereign firewall path.
 - `artifacts/k8_*.json`, `artifacts/k8_trace.ndjson`, `artifacts/k_tau_*.json` are live gate-trace outputs and routinely show dirty after lint runs. They are not stash-eligible; let the gate scripts manage them.
 
-## Current State (2026-05-06)
+## Current State
+
+### Update 2026-06-03 (114 commits since the 2026-05-06 snapshot below)
+New work has concentrated in the **operator-surface** and **object-computing** lanes, not the kernel. The constitutional invariants, gates, and sovereign firewall are unchanged. Highlights:
+- **Operator surfaces** (`apps/helen-surface/`): HOME V1/V1.1 receipted-agency surface, `helen2027` HOME (9.2/10), Semantic Cockpit V0.2 with dwell-detection POINTER V0/V1, live connector badges (Gmail/Calendar/GitHub) and ring-heat via `helen_status_api.py`, phone→cockpit live event bridge.
+- **SOURCEBOUND OBJECT OS V0**: executable primitive + `helen object create` + receipt + contract + tests (see architecture section). "ADMISSIBLE OBJECT COMPUTING V1" implementation proof.
+- **Non-sovereign HAL inference**: `tools/hal_driver.py` + `tools/run_hal_epoch.py`; `docs/spec/MODEL_ROUTING_V1.md` role-fit routing; local Ollama `qwen3.6` runtime.
+- **Video**: `helen_awakening` v1/v2 (2-shot parallel Kling, palindrome A·B·A), portrait v1/v2 (Pillow OS composite before Kling), STORYBOARD_V1 proof-of-continuity capture list.
+- **TEMPLE**: GOBLIN_TEMPLE_INNER_MEMORY hidden meditation room, Akashic Records interface, live LLM fragments, WULmoji scatter map, LNSA sacred-awakening knowledge archive.
+- **Telegram**: HER_TEMPLE_PRESENCE_V1 `/her` command (poetic sandbox voice), Groq fallback for HER temple responses.
+
+The dated snapshot below (2026-05-06) remains accurate for AUTORESEARCH, Schema Authority, gates, and the DAN/RALPH loop — those lanes did not advance. **Run the test suite and `git log` rather than trusting any dated state here.**
+
+### Snapshot 2026-05-06
 
 - **AUTORESEARCH**: E11 LEGORACLE + E12 replay gate shipped. Two parallel sessions diverged; **reconciliation in flight, not yet ruled**. Reconciliation hypothesis at `docs/proposals/AUTORESEARCH_E11_E12_RECONCILIATION.md` (commit `0d06b33`); §3 read-only SHA-diff experiment executed and reports landed at `docs/reports/AUTORESEARCH_E11_E12_*` (commit `d43ec64`). Headline finding: **H₁ partially falsified** — three artifact-level STRUCTURAL_CHANGE rows (test + fixtures), but the falsifier-specific check is **negative** (LEGORACLE gate logic and replay determinism logic unaffected; `legoracle_v13rc.py` SHA matches). Recommendation candidates for MAYOR: REQUEST_MORE_EVIDENCE (SHA_DIFF report) or REVOKE_AND_RERUN (RECONCILIATION_REPORT_V0). **Awaiting fresh-context peer-review (Rule 3) → operator countersignature → MAYOR ruling**. E13 remains blocked. Kernel daemon currently down.
 - **Knowledge corpus**: T4 (source-provenance floor) + T6 (intensity floor) landed for symbolic-knowledge ingestion. Symbolic sources collected in `helen_os/knowledge/symbolic_sources/` (DRAFT classifications).

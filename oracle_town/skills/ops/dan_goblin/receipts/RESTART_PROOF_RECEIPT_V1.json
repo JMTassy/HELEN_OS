@@ -1,0 +1,47 @@
+{
+  "receipt_id": "52cda4fffc6b72d5",
+  "schema": "RESTART_PROOF_RECEIPT_V1",
+  "timestamp": "2026-06-10T02:57:00Z",
+  "session_note": "Previous session restart claim was not receipted (UNRECOVERABLE). This receipt documents a fresh restart proof executed 2026-06-10 in the repair tranche.",
+  "services": [
+    {
+      "name": "local.helen.computer-control",
+      "pid_before": 76729,
+      "pid_after": 87055,
+      "pid_changed": true
+    },
+    {
+      "name": "local.helen.hal-api",
+      "pid_before": 76753,
+      "pid_after": 87059,
+      "pid_changed": true
+    },
+    {
+      "name": "local.helen.hermes-api",
+      "pid_before": 76756,
+      "pid_after": 87063,
+      "pid_changed": true
+    },
+    {
+      "name": "local.helen.airi",
+      "pid_before": 76759,
+      "pid_after": 87068,
+      "pid_changed": true
+    }
+  ],
+  "restart_method": "launchctl kickstart -k gui/<uid>/<service>",
+  "health_checks": [
+    {
+      "endpoint": "http://localhost:8000/",
+      "status": "responding",
+      "note": "server up; /api/health returns 404"
+    },
+    {
+      "endpoint": "http://localhost:8780/health",
+      "status": "no_response"
+    }
+  ],
+  "verdict": "PASS",
+  "authority": "NON_SOVEREIGN",
+  "canon": "NO_SHIP"
+}

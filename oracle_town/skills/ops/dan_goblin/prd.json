@@ -73,7 +73,7 @@
       "id": "HD-002",
       "title": "Integrate complexity extractor into aura_score.py",
       "priority": 2,
-      "status": "todo",
+      "status": "done",
       "epoch_owner": null,
       "allowed_paths": [
         "experiments/helen_video/",

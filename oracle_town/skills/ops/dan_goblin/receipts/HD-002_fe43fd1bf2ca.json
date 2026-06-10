@@ -1,0 +1,24 @@
+{
+  "receipt_id": "c16855295eb0a70e",
+  "story_id": "HD-002",
+  "epoch": "fe43fd1bf2ca",
+  "actor": "DAN_GOBLIN",
+  "authority": "NON_SOVEREIGN",
+  "canon": "NO_SHIP",
+  "status": "GREEN",
+  "failure_type": null,
+  "files_changed": [],
+  "tests_run": {
+    "passed": 264,
+    "failed": 0,
+    "total": 264,
+    "command": "pytest experiments/helen_video/ experiments/helen_video/tests/ -q --tb=no",
+    "stdout_tail": "........................................................................ [ 27%]\n........................................................................ [ 54%]\n........................................................................ [ 81%]\n................................................                         [100%]\n264 passed in 4.60s"
+  },
+  "screenshots": [],
+  "artifact_manifest": [],
+  "commit_hash": "\"183b2e42d710afe20206e73a35eddaa39abe95aa\"",
+  "notes": "",
+  "reducer_decision": null,
+  "timestamp": "2026-06-10T02:55:06Z"
+}
