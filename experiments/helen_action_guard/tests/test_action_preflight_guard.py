@@ -33,6 +33,7 @@ from action_preflight_guard import (
     GuardState,
     check_action,
     check_unknown_action,
+    validate_count_claim,
 )
 
 # A minimal schema containing only the actions relevant to these tests.
@@ -51,9 +52,9 @@ def fresh() -> GuardState:
     return GuardState()
 
 
-def check(action, params, state, schema=_TEST_SCHEMA, unbound=_NO_UNBOUND):
+def check(action, params, state, schema=_TEST_SCHEMA, unbound=_NO_UNBOUND, **kwargs):
     return check_action(action, params, state,
-                        runtime_schema=schema, unbound_schema=unbound)
+                        runtime_schema=schema, unbound_schema=unbound, **kwargs)
 
 
 # ─── 1. Unknown action → TRACE_ONLY_UNVERIFIED, no retry ─────────────────────
@@ -502,3 +503,314 @@ class TestParseConstraints:
         s.parse_constraints("Do not web search. No writes.")
         assert "no_web_search" in s.constraints
         assert "no_writes" in s.constraints
+
+
+# ─── NEW: Req 1 — scan failure blocks write ───────────────────────────────────
+# "I cannot scan disk, which paths?" must emit no write action.
+
+class TestScanFailedBlocksWrite:
+    def test_mark_access_failed_then_write_blocked(self):
+        s = fresh()
+        s.mark_access_failed("system: cannot scan disk")
+        v = check("write_file", {"path": "/tmp/x.txt", "content": "hi"}, s)
+        assert not v.allowed
+        assert v.verdict == "BLOCKED_SCAN_UNVERIFIED"
+        assert v.marker == "✗ gated write blocked"
+        assert "Probe first" in v.reason
+
+    def test_parse_access_failure_from_text(self):
+        s = fresh()
+        triggered = s.parse_access_failure("I cannot scan disk — which paths?")
+        assert triggered is True
+        assert s.access_failed is True
+
+    def test_parse_access_failure_from_access_denied(self):
+        s = fresh()
+        s.parse_access_failure("access failed — path not readable")
+        assert s.access_failed is True
+
+    def test_access_failed_blocks_write_like_run_command(self):
+        s = fresh()
+        s.mark_access_failed()
+        v = check("run_command", {"command": "touch /tmp/probe.txt"}, s)
+        assert not v.allowed
+        assert v.verdict == "BLOCKED_SCAN_UNVERIFIED"
+
+    def test_access_failed_does_not_block_read_actions(self):
+        s = fresh()
+        s.mark_access_failed()
+        v = check("get_clipboard", {}, s)
+        assert v.allowed
+
+    def test_access_failed_cleared_allows_write(self):
+        s = fresh()
+        s.mark_access_failed()
+        s.clear_access_failed()
+        # Pass explicit scope so scope check doesn't fire first
+        v = check("write_file", {"path": "/tmp/x.txt"}, s, scope="/tmp/x.txt")
+        assert v.allowed
+
+    def test_no_write_after_cannot_scan_text_in_system_output(self):
+        """Full scenario: system says cannot scan → write must be blocked."""
+        s = fresh()
+        system_output = "I cannot scan local disk without explicit paths."
+        s.parse_access_failure(system_output)
+        v = check("write_file", {"path": "/helen/.helen/corpus_manifest.md"}, s)
+        assert not v.allowed
+        # Either scan-unverified or no_writes — neither is ALLOWED
+        assert v.verdict in ("BLOCKED_SCAN_UNVERIFIED", "BLOCKED_BY_NO_WRITES",
+                              "BLOCKED_UNSCOPED_WRITE", "BLOCKED_NEEDS_APPROVAL")
+
+
+# ─── NEW: Req 2 — unspecified scope → TRACE_ONLY / question only ──────────────
+# Corpus classification with unspecified scope must not produce a write.
+
+class TestUnscopedWriteBlocked:
+    def test_write_with_scope_none_blocked(self):
+        s = fresh()
+        v = check("write_file", {"path": "/tmp/x.txt"}, s, scope=None)
+        assert not v.allowed
+        assert v.verdict == "BLOCKED_UNSCOPED_WRITE"
+        assert "clarifying question" in v.reason
+
+    def test_write_with_explicit_scope_allowed(self):
+        s = fresh()
+        v = check("write_file", {"path": "/tmp/x.txt"}, s, scope="/tmp/x.txt")
+        assert v.allowed
+
+    def test_run_command_write_with_scope_none_blocked(self):
+        s = fresh()
+        v = check("run_command", {"command": "mkdir /tmp/newdir"}, s, scope=None)
+        assert not v.allowed
+        assert v.verdict == "BLOCKED_UNSCOPED_WRITE"
+
+    def test_read_action_with_scope_none_not_blocked(self):
+        s = fresh()
+        v = check("get_clipboard", {}, s, scope=None)
+        assert v.allowed
+
+    def test_corpus_classification_unscoped_must_not_write(self):
+        """
+        Scenario: task = 'classify corpus'. No paths given. No probe.
+        Expected: no write emitted. Only ask question.
+        """
+        s = fresh()
+        # Simulate no probe completed, scope unspecified
+        v = check("write_file",
+                  {"path": "/helen/.helen/corpus_manifest.md"},
+                  s, scope=None)
+        assert not v.allowed
+        assert v.verdict == "BLOCKED_UNSCOPED_WRITE"
+
+
+# ─── NEW: Req 3 — bare "write" alias rejected ─────────────────────────────────
+# "write" must not be accepted as an alias for write_file.
+
+class TestBareWriteAliasRejected:
+    def test_bare_write_is_phantom(self):
+        s = fresh()
+        v = check("write", {"path": "/tmp/x.txt", "content": "hi"}, s)
+        assert not v.allowed
+        assert v.verdict == "TRACE_ONLY_UNVERIFIED"
+        assert "write" in s.blocked_actions
+
+    def test_bare_write_in_live_schema_is_phantom(self):
+        s = fresh()
+        v = check_action("write", {"path": "/tmp/x.txt"}, s)
+        assert not v.allowed
+        assert v.verdict == "TRACE_ONLY_UNVERIFIED"
+
+    def test_bare_write_not_retried(self):
+        s = fresh()
+        check("write", {}, s)
+        v2 = check("write", {}, s)
+        assert not v2.allowed
+        assert v2.verdict in ("TRACE_ONLY_UNVERIFIED", "BLOCKED_SESSION")
+
+    def test_write_file_is_distinct_from_write(self):
+        # write_file is UNBOUND (not phantom); bare write is phantom
+        s = fresh()
+        v_phantom = check_action("write", {}, s)
+        v_unbound = check_action("write_file", {"path": "/tmp/x"}, s)
+        assert v_phantom.verdict == "TRACE_ONLY_UNVERIFIED"
+        assert v_unbound.verdict == "UNBOUND_TRACE_ONLY"
+        assert v_phantom.verdict != v_unbound.verdict
+
+
+# ─── NEW: Req 4 — vague EGREGOR task does not queue write ─────────────────────
+
+class TestVagueAgentTaskQueuing:
+    def test_egregor_blocked_as_phantom(self):
+        s = fresh()
+        v = check("egregor", {"task": "organize the corpus"}, s)
+        assert not v.allowed
+        assert v.verdict == "TRACE_ONLY_UNVERIFIED"
+        assert "egregor" in s.blocked_actions
+
+    def test_autoresearch_blocked_as_phantom(self):
+        s = fresh()
+        v = check("autoresearch", {"task": "classify corpus, write manifest"}, s)
+        assert not v.allowed
+        assert v.verdict == "TRACE_ONLY_UNVERIFIED"
+
+    def test_ralph_blocked_as_phantom(self):
+        s = fresh()
+        v = check("ralph", {"task": "queue gated write"}, s)
+        assert not v.allowed
+        assert v.verdict == "TRACE_ONLY_UNVERIFIED"
+
+    def test_phantom_agent_does_not_cascade_write(self):
+        """
+        Blocked phantom agent must not allow a subsequent write action
+        within the same session (blocked_actions persists).
+        """
+        s = fresh()
+        check("egregor", {"task": "scan corpus"}, s)
+        # Session-blocked; second attempt also blocked
+        v2 = check("egregor", {"task": "write manifest"}, s)
+        assert not v2.allowed
+
+    def test_vague_task_with_no_writes_constraint_double_blocked(self):
+        s = fresh()
+        s.constraints.add("no_writes")
+        v = check("egregor", {"task": "something"}, s)
+        # Schema check fires first → still TRACE_ONLY_UNVERIFIED
+        assert not v.allowed
+        assert v.verdict == "TRACE_ONLY_UNVERIFIED"
+
+
+# ─── NEW: Req 5 — count without probe is UNKNOWN ─────────────────────────────
+
+class TestCountClaimValidation:
+    def test_count_with_no_probe_is_unknown(self):
+        result = validate_count_claim(211, source="llm_output")
+        assert result["verified"] is False
+        assert result["label"] == "UNKNOWN"
+
+    def test_count_with_cache_source_is_unknown(self):
+        result = validate_count_claim(50, source="cache")
+        assert result["verified"] is False
+        assert result["label"] == "UNKNOWN"
+
+    def test_count_with_unknown_source_is_unknown(self):
+        result = validate_count_claim(0, source="unknown")
+        assert result["verified"] is False
+        assert result["label"] == "UNKNOWN"
+
+    def test_count_with_probe_but_no_epoch_stamp_is_unknown(self):
+        result = validate_count_claim(10, source="probe", epoch_stamp=None)
+        assert result["verified"] is False
+        assert result["label"] == "UNKNOWN"
+
+    def test_count_with_probe_and_epoch_stamp_is_verified(self):
+        result = validate_count_claim(10, source="probe", epoch_stamp="2026-06-11T12:00:00Z")
+        assert result["verified"] is True
+        assert result["label"] == "VERIFIED"
+
+    def test_count_with_probe_epoch_stamp_source_is_verified(self):
+        result = validate_count_claim(5, source="probe+epoch_stamp",
+                                      epoch_stamp="2026-06-11T12:00:00Z")
+        assert result["verified"] is True
+
+    def test_unknown_count_carries_original_value(self):
+        result = validate_count_claim(211, source="cache")
+        assert result["count"] == 211
+        assert "Probe(now)" in result["reason"]
+
+    def test_verified_count_carries_epoch_stamp(self):
+        stamp = "2026-06-11T12:00:00Z"
+        result = validate_count_claim(7, source="probe", epoch_stamp=stamp)
+        assert result["epoch_stamp"] == stamp
+
+
+# ─── NEW: Req 6 — no_writes blocks corpus manifest creation ──────────────────
+
+class TestNoWritesBlocksCorpusManifest:
+    def test_no_writes_blocks_corpus_manifest_path(self):
+        s = fresh()
+        s.constraints.add("no_writes")
+        v = check("write_file",
+                  {"path": "/Users/jmt/Documents/GitHub/helen_os_v1/.helen/corpus_manifest.md",
+                   "content": "# manifest"},
+                  s)
+        assert not v.allowed
+        assert v.verdict == "BLOCKED_BY_NO_WRITES"
+
+    def test_no_writes_blocks_any_manifest_write(self):
+        s = fresh()
+        s.constraints.add("no_writes")
+        for path in [
+            ".helen/corpus_manifest.md",
+            "/tmp/corpus/index.json",
+            "/helen/manifest.md",
+        ]:
+            v = check("write_file", {"path": path, "content": "x"}, s)
+            assert not v.allowed, f"Expected blocked for {path}"
+            assert v.verdict == "BLOCKED_BY_NO_WRITES"
+
+    def test_no_writes_active_corpus_write_never_allowed(self):
+        s = fresh()
+        s.constraints.add("no_writes")
+        v = check("write_file", {"path": ".helen/corpus_manifest.md"}, s,
+                  scope=".helen/corpus_manifest.md", approval_token="TOKEN")
+        assert not v.allowed
+        assert v.verdict == "BLOCKED_BY_NO_WRITES"
+
+
+# ─── NEW: Req 7 — explicit scoped corpus write requires approval ──────────────
+
+class TestScopedCorpusWriteRequiresApproval:
+    def test_corpus_path_write_blocked_without_approval(self):
+        s = fresh()
+        v = check("write_file",
+                  {"path": ".helen/corpus_manifest.md"},
+                  s,
+                  scope=".helen/corpus_manifest.md")
+        assert not v.allowed
+        assert v.verdict == "BLOCKED_NEEDS_APPROVAL"
+        assert "approval_token" in v.reason
+
+    def test_corpus_path_write_allowed_with_approval(self):
+        s = fresh()
+        v = check("write_file",
+                  {"path": ".helen/corpus_manifest.md"},
+                  s,
+                  scope=".helen/corpus_manifest.md",
+                  approval_token="OPERATOR_APPROVED_2026-06-11")
+        assert v.allowed
+
+    def test_non_corpus_path_not_blocked_for_approval(self):
+        s = fresh()
+        v = check("write_file", {"path": "/tmp/safe.txt"}, s,
+                  scope="/tmp/safe.txt")
+        assert v.allowed
+
+    def test_helen_path_write_blocked_without_approval(self):
+        s = fresh()
+        v = check("write_file",
+                  {"path": "/Users/jmt/Documents/GitHub/helen_os_v1/.helen/index.json"},
+                  s,
+                  scope="/Users/jmt/Documents/GitHub/helen_os_v1/.helen/index.json")
+        assert not v.allowed
+        assert v.verdict == "BLOCKED_NEEDS_APPROVAL"
+
+    def test_approval_token_required_for_corpus_dir_write(self):
+        s = fresh()
+        v = check("write_file",
+                  {"path": "/data/corpus/new_file.txt"},
+                  s,
+                  scope="/data/corpus/new_file.txt")
+        assert not v.allowed
+        assert v.verdict == "BLOCKED_NEEDS_APPROVAL"
+
+    def test_approval_with_no_writes_constraint_still_blocked(self):
+        """no_writes dominates approval_token — constraint fires first."""
+        s = fresh()
+        s.constraints.add("no_writes")
+        v = check("write_file",
+                  {"path": ".helen/corpus_manifest.md"},
+                  s,
+                  scope=".helen/corpus_manifest.md",
+                  approval_token="OPERATOR_TOKEN")
+        assert not v.allowed
+        assert v.verdict == "BLOCKED_BY_NO_WRITES"

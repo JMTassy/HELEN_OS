@@ -85,6 +85,12 @@ import shlex
 from dataclasses import dataclass, field
 from typing import Dict, FrozenSet, List, Optional, Set, Tuple
 
+# Sentinel: caller did not pass a scope argument. Scope checks are skipped.
+# Callers who explicitly pass scope=None are asserting "no scope provided" and
+# will get BLOCKED_UNSCOPED_WRITE. Callers who don't pass scope at all get the
+# original behaviour (scope checks skip entirely — backward-compatible).
+_UNSET = object()
+
 
 # ─── Runtime schema (CRITICAL FIX: schema == dispatcher keys) ─────────────────
 # Source of truth: the dispatch branches in
@@ -127,6 +133,30 @@ _SEARCH_ACTIONS: FrozenSet[str] = frozenset({
     "search", "browser_search",
 })
 
+# Agents that must never be queued for vague / unscoped tasks.
+# If these appear as the action_name they are already phantom (not in schema),
+# but tests assert TRACE_ONLY_UNVERIFIED specifically for them.
+_RESTRICTED_AGENTS: FrozenSet[str] = frozenset({
+    "egregor", "autoresearch", "ralph",
+})
+
+# Path patterns that indicate corpus or manifest writes.
+# A write to a matching path always requires explicit operator approval.
+_CORPUS_PATH_PATTERN = re.compile(
+    r"(corpus_manifest|\.helen[/\\]|corpus[/\\]|manifest\.md$)",
+    re.IGNORECASE,
+)
+
+# Phrases that signal system-reported access failure.
+# parse_access_failure() keys on these.
+_ACCESS_FAILED_PATTERN = re.compile(
+    r"\bcannot\s+(scan|access|read|probe|classify|verify)\b"
+    r"|\baccess\s+(failed|denied|unavailable)\b"
+    r"|\bscan\s+fail(ed)?\b"
+    r"|\bno\s+(disk\s+)?access\b",
+    re.IGNORECASE,
+)
+
 
 # ─── Verdict ──────────────────────────────────────────────────────────────────
 
@@ -165,6 +195,9 @@ class GuardState:
     failed_paths: Set[str] = field(default_factory=set)
     # Current intent marker (set via begin_intent at intent boundary).
     current_intent: Optional[str] = None
+    # Set True when the system reports it cannot scan/access state.
+    # Any write action is blocked while this flag is active.
+    access_failed: bool = False
     _RECENT_MAX: int = 30
 
     # ── Constraint parsing ────────────────────────────────────────────────────
@@ -201,6 +234,28 @@ class GuardState:
                 added.append("no_writes")
 
         return added
+
+    def mark_access_failed(self, reason: str = "") -> None:
+        """
+        Mark that the system cannot access/scan state.
+        Any subsequent write action is blocked until this flag is cleared.
+        Call this when the system emits 'I cannot scan disk' or equivalent.
+        """
+        self.access_failed = True
+
+    def parse_access_failure(self, system_text: str) -> bool:
+        """
+        Detect system-reported access failures in text and set access_failed.
+        Returns True if the flag was newly set.
+        """
+        if not self.access_failed and _ACCESS_FAILED_PATTERN.search(system_text):
+            self.access_failed = True
+            return True
+        return False
+
+    def clear_access_failed(self) -> None:
+        """Reset access_failed after a successful probe. Test helper."""
+        self.access_failed = False
 
     # ── Stale tracking ────────────────────────────────────────────────────────
 
@@ -240,6 +295,7 @@ class GuardState:
         self.recent_calls.clear()
         self.failed_paths.clear()
         self.current_intent = None
+        self.access_failed = False
 
 
 # ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -324,18 +380,27 @@ def check_action(
     state: GuardState,
     runtime_schema: Optional[FrozenSet[str]] = None,
     unbound_schema: Optional[FrozenSet[str]] = None,
+    scope=_UNSET,
+    approval_token: Optional[str] = None,
 ) -> GuardVerdict:
     """
     Run all preflight checks in enforcement order.
 
     Args:
-        action_name:    Proposed action name (from intent mapper or direct call).
-        params:         Action parameters dict.
-        state:          Session-scoped GuardState.
-        runtime_schema: Override the certifiable schema (testing). Default:
-                        RUNTIME_VALID_ACTIONS (== DISPATCHED_ACTIONS).
-        unbound_schema: Override the unbound classification set (testing).
-                        Default: UNBOUND_ACTIONS.
+        action_name:     Proposed action name (from intent mapper or direct call).
+        params:          Action parameters dict.
+        state:           Session-scoped GuardState.
+        runtime_schema:  Override the certifiable schema (testing). Default:
+                         RUNTIME_VALID_ACTIONS (== DISPATCHED_ACTIONS).
+        unbound_schema:  Override the unbound classification set (testing).
+                         Default: UNBOUND_ACTIONS.
+        scope:           Explicit path/corpus scope for write actions.
+                         _UNSET (default) = caller did not provide scope, scope
+                           checks are skipped (backward compatible).
+                         None = caller asserts no scope → BLOCKED_UNSCOPED_WRITE.
+                         str  = explicit path scope; corpus-path pattern check runs.
+        approval_token:  Explicit operator approval token for corpus/manifest
+                         writes. Without this, corpus-path writes are blocked.
 
     Returns:
         GuardVerdict with allowed=True (proceed) or False (block).
@@ -368,6 +433,66 @@ def check_action(
             reason=f"Action '{action_name}' is in blocked_actions_session. No retry.",
             action=action_name,
         )
+
+    # ── 2a. Access-failed guard ───────────────────────────────────────────────
+    # If the system has reported it cannot scan/access state, no write may be
+    # proposed. This catches the pattern: "I cannot scan disk" → write_file.
+    is_write = action_name in _WRITE_ACTIONS or (
+        action_name == "run_command"
+        and _WRITE_CMD_PATTERN.match(
+            str(params.get("command", "") or params.get("cmd", "") or "")
+        )
+    )
+    if state.access_failed and is_write:
+        return GuardVerdict(
+            allowed=False,
+            verdict="BLOCKED_SCAN_UNVERIFIED",
+            marker="✗ gated write blocked",
+            reason=(
+                f"Action '{action_name}' is a write but the system reported "
+                "it cannot scan/access state. A write may not be fabricated "
+                "from unverified state. Probe first, then retry."
+            ),
+            action=action_name,
+        )
+
+    # ── 2b. Unscoped write guard ──────────────────────────────────────────────
+    # Fires only when the caller explicitly provided scope (scope is not _UNSET).
+    # scope=None means "caller asserts no scope was given" → block.
+    # Callers that don't pass scope at all skip this check (backward compat).
+    if is_write and scope is not _UNSET and scope is None:
+        return GuardVerdict(
+            allowed=False,
+            verdict="BLOCKED_UNSCOPED_WRITE",
+            marker="✗ gated write blocked",
+            reason=(
+                f"Action '{action_name}' is a write with no explicit scope. "
+                "Scope must be provided by the operator before any write. "
+                "Emit a clarifying question; do not fabricate a path."
+            ),
+            action=action_name,
+        )
+
+    # ── 2c. Corpus / manifest path write requires operator approval ───────────
+    # Fires only when an explicit non-None scope was provided.
+    if is_write and scope is not _UNSET and scope is not None:
+        write_path = (
+            str(scope)
+            or params.get("path", "")
+            or params.get("file_path", "")
+            or ""
+        )
+        if _CORPUS_PATH_PATTERN.search(str(write_path)) and not approval_token:
+            return GuardVerdict(
+                allowed=False,
+                verdict="BLOCKED_NEEDS_APPROVAL",
+                marker="✗ gated write blocked",
+                reason=(
+                    f"Write to corpus/manifest path '{write_path}' requires "
+                    "explicit operator approval. Provide approval_token to proceed."
+                ),
+                action=action_name,
+            )
 
     # ── 3a. Operator constraint: no_writes ────────────────────────────────────
     if "no_writes" in state.constraints:
@@ -501,6 +626,51 @@ def check_unknown_action(action_name: str, state: GuardState) -> GuardVerdict:
         ),
         action=action_name,
     )
+
+
+# ─── Count claim validation ───────────────────────────────────────────────────
+
+def validate_count_claim(
+    count: int,
+    source: str,
+    epoch_stamp: Optional[str] = None,
+) -> Dict:
+    """
+    Validate a live-state count claim (e.g. "211 pending approvals").
+
+    A count claim is only VERIFIED when:
+      - source is "probe" or "probe+epoch_stamp"
+      - AND epoch_stamp is provided
+
+    Any other source (cache, inference, LLM output, "unknown") → UNKNOWN.
+    Callers must surface UNKNOWN counts as unverified rather than asserting
+    them as facts.
+
+    Returns:
+        dict with keys: verified (bool), label ("VERIFIED"|"UNKNOWN"),
+        count (int), source (str), epoch_stamp (str|None), reason (str)
+    """
+    admissible_sources = {"probe", "probe+epoch_stamp"}
+    if source in admissible_sources and epoch_stamp:
+        return {
+            "verified": True,
+            "label": "VERIFIED",
+            "count": count,
+            "source": source,
+            "epoch_stamp": epoch_stamp,
+            "reason": "Count sourced from live probe with epoch stamp.",
+        }
+    return {
+        "verified": False,
+        "label": "UNKNOWN",
+        "count": count,
+        "source": source,
+        "epoch_stamp": epoch_stamp,
+        "reason": (
+            f"Count claim is UNKNOWN — source='{source}' without a live "
+            "Probe(now)+EpochStamp. Do not assert this count as verified."
+        ),
+    }
 
 
 # ─── Singleton ────────────────────────────────────────────────────────────────
