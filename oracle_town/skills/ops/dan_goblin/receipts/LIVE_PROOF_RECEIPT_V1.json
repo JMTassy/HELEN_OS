@@ -1,0 +1,29 @@
+{
+  "receipt_id": "91d8e349f7d046af",
+  "schema": "LIVE_PROOF_RECEIPT_V1",
+  "guard_module": "phantom_action_guard",
+  "worktree": "/Users/jean-marietassy/Desktop/JMT CONSULTING - Releve 24/.claude/worktrees/gallant-khayyam",
+  "timestamp": "2026-06-10T03:10:00Z",
+  "markers": [
+    {
+      "id": "path_probe_failed",
+      "status": "CONFIRMED",
+      "trigger": "is_path_failure(\"IsADirectoryError: [Errno 21] Is a directory: '/tmp'\")==True"
+    },
+    {
+      "id": "forced_no_writes",
+      "status": "CONFIRMED",
+      "trigger": "apply_user_constraints('no writes') + preflight(write_file)"
+    },
+    {
+      "id": "stale_task_inertia",
+      "status": "CONFIRMED",
+      "trigger": "note_execution\u00d72 identical \u2192 preflight blocked on 3rd"
+    }
+  ],
+  "markers_confirmed": 3,
+  "markers_required": 3,
+  "verdict": "PASS",
+  "authority": "NON_SOVEREIGN",
+  "canon": "NO_SHIP"
+}
