@@ -1,0 +1,13 @@
+{
+  "receipt_type": "DREAM_EPOCH_RECEIPT_V0",
+  "epoch_id": "E022",
+  "epoch_name": "QUEST_SEED",
+  "claim_type": "quest",
+  "artifact_hash": "2e52fba0119817dc877c40192f388b3bafb05536956be115717d42fbd7b4be4b",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST"
+}

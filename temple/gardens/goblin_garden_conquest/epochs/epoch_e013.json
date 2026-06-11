@@ -1,0 +1,16 @@
+{
+  "id": "E013",
+  "name": "CONQUEST_BULLETIN_ENTER",
+  "claim_type": "bulletin",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST",
+  "bulletin_title": "ENTER — DREAM_OF_CONQUEST",
+  "world": "Avalon archipelago: 6 islands, 4 factions, 6 bridges",
+  "current_epoch": "T123 — 122 turns logged, 0 islands yet claimed",
+  "sim_contract": "Non-sovereign simulation. No output here is HELEN canon. Ledger is sleeping.",
+  "wulmoji": "🔵 🧌 BULLETIN — portal entered, sim active 📜 ⏸️ LEDGER SLEEPING"
+}

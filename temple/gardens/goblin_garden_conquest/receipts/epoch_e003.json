@@ -1,0 +1,13 @@
+{
+  "receipt_type": "DREAM_EPOCH_RECEIPT_V0",
+  "epoch_id": "E003",
+  "epoch_name": "KNOWLEDGE_TO_POWER_AXIOM",
+  "claim_type": "draft_doctrine",
+  "artifact_hash": "191ac7e2c76315effaf25fd19a770bb97d095ac259b26b4bc0a6144d54a2022f",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST"
+}

@@ -1,0 +1,17 @@
+{
+  "receipt_type": "DREAM_OF_CONQUEST_FINAL_RECEIPT_V0",
+  "session": "DREAM_OF_CONQUEST genesis run",
+  "path": "temple/gardens/goblin_garden_conquest/",
+  "total": 25,
+  "passed": 25,
+  "failed": 0,
+  "errors": [],
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "layer": "TEMPLE",
+  "emojos_version": "EMOJOS_RENDERING_RULES_V1_DRAFT",
+  "commit": "BLOCKED",
+  "push": "BLOCKED",
+  "ledger": "SLEEPING"
+}

@@ -1,0 +1,53 @@
+{
+  "id": "E012",
+  "name": "WULMOJI_CONQUEST_GRAMMAR",
+  "claim_type": "validator",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST",
+  "grammar_version": "WULMOJI_CONQUEST_V0",
+  "emojos_base": "EMOJOS_RENDERING_RULES_V1_DRAFT",
+  "canonical_order": "[STATE_EMOJI] [AGENT_EMOJI] [LABEL]",
+  "token_separator": "exactly one ASCII space — no glued emoji pairs in canonical terminal render",
+  "state_palette": {
+    "🟢": "validator/local pass — NOT governance gate clearance",
+    "🔴": "validator/local fail",
+    "🟡": "hold/pending/quarantine",
+    "🔵": "compiling/generating/building",
+    "🟣": "syncing/cross-system",
+    "⚫": "absent/null/void",
+    "👁️": "observed/logged/trace",
+    "🧾": "receipted — evidence exists",
+    "⚖️": "review/judgment phase",
+    "✅": "governance gate cleared — distinct from 🟢 local pass",
+    "📜 ⏸️": "ledger sleeping — no sovereign write"
+  },
+  "governance_distinction": {
+    "🧾": "receipt — evidence exists",
+    "⚖️": "review — judgment phase",
+    "✅": "governance gate cleared",
+    "👁️": "JM — human reviewer (not governance automation)"
+  },
+  "temple_sim_view_forbidden": [
+    "SEALED — only valid in GOVERNANCE_VIEW (layer=LEDGER or GOVERNANCE)",
+    "LEDGER_APPEND — never emitted from TEMPLE layer",
+    "governance authority agent emoji in TEMPLE context",
+    "CANON_TRUE_FORBIDDEN",
+    "AUTHORITY_TRUE_FORBIDDEN",
+    "SOVEREIGN_TRUE_FORBIDDEN"
+  ],
+  "emojos_patch_summary": {
+    "patch_1": "🟢=local pass only; ✅=governance gate cleared; no conflation",
+    "patch_2": "SEALED scoped to layer=LEDGER or GOVERNANCE only",
+    "patch_3": "Governance authority agent emoji forbidden in TEMPLE_SIM_VIEW",
+    "patch_4": "Token spacing: exactly one ASCII space, no glued pairs in canonical render",
+    "patch_5": "✅ reserved for governance gate clearance; 🧾 for receipted",
+    "patch_6": "📜 ⏸️ LEDGER SLEEPING canonical; 📜 🚫 LEDGER WRITE BLOCKED for blocked writes",
+    "patch_7": "EMOJOS is one-way: StructuredState→RenderString only",
+    "patch_8": "Renamed EMOJOS_RENDERING_RULES_V1 → EMOJOS_RENDERING_RULES_V1_DRAFT until tests exist"
+  },
+  "wulmoji": "🟢 ⚖️ WULMOJI_CONQUEST_GRAMMAR — EMOJOS_V1_DRAFT applied"
+}

@@ -1,0 +1,15 @@
+{
+  "id": "E003",
+  "name": "KNOWLEDGE_TO_POWER_AXIOM",
+  "claim_type": "draft_doctrine",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST",
+  "axiom": "Knowledge accumulation translates to faction power only through receipted ritual. Unreceipted knowledge is latent, not active.",
+  "formula": "power(t) = sum(receipted_knowledge_events[0..t]) * influence_coefficient",
+  "corollary": "A faction that does not receipt its learning cannot spend it.",
+  "wulmoji": "🟢 📜 K2P AXIOM established"
+}

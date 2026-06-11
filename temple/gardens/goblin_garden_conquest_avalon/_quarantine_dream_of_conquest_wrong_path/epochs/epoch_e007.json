@@ -1,0 +1,29 @@
+{
+  "id": "E007",
+  "name": "TERRITORY_MODEL",
+  "claim_type": "world_model",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST",
+  "islands": [
+    "HOME_KEEP_AVALON",
+    "ISLE_IGNIS",
+    "ISLE_AQUA",
+    "ISLE_AETHER",
+    "ISLE_TERRA",
+    "ISLE_QUINT"
+  ],
+  "inalienable_islands": [
+    "HOME_KEEP_AVALON"
+  ],
+  "claim_types": {
+    "CLAIM": "costs native element shard of target island",
+    "CLAIM_LIGHT": "costs 1 QUINT_CORE — accessible to all factions",
+    "CONQUEST": "costs 3 QUINT_CORE — aggressive forced takeover"
+  },
+  "territory_score_rate": "10 pts per island held per turn",
+  "wulmoji": "🔵 🗺️ TERRITORY_MODEL — 6 islands, claim mechanics defined"
+}

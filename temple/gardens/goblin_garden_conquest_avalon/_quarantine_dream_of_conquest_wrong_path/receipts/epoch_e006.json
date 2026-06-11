@@ -1,0 +1,13 @@
+{
+  "receipt_type": "DREAM_EPOCH_RECEIPT_V0",
+  "epoch_id": "E006",
+  "epoch_name": "RESOURCE_MODEL",
+  "claim_type": "world_model",
+  "artifact_hash": "58b03d7416d0d7a13636257961f10492156d89cb5aa01e065a52d5324159c681",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST"
+}

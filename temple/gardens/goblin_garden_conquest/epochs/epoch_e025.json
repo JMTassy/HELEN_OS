@@ -1,0 +1,32 @@
+{
+  "id": "E025",
+  "name": "GOBLIN_GARDEN_CONQUEST_COMPLETE",
+  "claim_type": "receipt",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST",
+  "session_name": "DREAM_OF_CONQUEST genesis run",
+  "epochs_completed": 25,
+  "containment": {
+    "out_of_scope_writes": "NONE",
+    "sovereign_paths_touched": false,
+    "ledger_mutations": false,
+    "forbidden_terms_triggered": 0
+  },
+  "emojos_version_applied": "EMOJOS_RENDERING_RULES_V1_DRAFT",
+  "emojos_patch_notes": [
+    "PASS/GATE_CLEARED semantic split — forbidden authority vocab excluded from TEMPLE artifacts",
+    "SEALED render forbidden in TEMPLE sim view",
+    "Governance authority agent emoji forbidden in TEMPLE sim view",
+    "Token separator: exactly one ASCII space, no glued pairs",
+    "Ledger sleeping render: 📜 ⏸️ LEDGER SLEEPING",
+    "EMOJOS one-way: StructuredState to RenderString only",
+    "EMOJOS_RENDERING_RULES_V1 renamed to DRAFT pending test existence",
+    "✅ reserved for governance gate clearance only"
+  ],
+  "wulmoji": "🟢 🧌 🌍 DREAM_OF_CONQUEST — 25/25 PASS 📜 ⏸️ LEDGER SLEEPING",
+  "next_action": "JM_REVIEW — COMMIT=BLOCKED until authorized"
+}

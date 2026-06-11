@@ -1,0 +1,35 @@
+{
+  "id": "E005",
+  "name": "FACTION_SIGILS",
+  "claim_type": "world_model",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST",
+  "factions": {
+    "ROSE": {
+      "sigil": "🌹",
+      "personality": "QUEST_FOCUSED",
+      "wulmoji_agent": "🌹"
+    },
+    "CROSS": {
+      "sigil": "✝️",
+      "personality": "CONQUEST_FOCUSED",
+      "wulmoji_agent": "✝️"
+    },
+    "VEIL": {
+      "sigil": "🌀",
+      "personality": "DIPLOMATIC",
+      "wulmoji_agent": "🌀"
+    },
+    "WARDEN": {
+      "sigil": "⟂◯⟂",
+      "personality": "RESOURCE_FOCUSED",
+      "wulmoji_agent": "⟂◯⟂"
+    }
+  },
+  "sigil_rule": "Sigils are non-sovereign faction identifiers. They carry no HELEN authority.",
+  "wulmoji": "🔵 🌹 🌀 ✝️ ⟂◯⟂ FACTION_SIGILS defined"
+}

@@ -1,0 +1,13 @@
+{
+  "receipt_type": "DREAM_EPOCH_RECEIPT_V0",
+  "epoch_id": "E012",
+  "epoch_name": "WULMOJI_CONQUEST_GRAMMAR",
+  "claim_type": "validator",
+  "artifact_hash": "42d7a81035ce68b942dfaed8dbdf42c4dcb0c5a3bb1374207d968002d3feb6c7",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST"
+}

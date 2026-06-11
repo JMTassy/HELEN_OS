@@ -1,0 +1,13 @@
+{
+  "receipt_type": "DREAM_EPOCH_RECEIPT_V0",
+  "epoch_id": "E011",
+  "epoch_name": "GOBLIN_GUIDE_PROTOCOL",
+  "claim_type": "draft_doctrine",
+  "artifact_hash": "f2f902aced6767d43dd50418401334d7a97aa21c27e936246d6c692d94782897",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST"
+}

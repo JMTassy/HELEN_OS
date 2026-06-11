@@ -1,0 +1,28 @@
+{
+  "id": "E010",
+  "name": "PLAYER_AGENT_BOUNDARY",
+  "claim_type": "draft_doctrine",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST",
+  "agent_may": [
+    "read world state",
+    "emit faction action",
+    "observe event triggers",
+    "accumulate knowledge fragments",
+    "form alliances",
+    "execute quests"
+  ],
+  "agent_may_not": [
+    "write to sovereign HELEN ledger",
+    "invoke HELEN kernel",
+    "bypass claim validation ritual",
+    "mutate world state without receipt",
+    "grant governance gate clearance",
+    "escalate TEMPLE output to GOVERNANCE layer"
+  ],
+  "wulmoji": "🟡 🛡️ AGENT_BOUNDARY — may/may_not doctrine defined"
+}

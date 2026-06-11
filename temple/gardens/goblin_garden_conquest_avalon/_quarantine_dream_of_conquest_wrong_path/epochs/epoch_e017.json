@@ -1,0 +1,21 @@
+{
+  "id": "E017",
+  "name": "AUTORESEARCH_CANDIDATE_SPACE",
+  "claim_type": "world_model",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST",
+  "axes": {
+    "quest_ordering": "Which quests unlock which territories? What prerequisite graph is optimal?",
+    "symbolic_map": "Should ISLE_QUINT be central hub or peripheral? How should bridges connect?",
+    "bulletin_clarity": "Are faction bulletins legible without prior context?",
+    "world_model_consistency": "Do resource rates match scoring rates? Are rewards balanced?",
+    "learning_path_coherence": "Can a SCOUT faction reliably reach SETTLER in 50 turns?"
+  },
+  "evaluation_horizon_turns": 50,
+  "success_metric": "At least 2 factions reach SETTLER rank by T50",
+  "wulmoji": "🔵 🧪 CANDIDATE_SPACE — 5 axes, 50-turn horizon"
+}

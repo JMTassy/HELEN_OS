@@ -1,0 +1,35 @@
+{
+  "id": "E001",
+  "name": "PORTAL_DECLARATION",
+  "claim_type": "bulletin",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST",
+  "declaration": "DREAM_OF_CONQUEST is a non-sovereign TEMPLE simulation. A door inside the Goblin Garden leads here.",
+  "models": [
+    "knowledge_to_power",
+    "faction_learning",
+    "territory_control",
+    "quests",
+    "resources",
+    "strategy",
+    "claim_validation_ritual",
+    "epistemic_hygiene",
+    "non_sovereign_world_state"
+  ],
+  "forbidden_operations": [
+    "mutate_HELEN_ledger",
+    "define_HELEN_canon",
+    "approve_writes",
+    "act_as_HAL",
+    "act_as_reducer",
+    "claim_sovereignty",
+    "train_models",
+    "index_corpus",
+    "commit_files"
+  ],
+  "wulmoji": "🔵 🧌 PORTAL OPEN"
+}

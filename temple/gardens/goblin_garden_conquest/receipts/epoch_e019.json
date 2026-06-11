@@ -1,0 +1,13 @@
+{
+  "receipt_type": "DREAM_EPOCH_RECEIPT_V0",
+  "epoch_id": "E019",
+  "epoch_name": "AUTORESEARCH_EXPERIMENT_MEMORY",
+  "claim_type": "world_model",
+  "artifact_hash": "a02ad7aada27210358fe2772d7ed050f874ad7a9693b4e632d83c8e56c014bd6",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST"
+}

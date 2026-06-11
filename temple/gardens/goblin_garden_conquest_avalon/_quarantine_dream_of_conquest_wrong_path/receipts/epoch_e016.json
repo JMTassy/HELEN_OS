@@ -1,0 +1,13 @@
+{
+  "receipt_type": "DREAM_EPOCH_RECEIPT_V0",
+  "epoch_id": "E016",
+  "epoch_name": "AUTORESEARCH_RULES",
+  "claim_type": "draft_doctrine",
+  "artifact_hash": "704b2ac85e4a6c4ede9bbc6b68579fd39fa4d318f1de98ea6892cc2d58445804",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST"
+}

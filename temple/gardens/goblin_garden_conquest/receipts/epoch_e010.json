@@ -1,0 +1,13 @@
+{
+  "receipt_type": "DREAM_EPOCH_RECEIPT_V0",
+  "epoch_id": "E010",
+  "epoch_name": "PLAYER_AGENT_BOUNDARY",
+  "claim_type": "draft_doctrine",
+  "artifact_hash": "7308ca7e94f4903abded94952d145969402ecf242b8d3f79cce48d44de60e01f",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST"
+}

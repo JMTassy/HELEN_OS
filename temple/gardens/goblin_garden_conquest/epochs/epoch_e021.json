@@ -1,0 +1,50 @@
+{
+  "id": "E021",
+  "name": "DREAM_MAP_SEED",
+  "claim_type": "metaphor",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST",
+  "map_name": "AVALON_ARCHIPELAGO_SEED",
+  "symbolic_meaning": "Avalon = place of transformation. Islands = elemental knowledge nodes. QUINT = convergence of elements.",
+  "islands": {
+    "HOME_KEEP_AVALON": {
+      "element": "QUINT",
+      "production": "QUINT_CORE",
+      "inalienable": true
+    },
+    "ISLE_IGNIS": {
+      "element": "FIRE",
+      "production": "IGNIS_SHARD"
+    },
+    "ISLE_AQUA": {
+      "element": "WATER",
+      "production": "AQUA_SHARD"
+    },
+    "ISLE_AETHER": {
+      "element": "AIR",
+      "production": "AETHER_SHARD"
+    },
+    "ISLE_TERRA": {
+      "element": "EARTH",
+      "production": "TERRA_SHARD"
+    },
+    "ISLE_QUINT": {
+      "element": "QUINTESSENCE",
+      "production": "QUINT_CORE",
+      "is_conversion_hub": true
+    }
+  },
+  "bridges": [
+    "IGNIS_AQUA",
+    "IGNIS_TERRA",
+    "AQUA_AETHER",
+    "AETHER_QUINT",
+    "TERRA_QUINT",
+    "QUINT_HOME"
+  ],
+  "wulmoji": "🔵 🌍 DREAM_MAP_SEED — Avalon archipelago symbolic topology"
+}

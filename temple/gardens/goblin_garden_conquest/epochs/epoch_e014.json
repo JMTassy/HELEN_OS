@@ -1,0 +1,26 @@
+{
+  "id": "E014",
+  "name": "CONQUEST_BULLETIN_KNOWLEDGE_POWER",
+  "claim_type": "bulletin",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST",
+  "bulletin_title": "Knowledge to Power mechanics",
+  "mechanic_chain": [
+    "complete quest steps → earn knowledge_fragments",
+    "5 fragments → K2P_RITUAL → 1 power_token",
+    "power_token → CLAIM_LIGHT unlock on explored island"
+  ],
+  "receipt_requirement": "Every K2P conversion must be receipted. Unreceipted fragments are latent only.",
+  "schema_fields": [
+    "faction_id",
+    "fragments_spent",
+    "power_tokens_gained",
+    "ritual_turn",
+    "receipt_hash"
+  ],
+  "wulmoji": "🟢 📜 K2P BULLETIN — 5 fragments → 1 power_token"
+}

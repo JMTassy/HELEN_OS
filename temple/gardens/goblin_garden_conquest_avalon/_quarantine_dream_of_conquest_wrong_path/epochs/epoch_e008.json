@@ -1,0 +1,25 @@
+{
+  "id": "E008",
+  "name": "QUEST_MODEL",
+  "claim_type": "world_model",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST",
+  "quest_types": [
+    "CHAIN_QUEST",
+    "SINGLE_QUEST",
+    "RITUAL_QUEST",
+    "EXPLORATION_QUEST"
+  ],
+  "step_range": "1 to 5 steps per quest",
+  "reward_structure": {
+    "score_pts": "awarded per step completion",
+    "knowledge_fragment": "awarded on full chain completion",
+    "power_token": "5 fragments → K2P ritual → 1 power_token"
+  },
+  "knowledge_fragment_rule": "Fragments accumulate in faction memory. Must be receipted before spending.",
+  "wulmoji": "🟢 📜 QUEST_MODEL — chain + knowledge reward defined"
+}

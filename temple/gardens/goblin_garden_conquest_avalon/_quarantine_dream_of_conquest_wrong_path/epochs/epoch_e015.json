@@ -1,0 +1,21 @@
+{
+  "id": "E015",
+  "name": "CONQUEST_BULLETIN_NO_SOVEREIGNTY",
+  "claim_type": "bulletin",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST",
+  "bulletin_title": "Non-sovereignty contract",
+  "contract": [
+    "Nothing in DREAM_OF_CONQUEST affects HELEN OS sovereignty",
+    "World events are simulation events only",
+    "Faction victories are non-sovereign outcomes",
+    "No DREAM output may be cited as HELEN canon",
+    "All artifacts carry: authority=false, sovereign=false, canon=false"
+  ],
+  "enforcement": "Validator scans every artifact for forbidden terms before writing",
+  "wulmoji": "🟡 🛡️ NO_SOVEREIGNTY — sim contract active"
+}

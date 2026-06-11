@@ -1,0 +1,43 @@
+{
+  "id": "E023",
+  "name": "VALIDATOR_IMPLEMENTATION",
+  "claim_type": "validator",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST",
+  "validator_name": "DREAM_VALIDATOR_V0",
+  "version": "V0",
+  "fail_mode": "closed — artifact not written on any check failure",
+  "checks": {
+    "stop_term_scan": "Reject if any forbidden term found in artifact JSON text",
+    "required_field_check": [
+      "id",
+      "name",
+      "claim_type",
+      "layer",
+      "authority",
+      "sovereign",
+      "canon",
+      "status"
+    ],
+    "authority_must_be_false": true,
+    "sovereign_must_be_false": true,
+    "canon_must_be_false": true,
+    "layer_must_be_TEMPLE": true,
+    "status_must_be_PROPOSED": true,
+    "claim_type_allowed_values": [
+      "metaphor",
+      "simulation",
+      "draft_doctrine",
+      "world_model",
+      "quest",
+      "bulletin",
+      "validator",
+      "receipt"
+    ]
+  },
+  "wulmoji": "🟢 ⚖️ DREAM_VALIDATOR_V0 — 8 checks, fail-closed"
+}

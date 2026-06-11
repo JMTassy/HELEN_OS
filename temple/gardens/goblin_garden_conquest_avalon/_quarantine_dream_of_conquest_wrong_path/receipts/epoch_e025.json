@@ -1,0 +1,13 @@
+{
+  "receipt_type": "DREAM_EPOCH_RECEIPT_V0",
+  "epoch_id": "E025",
+  "epoch_name": "GOBLIN_GARDEN_CONQUEST_COMPLETE",
+  "claim_type": "receipt",
+  "artifact_hash": "25ec68b59592844c7f536123370b08a390a5a140238f2d4c9c83fd1314bbeb0e",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST"
+}

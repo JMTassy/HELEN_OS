@@ -1,0 +1,22 @@
+{
+  "id": "E006",
+  "name": "RESOURCE_MODEL",
+  "claim_type": "world_model",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST",
+  "resource_types": [
+    "IGNIS_SHARD",
+    "AQUA_SHARD",
+    "AETHER_SHARD",
+    "TERRA_SHARD",
+    "QUINT_CORE"
+  ],
+  "production_flow": "island_production → island_stockpile → collect_phase (5/turn) → faction_wallet",
+  "conversion_rule": "3 any_shard at ISLE_QUINT → 1 QUINT_CORE",
+  "collect_phase_cap_per_turn": 5,
+  "wulmoji": "🔵 📦 RESOURCE_MODEL — 5-type economy defined"
+}

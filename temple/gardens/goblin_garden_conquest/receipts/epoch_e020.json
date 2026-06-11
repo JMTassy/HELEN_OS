@@ -1,0 +1,13 @@
+{
+  "receipt_type": "DREAM_EPOCH_RECEIPT_V0",
+  "epoch_id": "E020",
+  "epoch_name": "AUTORESEARCH_ROLLBACK_LAW",
+  "claim_type": "draft_doctrine",
+  "artifact_hash": "25f11e242a7191dc0cc7e5e557b9f99ab9466685a2f6d2dfb04223959eabea2c",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST"
+}

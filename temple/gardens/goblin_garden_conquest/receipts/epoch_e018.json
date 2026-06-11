@@ -1,0 +1,13 @@
+{
+  "receipt_type": "DREAM_EPOCH_RECEIPT_V0",
+  "epoch_id": "E018",
+  "epoch_name": "AUTORESEARCH_EVALUATOR",
+  "claim_type": "validator",
+  "artifact_hash": "db12f92305016ec1b96946fe820067daab04665373d302d8afdecb706ae1c20a",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST"
+}

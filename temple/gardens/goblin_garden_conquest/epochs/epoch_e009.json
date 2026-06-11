@@ -1,0 +1,29 @@
+{
+  "id": "E009",
+  "name": "CLAIM_VALIDATION_RITUAL",
+  "claim_type": "validator",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST",
+  "ritual_name": "CLAIM_VALIDATION_V0",
+  "required_proof_fields": [
+    "faction_id",
+    "island_id",
+    "claim_type",
+    "resource_proof",
+    "turn_number"
+  ],
+  "validation_steps": [
+    "1. faction holds required resource",
+    "2. island is not inalienable",
+    "3. island not under TEMPLOCK",
+    "4. claim_type matches resource_proof",
+    "5. receipt generated on pass"
+  ],
+  "on_fail": "SKIP — no state mutation",
+  "on_pass": "Island holder updated + receipt written to session_log",
+  "wulmoji": "🟢 ⚖️ CLAIM_VALIDATION_V0 — 5-step validator"
+}

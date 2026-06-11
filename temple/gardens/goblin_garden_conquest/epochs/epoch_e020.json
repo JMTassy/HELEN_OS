@@ -1,0 +1,20 @@
+{
+  "id": "E020",
+  "name": "AUTORESEARCH_ROLLBACK_LAW",
+  "claim_type": "draft_doctrine",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST",
+  "law": "Any autoresearch with verdict=REJECT must be explicitly rolled back before the next hypothesis begins.",
+  "rollback_steps": [
+    "1. Mark hypothesis as REJECT in experiment memory",
+    "2. Revert world state mutations from the rejected experiment",
+    "3. Write rollback receipt",
+    "4. Increment rollback_count in counters.json"
+  ],
+  "halt_condition": "3 consecutive REJECT verdicts → halt autoresearch → request JM review",
+  "wulmoji": "🔴 🧪 ROLLBACK_LAW — 3 REJECTs → halt and report"
+}

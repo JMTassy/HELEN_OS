@@ -1,0 +1,32 @@
+{
+  "id": "E016",
+  "name": "AUTORESEARCH_RULES",
+  "claim_type": "draft_doctrine",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST",
+  "scope": "Temple simulation of autoresearch — NOT live system optimization",
+  "allowed_targets": [
+    "quest_ordering",
+    "symbolic_map_layout",
+    "bulletin_clarity",
+    "world_model_consistency",
+    "learning_path_coherence"
+  ],
+  "forbidden_targets": [
+    "HELEN_kernel",
+    "ledger",
+    "reducer",
+    "memory",
+    "canonical_schemas",
+    "write_gate",
+    "skills",
+    "tests",
+    "real_ranking_config"
+  ],
+  "cycle": "hypothesis → experiment → observation → receipt → keep_or_reject",
+  "wulmoji": "🟡 🧪 AUTORESEARCH_RULES — scoped to simulation targets only"
+}

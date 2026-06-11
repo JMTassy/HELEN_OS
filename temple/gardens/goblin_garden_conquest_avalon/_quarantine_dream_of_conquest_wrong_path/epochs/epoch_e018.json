@@ -1,0 +1,29 @@
+{
+  "id": "E018",
+  "name": "AUTORESEARCH_EVALUATOR",
+  "claim_type": "validator",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST",
+  "evaluator_name": "DREAM_EVALUATOR_V0",
+  "input_sources": [
+    "world_state.json",
+    "session_log.ndjson",
+    "counters.json"
+  ],
+  "criteria": {
+    "territory_progress": "At least 1 island claimed by T30",
+    "faction_diversity": "All 4 factions above SCOUT rank by T50",
+    "resource_flow": "collect_phase transfers > 0 by T10",
+    "skip_rate_target": "Action skip rate < 20 percent by T40",
+    "quest_completion": "At least 3 quest chains closed by T50"
+  },
+  "verdict_renders": {
+    "pass_render": "🟢 EVAL PASS",
+    "fail_render": "🔴 EVAL FAIL"
+  },
+  "wulmoji": "🟢 ⚖️ EVALUATOR_V0 — 5 criteria, 50-turn window defined"
+}

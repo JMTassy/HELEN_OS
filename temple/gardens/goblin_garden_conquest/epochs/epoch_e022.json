@@ -1,0 +1,43 @@
+{
+  "id": "E022",
+  "name": "QUEST_SEED",
+  "claim_type": "quest",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST",
+  "quest_id": "Q001",
+  "quest_name": "THE_KNOWLEDGE_PATH",
+  "description": "First quest: gather knowledge fragments from 3 different islands via EXPLORE actions.",
+  "steps": [
+    {
+      "step": 1,
+      "action": "EXPLORE ISLE_IGNIS",
+      "cost_resource": "QUINT_CORE",
+      "cost_amount": 1,
+      "reward": "knowledge_fragment:IGNIS"
+    },
+    {
+      "step": 2,
+      "action": "EXPLORE ISLE_AQUA",
+      "cost_resource": "QUINT_CORE",
+      "cost_amount": 1,
+      "reward": "knowledge_fragment:AQUA"
+    },
+    {
+      "step": 3,
+      "action": "EXPLORE ISLE_AETHER",
+      "cost_resource": "QUINT_CORE",
+      "cost_amount": 1,
+      "reward": "knowledge_fragment:AETHER"
+    }
+  ],
+  "chain_reward": {
+    "score_pts": 30,
+    "bonus": "power_token:1"
+  },
+  "unlock_condition": "Completing Q001 unlocks CLAIM_LIGHT on any explored island",
+  "wulmoji": "🔵 📜 Q001 — THE_KNOWLEDGE_PATH seeded"
+}

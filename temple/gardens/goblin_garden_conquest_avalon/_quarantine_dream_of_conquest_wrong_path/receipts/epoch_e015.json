@@ -1,0 +1,13 @@
+{
+  "receipt_type": "DREAM_EPOCH_RECEIPT_V0",
+  "epoch_id": "E015",
+  "epoch_name": "CONQUEST_BULLETIN_NO_SOVEREIGNTY",
+  "claim_type": "bulletin",
+  "artifact_hash": "4219afe0dab2348dd82c569a7e314f533c6365a14bcf2bea369f2e4cf76e3a93",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST"
+}

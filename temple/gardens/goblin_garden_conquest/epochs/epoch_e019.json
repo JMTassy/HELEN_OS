@@ -1,0 +1,25 @@
+{
+  "id": "E019",
+  "name": "AUTORESEARCH_EXPERIMENT_MEMORY",
+  "claim_type": "world_model",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST",
+  "schema_name": "EXPERIMENT_MEMORY_V0",
+  "fields": {
+    "hypothesis_id": "string",
+    "hypothesis_text": "string",
+    "experiment_turns": "integer",
+    "observation": "string",
+    "metric_results": "dict",
+    "verdict": "KEEP | REJECT | PARTIAL",
+    "upgrade_path": "string or null",
+    "receipt_hash": "sha256_hex"
+  },
+  "retention_turns": 200,
+  "escalation_prohibition": "Experiment memory may not be promoted to HELEN canonical memory layer",
+  "wulmoji": "🟢 🧾 EXPERIMENT_MEMORY_V0 — receipted, non-escalatable"
+}

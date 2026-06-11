@@ -1,0 +1,24 @@
+{
+  "id": "E004",
+  "name": "NON_SOVEREIGN_WORLD_STATE",
+  "claim_type": "world_model",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST",
+  "schema_version": "DREAM_WORLD_STATE_V0",
+  "fields": [
+    "factions",
+    "islands",
+    "bridges",
+    "clock",
+    "quests",
+    "events",
+    "knowledge_ledger"
+  ],
+  "knowledge_ledger_note": "DREAM knowledge_ledger is local to DREAM_OF_CONQUEST only. It is NOT the sovereign HELEN ledger.",
+  "write_rule": "DREAM world state written only by dream engine. Never by sovereign path.",
+  "wulmoji": "🟢 🌍 WORLD_STATE_V0 — non-sovereign schema defined"
+}

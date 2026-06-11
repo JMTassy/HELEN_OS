@@ -1,0 +1,20 @@
+{
+  "id": "E002",
+  "name": "DREAM_OF_CONQUEST_WORLD_BOUNDARY",
+  "claim_type": "world_model",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST",
+  "axioms": [
+    "LIVE_SIM != CANON",
+    "EPOCH_MEMORY != LEDGER",
+    "AGENT_EXPERIENCE != AUTHORITY",
+    "SIM_DEVELOPMENT != GATE_CLEARANCE"
+  ],
+  "crossing_condition": "JM_REVIEW + explicit authorization only",
+  "sim_boundary": "No sovereign write. No finality claim. No gate clearance.",
+  "wulmoji": "🟡 ⟂◯⟂ BOUNDARY defined"
+}
