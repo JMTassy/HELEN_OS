@@ -128,13 +128,14 @@ def test_admit_only_when_manifest_and_receipts_both_validate():
 # ── gate ordering: manifest check is Gate 2 (before receipts Gate 3) ─────────
 
 def test_manifest_gate_fires_before_receipt_gate():
-    """Missing manifest_id fires before empty receipts (Gate 2 < Gate 3)."""
+    """Missing manifest_id fires before receipt hash check (Gate 2 < Gate 4)."""
     p = _packet()
     del p["manifest_id"]
-    p["receipts"] = []  # would also fail at Gate 3
+    # corrupt receipt hash — would fail at Gate 4; manifest gate (Gate 2) fires first
+    p["receipts"][0]["sha256"] = "sha256:" + "f" * 64
     result = reduce_promotion_packet(p, _state(_valid_manifests()))
     assert result.decision == "REJECTED"
-    # Must be manifest error, not schema/receipt error
+    # Must be manifest error, not receipt-hash error
     assert result.reason_code == ReasonCode.ERR_MANIFEST_NOT_FOUND.value
 
 

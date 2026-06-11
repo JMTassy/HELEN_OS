@@ -40,6 +40,10 @@ def _make_packet(skill_id: str = "S1", manifest_sha: str = _MANIFEST_SHA):
             "parent_version": "0.9.0",
             "proposal_sha256": _OTHER_SHA,
         },
+        "manifest_id": "M1",
+        "manifest_hash": manifest_sha,
+        "domain_category": "reasoning",
+        "provider_class": "INTERNAL",
         "capability_manifest_sha256": manifest_sha,
         "doctrine_surface": {
             "law_surface_version": "v1",
@@ -78,6 +82,7 @@ def _make_state_with_manifests(allowed_skills: list[str] | None = None):
         },
         "manifests": {
             _MANIFEST_SHA: {
+                "manifest_id": "M1",
                 "allowed_skills": allowed_skills if allowed_skills is not None else ["S1"],
             }
         },
