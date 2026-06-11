@@ -1,0 +1,21 @@
+{
+  "schema": "GARDEN_EPOCH_RECEIPT_V0",
+  "epoch": 18,
+  "epoch_label": "BULLETIN_GARDEN_ENTER",
+  "authority": false,
+  "sovereign": false,
+  "status": "PROPOSED",
+  "session_date": "2026-06-11",
+  "head_at_run": "c196249",
+  "files_created": ["temple/gardens/goblin_meditation_center/bulletins/garden_enter.txt"],
+  "files_modified": [],
+  "validator": "PASS",
+  "failure_count": 0,
+  "gate_result": "OPEN",
+  "errors": [],
+  "bulletin_lines": 3,
+  "bulletin_lines_passed": 3,
+  "no_ledger_mutation": true,
+  "no_sovereign_paths": true,
+  "_meta": {"produced_by": "HERMES", "not_admitted": true, "not_canon": true}
+}

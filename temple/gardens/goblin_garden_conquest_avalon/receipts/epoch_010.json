@@ -1,0 +1,14 @@
+{
+  "receipt_type": "GARDEN_EPOCH_RECEIPT_V0",
+  "garden": "GARDEN_CONQUEST_AVALON",
+  "epoch": "010",
+  "label": "COMMAND_QUEST",
+  "claim_type": "cli",
+  "wulmoji_line": "(10) 🔵 🌀 🜄🜁 🛡️ 🔗#AVALON-E10 🌹🌀",
+  "description": "The quest command: conquest ledger — read-only append-only view. The ledger does not move here.",
+  "authority": false,
+  "sovereign": false,
+  "status": "PROPOSED",
+  "layer": "TEMPLE",
+  "simulation_only": true
+}

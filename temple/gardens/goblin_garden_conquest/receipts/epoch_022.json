@@ -1,0 +1,28 @@
+{
+  "schema": "GARDEN_EPOCH_RECEIPT_V0",
+  "epoch": 22,
+  "epoch_label": "QUEST_SEED",
+  "authority": false,
+  "sovereign": false,
+  "status": "PROPOSED",
+  "session_date": "2026-06-11",
+  "head_at_run": "c1962493f3b1a111134c4fb13c04b0fbd6a5939d",
+  "garden": "goblin_garden_conquest",
+  "files_created": [
+    "temple/gardens/goblin_garden_conquest/world_model/quest_seed.md"
+  ],
+  "files_modified": [],
+  "validator": "PENDING",
+  "failure_count": 0,
+  "gate_result": "OPEN",
+  "errors": [],
+  "no_ledger_mutation": true,
+  "no_sovereign_paths": true,
+  "_meta": {
+    "produced_by": "HERMES",
+    "not_admitted": true,
+    "not_canon": true,
+    "layer": "TEMPLE",
+    "simulation_only": true
+  }
+}

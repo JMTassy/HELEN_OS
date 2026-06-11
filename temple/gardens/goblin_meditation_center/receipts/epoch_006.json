@@ -1,0 +1,19 @@
+{
+  "schema": "GARDEN_EPOCH_RECEIPT_V0",
+  "epoch": 6,
+  "epoch_label": "ROOM_THE_HEAP",
+  "authority": false,
+  "sovereign": false,
+  "status": "PROPOSED",
+  "session_date": "2026-06-11",
+  "head_at_run": "c196249",
+  "files_created": ["temple/gardens/goblin_meditation_center/rooms/the_heap.md"],
+  "files_modified": [],
+  "validator": "PENDING",
+  "failure_count": 0,
+  "gate_result": "OPEN",
+  "errors": [],
+  "no_ledger_mutation": true,
+  "no_sovereign_paths": true,
+  "_meta": {"produced_by": "HERMES", "not_admitted": true, "not_canon": true}
+}

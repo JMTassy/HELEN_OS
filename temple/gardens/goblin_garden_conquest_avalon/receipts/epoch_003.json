@@ -1,0 +1,14 @@
+{
+  "receipt_type": "GARDEN_EPOCH_RECEIPT_V0",
+  "garden": "GARDEN_CONQUEST_AVALON",
+  "epoch": "003",
+  "label": "WULMOJI_ASCII_GRAMMAR_BASE",
+  "claim_type": "simulation",
+  "wulmoji_line": "(3) 🔵 🌹 🜄🜁 📜 🔗#AVALON-E03 🌹🌀",
+  "description": "CWL v0.2.1 EMOGLYPH frozen. Grammar base established. 32 canonical faces registered.",
+  "authority": false,
+  "sovereign": false,
+  "status": "PROPOSED",
+  "layer": "TEMPLE",
+  "simulation_only": true
+}

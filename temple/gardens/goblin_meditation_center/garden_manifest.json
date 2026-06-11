@@ -1,0 +1,49 @@
+{
+  "name": "goblin_meditation_center",
+  "version": "0.2.0",
+  "authority": false,
+  "sovereign": false,
+  "status": "PROPOSED",
+  "layer": "TEMPLE",
+  "path": "temple/gardens/goblin_meditation_center/",
+  "rooms": [
+    "rooms/entrance.md",
+    "rooms/meditation_hall.md",
+    "rooms/goblin_alcove.md",
+    "rooms/the_heap.md",
+    "rooms/oracle_pool.md",
+    "rooms/the_sanctum.md"
+  ],
+  "doctrines": [
+    "doctrines/jurisdiction_before_cognition.md",
+    "doctrines/receipt_before_claim.md",
+    "doctrines/proposer_not_validator.md",
+    "doctrines/the_heap_speaks.md",
+    "doctrines/feral_but_kind.md"
+  ],
+  "meditations": [
+    "meditations/on_not_knowing.md",
+    "meditations/on_the_receipt.md",
+    "meditations/on_the_gate.md",
+    "meditations/on_the_admitter.md"
+  ],
+  "bulletins": [
+    "bulletins/garden_enter.txt",
+    "bulletins/heap_speaks.txt",
+    "bulletins/receipt_flow.txt",
+    "bulletins/gate_clear.txt",
+    "bulletins/sanctum_rest.txt"
+  ],
+  "validator": "validate_garden.py",
+  "epoch_count": 25,
+  "epochs_completed": 25,
+  "forbidden_claim_statuses": ["ADMITTED", "CANON", "SOVEREIGN", "SHIPPED"],
+  "valid_claim_types": ["metaphor", "draft", "prompt", "receipt"],
+  "_meta": {
+    "authority": false,
+    "not_admitted": true,
+    "not_canon": true,
+    "build_complete": true,
+    "validator_passed": true
+  }
+}

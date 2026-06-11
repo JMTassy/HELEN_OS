@@ -1,0 +1,14 @@
+{
+  "receipt_type": "GARDEN_EPOCH_RECEIPT_V0",
+  "garden": "GARDEN_CONQUEST_AVALON",
+  "epoch": "005",
+  "label": "CLI_STATUS_BAR",
+  "claim_type": "cli",
+  "wulmoji_line": "(5) 🔵 🌹 🜁🜂 🛡️ 🔗#AVALON-E05 🌹🌀",
+  "description": "Status bar design: AUTH=false | SOV=false | LEDGER=SLEEPING. Always visible. Non-negotiable.",
+  "authority": false,
+  "sovereign": false,
+  "status": "PROPOSED",
+  "layer": "TEMPLE",
+  "simulation_only": true
+}

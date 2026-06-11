@@ -1,0 +1,14 @@
+{
+  "receipt_type": "GARDEN_EPOCH_RECEIPT_V0",
+  "garden": "GARDEN_CONQUEST_AVALON",
+  "epoch": "002",
+  "label": "CONQUEST_CLI_BOUNDARY",
+  "claim_type": "simulation",
+  "wulmoji_line": "(2) 🔵 🌹 🜃🜄 🛡️ 🔗#AVALON-E02 🌿🌹",
+  "description": "Boundary law documented. AUTH=false, LEDGER=SLEEPING. No sovereign claims in this layer.",
+  "authority": false,
+  "sovereign": false,
+  "status": "PROPOSED",
+  "layer": "TEMPLE",
+  "simulation_only": true
+}

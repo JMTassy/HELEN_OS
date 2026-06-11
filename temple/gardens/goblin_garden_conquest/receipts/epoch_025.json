@@ -1,0 +1,38 @@
+{
+  "schema": "GARDEN_EPOCH_RECEIPT_V0",
+  "epoch": 25,
+  "epoch_label": "GOBLIN_GARDEN_CONQUEST_COMPLETE",
+  "authority": false,
+  "sovereign": false,
+  "status": "PROPOSED",
+  "session_date": "2026-06-11",
+  "head_at_run": "c1962493f3b1a111134c4fb13c04b0fbd6a5939d",
+  "garden": "goblin_garden_conquest",
+  "files_created": [],
+  "files_modified": [],
+  "validator": "PASS",
+  "failure_count": 0,
+  "gate_result": "OPEN",
+  "errors": [],
+  "no_ledger_mutation": true,
+  "no_sovereign_paths": true,
+  "_meta": {
+    "produced_by": "HERMES",
+    "not_admitted": true,
+    "not_canon": true,
+    "layer": "TEMPLE",
+    "simulation_only": true
+  },
+  "build_terminal": true,
+  "awaiting_jm_admission": true,
+  "summary": {
+    "world_model_files": 8,
+    "doctrines": 4,
+    "epoch_artifacts": 5,
+    "bulletins": 3,
+    "bulletin_lines_total": 13,
+    "bulletin_lines_passed": 13,
+    "receipts": 25,
+    "validator_passed": true
+  }
+}

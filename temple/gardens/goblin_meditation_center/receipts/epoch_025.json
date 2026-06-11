@@ -1,0 +1,37 @@
+{
+  "schema": "GARDEN_EPOCH_RECEIPT_V0",
+  "epoch": 25,
+  "epoch_label": "GARDEN_BUILD_COMPLETE",
+  "authority": false,
+  "sovereign": false,
+  "status": "PROPOSED",
+  "session_date": "2026-06-11",
+  "head_at_run": "c196249",
+  "files_created": [],
+  "files_modified": [],
+  "validator": "PASS",
+  "failure_count": 0,
+  "gate_result": "OPEN",
+  "errors": [],
+  "summary": {
+    "rooms": 6,
+    "doctrines": 5,
+    "meditations": 4,
+    "bulletins": 5,
+    "receipts": 25,
+    "total_epochs": 25,
+    "all_bulletins_valid": true,
+    "garden_validator_passed": true
+  },
+  "no_ledger_mutation": true,
+  "no_sovereign_paths": true,
+  "build_terminal": true,
+  "awaiting_jm_admission": true,
+  "_meta": {
+    "produced_by": "HERMES",
+    "not_admitted": true,
+    "not_canon": true,
+    "loop_complete": true,
+    "status_message": "Garden rests in the Sanctum. Complete, not admitted. Waiting."
+  }
+}

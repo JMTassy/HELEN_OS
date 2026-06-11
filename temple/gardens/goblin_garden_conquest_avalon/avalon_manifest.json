@@ -1,0 +1,28 @@
+{
+  "garden": "GARDEN_CONQUEST_AVALON",
+  "type": "GARDEN_CONQUEST_SUBSANDBOX",
+  "parent": "goblin_garden_conquest",
+  "authority": false,
+  "sovereign": false,
+  "dream_world_sovereign": false,
+  "dream_world_simulation_only": true,
+  "status": "PROPOSED",
+  "layer": "TEMPLE",
+  "epoch_count": 10,
+  "cwl_version": "v0.2.1",
+  "mode": "CONQUESTLAND_CLI",
+  "one_line_lock": "The symbol may shine; the receipt decides.",
+  "guard": "UNDER HAL SUPERVISION AND HER INSIGHTS",
+  "epochs": {
+    "001": "AVALON_ASCII_PORTAL",
+    "002": "CONQUEST_CLI_BOUNDARY",
+    "003": "WULMOJI_ASCII_GRAMMAR_BASE",
+    "004": "HERALDIC_5_LAYER_FORMAT",
+    "005": "CLI_STATUS_BAR",
+    "006": "CLI_COMMAND_SET_BASE",
+    "007": "COMMAND_ASK",
+    "008": "COMMAND_CLAIM",
+    "009": "COMMAND_RECEIPT",
+    "010": "COMMAND_QUEST"
+  }
+}

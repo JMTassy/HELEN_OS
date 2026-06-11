@@ -1,0 +1,14 @@
+{
+  "receipt_type": "GARDEN_EPOCH_RECEIPT_V0",
+  "garden": "GARDEN_CONQUEST_AVALON",
+  "epoch": "008",
+  "label": "COMMAND_CLAIM",
+  "claim_type": "cli",
+  "wulmoji_line": "(8) 🔵 🌀 🜃🜄 🛡️ 🔗#AVALON-E08 🌿🌀",
+  "description": "The claim command: conquest order. Draft until sealed. No undo after seal.",
+  "authority": false,
+  "sovereign": false,
+  "status": "PROPOSED",
+  "layer": "TEMPLE",
+  "simulation_only": true
+}

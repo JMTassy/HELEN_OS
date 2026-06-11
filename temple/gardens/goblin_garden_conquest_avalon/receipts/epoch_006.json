@@ -1,0 +1,14 @@
+{
+  "receipt_type": "GARDEN_EPOCH_RECEIPT_V0",
+  "garden": "GARDEN_CONQUEST_AVALON",
+  "epoch": "006",
+  "label": "CLI_COMMAND_SET_BASE",
+  "claim_type": "cli",
+  "wulmoji_line": "(6) 🟢 🌹 🜂🜍 🔒📜 🔗#AVALON-E06 🌹🌀",
+  "description": "Base command set established: conquest status/enter/order/seal/leave/return/ledger.",
+  "authority": false,
+  "sovereign": false,
+  "status": "PROPOSED",
+  "layer": "TEMPLE",
+  "simulation_only": true
+}
