@@ -1,0 +1,14 @@
+{
+  "receipt_type": "BATCH_EPOCH_RECEIPT_V0",
+  "batch": "002",
+  "epoch_id": "E075",
+  "artifact_name": "EVENT_TYPE_ALLIANCE_COLLAPSE",
+  "artifact_type": "WORLD_EVENT",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "receipt_status": "PROPOSED",
+  "layer": "TEMPLE",
+  "simulation_only": true,
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/"
+}

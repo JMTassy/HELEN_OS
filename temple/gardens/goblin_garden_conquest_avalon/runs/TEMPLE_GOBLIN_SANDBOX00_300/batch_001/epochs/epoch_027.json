@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E027",
+  "artifact_name": "QUEST_CHAIN_RULES",
+  "artifact_type": "QUEST",
+  "world_model_delta": "Quest chains: up to 5 sequential quests. Chain completion unlocks a CHAIN_ARTIFACT. CHAIN_ARTIFACT has no HELEN standing — it is a CONQUESTLAND-local artifact. Broken chain resets to step 1.",
+  "WULmoji_surface": "🟢 ✝️ 🜁🜂 🔒📜 🔗#SANDBOX00-E027 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Is CHAIN_ARTIFACT bounded to local CONQUESTLAND scope only?",
+  "risk_of_symbol_smuggling": "MEDIUM — 'artifact' vocabulary; CHAIN_ARTIFACT has no HELEN standing",
+  "next_epoch_seed": "Quest expiration rules",
+  "group": "QUESTS",
+  "batch": "001"
+}

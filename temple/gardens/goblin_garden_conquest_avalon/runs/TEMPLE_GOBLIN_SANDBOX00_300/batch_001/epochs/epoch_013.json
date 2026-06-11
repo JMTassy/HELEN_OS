@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E013",
+  "artifact_name": "FACTION_CROSS_RULES",
+  "artifact_type": "FACTION",
+  "world_model_delta": "✝️ CROSS faction. Affinity: AIR. Action bias: 🔒📜 LOCK_LOCAL. Resource bonus: AETHER_SHARD +1/turn on ISLE_AETHER. Weakness: earth moves cost double. All locks expire after 5 turns.",
+  "WULmoji_surface": "🟣 🌀 🜃🜄 📜 🔗#SANDBOX00-E013 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does LOCK_LOCAL action by CROSS create any permanent governance state?",
+  "risk_of_symbol_smuggling": "HIGH — LOCK could imply permanence; all locks expire after 5 turns, no lock is ever permanent",
+  "next_epoch_seed": "VOID faction rules",
+  "group": "FACTIONS",
+  "batch": "001"
+}

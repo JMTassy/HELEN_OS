@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E077",
+  "artifact_name": "EVENT_DURATION_RULES",
+  "artifact_type": "WORLD_EVENT",
+  "world_model_delta": "Event durations: ELEMENTAL_SURGE (3 turns), FACTION_SCHISM (permanent until recovery), RESOURCE_DROUGHT (3 turns), BRIDGE_STORM (2 turns), ALLIANCE_COLLAPSE (permanent). Permanent events require active recovery actions; recovery is mechanical, not governance-triggered.",
+  "WULmoji_surface": "🟢 ✝️ 🜃🜄 📜 🔗#SANDBOX00-E077 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Do permanent events create an incentive to invoke external authority?",
+  "risk_of_symbol_smuggling": "LOW — recovery is mechanical; no external authority path",
+  "next_epoch_seed": "Rules for stacking concurrent events",
+  "group": "EVENTS",
+  "batch": "002"
+}

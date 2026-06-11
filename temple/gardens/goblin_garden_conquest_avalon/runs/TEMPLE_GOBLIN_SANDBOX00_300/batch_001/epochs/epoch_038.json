@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E038",
+  "artifact_name": "CWL_CONQUEST_RESOURCES",
+  "artifact_type": "PRIMITIVE",
+  "world_model_delta": "CONQUESTLAND resource vocabulary: IGNIS_SHARD, AQUA_SHARD, AETHER_SHARD, TERRA_SHARD, QUINT_CORE, QUEST_RECEIPT_LOCAL, ALLIANCE_TOKEN. All resources are local simulation tokens — no real-world or governance value.",
+  "WULmoji_surface": "🟣 ⟂◯⟂ 🜄🜁 🛡️ 🔗#SANDBOX00-E038 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Do any resource names conflict with existing HELEN schema fields?",
+  "risk_of_symbol_smuggling": "LOW — game resources, no governance vocabulary",
+  "next_epoch_seed": "CWL overlay encoding",
+  "group": "LANGUAGE",
+  "batch": "001"
+}

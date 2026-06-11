@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E001",
+  "artifact_name": "HOME_KEEP_AVALON",
+  "artifact_type": "LOCUS",
+  "world_model_delta": "Establishes HOME_KEEP_AVALON as the inalienable origin island. INALIENABLE means it cannot be conquered or transferred — the simulation's anchor point.",
+  "WULmoji_surface": "🔵 🌹 🜃🜄 📜 🔗#SANDBOX00-E001 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does HOME_KEEP_AVALON remain inalienable even when PLAYER_HP=0?",
+  "risk_of_symbol_smuggling": "LOW — geographical declaration, no authority claim embedded",
+  "next_epoch_seed": "Fire island adjacent to HOME_KEEP",
+  "group": "TOPOGRAPHY",
+  "batch": "001"
+}

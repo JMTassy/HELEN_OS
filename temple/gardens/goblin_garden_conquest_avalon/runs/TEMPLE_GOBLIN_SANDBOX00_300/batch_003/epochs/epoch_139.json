@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E139",
+  "artifact_name": "RITUAL_CONFLICT_RULES",
+  "artifact_type": "RITUAL",
+  "world_model_delta": "Competing rituals: if two factions attempt different rituals on the same island in the same turn, the ritual from the faction with higher total_score proceeds; the other is deferred 1 turn. Deferral is automatic and requires no arbitration.",
+  "WULmoji_surface": "⚫ 🌹 🜁🜂 🔒📜 🔗#SANDBOX00-E139 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does ritual priority by score create an incentive to inflate score for ritual access?",
+  "risk_of_symbol_smuggling": "MEDIUM — score-based priority could incentivize score inflation; effect is minor (1-turn deferral only); no governance path",
+  "next_epoch_seed": "Ritual system synthesis",
+  "group": "RITUALS",
+  "batch": "003"
+}

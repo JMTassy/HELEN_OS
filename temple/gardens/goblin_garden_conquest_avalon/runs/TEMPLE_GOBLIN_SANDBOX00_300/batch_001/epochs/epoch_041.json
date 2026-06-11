@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E041",
+  "artifact_name": "CONTAINMENT_BOUNDARY_RULE",
+  "artifact_type": "VALIDATOR",
+  "world_model_delta": "All SANDBOX00 artifacts must exist only under temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/. Any write outside this path is a containment failure. No exceptions. Verification: git status after generation must show only changes under this path.",
+  "WULmoji_surface": "🔵 🌹 🜃🜄 📜 🔗#SANDBOX00-E041 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Can this rule be checked by scanning file paths post-generation?",
+  "risk_of_symbol_smuggling": "LOW — explicit boundary definition",
+  "next_epoch_seed": "Symbol-smuggling detection rules",
+  "group": "VALIDATORS",
+  "batch": "001"
+}

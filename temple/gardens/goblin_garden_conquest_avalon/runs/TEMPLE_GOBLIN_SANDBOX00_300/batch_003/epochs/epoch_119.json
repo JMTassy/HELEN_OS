@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E119",
+  "artifact_name": "CONQUEST_INALIENABLE_EXCEPTIONS",
+  "artifact_type": "CONQUEST",
+  "world_model_delta": "HOME_KEEP_AVALON cannot be conquered. Any conquest declaration targeting HOME_KEEP is rejected at declaration time with INVALID_TARGET status. HOME_KEEP inalienability is a foundational simulation rule, not a governance privilege.",
+  "WULmoji_surface": "⚫ ✝️ 🜁🜂 🔒📜 🔗#SANDBOX00-E119 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does HOME_KEEP inalienability create a special governance status for its holder?",
+  "risk_of_symbol_smuggling": "LOW — inalienability is simulation rule; no governance privilege for holder",
+  "next_epoch_seed": "Conquest system synthesis",
+  "group": "CONQUEST",
+  "batch": "003"
+}

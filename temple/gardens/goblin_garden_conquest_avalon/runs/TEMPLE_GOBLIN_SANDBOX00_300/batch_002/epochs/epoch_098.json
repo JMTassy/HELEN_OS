@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E098",
+  "artifact_name": "DIPLOMACY_EMBARGO_RULES",
+  "artifact_type": "DIPLOMACY",
+  "world_model_delta": "EMBARGO: a faction may declare an embargo against another, blocking resource transfers between them for 5 turns. Embargo costs 5 resource units. The embargoing faction also loses 2 alliance_bonus_score if an alliance exists. Embargo is simulation-mechanical only.",
+  "WULmoji_surface": "🟣 🌹 🜄🜁 🛡️ 🔗#SANDBOX00-E098 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does embargo constitute a governance sanction?",
+  "risk_of_symbol_smuggling": "LOW — mechanical trade block, no governance sanction",
+  "next_epoch_seed": "Peace treaty data structure",
+  "group": "DIPLOMACY",
+  "batch": "002"
+}

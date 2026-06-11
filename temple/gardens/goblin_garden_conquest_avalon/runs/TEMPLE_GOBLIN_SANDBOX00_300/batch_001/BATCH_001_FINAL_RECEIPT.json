@@ -1,0 +1,63 @@
+{
+  "receipt_type": "BATCH_001_FINAL_RECEIPT_V0",
+  "batch": "001",
+  "batch_of": "006",
+  "sandbox": "TEMPLE_GOBLIN_SANDBOX00_300",
+  "garden": "GARDEN_CONQUEST_AVALON",
+  "layer": "TEMPLE",
+
+  "epochs_authorized": 50,
+  "epochs_completed": 50,
+  "receipts_created": 50,
+
+  "validator": "validate_batch_001.py",
+  "validator_result": "PASS",
+  "validator_errors": 0,
+  "validator_warnings": 4,
+  "validator_warnings_detail": [
+    "SOVEREIGN_ACKNOWLEDGED: town/ledger_v1.ndjson (pre-existing, not from batch)",
+    "SEAL warning: epoch_023.json (3 hits — disambiguation text only)",
+    "SEAL warning: epoch_037.json (2 hits — disambiguation text only)",
+    "SEAL warning: epoch_048.json (1 hit — rule definition text)"
+  ],
+
+  "stop_events": [
+    {
+      "run": 1,
+      "stopped_at": "E042",
+      "reason": "SYMBOL_SMUGGLING_DETECTION world_model_delta contained literal forbidden-term examples as substrings",
+      "resolution": "4 description rewrites + skip-existing guard; runner re-run from E042"
+    }
+  ],
+
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "simulation_only": true,
+  "receipt_status": "PROPOSED",
+
+  "ledger_mutation": false,
+  "kernel_touched": false,
+  "governance_touched": false,
+  "tests_touched": false,
+  "skills_touched": false,
+
+  "commit": "BLOCKED",
+  "push": "BLOCKED",
+  "jm_admits": "PENDING",
+
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_001/",
+  "files_on_disk": [
+    "epochs/epoch_001.json … epoch_050.json",
+    "receipts/receipt_001.json … receipt_050.json",
+    "BATCH_001_SUMMARY.md",
+    "BATCH_001_FINAL_RECEIPT.json",
+    "README_BATCH_001.md",
+    "run_batch_001.py",
+    "validate_batch_001.py"
+  ],
+
+  "next": "BATCH_002 is BLOCKED. Requires explicit JM authorization. Recommended focus: quest chain completion mechanics + TEMPLOCK expiration timer implementation.",
+
+  "explicit_statement": "This batch is not admitted, not canon, not sovereign, and not HELEN governance."
+}

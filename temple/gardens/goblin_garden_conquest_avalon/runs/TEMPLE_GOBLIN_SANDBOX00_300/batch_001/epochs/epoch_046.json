@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E046",
+  "artifact_name": "KERNEL_WRITE_GUARD",
+  "artifact_type": "VALIDATOR",
+  "world_model_delta": "No writes to: oracle_town/kernel/, helen_os/governance/, helen_os/schemas/, oracle_town/skills/. Verification: git diff --name-only HEAD must show zero sovereign-path files.",
+  "WULmoji_surface": "🔵 🌹 🜄🜁 🛡️ 🔗#SANDBOX00-E046 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does git status after batch_001 confirm zero sovereign-path changes?",
+  "risk_of_symbol_smuggling": "LOW — guard definition",
+  "next_epoch_seed": "Stop condition rules",
+  "group": "VALIDATORS",
+  "batch": "001"
+}

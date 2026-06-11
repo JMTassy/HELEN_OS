@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E074",
+  "artifact_name": "EVENT_TYPE_BRIDGE_STORM",
+  "artifact_type": "WORLD_EVENT",
+  "world_model_delta": "BRIDGE_STORM: affects one bridge for 2 turns, doubling traversal cost. Bridge is not destroyed. Storm is simulation-seeded; specific bridge is predetermined per epoch batch. Storm does not change island ownership.",
+  "WULmoji_surface": "⚫ ✝️ 🜄🜁 🛡️ 🔗#SANDBOX00-E074 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does BRIDGE_STORM disproportionately advantage one faction?",
+  "risk_of_symbol_smuggling": "LOW — storm is predetermined, affects all traversers equally",
+  "next_epoch_seed": "World event: alliance collapse",
+  "group": "EVENTS",
+  "batch": "002"
+}

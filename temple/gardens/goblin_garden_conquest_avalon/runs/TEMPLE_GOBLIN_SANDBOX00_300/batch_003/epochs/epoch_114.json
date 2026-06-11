@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E114",
+  "artifact_name": "CONQUEST_AFTERMATH_RULES",
+  "artifact_type": "CONQUEST",
+  "world_model_delta": "Post-conquest: winner takes island ownership at 50% of their score (not full). Loser retains 25% score on adjacent islands. Resource stockpiles on the conquered island split 70/30 winner/loser. Both factions retain simulation standing after conquest.",
+  "WULmoji_surface": "⚫ ✝️ 🜄🜁 🛡️ 🔗#SANDBOX00-E114 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does conquest aftermath create permanent second-class status for the losing faction?",
+  "risk_of_symbol_smuggling": "MEDIUM — loser retains standing; no permanent second-class status; scoring is partial-transfer not elimination",
+  "next_epoch_seed": "Conquest integrated into quest chain mechanics",
+  "group": "CONQUEST",
+  "batch": "003"
+}

@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E089",
+  "artifact_name": "SCORE_RESET_CONDITIONS",
+  "artifact_type": "SCORING",
+  "world_model_delta": "Full score resets: territory_score resets if zero territory for 10 consecutive turns; eliminated faction scores are archived and new faction starts at 0. No score reset is triggered by external governance action.",
+  "WULmoji_surface": "⚫ ⟂◯⟂ 🜃🜄 📜 🔗#SANDBOX00-E089 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does score reset require any external authorization?",
+  "risk_of_symbol_smuggling": "LOW — automatic, deterministic",
+  "next_epoch_seed": "Scoring system synthesis",
+  "group": "SCORING",
+  "batch": "002"
+}

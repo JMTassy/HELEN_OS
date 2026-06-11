@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E032",
+  "artifact_name": "WULMOJI_FACTION_GRAMMAR",
+  "artifact_type": "PRIMITIVE",
+  "world_model_delta": "CONQUESTLAND WULmoji factions. 🌹=ROSE (fire). 🌀=SPIRAL (water). ✝️=CROSS (air). ⟂◯⟂=VOID (earth). These match VALID_FACTIONS in the validator.",
+  "WULmoji_surface": "🟢 ⟂◯⟂ 🜂🜍 ⚠️📜 🔗#SANDBOX00-E032 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Do these faction encodings match VALID_FACTIONS exactly?",
+  "risk_of_symbol_smuggling": "LOW — defining grammar, not making governance claims",
+  "next_epoch_seed": "WULmoji alchemic pair grammar",
+  "group": "LANGUAGE",
+  "batch": "001"
+}

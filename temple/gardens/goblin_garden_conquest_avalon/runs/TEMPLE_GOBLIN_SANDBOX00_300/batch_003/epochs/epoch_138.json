@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E138",
+  "artifact_name": "RITUAL_OUTCOME_SCHEMA",
+  "artifact_type": "RITUAL",
+  "world_model_delta": "Ritual outcome: {ritual_id, outcome_type, affected_factions, effect_applied, score_delta, resource_delta, wulmoji_surface}. Outcomes are computed deterministically from ritual type and game state. No outcome creates governance standing.",
+  "WULmoji_surface": "🟣 🌹 🜄🜁 🛡️ 🔗#SANDBOX00-E138 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Is ritual outcome fully deterministic from ritual type and game state?",
+  "risk_of_symbol_smuggling": "LOW — deterministic; no governance outcome",
+  "next_epoch_seed": "Rules for competing rituals",
+  "group": "RITUALS",
+  "batch": "003"
+}

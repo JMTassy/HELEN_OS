@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E078",
+  "artifact_name": "EVENT_STACK_RULES",
+  "artifact_type": "WORLD_EVENT",
+  "world_model_delta": "At most 3 events may be active simultaneously. If a 4th event would trigger, it is deferred to the next eligible turn. Deferred events do not stack effects. Stack order is first-in-first-out by trigger turn.",
+  "WULmoji_surface": "🟣 ✝️ 🜄🜁 🛡️ 🔗#SANDBOX00-E078 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does event stacking create emergent interactions exploitable for scoring?",
+  "risk_of_symbol_smuggling": "MEDIUM — stack mechanics can combine effects; each event formula is independent; no compounding exploit path identified",
+  "next_epoch_seed": "Event resolution protocol",
+  "group": "EVENTS",
+  "batch": "002"
+}

@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E071",
+  "artifact_name": "EVENT_TYPE_ELEMENTAL_SURGE",
+  "artifact_type": "WORLD_EVENT",
+  "world_model_delta": "ELEMENTAL_SURGE: simulation-seeded event that doubles resource production on one island for 3 turns. Affected island is determined at simulation-start per epoch. Surge does not change faction ownership or governance state.",
+  "WULmoji_surface": "🔵 ✝️ 🜁🜂 🔒📜 🔗#SANDBOX00-E071 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does ELEMENTAL_SURGE benefit distribution create any unfair mechanical advantage?",
+  "risk_of_symbol_smuggling": "LOW — resource bonus event, simulation-local",
+  "next_epoch_seed": "World event: faction schism",
+  "group": "EVENTS",
+  "batch": "002"
+}

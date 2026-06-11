@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E073",
+  "artifact_name": "EVENT_TYPE_RESOURCE_DROUGHT",
+  "artifact_type": "WORLD_EVENT",
+  "world_model_delta": "RESOURCE_DROUGHT: triggers when an island's production rate has been at 0 for 5 consecutive turns (excluding TEMPLOCK-caused zeros). Drought lasts 3 turns and reduces all island resource bonuses by 50%. Simulation-automatic — no faction triggers or prevents it.",
+  "WULmoji_surface": "🟣 ✝️ 🜃🜄 📜 🔗#SANDBOX00-E073 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does drought interact with TEMPLOCK in ways that create unexpected freeze loops?",
+  "risk_of_symbol_smuggling": "LOW — drought triggers on natural zeros only; TEMPLOCK-caused zeros excluded",
+  "next_epoch_seed": "World event: bridge storm",
+  "group": "EVENTS",
+  "batch": "002"
+}

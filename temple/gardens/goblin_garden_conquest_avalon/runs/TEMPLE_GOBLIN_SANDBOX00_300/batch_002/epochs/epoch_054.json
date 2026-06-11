@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E054",
+  "artifact_name": "CHAIN_RESUME_RULES",
+  "artifact_type": "QUEST_CHAIN",
+  "world_model_delta": "A broken chain may resume from last valid checkpoint (not step 0) if the faction recovers rank within 5 turns. Resume costs 50% of normal step resource cost. The 5-turn recovery window is deterministic — no appeal allowed.",
+  "WULmoji_surface": "⚫ 🌹 🜄🜁 🛡️ 🔗#SANDBOX00-E054 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does resume-from-checkpoint create any implicit territorial claim?",
+  "risk_of_symbol_smuggling": "LOW — recovery mechanic, no governance implication",
+  "next_epoch_seed": "Chain artifact schema",
+  "group": "QUEST_CHAINS",
+  "batch": "002"
+}

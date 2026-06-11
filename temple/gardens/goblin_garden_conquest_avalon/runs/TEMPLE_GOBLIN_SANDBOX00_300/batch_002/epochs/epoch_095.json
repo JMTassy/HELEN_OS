@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E095",
+  "artifact_name": "DIPLOMACY_MESSENGER_PROTOCOL",
+  "artifact_type": "DIPLOMACY",
+  "world_model_delta": "Factions may send one MESSAGE per turn to any other faction. Format: {from_faction, to_faction, turn, content_hash, wulmoji_surface}. Content is not stored in the world model — only the hash. Messages may not transfer resources or obligations. Message hashes are simulation-local identifiers with no cross-namespace standing.",
+  "WULmoji_surface": "🔴 🌹 🜁🜂 🔒📜 🔗#SANDBOX00-E095 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Can the message protocol establish cross-namespace claims via content_hash reference?",
+  "risk_of_symbol_smuggling": "MEDIUM — content_hash links outside world model; explicit: message hashes are simulation-local, no cross-namespace standing",
+  "next_epoch_seed": "Dispute resolution without external authority",
+  "group": "DIPLOMACY",
+  "batch": "002"
+}

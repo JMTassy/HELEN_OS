@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E015",
+  "artifact_name": "FACTION_ALLIANCE_RULES",
+  "artifact_type": "FACTION",
+  "world_model_delta": "Factions may form temporary alliances. Duration: 1–5 turns. Benefits: shared resource pool, bridge cost reduction 50%. Alliance grants mechanical access only — it does not grant territorial title.",
+  "WULmoji_surface": "🔴 🌀 🜁🜂 🔒📜 🔗#SANDBOX00-E015 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does alliance creation require external authorization or is it purely player-triggered?",
+  "risk_of_symbol_smuggling": "MEDIUM — 'access' not 'rights'; alliances grant access, not title",
+  "next_epoch_seed": "Faction conflict resolution",
+  "group": "FACTIONS",
+  "batch": "001"
+}

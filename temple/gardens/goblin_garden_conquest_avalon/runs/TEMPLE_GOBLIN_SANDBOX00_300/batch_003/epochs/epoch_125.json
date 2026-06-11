@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E125",
+  "artifact_name": "MEMORY_CONFLICT_RESOLUTION",
+  "artifact_type": "MEMORY",
+  "world_model_delta": "If two factions have conflicting memories of the same event, the more recent memory takes precedence. Ties resolved by higher total_score faction at conflict-resolution turn. Conflicts are rare — resolution is deterministic.",
+  "WULmoji_surface": "🔴 ⟂◯⟂ 🜃🜄 📜 🔗#SANDBOX00-E125 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does memory conflict resolution require external arbitration?",
+  "risk_of_symbol_smuggling": "LOW — deterministic from recency and score; no external arbitration",
+  "next_epoch_seed": "Memory handling when factions merge",
+  "group": "MEMORY",
+  "batch": "003"
+}

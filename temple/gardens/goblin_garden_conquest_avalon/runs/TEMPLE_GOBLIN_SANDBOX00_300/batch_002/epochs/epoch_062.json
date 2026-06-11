@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E062",
+  "artifact_name": "TEMPLOCK_DURATION_RULES",
+  "artifact_type": "MECHANIC",
+  "world_model_delta": "TEMPLOCK turn counting: each game-turn advances the counter by 1 regardless of player action. No action by any faction can pause or extend a TEMPLOCK. At turn 5, TEMPLOCK expires automatically. No renewal is allowed within 3 turns of expiration.",
+  "WULmoji_surface": "🟢 🌀 🜄🜁 🛡️ 🔗#SANDBOX00-E062 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Can any faction action pause or extend a TEMPLOCK?",
+  "risk_of_symbol_smuggling": "LOW — deterministic timer, no appeal",
+  "next_epoch_seed": "Scope of what TEMPLOCK freezes",
+  "group": "TEMPLOCK",
+  "batch": "002"
+}

@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E063",
+  "artifact_name": "TEMPLOCK_SCOPE_RULES",
+  "artifact_type": "MECHANIC",
+  "world_model_delta": "TEMPLOCK freezes ownership_score delta and resource_production_multiplier on that island only. TEMPLOCK does NOT freeze: bridge traversal, quest progress on other islands, alliance mechanics, or faction rank globally.",
+  "WULmoji_surface": "🟣 🌀 🜁🜂 🔒📜 🔗#SANDBOX00-E063 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does TEMPLOCK scope extend to bridges or global faction state?",
+  "risk_of_symbol_smuggling": "LOW — scope clearly bounded to island ownership mechanics only",
+  "next_epoch_seed": "Rules for overriding a TEMPLOCK",
+  "group": "TEMPLOCK",
+  "batch": "002"
+}

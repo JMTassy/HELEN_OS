@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E149",
+  "artifact_name": "SYNTHESIS_RESOURCE_CONQUEST_FLOW",
+  "artifact_type": "SYNTHESIS",
+  "world_model_delta": "Resource and conquest flow: resource accumulation (E101-E110) feeds conquest declarations (E111); conquest success unlocks new resource generation capacity; this creates a positive-feedback loop. Loop is bounded by TEMPLOCK (E061-E070) and EVENT disruptions (E071-E080).",
+  "WULmoji_surface": "⚫ 🌀 🜃🜄 📜 🔗#SANDBOX00-E149 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does the resource-conquest feedback loop create an unbounded score acceleration path?",
+  "risk_of_symbol_smuggling": "MEDIUM — feedback loop exists but is bounded by TEMPLOCK, events, and score-decay rules; no unbounded acceleration path identified",
+  "next_epoch_seed": "Final synthesis: Batch 003 review before JM morning review",
+  "group": "SYNTHESIS",
+  "batch": "003"
+}

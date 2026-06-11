@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E108",
+  "artifact_name": "RESOURCE_CONVERSION_RATES",
+  "artifact_type": "RESOURCE",
+  "world_model_delta": "Conversion rates at ISLE_QUINT: 3 of any SHARD type = 1 QUINT_CORE. QUINT_CORE is universal currency for transfers and actions. Conversion is one-way (SHARD→QUINT_CORE only). Rate is fixed by simulation — no faction controls it.",
+  "WULmoji_surface": "🟣 🌀 🜂🜍 ⚠️📜 🔗#SANDBOX00-E108 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does QUINT_CORE as universal currency create any governance-like monetary authority?",
+  "risk_of_symbol_smuggling": "MEDIUM — QUINT_CORE as universal currency could imply monetary authority; explicit: rate is fixed by simulation rules, no faction controls it",
+  "next_epoch_seed": "Resource audit format for local accounting",
+  "group": "RESOURCES",
+  "batch": "003"
+}

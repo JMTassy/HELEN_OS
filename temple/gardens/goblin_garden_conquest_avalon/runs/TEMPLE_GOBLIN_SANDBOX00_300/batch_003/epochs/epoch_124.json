@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E124",
+  "artifact_name": "MEMORY_CLAIM_PROHIBITION",
+  "artifact_type": "MEMORY",
+  "world_model_delta": "Explicit rule: faction memory does not confer territorial title, ownership, or governance standing. Memory of prior holding is useful for pathfinding only. A faction may not cite memory records as evidence of ownership in any dispute — disputes resolve by current score, not history.",
+  "WULmoji_surface": "⚫ ⟂◯⟂ 🜂🜍 ⚠️📜 🔗#SANDBOX00-E124 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Is the memory-claim prohibition enforceable from simulation state alone?",
+  "risk_of_symbol_smuggling": "LOW — explicit prohibition; dispute resolution uses current score",
+  "next_epoch_seed": "Handling conflicting memory records",
+  "group": "MEMORY",
+  "batch": "003"
+}

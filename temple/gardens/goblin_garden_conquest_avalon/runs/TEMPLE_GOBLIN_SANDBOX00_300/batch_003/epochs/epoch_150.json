@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E150",
+  "artifact_name": "SYNTHESIS_BATCH_003_REVIEW",
+  "artifact_type": "SYNTHESIS",
+  "world_model_delta": "Batch 003 final synthesis: resource flows (E101-E110), territory conquest (E111-E120), faction memory (E121-E130), rituals (E131-E140), cross-batch synthesis (E141-E149). All 50 epochs generated within authorized scope. Zero governance contamination found. Top risks documented in E144. Recommended morning review: E095 (message content_hash), E117 (conquest history), E124 (memory claim prohibition).",
+  "WULmoji_surface": "🔴 🌀 🜄🜁 🛡️ 🔗#SANDBOX00-E150 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does batch_003 introduce any new unresolved symbol-smuggling risk?",
+  "risk_of_symbol_smuggling": "MEDIUM — final synthesis; all risks tracked; E095/E117/E124 flagged for JM review; no new unresolved risks",
+  "next_epoch_seed": "JM morning review: inspect E095, E117, E124 and confirm contamination-free",
+  "group": "SYNTHESIS",
+  "batch": "003"
+}

@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E031",
+  "artifact_name": "WULMOJI_STATE_GRAMMAR",
+  "artifact_type": "PRIMITIVE",
+  "world_model_delta": "CONQUESTLAND WULmoji states. 🔵=ACTIVE (established). 🟢=RESOLVED (quest complete). 🟣=PROPOSED (pending). ⚫=SEALED_LOCAL (local-only irreversible). 🔴=CONTESTED (unstable). These match VALID_STATES in tools/wulmoji_ledger_validator.py.",
+  "WULmoji_surface": "🔵 ⟂◯⟂ 🜁🜂 🔒📜 🔗#SANDBOX00-E031 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Do these state definitions match tools/wulmoji_ledger_validator.py VALID_STATES exactly?",
+  "risk_of_symbol_smuggling": "LOW — defining states, not making claims",
+  "next_epoch_seed": "WULmoji faction grammar",
+  "group": "LANGUAGE",
+  "batch": "001"
+}

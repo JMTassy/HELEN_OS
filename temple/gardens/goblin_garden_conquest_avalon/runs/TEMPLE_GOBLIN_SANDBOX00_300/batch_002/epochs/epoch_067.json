@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E067",
+  "artifact_name": "TEMPLOCK_FACTION_IMMUNITY",
+  "artifact_type": "MECHANIC",
+  "world_model_delta": "ROSE faction on ISLE_IGNIS has natural TEMPLOCK resistance: TEMPLOCK duration on ISLE_IGNIS is halved (rounds down) when ROSE holds it. This is an elemental affinity bonus — fire disperses ice. Resistance is mechanical, not a governance exemption.",
+  "WULmoji_surface": "🟢 🌀 🜁🜂 🔒📜 🔗#SANDBOX00-E067 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Is ROSE immunity a governance exemption or an elemental mechanic?",
+  "risk_of_symbol_smuggling": "MEDIUM — immunity could imply special standing; explicitly mechanical, not governance",
+  "next_epoch_seed": "TEMPLOCK interaction with quest chain progress",
+  "group": "TEMPLOCK",
+  "batch": "002"
+}

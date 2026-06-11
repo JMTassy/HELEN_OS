@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E075",
+  "artifact_name": "EVENT_TYPE_ALLIANCE_COLLAPSE",
+  "artifact_type": "WORLD_EVENT",
+  "world_model_delta": "ALLIANCE_COLLAPSE: triggered if one alliance party uses a hostile action against their ally. Collapse removes all shared resource pools immediately. Resources split proportionally by contribution. No faction retains alliance bonuses post-collapse.",
+  "WULmoji_surface": "🔴 ✝️ 🜁🜂 🔒📜 🔗#SANDBOX00-E075 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does ALLIANCE_COLLAPSE trigger any external arbitration requirement?",
+  "risk_of_symbol_smuggling": "LOW — mechanical collapse, no external arbitration",
+  "next_epoch_seed": "Event trigger condition rules",
+  "group": "EVENTS",
+  "batch": "002"
+}

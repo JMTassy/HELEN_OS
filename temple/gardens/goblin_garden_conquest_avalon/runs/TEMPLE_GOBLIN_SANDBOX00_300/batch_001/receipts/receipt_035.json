@@ -1,0 +1,14 @@
+{
+  "receipt_type": "BATCH_EPOCH_RECEIPT_V0",
+  "batch": "001",
+  "epoch_id": "E035",
+  "artifact_name": "WULMOJI_PROOF_FORMAT",
+  "artifact_type": "PRIMITIVE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "receipt_status": "PROPOSED",
+  "layer": "TEMPLE",
+  "simulation_only": true,
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/"
+}

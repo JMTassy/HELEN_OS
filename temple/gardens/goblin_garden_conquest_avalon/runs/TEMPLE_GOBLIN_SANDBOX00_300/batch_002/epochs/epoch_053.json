@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E053",
+  "artifact_name": "CHAIN_BREAK_RULES",
+  "artifact_type": "QUEST_CHAIN",
+  "world_model_delta": "A chain breaks if: (1) faction decays below SETTLER rank, (2) prerequisite quest expires before completion, or (3) holding island is conquered by an opposing faction. Break resets chain to step 0. Chain history is retained for 10 turns.",
+  "WULmoji_surface": "🟣 🌹 🜃🜄 📜 🔗#SANDBOX00-E053 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does chain break trigger any authority decision or is it automatic?",
+  "risk_of_symbol_smuggling": "LOW — mechanical break condition, no authority",
+  "next_epoch_seed": "Rules for resuming a broken chain",
+  "group": "QUEST_CHAINS",
+  "batch": "002"
+}

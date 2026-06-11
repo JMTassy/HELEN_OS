@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E106",
+  "artifact_name": "RESOURCE_QUEST_COSTS",
+  "artifact_type": "RESOURCE",
+  "world_model_delta": "Quest resource costs: EXPLORE (2 AETHER_SHARD), CLAIM (5 island-specific SHARD), CONQUESTLAND_SEAL_CEREMONY (15 mixed SHARD total), WARN (0 cost), COMBINE (3 AQUA_SHARD). Costs are fixed. No governance discount mechanism exists.",
+  "WULmoji_surface": "🔵 🌀 🜄🜁 🛡️ 🔗#SANDBOX00-E106 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Do quest resource costs create any implicit governance obligation for resource-poor factions?",
+  "risk_of_symbol_smuggling": "LOW — costs are mechanical gates; no governance obligation",
+  "next_epoch_seed": "Alliance resource pooling mechanics",
+  "group": "RESOURCES",
+  "batch": "003"
+}

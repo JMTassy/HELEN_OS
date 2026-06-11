@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E136",
+  "artifact_name": "RITUAL_DURATION_RULES",
+  "artifact_type": "RITUAL",
+  "world_model_delta": "Ritual durations: ELEMENTAL_CYCLE (instantaneous), RESOURCE_FESTIVAL (3 turns), FACTION_CONCLAVE (1 turn), BRIDGE_CEREMONY (5 turns). Rituals may not be interrupted once started. Duration countdown begins at turn-start the ritual is initiated.",
+  "WULmoji_surface": "🔵 🌹 🜂🜍 ⚠️📜 🔗#SANDBOX00-E136 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Can rituals be prematurely ended by faction action?",
+  "risk_of_symbol_smuggling": "LOW — non-interruptible by design; deterministic countdown",
+  "next_epoch_seed": "How factions participate in rituals",
+  "group": "RITUALS",
+  "batch": "003"
+}

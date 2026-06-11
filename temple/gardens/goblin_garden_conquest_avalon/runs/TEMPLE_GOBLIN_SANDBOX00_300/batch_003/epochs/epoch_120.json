@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E120",
+  "artifact_name": "CONQUEST_REVIEW_CHECKPOINT",
+  "artifact_type": "CONQUEST",
+  "world_model_delta": "Conquest synthesis: declaration format (E111), resolution formula (E112), defense mechanics (E113), aftermath rules (E114), chain integration (E115), score impact (E116), history record (E117), reversal rules (E118), HOME_KEEP exceptions (E119). E117 history records and E118 reversal window require explicit simulation-local framing. Conquest system is mechanical and governance-neutral.",
+  "WULmoji_surface": "🔴 ✝️ 🜂🜍 ⚠️📜 🔗#SANDBOX00-E120 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does the conquest system create any pathway to governance contamination?",
+  "risk_of_symbol_smuggling": "MEDIUM — synthesizing; E117/E118 vocabulary risks noted; all conquest records carry explicit false-flags",
+  "next_epoch_seed": "Faction memory record schema",
+  "group": "CONQUEST",
+  "batch": "003"
+}

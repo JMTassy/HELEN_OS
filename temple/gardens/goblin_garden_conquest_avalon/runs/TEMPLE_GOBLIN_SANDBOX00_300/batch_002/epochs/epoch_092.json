@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E092",
+  "artifact_name": "DIPLOMACY_NEGOTIATION_RULES",
+  "artifact_type": "DIPLOMACY",
+  "world_model_delta": "Negotiation: proposing faction spends 3 resource units (any type). Receiving faction has 5 turns to accept or reject. Silence = reject at turn 5. No external mediator needed for negotiation.",
+  "WULmoji_surface": "🟢 🌹 🜂🜍 ⚠️📜 🔗#SANDBOX00-E092 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does the negotiation protocol require any external authority to validate?",
+  "risk_of_symbol_smuggling": "LOW — peer-to-peer mechanic, no external authority",
+  "next_epoch_seed": "Betrayal mechanics and penalties",
+  "group": "DIPLOMACY",
+  "batch": "002"
+}

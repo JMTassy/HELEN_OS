@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E097",
+  "artifact_name": "DIPLOMACY_MEMORY_RECORD",
+  "artifact_type": "DIPLOMACY",
+  "world_model_delta": "Each faction maintains a DIPLOMATIC_HISTORY: last 20 treaty events (PROPOSED/ACCEPTED/REJECTED/EXPIRED/BROKEN/BETRAYAL). History informs faction behavior heuristics but carries zero governance weight. History is local to each faction instance.",
+  "WULmoji_surface": "🟢 🌹 🜃🜄 📜 🔗#SANDBOX00-E097 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does DIPLOMATIC_HISTORY create any retroactive claim pathway?",
+  "risk_of_symbol_smuggling": "LOW — local history only; no governance standing; no retroactive claims",
+  "next_epoch_seed": "Resource embargo mechanics",
+  "group": "DIPLOMACY",
+  "batch": "002"
+}

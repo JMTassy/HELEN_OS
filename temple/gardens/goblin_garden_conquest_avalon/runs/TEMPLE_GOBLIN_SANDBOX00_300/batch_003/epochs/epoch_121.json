@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E121",
+  "artifact_name": "MEMORY_RECORD_SCHEMA",
+  "artifact_type": "MEMORY",
+  "world_model_delta": "Faction memory record: {faction, island, type, turn_occurred, score_at_time, resource_delta, event_ref, wulmoji_surface}. Memory types: TERRITORY_HELD, QUEST_COMPLETED, CONQUEST_WON, CONQUEST_LOST, ALLIANCE_FORMED, ALLIANCE_BROKEN. Memory carries no governance weight.",
+  "WULmoji_surface": "🔵 ⟂◯⟂ 🜃🜄 📜 🔗#SANDBOX00-E121 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Is faction memory schema distinct from governance event schemas?",
+  "risk_of_symbol_smuggling": "LOW — memory schema is local only; no governance implication",
+  "next_epoch_seed": "Memory retention duration rules",
+  "group": "MEMORY",
+  "batch": "003"
+}

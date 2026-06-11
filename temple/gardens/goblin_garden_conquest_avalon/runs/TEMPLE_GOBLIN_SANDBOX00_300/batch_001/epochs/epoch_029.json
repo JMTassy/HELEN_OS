@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E029",
+  "artifact_name": "QUEST_DIFFICULTY_SCALING",
+  "artifact_type": "QUEST",
+  "world_model_delta": "Quest difficulty scales with faction rank. WANDERER: base. SETTLER: 1.5×. HOLDER: 2×. WARDEN: 3×. Higher difficulty = higher reward multiplier. This is a pure function of rank — fully deterministic.",
+  "WULmoji_surface": "⚫ ✝️ 🜃🜄 📜 🔗#SANDBOX00-E029 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does difficulty scaling break determinism?",
+  "risk_of_symbol_smuggling": "LOW — scaling mechanic, deterministic",
+  "next_epoch_seed": "Quest event record format",
+  "group": "QUESTS",
+  "batch": "001"
+}

@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E083",
+  "artifact_name": "SCORE_RESOURCE_ACCUMULATION",
+  "artifact_type": "SCORING",
+  "world_model_delta": "Resource score: S_resource = FLOOR(total_resources_ever_generated / 10). Resources spent are not deducted from score. Score reflects production capacity, not current stockpile. Recorded at epoch boundary.",
+  "WULmoji_surface": "🟣 ⟂◯⟂ 🜁🜂 🔒📜 🔗#SANDBOX00-E083 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does resource scoring incentivize hoarding over spending?",
+  "risk_of_symbol_smuggling": "LOW — score uses all-time generated, not current; no hoarding incentive",
+  "next_epoch_seed": "Alliance score bonuses",
+  "group": "SCORING",
+  "batch": "002"
+}

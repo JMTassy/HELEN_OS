@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E069",
+  "artifact_name": "TEMPLOCK_RESOURCE_FREEZE",
+  "artifact_type": "MECHANIC",
+  "world_model_delta": "During TEMPLOCK: resource_production_rate on the affected island drops to 0. Existing stockpiled resources are unaffected. Transfer of already-stockpiled resources remains possible. Only new production is blocked.",
+  "WULmoji_surface": "⚫ 🌀 🜃🜄 📜 🔗#SANDBOX00-E069 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Are stockpiled resources accessible during TEMPLOCK?",
+  "risk_of_symbol_smuggling": "LOW — production freeze only; stockpiles unaffected",
+  "next_epoch_seed": "Synthesis of TEMPLOCK system",
+  "group": "TEMPLOCK",
+  "batch": "002"
+}

@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E064",
+  "artifact_name": "TEMPLOCK_OVERRIDE_RULES",
+  "artifact_type": "MECHANIC",
+  "world_model_delta": "TEMPLOCK can be overridden only by faction CROSS using LOCK_OVERRIDE action at a cost of 8 AETHER_SHARD. Override cancels the TEMPLOCK immediately. Override is resource-gated, not governance-gated — available to any CROSS-rank WARDEN.",
+  "WULmoji_surface": "⚫ 🌀 🜂🜍 ⚠️📜 🔗#SANDBOX00-E064 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does LOCK_OVERRIDE imply governance authority or is it purely resource-gated?",
+  "risk_of_symbol_smuggling": "MEDIUM — override implies authority; explicitly resource-gated, not governance-gated",
+  "next_epoch_seed": "Rules for stacking multiple TEMPLOCKs",
+  "group": "TEMPLOCK",
+  "batch": "002"
+}

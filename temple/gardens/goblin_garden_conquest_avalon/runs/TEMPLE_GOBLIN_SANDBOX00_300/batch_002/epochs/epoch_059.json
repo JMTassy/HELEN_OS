@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E059",
+  "artifact_name": "CHAIN_EVENT_RECORD",
+  "artifact_type": "QUEST_CHAIN",
+  "world_model_delta": "Chain events: CHAIN_STARTED, CHAIN_STEP_COMPLETED, CHAIN_BROKEN, CHAIN_RESUMED, CHAIN_EXPIRED, CHAIN_COMPLETED. Each entry: {turn, faction, chain_id, event_type, step_number, resource_delta, wulmoji_surface}. Append-only per chain.",
+  "WULmoji_surface": "⚫ 🌹 🜁🜂 🔒📜 🔗#SANDBOX00-E059 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Is CHAIN_EVENT_RECORD distinct from governance event schemas?",
+  "risk_of_symbol_smuggling": "LOW — local event log, append-only",
+  "next_epoch_seed": "Cross-chain synthesis",
+  "group": "QUEST_CHAINS",
+  "batch": "002"
+}

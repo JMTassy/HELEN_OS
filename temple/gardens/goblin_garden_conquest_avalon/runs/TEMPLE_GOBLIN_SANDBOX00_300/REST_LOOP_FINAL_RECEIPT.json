@@ -1,0 +1,31 @@
+{
+  "receipt_type": "REST_LOOP_FINAL_RECEIPT_V0",
+  "sandbox": "TEMPLE_GOBLIN_SANDBOX00_300",
+  "batches_completed": [
+    "002",
+    "003"
+  ],
+  "epochs_completed": 100,
+  "epoch_range": "E051–E150",
+  "files_created": "200 epoch JSON + 200 receipt JSON + 4 batch artifacts + 2 loop artifacts",
+  "validators": {
+    "batch_002": "PASS",
+    "batch_003": "PASS"
+  },
+  "errors": 0,
+  "warnings": {
+    "batch_002": 0,
+    "batch_003": 1
+  },
+  "out_of_scope_writes": "NONE",
+  "protected_diffs_changed": "UNCHANGED",
+  "ledger_mutation_from_loop": false,
+  "commit": "BLOCKED",
+  "push": "BLOCKED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "jm_admits": "PENDING",
+  "next_action": "JM_REVIEW_AFTER_REST",
+  "explicit_statement": "This rest loop is not admitted, not canon, not sovereign, and not HELEN governance."
+}

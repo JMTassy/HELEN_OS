@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E096",
+  "artifact_name": "DIPLOMACY_ARBITRATION_RULES",
+  "artifact_type": "DIPLOMACY",
+  "world_model_delta": "Disputes resolve via score-delta comparison: faction with higher total_score at dispute-turn wins the contested decision. No external arbitrator is invoked. If scores are equal at dispute-turn, the ISLE_QUINT neutral zone protocol determines outcome.",
+  "WULmoji_surface": "🔵 🌹 🜂🜍 ⚠️📜 🔗#SANDBOX00-E096 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Is dispute arbitration fully deterministic from simulation state?",
+  "risk_of_symbol_smuggling": "LOW — deterministic from scores and neutral zone rules",
+  "next_epoch_seed": "Diplomatic history tracking",
+  "group": "DIPLOMACY",
+  "batch": "002"
+}

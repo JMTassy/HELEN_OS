@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E043",
+  "artifact_name": "AUTHORITY_CLAIM_DETECTOR",
+  "artifact_type": "VALIDATOR",
+  "world_model_delta": "Authority claims: any statement asserting CONQUESTLAND mechanics have binding power outside the sandbox. Allowed: statements about in-simulation mechanics. Forbidden: statements implying HELEN authority, governance standing, or external enforcement.",
+  "WULmoji_surface": "🟣 🌹 🜁🜂 🔒📜 🔗#SANDBOX00-E043 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does any epoch in batch_001 claim authority over real systems?",
+  "risk_of_symbol_smuggling": "LOW — defines detection, does not make claims",
+  "next_epoch_seed": "Sovereignty claim detector",
+  "group": "VALIDATORS",
+  "batch": "001"
+}

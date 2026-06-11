@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E019",
+  "artifact_name": "FACTION_MEMORY_RULES",
+  "artifact_type": "FACTION",
+  "world_model_delta": "Factions retain memory of prior positions for 10 turns. Memory enables 'return to last held territory' at 50% standard cost. Memory is a pathfinding aid only — it does not confer ownership or title.",
+  "WULmoji_surface": "⚫ 🌀 🜁🜂 🔒📜 🔗#SANDBOX00-E019 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does faction memory create any implicit ownership claim?",
+  "risk_of_symbol_smuggling": "MEDIUM — memory of prior positions could imply territorial rights; explicit: memory = pathfinding aid only, no title",
+  "next_epoch_seed": "Faction event log format",
+  "group": "FACTIONS",
+  "batch": "001"
+}

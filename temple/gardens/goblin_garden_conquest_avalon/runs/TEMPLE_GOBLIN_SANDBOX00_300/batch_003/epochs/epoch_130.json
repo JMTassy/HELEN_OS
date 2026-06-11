@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E130",
+  "artifact_name": "MEMORY_REVIEW_CHECKPOINT",
+  "artifact_type": "MEMORY",
+  "world_model_delta": "Memory synthesis: record schema (E121), retention (E122), pathfinding (E123), claim prohibition (E124), conflict resolution (E125), faction merge (E126), decay formula (E127), island affinity (E128), event annotations (E129). E122 archive retention and E123 familiar-routes both require explicit non-claim framing. E124 memory claim prohibition is the anchor rule for this group.",
+  "WULmoji_surface": "🔴 ⟂◯⟂ 🜄🜁 🛡️ 🔗#SANDBOX00-E130 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Is the memory claim prohibition sufficient to prevent retroactive territorial claims from memory records?",
+  "risk_of_symbol_smuggling": "MEDIUM — synthesizing; E124 is the anchor; E122/E123 vocabulary risks noted; no governance contamination path",
+  "next_epoch_seed": "Ritual type: seasonal elemental cycling",
+  "group": "MEMORY",
+  "batch": "003"
+}

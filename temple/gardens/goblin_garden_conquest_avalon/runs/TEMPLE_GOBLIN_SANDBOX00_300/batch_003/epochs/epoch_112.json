@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E112",
+  "artifact_name": "CONQUEST_RESOLUTION_FORMULA",
+  "artifact_type": "CONQUEST",
+  "world_model_delta": "Conquest resolves at end of 3-turn window if declaring faction's score exceeds defender's score on the target island by at least 1.5x. Resolution is deterministic. Defender may counter-build score during the window. Ties preserve current ownership.",
+  "WULmoji_surface": "🟢 ✝️ 🜂🜍 ⚠️📜 🔗#SANDBOX00-E112 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Is conquest resolution fully deterministic from island scores at window-end?",
+  "risk_of_symbol_smuggling": "LOW — deterministic scoring formula",
+  "next_epoch_seed": "Defense mechanics during conquest window",
+  "group": "CONQUEST",
+  "batch": "003"
+}

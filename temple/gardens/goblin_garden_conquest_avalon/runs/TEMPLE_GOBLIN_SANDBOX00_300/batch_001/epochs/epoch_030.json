@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E030",
+  "artifact_name": "QUEST_EVENT_RECORD",
+  "artifact_type": "QUEST",
+  "world_model_delta": "Quest events: INITIATED, ADVANCED, COMPLETED, EXPIRED. Each event produces a QUEST_EVENT entry: {turn, faction, quest_id, event_type, world_delta, wulmoji_surface}. Append-only per quest.",
+  "WULmoji_surface": "🔴 ✝️ 🜄🜁 🛡️ 🔗#SANDBOX00-E030 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Is QUEST_EVENT append-only and self-contained within the quest record?",
+  "risk_of_symbol_smuggling": "LOW — event record, no governance claim",
+  "next_epoch_seed": "WULmoji state grammar definition",
+  "group": "QUESTS",
+  "batch": "001"
+}

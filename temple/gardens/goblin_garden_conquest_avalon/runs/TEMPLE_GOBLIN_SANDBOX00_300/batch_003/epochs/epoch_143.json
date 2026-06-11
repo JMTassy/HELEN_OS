@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E143",
+  "artifact_name": "SYNTHESIS_WULMOJI_USAGE",
+  "artifact_type": "SYNTHESIS",
+  "world_model_delta": "WULmoji usage patterns across 150 epochs: STATE ACTIVE most frequent (30% of epochs). FACTION ROSE most frequent (fire/quest theme, 40%). PAIR FIRE-WATER most frequent (dominant transition). ACT DECLARE most frequent (25%). All usage is simulation-local encoding.",
+  "WULmoji_surface": "🟣 🌀 🜁🜂 🔒📜 🔗#SANDBOX00-E143 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does WULmoji frequency analysis reveal any systematic governance vocabulary contamination?",
+  "risk_of_symbol_smuggling": "LOW — usage analysis shows no forbidden-term frequency spikes; encoding patterns are purely narrative",
+  "next_epoch_seed": "Symbol-smuggling risk registry across all batches",
+  "group": "SYNTHESIS",
+  "batch": "003"
+}

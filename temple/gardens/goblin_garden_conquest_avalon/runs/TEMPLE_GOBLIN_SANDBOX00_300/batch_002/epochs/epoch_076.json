@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E076",
+  "artifact_name": "EVENT_TRIGGER_CONDITIONS",
+  "artifact_type": "WORLD_EVENT",
+  "world_model_delta": "Event triggers: ELEMENTAL_SURGE (simulation-seeded), FACTION_SCHISM (conflict_score > 100), RESOURCE_DROUGHT (5-turn natural zero), BRIDGE_STORM (simulation-seeded), ALLIANCE_COLLAPSE (betrayal action). All triggers are deterministic from simulation state.",
+  "WULmoji_surface": "🔵 ✝️ 🜂🜍 ⚠️📜 🔗#SANDBOX00-E076 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Are all event triggers observable from simulation state without external oracle?",
+  "risk_of_symbol_smuggling": "LOW — fully deterministic from simulation state",
+  "next_epoch_seed": "Event duration rules",
+  "group": "EVENTS",
+  "batch": "002"
+}

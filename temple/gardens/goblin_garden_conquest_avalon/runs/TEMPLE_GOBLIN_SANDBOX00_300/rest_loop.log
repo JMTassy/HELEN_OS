@@ -1,0 +1,202 @@
+============================================================
+UNATTENDED_REST_LOOP — PREFLIGHT
+REPO_ROOT   : /Users/jean-marietassy/Documents/GitHub/helen_os_v1
+SANDBOX     : /Users/jean-marietassy/Documents/GitHub/helen_os_v1/temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300
+============================================================
+branch      : main
+HEAD        : 9b21a48
+git status  :
+M town/ledger_v1.ndjson
+?? apps/helen-surface/goblin/garden_conquest_avalon.html
+?? docs/CATALOG_OF_CATALOGS.md
+?? temple/gardens/goblin_garden_conquest_avalon/runs/
+
+Protected diff hashes (preflight):
+  town/ledger_v1.ndjson: ecf7374c022903476cad…
+  docs/CATALOG_OF_CATALOGS.md: e3b0c44298fc1c149afb…
+  apps/helen-surface/goblin/garden_conquest_avalon.h: e3b0c44298fc1c149afb…
+
+
+============================================================
+GENERATING BATCH_002 — E051–E100
+AUTHORITY=false | SOVEREIGN=false | CANON=false | LEDGER=SLEEPING
+============================================================
+  ✓ E051 [QUEST_CHAINS] CHAIN_PREREQ_STRUCTURE
+  ✓ E052 [QUEST_CHAINS] CHAIN_STEP_TOKENS
+  ✓ E053 [QUEST_CHAINS] CHAIN_BREAK_RULES
+  ✓ E054 [QUEST_CHAINS] CHAIN_RESUME_RULES
+  ✓ E055 [QUEST_CHAINS] CHAIN_ARTIFACT_SCHEMA
+  ✓ E056 [QUEST_CHAINS] CHAIN_REWARD_MATRIX
+  ✓ E057 [QUEST_CHAINS] CHAIN_OVERLAP_RULES
+  ✓ E058 [QUEST_CHAINS] CHAIN_EXPIRATION_CASCADE
+  ✓ E059 [QUEST_CHAINS] CHAIN_EVENT_RECORD
+  ✓ E060 [QUEST_CHAINS] CHAIN_REVIEW_CHECKPOINT
+  ✓ E061 [TEMPLOCK    ] TEMPLOCK_DEFINITION
+  ✓ E062 [TEMPLOCK    ] TEMPLOCK_DURATION_RULES
+  ✓ E063 [TEMPLOCK    ] TEMPLOCK_SCOPE_RULES
+  ✓ E064 [TEMPLOCK    ] TEMPLOCK_OVERRIDE_RULES
+  ✓ E065 [TEMPLOCK    ] TEMPLOCK_STACK_RULES
+  ✓ E066 [TEMPLOCK    ] TEMPLOCK_EXPIRATION_EVENT
+  ✓ E067 [TEMPLOCK    ] TEMPLOCK_FACTION_IMMUNITY
+  ✓ E068 [TEMPLOCK    ] TEMPLOCK_CHAIN_INTERACTION
+  ✓ E069 [TEMPLOCK    ] TEMPLOCK_RESOURCE_FREEZE
+  ✓ E070 [TEMPLOCK    ] TEMPLOCK_REVIEW_CHECKPOINT
+  ✓ E071 [EVENTS      ] EVENT_TYPE_ELEMENTAL_SURGE
+  ✓ E072 [EVENTS      ] EVENT_TYPE_FACTION_SCHISM
+  ✓ E073 [EVENTS      ] EVENT_TYPE_RESOURCE_DROUGHT
+  ✓ E074 [EVENTS      ] EVENT_TYPE_BRIDGE_STORM
+  ✓ E075 [EVENTS      ] EVENT_TYPE_ALLIANCE_COLLAPSE
+  ✓ E076 [EVENTS      ] EVENT_TRIGGER_CONDITIONS
+  ✓ E077 [EVENTS      ] EVENT_DURATION_RULES
+  ✓ E078 [EVENTS      ] EVENT_STACK_RULES
+  ✓ E079 [EVENTS      ] EVENT_RESOLUTION_PROTOCOL
+  ✓ E080 [EVENTS      ] EVENT_REVIEW_CHECKPOINT
+  ✓ E081 [SCORING     ] SCORE_TERRITORY_FORMULA
+  ✓ E082 [SCORING     ] SCORE_QUEST_COMPLETION
+  ✓ E083 [SCORING     ] SCORE_RESOURCE_ACCUMULATION
+  ✓ E084 [SCORING     ] SCORE_ALLIANCE_BONUS
+  ✓ E085 [SCORING     ] SCORE_DECAY_FORMULA
+  ✓ E086 [SCORING     ] SCORE_MILESTONE_THRESHOLDS
+  ✓ E087 [SCORING     ] SCORE_TIEBREAK_RULES
+  ✓ E088 [SCORING     ] SCORE_LEADERBOARD_FORMAT
+  ✓ E089 [SCORING     ] SCORE_RESET_CONDITIONS
+  ✓ E090 [SCORING     ] SCORE_REVIEW_CHECKPOINT
+  ✓ E091 [DIPLOMACY   ] DIPLOMACY_TREATY_FORMAT
+  ✓ E092 [DIPLOMACY   ] DIPLOMACY_NEGOTIATION_RULES
+  ✓ E093 [DIPLOMACY   ] DIPLOMACY_BETRAYAL_RULES
+  ✓ E094 [DIPLOMACY   ] DIPLOMACY_NEUTRAL_ZONE_RULES
+  ✓ E095 [DIPLOMACY   ] DIPLOMACY_MESSENGER_PROTOCOL
+  ✓ E096 [DIPLOMACY   ] DIPLOMACY_ARBITRATION_RULES
+  ✓ E097 [DIPLOMACY   ] DIPLOMACY_MEMORY_RECORD
+  ✓ E098 [DIPLOMACY   ] DIPLOMACY_EMBARGO_RULES
+  ✓ E099 [DIPLOMACY   ] DIPLOMACY_PEACE_TREATY_SCHEMA
+  ✓ E100 [DIPLOMACY   ] DIPLOMACY_REVIEW_CHECKPOINT
+
+  batch_002 generation complete: 50 epochs, 50 receipts
+
+[Validating BATCH_002]
+
+[Protected diff check — after batch_002]
+  OK      : town/ledger_v1.ndjson
+  OK      : docs/CATALOG_OF_CATALOGS.md
+  OK      : apps/helen-surface/goblin/garden_conquest_avalon.html
+
+  git status --short:
+    M town/ledger_v1.ndjson
+    ?? apps/helen-surface/goblin/garden_conquest_avalon.html
+    ?? docs/CATALOG_OF_CATALOGS.md
+    ?? temple/gardens/goblin_garden_conquest_avalon/runs/
+
+  ========================================
+  VALIDATOR: PASS (0 warnings)
+  epochs:   50/50  receipts: 50/50
+  AUTHORITY=false  SOVEREIGN=false  CANON=false
+  LEDGER=SLEEPING
+  ✓ BATCH_002_SUMMARY.md + BATCH_002_FINAL_RECEIPT.json written
+
+============================================================
+GENERATING BATCH_003 — E101–E150
+AUTHORITY=false | SOVEREIGN=false | CANON=false | LEDGER=SLEEPING
+============================================================
+  ✓ E101 [RESOURCES   ] RESOURCE_GENERATION_RATES
+  ✓ E102 [RESOURCES   ] RESOURCE_DECAY_RULES
+  ✓ E103 [RESOURCES   ] RESOURCE_TRANSFER_PROTOCOL
+  ✓ E104 [RESOURCES   ] RESOURCE_SCARCITY_EVENTS
+  ✓ E105 [RESOURCES   ] RESOURCE_OVERFLOW_RULES
+  ✓ E106 [RESOURCES   ] RESOURCE_QUEST_COSTS
+  ✓ E107 [RESOURCES   ] RESOURCE_ALLIANCE_POOLING
+  ✓ E108 [RESOURCES   ] RESOURCE_CONVERSION_RATES
+  ✓ E109 [RESOURCES   ] RESOURCE_AUDIT_FORMAT
+  ✓ E110 [RESOURCES   ] RESOURCE_REVIEW_CHECKPOINT
+  ✓ E111 [CONQUEST    ] CONQUEST_DECLARATION_FORMAT
+  ✓ E112 [CONQUEST    ] CONQUEST_RESOLUTION_FORMULA
+  ✓ E113 [CONQUEST    ] CONQUEST_DEFENSE_MECHANICS
+  ✓ E114 [CONQUEST    ] CONQUEST_AFTERMATH_RULES
+  ✓ E115 [CONQUEST    ] CONQUEST_CHAIN_INTEGRATION
+  ✓ E116 [CONQUEST    ] CONQUEST_SCORE_IMPACT
+  ✓ E117 [CONQUEST    ] CONQUEST_HISTORY_RECORD
+  ✓ E118 [CONQUEST    ] CONQUEST_REVERSAL_RULES
+  ✓ E119 [CONQUEST    ] CONQUEST_INALIENABLE_EXCEPTIONS
+  ✓ E120 [CONQUEST    ] CONQUEST_REVIEW_CHECKPOINT
+  ✓ E121 [MEMORY      ] MEMORY_RECORD_SCHEMA
+  ✓ E122 [MEMORY      ] MEMORY_RETENTION_DURATION
+  ✓ E123 [MEMORY      ] MEMORY_PATHFINDING_USE
+  ✓ E124 [MEMORY      ] MEMORY_CLAIM_PROHIBITION
+  ✓ E125 [MEMORY      ] MEMORY_CONFLICT_RESOLUTION
+  ✓ E126 [MEMORY      ] MEMORY_FACTION_MERGE
+  ✓ E127 [MEMORY      ] MEMORY_DECAY_FORMULA
+  ✓ E128 [MEMORY      ] MEMORY_ISLAND_AFFINITY
+  ✓ E129 [MEMORY      ] MEMORY_EVENT_ANNOTATIONS
+  ✓ E130 [MEMORY      ] MEMORY_REVIEW_CHECKPOINT
+  ✓ E131 [RITUALS     ] RITUAL_TYPE_ELEMENTAL_CYCLE
+  ✓ E132 [RITUALS     ] RITUAL_TYPE_RESOURCE_FESTIVAL
+  ✓ E133 [RITUALS     ] RITUAL_TYPE_FACTION_CONCLAVE
+  ✓ E134 [RITUALS     ] RITUAL_TYPE_BRIDGE_CEREMONY
+  ✓ E135 [RITUALS     ] RITUAL_TRIGGER_CONDITIONS
+  ✓ E136 [RITUALS     ] RITUAL_DURATION_RULES
+  ✓ E137 [RITUALS     ] RITUAL_PARTICIPATION_FORMAT
+  ✓ E138 [RITUALS     ] RITUAL_OUTCOME_SCHEMA
+  ✓ E139 [RITUALS     ] RITUAL_CONFLICT_RULES
+  ✓ E140 [RITUALS     ] RITUAL_REVIEW_CHECKPOINT
+  ✓ E141 [SYNTHESIS   ] SYNTHESIS_CROSS_BATCH_LOCI
+  ✓ E142 [SYNTHESIS   ] SYNTHESIS_QUEST_MECHANIC_MAP
+  ✓ E143 [SYNTHESIS   ] SYNTHESIS_WULMOJI_USAGE
+  ✓ E144 [SYNTHESIS   ] SYNTHESIS_RISK_REGISTRY
+  ✓ E145 [SYNTHESIS   ] SYNTHESIS_CONTAINMENT_AUDIT
+  ✓ E146 [SYNTHESIS   ] SYNTHESIS_VALIDATOR_PERFORMANCE
+  ✓ E147 [SYNTHESIS   ] SYNTHESIS_TEMPLOCK_WULMOJI
+  ✓ E148 [SYNTHESIS   ] SYNTHESIS_DIPLOMACY_QUEST_BRIDGE
+  ✓ E149 [SYNTHESIS   ] SYNTHESIS_RESOURCE_CONQUEST_FLOW
+  ✓ E150 [SYNTHESIS   ] SYNTHESIS_BATCH_003_REVIEW
+
+  batch_003 generation complete: 50 epochs, 50 receipts
+
+[Validating BATCH_003]
+
+[Protected diff check — after batch_003]
+  OK      : town/ledger_v1.ndjson
+  OK      : docs/CATALOG_OF_CATALOGS.md
+  OK      : apps/helen-surface/goblin/garden_conquest_avalon.html
+
+  git status --short:
+    M town/ledger_v1.ndjson
+    ?? apps/helen-surface/goblin/garden_conquest_avalon.html
+    ?? docs/CATALOG_OF_CATALOGS.md
+    ?? temple/gardens/goblin_garden_conquest_avalon/runs/
+
+  ========================================
+  VALIDATOR: PASS (1 warnings)
+    WARN: SEAL WARNING: epoch_146.json — 1 hits
+  epochs:   50/50  receipts: 50/50
+  AUTHORITY=false  SOVEREIGN=false  CANON=false
+  LEDGER=SLEEPING
+  ✓ BATCH_003_SUMMARY.md + BATCH_003_FINAL_RECEIPT.json written
+
+[Writing REST_LOOP_SUMMARY.md + REST_LOOP_FINAL_RECEIPT.json]
+
+[Protected diff check — final]
+  OK      : town/ledger_v1.ndjson
+  OK      : docs/CATALOG_OF_CATALOGS.md
+  OK      : apps/helen-surface/goblin/garden_conquest_avalon.html
+  ✓ REST_LOOP_SUMMARY.md + REST_LOOP_FINAL_RECEIPT.json written
+
+============================================================
+REST_LOOP_FINAL_RECEIPT
+  BATCHES_COMPLETED      : ['002', '003']
+  EPOCHS_COMPLETED       : 100
+  VALIDATORS             : {'batch_002': 'PASS', 'batch_003': 'PASS'}
+  ERRORS                 : 0
+  WARNINGS               : {'batch_002': 0, 'batch_003': 1}
+  OUT_OF_SCOPE_WRITES    : NONE
+  PROTECTED_DIFFS_CHANGED: UNCHANGED
+  LEDGER_MUTATION        : False
+  COMMIT                 : BLOCKED
+  PUSH                   : BLOCKED
+  AUTHORITY              : False
+  SOVEREIGN              : False
+  CANON                  : False
+  JM_ADMITS              : PENDING
+  NEXT_ACTION            : JM_REVIEW_AFTER_REST
+============================================================
+
+🧌 Goblin gardened. 🛡️ HAL validated. 📜 Ledger slept. 👑 JM reviews after rest.

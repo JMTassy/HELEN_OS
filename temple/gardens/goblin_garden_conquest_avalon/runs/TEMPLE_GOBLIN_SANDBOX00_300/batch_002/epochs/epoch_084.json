@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E084",
+  "artifact_name": "SCORE_ALLIANCE_BONUS",
+  "artifact_type": "SCORING",
+  "world_model_delta": "Alliance bonus: while alliance is active, both parties receive S_alliance = 5 pts/turn. Bonus ends on ALLIANCE_COLLAPSE. No retroactive bonus removal on collapse. Alliance score is a cooperation incentive — no governance meaning.",
+  "WULmoji_surface": "⚫ ⟂◯⟂ 🜂🜍 ⚠️📜 🔗#SANDBOX00-E084 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does the alliance bonus create a governance obligation between allied factions?",
+  "risk_of_symbol_smuggling": "LOW — points incentive only, no obligation",
+  "next_epoch_seed": "Score decay formula",
+  "group": "SCORING",
+  "batch": "002"
+}

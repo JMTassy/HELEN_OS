@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E103",
+  "artifact_name": "RESOURCE_TRANSFER_PROTOCOL",
+  "artifact_type": "RESOURCE",
+  "world_model_delta": "Resource transfer: faction pays 1 QUINT_CORE per transfer action. Transfer is instantaneous within the turn. Maximum transfer per action: 20 units. Transfers are logged in a CONQUESTLAND-local simulation record, not a governance ledger: {turn, from_island, to_island, faction, resource_type, amount, wulmoji_surface}.",
+  "WULmoji_surface": "🟣 🌀 🜁🜂 🔒📜 🔗#SANDBOX00-E103 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Is the transfer log distinct from governance ledger schemas?",
+  "risk_of_symbol_smuggling": "MEDIUM — log vocabulary; transfer log is CONQUESTLAND-local, not a governance ledger",
+  "next_epoch_seed": "Resource scarcity event triggers",
+  "group": "RESOURCES",
+  "batch": "003"
+}

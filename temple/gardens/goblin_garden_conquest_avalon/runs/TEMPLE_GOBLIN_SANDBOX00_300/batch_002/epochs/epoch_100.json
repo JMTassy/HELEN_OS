@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E100",
+  "artifact_name": "DIPLOMACY_REVIEW_CHECKPOINT",
+  "artifact_type": "DIPLOMACY",
+  "world_model_delta": "Diplomacy synthesis: treaty format (E091), negotiation (E092), betrayal (E093), neutral zone (E094), messenger protocol (E095), arbitration (E096), history record (E097), embargo (E098), peace treaty (E099). E095 message content_hash must not be treated as cross-namespace proof. Diplomacy system is self-contained and governance-neutral.",
+  "WULmoji_surface": "🔴 🌹 🜂🜍 ⚠️📜 🔗#SANDBOX00-E100 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does any diplomacy mechanic create an unintended path to cross-namespace contamination?",
+  "risk_of_symbol_smuggling": "MEDIUM — synthesizing; E095 content_hash risk noted; all treaties carry explicit false-flags",
+  "next_epoch_seed": "Batch 003 seed: resource flows, territory conquest, faction memory",
+  "group": "DIPLOMACY",
+  "batch": "002"
+}

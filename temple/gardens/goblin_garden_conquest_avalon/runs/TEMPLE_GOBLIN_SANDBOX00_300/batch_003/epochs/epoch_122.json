@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E122",
+  "artifact_name": "MEMORY_RETENTION_DURATION",
+  "artifact_type": "MEMORY",
+  "world_model_delta": "Memory retention: standard memories persist 10 turns. High-importance memories (CONQUEST, ALLIANCE) persist 20 turns. All memories expire automatically at retention limit. Expired memories are archived for 50 turns then deleted. No permanent memory exists. Archive is ephemeral simulation data, not a governance ownership record.",
+  "WULmoji_surface": "🟢 ⟂◯⟂ 🜄🜁 🛡️ 🔗#SANDBOX00-E122 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does memory archive retention create any implicit ownership record?",
+  "risk_of_symbol_smuggling": "MEDIUM — archive retention could be cited as territorial history; explicit: archive is ephemeral simulation data, not a governance ownership record",
+  "next_epoch_seed": "Memory use for pathfinding optimization",
+  "group": "MEMORY",
+  "batch": "003"
+}

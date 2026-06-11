@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E101",
+  "artifact_name": "RESOURCE_GENERATION_RATES",
+  "artifact_type": "RESOURCE",
+  "world_model_delta": "Base resource generation per island per turn: HOME_KEEP (1 any shard), ISLE_IGNIS (3 IGNIS_SHARD), ISLE_AQUA (3 AQUA_SHARD), ISLE_AETHER (3 AETHER_SHARD), ISLE_TERRA (3 TERRA_SHARD), ISLE_QUINT (1 QUINT_CORE if neutral, 0 if held). Rates are additive with event modifiers.",
+  "WULmoji_surface": "🔵 🌀 🜃🜄 📜 🔗#SANDBOX00-E101 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Do generation rates remain deterministic even with event modifiers active?",
+  "risk_of_symbol_smuggling": "LOW — additive modifiers; deterministic from base + active events",
+  "next_epoch_seed": "Resource decay rules for unspent stockpiles",
+  "group": "RESOURCES",
+  "batch": "003"
+}

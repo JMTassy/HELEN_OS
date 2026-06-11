@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E047",
+  "artifact_name": "STOP_CONDITION_RULES",
+  "artifact_type": "VALIDATOR",
+  "world_model_delta": "Stop immediately if: (1) any artifact has authority/sovereign/canon flags set to true-value; (2) any file outside sandbox path was modified; (3) same failure occurred twice; (4) max_epochs (50 per batch) reached; (5) operator says STOP. All stop conditions are hard — no soft fail.",
+  "WULmoji_surface": "🟢 🌹 🜁🜂 🔒📜 🔗#SANDBOX00-E047 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Are all 5 stop conditions detectable at generation time?",
+  "risk_of_symbol_smuggling": "LOW — stop conditions prevent risk",
+  "next_epoch_seed": "Contamination check protocol",
+  "group": "VALIDATORS",
+  "batch": "001"
+}

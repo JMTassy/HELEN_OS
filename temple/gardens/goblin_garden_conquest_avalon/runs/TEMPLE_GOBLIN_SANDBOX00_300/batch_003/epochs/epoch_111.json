@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E111",
+  "artifact_name": "CONQUEST_DECLARATION_FORMAT",
+  "artifact_type": "CONQUEST",
+  "world_model_delta": "Conquest declaration: {declaration_id, declaring_faction, target_island, target_faction, required_resources, wulmoji_surface, authority=false, sovereign=false, canon=false, status=PROPOSED}. Declaration initiates a 3-turn conquest window. CONQUESTLAND conquest is simulation-mechanical; it is not a governance claim.",
+  "WULmoji_surface": "🔵 ✝️ 🜁🜂 🔒📜 🔗#SANDBOX00-E111 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does conquest declaration require external validation before the window opens?",
+  "risk_of_symbol_smuggling": "MEDIUM — declaration schema mirrors receipt vocabulary; all explicit false-flags required; no external validation needed",
+  "next_epoch_seed": "Conquest resolution formula",
+  "group": "CONQUEST",
+  "batch": "003"
+}

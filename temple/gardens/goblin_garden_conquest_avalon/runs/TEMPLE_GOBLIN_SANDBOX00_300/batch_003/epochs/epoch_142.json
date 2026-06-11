@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E142",
+  "artifact_name": "SYNTHESIS_QUEST_MECHANIC_MAP",
+  "artifact_type": "SYNTHESIS",
+  "world_model_delta": "Quest mechanic map: EXPLORE (E021) → CLAIM (E022) → CONQUESTLAND_SEAL_CEREMONY (E023) → WARN (E024) → COMBINE (E025, E132) → CHAIN (E051-E060) → CONQUEST_CHAIN (E115). Quest complexity increases with chain depth. No quest type creates governance standing.",
+  "WULmoji_surface": "🟢 🌀 🜄🜁 🛡️ 🔗#SANDBOX00-E142 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does quest complexity escalation create an unintended pathway toward governance-level claims?",
+  "risk_of_symbol_smuggling": "MEDIUM — synthesizing across batches; CONQUESTLAND_SEAL_CEREMONY and CHAIN are highest-complexity; both carry explicit false-flags; no governance pathway found",
+  "next_epoch_seed": "WULmoji usage patterns across batches",
+  "group": "SYNTHESIS",
+  "batch": "003"
+}

@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E085",
+  "artifact_name": "SCORE_DECAY_FORMULA",
+  "artifact_type": "SCORING",
+  "world_model_delta": "Score does not decay by default. Exception: if a faction has zero active territory for 10 consecutive turns, their territory score resets to 0. Quest and resource scores are permanent. This prevents score preservation without active play.",
+  "WULmoji_surface": "🔴 ⟂◯⟂ 🜃🜄 📜 🔗#SANDBOX00-E085 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does territory score reset create an appeal path or is it automatic?",
+  "risk_of_symbol_smuggling": "LOW — automatic reset, no appeal",
+  "next_epoch_seed": "Score milestone threshold definitions",
+  "group": "SCORING",
+  "batch": "002"
+}

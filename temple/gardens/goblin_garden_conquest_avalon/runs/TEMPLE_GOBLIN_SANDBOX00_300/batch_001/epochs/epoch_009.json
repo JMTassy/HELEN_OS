@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E009",
+  "artifact_name": "MAP_METADATA",
+  "artifact_type": "LOCUS",
+  "world_model_delta": "CONQUESTLAND spatial schema. 6 islands (HOME, IGNIS, AQUA, AETHER, TERRA, QUINT). 5 bridges. 4 frontier zones. Traversal cost matrix: same_element=1, adjacent=2, diagonal=3, void=4.",
+  "WULmoji_surface": "⚫ 🌹 🜃🜄 📜 🔗#SANDBOX00-E009 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Is the traversal cost matrix deterministic given world state?",
+  "risk_of_symbol_smuggling": "LOW — pure spatial data",
+  "next_epoch_seed": "Island capacities: how many factions per island",
+  "group": "TOPOGRAPHY",
+  "batch": "001"
+}

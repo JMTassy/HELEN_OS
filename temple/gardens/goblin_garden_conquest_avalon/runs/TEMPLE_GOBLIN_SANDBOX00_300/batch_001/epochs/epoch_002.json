@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E002",
+  "artifact_name": "ISLE_IGNIS",
+  "artifact_type": "LOCUS",
+  "world_model_delta": "Fire territory. FIRE element dominates. Faction 🌹 ROSE has natural affinity. Resource: IGNIS_SHARD. Connects via 🜃🜄 bridge to water.",
+  "WULmoji_surface": "🟢 🌹 🜄🜁 🛡️ 🔗#SANDBOX00-E002 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Is IGNIS_SHARD creation bounded to ISLE_IGNIS only?",
+  "risk_of_symbol_smuggling": "LOW — elemental territory, no governance language",
+  "next_epoch_seed": "Water territory adjacent",
+  "group": "TOPOGRAPHY",
+  "batch": "001"
+}

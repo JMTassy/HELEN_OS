@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E127",
+  "artifact_name": "MEMORY_DECAY_FORMULA",
+  "artifact_type": "MEMORY",
+  "world_model_delta": "Memory intensity decays at 10% per turn for standard memories if faction takes no action on the remembered island. High-importance memories decay at 5% per turn. Decayed memories remain in record but their pathfinding weight reduces proportionally.",
+  "WULmoji_surface": "🟢 ⟂◯⟂ 🜁🜂 🔒📜 🔗#SANDBOX00-E127 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does memory decay create erratic pathfinding behavior at low intensity?",
+  "risk_of_symbol_smuggling": "LOW — pathfinding weight tapers smoothly; no erratic behavior",
+  "next_epoch_seed": "Memory of island elemental affinities",
+  "group": "MEMORY",
+  "batch": "003"
+}

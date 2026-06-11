@@ -1,0 +1,21 @@
+{
+  "receipt_type": "BATCH_003_FINAL_RECEIPT_V0",
+  "batch": "003",
+  "batch_of": "006",
+  "sandbox": "TEMPLE_GOBLIN_SANDBOX00_300",
+  "epochs_completed": 50,
+  "receipts_created": 50,
+  "validator_result": "PASS",
+  "validator_warnings": 1,
+  "validator_errors": 0,
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "simulation_only": true,
+  "receipt_status": "PROPOSED",
+  "ledger_mutation": false,
+  "commit": "BLOCKED",
+  "push": "BLOCKED",
+  "jm_admits": "PENDING",
+  "explicit_statement": "This batch is not admitted, not canon, not sovereign, and not HELEN governance."
+}

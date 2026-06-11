@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E081",
+  "artifact_name": "SCORE_TERRITORY_FORMULA",
+  "artifact_type": "SCORING",
+  "world_model_delta": "Territory score: S_territory = SUM(island_weight × turns_held) for each island. Island weights: HOME_KEEP(0), IGNIS(2), AQUA(2), AETHER(2), TERRA(2), QUINT(3). HOME_KEEP weight=0 (inalienable, not scored). Score is cumulative per faction.",
+  "WULmoji_surface": "🔵 ⟂◯⟂ 🜃🜄 📜 🔗#SANDBOX00-E081 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does territory scoring create a governance incentive to claim HOME_KEEP?",
+  "risk_of_symbol_smuggling": "LOW — HOME_KEEP excluded from scoring; no incentive",
+  "next_epoch_seed": "Quest completion score multipliers",
+  "group": "SCORING",
+  "batch": "002"
+}

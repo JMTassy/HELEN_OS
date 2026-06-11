@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E072",
+  "artifact_name": "EVENT_TYPE_FACTION_SCHISM",
+  "artifact_type": "WORLD_EVENT",
+  "world_model_delta": "FACTION_SCHISM: triggered if a faction's internal conflict_score exceeds 100 (cumulative betrayal events). Schism splits faction resources 50/50 and resets rank to SETTLER for both halves. Schism creates a new simulation instance only — no governance standing.",
+  "WULmoji_surface": "🟢 ✝️ 🜂🜍 ⚠️📜 🔗#SANDBOX00-E072 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does FACTION_SCHISM create any new governance entity that needs external recognition?",
+  "risk_of_symbol_smuggling": "MEDIUM — faction split could imply new sovereignty; explicitly: schism creates simulation instance only, no governance standing",
+  "next_epoch_seed": "World event: resource drought",
+  "group": "EVENTS",
+  "batch": "002"
+}

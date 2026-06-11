@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E104",
+  "artifact_name": "RESOURCE_SCARCITY_EVENTS",
+  "artifact_type": "RESOURCE",
+  "world_model_delta": "RESOURCE_SCARCITY triggers when a faction's total resource stockpile across all islands falls below 5 units for 3 consecutive turns. Scarcity activates a 50% resource production bonus for that faction for 3 turns. Scarcity is a catch-up mechanic.",
+  "WULmoji_surface": "⚫ 🌀 🜂🜍 ⚠️📜 🔗#SANDBOX00-E104 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does scarcity bonus create a governance exemption for the affected faction?",
+  "risk_of_symbol_smuggling": "LOW — catch-up bonus only, no governance exemption",
+  "next_epoch_seed": "Resource overflow handling",
+  "group": "RESOURCES",
+  "batch": "003"
+}

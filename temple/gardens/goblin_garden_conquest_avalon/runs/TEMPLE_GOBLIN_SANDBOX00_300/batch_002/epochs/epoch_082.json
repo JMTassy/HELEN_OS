@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E082",
+  "artifact_name": "SCORE_QUEST_COMPLETION",
+  "artifact_type": "SCORING",
+  "world_model_delta": "Quest score: S_quest = quest_difficulty × completion_bonus × chain_length_multiplier. Single quest: 10 pts base. Chain length 2: 25 pts. Chain length 5: 100 pts. Score added at completion time. No retroactive scoring.",
+  "WULmoji_surface": "🟢 ⟂◯⟂ 🜄🜁 🛡️ 🔗#SANDBOX00-E082 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Is quest scoring deterministic from quest parameters at completion?",
+  "risk_of_symbol_smuggling": "LOW — scoring formula, deterministic",
+  "next_epoch_seed": "Resource accumulation score formula",
+  "group": "SCORING",
+  "batch": "002"
+}

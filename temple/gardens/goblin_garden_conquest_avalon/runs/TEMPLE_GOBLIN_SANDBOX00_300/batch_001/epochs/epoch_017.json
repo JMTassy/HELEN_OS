@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E017",
+  "artifact_name": "FACTION_ADVANCEMENT",
+  "artifact_type": "FACTION",
+  "world_model_delta": "Faction ranks: WANDERER → SETTLER → HOLDER → WARDEN. Each rank unlocks one additional action per turn. Rank requires cumulative resource thresholds: 10/30/100/300 SHARDS. WARDEN = mechanical capability gate only, zero governance meaning.",
+  "WULmoji_surface": "🟢 🌀 🜃🜄 📜 🔗#SANDBOX00-E017 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Do faction ranks create governance standing or only mechanical capability?",
+  "risk_of_symbol_smuggling": "MEDIUM — WARDEN implies authority; note: WARDEN = mechanical capability gate only",
+  "next_epoch_seed": "Faction decay rules",
+  "group": "FACTIONS",
+  "batch": "001"
+}

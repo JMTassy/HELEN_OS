@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E116",
+  "artifact_name": "CONQUEST_SCORE_IMPACT",
+  "artifact_type": "CONQUEST",
+  "world_model_delta": "Conquest score impact: successful conquest adds +20 pts to declaring faction's quest_score. Defense success adds +10 pts to defending faction. Failed conquest: no score change. Score impacts are logged at resolution time.",
+  "WULmoji_surface": "🔵 ✝️ 🜂🜍 ⚠️📜 🔗#SANDBOX00-E116 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does conquest scoring create an incentive for constant aggression over other mechanics?",
+  "risk_of_symbol_smuggling": "LOW — conquest bonus is lower than equivalent quest completion bonus; balanced incentive",
+  "next_epoch_seed": "Conquest event history format",
+  "group": "CONQUEST",
+  "batch": "003"
+}

@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E042",
+  "artifact_name": "SYMBOL_SMUGGLING_DETECTION",
+  "artifact_type": "VALIDATOR",
+  "world_model_delta": "Symbol smuggling = governance vocabulary embedded in simulation output. Detection: scan each artifact JSON for governance boolean flags set to true-value, plus vocabulary: governance-approval markers, authority-figure references, ledger write operations, cross-boundary admission markers. See validate_batch_001.py STOP_TERMS for exact patterns.",
+  "WULmoji_surface": "🟢 🌹 🜄🜁 🛡️ 🔗#SANDBOX00-E042 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does this artifact itself contain any of the forbidden terms?",
+  "risk_of_symbol_smuggling": "LOW — defining the detector, not making claims",
+  "next_epoch_seed": "Authority claim detector",
+  "group": "VALIDATORS",
+  "batch": "001"
+}

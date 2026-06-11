@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E141",
+  "artifact_name": "SYNTHESIS_CROSS_BATCH_LOCI",
+  "artifact_type": "SYNTHESIS",
+  "world_model_delta": "Top world loci across batches 001-003: HOME_KEEP_AVALON (E001, E119) — inalienable anchor, referenced 2x for protection rules. ISLE_QUINT (E006, E094, E132, E134) — neutral zone, festival site, bridge hub; highest cross-batch reference count (4x). ISLE_IGNIS (E002, E067, E131) — ROSE home, TEMPLOCK-resistant, elemental cycle origin.",
+  "WULmoji_surface": "🔵 🌀 🜃🜄 📜 🔗#SANDBOX00-E141 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Do cross-batch locus references create cumulative governance standing for referenced islands?",
+  "risk_of_symbol_smuggling": "LOW — locus references are mapping, not governance; HOME_KEEP and ISLE_QUINT are simulation-protected by explicit rules, not by reference count",
+  "next_epoch_seed": "Quest mechanics synthesis across batches",
+  "group": "SYNTHESIS",
+  "batch": "003"
+}

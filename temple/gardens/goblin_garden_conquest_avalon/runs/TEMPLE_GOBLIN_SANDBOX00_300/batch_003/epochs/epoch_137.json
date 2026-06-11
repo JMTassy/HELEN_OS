@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E137",
+  "artifact_name": "RITUAL_PARTICIPATION_FORMAT",
+  "artifact_type": "RITUAL",
+  "world_model_delta": "Participation record: {ritual_id, ritual_type, participating_factions, turn_started, duration, wulmoji_surface, authority=false, sovereign=false, canon=false, status=PROPOSED}. All participating factions are listed. No faction gains exclusive ritual credit.",
+  "WULmoji_surface": "🟢 🌹 🜃🜄 📜 🔗#SANDBOX00-E137 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does ritual participation record share vocabulary with governance receipt schemas?",
+  "risk_of_symbol_smuggling": "MEDIUM — participation record mirrors receipt schema; all explicit false-flags required; no governance credit",
+  "next_epoch_seed": "Ritual outcome data structure",
+  "group": "RITUALS",
+  "batch": "003"
+}

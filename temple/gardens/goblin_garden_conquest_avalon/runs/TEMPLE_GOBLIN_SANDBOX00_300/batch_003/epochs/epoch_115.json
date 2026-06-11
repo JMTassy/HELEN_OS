@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E115",
+  "artifact_name": "CONQUEST_CHAIN_INTEGRATION",
+  "artifact_type": "CONQUEST",
+  "world_model_delta": "Conquest may be a chain step (CLAIM quest type). If conquest window fails (score threshold not met), CLAIM step is marked FAILED but chain persists — next attempt costs 50% more resources. Failed conquest does not create retroactive resource liability.",
+  "WULmoji_surface": "🔴 ✝️ 🜁🜂 🔒📜 🔗#SANDBOX00-E115 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does a failed conquest chain step create retroactive liability for resources spent?",
+  "risk_of_symbol_smuggling": "LOW — failed step costs only the failed attempt; no retroactive liability",
+  "next_epoch_seed": "Conquest impact on faction scores",
+  "group": "CONQUEST",
+  "batch": "003"
+}

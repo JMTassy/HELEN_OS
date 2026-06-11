@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E040",
+  "artifact_name": "CWL_FACE_PROP",
+  "artifact_type": "PRIMITIVE",
+  "world_model_delta": "CWL FACE= prop uses face_pool_canon.md [00]–[32] index. Value is a 2-character index string. Example: FACE=[07] maps to a specific kaomoji. FACE= is emotional register only — it does not affect world model logic.",
+  "WULmoji_surface": "🔴 ⟂◯⟂ 🜂🜍 ⚠️📜 🔗#SANDBOX00-E040 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does FACE= prop affect world model logic or only display?",
+  "risk_of_symbol_smuggling": "LOW — display-only prop, no logic impact",
+  "next_epoch_seed": "Containment boundary rules",
+  "group": "LANGUAGE",
+  "batch": "001"
+}

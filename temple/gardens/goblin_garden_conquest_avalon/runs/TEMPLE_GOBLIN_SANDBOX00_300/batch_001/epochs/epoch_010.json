@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E010",
+  "artifact_name": "ISLAND_CAPACITIES",
+  "artifact_type": "LOCUS",
+  "world_model_delta": "Each island has MAX_FACTIONS=2 (HOME_KEEP: 1, always player-only). Exceeding capacity triggers displacement. Displacement is deterministic: lower score vacates.",
+  "WULmoji_surface": "🔴 🌹 🜄🜁 🛡️ 🔗#SANDBOX00-E010 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Is displacement fully deterministic (no RNG, no governance appeal)?",
+  "risk_of_symbol_smuggling": "LOW — capacity mechanic, no governance claim",
+  "next_epoch_seed": "Faction mechanics: ROSE rules",
+  "group": "TOPOGRAPHY",
+  "batch": "001"
+}

@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E007",
+  "artifact_name": "BRIDGE_RULES",
+  "artifact_type": "LOCUS",
+  "world_model_delta": "Alchemic bridges (🜃🜄 🜄🜁 🜁🜂 🜂🜍) are traversal primitives. Crossing costs 1 SHARD of origin type. Bridges can be contested but not destroyed.",
+  "WULmoji_surface": "🟢 🌹 🜁🜂 🔒📜 🔗#SANDBOX00-E007 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Can a bridge be permanently blocked by a faction?",
+  "risk_of_symbol_smuggling": "LOW — mechanical rule, no authority claim",
+  "next_epoch_seed": "Border zones between islands define partial ownership",
+  "group": "TOPOGRAPHY",
+  "batch": "001"
+}

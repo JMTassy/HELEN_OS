@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E147",
+  "artifact_name": "SYNTHESIS_TEMPLOCK_WULMOJI",
+  "artifact_type": "SYNTHESIS",
+  "world_model_delta": "TEMPLOCK and WULmoji integration: TEMPLOCK state maps to SEALED_LOCAL (appropriate — temporary local freeze). TEMPLOCK expiration maps to ACTIVE (island returns to normal). LOCK_LOCAL act is the WULmoji encoding for TEMPLOCK application. Integration is internally consistent.",
+  "WULmoji_surface": "🟢 🌀 🜁🜂 🔒📜 🔗#SANDBOX00-E147 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does TEMPLOCK WULmoji encoding create any confusion with governance-level state encoding?",
+  "risk_of_symbol_smuggling": "LOW — SEALED_LOCAL and LOCK_LOCAL both explicitly local; no governance state confusion",
+  "next_epoch_seed": "Diplomacy and quest system interaction",
+  "group": "SYNTHESIS",
+  "batch": "003"
+}

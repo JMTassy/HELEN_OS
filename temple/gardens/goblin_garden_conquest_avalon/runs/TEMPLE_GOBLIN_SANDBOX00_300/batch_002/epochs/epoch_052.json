@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E052",
+  "artifact_name": "CHAIN_STEP_TOKENS",
+  "artifact_type": "QUEST_CHAIN",
+  "world_model_delta": "Each completed chain step produces a CHAIN_STEP_TOKEN: {chain_id, step_number, faction, turn_completed, resource_bonus}. Tokens accumulate until chain completion, then are consumed to generate the CHAIN_ARTIFACT. Tokens have no governance meaning.",
+  "WULmoji_surface": "🟢 🌹 🜂🜍 ⚠️📜 🔗#SANDBOX00-E052 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Do CHAIN_STEP_TOKENs persist after chain completion?",
+  "risk_of_symbol_smuggling": "LOW — intermediate state token, no governance claim",
+  "next_epoch_seed": "Rules for breaking a chain",
+  "group": "QUEST_CHAINS",
+  "batch": "002"
+}

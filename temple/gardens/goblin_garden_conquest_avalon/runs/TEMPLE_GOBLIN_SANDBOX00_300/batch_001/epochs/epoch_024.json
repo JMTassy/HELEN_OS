@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E024",
+  "artifact_name": "QUEST_TYPE_WARN",
+  "artifact_type": "QUEST",
+  "world_model_delta": "WARN quest type. Goal: detect a symbol-smuggling risk and document it. Reward: contamination_score -10. Uses ⚠️📜 ACT. This quest type actively incentivizes safety checks within the sandbox.",
+  "WULmoji_surface": "⚫ ✝️ 🜂🜍 ⚠️📜 🔗#SANDBOX00-E024 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does WARN quest reward only reduce contamination_score within the sandbox?",
+  "risk_of_symbol_smuggling": "LOW — meta-safety quest type, actively reduces risk",
+  "next_epoch_seed": "COMBINE quest: multi-faction collaboration",
+  "group": "QUESTS",
+  "batch": "001"
+}

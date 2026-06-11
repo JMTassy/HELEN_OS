@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E135",
+  "artifact_name": "RITUAL_TRIGGER_CONDITIONS",
+  "artifact_type": "RITUAL",
+  "world_model_delta": "Ritual triggers: ELEMENTAL_CYCLE (automatic every 20 turns), RESOURCE_FESTIVAL (COMBINE quest completion at ISLE_QUINT), FACTION_CONCLAVE (mutual faction initiation), BRIDGE_CEREMONY (dual-endpoint occupation + resource payment). All triggers are deterministic from simulation state.",
+  "WULmoji_surface": "🔴 🌹 🜁🜂 🔒📜 🔗#SANDBOX00-E135 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Are all ritual triggers observable and deterministic from simulation state?",
+  "risk_of_symbol_smuggling": "LOW — fully deterministic; no hidden triggers",
+  "next_epoch_seed": "Ritual duration and effect rules",
+  "group": "RITUALS",
+  "batch": "003"
+}

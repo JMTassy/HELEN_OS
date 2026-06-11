@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E028",
+  "artifact_name": "QUEST_EXPIRATION_RULES",
+  "artifact_type": "QUEST",
+  "world_model_delta": "All quests expire after MAX_TURNS=20 (except EXPLORE type). On expiration: quest removed, no reward, no penalty. Expiration is automatic — no appeal, no authority decision required.",
+  "WULmoji_surface": "🟣 ✝️ 🜂🜍 ⚠️📜 🔗#SANDBOX00-E028 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Is quest expiration deterministic and appeal-free?",
+  "risk_of_symbol_smuggling": "LOW — timer mechanic, no authority",
+  "next_epoch_seed": "Quest difficulty scaling",
+  "group": "QUESTS",
+  "batch": "001"
+}

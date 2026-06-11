@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E049",
+  "artifact_name": "BATCH_HANDOFF_PROTOCOL",
+  "artifact_type": "VALIDATOR",
+  "world_model_delta": "Batch 001 to Batch 002 handoff: (1) BATCH_001_SUMMARY.md must exist and pass; (2) contamination check CLEAN; (3) top recurring loci identified; (4) best next_epoch_seed extracted; (5) JM reviews BATCH_001_SUMMARY before Batch 002 begins. BATCH_002 is BLOCKED until JM explicit approval.",
+  "WULmoji_surface": "⚫ 🌹 🜃🜄 📜 🔗#SANDBOX00-E049 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Is Batch 002 fully blocked until JM explicit approval?",
+  "risk_of_symbol_smuggling": "LOW — handoff protocol enforces pause",
+  "next_epoch_seed": "Review checkpoint: synthesize batch findings",
+  "group": "VALIDATORS",
+  "batch": "001"
+}

@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E110",
+  "artifact_name": "RESOURCE_REVIEW_CHECKPOINT",
+  "artifact_type": "RESOURCE",
+  "world_model_delta": "Resource synthesis: generation rates (E101), decay (E102), transfer protocol (E103), scarcity events (E104), overflow rules (E105), quest costs (E106), alliance pooling (E107), conversion rates (E108), audit format (E109). E108 QUINT_CORE currency and E109 audit vocabulary require explicit non-governance framing. Resource system is self-contained.",
+  "WULmoji_surface": "🔴 🌀 🜄🜁 🛡️ 🔗#SANDBOX00-E110 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does the resource system create any pathway to governance contamination through accounting vocabulary?",
+  "risk_of_symbol_smuggling": "MEDIUM — synthesizing; E108 and E109 vocabulary risks noted; no contamination pathway found",
+  "next_epoch_seed": "Territory conquest declaration format",
+  "group": "RESOURCES",
+  "batch": "003"
+}

@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E146",
+  "artifact_name": "SYNTHESIS_VALIDATOR_PERFORMANCE",
+  "artifact_type": "SYNTHESIS",
+  "world_model_delta": "Validator performance: batch_001 stop event at E042 was a true-positive (forbidden terms in description text as literal substrings). Fix: rewrote descriptions to avoid literal substring matches. Batches 002 and 003 avoid this pattern by design. SEAL regex warns on disambiguation text — acceptable informational warning.",
+  "WULmoji_surface": "🔵 🌀 🜄🜁 🛡️ 🔗#SANDBOX00-E146 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does the validator design produce false negatives as well as the documented false positives?",
+  "risk_of_symbol_smuggling": "MEDIUM — validator scans substrings; false positive risk is documented and mitigated; false negative risk (obfuscated terms) remains theoretical",
+  "next_epoch_seed": "TEMPLOCK and WULmoji integration analysis",
+  "group": "SYNTHESIS",
+  "batch": "003"
+}

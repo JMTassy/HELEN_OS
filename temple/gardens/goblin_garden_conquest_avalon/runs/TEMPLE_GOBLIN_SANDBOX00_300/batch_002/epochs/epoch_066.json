@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E066",
+  "artifact_name": "TEMPLOCK_EXPIRATION_EVENT",
+  "artifact_type": "MECHANIC",
+  "world_model_delta": "On TEMPLOCK expiration: generates TEMPLOCK_EXPIRED event: {turn, island, applying_faction, duration_actual, resource_delta_frozen}. Island ownership and resource production resume normal delta calculations immediately. No manual action required.",
+  "WULmoji_surface": "🔵 🌀 🜄🜁 🛡️ 🔗#SANDBOX00-E066 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Is the TEMPLOCK_EXPIRED event sufficient to reconstruct frozen-period state for scoring?",
+  "risk_of_symbol_smuggling": "LOW — automatic expiration event, self-documenting",
+  "next_epoch_seed": "Faction immunity to TEMPLOCK",
+  "group": "TEMPLOCK",
+  "batch": "002"
+}

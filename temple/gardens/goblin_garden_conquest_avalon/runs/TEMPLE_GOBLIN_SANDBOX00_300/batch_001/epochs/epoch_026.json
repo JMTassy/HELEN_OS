@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E026",
+  "artifact_name": "QUEST_RECEIPT_FORMAT",
+  "artifact_type": "QUEST",
+  "world_model_delta": "Every completed quest produces a QUEST_RECEIPT_V0. Fields: quest_id, quest_type, faction, turn_completed, reward_granted, wulmoji_surface, authority=false, sovereign=false, status=PROPOSED. QUEST_RECEIPT is CONQUESTLAND-local, different namespace from governance receipts.",
+  "WULmoji_surface": "🔵 ✝️ 🜄🜁 🛡️ 🔗#SANDBOX00-E026 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does QUEST_RECEIPT_V0 share any schema fields that could contaminate GARDEN_EPOCH_RECEIPT_V0?",
+  "risk_of_symbol_smuggling": "MEDIUM — receipt vocabulary is shared with governance; disambiguate via CONQUESTLAND namespace",
+  "next_epoch_seed": "Quest chains: multi-part quests",
+  "group": "QUESTS",
+  "batch": "001"
+}

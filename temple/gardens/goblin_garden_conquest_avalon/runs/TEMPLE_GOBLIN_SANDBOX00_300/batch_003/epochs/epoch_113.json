@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E113",
+  "artifact_name": "CONQUEST_DEFENSE_MECHANICS",
+  "artifact_type": "CONQUEST",
+  "world_model_delta": "Defense actions during conquest window: GUARD action doubles ownership_score delta for defender for that turn. Defender may request ally reinforcement: ally contributes score support at cost of 3 resource units. Defense is simulation-mechanical — no governance body arbitrates.",
+  "WULmoji_surface": "🟣 ✝️ 🜃🜄 📜 🔗#SANDBOX00-E113 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does ally reinforcement create a governance obligation for the reinforcing faction?",
+  "risk_of_symbol_smuggling": "LOW — mechanical reinforcement, no governance obligation",
+  "next_epoch_seed": "Post-conquest transition rules",
+  "group": "CONQUEST",
+  "batch": "003"
+}

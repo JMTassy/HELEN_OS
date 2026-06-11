@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E105",
+  "artifact_name": "RESOURCE_OVERFLOW_RULES",
+  "artifact_type": "RESOURCE",
+  "world_model_delta": "When a faction's resource stockpile on one island exceeds MAX_STOCKPILE=50, overflow distributes to adjacent bridge-connected islands. If all adjacent islands are also full, overflow is lost. Lost overflow is logged but not recoverable.",
+  "WULmoji_surface": "🔴 🌀 🜃🜄 📜 🔗#SANDBOX00-E105 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does lost overflow create any scoring adjustment or liability?",
+  "risk_of_symbol_smuggling": "LOW — logged informational only; no scoring impact",
+  "next_epoch_seed": "Resource costs per quest type",
+  "group": "RESOURCES",
+  "batch": "003"
+}

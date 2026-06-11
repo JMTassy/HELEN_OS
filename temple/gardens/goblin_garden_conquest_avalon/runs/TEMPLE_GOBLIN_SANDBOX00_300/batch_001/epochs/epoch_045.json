@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E045",
+  "artifact_name": "LEDGER_MUTATION_GUARD",
+  "artifact_type": "VALIDATOR",
+  "world_model_delta": "Batch_001 must not write to: town/ledger_v1.ndjson, helensh/.state/live_ledger.jsonl, admitted_canon.jsonl, GOVERNANCE/GEMMA_PROPOSALS/, docs/proposals/. Verification: git status after generation must show only changes under the sandbox path.",
+  "WULmoji_surface": "🔴 🌹 🜃🜄 📜 🔗#SANDBOX00-E045 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "What command verifies no files outside the sandbox were modified?",
+  "risk_of_symbol_smuggling": "LOW — guard definition, no claims",
+  "next_epoch_seed": "Kernel write guard",
+  "group": "VALIDATORS",
+  "batch": "001"
+}

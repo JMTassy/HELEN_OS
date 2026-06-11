@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E093",
+  "artifact_name": "DIPLOMACY_BETRAYAL_RULES",
+  "artifact_type": "DIPLOMACY",
+  "world_model_delta": "Betrayal = using a hostile action against an active ally. Consequence: ALLIANCE_COLLAPSE triggers, betrayer conflict_score +50, betrayed party receives betrayal_compensation = 10 resource units. Betrayal is mechanic-only — no governance tribunal.",
+  "WULmoji_surface": "🟣 🌹 🜃🜄 📜 🔗#SANDBOX00-E093 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does betrayal compensation imply any ongoing obligation between factions?",
+  "risk_of_symbol_smuggling": "LOW — one-time compensation, no ongoing obligation",
+  "next_epoch_seed": "Neutral zone protocols",
+  "group": "DIPLOMACY",
+  "batch": "002"
+}

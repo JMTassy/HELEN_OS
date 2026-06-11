@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E131",
+  "artifact_name": "RITUAL_TYPE_ELEMENTAL_CYCLE",
+  "artifact_type": "RITUAL",
+  "world_model_delta": "ELEMENTAL_CYCLE ritual: occurs every 20 turns automatically. Each island's dominant element cycles forward (FIRE→WATER→AIR→EARTH→QUINT→FIRE). Elemental cycle affects faction affinity bonuses but not ownership. Cycle is simulation-clockwork — no faction triggers it.",
+  "WULmoji_surface": "🔵 🌹 🜁🜂 🔒📜 🔗#SANDBOX00-E131 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does the elemental cycle affect governance standing of any faction?",
+  "risk_of_symbol_smuggling": "LOW — resource affinity shift only; no governance standing change",
+  "next_epoch_seed": "Ritual type: resource festival",
+  "group": "RITUALS",
+  "batch": "003"
+}

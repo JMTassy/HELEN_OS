@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E087",
+  "artifact_name": "SCORE_TIEBREAK_RULES",
+  "artifact_type": "SCORING",
+  "world_model_delta": "Score tiebreak order: (1) higher quest_score wins; (2) if still tied, higher resource_score; (3) if still tied, faction who reached current score first by turn number. If all three tie, result is DRAW. No external judge for tiebreaks.",
+  "WULmoji_surface": "🟢 ⟂◯⟂ 🜁🜂 🔒📜 🔗#SANDBOX00-E087 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Are all tiebreak conditions resolvable from game state without external judge?",
+  "risk_of_symbol_smuggling": "LOW — tiebreak is deterministic from game history",
+  "next_epoch_seed": "Leaderboard data structure",
+  "group": "SCORING",
+  "batch": "002"
+}

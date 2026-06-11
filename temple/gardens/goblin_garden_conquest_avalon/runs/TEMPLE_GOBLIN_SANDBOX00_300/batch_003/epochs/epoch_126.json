@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E126",
+  "artifact_name": "MEMORY_FACTION_MERGE",
+  "artifact_type": "MEMORY",
+  "world_model_delta": "When two factions merge via ALLIANCE completion: TERRITORY_HELD and QUEST/CONQUEST records union; ALLIANCE records cleared; resource memories average. Merged memory is treated as new baseline. Prior individual memories are archived. Merged memory reflects pathfinding history only, not joint governance title.",
+  "WULmoji_surface": "🔵 ⟂◯⟂ 🜄🜁 🛡️ 🔗#SANDBOX00-E126 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does merged memory create any joint ownership claim?",
+  "risk_of_symbol_smuggling": "MEDIUM — merged territory memories could imply co-ownership; explicit: merged memory is pathfinding history only, not governance co-title",
+  "next_epoch_seed": "Memory decay formula",
+  "group": "MEMORY",
+  "batch": "003"
+}

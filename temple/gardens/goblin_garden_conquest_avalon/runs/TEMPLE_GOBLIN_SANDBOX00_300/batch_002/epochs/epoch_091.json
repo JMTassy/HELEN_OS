@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E091",
+  "artifact_name": "DIPLOMACY_TREATY_FORMAT",
+  "artifact_type": "DIPLOMACY",
+  "world_model_delta": "Treaty record: {treaty_id, proposer_faction, acceptor_faction, terms, duration_turns, turn_signed, status, wulmoji_surface, authority=false, sovereign=false, canon=false}. CONQUESTLAND-local; no governance standing. Status values: PROPOSED, ACTIVE, EXPIRED, BROKEN.",
+  "WULmoji_surface": "🔵 🌹 🜁🜂 🔒📜 🔗#SANDBOX00-E091 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does a CONQUESTLAND treaty share schema fields with governance receipts?",
+  "risk_of_symbol_smuggling": "MEDIUM — treaty schema uses governance-adjacent fields; all must be explicitly false; PROPOSED status mirrors receipt vocabulary",
+  "next_epoch_seed": "Negotiation mechanics",
+  "group": "DIPLOMACY",
+  "batch": "002"
+}

@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E056",
+  "artifact_name": "CHAIN_REWARD_MATRIX",
+  "artifact_type": "QUEST_CHAIN",
+  "world_model_delta": "Chain completion rewards scale with length: L=1 (1x base), L=2 (2.5x), L=3 (4x), L=4 (6x), L=5 (10x). Base reward = resource_pool_at_completion × faction_rank_multiplier. Reward is a mechanical calculation — no approval required.",
+  "WULmoji_surface": "🔵 🌹 🜂🜍 ⚠️📜 🔗#SANDBOX00-E056 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Is the reward matrix fully deterministic given chain length and faction rank?",
+  "risk_of_symbol_smuggling": "LOW — scaling formula, deterministic",
+  "next_epoch_seed": "Rules for two concurrent chains",
+  "group": "QUEST_CHAINS",
+  "batch": "002"
+}

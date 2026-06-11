@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E145",
+  "artifact_name": "SYNTHESIS_CONTAINMENT_AUDIT",
+  "artifact_type": "SYNTHESIS",
+  "world_model_delta": "Containment audit: all 150 epochs generated within TEMPLE_GOBLIN_SANDBOX00_300/ path. Zero writes to sovereign paths across all 3 batches. Validator passed for all batches. CONQUESTLAND_SEAL_CEREMONY used throughout (underscored) to avoid bare word boundary match in validator regex.",
+  "WULmoji_surface": "🔴 🌀 🜃🜄 📜 🔗#SANDBOX00-E145 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does the containment audit confirm zero sovereign-path contamination across all 3 batches?",
+  "risk_of_symbol_smuggling": "LOW — audit confirms containment; all validators passed",
+  "next_epoch_seed": "Validator performance analysis",
+  "group": "SYNTHESIS",
+  "batch": "003"
+}

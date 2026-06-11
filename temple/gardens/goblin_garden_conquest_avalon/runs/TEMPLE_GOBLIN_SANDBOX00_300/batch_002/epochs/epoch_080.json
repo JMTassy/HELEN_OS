@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E080",
+  "artifact_name": "EVENT_REVIEW_CHECKPOINT",
+  "artifact_type": "WORLD_EVENT",
+  "world_model_delta": "Event synthesis: elemental surge (E071), faction schism (E072), drought (E073), bridge storm (E074), alliance collapse (E075), triggers (E076), durations (E077), stack rules (E078), resolution (E079). TEMPLOCK+event stack interaction should be validated separately. Event system is simulation-local and governance-neutral.",
+  "WULmoji_surface": "🔴 ✝️ 🜂🜍 ⚠️📜 🔗#SANDBOX00-E080 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does the event system introduce any unintended path to governance contamination?",
+  "risk_of_symbol_smuggling": "MEDIUM — synthesizing; TEMPLOCK and event stack interaction flagged; no governance contamination path found",
+  "next_epoch_seed": "Territory score formula",
+  "group": "EVENTS",
+  "batch": "002"
+}

@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E048",
+  "artifact_name": "CONTAMINATION_CHECK_PROTOCOL",
+  "artifact_type": "VALIDATOR",
+  "world_model_delta": "Post-batch contamination check: (1) grep all artifacts for forbidden terms per STOP_TERMS list; (2) git status confirms sandbox-only changes; (3) all receipts have authority=false, sovereign=false, canon=false; (4) no epoch claimed cross-boundary admission or SEAL without _LOCAL. Result: CLEAN or CONTAMINATED.",
+  "WULmoji_surface": "🟣 🌹 🜂🜍 ⚠️📜 🔗#SANDBOX00-E048 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does the contamination check run as an automated script or manual review?",
+  "risk_of_symbol_smuggling": "LOW — explicit safety protocol, actively reduces risk",
+  "next_epoch_seed": "Batch handoff protocol",
+  "group": "VALIDATORS",
+  "batch": "001"
+}

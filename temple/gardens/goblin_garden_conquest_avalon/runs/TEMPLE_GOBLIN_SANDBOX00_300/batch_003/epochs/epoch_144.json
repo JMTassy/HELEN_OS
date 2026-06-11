@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E144",
+  "artifact_name": "SYNTHESIS_RISK_REGISTRY",
+  "artifact_type": "SYNTHESIS",
+  "world_model_delta": "Symbol-smuggling risk registry across batches 001-003: HIGH risks identified at E022 (CLAIM vocabulary), E023 (CONQUESTLAND_SEAL_CEREMONY vocabulary), E037 (TEMPLOCK naming), E061 (TEMPLOCK definition), E095 (message content_hash), E117 (conquest history records). All HIGH risks have explicit disambiguation in their respective epochs. No unresolved HIGH risk.",
+  "WULmoji_surface": "⚫ 🌀 🜂🜍 ⚠️📜 🔗#SANDBOX00-E144 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Are all HIGH-risk epochs sufficiently disambiguated from governance vocabulary?",
+  "risk_of_symbol_smuggling": "MEDIUM — synthesizing; all HIGH risks tracked; all carry explicit non-governance framing in their respective epochs",
+  "next_epoch_seed": "Containment effectiveness across 150 epochs",
+  "group": "SYNTHESIS",
+  "batch": "003"
+}

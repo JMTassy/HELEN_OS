@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E044",
+  "artifact_name": "SOVEREIGNTY_CLAIM_DETECTOR",
+  "artifact_type": "VALIDATOR",
+  "world_model_delta": "Forbidden: 'sovereign territory', 'sovereign right', sovereign-flag set to true-value, 'this island is sovereign'. Allowed: 'the simulation treats this island as inalienable within the game'. Replace 'sovereign' with 'inalienable' or 'simulation-local' throughout.",
+  "WULmoji_surface": "⚫ 🌹 🜂🜍 ⚠️📜 🔗#SANDBOX00-E044 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does ISLE_QUINT 'neutral ground' declaration in E006 constitute a sovereignty claim?",
+  "risk_of_symbol_smuggling": "LOW — defines detection, actively prevents claims",
+  "next_epoch_seed": "Ledger mutation guard",
+  "group": "VALIDATORS",
+  "batch": "001"
+}

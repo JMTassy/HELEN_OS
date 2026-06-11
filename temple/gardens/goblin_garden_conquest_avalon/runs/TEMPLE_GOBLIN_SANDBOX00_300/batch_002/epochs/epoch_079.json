@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E079",
+  "artifact_name": "EVENT_RESOLUTION_PROTOCOL",
+  "artifact_type": "WORLD_EVENT",
+  "world_model_delta": "Event resolution: at turn-end, each active event's effect is applied in stack order. Effects are additive, not multiplicative. Event log entry created for each resolution: {turn, event_type, affected_entity, effect_applied, wulmoji_surface}. Resolution is automatic.",
+  "WULmoji_surface": "⚫ ✝️ 🜁🜂 🔒📜 🔗#SANDBOX00-E079 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Is event resolution deterministic from stack order and event type alone?",
+  "risk_of_symbol_smuggling": "LOW — deterministic resolution protocol",
+  "next_epoch_seed": "Event system synthesis",
+  "group": "EVENTS",
+  "batch": "002"
+}

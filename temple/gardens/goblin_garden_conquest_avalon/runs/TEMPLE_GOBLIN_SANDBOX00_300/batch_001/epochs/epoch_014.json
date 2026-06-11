@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E014",
+  "artifact_name": "FACTION_VOID_RULES",
+  "artifact_type": "FACTION",
+  "world_model_delta": "⟂◯⟂ VOID faction. Affinity: EARTH. Action bias: ⚠️📜 WARN. Resource bonus: TERRA_SHARD +1/turn on ISLE_TERRA. Unique: VOID may move between any two islands once per 10 turns at zero cost. This is a mechanical mobility bonus only.",
+  "WULmoji_surface": "⚫ 🌀 🜄🜁 🛡️ 🔗#SANDBOX00-E014 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does VOID free movement create any special governance standing?",
+  "risk_of_symbol_smuggling": "MEDIUM — VOID 'uniqueness' could be inflated; this is a mechanical mobility bonus only",
+  "next_epoch_seed": "Faction allegiance and alliance rules",
+  "group": "FACTIONS",
+  "batch": "001"
+}

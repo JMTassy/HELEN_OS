@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E055",
+  "artifact_name": "CHAIN_ARTIFACT_SCHEMA",
+  "artifact_type": "QUEST_CHAIN",
+  "world_model_delta": "CHAIN_ARTIFACT fields: chain_id, chain_type, faction, steps_completed, total_turns, resource_cost_total, wulmoji_surface, authority=false, sovereign=false, canon=false, status=PROPOSED. CHAIN_ARTIFACT is CONQUESTLAND-local with no cross-namespace standing.",
+  "WULmoji_surface": "🔴 🌹 🜁🜂 🔒📜 🔗#SANDBOX00-E055 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does CHAIN_ARTIFACT schema share fields that could be confused with governance receipt schemas?",
+  "risk_of_symbol_smuggling": "MEDIUM — artifact schema uses governance-adjacent vocabulary; authority/sovereign/canon fields must be explicitly false",
+  "next_epoch_seed": "Reward matrix by chain length",
+  "group": "QUEST_CHAINS",
+  "batch": "002"
+}

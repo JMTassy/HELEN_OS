@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E086",
+  "artifact_name": "SCORE_MILESTONE_THRESHOLDS",
+  "artifact_type": "SCORING",
+  "world_model_delta": "Score milestones: SCOUT (50 pts), SETTLER (200 pts), HOLDER (500 pts), WARDEN (1000 pts). Milestones unlock cosmetic WULmoji ribbon variants — no mechanical effect, zero governance meaning. Milestone names intentionally parallel faction rank names to indicate progression; both are mechanical only.",
+  "WULmoji_surface": "🔵 ⟂◯⟂ 🜄🜁 🛡️ 🔗#SANDBOX00-E086 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Do score milestones and faction ranks share enough vocabulary to cause namespace collision?",
+  "risk_of_symbol_smuggling": "MEDIUM — parallel naming; both are mechanical; milestones = cosmetic only, ranks = mechanical capability",
+  "next_epoch_seed": "Tiebreak rules for equal scores",
+  "group": "SCORING",
+  "batch": "002"
+}

@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E140",
+  "artifact_name": "RITUAL_REVIEW_CHECKPOINT",
+  "artifact_type": "RITUAL",
+  "world_model_delta": "Ritual synthesis: elemental cycle (E131), resource festival (E132), faction conclave (E133), bridge ceremony (E134), trigger conditions (E135), duration rules (E136), participation format (E137), outcome schema (E138), conflict rules (E139). E133 conclave and E137 participation schema require explicit non-governance framing. Ritual system adds seasonal texture without governance implication.",
+  "WULmoji_surface": "🔴 🌹 🜂🜍 ⚠️📜 🔗#SANDBOX00-E140 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does the ritual system create any pathway to governance contamination?",
+  "risk_of_symbol_smuggling": "MEDIUM — synthesizing; E133/E137 vocabulary risks noted; no contamination pathway found",
+  "next_epoch_seed": "Cross-batch synthesis: top world loci",
+  "group": "RITUALS",
+  "batch": "003"
+}

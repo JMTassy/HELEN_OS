@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E036",
+  "artifact_name": "WULMOJI_RIBBON_FORMAT",
+  "artifact_type": "PRIMITIVE",
+  "world_model_delta": "CONQUESTLAND ribbon format. Must be exactly 2 grapheme clusters. Canonical ribbons: 🌿🌹 (ROSE context), 🌹🌀 (SPIRAL context), 🌀✝️ (CROSS context), ✝️🌿 (VOID context). Ribbon = emotional/contextual register, not instruction.",
+  "WULmoji_surface": "🔵 ⟂◯⟂ 🜂🜍 ⚠️📜 🔗#SANDBOX00-E036 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Do all ribbon combinations in this sandbox pass grapheme cluster count = 2?",
+  "risk_of_symbol_smuggling": "LOW — decorative register, no semantic claim",
+  "next_epoch_seed": "CWL CONQUESTLAND verb set",
+  "group": "LANGUAGE",
+  "batch": "001"
+}

@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E107",
+  "artifact_name": "RESOURCE_ALLIANCE_POOLING",
+  "artifact_type": "RESOURCE",
+  "world_model_delta": "Allied factions may share a SHARED_POOL: each ally contributes a declared amount at alliance formation. Pool may be drawn by either ally at cost of 1 QUINT_CORE per draw. Pool splits 50/50 on ALLIANCE_COLLAPSE. Shared pool is simulation-local; no governance claim arises from contribution.",
+  "WULmoji_surface": "🟢 🌀 🜁🜂 🔒📜 🔗#SANDBOX00-E107 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does shared pool contribution imply co-ownership or governance co-title?",
+  "risk_of_symbol_smuggling": "MEDIUM — pool contribution could imply co-title; explicit: pool is mechanical resource sharing, not governance co-ownership",
+  "next_epoch_seed": "Resource conversion rates",
+  "group": "RESOURCES",
+  "batch": "003"
+}

@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E132",
+  "artifact_name": "RITUAL_TYPE_RESOURCE_FESTIVAL",
+  "artifact_type": "RITUAL",
+  "world_model_delta": "RESOURCE_FESTIVAL: triggered by COMBINE quest completion on ISLE_QUINT. Duration: 3 turns. Effect: all resource generation rates +50%. Festival benefits all factions on active islands. No faction can claim exclusive festival benefit.",
+  "WULmoji_surface": "🟢 🌹 🜂🜍 ⚠️📜 🔗#SANDBOX00-E132 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does the triggering faction gain exclusive governance standing from hosting the festival?",
+  "risk_of_symbol_smuggling": "LOW — all factions benefit equally; no exclusive standing",
+  "next_epoch_seed": "Ritual type: faction conclave",
+  "group": "RITUALS",
+  "batch": "003"
+}

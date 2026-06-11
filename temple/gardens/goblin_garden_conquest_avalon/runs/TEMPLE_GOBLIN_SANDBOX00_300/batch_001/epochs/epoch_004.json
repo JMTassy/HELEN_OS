@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E004",
+  "artifact_name": "ISLE_AETHER",
+  "artifact_type": "LOCUS",
+  "world_model_delta": "Air territory. AIR element dominates. Faction ✝️ CROSS has natural affinity. Resource: AETHER_SHARD. Connects via 🜁🜂 to earth.",
+  "WULmoji_surface": "⚫ 🌹 🜂🜍 ⚠️📜 🔗#SANDBOX00-E004 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does AETHER_SHARD only generate at ISLE_AETHER?",
+  "risk_of_symbol_smuggling": "LOW — elemental, no authority language",
+  "next_epoch_seed": "Earth territory closes the four-element circuit",
+  "group": "TOPOGRAPHY",
+  "batch": "001"
+}

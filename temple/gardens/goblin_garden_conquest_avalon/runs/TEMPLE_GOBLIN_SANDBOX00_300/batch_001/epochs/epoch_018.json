@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E018",
+  "artifact_name": "FACTION_DECAY_RULES",
+  "artifact_type": "FACTION",
+  "world_model_delta": "Factions decay if no action taken for 3 turns. Decay: rank drops one level per 3-turn inaction period. Fully decayed faction returns to WANDERER. Territory is released to neutral. Decay is automatic — no governance trigger.",
+  "WULmoji_surface": "🟣 🌀 🜄🜁 🛡️ 🔗#SANDBOX00-E018 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does decay reset require external trigger or is it automatic?",
+  "risk_of_symbol_smuggling": "LOW — automatic mechanical decay, no governance implication",
+  "next_epoch_seed": "Faction memory rules",
+  "group": "FACTIONS",
+  "batch": "001"
+}

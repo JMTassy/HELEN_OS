@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E094",
+  "artifact_name": "DIPLOMACY_NEUTRAL_ZONE_RULES",
+  "artifact_type": "DIPLOMACY",
+  "world_model_delta": "ISLE_QUINT is the canonical neutral zone. No faction may hold ISLE_QUINT for more than 3 consecutive turns. On turn 4, ownership resets to neutral automatically. Neutral zone rules are simulation-enforced — no external arbitration needed.",
+  "WULmoji_surface": "⚫ 🌹 🜄🜁 🛡️ 🔗#SANDBOX00-E094 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does the ISLE_QUINT neutral zone rule create any authority claim for the enforcing faction?",
+  "risk_of_symbol_smuggling": "LOW — simulation-enforced reset, no faction benefits",
+  "next_epoch_seed": "Inter-faction messaging protocol",
+  "group": "DIPLOMACY",
+  "batch": "002"
+}

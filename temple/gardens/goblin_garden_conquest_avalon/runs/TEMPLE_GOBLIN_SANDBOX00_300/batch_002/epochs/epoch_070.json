@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E070",
+  "artifact_name": "TEMPLOCK_REVIEW_CHECKPOINT",
+  "artifact_type": "MECHANIC",
+  "world_model_delta": "TEMPLOCK synthesis: definition (E061), duration (E062), scope (E063), override (E064), stacking (E065), expiration event (E066), faction immunity (E067), chain interaction (E068), resource freeze (E069). E068 chain-block risk is non-trivial. TEMPLOCK is governance-neutral by design.",
+  "WULmoji_surface": "🔴 🌀 🜄🜁 🛡️ 🔗#SANDBOX00-E070 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does TEMPLOCK system as designed create any pathway to governance contamination?",
+  "risk_of_symbol_smuggling": "MEDIUM — synthesizing; E068 chain-block risk noted; TEMPLOCK is governance-neutral",
+  "next_epoch_seed": "World event: elemental surge",
+  "group": "TEMPLOCK",
+  "batch": "002"
+}

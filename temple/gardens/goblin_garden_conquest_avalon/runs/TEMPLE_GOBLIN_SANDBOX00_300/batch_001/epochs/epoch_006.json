@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E006",
+  "artifact_name": "ISLE_QUINT",
+  "artifact_type": "LOCUS",
+  "world_model_delta": "Quintessence territory at the map center. Neutral ground (simulation-local only — no governance standing). Resource: QUINT_CORE. All four alchemic bridges converge here.",
+  "WULmoji_surface": "🔵 🌹 🜄🜁 🛡️ 🔗#SANDBOX00-E006 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does ISLE_QUINT reject faction ownership claims?",
+  "risk_of_symbol_smuggling": "MEDIUM — 'neutral ground' could be read as having authority; must specify it has zero governance standing",
+  "next_epoch_seed": "Passage rules between islands",
+  "group": "TOPOGRAPHY",
+  "batch": "001"
+}

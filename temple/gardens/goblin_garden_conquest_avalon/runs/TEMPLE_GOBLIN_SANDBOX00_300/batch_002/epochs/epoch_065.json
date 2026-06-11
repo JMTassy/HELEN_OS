@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E065",
+  "artifact_name": "TEMPLOCK_STACK_RULES",
+  "artifact_type": "MECHANIC",
+  "world_model_delta": "At most 2 TEMPLOCKs may be active on the same island simultaneously. If a third is applied, the oldest expires immediately. Each TEMPLOCK tracks its own turn counter independently. Combined effect: both freeze conditions apply simultaneously.",
+  "WULmoji_surface": "🔴 🌀 🜃🜄 📜 🔗#SANDBOX00-E065 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does TEMPLOCK stacking create emergent governance behavior?",
+  "risk_of_symbol_smuggling": "LOW — stacking mechanic, independent timers",
+  "next_epoch_seed": "Event generated when TEMPLOCK expires",
+  "group": "TEMPLOCK",
+  "batch": "002"
+}

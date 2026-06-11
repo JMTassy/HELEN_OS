@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E008",
+  "artifact_name": "FRONTIER_ZONES",
+  "artifact_type": "LOCUS",
+  "world_model_delta": "Each island pair shares a FRONTIER_ZONE. Ownership is contested. WULmoji 🔴=contested, 🔵=established. Frontier zones decay toward neutral after 3 epochs without action.",
+  "WULmoji_surface": "🟣 🌹 🜂🜍 ⚠️📜 🔗#SANDBOX00-E008 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does frontier decay trigger without external authorization?",
+  "risk_of_symbol_smuggling": "LOW — mechanical decay rule",
+  "next_epoch_seed": "Map metadata: island distances and travel costs",
+  "group": "TOPOGRAPHY",
+  "batch": "001"
+}

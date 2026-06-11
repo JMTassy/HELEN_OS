@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E133",
+  "artifact_name": "RITUAL_TYPE_FACTION_CONCLAVE",
+  "artifact_type": "RITUAL",
+  "world_model_delta": "FACTION_CONCLAVE: optional ritual that two or more factions may jointly initiate at ISLE_QUINT. Duration: 1 turn. Effect: all participating factions gain +10 diplomatic standing (reduces betrayal_penalty by 10 for 5 turns). FACTION_CONCLAVE is a diplomatic standing bonus mechanic only — no binding governance body is created.",
+  "WULmoji_surface": "🟣 🌹 🜃🜄 📜 🔗#SANDBOX00-E133 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does FACTION_CONCLAVE create any governance body or binding agreement?",
+  "risk_of_symbol_smuggling": "MEDIUM — conclave implies governance assembly; explicit: conclave is a diplomatic standing bonus mechanic, no binding governance body",
+  "next_epoch_seed": "Ritual type: bridge activation ceremony",
+  "group": "RITUALS",
+  "batch": "003"
+}

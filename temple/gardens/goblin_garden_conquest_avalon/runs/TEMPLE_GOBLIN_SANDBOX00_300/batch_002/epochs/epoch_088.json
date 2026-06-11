@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E088",
+  "artifact_name": "SCORE_LEADERBOARD_FORMAT",
+  "artifact_type": "SCORING",
+  "world_model_delta": "Leaderboard record: {turn, faction, total_score, territory_score, quest_score, resource_score, alliance_score, rank_achieved, wulmoji_surface}. Snapshot taken at each epoch boundary. Leaderboard is append-only simulation data — not a governance record.",
+  "WULmoji_surface": "🟣 ⟂◯⟂ 🜂🜍 ⚠️📜 🔗#SANDBOX00-E088 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Is the leaderboard record distinct from governance receipt schemas?",
+  "risk_of_symbol_smuggling": "LOW — simulation data only; no governance claim",
+  "next_epoch_seed": "Score reset conditions",
+  "group": "SCORING",
+  "batch": "002"
+}

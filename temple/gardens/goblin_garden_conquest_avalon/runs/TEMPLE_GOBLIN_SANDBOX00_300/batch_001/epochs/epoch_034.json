@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E034",
+  "artifact_name": "WULMOJI_ACT_GRAMMAR",
+  "artifact_type": "PRIMITIVE",
+  "world_model_delta": "WULmoji act grammar. 📜=DECLARE. 🛡️=GUARD. 🔒📜=LOCK_LOCAL (5-turn freeze, expires automatically). ⚠️📜=WARN. LOCK_LOCAL ≠ governance LOCK. All acts are CONQUESTLAND-local.",
+  "WULmoji_surface": "⚫ ⟂◯⟂ 🜄🜁 🛡️ 🔗#SANDBOX00-E034 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does 🔒📜 LOCK_LOCAL in CONQUESTLAND conflict with kernel LOCK mechanics?",
+  "risk_of_symbol_smuggling": "MEDIUM — LOCK is shared vocabulary; CONQUESTLAND LOCK = temporal freeze only, not governance lock",
+  "next_epoch_seed": "WULmoji proof ID format",
+  "group": "LANGUAGE",
+  "batch": "001"
+}

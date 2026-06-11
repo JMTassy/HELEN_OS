@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E148",
+  "artifact_name": "SYNTHESIS_DIPLOMACY_QUEST_BRIDGE",
+  "artifact_type": "SYNTHESIS",
+  "world_model_delta": "Diplomacy and quest interaction: COMBINE quest (E025) triggers RESOURCE_FESTIVAL (E132) at ISLE_QUINT; alliances accelerate quest chains; quests trigger diplomacy bonuses. This bidirectional interaction is complex but bounded — COMBINE requires separate activation from alliance.",
+  "WULmoji_surface": "🟣 🌀 🜂🜍 ⚠️📜 🔗#SANDBOX00-E148 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does the diplomacy-quest bridge create unintended circular dependencies in world state?",
+  "risk_of_symbol_smuggling": "MEDIUM — bidirectional interaction is complex; circular dependency risk is low because COMBINE requires separate activation; no infinite loops identified",
+  "next_epoch_seed": "Resource and conquest system flow analysis",
+  "group": "SYNTHESIS",
+  "batch": "003"
+}

@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E022",
+  "artifact_name": "QUEST_TYPE_CLAIM",
+  "artifact_type": "QUEST",
+  "world_model_delta": "CLAIM quest type. Goal: hold territory for K turns. Reward: territory_bonus + resource_multiplier for 5 turns. Requires 🛡️ ACT to initiate. CONQUESTLAND CLAIM is simulation-local — it does not constitute a HELEN governance claim.",
+  "WULmoji_surface": "🟢 ✝️ 🜄🜁 🛡️ 🔗#SANDBOX00-E022 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Is CLAIM territory-holding purely mechanical with no canon implication?",
+  "risk_of_symbol_smuggling": "HIGH — CLAIM is HELEN governance vocabulary; CONQUESTLAND CLAIM ≠ HELEN governance claim, different namespace",
+  "next_epoch_seed": "SEAL_LOCAL quest type",
+  "group": "QUESTS",
+  "batch": "001"
+}

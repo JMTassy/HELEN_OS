@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E021",
+  "artifact_name": "QUEST_TYPE_EXPLORE",
+  "artifact_type": "QUEST",
+  "world_model_delta": "EXPLORE quest type. Goal: traverse N distinct islands. Reward: AETHER_SHARD × N. Duration: open (no time limit). Completion triggers 📜 ACT. Cannot fail — only expires after 20 turns inactive.",
+  "WULmoji_surface": "🔵 ✝️ 🜃🜄 📜 🔗#SANDBOX00-E021 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does EXPLORE quest reward exceed what can be created within the sandbox?",
+  "risk_of_symbol_smuggling": "LOW — movement quest, no authority language",
+  "next_epoch_seed": "CLAIM quest type",
+  "group": "QUESTS",
+  "batch": "001"
+}

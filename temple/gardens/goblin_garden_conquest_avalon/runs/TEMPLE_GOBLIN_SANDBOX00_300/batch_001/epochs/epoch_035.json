@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E035",
+  "artifact_name": "WULMOJI_PROOF_FORMAT",
+  "artifact_type": "PRIMITIVE",
+  "world_model_delta": "CONQUESTLAND proof format. Pattern: 🔗#SANDBOX00-E{n:03d}. PROOF_ID follows [A-Z0-9_-]+ per validator. Each proof is unique per epoch across the 300-epoch run.",
+  "WULmoji_surface": "🔴 ⟂◯⟂ 🜁🜂 🔒📜 🔗#SANDBOX00-E035 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Are all SANDBOX00 proof IDs unique across the 300-epoch run?",
+  "risk_of_symbol_smuggling": "LOW — proof format definition, no authority claim",
+  "next_epoch_seed": "WULmoji ribbon format",
+  "group": "LANGUAGE",
+  "batch": "001"
+}

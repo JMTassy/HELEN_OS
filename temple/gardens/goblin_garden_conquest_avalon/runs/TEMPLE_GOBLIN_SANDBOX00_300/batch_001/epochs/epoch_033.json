@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E033",
+  "artifact_name": "WULMOJI_PAIR_GRAMMAR",
+  "artifact_type": "PRIMITIVE",
+  "world_model_delta": "Alchemic pair grammar. 🜃🜄=FIRE→WATER. 🜄🜁=WATER→AIR. 🜁🜂=AIR→EARTH. 🜂🜍=EARTH→QUINTESSENCE. Pairs are directional — 🜄🜃 differs from 🜃🜄.",
+  "WULmoji_surface": "🟣 ⟂◯⟂ 🜃🜄 📜 🔗#SANDBOX00-E033 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does directionality of pairs affect traversal cost calculation?",
+  "risk_of_symbol_smuggling": "LOW — alchemy grammar, purely symbolic",
+  "next_epoch_seed": "WULmoji act grammar",
+  "group": "LANGUAGE",
+  "batch": "001"
+}

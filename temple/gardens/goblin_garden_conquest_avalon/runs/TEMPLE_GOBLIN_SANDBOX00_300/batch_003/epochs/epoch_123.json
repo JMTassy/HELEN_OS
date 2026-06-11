@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E123",
+  "artifact_name": "MEMORY_PATHFINDING_USE",
+  "artifact_type": "MEMORY",
+  "world_model_delta": "Factions use memory of prior high-score positions to optimize pathfinding: 50% cost reduction for familiar routes. Familiar route = island held for 3+ consecutive turns in prior 20 turns. Pathfinding is a cost reduction only — memory does not confer ownership.",
+  "WULmoji_surface": "🟣 ⟂◯⟂ 🜁🜂 🔒📜 🔗#SANDBOX00-E123 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does memory-guided pathfinding create any implicit prior-claim to familiar routes?",
+  "risk_of_symbol_smuggling": "MEDIUM — familiar routes could imply territorial prior claim; explicit: pathfinding is cost reduction only, not a claim; ownership requires active holding",
+  "next_epoch_seed": "Memory does not confer title",
+  "group": "MEMORY",
+  "batch": "003"
+}

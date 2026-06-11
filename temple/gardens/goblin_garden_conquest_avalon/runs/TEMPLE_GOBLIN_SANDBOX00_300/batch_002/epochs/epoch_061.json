@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E061",
+  "artifact_name": "TEMPLOCK_DEFINITION",
+  "artifact_type": "MECHANIC",
+  "world_model_delta": "TEMPLOCK is a 5-turn territory freeze mechanic. The applying faction pays 5 AQUA_SHARD. The target island's ownership score is frozen — no gain or decay occurs for the duration. TEMPLOCK is simulation-local and temporal; it confers zero governance standing.",
+  "WULmoji_surface": "🔵 🌀 🜃🜄 📜 🔗#SANDBOX00-E061 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does TEMPLOCK freeze mechanics extend beyond the 5-turn window?",
+  "risk_of_symbol_smuggling": "MEDIUM — TEMPLOCK implies stasis; explicitly bounded to 5 turns and zero governance standing",
+  "next_epoch_seed": "TEMPLOCK duration and turn-counting rules",
+  "group": "TEMPLOCK",
+  "batch": "002"
+}

@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E102",
+  "artifact_name": "RESOURCE_DECAY_RULES",
+  "artifact_type": "RESOURCE",
+  "world_model_delta": "Resource stockpiles decay at 5% per turn if held beyond MAX_STOCKPILE=50 per resource type per island. Decay is calculated per island per resource at turn-end. Resources transferred away before decay calculation are unaffected.",
+  "WULmoji_surface": "🟢 🌀 🜄🜁 🛡️ 🔗#SANDBOX00-E102 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does resource decay create an incentive to transfer resources before decay?",
+  "risk_of_symbol_smuggling": "LOW — decay incentivizes transfer; expected behavior; no governance implication",
+  "next_epoch_seed": "Resource transfer protocol between islands",
+  "group": "RESOURCES",
+  "batch": "003"
+}

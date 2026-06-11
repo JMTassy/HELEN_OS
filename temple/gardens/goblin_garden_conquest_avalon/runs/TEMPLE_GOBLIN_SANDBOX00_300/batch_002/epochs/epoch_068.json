@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E068",
+  "artifact_name": "TEMPLOCK_CHAIN_INTERACTION",
+  "artifact_type": "MECHANIC",
+  "world_model_delta": "TEMPLOCK does not pause quest chain timers. Chain steps requiring resource production from a TEMPLOCKed island are blocked but not failed — they wait. Chain expiration risk increases if TEMPLOCK duration overlaps with chain step deadlines.",
+  "WULmoji_surface": "🟣 🌀 🜂🜍 ⚠️📜 🔗#SANDBOX00-E068 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does TEMPLOCK blocking a chain step cause chain expiration risk?",
+  "risk_of_symbol_smuggling": "MEDIUM — yes; chain timer runs while production is blocked; chains should account for TEMPLOCK risk in step design",
+  "next_epoch_seed": "Resource production behavior during TEMPLOCK",
+  "group": "TEMPLOCK",
+  "batch": "002"
+}

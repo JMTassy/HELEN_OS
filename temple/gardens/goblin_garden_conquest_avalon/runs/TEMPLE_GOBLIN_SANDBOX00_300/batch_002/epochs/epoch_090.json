@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E090",
+  "artifact_name": "SCORE_REVIEW_CHECKPOINT",
+  "artifact_type": "SCORING",
+  "world_model_delta": "Scoring synthesis: territory formula (E081), quest scoring (E082), resource scoring (E083), alliance bonus (E084), decay (E085), milestones (E086), tiebreaks (E087), leaderboard (E088), reset conditions (E089). E086 milestone/rank vocabulary overlap noted for UI layer. Scoring system is fully self-contained.",
+  "WULmoji_surface": "🔴 ⟂◯⟂ 🜄🜁 🛡️ 🔗#SANDBOX00-E090 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does the scoring system create any implicit governance incentive?",
+  "risk_of_symbol_smuggling": "MEDIUM — synthesizing; E086 milestone/rank vocabulary overlap flagged; no governance path",
+  "next_epoch_seed": "Diplomacy treaty data structure",
+  "group": "SCORING",
+  "batch": "002"
+}

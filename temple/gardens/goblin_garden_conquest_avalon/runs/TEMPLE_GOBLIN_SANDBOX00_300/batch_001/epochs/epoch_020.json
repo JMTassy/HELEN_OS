@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E020",
+  "artifact_name": "FACTION_EVENT_LOG",
+  "artifact_type": "FACTION",
+  "world_model_delta": "Every faction action produces a local event log entry: {turn, faction, action, island, resource_delta, wulmoji_surface}. Log is append-only after creation. Max 100 entries per faction; oldest entries rotate out.",
+  "WULmoji_surface": "🔴 🌀 🜂🜍 ⚠️📜 🔗#SANDBOX00-E020 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Is the faction event log append-only and rotation-safe?",
+  "risk_of_symbol_smuggling": "LOW — event log mechanics, not a governance ledger",
+  "next_epoch_seed": "Quest types: initiation and structure",
+  "group": "FACTIONS",
+  "batch": "001"
+}

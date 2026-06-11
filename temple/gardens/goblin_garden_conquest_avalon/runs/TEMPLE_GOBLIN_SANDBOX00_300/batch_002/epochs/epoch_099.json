@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E099",
+  "artifact_name": "DIPLOMACY_PEACE_TREATY_SCHEMA",
+  "artifact_type": "DIPLOMACY",
+  "world_model_delta": "Peace treaty: {treaty_id, type=PEACE, parties, no_hostile_for_N_turns, resource_exchange_optional, wulmoji_surface, authority=false, sovereign=false, canon=false, status=PROPOSED}. Peace treaties expire automatically at N turns. No obligation persists after expiration.",
+  "WULmoji_surface": "⚫ 🌹 🜁🜂 🔒📜 🔗#SANDBOX00-E099 🌀🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does a peace treaty create any obligation that persists after expiration?",
+  "risk_of_symbol_smuggling": "LOW — no obligation persists; treaty expires cleanly",
+  "next_epoch_seed": "Diplomacy system synthesis",
+  "group": "DIPLOMACY",
+  "batch": "002"
+}

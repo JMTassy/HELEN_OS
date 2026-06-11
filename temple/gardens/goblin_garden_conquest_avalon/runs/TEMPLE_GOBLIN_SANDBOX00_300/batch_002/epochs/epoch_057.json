@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E057",
+  "artifact_name": "CHAIN_OVERLAP_RULES",
+  "artifact_type": "QUEST_CHAIN",
+  "world_model_delta": "A faction may have at most 2 active chains simultaneously. A third chain initiation suspends the oldest active chain. Suspended chains retain step progress for up to 10 turns. No scoring penalty for suspension.",
+  "WULmoji_surface": "🟢 🌹 🜃🜄 📜 🔗#SANDBOX00-E057 🌿🌹",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_002/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does chain suspension create any governance obligation or just a mechanical pause?",
+  "risk_of_symbol_smuggling": "LOW — queue mechanic, no obligation",
+  "next_epoch_seed": "Chain expiration cascade rules",
+  "group": "QUEST_CHAINS",
+  "batch": "002"
+}

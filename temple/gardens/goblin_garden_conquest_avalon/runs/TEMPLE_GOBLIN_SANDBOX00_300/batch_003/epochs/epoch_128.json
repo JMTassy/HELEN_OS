@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E128",
+  "artifact_name": "MEMORY_ISLAND_AFFINITY",
+  "artifact_type": "MEMORY",
+  "world_model_delta": "Elemental affinity memory: factions remember which islands gave resource bonuses during their tenure. Affinity memory persists 30 turns regardless of current ownership. Affinity memory only affects resource generation rate predictions — not actual generation rates.",
+  "WULmoji_surface": "🟣 ⟂◯⟂ 🜂🜍 ⚠️📜 🔗#SANDBOX00-E128 🌹🌿",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does affinity memory affect actual resource generation or only predictions?",
+  "risk_of_symbol_smuggling": "LOW — prediction-only; actual rates are simulation-determined",
+  "next_epoch_seed": "Memory event annotation rules",
+  "group": "MEMORY",
+  "batch": "003"
+}

@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E050",
+  "artifact_name": "BATCH_001_REVIEW_CHECKPOINT",
+  "artifact_type": "VALIDATOR",
+  "world_model_delta": "Checkpoint before summary. Top recurring loci: HOME_KEEP_AVALON (E001), ISLE_IGNIS (E002), ISLE_QUINT (E006). Top quest mechanics: CONQUESTLAND_SEAL (E023), WARN (E024), COMBINE (E025). Top WULmoji primitives: state grammar (E031), pair grammar (E033). Top risks: CLAIM/CONQUESTLAND_SEAL vocabulary overlap (E022/E023), TEMPLOCK rename needed (E037).",
+  "WULmoji_surface": "🔴 🌹 🜄🜁 🛡️ 🔗#SANDBOX00-E050 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does this checkpoint accurately reflect the batch_001 artifact set?",
+  "risk_of_symbol_smuggling": "MEDIUM — synthesizing across batch; must not overstate findings as canonical insights",
+  "next_epoch_seed": "Begin Batch 002 after JM approval: focus on quest chain completion mechanics and TEMPLOCK implementation",
+  "group": "VALIDATORS",
+  "batch": "001"
+}

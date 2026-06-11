@@ -1,0 +1,17 @@
+{
+  "epoch_id": "E134",
+  "artifact_name": "RITUAL_TYPE_BRIDGE_CEREMONY",
+  "artifact_type": "RITUAL",
+  "world_model_delta": "BRIDGE_CEREMONY: faction occupying both endpoints of a bridge may initiate a ceremony reducing that bridge's traversal cost to 0 for 5 turns. Cost: 5 QUINT_CORE. Effect: affects all traversers equally. Ceremony does not create ownership of the bridge.",
+  "WULmoji_surface": "⚫ 🌹 🜄🜁 🛡️ 🔗#SANDBOX00-E134 🌹🌀",
+  "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/batch_003/",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "validator_question": "Does bridge ceremony create any ownership claim over the bridge?",
+  "risk_of_symbol_smuggling": "LOW — cost reduction only; no ownership; available to all traversers",
+  "next_epoch_seed": "Conditions that trigger rituals",
+  "group": "RITUALS",
+  "batch": "003"
+}
