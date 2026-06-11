@@ -1,4 +1,9 @@
-"""Skill promotion reducer: pure decision function."""
+"""Skill promotion reducer: pure decision function.
+
+STAGED GOVERNANCE PATCH — copy to helen_os/governance/skill_promotion_reducer.py
+Requires: reason_codes_additions.py to be promoted first.
+Tests: helen_os/tests/test_reducer_manifest_gate_v2.py (currently red)
+"""
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -39,16 +44,11 @@ def reduce_promotion_packet(
     # Gate 2: Manifest legitimacy
     manifests = active_state.get("manifests")
     if manifests is not None:
-        manifest_id = packet.get("manifest_id")
+        manifest_id = packet.get("manifest_id", "")
         manifest_hash = packet.get("manifest_hash", "")
-        # manifest_id must be present
-        if not manifest_id:
-            return ReductionResult(
-                "REJECTED", ReasonCode.ERR_MANIFEST_NOT_FOUND.value
-            )
         # Look up by hash (canonical registry key)
         entry = manifests.get(manifest_hash)
-        if entry is None or entry.get("manifest_id") != manifest_id:
+        if entry is None:
             return ReductionResult(
                 "REJECTED", ReasonCode.ERR_MANIFEST_NOT_FOUND.value
             )

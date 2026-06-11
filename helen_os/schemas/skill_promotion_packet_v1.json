@@ -1,40 +1,95 @@
 {
   "type": "object",
   "properties": {
-    "schema_name": {"const": "SKILL_PROMOTION_PACKET_V1"},
-    "schema_version": {"const": "1.0.0"},
-    "packet_id": {"type": "string"},
-    "skill_id": {"type": "string"},
-    "candidate_version": {"type": "string"},
+    "schema_name": {
+      "const": "SKILL_PROMOTION_PACKET_V1"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "packet_id": {
+      "type": "string"
+    },
+    "skill_id": {
+      "type": "string"
+    },
+    "candidate_version": {
+      "type": "string"
+    },
     "lineage": {
       "type": "object",
       "properties": {
-        "parent_skill_id": {"type": "string"},
-        "parent_version": {"type": "string"},
-        "proposal_sha256": {"type": "string"}
+        "parent_skill_id": {
+          "type": "string"
+        },
+        "parent_version": {
+          "type": "string"
+        },
+        "proposal_sha256": {
+          "type": "string"
+        }
       },
-      "required": ["parent_skill_id", "parent_version", "proposal_sha256"],
+      "required": [
+        "parent_skill_id",
+        "parent_version",
+        "proposal_sha256"
+      ],
       "additionalProperties": false
     },
-    "capability_manifest_sha256": {"type": "string"},
+    "manifest_id": {
+      "type": "string"
+    },
+    "manifest_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "domain_category": {
+      "type": "string"
+    },
+    "provider_class": {
+      "type": "string"
+    },
+    "capability_manifest_sha256": {
+      "type": "string"
+    },
     "doctrine_surface": {
       "type": "object",
       "properties": {
-        "law_surface_version": {"type": "string"},
-        "transfer_required": {"type": "boolean"}
+        "law_surface_version": {
+          "type": "string"
+        },
+        "transfer_required": {
+          "type": "boolean"
+        }
       },
-      "required": ["law_surface_version", "transfer_required"],
+      "required": [
+        "law_surface_version",
+        "transfer_required"
+      ],
       "additionalProperties": false
     },
     "evaluation": {
       "type": "object",
       "properties": {
-        "threshold_name": {"type": "string"},
-        "threshold_value": {"type": "number"},
-        "observed_value": {"type": "number"},
-        "passed": {"type": "boolean"}
+        "threshold_name": {
+          "type": "string"
+        },
+        "threshold_value": {
+          "type": "number"
+        },
+        "observed_value": {
+          "type": "number"
+        },
+        "passed": {
+          "type": "boolean"
+        }
       },
-      "required": ["threshold_name", "threshold_value", "observed_value", "passed"],
+      "required": [
+        "threshold_name",
+        "threshold_value",
+        "observed_value",
+        "passed"
+      ],
       "additionalProperties": false
     },
     "receipts": {
@@ -43,15 +98,27 @@
       "items": {
         "type": "object",
         "properties": {
-          "receipt_id": {"type": "string"},
-          "payload": {"type": "object"},
-          "sha256": {"type": "string"}
+          "receipt_id": {
+            "type": "string"
+          },
+          "payload": {
+            "type": "object"
+          },
+          "sha256": {
+            "type": "string"
+          }
         },
-        "required": ["receipt_id", "payload", "sha256"],
+        "required": [
+          "receipt_id",
+          "payload",
+          "sha256"
+        ],
         "additionalProperties": false
       }
     },
-    "transfer_evidence": {"type": "object"}
+    "transfer_evidence": {
+      "type": "object"
+    }
   },
   "required": [
     "schema_name",
