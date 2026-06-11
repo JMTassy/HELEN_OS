@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rho_trace.schema.json",
+  "title": "RHO Trace Line (NDJSON)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["t", "mu_Delta", "mu_Pi", "mu_CFL", "mu_Lyap", "mu_Z", "rho"],
+  "properties": {
+    "t":        { "type": "integer", "minimum": 0 },
+    "mu_Delta": { "type": "number" },
+    "mu_Pi":    { "type": "number" },
+    "mu_CFL":   { "type": "number" },
+    "mu_Lyap":  { "type": "number" },
+    "mu_Z":     { "type": "number" },
+    "rho":      { "type": "number" }
+  }
+}

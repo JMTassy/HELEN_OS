@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rho_manifest.schema.json",
+  "title": "RHO Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_id", "thresholds", "audit", "environment"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "enum": ["RHO_MANIFEST_V1"]
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "thresholds": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["Delta_floor", "eps_Pi", "M_floor", "R2_floor", "mu_floor", "Z_max", "tau"],
+      "properties": {
+        "Delta_floor": { "type": "number", "exclusiveMinimum": 0 },
+        "eps_Pi":      { "type": "number", "exclusiveMinimum": 0 },
+        "M_floor":     { "type": "number" },
+        "R2_floor":    { "type": "number", "minimum": 0, "maximum": 1 },
+        "mu_floor":    { "type": "number", "exclusiveMinimum": 0 },
+        "Z_max":       { "type": "number", "exclusiveMinimum": 0 },
+        "tau":         { "type": "number", "exclusiveMinimum": 0 }
+      }
+    },
+    "audit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["delta_audit"],
+      "properties": {
+        "delta_audit": { "type": "number", "minimum": 0 }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["precision", "backend", "seeds", "commit"],
+      "properties": {
+        "precision": { "type": "string", "enum": ["float64", "float32"] },
+        "backend":   { "type": "string", "minLength": 1 },
+        "seeds": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["global"],
+          "properties": {
+            "global":  { "type": "integer" },
+            "streams": { "type": "object", "additionalProperties": { "type": "integer" } }
+          }
+        },
+        "commit": { "type": "string", "minLength": 7 }
+      }
+    },
+    "optional_refs": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "latex_spine": { "type": "string" },
+        "notes":       { "type": "string" }
+      }
+    }
+  }
+}
