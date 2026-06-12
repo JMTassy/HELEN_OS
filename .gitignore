@@ -40,3 +40,9 @@ oracle_town/memory/
 .env
 *.local.json
 .helen_env
+
+# Ephemeral runtime outputs
+logs/
+storage/
+oracle_town/skills/ops/dan_goblin/scratch/
+temple/gardens/**/runs/
