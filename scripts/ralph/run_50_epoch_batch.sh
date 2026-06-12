@@ -21,6 +21,7 @@ LOG_DIR="${SOT_ROOT}/logs/ralph_50_epoch"
 SCRATCH="${SOT_ROOT}/oracle_town/skills/ops/dan_goblin/scratch"
 
 MAX_EPOCHS="${MAX_EPOCHS:-50}"
+START_EPOCH="${START_EPOCH:-1}"
 BLOCK_SIZE="${BLOCK_SIZE:-5}"
 STAGNATION_LIMIT=3
 NO_PROGRESS_LIMIT=5
@@ -215,7 +216,8 @@ log "max_epochs=${MAX_EPOCHS}  block_size=${BLOCK_SIZE}"
 log "stagnation_limit=${STAGNATION_LIMIT}  no_progress_limit=${NO_PROGRESS_LIMIT}"
 log "═══════════════════════════════════════════════════════════"
 
-for epoch in $(seq 1 "${MAX_EPOCHS}"); do
+END_EPOCH=$(( START_EPOCH + MAX_EPOCHS - 1 ))
+for epoch in $(seq "${START_EPOCH}" "${END_EPOCH}"); do
   EPOCH_TAG="E${epoch}"
   out="${LOG_DIR}/epoch_${epoch}.log"
 
