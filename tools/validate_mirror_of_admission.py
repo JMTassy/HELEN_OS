@@ -15,7 +15,7 @@ except ImportError as exc:
     ) from exc
 
 ROOT = Path(__file__).resolve().parents[1]
-SCHEMA_PATH = ROOT / "schemas" / "mirror_of_admission_v1.schema.json"
+SCHEMA_PATH = ROOT / "helen_os" / "schemas" / "mirror_of_admission_v1.schema.json"
 
 
 def load_json(path: Path) -> dict:
