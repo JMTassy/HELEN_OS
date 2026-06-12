@@ -9,6 +9,7 @@ Day 2 Validation Tests:
 """
 
 import pytest
+pytest.importorskip("numpy")
 import json
 import hashlib
 from pathlib import Path

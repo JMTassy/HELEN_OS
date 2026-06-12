@@ -5,6 +5,7 @@ Validates SVG output generation from map data
 """
 
 import pytest
+pytest.importorskip("numpy")
 import tempfile
 import shutil
 from pathlib import Path

@@ -10,6 +10,7 @@ Tests Ed25519 signature creation and verification:
 """
 
 import pytest
+pytest.importorskip("numpy")
 import base64
 import sys
 from pathlib import Path

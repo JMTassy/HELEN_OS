@@ -5,6 +5,7 @@ Day 3: Ledger integration + K2 workflow validation
 """
 
 import pytest
+pytest.importorskip("numpy")
 import json
 import tempfile
 import shutil

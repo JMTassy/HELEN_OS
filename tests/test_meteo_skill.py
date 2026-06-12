@@ -10,6 +10,7 @@ Validates:
 """
 
 import pytest
+pytest.importorskip("numpy")
 import tempfile
 import shutil
 from pathlib import Path

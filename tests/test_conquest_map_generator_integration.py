@@ -11,6 +11,7 @@ Tests verify:
 """
 
 import pytest
+pytest.importorskip("numpy")
 import sys
 import tempfile
 import shutil
