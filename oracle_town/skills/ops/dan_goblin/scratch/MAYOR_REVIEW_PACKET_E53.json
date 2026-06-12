@@ -1,0 +1,57 @@
+{
+  "schema_name": "SKILL_PROMOTION_REVIEW_PACKET_V1",
+  "epoch": "E53",
+  "skill_id": "REFERENCE_DRIFT_WITNESS_V1",
+  "description": "Scans a declared set of non-sovereign artifacts and reports SHA drift, missing files, and stale receipts",
+  "domain_category": "observability",
+  "provider_class": "INTERNAL",
+  "hypothesis": "A drift witness for non-sovereign artifacts will make autoresearch epoch health observable and replayable",
+  "gap_evidence": {
+    "coupling_witness_covers": "sovereign surfaces only",
+    "uncovered": "EVAL_RECEIPT, FAILURE_CLUSTER, block receipts, epoch logs",
+    "existing_probes": [
+      "lnsa_consciousness_probe_integrator.py",
+      "probe.py",
+      "lnsa_consciousness_probe_integrator.py",
+      "lnsa_consciousness_probe_integrator.py",
+      "lnsa_consciousness_probe_integrator.py"
+    ],
+    "existing_witnesses": [
+      "street1_witness_activation.py",
+      "street1_witness_activation.py",
+      "street1_witness_activation.py",
+      "street1_witness_activation.py",
+      "test_second_witness_receipt_v1.py"
+    ]
+  },
+  "oracle_critique_receipt": {
+    "schema": "ORACLE_CRITIQUE_RECEIPT_V1",
+    "epoch": "E52",
+    "candidate_skill": "REFERENCE_DRIFT_WITNESS_V1",
+    "authority": "NONE",
+    "dimensions": {
+      "necessity": {
+        "verdict": "NECESSARY",
+        "evidence": "coupling_witness covers only git-tracked sovereign files; epoch receipts and EVAL_RECEIPT JSONs have no drift detection"
+      },
+      "authority_safety": {
+        "verdict": "SAFE",
+        "evidence": "NONE \u2014 skill reads only non-sovereign paths; no write path to ledger/governance/schemas"
+      },
+      "failure_mode": {
+        "verdict": "STRUCTURAL_ONLY",
+        "evidence": "SHA comparison could produce false positives if artifact format changes without content change; mitigated by content-hash, not format-hash"
+      }
+    },
+    "overall_verdict": "SURVIVES_ORACLE_PRESSURE",
+    "kill_reason": null,
+    "surviving_candidate": "REFERENCE_DRIFT_WITNESS_V1"
+  },
+  "authority": "NONE",
+  "world_effect": "NONE",
+  "admissibility_candidate": false,
+  "sovereign_touch_confirmed": false,
+  "note": "NON_SOVEREIGN dry-run only \u2014 not submitted to Mayor, requires operator countersign",
+  "completeness_check": "COMPLETE",
+  "packet_sha": "sha256:fe360503441eb668ceef265e02d8e5526fe66bcdfaa76759a4a72a75a7547422"
+}

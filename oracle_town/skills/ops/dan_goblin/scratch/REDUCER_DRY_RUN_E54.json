@@ -1,0 +1,18 @@
+{
+  "schema": "REDUCER_DRY_RUN_RECEIPT_V1",
+  "epoch": "E54",
+  "candidate": "REFERENCE_DRIFT_WITNESS_V1",
+  "verdict": "DRY_ADMITTED",
+  "checks_passed": [
+    "authority_NONE",
+    "world_effect_NONE",
+    "no_sovereign_touch",
+    "oracle_critique_present",
+    "oracle_survives",
+    "skill_id_present",
+    "domain_category_present"
+  ],
+  "checks_failed": [],
+  "authority": "NONE",
+  "note": "Dry-run only \u2014 no ledger write, no real reducer call, no sovereign state mutation"
+}

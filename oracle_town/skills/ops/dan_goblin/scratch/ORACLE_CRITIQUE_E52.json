@@ -1,0 +1,23 @@
+{
+  "schema": "ORACLE_CRITIQUE_RECEIPT_V1",
+  "epoch": "E52",
+  "candidate_skill": "REFERENCE_DRIFT_WITNESS_V1",
+  "authority": "NONE",
+  "dimensions": {
+    "necessity": {
+      "verdict": "NECESSARY",
+      "evidence": "coupling_witness covers only git-tracked sovereign files; epoch receipts and EVAL_RECEIPT JSONs have no drift detection"
+    },
+    "authority_safety": {
+      "verdict": "SAFE",
+      "evidence": "NONE \u2014 skill reads only non-sovereign paths; no write path to ledger/governance/schemas"
+    },
+    "failure_mode": {
+      "verdict": "STRUCTURAL_ONLY",
+      "evidence": "SHA comparison could produce false positives if artifact format changes without content change; mitigated by content-hash, not format-hash"
+    }
+  },
+  "overall_verdict": "SURVIVES_ORACLE_PRESSURE",
+  "kill_reason": null,
+  "surviving_candidate": "REFERENCE_DRIFT_WITNESS_V1"
+}

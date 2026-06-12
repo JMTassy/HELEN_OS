@@ -1,0 +1,46 @@
+{
+  "schema": "CANDIDATE_SKILL_MANIFEST_V1",
+  "epoch": "E51",
+  "authority": "NONE",
+  "world_effect": "NONE",
+  "gap": {
+    "gap_id": "G-001",
+    "description": "No skill exists to probe non-sovereign reference artifacts for drift between epochs",
+    "evidence": {
+      "coupling_witness_covers": "sovereign surfaces only",
+      "uncovered": "EVAL_RECEIPT, FAILURE_CLUSTER, block receipts, epoch logs",
+      "existing_probes": [
+        "lnsa_consciousness_probe_integrator.py",
+        "probe.py",
+        "lnsa_consciousness_probe_integrator.py",
+        "lnsa_consciousness_probe_integrator.py",
+        "lnsa_consciousness_probe_integrator.py"
+      ],
+      "existing_witnesses": [
+        "street1_witness_activation.py",
+        "street1_witness_activation.py",
+        "street1_witness_activation.py",
+        "street1_witness_activation.py",
+        "test_second_witness_receipt_v1.py"
+      ]
+    },
+    "proposed_skill": {
+      "skill_id": "REFERENCE_DRIFT_WITNESS_V1",
+      "description": "Scans a declared set of non-sovereign artifacts and reports SHA drift, missing files, and stale receipts",
+      "inputs": [
+        "artifact_manifest: list[{path, expected_sha}]"
+      ],
+      "outputs": [
+        "REFERENCE_DRIFT_REPORT_V1: {drift_count, missing_count, stale_count, authority=NONE}"
+      ],
+      "authority": "NONE",
+      "world_effect": "NONE",
+      "sovereign_touch": false,
+      "hypothesis": "A drift witness for non-sovereign artifacts will make autoresearch epoch health observable and replayable",
+      "domain_category": "observability",
+      "provider_class": "INTERNAL"
+    }
+  },
+  "admissibility_candidate": false,
+  "note": "TEMPLE sandbox \u2014 non-sovereign candidate only; requires Oracle pressure before Mayor review"
+}

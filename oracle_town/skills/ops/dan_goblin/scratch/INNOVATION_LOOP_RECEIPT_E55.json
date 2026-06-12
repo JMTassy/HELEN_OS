@@ -1,0 +1,20 @@
+{
+  "schema": "INNOVATION_LOOP_RECEIPT_V1",
+  "epoch": "E55",
+  "loop": "E51\u2192E52\u2192E53\u2192E54\u2192E55",
+  "coupling_state": "COUPLED",
+  "sovereign_dirty": [],
+  "suite_green": 604,
+  "suite_ok": true,
+  "loop_artifacts": {
+    "manifest_E51": "PRESENT",
+    "oracle_E52": "PRESENT",
+    "packet_E53": "PRESENT",
+    "dry_run_E54": "PRESENT"
+  },
+  "all_artifacts_present": true,
+  "authority": "NONE",
+  "world_effect": "NONE",
+  "ledger_mutation": false,
+  "verdict": "LOOP_COMPLETE"
+}

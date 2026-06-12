@@ -1,0 +1,18 @@
+{
+  "schema_name": "AUTORESEARCH_BLOCK_RECEIPT_V1",
+  "schema_version": "1.0.0",
+  "block_id": "B11",
+  "epoch_range": ["E51", "E55"],
+  "tests_green_sum": 0,
+  "tests_red_sum": 0,
+  "candidate_fixes_emitted": 1,
+  "review_packets_emitted": 2,
+  "stagnation_streak": 0,
+  "no_progress_streak": 0,
+  "dominant_failures": "",
+  "sovereign_touches": 0,
+  "decision": "CONTINUE",
+  "authority": "NONE",
+  "world_effect": "NONE",
+  "ledger_mutation": false
+}
