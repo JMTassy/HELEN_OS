@@ -74,7 +74,13 @@ MAX_EPOCHS=5 BLOCK_SIZE=5 bash scripts/ralph/run_50_epoch_batch.sh 2>&1 | tee /t
 - `ledger_mutation == false` in receipt
 - No FAILURE_CLUSTER entries touching `governance/` paths
 
-**Status:** READY
+**Status:** DONE — 2026-06-12
+- 5 epochs (1 block), exit 0, 1.9s
+- `AUTORESEARCH_BLOCK_RECEIPT_V1` emitted (`B10`, epoch_range E46-E50)
+- `sovereign_touches: 0` ✓ | `ledger_mutation: false` ✓ | `authority: NONE` ✓
+- Zero R_sovereign failures across all epochs
+- Stagnation guard triggered cleanly (no crash), batch completed to BLOCK receipt
+- Suite stable: 584/584 post-batch
 
 ---
 

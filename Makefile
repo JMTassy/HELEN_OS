@@ -4,7 +4,7 @@ PYTHON := $(VENV)/bin/python
 PYTEST := $(VENV)/bin/pytest
 PYTHONPATH := $(CURDIR)
 
-.PHONY: test membrane-test anti-regression
+.PHONY: test membrane-test anti-regression demo-helen demo-boot demo-coupling demo-autoresearch
 
 # Run all tests
 test:
@@ -17,6 +17,18 @@ membrane-test:
 	  helen_os/tests/test_autoresearch_batch_is_bounded_and_ordered.py \
 	  helen_os/tests/test_autoresearch_batch_is_deterministic.py \
 	  helen_os/tests/test_no_local_replay_shadowing.py
+
+# Power demos — NON_SOVEREIGN, authority=NONE, no ledger writes
+demo-boot:
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) scripts/demos/demo_boot_ritual.py
+
+demo-coupling:
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) scripts/demos/demo_reality_coupling.py
+
+demo-autoresearch:
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) scripts/demos/demo_bounded_autoresearch.py
+
+demo-helen: demo-boot demo-coupling demo-autoresearch
 
 # Check for replay divergence (single source of truth)
 anti-regression:
