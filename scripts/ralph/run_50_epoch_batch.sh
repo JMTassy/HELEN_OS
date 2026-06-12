@@ -66,8 +66,27 @@ parse_sig() {
 }
 
 green_count_from_log() {
+  # Primary: scan stdout log for "N passed" (epochs that print pytest directly)
   local out="$1"
-  grep -oE "[0-9]+ passed" "${out}" 2>/dev/null | awk '{print $1}' | tail -1 || echo "0"
+  local from_log
+  from_log=$(grep -oE "[0-9]+ passed" "${out}" 2>/dev/null | awk '{print $1}' | tail -1 || echo "0")
+  if (( from_log > 0 )); then echo "${from_log}"; return; fi
+
+  # Fallback: parse EVAL_RECEIPT_E*.json written by epochs that use capture_output=True
+  # Extract epoch tag from log filename: epoch_15.log → E15
+  local epoch_tag
+  epoch_tag=$(basename "${out}" .log | sed 's/epoch_/E/')
+  local receipt="${SCRATCH}/EVAL_RECEIPT_${epoch_tag}.json"
+  if [[ -f "${receipt}" ]]; then
+    python3 -c "
+import json, re, sys
+d = json.load(open('${receipt}'))
+m = re.search(r'([0-9]+) passed', d.get('summary',''))
+print(m.group(1) if m else '0')
+" 2>/dev/null || echo "0"
+  else
+    echo "0"
+  fi
 }
 
 # ─── Block receipt writer ────────────────────────────────────────────────────
@@ -80,8 +99,27 @@ write_block_receipt() {
   for ep in $(seq "${epoch_start}" "${epoch_end}"); do
     local f="${LOG_DIR}/epoch_${ep}.log"
     [[ -f "$f" ]] || continue
+    # Count from log first, then fall back to EVAL_RECEIPT if log has no pytest output
     local g; g=$(grep -oE "[0-9]+ passed" "$f" 2>/dev/null | awk '{print $1}' | tail -1 || echo 0)
     local r; r=$(grep -oE "[0-9]+ failed" "$f" 2>/dev/null | awk '{print $1}' | tail -1 || echo 0)
+    if (( g == 0 )); then
+      local receipt_ep="${SCRATCH}/EVAL_RECEIPT_E${ep}.json"
+      if [[ -f "${receipt_ep}" ]]; then
+        g=$(python3 -c "
+import json, re
+d = json.load(open('${receipt_ep}'))
+m = re.search(r'([0-9]+) passed', d.get('summary',''))
+print(m.group(1) if m else '0')
+" 2>/dev/null || echo 0)
+        local rf; rf=$(python3 -c "
+import json, re
+d = json.load(open('${receipt_ep}'))
+m = re.search(r'([0-9]+) failed', d.get('summary',''))
+print(m.group(1) if m else '0')
+" 2>/dev/null || echo 0)
+        r=$((r + rf))
+      fi
+    fi
     greens=$((greens + g)); reds=$((reds + r))
     grep -q "CANDIDATE_EMITTED" "$f" 2>/dev/null && candidates=$((candidates + 1)) || true
     grep -q "REVIEW_PACKET_EMITTED\|REVIEW_PACKET" "$f" 2>/dev/null && reviews=$((reviews + 1)) || true
@@ -203,9 +241,14 @@ for epoch in $(seq 1 "${MAX_EPOCHS}"); do
   fi
   last_sig="${sig}"
 
-  # Green progress tracking — only count epochs that actually ran pytest
+  # Green progress tracking — check log first, then EVAL_RECEIPT fallback
   green=$(green_count_from_log "${out}")
-  ran_pytest=$(grep -qE "[0-9]+ passed" "${out}" 2>/dev/null && echo 1 || echo 0)
+  ran_pytest=0
+  if grep -qE "[0-9]+ passed" "${out}" 2>/dev/null; then
+    ran_pytest=1
+  elif (( green > 0 )); then
+    ran_pytest=1  # green came from EVAL_RECEIPT fallback
+  fi
   if (( ran_pytest == 1 )); then
     if (( green <= last_green_count )); then
       no_progress_count=$((no_progress_count + 1))
