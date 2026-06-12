@@ -8,7 +8,9 @@ sovereign_touch: false
 domain_category: governance_observability
 provider_class: INTERNAL
 protocol_ref: oracle_town/protocols/SKILL_ADMISSION_PROTOCOL_V1.md
-institutional_admission: CONFIRMED (ADMISSION_LEDGER_V1.json / entry_hash=sha256:978457cf09cf74a0bed501e0f5f4fd2c221cece1c6e2daf9aa91f181e483b6c2 / replay_status=ACTIVE)
+skill_local_admission: CONFIRMED (ADMISSION_LEDGER_V1.json / entry_hash=sha256:978457cf09cf74a0bed501e0f5f4fd2c221cece1c6e2daf9aa91f181e483b6c2 / replay_status=ACTIVE)
+sovereign_admission: NO
+town_ledger_mutation: NO
 ---
 
 # SKILL_ADMISSION_CHECKER_V1
