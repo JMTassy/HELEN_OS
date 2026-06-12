@@ -1,0 +1,72 @@
+{
+  "schema": "REDUCER_SUBMISSION_PACKET_V1",
+  "target": "SKILL_ADMISSION_CHECKER_V1",
+  "submitted_at": "2026-06-12T20:20:29.430166+00:00",
+  "authority": false,
+  "admission_status": "PENDING_REDUCER",
+  "ledger_effect": "NONE",
+  "target_packet": {
+    "skill_id": "SKILL_ADMISSION_CHECKER_V1",
+    "candidate_version": "V1",
+    "description": "Anti-claim-laundering checker. Returns 7-level admission status. Fail-closed on malformed replay.",
+    "domain_category": "governance_observability",
+    "world_effect": "NONE",
+    "sovereign_touch": false
+  },
+  "source_refs": {
+    "implementation": {
+      "path": "oracle_town/skills/skill_admission_checker/skill.py",
+      "sha": "sha256:393e565c05c66bd86d906c4f6ebe8655c1abafc39ee1d7737632eb3a8385edb2"
+    },
+    "tests": {
+      "path": "oracle_town/skills/skill_admission_checker/tests/test_skill_admission_checker.py",
+      "sha": "sha256:6ed425fb7240e4cc3b0e4cfb26098e9974fcfefa3b30894962c110ca935d5bd6"
+    },
+    "skill_md": {
+      "path": "oracle_town/skills/skill_admission_checker/SKILL.md",
+      "sha": "sha256:42716c9569239c0071922bbdc755e8b4c62027439d2a2644ae0a03028f993b3b"
+    },
+    "oracle_critique": {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/ORACLE_CRITIQUE_SKILL_ADMISSION_CHECKER_V1.json",
+      "sha": "sha256:90b885106a16aad7e61d7870b4ae6c682a7a21ea18857f70faf7f7fddba8d081"
+    },
+    "protocol": {
+      "path": "oracle_town/protocols/SKILL_ADMISSION_PROTOCOL_V1.md",
+      "sha": "sha256:be2126250de20e18a8b742853cb50b9392b33e7c27a2dff12a063a9d29d061e1"
+    }
+  },
+  "oracle_verdict": "SURVIVES_ORACLE_PRESSURE",
+  "claimed_scope": {
+    "reads": [
+      "oracle_town/skills/<id>/",
+      "oracle_town/skills/ops/dan_goblin/scratch/"
+    ],
+    "writes": [],
+    "sovereign_paths": []
+  },
+  "guardrails_checked": {
+    "all_guardrails_pass": true,
+    "count": 10,
+    "results": {
+      "no_sovereign_authority_claim": true,
+      "no_premature_admission_status": true,
+      "no_direct_ledger_reference": true,
+      "no_helen_say_routing": true,
+      "no_write_sovereign": true,
+      "no_protected_path_writes": true,
+      "authority_false": true,
+      "world_effect_none": true,
+      "sovereign_touch_false": true,
+      "tests_pass_13_13": true
+    }
+  },
+  "false_admission_scan": "CLEAN",
+  "protected_path_scan": "CLEAN",
+  "requested_reducer_decision": {
+    "valid_responses": [
+      "ADMIT",
+      "REJECT",
+      "REQUEST_CHANGES"
+    ]
+  }
+}

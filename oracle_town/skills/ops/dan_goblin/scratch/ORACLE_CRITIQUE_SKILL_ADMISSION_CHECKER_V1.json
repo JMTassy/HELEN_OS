@@ -1,0 +1,33 @@
+{
+  "schema": "ORACLE_CRITIQUE_V1",
+  "target": "SKILL_ADMISSION_CHECKER_V1",
+  "verdict": "SURVIVES_ORACLE_PRESSURE",
+  "impl_sha": "sha256:393e565c05c66bd86d906c4f6ebe8655c1abafc39ee1d7737632eb3a8385edb2",
+  "critiqued_at": "2026-06-12T20:19:27.044209+00:00",
+  "dimensions": {
+    "risks": {
+      "score": "LOW",
+      "findings": [
+        "glob pattern '*ADMIT*{skill_id}*' could match unintended files \u2014 mitigated by also requiring REDUCER_DECISION prefix; low false-positive risk in current structure",
+        "parents[3] path depth in cli.py is fragile if directory is moved \u2014 acceptable for prototype; SKILL.md notes it"
+      ]
+    },
+    "gaps": {
+      "score": "ACCEPTABLE",
+      "findings": [
+        "_find_reducer_artifact searches only dan_goblin/scratch \u2014 future skills may store reducer artifacts elsewhere; currently all follow this convention",
+        "skill_dir auto-derive strips _V\\d+ only \u2014 non-versioned skill IDs would fail auto-derive; explicit skill_dir param is the escape hatch"
+      ]
+    },
+    "injection": {
+      "score": "CLEAN",
+      "findings": [
+        "Only json.loads on ADMISSION_STATE_V1.json \u2014 no exec, no subprocess, no eval; malformed JSON \u2192 False (fail closed)",
+        "No sovereign path reads or writes confirmed",
+        "No calls to helen_say.py confirmed"
+      ]
+    }
+  },
+  "authority": "NONE",
+  "world_effect": "NONE"
+}

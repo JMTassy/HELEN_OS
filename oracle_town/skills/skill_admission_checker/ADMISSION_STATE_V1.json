@@ -1,0 +1,15 @@
+{
+  "schema_name": "SKILL_LIBRARY_STATE_V1",
+  "schema_version": "1.0.0",
+  "law_surface_version": "v1",
+  "active_skills": {
+    "SKILL_ADMISSION_CHECKER_V1": {
+      "active_version": "V1",
+      "status": "ACTIVE",
+      "last_decision_id": "DECISION_SKILL_ADMISSION_CHECKER_V1_ADMITTED_001"
+    }
+  },
+  "admitted_at": "2026-06-12T20:21:08.825139+00:00",
+  "authority": "NONE",
+  "candidate_identity_hash": "sha256:393e565c05c66bd86d906c4f6ebe8655c1abafc39ee1d7737632eb3a8385edb2"
+}

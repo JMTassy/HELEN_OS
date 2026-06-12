@@ -1,0 +1,25 @@
+{
+  "schema_name": "DECISION_LEDGER_V1",
+  "schema_version": "1.0.0",
+  "ledger_id": "SKILL_ADMISSION_CHECKER_V1_LEDGER",
+  "entries": [
+    {
+      "entry_index": 0,
+      "prev_entry_hash": null,
+      "decision": {
+        "schema_name": "SKILL_PROMOTION_DECISION_V1",
+        "schema_version": "1.0.0",
+        "decision_id": "DECISION_SKILL_ADMISSION_CHECKER_V1_ADMITTED_001",
+        "skill_id": "SKILL_ADMISSION_CHECKER_V1",
+        "candidate_version": "V1",
+        "decision_type": "ADMITTED",
+        "reason_code": "OK_ADMITTED",
+        "candidate_identity_hash": "sha256:393e565c05c66bd86d906c4f6ebe8655c1abafc39ee1d7737632eb3a8385edb2"
+      },
+      "entry_hash": "sha256:978457cf09cf74a0bed501e0f5f4fd2c221cece1c6e2daf9aa91f181e483b6c2"
+    }
+  ],
+  "admitted_at": "2026-06-12T20:21:08.825139+00:00",
+  "authority": "NONE",
+  "note": "Skill-local admission ledger. Not town/ledger_v1.ndjson."
+}
