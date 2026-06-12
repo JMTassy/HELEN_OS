@@ -1,0 +1,25 @@
+{
+  "schema_name": "DECISION_LEDGER_V1",
+  "schema_version": "1.0.0",
+  "ledger_id": "SKILL_ADMISSION_REFERENCE_DRIFT_WITNESS_V1",
+  "entries": [
+    {
+      "entry_index": 0,
+      "prev_entry_hash": null,
+      "decision": {
+        "schema_name": "SKILL_PROMOTION_DECISION_V1",
+        "schema_version": "1.0.0",
+        "decision_id": "DECISION_REFERENCE_DRIFT_WITNESS_V1_ADMITTED_001",
+        "skill_id": "REFERENCE_DRIFT_WITNESS_V1",
+        "candidate_version": "V1",
+        "decision_type": "ADMITTED",
+        "reason_code": "OK_ADMITTED",
+        "candidate_identity_hash": "sha256:b81b4c2777a16bf815dd98fd1fce2d372ad4bf62d41e3253599fbb3f451b43df"
+      },
+      "entry_hash": "sha256:02ac60212c6f122b08b82250b766745dacc058b294a409158f8fd2786d98aee0"
+    }
+  ],
+  "admitted_at": "2026-06-12T18:20:23.097817+00:00",
+  "authority": "NONE",
+  "note": "Skill-local admission ledger. Not town/ledger_v1.ndjson. Institutional admission requires sovereign replay gate."
+}

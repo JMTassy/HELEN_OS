@@ -10,7 +10,7 @@ provider_class: INTERNAL
 admission_chain: E51→E52→E53→E54→E55→cb47c65
 reducer_decision: ADMIT (JM_TASSY_MANUAL_REDUCER_DECISION, f73b7b2)
 ledger_receipt: R-20260612-0007 / R-20260612-0008 / R-20260612-0009 (routing only)
-institutional_admission: PENDING_LAWFUL_APPEND
+institutional_admission: CONFIRMED (ADMISSION_LEDGER_V1.json / entry_hash=sha256:02ac60212c6f122b08b82250b766745dacc058b294a409158f8fd2786d98aee0 / replay_status=ACTIVE)
 ---
 
 # REFERENCE_DRIFT_WITNESS_V1
