@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "skill_promotion_packet_v1",
+  "title": "SKILL_PROMOTION_PACKET_V1",
+  "description": "Packet submitted to MAYOR to request sovereign promotion of a skill. Requires prior skill_local_admission: CONFIRMED.",
+  "type": "object",
+  "required": [
+    "schema_name",
+    "schema_version",
+    "skill_id",
+    "candidate_version",
+    "candidate_identity_hash",
+    "skill_local_admission_commit",
+    "checker_verdict",
+    "operator_countersign",
+    "requested_action"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_name": {
+      "type": "string",
+      "const": "SKILL_PROMOTION_PACKET_V1"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "skill_id": {
+      "type": "string",
+      "description": "Canonical skill ID, e.g. REFERENCE_DRIFT_WITNESS_V1"
+    },
+    "candidate_version": {
+      "type": "string",
+      "description": "Version string, e.g. V1"
+    },
+    "candidate_identity_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "description": "SHA256 of skill.py at the time of skill-local admission"
+    },
+    "skill_local_admission_commit": {
+      "type": "string",
+      "description": "Git commit SHA where ADMISSION_LEDGER_V1.json was created"
+    },
+    "checker_verdict": {
+      "type": "string",
+      "enum": ["OPERATIONALLY_WITNESSED"],
+      "description": "Must be OPERATIONALLY_WITNESSED — verified live by SKILL_ADMISSION_CHECKER_V1, not self-reported"
+    },
+    "operator_countersign": {
+      "type": "string",
+      "description": "Operator seal authorizing sovereign promotion routing"
+    },
+    "requested_action": {
+      "type": "string",
+      "const": "SOVEREIGN_PROMOTE"
+    },
+    "authority": {
+      "type": "string",
+      "const": "NONE",
+      "description": "Claude Code has no authority — packet is a request only"
+    },
+    "submitted_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

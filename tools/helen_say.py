@@ -162,7 +162,7 @@ def main():
         print("Usage: python3 tools/helen_say.py \"your message\" [OPTIONS]", file=sys.stderr)
         print("", file=sys.stderr)
         print("Options:", file=sys.stderr)
-        print("  --op OPERATION       Operation type: fetch (default), dialog, shell", file=sys.stderr)
+        print("  --op OPERATION       Operation type: fetch (default), dialog, shell, promote_skill", file=sys.stderr)
         print("  --sock PATH          Kernel socket (default: ~/.openclaw/oracle_town.sock)", file=sys.stderr)
         print("  --ledger PATH        Ledger file (default: town/ledger_v1.ndjson)", file=sys.stderr)
         print("  --help, -h           Show this help", file=sys.stderr)
@@ -236,6 +236,19 @@ def main():
             "claim_id": claim_id,
             "proposer": "helen",
             "intent": "helen_dialog",
+        }
+    elif op_type == "promote_skill":
+        # Route a SKILL_PROMOTION_PACKET_V1 to MAYOR for sovereign ledger admission.
+        # msg must be a JSON-encoded SKILL_PROMOTION_PACKET_V1.
+        # MAYOR handler for this op is not yet implemented in oracle_town/kernel/mayor.py
+        # (sovereign firewall — requires HELEN-side authorized process).
+        # This op fails closed at the kernel boundary until the handler exists.
+        req = {
+            "operation": "promote_skill",
+            "packet": msg,
+            "claim_id": claim_id,
+            "proposer": "helen",
+            "intent": "skill_sovereign_promotion",
         }
     else:
         # default: fetch

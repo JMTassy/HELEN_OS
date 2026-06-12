@@ -55,6 +55,11 @@ def apply_skill_promotion_decision(
         "last_decision_id": decision_id,
     }
 
+    # Sovereign promotion flag: set only when decision carries sovereign_promotion: true.
+    # Absence of the flag means skill_local_admission only — not sovereign.
+    if decision.get("sovereign_promotion") is True:
+        skill_entry["sovereign"] = True
+
     # Manifest provenance: sourced from admission packet when present
     if packet is not None:
         manifest_id = packet.get("manifest_id")
