@@ -155,13 +155,14 @@ Claude Code may **not**:
 
 | Step | Status |
 |---|---|
-| `--op promote_skill` in `helen_say.py` | NOT IMPLEMENTED |
-| MAYOR handler for `promote_skill` op | NOT IMPLEMENTED |
-| Sovereign replay includes `sovereign: true` field | NOT VERIFIED |
-| `SKILL_PROMOTION_PACKET_V1` schema | NOT YET DEFINED |
+| `--op promote_skill` in `helen_say.py` | IMPLEMENTED — commit `73dceaf` |
+| MAYOR handler for `promote_skill` op | SPEC WRITTEN — `oracle_town/protocols/MAYOR_HANDLER_PROMOTE_SKILL_SPEC_V1.md` |
+| Sovereign replay includes `sovereign: true` field | IMPLEMENTED + TESTED — commit `73dceaf` |
+| `SKILL_PROMOTION_PACKET_V1` schema | DEFINED — commit `73dceaf` |
 
-This protocol is a PROPOSAL. None of these gaps may be bridged by Claude Code
-acting alone. Each requires a HELEN-side authorized process or operator routing.
+Gap 1 and 3–4 are implemented. Gap 2 has a precise spec but requires a human operator
+or HELEN-side authorized process to apply (sovereign firewall: `oracle_town/kernel/` is
+off-limits to Claude Code writes).
 
 ---
 
