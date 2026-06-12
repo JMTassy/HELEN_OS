@@ -2,7 +2,7 @@
   "schema_name": "CLOSURE_RECEIPT_V1",
   "schema_version": "1.0.0",
   "seam_id": "SEAM-001",
-  "seam_title": "Schema Authority — Single Authority Rule",
+  "seam_title": "Schema Authority \u2014 Single Authority Rule",
   "closure_version": 4,
   "proposer": {
     "role": "agent",
@@ -32,7 +32,7 @@
       "statement": "Legacy schema purge migration script exists at scripts/purge_legacy_schemas.sh. Safe-by-default: dry-run unless --execute; refuses to purge if bare SchemaRegistry() callers remain in helen_os/.",
       "expected_artifact": "scripts/purge_legacy_schemas.sh",
       "expected_sha256": "5869c46b39dd97025dd30c213355a279755e993699ea22ebaa4ceef269c7b125",
-      "verdict": "PASS"
+      "verdict": "MISSING"
     },
     {
       "claim_id": "C4",
@@ -53,5 +53,5 @@
   ],
   "verdict": "BLOCKED",
   "closed_at": "2026-04-17T00:00:00Z",
-  "note": "V4 materializes the MEASUREMENT INSTRUMENTS for Seam 1. V1/V2/V3 were ghost closures — claimed CLOSED without backing artifacts, retracted by direct filesystem inspection. This V4 is the first honest receipt: it proves the instruments exist (C1–C4) and names the specific blocker (C5) that must clear before a V5 CLOSED receipt can issue. The seam is not closed; the closure process is now auditable."
+  "note": "V4 materializes the MEASUREMENT INSTRUMENTS for Seam 1. V1/V2/V3 were ghost closures \u2014 claimed CLOSED without backing artifacts, retracted by direct filesystem inspection. This V4 is the first honest receipt: it proves the instruments exist (C1\u2013C4) and names the specific blocker (C5) that must clear before a V5 CLOSED receipt can issue. The seam is not closed; the closure process is now auditable."
 }

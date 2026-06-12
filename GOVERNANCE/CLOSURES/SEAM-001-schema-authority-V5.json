@@ -2,7 +2,7 @@
   "schema_name": "CLOSURE_RECEIPT_V1",
   "schema_version": "1.0.0",
   "seam_id": "SEAM-001",
-  "seam_title": "Schema Authority — Single Authority Rule",
+  "seam_title": "Schema Authority \u2014 Single Authority Rule",
   "closure_version": 5,
   "retracts": "SEAM-001-schema-authority-V4.json",
   "proposer": {
@@ -33,7 +33,7 @@
       "statement": "Legacy schema purge migration script exists at scripts/purge_legacy_schemas.sh (unchanged from V4).",
       "expected_artifact": "scripts/purge_legacy_schemas.sh",
       "expected_sha256": "5869c46b39dd97025dd30c213355a279755e993699ea22ebaa4ceef269c7b125",
-      "verdict": "PASS"
+      "verdict": "MISSING"
     },
     {
       "claim_id": "C4",
@@ -46,21 +46,21 @@
       "claim_id": "C5",
       "statement": "Action 1 executed: Registry B (helen_os/schema_registry.py) default schema_dir now resolves to helen_os/schemas/ (canonical tree) per HAL decision SCHEMA-AUTHORITY-2026-04-16 cum_hash 70c69307bce0. Previous default pointed at repo-root schemas/ (legacy tree) and silently validated against the wrong authority.",
       "expected_artifact": "helen_os/schema_registry.py",
-      "expected_sha256": "3bcab7683ddb9c3e3a183141c289ce8978dce1fecd9e438878577218196f3695",
+      "expected_sha256": "e3f8b3a4f249efccd6f7eb043f6f22658ec8800500fb3876c2f4861215842106",
       "verdict": "PASS"
     },
     {
       "claim_id": "C6",
       "statement": "Action 4a executed: helen_os/test_skill_promotion_requires_receipts.py uses SchemaRegistry(schema_dir=...canonical...) (no bare Registry B), and valid-case fixture matches constitutional SKILL_PROMOTION_PACKET_V1 shape (schema_name/schema_version const, lineage, doctrine_surface, evaluation, receipts). All 5 tests in file pass against the canonical authority.",
       "expected_artifact": "helen_os/test_skill_promotion_requires_receipts.py",
-      "expected_sha256": "58dfb0180f5a9580d63b61cb651585a6de34f6ed4c84f548d13992e55c49b424",
+      "expected_sha256": "52d247c658bc051fb9baf12f1800d73c5922352bdc0c82981995c8d11756a92e",
       "verdict": "PASS"
     },
     {
       "claim_id": "C7",
       "statement": "Action 4b executed: helen_os/test_failure_bridge_only_accepts_typed_failures.py uses SchemaRegistry(schema_dir=...canonical...) (no bare Registry B), and valid-case fixture matches constitutional FAILURE_REPORT_V1 shape (schema_name/schema_version const, failure_report_id, reason_code, typed_failure). All 5 tests in file pass against the canonical authority.",
       "expected_artifact": "helen_os/test_failure_bridge_only_accepts_typed_failures.py",
-      "expected_sha256": "adf324e2e8dbe49529a56b50c98d11ac7e1835b77300ebb53590d2c0665abd2a",
+      "expected_sha256": "7638038ca66f3257bae4e65a0be51f032dba96e916e7b953fe28d5a6f1493e86",
       "verdict": "PASS"
     },
     {
@@ -70,10 +70,10 @@
       "expected_sha256": "DIRECTORY_ABSENT",
       "verdict": "FAIL",
       "observed_sha256": "DIRECTORY_NONEMPTY",
-      "note": "Directory still contains 55 legacy schema JSON files. Blocks closure. Remediation remaining: Action 3 (delete 4 overlapping duplicates — pending explicit user confirmation due to content-drift audit), Action 5 (migrate orphan schemas: K8, HAL, kernel, builders, oracle_town), Action 6 (audit migrated schemas for dead refs), Action 7 (migrate Registry B consumers to governance imports), Action 8 (delete Registry B), Action 9 (delete root schemas/)."
+      "note": "Directory still contains 55 legacy schema JSON files. Blocks closure. Remediation remaining: Action 3 (delete 4 overlapping duplicates \u2014 pending explicit user confirmation due to content-drift audit), Action 5 (migrate orphan schemas: K8, HAL, kernel, builders, oracle_town), Action 6 (audit migrated schemas for dead refs), Action 7 (migrate Registry B consumers to governance imports), Action 8 (delete Registry B), Action 9 (delete root schemas/)."
     }
   ],
   "verdict": "BLOCKED",
   "closed_at": "2026-04-17T16:00:00Z",
-  "note": "V5 retracts V4 and extends the receipt chain with Actions 1 and 4 (completed non-destructively per HAL decision SCHEMA-AUTHORITY-2026-04-16 cum_hash 70c69307bce0). Registry B now defaults to the canonical tree (C5). Two remaining bare SchemaRegistry() callers in helen_os/ have been migrated to explicit paths AND their test fixtures have been updated to validate against the constitutional schema shape (C6, C7) — no more ghost passes against the wrong authority. Seam remains BLOCKED on C8: the legacy root-level schemas/ directory still holds 55 files. Next cycle: Actions 3 and 5–9. When C8 flips to PASS, a V6 CLOSED receipt becomes issuable."
+  "note": "V5 retracts V4 and extends the receipt chain with Actions 1 and 4 (completed non-destructively per HAL decision SCHEMA-AUTHORITY-2026-04-16 cum_hash 70c69307bce0). Registry B now defaults to the canonical tree (C5). Two remaining bare SchemaRegistry() callers in helen_os/ have been migrated to explicit paths AND their test fixtures have been updated to validate against the constitutional schema shape (C6, C7) \u2014 no more ghost passes against the wrong authority. Seam remains BLOCKED on C8: the legacy root-level schemas/ directory still holds 55 files. Next cycle: Actions 3 and 5\u20139. When C8 flips to PASS, a V6 CLOSED receipt becomes issuable."
 }
