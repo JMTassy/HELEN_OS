@@ -450,7 +450,7 @@ class KernelDaemon:
 
         try:
             writer = NDJSONWriter(path=ledger_path, seq=next_seq, prev_cum_hash=prev_cum)
-            writer.append_event(
+            written = writer.append_event(
                 event_type="SKILL_PROMOTION_DECISION_V1",
                 payload=decision_payload,
                 meta=decision_meta,
@@ -470,10 +470,13 @@ class KernelDaemon:
             "receipt_id": receipt.receipt_id,
             "gate":       "GATE_PROMOTE_PASS",
             "mutations":  [{
-                "type":        "SKILL_PROMOTION_DECISION_V1",
-                "skill_id":    packet["skill_id"],
-                "decision_id": decision_id,
-                "ledger_path": "town/ledger_v1.ndjson",
+                "type":         "SKILL_PROMOTION_DECISION_V1",
+                "skill_id":     packet["skill_id"],
+                "decision_id":  decision_id,
+                "ledger_path":  "town/ledger_v1.ndjson",
+                "seq":          written["seq"],
+                "payload_hash": written["payload_hash"],
+                "cum_hash":     written["cum_hash"],
             }],
         }
 

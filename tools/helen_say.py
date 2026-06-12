@@ -142,7 +142,7 @@ def hal_verdict_from_kernel(kernel_resp: Dict[str, Any], run_id: str, kernel_has
         "required_fixes": required,
         "certificates": certs,
         "refs": refs,
-        "mutations": [],
+        "mutations": kernel_resp.get("mutations", []),
     }
 
 def render_her(msg: str, kernel_resp: Dict[str, Any]) -> str:

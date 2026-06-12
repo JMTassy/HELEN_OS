@@ -152,8 +152,16 @@ def test_valid_packet_accept_with_non_empty_mutations():
     p = _base_packet()
     req = _req(p)
 
+    _WRITTEN_SEQ = 42
+    _WRITTEN_PAYLOAD_HASH = "a" * 64
+    _WRITTEN_CUM_HASH = "b" * 64
+
     mock_writer = MagicMock()
-    mock_writer.append_event.return_value = {"seq": 0, "cum_hash": "x" * 64}
+    mock_writer.append_event.return_value = {
+        "seq": _WRITTEN_SEQ,
+        "payload_hash": _WRITTEN_PAYLOAD_HASH,
+        "cum_hash": _WRITTEN_CUM_HASH,
+    }
 
     with patch("oracle_town.kernel.kernel_daemon._tail_ledger", return_value=(0, "0" * 64)), \
          patch("oracle_town.kernel.kernel_daemon.NDJSONWriter", return_value=mock_writer):
@@ -168,6 +176,12 @@ def test_valid_packet_accept_with_non_empty_mutations():
     assert mutation["skill_id"] == "TEST_SKILL_V1"
     assert "decision_id" in mutation
     assert mutation["ledger_path"] == "town/ledger_v1.ndjson"
+
+    # Test 8 requirement: mutations[0] must include seq from the written entry
+    assert "seq" in mutation, "mutations[0] must include 'seq' key (PATCH C requirement)"
+    assert mutation["seq"] == _WRITTEN_SEQ
+    assert mutation["payload_hash"] == _WRITTEN_PAYLOAD_HASH
+    assert mutation["cum_hash"] == _WRITTEN_CUM_HASH
 
     # Verify NDJSONWriter was called with the correct event_type and key payload fields
     mock_writer.append_event.assert_called_once()
@@ -184,7 +198,11 @@ def test_accept_receipt_id_is_set():
     """receipt_id must be non-None on ACCEPT."""
     p = _base_packet()
     mock_writer = MagicMock()
-    mock_writer.append_event.return_value = {}
+    mock_writer.append_event.return_value = {
+        "seq": 0,
+        "payload_hash": "0" * 64,
+        "cum_hash": "0" * 64,
+    }
 
     with patch("oracle_town.kernel.kernel_daemon._tail_ledger", return_value=(0, "0" * 64)), \
          patch("oracle_town.kernel.kernel_daemon.NDJSONWriter", return_value=mock_writer):
@@ -192,3 +210,67 @@ def test_accept_receipt_id_is_set():
 
     assert resp["decision"] == "ACCEPT"
     assert resp["receipt_id"] is not None
+
+
+# ── Test 9: hal_verdict_from_kernel passes mutations through ─────────────────
+
+def test_hal_verdict_passes_through_mutations_from_kernel_response():
+    """
+    hal_verdict_from_kernel() must include mutations from kernel_resp, not [].
+    PATCH B regression test — before the fix this always returned mutations: [].
+    """
+    from tools.helen_say import hal_verdict_from_kernel
+
+    mutations_from_kernel = [
+        {
+            "type":         "SKILL_PROMOTION_DECISION_V1",
+            "skill_id":     "TEST_SKILL_V1",
+            "decision_id":  "SOVEREIGN_TEST_SKILL_V1_RUN_20260612",
+            "ledger_path":  "town/ledger_v1.ndjson",
+            "seq":          42,
+            "payload_hash": "a" * 64,
+            "cum_hash":     "b" * 64,
+        }
+    ]
+
+    kernel_resp = {
+        "decision":    "ACCEPT",
+        "receipt_id":  "R-20260612-0001",
+        "gate":        "GATE_PROMOTE_PASS",
+        "reason":      None,
+        "mutations":   mutations_from_kernel,
+    }
+
+    hal = hal_verdict_from_kernel(
+        kernel_resp,
+        run_id="RUN_20260612",
+        kernel_hash="0" * 40,
+        ledger_cum_hash="0" * 64,
+    )
+
+    assert hal["mutations"] == mutations_from_kernel, (
+        "hal_verdict_from_kernel must pass kernel_resp['mutations'] through, not hardcode []"
+    )
+    assert hal["verdict"] == "PASS"
+
+
+def test_hal_verdict_mutations_defaults_to_empty_when_kernel_omits():
+    """When kernel_resp has no mutations key, hal verdict must return []."""
+    from tools.helen_say import hal_verdict_from_kernel
+
+    kernel_resp = {
+        "decision": "REJECT",
+        "receipt_id": None,
+        "gate": "GATE_PROMOTE_CHECKER_VERDICT_WEAK",
+        "reason": "checker_verdict too weak",
+        # no 'mutations' key
+    }
+
+    hal = hal_verdict_from_kernel(
+        kernel_resp,
+        run_id="RUN_20260612",
+        kernel_hash="0" * 40,
+        ledger_cum_hash="0" * 64,
+    )
+
+    assert hal["mutations"] == []

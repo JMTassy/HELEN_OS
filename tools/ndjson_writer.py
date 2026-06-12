@@ -28,6 +28,20 @@ from kernel.canonical_json import canon_json_bytes
 from dataclasses import dataclass
 from typing import Any, Dict, Optional, Callable
 
+# Platform-safe file locking
+try:
+    import fcntl as _fcntl
+    _HAS_FCNTL = True
+except ImportError:
+    _HAS_FCNTL = False
+    import warnings as _warnings
+    _warnings.warn(
+        "fcntl not available on this platform — NDJSONWriter will operate without exclusive "
+        "file locking. Concurrent writers may produce duplicate seq values.",
+        RuntimeWarning,
+        stacklevel=1,
+    )
+
 # ──────────────────────────────────────────────────────────────────────────────
 # Hash scheme support — both V0 and V1 implemented
 # ──────────────────────────────────────────────────────────────────────────────
@@ -191,6 +205,41 @@ class NDJSONWriter:
                 file=sys.stderr
             )
 
+    def _read_tail_under_fd(self, fd) -> tuple:
+        """
+        Re-read the on-disk tail of the file through an already-open fd.
+
+        Must be called while holding an exclusive lock on fd so that the read
+        and the subsequent write are atomic with respect to other writers.
+
+        Returns (last_seq, last_cum_hash) using the same semantics as
+        tail_prev_state(): for an empty file returns (None, HEX64_ZERO)
+        so the caller can distinguish "genesis" from "seq=0 exists".
+        """
+        try:
+            _os.lseek(fd, 0, _os.SEEK_END)
+            size = _os.lseek(fd, 0, _os.SEEK_CUR)
+            if size == 0:
+                return None, HEX64_ZERO
+            read_start = max(0, size - 65536)
+            _os.lseek(fd, read_start, _os.SEEK_SET)
+            raw = _os.read(fd, min(65536, size))
+        except OSError:
+            return None, HEX64_ZERO
+
+        chunk = raw.decode("utf-8", "replace").strip().splitlines()
+        for line in reversed(chunk):
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                ev = json.loads(line)
+                if isinstance(ev, dict) and "seq" in ev and "cum_hash" in ev:
+                    return int(ev["seq"]), str(ev["cum_hash"])
+            except Exception:
+                continue
+        return None, HEX64_ZERO
+
     def append_event(
         self,
         event_type: str,
@@ -198,7 +247,12 @@ class NDJSONWriter:
         meta: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         """
-        Append event to NDJSON file.
+        Append event to NDJSON file with exclusive file locking.
+
+        Acquires an exclusive lock (fcntl.LOCK_EX on POSIX), re-reads the
+        on-disk tail under the lock to get the authoritative (seq, prev_cum_hash),
+        then writes.  This prevents two concurrent processes from allocating the
+        same seq even if both read the tail before either writes.
 
         Hash scheme is determined by environment at writer initialization.
         Payload is hash-bound (floats forbidden). Meta is observational.
@@ -209,7 +263,8 @@ class NDJSONWriter:
             meta: Observational fields (timestamp, notes, etc.)
 
         Returns:
-            Full record dict (for testing/inspection)
+            Full record dict (for testing/inspection), including seq,
+            payload_hash, cum_hash, and prev_cum_hash as written.
         """
         if meta is None:
             meta = {}
@@ -217,32 +272,55 @@ class NDJSONWriter:
         # HARD CONSTRAINT: No floats in payload
         assert_no_floats(payload)
 
-        # Compute payload_hash via canonical JSON
+        # Compute payload_hash via canonical JSON (independent of seq/chain state)
         payload_bytes = canon_json_bytes(payload)
         payload_hash = sha256_hex(payload_bytes)
 
-        # Compute cum_hash using environment-sovereign scheme
-        # (self._hash_fn is either _cum_hash_v0 or _cum_hash_v1)
-        cum_hash = self._hash_fn(self.prev_cum_hash, payload_hash)
+        # Open file for appending (creates if absent)
+        raw_fd = _os.open(self.path, _os.O_RDWR | _os.O_CREAT | _os.O_APPEND, 0o644)
+        try:
+            # Acquire exclusive lock — blocks until all other writers release
+            if _HAS_FCNTL:
+                _fcntl.flock(raw_fd, _fcntl.LOCK_EX)
 
-        # Build record
-        record = {
-            "type": event_type,
-            "seq": self.seq,
-            "payload": payload,
-            "meta": meta,
-            "payload_hash": payload_hash,
-            "prev_cum_hash": self.prev_cum_hash,
-            "cum_hash": cum_hash,
-        }
+            # Re-read tail under lock — authoritative seq allocation
+            last_seq, last_cum = self._read_tail_under_fd(raw_fd)
+            if last_seq is None:
+                # File is empty (genesis)
+                authoritative_seq = 0
+                authoritative_prev_cum = HEX64_ZERO
+            else:
+                authoritative_seq = last_seq + 1
+                authoritative_prev_cum = last_cum
 
-        # Write one NDJSON line (canonical JSON + LF)
-        line = canon_json_bytes(record).decode("utf-8") + "\n"
-        with open(self.path, "a", encoding="utf-8", newline="\n") as f:
-            f.write(line)
+            # Compute cum_hash using authoritative prev_cum (not constructor-supplied)
+            cum_hash = self._hash_fn(authoritative_prev_cum, payload_hash)
 
-        # Update state
+            # Build record
+            record = {
+                "type": event_type,
+                "seq": authoritative_seq,
+                "payload": payload,
+                "meta": meta,
+                "payload_hash": payload_hash,
+                "prev_cum_hash": authoritative_prev_cum,
+                "cum_hash": cum_hash,
+            }
+
+            # Write one NDJSON line (canonical JSON + LF)
+            line = (canon_json_bytes(record).decode("utf-8") + "\n").encode("utf-8")
+            # Seek to end before writing (O_APPEND guarantees this, but be explicit)
+            _os.lseek(raw_fd, 0, _os.SEEK_END)
+            _os.write(raw_fd, line)
+
+        finally:
+            if _HAS_FCNTL:
+                _fcntl.flock(raw_fd, _fcntl.LOCK_UN)
+            _os.close(raw_fd)
+
+        # Update instance state to reflect written record (for callers that
+        # chain multiple append_event() calls on the same writer instance)
+        self.seq = authoritative_seq + 1
         self.prev_cum_hash = cum_hash
-        self.seq += 1
 
         return record
