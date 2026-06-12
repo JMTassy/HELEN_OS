@@ -1,0 +1,576 @@
+{
+  "schema": "REFERENCE_DRIFT_REPORT_V1",
+  "scanned_at": "2026-06-12T18:25:45.968081+00:00",
+  "manifest_source": "directory_scan",
+  "drift_count": 0,
+  "missing_count": 0,
+  "stale_count": 34,
+  "total_artifacts": 55,
+  "artifacts": [
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E1.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:9a5e97861e434f3841a5be7c8d8fb5a270a2878c7b31d7c5c03f9d4f98cc4699",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=54 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E10.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:41d2f2487e52c211fb553a3dece662bf74d4178688b98190994397bd7fb50456",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=45 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E11.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:8b873aaf8a0e7da7d80b1c6c3de72c34d59e0c00f7b2ef904e4caead0fcacdf2",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=44 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E12.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:dfc0c28b6f555de29fe0810709d0470e764b02e592b2ec6e3f576d30cd3dbd42",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=43 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E13.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:ff938db2b063fd5ca8c45342e03d010dd1b192e41e4f06f9ab40586369797be9",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=42 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E14.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:f333d9d7708246541c21aa3ef9c0c2e1888d90203897acf313aaad7b093745c5",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=41 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E15.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:ac10f6b8fb96cf545a3721d44a8d237bec53e506b289c2e8d0da42886e988718",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=40 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E16.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:a19ea089bd6757ab639abcb64cec00d5f8dd8b0d812bec875aaa3b2c451aafb6",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=39 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E17.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:59bbe0422f61bbea434668a971a6db9be9e1e89de543b4bd38e9999291fd34f3",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=38 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E18.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:16fadaad76827ae06baa007e983347083a0f1e55958ace23687ae2b13fcf092a",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=37 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E19.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:c1764b3d649c89a47eed97b71945ecefc4de7fd60812cc2d0af1cb1414355a38",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=36 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E2.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:5dc12948d4a8cd9a1ccee9e296ba839182c1abe0423d9c11be06daa7b61c487a",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=53 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E20.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:d93ebd65dda8a8d090b330007418bc09d4b905887b4ee1feacafc8b8c75680bf",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=35 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E21.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:6baaa8937a3bec9ff4d241d1a2ff6307567fc791186ab65ecc0d55bacc78934a",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=34 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E22.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:00dd26e157bda65c2affb596a9fd900e928be8834e5cb89f3da984353f63f8cd",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=33 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E23.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:a03fbb9043963ec57c3b225786a6bd5b960ef637fc4736538a7b7eaca720775a",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=32 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E24.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:ca30fb9e8dc8342cf878b667beccf826cbe1f801ea63510af179686fd65e99d0",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=31 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E25.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:8be12398418831ed7b0f8ec6b2bad21d3fe0affecebe799ecf6544ed6dd3cc47",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=30 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E26.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:7eac8803bbbf7ec0f576799c67cf0adf150c136c72db5f1c5fd95610d7b8086a",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=29 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E27.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:b42f92f23168bb605541745c1d94da342badf2a7480a5f7f78b4d1aa29727b1f",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=28 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E28.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:432589e2030bf1d2c67f6c73200125142157171900db5a29142d4fab504c5de7",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=27 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E29.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:ee923c4d807cd07eb69687ae4f5b80bae61d8a3b625fb121d37cb80f2cdf664c",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=26 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E3.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:e151d1ffb5c0ac614e4a914f9537182e126b83da184f8469cfcbd3d042cd72aa",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=52 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E30.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:05698d344b08ae870fdfff569c73fe74489ca9bf622011a97371c0b09b0fd8c5",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=25 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E31.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:d0b0a306da385a40db5d7e2fd4da16bb8080e608edca8d3c14013cd34a1b03e2",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=24 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E32.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:0f561c0e8535e735f6b03ecac735272a084215cb7320d143dacb7ccefb7d1979",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=23 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E33.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:fea3a729788e15276aebf839fc5a93d53e769f566ece6808143f640ad92f6d32",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=22 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E34.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:ba8e0f6ae83d3e1c40792948a72d0c07da135cf94fc0cf4c3a39be63de102a27",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=21 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E35.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:a91a0962c786c93922efa0217935c5f03678dffedc3440eb6ccfc635faf2364b",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": false,
+      "stale_reason": null
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E36.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:39e6add674e66c106828efcb08e077755b83c83b0c7e245190d06a6eb5470f17",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": false,
+      "stale_reason": null
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E37.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:ef0e349616d818122638f3448c2d1a881911de262f15330da7fc1dcb62cd725e",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": false,
+      "stale_reason": null
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E38.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:7848a197ed5c297539cac95c25472246c491579e3d7ea262858b6bce71edb71a",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": false,
+      "stale_reason": null
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E39.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:5aa1a92babbac2169ab43491c89cdf9f037323c19e0662c2217afadb4271678f",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": false,
+      "stale_reason": null
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E4.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:f8eaa091aaf3e11638e83d68881053bd9fab2b87136bb269c35bf4b28b3888b9",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=51 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E40.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:c4a0ce6a0aed31020e5d69fc490aeeb91a9062542194e9a29455bcda5235dbe9",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": false,
+      "stale_reason": null
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E41.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:7c769a1c8b9a6b65568facb9d4dde964d6a5ffc3f9c2cec247390b827b2dbb4a",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": false,
+      "stale_reason": null
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E42.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:1afe506730c28796e9ab24cfba443ae10cbb6d9ace13aa8602e77ef74de34e3e",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": false,
+      "stale_reason": null
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E43.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:a376de3ea9cec3f0d11d99f20e2a0a770adaed10cabe27acbfb145fd1f7a6245",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": false,
+      "stale_reason": null
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E44.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:5e0520d6b547e21bb13f8f66811cbc6ea8d91dc2a6a84813a8ca9521d3ce40f1",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": false,
+      "stale_reason": null
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E45.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:de0c8105d9fafb74309105c03c18b3faf53b5437a43df1f8f905447932d65c7c",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": false,
+      "stale_reason": null
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E46.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:27e0842ee7886d9426b843a4431d72921250b2e48ca7a7af1bc04f9fde6deed7",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": false,
+      "stale_reason": null
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E47.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:2e3addf62968b6128e0a8b8077faa98efd23bf5fc20d62606dbe261cfabf6299",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": false,
+      "stale_reason": null
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E48.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:875ec82e82f93bf0381d55dbf27bc16aaa79fe0d2bf7461865fceb834bc6372f",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": false,
+      "stale_reason": null
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E49.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:dea32066a138a57be192611455edcfb18d3ecd43a5ff2ad6139f6f7b748bd91e",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": false,
+      "stale_reason": null
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E5.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:ee7b5325ba70b032eba670f666df1aed2101ef56e721ae2b8b20500abfaa5aad",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=50 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E50.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:5d3629a8a4ae7c024a212d300b4a6353b126d680ed1a7936d1cc7c38fd307df0",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": false,
+      "stale_reason": null
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E51.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:60669bf5e89e0a62c1913cea79473a05136a038fc65316250926d4f578642fb7",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": false,
+      "stale_reason": null
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E52.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:fcfda3c2a4e81333565f35e7f9dbd12584f5f6679611f6119c3b7a8c528c5ee4",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": false,
+      "stale_reason": null
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E53.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:ab74c20b5d6592413d474d6a8af46c94a0d2c8c54726d79b2bdb2a5cae12b765",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": false,
+      "stale_reason": null
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E54.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:934066553ce9c179c79f5a7b2e19efe54449b22962b756f54dd0ae61385e94cc",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": false,
+      "stale_reason": null
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E55.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:7d96b1d44f915822cd8dbe8cd1e2687302d2a05c95b6d106bf4005695f866776",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": false,
+      "stale_reason": null
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E6.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:b5093ee1a5566f114e0453559b738350289fa85c8d3e2674e215f2fbfea0c451",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=49 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E7.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:f8359dcfd6ff0fd858924156c4d69893097cf7ce8b6d772ef20241f9a9a00a8a",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=48 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E8.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:ee0dd8318b0bba0e0a107da2aa6a7c47db184abeda0c240cd17388ff05356253",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=47 > threshold=20"
+    },
+    {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/EPOCH_RECEIPT_E9.json",
+      "expected_sha": null,
+      "actual_sha": "sha256:aa6ce246ed635cfb4b4182ccecfe919f090901f6162067fcd571a6cb10adbd4a",
+      "present": true,
+      "drift": false,
+      "missing": false,
+      "stale": true,
+      "stale_reason": "epoch_lag=46 > threshold=20"
+    }
+  ],
+  "authority": "NONE",
+  "world_effect": "NONE",
+  "sovereign_touch": false,
+  "run_context": {
+    "skill_version": "V1",
+    "skill_id": "REFERENCE_DRIFT_WITNESS_V1",
+    "admission_status": "ACTIVE",
+    "admission_commit": "aee779c",
+    "sot_root": "/Users/jean-marietassy/Documents/GitHub/helen_os_v1",
+    "scanned_dir": "oracle_town/skills/ops/dan_goblin/scratch",
+    "current_epoch": 55,
+    "staleness_epochs": 20,
+    "run_at": "2026-06-12T18:25:45.978947+00:00",
+    "authority": "NONE"
+  }
+}
