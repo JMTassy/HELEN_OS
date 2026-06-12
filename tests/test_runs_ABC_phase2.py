@@ -15,6 +15,7 @@ Each test verifies:
 """
 
 import pytest
+pytestmark = pytest.mark.integration
 import json
 import sys
 import os

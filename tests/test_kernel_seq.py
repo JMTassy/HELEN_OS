@@ -16,6 +16,7 @@ import os
 import sys
 
 import pytest
+pytestmark = pytest.mark.requires_ocaml
 
 sys.path.insert(0, os.path.dirname(__file__))
 from conftest_kernel import (

@@ -23,6 +23,7 @@ import os
 import tempfile
 
 import pytest
+pytestmark = pytest.mark.requires_ocaml
 
 # Import helpers (not a pytest conftest — use direct import)
 import sys

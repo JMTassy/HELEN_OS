@@ -23,6 +23,7 @@ Each test verifies:
 """
 
 import pytest
+pytestmark = pytest.mark.integration
 import json
 import sys
 from pathlib import Path

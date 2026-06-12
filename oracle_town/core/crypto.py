@@ -80,22 +80,19 @@ def verify_ed25519(public_key_b64: str, message_bytes: bytes, signature_b64: str
     try:
         from nacl.signing import VerifyKey
         from nacl.exceptions import BadSignatureError
+    except ImportError:
+        print("Signature verification error: nacl not installed")
+        return False
 
-        # Decode base64
+    try:
         public_key_bytes = base64.b64decode(public_key_b64)
         signature_bytes = base64.b64decode(signature_b64)
-
-        # Create verify key
         verify_key = VerifyKey(public_key_bytes)
-
-        # Verify signature
         verify_key.verify(message_bytes, signature_bytes)
         return True
-
     except BadSignatureError:
         return False
     except Exception as e:
-        # Key decode error, import error, etc. → invalid
         print(f"Signature verification error: {e}")
         return False
 

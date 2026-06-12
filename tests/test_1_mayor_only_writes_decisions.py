@@ -47,8 +47,10 @@ def test_only_mayor_writes_decisions_dir():
     offenders = []
 
     for py_file in repo_root.rglob("*.py"):
-        # Skip test files and __pycache__
-        if "test" in str(py_file) or "__pycache__" in str(py_file):
+        rel = str(py_file.relative_to(repo_root))
+        # Skip test files, __pycache__, worktrees, and non-sovereign sandboxes
+        if ("test" in rel or "__pycache__" in rel
+                or rel.startswith(".claude/") or rel.startswith("temple/")):
             continue
 
         try:
@@ -57,9 +59,10 @@ def test_only_mayor_writes_decisions_dir():
             continue
 
         # Check for write patterns to decisions/ directory
+        # Require trailing slash to avoid matching "decisions" as a plain word in lists
         write_patterns = [
-            f'"{DECISION_DIR}',
-            f"'{DECISION_DIR}",
+            f'"{DECISION_DIR}/',
+            f"'{DECISION_DIR}/",
             'decision_record.json',
             'remediation_plan.json'
         ]
