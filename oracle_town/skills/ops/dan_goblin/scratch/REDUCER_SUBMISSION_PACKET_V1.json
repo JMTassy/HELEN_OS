@@ -1,0 +1,134 @@
+{
+  "schema": "REDUCER_SUBMISSION_PACKET_V1",
+  "schema_version": "1.0.0",
+  "assembled_at": "2026-06-12T16:26:38.620323+00:00",
+  "authority": false,
+  "admission_status": "PENDING_REDUCER",
+  "ledger_effect": "NONE",
+  "target_packet": {
+    "schema": "SKILL_PROMOTION_REVIEW_PACKET_V1",
+    "skill_id": "REFERENCE_DRIFT_WITNESS_V1",
+    "path": "oracle_town/skills/ops/dan_goblin/scratch/MAYOR_REVIEW_PACKET_E53.json",
+    "sha": "sha256:e148ef9c63e552ca5ec1509e6bdd2dcd0999b40b1e33758699f7c6361fe9dfd4",
+    "packet_sha": "sha256:fe360503441eb668ceef265e02d8e5526fe66bcdfaa76759a4a72a75a7547422",
+    "completeness_check": "COMPLETE"
+  },
+  "source_refs": {
+    "loop_epochs": [
+      "E51",
+      "E52",
+      "E53",
+      "E54",
+      "E55"
+    ],
+    "git_commits": "cdb65d9 feat(goblin): E51\u2013E55 innovation loop receipts + B11 block receipt\n91b2f22 feat(goblin): E51\u2013E55 Temple innovation loop epochs\n845c1bd feat(batch): add START_EPOCH parameter for targeted tranche execution\n351f91e fix(batch): read EVAL_RECEIPT JSONs for tests_green_sum when epoch uses capture_output",
+    "block_receipt": "logs/ralph_50_epoch/block_11_receipt.json"
+  },
+  "oracle_verdict": {
+    "schema": "ORACLE_CRITIQUE_RECEIPT_V1",
+    "overall_verdict": "SURVIVES_ORACLE_PRESSURE",
+    "dimensions": {
+      "necessity": {
+        "verdict": "NECESSARY",
+        "evidence": "coupling_witness covers only git-tracked sovereign files; epoch receipts and EVAL_RECEIPT JSONs have no drift detection"
+      },
+      "authority_safety": {
+        "verdict": "SAFE",
+        "evidence": "NONE \u2014 skill reads only non-sovereign paths; no write path to ledger/governance/schemas"
+      },
+      "failure_mode": {
+        "verdict": "STRUCTURAL_ONLY",
+        "evidence": "SHA comparison could produce false positives if artifact format changes without content change; mitigated by content-hash, not format-hash"
+      }
+    },
+    "kill_reason": null,
+    "surviving_candidate": "REFERENCE_DRIFT_WITNESS_V1"
+  },
+  "claimed_scope": {
+    "skill_id": "REFERENCE_DRIFT_WITNESS_V1",
+    "description": "Scans a declared set of non-sovereign artifacts and reports SHA drift, missing files, and stale receipts",
+    "inputs": [
+      "artifact_manifest: list[{path, expected_sha}]"
+    ],
+    "outputs": [
+      "REFERENCE_DRIFT_REPORT_V1: {drift_count, missing_count, stale_count, authority=NONE}"
+    ],
+    "domain_category": "observability",
+    "provider_class": "INTERNAL",
+    "hypothesis": "A drift witness for non-sovereign artifacts will make autoresearch epoch health observable and replayable",
+    "authority_claimed": "NONE",
+    "world_effect_claimed": "NONE",
+    "sovereign_touch_claimed": false
+  },
+  "guardrails_checked": {
+    "authority_none": true,
+    "world_effect_none": true,
+    "no_sovereign_touch": true,
+    "no_ledger_mutation": true,
+    "oracle_survived": true,
+    "dry_run_admitted": true,
+    "full_suite_stable": true,
+    "false_admission_clean": true,
+    "all_artifacts_present": true,
+    "mayor_packet_complete": true
+  },
+  "all_guardrails_pass": true,
+  "failed_guardrails": [],
+  "false_admission_scan": {
+    "method": "regex scan on 5 loop artifacts for positive authority/admission claims: authority=SOVEREIGN, authority=true, admission_status=ADMITTED, ledger_mutation=true, ledger_write=true, world_effect\u2260NONE. Anti-claim tokens (NON_SOVEREIGN, DRY_ADMITTED, admissibility_candidate) are exempt.",
+    "hits": [],
+    "result": "CLEAN"
+  },
+  "protected_path_scan": {
+    "method": "git status --porcelain filtered for sovereign path prefixes (E55 witness)",
+    "sovereign_paths_checked": [
+      "helen_os/governance/",
+      "helen_os/schemas/",
+      "oracle_town/kernel/",
+      "GOVERNANCE/CLOSURES/",
+      "GOVERNANCE/TRANCHE_RECEIPTS/",
+      "mayor_"
+    ],
+    "dirty_sovereign_paths": [],
+    "result": "CLEAN"
+  },
+  "diff_or_artifact_refs": {
+    "CANDIDATE_SKILL_MANIFEST_E51": {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/CANDIDATE_SKILL_MANIFEST_E51.json",
+      "sha": "sha256:5b08612a890ffbd2e7299e9cb5fd2509c1be8ebfc89a7e753eccb91a43660b58",
+      "present": true
+    },
+    "ORACLE_CRITIQUE_E52": {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/ORACLE_CRITIQUE_E52.json",
+      "sha": "sha256:e8376a95f64b2d561063f80450f534fbfa2097b389a268d1936d17e00097a434",
+      "present": true
+    },
+    "MAYOR_REVIEW_PACKET_E53": {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/MAYOR_REVIEW_PACKET_E53.json",
+      "sha": "sha256:e148ef9c63e552ca5ec1509e6bdd2dcd0999b40b1e33758699f7c6361fe9dfd4",
+      "present": true
+    },
+    "REDUCER_DRY_RUN_E54": {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/REDUCER_DRY_RUN_E54.json",
+      "sha": "sha256:f592b3df459bddc5aa3a544c2e8d59f323e0d8c5bb1f6679e71f58a6dda85ff8",
+      "present": true
+    },
+    "INNOVATION_LOOP_RECEIPT_E55": {
+      "path": "oracle_town/skills/ops/dan_goblin/scratch/INNOVATION_LOOP_RECEIPT_E55.json",
+      "sha": "sha256:ac755b3bbd27b9565af564c7a1f540ea4468a5e08beb4d830edc30b00e540509",
+      "present": true
+    }
+  },
+  "requested_reducer_decision": {
+    "question": "Should REFERENCE_DRIFT_WITNESS_V1 be admitted as a canonical non-sovereign skill?",
+    "valid_responses": [
+      "ADMIT",
+      "REJECT",
+      "REQUEST_CHANGES"
+    ],
+    "if_admit": "Skill may be implemented in oracle_town/skills/ as a canonical non-sovereign probe. No sovereign effect. Ledger entry may follow via helen_say.py only.",
+    "if_reject": "Candidate is dropped. No further action. Loop receipt stands as evidence artifact.",
+    "if_request_changes": "Packet is returned. Revised candidate must re-enter Temple\u2192Oracle\u2192Mayor loop.",
+    "note": "Mayor prepares. Reducer decides. Ledger sleeps until admission."
+  }
+}
