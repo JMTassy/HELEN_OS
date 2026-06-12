@@ -240,9 +240,6 @@ def main():
     elif op_type == "promote_skill":
         # Route a SKILL_PROMOTION_PACKET_V1 to MAYOR for sovereign ledger admission.
         # msg must be a JSON-encoded SKILL_PROMOTION_PACKET_V1.
-        # MAYOR handler for this op is not yet implemented in oracle_town/kernel/mayor.py
-        # (sovereign firewall — requires HELEN-side authorized process).
-        # This op fails closed at the kernel boundary until the handler exists.
         req = {
             "operation": "promote_skill",
             "packet": msg,
@@ -261,6 +258,14 @@ def main():
         }
 
     kernel_resp = kernel_call(sock_path, req)
+
+    # If the kernel wrote to the sovereign ledger (e.g. promote_skill with non-empty
+    # mutations), re-scan the tail so user_msg/turn chain from that write rather than
+    # forking from the same prev_cum the kernel used.
+    if kernel_resp.get("mutations"):
+        last_seq, prev_cum = tail_prev_state(ledger_path)
+        seq1 = last_seq + 1
+        ev1 = make_event("user_msg", seq1, payload1, meta1, prev_cum)
 
     # If dialog and kernel approved, execute it
     if op_type == "dialog" and kernel_resp.get("decision") == "ACCEPT":
