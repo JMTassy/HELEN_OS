@@ -4,7 +4,7 @@ PYTHON := $(VENV)/bin/python
 PYTEST := $(VENV)/bin/pytest
 PYTHONPATH := $(CURDIR)
 
-.PHONY: test membrane-test anti-regression demo-helen demo-boot demo-coupling demo-autoresearch
+.PHONY: test membrane-test anti-regression demo-helen demo-boot demo-coupling demo-autoresearch demo-airlock
 
 # Run all tests
 test:
@@ -28,7 +28,10 @@ demo-coupling:
 demo-autoresearch:
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) scripts/demos/demo_bounded_autoresearch.py
 
-demo-helen: demo-boot demo-coupling demo-autoresearch
+demo-airlock:
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) scripts/demos/demo_init_airlock.py
+
+demo-helen: demo-boot demo-coupling demo-autoresearch demo-airlock
 
 # Check for replay divergence (single source of truth)
 anti-regression:
