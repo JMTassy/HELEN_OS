@@ -1,7 +1,10 @@
+import pytest
 import requests
 import json
 import os
 
+
+@pytest.mark.skip(reason="manual integration test — requires live server at localhost:3333")
 def test_chat_api():
     url = "http://localhost:3333/api/chat"
     payload = {

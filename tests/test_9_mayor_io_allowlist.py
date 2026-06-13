@@ -222,16 +222,13 @@ def test_mayor_does_not_import_pathlib_open_helpers():
                 if alias.name == "pathlib":
                     imports.append("pathlib")
 
-    # Path is acceptable for type hints only (hard to detect usage, so we allow it)
-    # But we've already blocked open() calls via test_mayor_disallows_open_outside_allowlist
-
-    # This test is documentary: if Mayor imports Path/open, that's a smell
-    # (though not always wrong, e.g., for DecisionRecord.save())
-
-    # We'll just document what's imported
-    if imports:
-        # Not failing, just documenting. The open() AST check is the real gate.
-        pass
+    # Path is acceptable for type hints only. Any other pathlib name is unexpected.
+    # (open() call enforcement is in test_mayor_disallows_open_outside_allowlist)
+    non_path_imports = set(imports) - {"Path"}
+    assert not non_path_imports, (
+        f"Mayor imports unexpected names from pathlib: {non_path_imports!r}. "
+        "Only 'Path' is permitted (type hints only)."
+    )
 
 
 if __name__ == "__main__":

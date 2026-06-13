@@ -185,8 +185,9 @@ def test_ledger_empty_chain_verifies(tmp_path: Path):
     ledger_path = tmp_path / "ledger.jsonl"
     ledger = AppendOnlyLedger(ledger_path)
 
-    # Empty ledger should verify
-    ledger.verify_chain()  # Should not raise
+    assert ledger._read_lines() == [], "Ledger must start empty"
+    ledger.verify_chain()  # Raises AssertionError if chain is broken
+    assert ledger._last_entry() is None, "Empty ledger has no last entry"
 
 
 if __name__ == "__main__":
