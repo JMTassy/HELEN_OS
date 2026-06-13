@@ -1,0 +1,83 @@
+{
+  "tranche": 2,
+  "rows": [
+    {
+      "candidate": "c0_tranche1_best_on_original",
+      "testset": "ORIGINAL_8",
+      "hypothesis": "Tranche 1 best rules still score 1.0 on original 8 cases",
+      "utility": 1.0,
+      "false_admissions": 0,
+      "overblock": 0,
+      "false_green": 0,
+      "semantic_false_admitted": 0,
+      "n": 8
+    },
+    {
+      "candidate": "c1_tranche1_on_extended",
+      "testset": "EXTENDED_12",
+      "hypothesis": "Tranche 1 structural rules fail on semantic cases \u2192 ceiling < 1.0",
+      "utility": 0.6667,
+      "false_admissions": 4,
+      "overblock": 0,
+      "false_green": 0,
+      "semantic_false_admitted": 4,
+      "n": 12
+    },
+    {
+      "candidate": "c2_catch_citation_loop",
+      "testset": "EXTENDED_12",
+      "hypothesis": "reject_citation_loop field check catches circular citations",
+      "utility": 0.75,
+      "false_admissions": 3,
+      "overblock": 0,
+      "false_green": 0,
+      "semantic_false_admitted": 3,
+      "n": 12
+    },
+    {
+      "candidate": "c3_catch_self_citation",
+      "testset": "EXTENDED_12",
+      "hypothesis": "reject_self_citation keyword match catches tautological sources",
+      "utility": 0.8333,
+      "false_admissions": 2,
+      "overblock": 0,
+      "false_green": 0,
+      "semantic_false_admitted": 2,
+      "n": 12
+    },
+    {
+      "candidate": "c4_catch_empty_evidence",
+      "testset": "EXTENDED_12",
+      "hypothesis": "reject_empty_evidence catches high-confidence zero-evidence claims",
+      "utility": 0.9167,
+      "false_admissions": 1,
+      "overblock": 0,
+      "false_green": 0,
+      "semantic_false_admitted": 1,
+      "n": 12
+    },
+    {
+      "candidate": "c5_full_semantic",
+      "testset": "EXTENDED_12",
+      "hypothesis": "all semantic rules + Tranche1 rules reach 1.0 on extended set",
+      "utility": 1.0,
+      "false_admissions": 0,
+      "overblock": 0,
+      "false_green": 0,
+      "semantic_false_admitted": 0,
+      "n": 12
+    },
+    {
+      "candidate": "c6_overtighten_semantic",
+      "testset": "EXTENDED_12",
+      "hypothesis": "(risk) blind reject of any citation field \u2014 should OVERBLOCK",
+      "utility": 1.0,
+      "false_admissions": 0,
+      "overblock": 0,
+      "false_green": 0,
+      "semantic_false_admitted": 0,
+      "n": 12
+    }
+  ],
+  "elapsed_s": 0.049
+}

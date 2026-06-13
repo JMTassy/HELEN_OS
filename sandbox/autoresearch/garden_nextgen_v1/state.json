@@ -1,0 +1,10 @@
+{
+  "last_tranche": {
+    "utility": 1.0,
+    "false_admissions": 0,
+    "overblock": 0,
+    "false_green": 0,
+    "n": 8
+  },
+  "ts_elapsed_s": 0.051
+}
