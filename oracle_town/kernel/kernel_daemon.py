@@ -134,6 +134,8 @@ class KernelDaemon:
             response = self._handle_dialog(request)
         elif operation == "promote_skill":
             response = self._handle_promote_skill(request)
+        elif operation == "seq_correction":
+            response = self._handle_seq_correction(request)
         else:
             response = {"error": f"Unknown operation: {operation}"}
 
@@ -477,6 +479,185 @@ class KernelDaemon:
                 "seq":          written["seq"],
                 "payload_hash": written["payload_hash"],
                 "cum_hash":     written["cum_hash"],
+            }],
+        }
+
+    def _handle_seq_correction(self, request):
+        """
+        Handle seq_correction operation — append LEDGER_SEQ_CORRECTION_V1.
+
+        Validates the correction packet, verifies the dangling entry exists in the
+        ledger with the claimed cum_hash, runs MAYOR ratification, writes via
+        NDJSONWriter. Fails closed on every error.
+
+        Implements Option A of SOVEREIGN_LEDGER_SEQ_REPAIR_PROTOCOL_V1.
+        """
+        raw_packet = request.get("packet", "")
+        claim_id   = request.get("claim_id", "seq_correction:unknown")
+
+        # 1. Parse
+        try:
+            packet = json.loads(raw_packet) if isinstance(raw_packet, str) else raw_packet
+        except Exception as exc:
+            return {"decision": "REJECT", "receipt_id": None,
+                    "gate": "GATE_CORRECTION_PARSE_ERROR",
+                    "reason": f"packet not valid JSON: {exc}", "mutations": []}
+
+        # 2. Required fields
+        _REQUIRED = [
+            "schema_name", "correction_type", "dangling_seq",
+            "dangling_cum_hash", "dangling_decision_id", "operator_countersign",
+        ]
+        missing = [f for f in _REQUIRED if not str(packet.get(f, "")).strip()]
+        if missing:
+            return {"decision": "REJECT", "receipt_id": None,
+                    "gate": "GATE_CORRECTION_MISSING_FIELDS",
+                    "reason": f"missing required fields: {missing}", "mutations": []}
+
+        # 3. Schema name
+        if packet["schema_name"] != "LEDGER_SEQ_CORRECTION_V1":
+            return {"decision": "REJECT", "receipt_id": None,
+                    "gate": "GATE_CORRECTION_WRONG_SCHEMA",
+                    "reason": "schema_name must be LEDGER_SEQ_CORRECTION_V1",
+                    "mutations": []}
+
+        # 4. dangling_cum_hash — 64 lowercase hex chars
+        dangling_cum = str(packet["dangling_cum_hash"])
+        if not re.fullmatch(r"[0-9a-f]{64}", dangling_cum):
+            return {"decision": "REJECT", "receipt_id": None,
+                    "gate": "GATE_CORRECTION_BAD_CUM_HASH",
+                    "reason": "dangling_cum_hash must be 64 lowercase hex chars",
+                    "mutations": []}
+
+        # 5. Verify the dangling entry exists with matching cum_hash
+        ledger_path = str(Path(__file__).parents[2] / "town" / "ledger_v1.ndjson")
+        dangling_seq = int(packet["dangling_seq"])
+        verified = False
+        try:
+            with open(ledger_path, "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    try:
+                        ev = json.loads(line)
+                        if ev.get("seq") == dangling_seq and ev.get("cum_hash") == dangling_cum:
+                            verified = True
+                            break
+                    except Exception:
+                        continue
+        except OSError as exc:
+            return {"decision": "REJECT", "receipt_id": None,
+                    "gate": "GATE_CORRECTION_LEDGER_READ_ERROR",
+                    "reason": f"could not read ledger: {exc}", "mutations": []}
+
+        if not verified:
+            return {"decision": "REJECT", "receipt_id": None,
+                    "gate": "GATE_CORRECTION_DANGLING_NOT_FOUND",
+                    "reason": (
+                        f"dangling entry seq={dangling_seq} "
+                        f"cum_hash={dangling_cum[:16]}... not found in ledger"
+                    ),
+                    "mutations": []}
+
+        # 6. Gate A injection check on raw packet
+        raw_str = raw_packet if isinstance(raw_packet, str) else json.dumps(raw_packet)
+        gate_decision = gate_a(raw_str)
+
+        # 7. MAYOR ratification
+        claim = Claim(
+            claim_id=claim_id,
+            proposer=request.get("proposer", "unknown"),
+            intent=request.get("intent", "ledger_seq_correction"),
+            timestamp=request.get("timestamp", "2026-01-30T00:00:00Z"),
+        )
+        evidence = Evidence(
+            content_snapshot=raw_str,
+            content_hash=gate_decision.content_hash,
+            gates_run={
+                "gate_a": {
+                    "result": gate_decision.result.value,
+                    "code":   gate_decision.code,
+                    "reason": gate_decision.reason,
+                },
+                "correction_schema":         {"result": "PASS", "code": "CORRECTION_SCHEMA_OK"},
+                "correction_dangling_found": {"result": "PASS", "code": "CORRECTION_DANGLING_VERIFIED"},
+            },
+        )
+        receipt = self.mayor.ratify(claim, evidence)
+        self.ledger.record("CLAIM", {
+            "claim_id":     claim.claim_id,
+            "type":         "seq_correction",
+            "dangling_seq": dangling_seq,
+            "proposer":     claim.proposer,
+        })
+        self.ledger.record("RECEIPT", {
+            "receipt_id":     receipt.receipt_id,
+            "decision":       receipt.decision,
+            "policy_version": receipt.policy_version,
+        })
+
+        if receipt.decision != "ACCEPT":
+            return {
+                "decision":   "REJECT",
+                "receipt_id": receipt.receipt_id,
+                "gate":       receipt.failed_gate or gate_decision.code,
+                "reason":     receipt.reason,
+                "mutations":  [],
+            }
+
+        # 8. Sovereign ledger write via NDJSONWriter
+        correction_id = f"CORRECTION_{dangling_seq}_{claim_id}"
+        correction_payload = {
+            "schema_name":          "LEDGER_SEQ_CORRECTION_V1",
+            "schema_version":       "1.0.0",
+            "correction_id":        correction_id,
+            "correction_type":      packet["correction_type"],
+            "dangling_seq":         dangling_seq,
+            "dangling_cum_hash":    dangling_cum,
+            "dangling_decision_id": packet["dangling_decision_id"],
+        }
+        for opt in ("fork_point_seq", "fork_point_cum_hash", "authoritative_entry_seq",
+                    "authoritative_decision_id", "root_cause", "resolution"):
+            if packet.get(opt):
+                correction_payload[opt] = packet[opt]
+
+        correction_meta = {
+            "claim_id":             claim_id,
+            "operator_countersign": packet["operator_countersign"],
+            "receipt_id":           receipt.receipt_id,
+        }
+
+        next_seq, prev_cum = _tail_ledger(ledger_path)
+        try:
+            writer = NDJSONWriter(path=ledger_path, seq=next_seq, prev_cum_hash=prev_cum)
+            written = writer.append_event(
+                event_type="LEDGER_SEQ_CORRECTION_V1",
+                payload=correction_payload,
+                meta=correction_meta,
+            )
+        except Exception as exc:
+            return {
+                "decision":   "REJECT",
+                "receipt_id": receipt.receipt_id,
+                "gate":       "GATE_CORRECTION_WRITE_FAILED",
+                "reason":     f"NDJSONWriter.append_event failed: {exc}",
+                "mutations":  [],
+            }
+
+        return {
+            "decision":   "ACCEPT",
+            "receipt_id": receipt.receipt_id,
+            "gate":       "GATE_CORRECTION_PASS",
+            "mutations":  [{
+                "type":              "LEDGER_SEQ_CORRECTION_V1",
+                "correction_id":     correction_id,
+                "dangling_seq":      dangling_seq,
+                "dangling_cum_hash": dangling_cum,
+                "ledger_path":       "town/ledger_v1.ndjson",
+                "seq":               written["seq"],
+                "payload_hash":      written["payload_hash"],
+                "cum_hash":          written["cum_hash"],
             }],
         }
 

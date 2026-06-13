@@ -162,7 +162,7 @@ def main():
         print("Usage: python3 tools/helen_say.py \"your message\" [OPTIONS]", file=sys.stderr)
         print("", file=sys.stderr)
         print("Options:", file=sys.stderr)
-        print("  --op OPERATION       Operation type: fetch (default), dialog, shell, promote_skill", file=sys.stderr)
+        print("  --op OPERATION       Operation type: fetch (default), dialog, shell, promote_skill, seq_correction", file=sys.stderr)
         print("  --sock PATH          Kernel socket (default: ~/.openclaw/oracle_town.sock)", file=sys.stderr)
         print("  --ledger PATH        Ledger file (default: town/ledger_v1.ndjson)", file=sys.stderr)
         print("  --help, -h           Show this help", file=sys.stderr)
@@ -246,6 +246,17 @@ def main():
             "claim_id": claim_id,
             "proposer": "helen",
             "intent": "skill_sovereign_promotion",
+        }
+    elif op_type == "seq_correction":
+        # Route a LEDGER_SEQ_CORRECTION_V1 packet to MAYOR for chain repair.
+        # msg must be a JSON-encoded correction packet.
+        # Implements Option A of SOVEREIGN_LEDGER_SEQ_REPAIR_PROTOCOL_V1.
+        req = {
+            "operation": "seq_correction",
+            "packet": msg,
+            "claim_id": claim_id,
+            "proposer": "helen",
+            "intent": "ledger_seq_correction",
         }
     else:
         # default: fetch
