@@ -1,0 +1,13 @@
+{
+  "receipt_type": "DREAM_EPOCH_RECEIPT_V0",
+  "epoch_id": "E026",
+  "epoch_name": "EXPLORE_MECHANIC",
+  "claim_type": "world_model",
+  "artifact_hash": "ce39cbf619f52a6e844f385377196fc4bd72b68fd7a17ac3eb4949de74084b5d",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST"
+}

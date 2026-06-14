@@ -34,6 +34,13 @@
     "bulletins/gate_clear.txt",
     "bulletins/sanctum_rest.txt"
   ],
+  "portal": {
+    "type": "TEMPLE_SIMULATION",
+    "target": "temple/gardens/goblin_garden_conquest/",
+    "authority": false,
+    "sovereign": false,
+    "description": "Door to DREAM_OF_CONQUEST — non-sovereign world model garden"
+  },
   "validator": "validate_garden.py",
   "epoch_count": 25,
   "epochs_completed": 25,

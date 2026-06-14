@@ -5,10 +5,29 @@
 
 ---
 
-## Resource Types
+## Resource Schemas (two layers, reconciled E026)
+
+This model has two resource layers. Both are non-sovereign simulation resources only.
+
+### Layer A — Island Economy (runner vocabulary)
 
 ```
-RESOURCE_TABLE = {
+ISLAND_RESOURCES = {
+  "QUINT_CORE":    "Produced by HOME_KEEP_AVALON + ISLE_QUINT; primary action currency",
+  "IGNIS_SHARD":   "Produced by ISLE_IGNIS; native claim cost for fire territory",
+  "AQUA_SHARD":    "Produced by ISLE_AQUA; native claim cost for water territory",
+  "AETHER_SHARD":  "Produced by ISLE_AETHER; native claim cost for air territory",
+  "TERRA_SHARD":   "Produced by ISLE_TERRA; native claim cost for earth territory",
+  "knowledge_fragment": "Output of EXPLORE action; 5 → K2P ritual → power_token"
+}
+```
+
+Conversion: 3 any_shard at ISLE_QUINT → 1 QUINT_CORE
+
+### Layer B — Epistemic Economy (proto-schema, phase 1)
+
+```
+EPISTEMIC_RESOURCES = {
   "KNOWLEDGE_UNITS":   "Accumulated from verified domain understanding",
   "CLAIM_TOKENS":      "Earned by producing receipted claims; spent to assert territory",
   "HEAP_SHARDS":       "Raw unverified material; abundant, low value, honest",
@@ -18,16 +37,24 @@ RESOURCE_TABLE = {
 }
 ```
 
+Status: Layer B is the proto-genesis vocabulary. Layer A is the active runner vocabulary.
+Both are valid simulation resources. They represent different abstraction levels of the same world.
+Layer A = economic substrate. Layer B = epistemic layer above it.
+
 ## Accumulation Mechanics
 
-| Action | Resource Gained |
-|---|---|
-| Produce receipted claim | +1 CLAIM_TOKEN |
-| Pass claim validation | +1 GATE_PASS |
-| Build receipt chain (3+) | +1 RECEIPT_CHAIN |
-| Label heap material honestly | +2 HEAP_SHARDS |
-| Complete a quest | +K KNOWLEDGE_UNITS (K = quest difficulty) |
-| Meditate (honest labeling session) | +1 GOBLIN_HOUR |
+| Action | Layer | Resource Gained |
+|---|---|---|
+| collect_phase fires (automatic, per turn) | A | +≤5 island resources → faction_wallet |
+| EXPLORE ISLE_X (cost 1 QUINT_CORE) | A | +1 knowledge_fragment:X |
+| 3 any_shard at ISLE_QUINT | A | +1 QUINT_CORE |
+| 5 knowledge_fragment → K2P ritual | A | +1 power_token |
+| Produce receipted claim | B | +1 CLAIM_TOKEN |
+| Pass claim validation | B | +1 GATE_PASS |
+| Build receipt chain (3+) | B | +1 RECEIPT_CHAIN |
+| Label heap material honestly | B | +2 HEAP_SHARDS |
+| Complete a quest | B | +K KNOWLEDGE_UNITS (K = quest difficulty) |
+| Meditate (honest labeling session) | B | +1 GOBLIN_HOUR |
 
 ## Depletion Mechanics
 

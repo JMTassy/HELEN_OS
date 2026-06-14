@@ -1,0 +1,65 @@
+{
+  "id": "E026",
+  "name": "EXPLORE_MECHANIC",
+  "claim_type": "world_model",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "DREAM_OF_CONQUEST",
+  "collect_phase": {
+    "type": "automatic",
+    "trigger": "per_turn_tick",
+    "cap_per_turn": 5,
+    "flow": "island_production → island_stockpile → faction_wallet",
+    "note": "collect_phase is NOT a player action. It fires automatically each turn tick. HOME_KEEP_AVALON produces QUINT_CORE automatically."
+  },
+  "explore_action": {
+    "name": "EXPLORE",
+    "type": "player_action",
+    "registered": true,
+    "cost_resource": "QUINT_CORE",
+    "cost_amount": 1,
+    "output_resource": "knowledge_fragment",
+    "output_key": "knowledge_fragment:{island_id}",
+    "territory_mutation": false,
+    "claim_power": false,
+    "receipt_schema": "EXPLORE_RECEIPT_V0",
+    "available_at": "T>=1 (after first collect_phase tick)"
+  },
+  "explore_receipt_schema": {
+    "schema": "EXPLORE_RECEIPT_V0",
+    "authority": false,
+    "sovereign": false,
+    "layer": "TEMPLE",
+    "simulation_only": true,
+    "required_fields": [
+      "schema",
+      "faction_id",
+      "island_id",
+      "cost_paid",
+      "fragment_gained",
+      "turn_number",
+      "authority",
+      "sovereign"
+    ]
+  },
+  "resource_additions": {
+    "knowledge_fragment": "Gained via EXPLORE action; 5 required for K2P ritual → power_token",
+    "QUINT_CORE": "Island-economy resource; produced by HOME_KEEP_AVALON and ISLE_QUINT; primary EXPLORE cost"
+  },
+  "bootstrap_path": {
+    "description": "Confirmed bootstrap — no SCOUT or EXPLORE_LIGHT needed",
+    "steps": [
+      "T=0: HOME_KEEP_AVALON held (inalienable, all factions)",
+      "T=1: collect_phase fires automatically → QUINT_CORE in faction_wallet",
+      "T=1+: EXPLORE ISLE_X (cost 1 QUINT_CORE) → knowledge_fragment:X",
+      "T=?: 5 × knowledge_fragment → K2P ritual → power_token",
+      "T=?: CLAIM_LIGHT (cost 1 QUINT_CORE) → island claimed"
+    ]
+  },
+  "deadlock_resolution": "RESOLVED. HOME_KEEP_AVALON (inalienable) produces QUINT_CORE via automatic collect_phase. CROSS and WARDEN have a valid bootstrap path at T=1.",
+  "schema_reconciliation": "Two resource schemas existed (island-economy: QUINT_CORE/shards; epistemic: KNOWLEDGE_UNITS/CLAIM_TOKENS). Both are valid simulation layers. resource_model.md updated to document both as Layer A (economic substrate) and Layer B (epistemic layer). Not a conflict.",
+  "wulmoji": "🟢 👁️ EXPLORE_MECHANIC — registered action, collect_phase automatic, bootstrap closed 🏠→🧩→👁️→📚→🛡️"
+}
