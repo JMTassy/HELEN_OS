@@ -1,0 +1,19 @@
+{
+  "type": "K8_NDARTIFACT_PROVENANCE_V1",
+  "artifact": "helen_photoreal_front.jpg",
+  "sha256": "e844ec831475df599fd6dd426db173c9e0217ed8669ebaa717c25b41cba88bf1",
+  "format": "JPEG",
+  "resolution": "1024px longest edge, quality 85",
+  "register": "photoreal_modern_street",
+  "source_id": "grok-image-093c18d5-...jpeg",
+  "generator": "grok-image (external, non-deterministic)",
+  "generation_date": "2026-04-20",
+  "license": "operator-generated, non-sovereign",
+  "authority": "NONE",
+  "non_sovereign": true,
+  "use_case": "Festival / cinematic work. Validated hero image (T3, 2026-04-20, ~95% identity hold).",
+  "identity_tokens": ["flame-orange hair", "blue teardrop hair clips", "blue/teal eyes", "freckles", "choker", "silver chain", "HELEN logo"],
+  "k8_ndartifact": "declared — generation method is externally non-deterministic; sidecar seals provenance at ingestion",
+  "committed_by": "operator via helen-director/references/ lane",
+  "validated_at": "2026-04-20"
+}

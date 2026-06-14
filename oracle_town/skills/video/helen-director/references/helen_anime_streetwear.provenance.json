@@ -1,0 +1,19 @@
+{
+  "type": "K8_NDARTIFACT_PROVENANCE_V1",
+  "artifact": "helen_anime_streetwear.jpg",
+  "sha256": "b00e33b7284c750dec0a420e6b6df2f7eba1cec1abd4dd236c86aeadc0a94fdc",
+  "format": "JPEG",
+  "resolution": "1024px longest edge, quality 85",
+  "register": "anime_cyberpunk_neon",
+  "source_id": "hf_20260411_223314_...png",
+  "generator": "Higgsfield anime model (external, non-deterministic)",
+  "generation_date": "2026-04-11",
+  "license": "operator-generated, non-sovereign",
+  "authority": "NONE",
+  "non_sovereign": true,
+  "use_case": "Streetwear reels / TikTok register. Anime cyberpunk neon aesthetic.",
+  "identity_tokens": ["flame-orange hair", "blue teardrop hair clips", "blue/teal eyes", "freckles", "choker", "silver chain", "HELEN logo"],
+  "k8_ndartifact": "declared — generation method is externally non-deterministic; sidecar seals provenance at ingestion",
+  "committed_by": "operator via helen-director/references/ lane",
+  "validated_at": "2026-04-20"
+}

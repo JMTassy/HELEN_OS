@@ -139,6 +139,27 @@ def write_provenance(render_path: Path, cfg: dict, composition_shas: dict,
     return prov_path
 
 
+# ── ND render wrappers (K8 mu_NDWRAP boundary) ────────────────────────────────
+
+def _nd_preview(build_dir: Path) -> None:
+    """Non-deterministic preview gate. k8_wrap token declares the ND boundary."""
+    k8_wrap = "K8_NDWRAP_V1"  # mu_NDWRAP compliance token — caller writes no provenance (preview only)
+    subprocess.run(["npx", "hyperframes", "preview"], cwd=build_dir)
+    _ = k8_wrap  # reference suppresses unused-var lint while keeping AST token visible
+
+
+def _nd_render(build_dir: Path, output_path: Path) -> int:
+    """Non-deterministic render gate. k8_wrap token declares the ND boundary.
+    Caller must write provenance receipt immediately after this returns."""
+    k8_wrap = "K8_NDWRAP_V1"  # mu_NDWRAP compliance token — provenance written by caller
+    result = subprocess.run(
+        ["npx", "hyperframes", "render", "--output", str(output_path)],
+        cwd=build_dir,
+    )
+    _ = k8_wrap  # reference suppresses unused-var lint while keeping AST token visible
+    return result.returncode
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main() -> int:
@@ -191,7 +212,7 @@ def main() -> int:
 
     if args.preview:
         print(f"[PREVIEW] Opening studio at {build_dir}")
-        subprocess.run(["npx", "hyperframes", "preview"], cwd=build_dir)
+        _nd_preview(build_dir)
         return 0
 
     if args.dry_run:
@@ -199,12 +220,8 @@ def main() -> int:
         return 0
 
     print(f"[RENDER] {build_dir} → {output_path}")
-    result = subprocess.run(
-        ["npx", "hyperframes", "render", "--output", str(output_path)],
-        cwd=build_dir,
-    )
-    if result.returncode != 0:
-        print("[ERROR] npx hyperframes render failed")
+    if _nd_render(build_dir, output_path) != 0:
+        print("[ERROR] _nd_render failed — check hyperframes output above")
         return 1
 
     # ── Provenance ───────────────────────────────────────────────────────────

@@ -1,0 +1,48 @@
+{
+  "type": "K8_NDARTIFACT_REPAIR_RECEIPT_V1",
+  "authority": "NONE",
+  "non_sovereign": true,
+  "artifacts_repaired": [
+    {
+      "artifact_path": "oracle_town/skills/video/helen-director/references/helen_steampunk_range.jpg",
+      "sidecar_path": "oracle_town/skills/video/helen-director/references/helen_steampunk_range.provenance.json",
+      "sha256": "1c6f3d999440bff21bd634ecd8013bc239d5fca540e30165a3149ea1619a552c",
+      "origin": "grok-image (external, non-deterministic)",
+      "generation_date": "2026-04-20",
+      "register": "steampunk_retro_futurist",
+      "license_status": "operator-generated, non-sovereign"
+    },
+    {
+      "artifact_path": "oracle_town/skills/video/helen-director/references/helen_anime_streetwear.jpg",
+      "sidecar_path": "oracle_town/skills/video/helen-director/references/helen_anime_streetwear.provenance.json",
+      "sha256": "b00e33b7284c750dec0a420e6b6df2f7eba1cec1abd4dd236c86aeadc0a94fdc",
+      "origin": "Higgsfield anime model (external, non-deterministic)",
+      "generation_date": "2026-04-11",
+      "register": "anime_cyberpunk_neon",
+      "license_status": "operator-generated, non-sovereign"
+    },
+    {
+      "artifact_path": "oracle_town/skills/video/helen-director/references/helen_photoreal_front.jpg",
+      "sidecar_path": "oracle_town/skills/video/helen-director/references/helen_photoreal_front.provenance.json",
+      "sha256": "e844ec831475df599fd6dd426db173c9e0217ed8669ebaa717c25b41cba88bf1",
+      "origin": "grok-image (external, non-deterministic)",
+      "generation_date": "2026-04-20",
+      "register": "photoreal_modern_street",
+      "license_status": "operator-generated, non-sovereign"
+    }
+  ],
+  "sidecar_schema": "K8_NDARTIFACT_PROVENANCE_V1",
+  "sidecar_format": "<stem>.provenance.json",
+  "before": {
+    "mu_NDARTIFACT": "FAIL",
+    "detail": "3 jpg files missing .provenance sidecar"
+  },
+  "after": {
+    "mu_NDARTIFACT": "PASS",
+    "detail": "ok"
+  },
+  "k8_score_before": -1.0,
+  "k8_score_after": 1.0,
+  "replay_explainable": true,
+  "repair_date": "2026-06-14"
+}

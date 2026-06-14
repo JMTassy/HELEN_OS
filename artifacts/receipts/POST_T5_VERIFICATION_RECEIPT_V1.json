@@ -1,0 +1,61 @@
+{
+  "type": "POST_T5_VERIFICATION_RECEIPT_V1",
+  "authority": "NONE",
+  "non_sovereign": true,
+  "session": "gallant-khayyam-continuation-2026-06-14",
+  "garden_tranches_complete": ["T1", "T2", "T3", "T4", "T5"],
+  "commits": {
+    "T1_T2": "afe1b4a",
+    "false_green_fix": "2f1e8d0",
+    "T3": "0b73145",
+    "T4": "8be57ce",
+    "T5": "9c16b5b"
+  },
+  "proven": {
+    "structural_self_improvement": "T1 — utility 0.5→1.0 via bounded rule discovery",
+    "semantic_firewall_boundary": "T2 — structural ceiling=0.6667; gap requires human marker",
+    "convergence_monotonic_stability": "T3 — 30 epochs, k_c=11, no regressions",
+    "witness_as_first_class_admission": "T4 — HARD_DRIFT blocks; SOFT_DRIFT admits informational",
+    "explicit_citation_loop_detection": "T5 — Tarjan SCC; FA 8→0; backward compat preserved"
+  },
+  "architectural_shift": {
+    "T1_to_T4": "per-receipt evaluation (independent)",
+    "T5": "corpus-level citation graph → annotate → per-receipt evaluation",
+    "implication": "admission is no longer fully local for receipts with citation fields"
+  },
+  "honest_boundary": {
+    "closed": "explicit citation loops with cites fields — detectable computationally",
+    "open": [
+      "implicit loops (no cites fields) — still invisible",
+      "semantic falsehood without citation structure — reducer only",
+      "contradiction requiring domain knowledge — human or oracle required",
+      "false claims with clean citations",
+      "outdated but once-valid evidence",
+      "source laundering",
+      "human-intent mismatch",
+      "visual/artifact provenance ambiguity"
+    ]
+  },
+  "probe_class_map": {
+    "witness_projection": "P1_GUARD",
+    "false_green_lint": "P1_GUARD",
+    "k_tau_lint": "P1_GUARD",
+    "k8_lint": "P1_GUARD",
+    "citation_graph_probe": "P2_ROUTER",
+    "garden_autoresearch": "P0_OBSERVER"
+  },
+  "ecp_formula": "Phi≠A, M≠A, d_W→not-authority, G=Replay(R*)",
+  "canonical_law": "probes classify risk; reducers admit reality; ledger preserves only admitted transitions",
+  "k8_at_receipt": {
+    "mu_NDWRAP": "PASS",
+    "mu_NDARTIFACT": "PASS",
+    "mu_NDLEDGER": "PASS",
+    "k8_score": 1.0
+  },
+  "tests_at_receipt": {
+    "total": 706,
+    "passed": 706,
+    "witness_status": "COUPLED"
+  },
+  "receipt_date": "2026-06-14"
+}

@@ -87,9 +87,32 @@ def run_probe(receipts: list) -> dict:
         annotated.append({**rec, "citation_loop_detected": node in in_loop,
                           "signal": "CITATION_LOOP_V1" if node in in_loop else "CLEAN"})
 
+    # Typed verdict: P2_ROUTER → ROUTE when loops detected, OBSERVE when clean
+    loop_count = len(in_loop)
+    if loop_count > 0:
+        verdict = {
+            "probe": "citation_graph_probe",
+            "probe_class": "P2_ROUTER",
+            "verdict": "ROUTE",
+            "reason": "CITATION_LOOP_V1",
+            "semantic_claim": False,
+            "requires": "SEMANTIC_REVIEW_RECEIPT_V1",
+            "loop_nodes": sorted(in_loop),
+            "loop_count": loop_count,
+        }
+    else:
+        verdict = {
+            "probe": "citation_graph_probe",
+            "probe_class": "P2_ROUTER",
+            "verdict": "OBSERVE",
+            "reason": "CLEAN",
+            "loop_count": 0,
+        }
+
     return {
+        "verdict": verdict,
         "loop_nodes": sorted(in_loop),
-        "loop_count": len(in_loop),
+        "loop_count": loop_count,
         "graph_node_count": len(graph),
         "graph_edge_count": sum(len(v) for v in graph.values()),
         "receipts": annotated,

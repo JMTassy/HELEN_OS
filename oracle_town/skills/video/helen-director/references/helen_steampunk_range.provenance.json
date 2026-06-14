@@ -1,0 +1,19 @@
+{
+  "type": "K8_NDARTIFACT_PROVENANCE_V1",
+  "artifact": "helen_steampunk_range.jpg",
+  "sha256": "1c6f3d999440bff21bd634ecd8013bc239d5fca540e30165a3149ea1619a552c",
+  "format": "JPEG",
+  "resolution": "1024px longest edge, quality 85",
+  "register": "steampunk_retro_futurist",
+  "source_id": "grok-image-1efcf428-...jpg",
+  "generator": "grok-image (external, non-deterministic)",
+  "generation_date": "2026-04-20",
+  "license": "operator-generated, non-sovereign",
+  "authority": "NONE",
+  "non_sovereign": true,
+  "use_case": "Range demonstration — proves HELEN adapts across costume worlds while identity tokens hold. Not typical shot material.",
+  "identity_tokens": ["flame-orange hair", "blue teardrop hair clips", "blue/teal eyes", "freckles", "choker", "silver chain", "HELEN logo"],
+  "k8_ndartifact": "declared — generation method is externally non-deterministic; sidecar seals provenance at ingestion",
+  "committed_by": "operator via helen-director/references/ lane",
+  "validated_at": "2026-04-20"
+}
