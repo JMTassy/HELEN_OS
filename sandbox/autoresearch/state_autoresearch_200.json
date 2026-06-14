@@ -1,0 +1,162 @@
+{
+  "autoresearch_mode": true,
+  "epochs_run": 200,
+  "head_sha": "3c9e88fd2eb5d3d84489e4c9fc5c5cf7dc4f4dcd",
+  "attractor_map": {
+    "type": "OBSIDIAN_MIRROR_ATTRACTOR_MAP_V1",
+    "epochs_run": 200,
+    "head_sha": "3c9e88fd2eb5d3d84489e4c9fc5c5cf7dc4f4dcd",
+    "attractors": [
+      {
+        "concept": "REPLAY",
+        "probe_angles_run": 20,
+        "confirmed": 13,
+        "weak": 0,
+        "absent": 7,
+        "lineage_pressure": 0.65,
+        "avg_gate_score": 1.0,
+        "top_sources": [
+          ""
+        ]
+      },
+      {
+        "concept": "DETERMINISM",
+        "probe_angles_run": 20,
+        "confirmed": 13,
+        "weak": 0,
+        "absent": 7,
+        "lineage_pressure": 0.65,
+        "avg_gate_score": 1.0,
+        "top_sources": [
+          ""
+        ]
+      },
+      {
+        "concept": "PROVENANCE",
+        "probe_angles_run": 20,
+        "confirmed": 11,
+        "weak": 1,
+        "absent": 8,
+        "lineage_pressure": 0.575,
+        "avg_gate_score": 1.0,
+        "top_sources": [
+          ""
+        ]
+      },
+      {
+        "concept": "GOVERNANCE",
+        "probe_angles_run": 20,
+        "confirmed": 11,
+        "weak": 1,
+        "absent": 8,
+        "lineage_pressure": 0.575,
+        "avg_gate_score": 1.0,
+        "top_sources": [
+          ""
+        ]
+      },
+      {
+        "concept": "ADMISSION",
+        "probe_angles_run": 20,
+        "confirmed": 10,
+        "weak": 3,
+        "absent": 7,
+        "lineage_pressure": 0.575,
+        "avg_gate_score": 1.0,
+        "top_sources": [
+          ""
+        ]
+      },
+      {
+        "concept": "IDENTITY",
+        "probe_angles_run": 20,
+        "confirmed": 9,
+        "weak": 4,
+        "absent": 7,
+        "lineage_pressure": 0.55,
+        "avg_gate_score": 1.0,
+        "top_sources": [
+          ""
+        ]
+      },
+      {
+        "concept": "WITNESS",
+        "probe_angles_run": 20,
+        "confirmed": 9,
+        "weak": 2,
+        "absent": 9,
+        "lineage_pressure": 0.5,
+        "avg_gate_score": 1.0,
+        "top_sources": [
+          ""
+        ]
+      },
+      {
+        "concept": "COUPLING",
+        "probe_angles_run": 20,
+        "confirmed": 8,
+        "weak": 1,
+        "absent": 11,
+        "lineage_pressure": 0.425,
+        "avg_gate_score": 1.0,
+        "top_sources": [
+          ""
+        ]
+      },
+      {
+        "concept": "RECONSTRUCTION",
+        "probe_angles_run": 20,
+        "confirmed": 4,
+        "weak": 4,
+        "absent": 12,
+        "lineage_pressure": 0.3,
+        "avg_gate_score": 1.0,
+        "top_sources": [
+          ""
+        ]
+      },
+      {
+        "concept": "COMPRESSION",
+        "probe_angles_run": 20,
+        "confirmed": 3,
+        "weak": 3,
+        "absent": 14,
+        "lineage_pressure": 0.225,
+        "avg_gate_score": 1.0,
+        "top_sources": [
+          ""
+        ]
+      }
+    ],
+    "authority": "NONE",
+    "non_sovereign": true
+  },
+  "stats": {
+    "elapsed": 1018.3858778341673,
+    "hashes_match": true,
+    "perfect_gate_count": 200,
+    "gate_fail_count": 0,
+    "confirmed_count": 91,
+    "weak_count": 19,
+    "absent_count": 90
+  },
+  "receipts_summary": {
+    "total": 200,
+    "confirmed": 91,
+    "weak": 19,
+    "absent": 90,
+    "perfect_gate": 200
+  },
+  "protected_before": {
+    "town/ledger_v1.ndjson": "544c056a77fecc2f",
+    "helen_os/governance": "28339dc8df55c322",
+    "helen_os/schemas": "ceef6f042460cba2",
+    "oracle_town/kernel": "2a391851f6890b69"
+  },
+  "protected_after": {
+    "town/ledger_v1.ndjson": "544c056a77fecc2f",
+    "helen_os/governance": "28339dc8df55c322",
+    "helen_os/schemas": "ceef6f042460cba2",
+    "oracle_town/kernel": "2a391851f6890b69"
+  }
+}
