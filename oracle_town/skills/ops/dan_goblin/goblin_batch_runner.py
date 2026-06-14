@@ -298,7 +298,8 @@ def make_epoch_entry(
         },
         "hal_verdict": hal,
     }
-    canon_str = json.dumps(payload, sort_keys=True, ensure_ascii=True)
+    _hash_core = {k: v for k, v in payload.items() if k != "timestamp"}
+    canon_str = json.dumps(_hash_core, sort_keys=True, ensure_ascii=True)
     epoch_hash = hashlib.sha256(canon_str.encode()).hexdigest()[:16]
     payload["epoch_hash"] = epoch_hash
     return payload
@@ -332,7 +333,7 @@ def make_tranche_receipt(
         for s, idx, h in scores[:5]
     ]
 
-    tranche_id_input = f"{batch_id}:tranche:{tranche_index}:{timestamp}"
+    tranche_id_input = f"{batch_id}:tranche:{tranche_index}"
     tranche_id = hashlib.sha256(tranche_id_input.encode()).hexdigest()[:12]
 
     receipt = {
@@ -374,7 +375,7 @@ def run_batch(
 
     timestamp = datetime.now(timezone.utc).isoformat()
     if batch_id is None:
-        batch_id = hashlib.sha256(f"{mission}:{timestamp}".encode()).hexdigest()[:12]
+        batch_id = hashlib.sha256(f"{mission}:{tranche_index}".encode()).hexdigest()[:12]
 
     mode = "DRY-RUN" if dry_run else "LIVE"
     print(f"=== GOBLIN BATCH RUNNER ===")
