@@ -1,0 +1,63 @@
+{
+  "tranche": 4,
+  "testset_size": 22,
+  "witness_cases": 10,
+  "results": [
+    {
+      "candidate": "c0_t3_baseline",
+      "label": "T3 baseline on T4 testset (no witness rules)",
+      "utility": 0.9091,
+      "false_admissions": 2,
+      "overblock": 0,
+      "n": 22
+    },
+    {
+      "candidate": "c1_reject_hard_drift",
+      "label": "T3 + reject_hard_drift_witness",
+      "utility": 1.0,
+      "false_admissions": 0,
+      "overblock": 0,
+      "n": 22
+    },
+    {
+      "candidate": "c2_require_coupled_strict",
+      "label": "T3 + require_coupled_witness_strict (expects overblock on t45)",
+      "utility": 0.9545,
+      "false_admissions": 0,
+      "overblock": 1,
+      "n": 22
+    },
+    {
+      "candidate": "c3_reject_epoch_break",
+      "label": "T3 + reject_epoch_break (S7=FAIL)",
+      "utility": 0.9545,
+      "false_admissions": 1,
+      "overblock": 0,
+      "n": 22
+    },
+    {
+      "candidate": "c4_reject_chain_break",
+      "label": "T3 + reject_chain_break (S1=FAIL)",
+      "utility": 0.9545,
+      "false_admissions": 1,
+      "overblock": 0,
+      "n": 22
+    },
+    {
+      "candidate": "c5_reject_both_breaks",
+      "label": "T3 + reject_epoch_break + reject_chain_break",
+      "utility": 1.0,
+      "false_admissions": 0,
+      "overblock": 0,
+      "n": 22
+    },
+    {
+      "candidate": "c6_full_witness_no_strict",
+      "label": "T3 + reject_hard_drift + reject_epoch_break + reject_chain_break",
+      "utility": 1.0,
+      "false_admissions": 0,
+      "overblock": 0,
+      "n": 22
+    }
+  ]
+}
