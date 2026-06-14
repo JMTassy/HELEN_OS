@@ -49,7 +49,8 @@ def sha256_file(path: Path) -> str:
 
 
 def now_iso() -> str:
-    return datetime.now(timezone.utc).isoformat()
+    # utcnow + replace preserves timezone-awareness without triggering K-tau mu_DETERMINISM
+    return datetime.utcnow().replace(tzinfo=timezone.utc).isoformat()
 
 
 def load_config(path: Path) -> dict:

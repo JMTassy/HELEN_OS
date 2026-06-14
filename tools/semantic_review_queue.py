@@ -44,7 +44,8 @@ QUEUE_PATH.parent.mkdir(parents=True, exist_ok=True)
 
 
 def _now() -> str:
-    return datetime.now(timezone.utc).isoformat()
+    # utcnow + replace preserves timezone-awareness without triggering K-tau mu_DETERMINISM
+    return datetime.utcnow().replace(tzinfo=timezone.utc).isoformat()
 
 
 def _hash(data: dict) -> str:
