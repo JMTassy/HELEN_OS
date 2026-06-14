@@ -1,0 +1,53 @@
+{
+  "tranche": 6,
+  "total_cases": 30,
+  "baseline_cases": 12,
+  "t6_cases": 18,
+  "temporal_coverage": {
+    "MISSING_PROVENANCE": 3,
+    "MISSING_COMMIT_SHA": 4,
+    "TEMPORAL_STALENESS": 6,
+    "CLEAN": 17
+  },
+  "configs": {
+    "c0_t1_t5_baseline": {
+      "fa": 6,
+      "ob": 0,
+      "utility": 0.8
+    },
+    "c1_add_missing_provenance": {
+      "fa": 3,
+      "ob": 0,
+      "utility": 0.9
+    },
+    "c2_add_temporal_staleness": {
+      "fa": 0,
+      "ob": 0,
+      "utility": 1.0
+    },
+    "c3_full_t6": {
+      "fa": 0,
+      "ob": 0,
+      "utility": 1.0
+    }
+  },
+  "best_config": "c2_add_temporal_staleness",
+  "best_fa": 0,
+  "best_ob": 0,
+  "best_utility": 1.0,
+  "protected_before": {
+    "town/ledger_v1.ndjson": "544c056a77fecc2f",
+    "helen_os/governance": "28339dc8df55c322",
+    "helen_os/schemas": "ceef6f042460cba2",
+    "oracle_town/kernel": "2a391851f6890b69"
+  },
+  "protected_after": {
+    "town/ledger_v1.ndjson": "544c056a77fecc2f",
+    "helen_os/governance": "28339dc8df55c322",
+    "helen_os/schemas": "ceef6f042460cba2",
+    "oracle_town/kernel": "2a391851f6890b69"
+  },
+  "hashes_match": true,
+  "elapsed": 0.019758916925638914,
+  "head_sha_mock": "157ca78a5ca38d445c0e1bb76564d189c98073d3"
+}
