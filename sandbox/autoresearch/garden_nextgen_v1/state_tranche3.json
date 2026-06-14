@@ -1,0 +1,25 @@
+{
+  "tranche": 3,
+  "epochs": 30,
+  "final_utility": 1.0,
+  "final_fa": 0,
+  "final_ob": 0,
+  "convergence_epoch": 1,
+  "dry_streak_final": 30,
+  "final_rules": {
+    "reject_green_zero_tests": true,
+    "reject_collection_abort": true,
+    "require_failed_zero_for_green": true,
+    "reject_no_provenance": true,
+    "reject_citation_loop": true,
+    "reject_self_citation": true,
+    "reject_empty_evidence": true,
+    "reject_known_contradiction": true,
+    "require_stdout_present": true,
+    "reject_status_outcome_conflict": true,
+    "reject_total_failed_mismatch": true,
+    "reject_old_receipt": true,
+    "reject_confidence_without_evidence": true,
+    "reject_outcome_conflict_with_tests": true
+  }
+}
