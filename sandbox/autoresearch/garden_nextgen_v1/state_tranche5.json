@@ -1,0 +1,34 @@
+{
+  "tranche": 5,
+  "best": "c1_citation_probe",
+  "utility": 1.0,
+  "probe_fa": 0,
+  "probe_ob": 0,
+  "fa_closed": 8,
+  "loop_count": 8,
+  "loop_ids": [
+    "t_loop3_a",
+    "t_loop3_b",
+    "t_loop3_c",
+    "t_loop2_a",
+    "t_loop2_b",
+    "t_self_loop",
+    "t_green_loop_a",
+    "t_green_loop_b"
+  ],
+  "total_cases": 28,
+  "protected_before": {
+    "town/ledger_v1.ndjson": "6a45196a4a918896",
+    "helen_os/governance": "28339dc8df55c322",
+    "helen_os/schemas": "ceef6f042460cba2",
+    "oracle_town/kernel": "2a391851f6890b69"
+  },
+  "protected_after": {
+    "town/ledger_v1.ndjson": "6a45196a4a918896",
+    "helen_os/governance": "28339dc8df55c322",
+    "helen_os/schemas": "ceef6f042460cba2",
+    "oracle_town/kernel": "2a391851f6890b69"
+  },
+  "hashes_match": true,
+  "elapsed": 0.01610183296725154
+}
