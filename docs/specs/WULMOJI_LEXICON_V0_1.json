@@ -1,0 +1,417 @@
+{
+  "meta": {
+    "name": "WULMOJI_LEXICON_V0_1",
+    "version": "0.1",
+    "frozen": true,
+    "status": "NON_SOVEREIGN_SPEC",
+    "authority": false,
+    "sovereign": false,
+    "canon": false,
+    "layer": "TEMPLE",
+    "simulation": "DREAM_OF_CONQUEST",
+    "description": "Frozen WULmoji v0.1 token table for DREAM_OF_CONQUEST simulation and non-sovereign symbolic communication. Forward-compatible: unknown tokens produce warnings, not errors.",
+    "date_frozen": "2026-06-15",
+    "relation_to_formal_spec": "docs/specs/WULMOJI_LEXICON_V0_1.json is a DREAM_OF_CONQUEST dialect. It does NOT supersede formal/wulmoji_spec_v1.txt (SYSTEM_A, 8 PROCESS primitives) or WUL_PACKET_SPEC_V0_1.md (inter-agent packet format). These are orthogonal systems retained per WULMOJI_V1_RECONCILIATION.md.",
+    "hash_formula": "payload_hash = SHA256(CANON_JSON(AST))",
+    "normalizer_spec": "docs/specs/WULMOJI_NORMALIZER_SPEC_V0_1.md",
+    "related_specs": [
+      "docs/specs/WUL_PACKET_SPEC_V0_1.md",
+      "docs/specs/WULMOJI_V1_RECONCILIATION.md",
+      "docs/specs/WULMOJI_NORMALIZER_SPEC_V0_1.md",
+      "formal/wulmoji_spec_v1.txt"
+    ]
+  },
+
+  "unknown_token_policy": {
+    "action": "WARNING_ONLY",
+    "error": false,
+    "forward_compatible": true,
+    "behavior": "Unknown grapheme clusters are emitted as AST nodes with class='UNKNOWN', type='UNKNOWN', and raw_codepoints preserved. Parsing continues. Hash includes the UNKNOWN node verbatim.",
+    "reason": "Lexicon may be extended in v0.2+ without breaking v0.1 parsers."
+  },
+
+  "delimiter_pairs": [
+    {
+      "open": "🔷",
+      "open_type": "GROUP_OPEN",
+      "close": "🔶",
+      "close_type": "GROUP_CLOSE",
+      "balance_required": true,
+      "error_on_imbalance": true
+    }
+  ],
+
+  "token_classes": {
+    "O": "Operator — actions and transformations applied to one or more operand expressions",
+    "R": "Relation — arrows and causal links; binary in canonical use",
+    "D": "Delimiter — structural scope markers; GROUP pair must balance; SEP and EOM are non-scoping",
+    "M": "Modality — speech-act type annotation; appears as prefix to the expression it qualifies",
+    "E": "Entity — semantic noun-like object; arity 0 (no direct operand)"
+  },
+
+  "tokens": [
+    {
+      "token": "👁️",
+      "unicode": ["U+1F441", "U+FE0F"],
+      "class": "O",
+      "type": "ATTN",
+      "arity": 1,
+      "description": "Observe / attend / witness. Marks active notice of the operand.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "🧬",
+      "unicode": ["U+1F9EC"],
+      "class": "O",
+      "type": "MERGE",
+      "arity": 2,
+      "description": "Merge / synthesize. Binary operator combining two expressions into one composite.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "✅",
+      "unicode": ["U+2705"],
+      "class": "O",
+      "type": "AFFIRM",
+      "arity": 1,
+      "description": "Affirm / validate / accept. Marks the operand as verified or passing.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "🚫",
+      "unicode": ["U+1F6AB"],
+      "class": "O",
+      "type": "NEGATE",
+      "arity": 1,
+      "description": "Negate / refuse / block. Marks the operand as rejected or forbidden.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "🔁",
+      "unicode": ["U+1F501"],
+      "class": "O",
+      "type": "RECURSE",
+      "arity": 1,
+      "description": "Recurse / repeat / loop. Apply the operand repeatedly.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "🔄",
+      "unicode": ["U+1F504"],
+      "class": "O",
+      "type": "RECALL",
+      "arity": 1,
+      "description": "Recall / retrieve / restore from memory or prior state.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "🔺",
+      "unicode": ["U+1F53A"],
+      "class": "O",
+      "type": "DELTA",
+      "arity": 1,
+      "description": "Delta / mutation / change signal. Marks a state transition on the operand.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "⭕",
+      "unicode": ["U+2B55"],
+      "class": "O",
+      "type": "INTEGRATE",
+      "arity": 1,
+      "description": "Integrate / close loop / summarize. Marks completion of a cycle or proof.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "🚨",
+      "unicode": ["U+1F6A8"],
+      "class": "O",
+      "type": "ALERT",
+      "arity": 1,
+      "description": "Alert / escalate / urgent. Marks operand as requiring immediate attention.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "🛡️",
+      "unicode": ["U+1F6E1", "U+FE0F"],
+      "class": "O",
+      "type": "PROTECT",
+      "arity": 1,
+      "description": "Protect / guard / gate. Marks the operand as boundary-enforced or gate-cleared.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "🟢",
+      "unicode": ["U+1F7E2"],
+      "class": "O",
+      "type": "PASS",
+      "arity": 1,
+      "description": "Pass / green / success. Marks the operand as having cleared a gate or check.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "🔴",
+      "unicode": ["U+1F534"],
+      "class": "O",
+      "type": "FAIL",
+      "arity": 1,
+      "description": "Fail / red / blocked. Marks the operand as failing a gate or check.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "🟡",
+      "unicode": ["U+1F7E1"],
+      "class": "O",
+      "type": "WARN",
+      "arity": 1,
+      "description": "Warn / amber / caution. Marks the operand as requiring review before proceeding.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "🔗",
+      "unicode": ["U+1F517"],
+      "class": "R",
+      "type": "LINK",
+      "arity": 2,
+      "description": "Link / reference / causal binding. Binary: left-expr LINK right-expr.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "→",
+      "unicode": ["U+2192"],
+      "class": "R",
+      "type": "FLOW",
+      "arity": 2,
+      "description": "Flow / leads-to / sequential dependency. Right-arrow chaining.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "↔",
+      "unicode": ["U+2194"],
+      "class": "R",
+      "type": "BILINK",
+      "arity": 2,
+      "description": "Bidirectional link / mutual dependency / feedback loop.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "🔷",
+      "unicode": ["U+1F537"],
+      "class": "D",
+      "type": "GROUP_OPEN",
+      "arity": 0,
+      "description": "Open group scope. Must be balanced by a GROUP_CLOSE (🔶). Imbalance is a hard error.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "🔶",
+      "unicode": ["U+1F536"],
+      "class": "D",
+      "type": "GROUP_CLOSE",
+      "arity": 0,
+      "description": "Close group scope. Must be paired with a preceding GROUP_OPEN (🔷). Imbalance is a hard error.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "🪢",
+      "unicode": ["U+1FAA2"],
+      "class": "D",
+      "type": "KNOT",
+      "arity": 0,
+      "description": "Repair marker / clarification boundary. Inline; does not open or close a scope.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "•",
+      "unicode": ["U+2022"],
+      "class": "D",
+      "type": "SEP",
+      "arity": 0,
+      "description": "Item separator / sequence boundary within a group.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "🏁",
+      "unicode": ["U+1F3C1"],
+      "class": "D",
+      "type": "EOM",
+      "arity": 0,
+      "description": "End of message / final seal. No tokens may follow EOM in a well-formed expression.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "❓",
+      "unicode": ["U+2753"],
+      "class": "M",
+      "type": "QUERY",
+      "arity": 0,
+      "description": "Query / open variable / question. Speech-act prefix: the following expression is a question.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "📣",
+      "unicode": ["U+1F4E3"],
+      "class": "M",
+      "type": "COMMAND",
+      "arity": 0,
+      "description": "Command / directive / imperative. Speech-act prefix: the following expression is an instruction.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "🧾",
+      "unicode": ["U+1F9FE"],
+      "class": "M",
+      "type": "ASSERT",
+      "arity": 0,
+      "description": "Assert / receipt-marker / formal claim. Speech-act prefix: the following expression is a stated fact.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "🧪",
+      "unicode": ["U+1F9EA"],
+      "class": "M",
+      "type": "TEST",
+      "arity": 0,
+      "description": "Test / experiment / probe. Speech-act prefix: the following expression is a hypothesis under test.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "🧠",
+      "unicode": ["U+1F9E0"],
+      "class": "E",
+      "type": "COGNITION",
+      "arity": 0,
+      "description": "Agent / cognition / decision-maker.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "🧩",
+      "unicode": ["U+1F9E9"],
+      "class": "E",
+      "type": "STRUCTURE",
+      "arity": 0,
+      "description": "Composition / architecture / puzzle-piece. A structural or assembled element.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "🪞",
+      "unicode": ["U+1FA9E"],
+      "class": "E",
+      "type": "REFLECTION",
+      "arity": 0,
+      "description": "Reflection / mirror / introspection target.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "🌿",
+      "unicode": ["U+1F33F"],
+      "class": "E",
+      "type": "GROWTH",
+      "arity": 0,
+      "description": "Growth / living process / organic development.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "🌊",
+      "unicode": ["U+1F30A"],
+      "class": "E",
+      "type": "FIELD",
+      "arity": 0,
+      "description": "Ambient field / background pressure / contextual medium.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "🔮",
+      "unicode": ["U+1F52E"],
+      "class": "E",
+      "type": "INFERENCE",
+      "arity": 0,
+      "description": "Inference / prediction / forward projection.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "📚",
+      "unicode": ["U+1F4DA"],
+      "class": "E",
+      "type": "EVIDENCE",
+      "arity": 0,
+      "description": "Evidence / corpus / accumulated knowledge fragments. DREAM_OF_CONQUEST: knowledge_fragment pool.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "🎯",
+      "unicode": ["U+1F3AF"],
+      "class": "E",
+      "type": "GOAL",
+      "arity": 0,
+      "description": "Goal / target / success condition.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "🧭",
+      "unicode": ["U+1F9ED"],
+      "class": "E",
+      "type": "PLAN",
+      "arity": 0,
+      "description": "Plan / map / navigation structure.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "⚖️",
+      "unicode": ["U+2696", "U+FE0F"],
+      "class": "E",
+      "type": "CONSTRAINT",
+      "arity": 0,
+      "description": "Constraint / balance / gate condition / rule.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "📦",
+      "unicode": ["U+1F4E6"],
+      "class": "E",
+      "type": "ARTIFACT",
+      "arity": 0,
+      "description": "Artifact / package / delivered change. Marks a concrete output.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "🚦",
+      "unicode": ["U+1F6A6"],
+      "class": "E",
+      "type": "SIGNAL",
+      "arity": 0,
+      "description": "Signal / gate status / next-step indicator.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "🏠",
+      "unicode": ["U+1F3E0"],
+      "class": "E",
+      "type": "HOME",
+      "arity": 0,
+      "description": "Home / keep / inalienable base. DREAM_OF_CONQUEST: HOME_KEEP_AVALON — automatic QUINT_CORE source.",
+      "status": "FROZEN"
+    },
+    {
+      "token": "⌬",
+      "unicode": ["U+23AC"],
+      "class": "E",
+      "type": "SOVEREIGN_MARKER",
+      "arity": 0,
+      "description": "Sovereign-proximity marker. Mandatory in KERNEL_ADJACENT WUL packets per WUL_PACKET_SPEC_V0_1.md §KERNEL_ADJACENT_RULES.",
+      "status": "FROZEN"
+    }
+  ],
+
+  "verdict_format": {
+    "description": "Canonical WULmoji verdict line format used in session responses",
+    "pattern": "🛡️✅ / 🧪 / 📦 / 🚦",
+    "slots": {
+      "1": "Gate result — 🛡️✅ (pass) or 🛡️🔴 (fail) or 🛡️🟡 (warn)",
+      "2": "Test result — 🧪✅ or 🧪🔴",
+      "3": "Artifact / change — 📦 + description",
+      "4": "Next step signal — 🚦 + instruction"
+    },
+    "example": "🛡️✅ EXPLORE_MECHANIC • 🧪✅ bootstrap_closed • 📦 epoch_e026 • 🚦 COMMIT_READY 🏁"
+  }
+}
