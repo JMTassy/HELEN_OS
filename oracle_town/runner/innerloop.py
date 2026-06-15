@@ -17,7 +17,7 @@ import sys
 from pathlib import Path
 from typing import Dict, List, Any, Optional, Tuple
 from dataclasses import dataclass, asdict
-from datetime import datetime
+from datetime import datetime, UTC
 
 # Add parent to path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
@@ -87,7 +87,7 @@ class WorkspaceSnapshot:
 
     def capture(self) -> CycleSnapshot:
         """Capture current workspace state"""
-        cycle_id = f"CYCLE-{datetime.utcnow().strftime('%Y%m%d-%H%M%S-%f')}"
+        cycle_id = f"CYCLE-{datetime.now(UTC).replace(tzinfo=None).strftime('%Y%m%d-%H%M%S-%f')}"
 
         # Hash all allowed files
         file_hashes = {}
@@ -106,7 +106,7 @@ class WorkspaceSnapshot:
         return CycleSnapshot(
             cycle_id=cycle_id,
             snapshot_hash=f"sha256:{snapshot_hash}",
-            timestamp=datetime.utcnow().isoformat(),
+            timestamp=datetime.now(UTC).replace(tzinfo=None).isoformat(),
             repo_files=file_hashes,
             git_commit=self._get_git_commit()
         )
@@ -266,7 +266,7 @@ class IdeaTracker:
     ):
         """Append idea lifecycle event"""
         idea_event = {
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(UTC).replace(tzinfo=None).isoformat(),
             "cycle_id": cycle_id,
             "idea_id": proposal.proposal_id,
             "proposal_digest": self._hash_proposal(proposal),
@@ -332,7 +332,7 @@ class InnerLoopRunner:
         print(f"CYCLE {cycle_num}")
         print(f"{'='*70}")
 
-        start_time = datetime.utcnow()
+        start_time = datetime.now(UTC).replace(tzinfo=None)
 
         # 1. Snapshot workspace
         snapshot = self.snapshot_engine.capture()
@@ -403,7 +403,7 @@ class InnerLoopRunner:
         # 10. Reflection input (ledger-derived only)
         reflection_input = self._build_reflection_input(decision, ledger)
 
-        end_time = datetime.utcnow()
+        end_time = datetime.now(UTC).replace(tzinfo=None)
         duration = (end_time - start_time).total_seconds()
 
         report = CycleReport(
@@ -498,7 +498,7 @@ class InnerLoopRunner:
             "attestations": attestations,
             "metadata": {
                 "proposal_id": proposal.proposal_id,
-                "timestamp": datetime.utcnow().isoformat()
+                "timestamp": datetime.now(UTC).replace(tzinfo=None).isoformat()
             }
         }
 
@@ -559,7 +559,7 @@ class InnerLoopRunner:
 
     def _make_empty_report(self, snapshot: CycleSnapshot, start_time: datetime) -> CycleReport:
         """Make empty report for failed cycles"""
-        end_time = datetime.utcnow()
+        end_time = datetime.now(UTC).replace(tzinfo=None)
         return CycleReport(
             cycle_id=snapshot.cycle_id,
             timestamp=snapshot.timestamp,
@@ -584,7 +584,7 @@ class InnerLoopRunner:
         start_time: datetime
     ) -> CycleReport:
         """Make cycle report"""
-        end_time = datetime.utcnow()
+        end_time = datetime.now(UTC).replace(tzinfo=None)
         return CycleReport(
             cycle_id=snapshot.cycle_id,
             timestamp=snapshot.timestamp,
