@@ -95,7 +95,7 @@ Every semantic object in the field:
 ## Surface Geometry
 
 ```
-[ Object Field 220px ] [ Constellation 1fr ] [ Sovereign Ledger 220px ]
+[ Object Field 220px ] [ Constellation 1fr ] [ Receipt Ledger 220px ]
 ```
 
 Header strip: 40px — title (serif) left, density + badge + clock right.

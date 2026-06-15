@@ -49,4 +49,27 @@ Those three open questions are parked. The two canonical systems are clear.
 
 ---
 
+---
+
+## WULmoji Authority Invariant
+
+```
+WULmoji is a render layer. It may signal state, mood, risk, and receipt status.
+It cannot create authority, admit truth, mutate ledger, or override reducer decisions.
+```
+
+Cockpit doctrine:
+
+```
+Semantic continuity may be cross-device. Authority is operator-bound and receipt-governed.
+```
+
+HELEN formula (non-sovereign surface docs):
+
+```
+HELEN = machine-independent semantic continuity + operator-bound authority
+```
+
+---
+
 *NON_SOVEREIGN · NO_SHIP · REFERENCE · scatter audit 2026-05-16*

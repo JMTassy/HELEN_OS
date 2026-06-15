@@ -18,7 +18,7 @@ HELEN = Π_𝓛 ∘ 𝒢
 Where:
 
 - **𝒢** = generative machinery — LLMs, skills, agents, compilation, Temple, UI expression. Powerful, non-sovereign.
-- **Π_𝓛** = lawful admissibility projector — routing law, receipt law, replay law, promotion law, memory scope law. Narrow, sovereign.
+- **Π_𝓛** = lawful admissibility projector — routing law, receipt law, replay law, promotion law, memory scope law. Narrow, operator-authority-bound.
 
 The governing equation for all state transitions:
 
@@ -41,7 +41,7 @@ x_{t+1} = Π_𝓛 ( 𝒢(x_t, u_t) )
 ```
 ┌─────────────────────────────────────┐  ┌──────────────────────────────────────┐
 │        GENERATIVE LAYER  𝒢           │  │      GOVERNING LAYER  Π_𝓛             │
-│  (powerful, non-sovereign)           │  │  (narrow, sovereign)                  │
+│  (powerful, non-sovereign)           │  │  (narrow, operator-bound)             │
 │                                      │  │                                       │
 │  • Language generation               │  │  • Admissibility checks               │
 │  • Decomposition                     │  │  • Routing law                        │
@@ -67,7 +67,7 @@ The whole architecture is a system of anti-collapse barriers.
 
 Defines the invariants that must not drift:
 
-- Reducer sovereignty — only reducer-emitted decisions mutate governed state
+- Reducer Admission Boundary — only reducer-emitted decisions mutate governed state
 - Receipt immutability — receipts are append-only, never modified
 - Replay requirement — state must be reconstructible from initial state + ledger
 - Input resolution rules — unresolved pointers blocked at boundary

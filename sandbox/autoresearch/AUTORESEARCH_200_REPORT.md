@@ -4,7 +4,7 @@
 
 epochs_run     : 200
 head_sha       : 3c9e88fd2eb5d3d8...
-elapsed        : 1018.39s
+elapsed        : 809.08s
 sovereign_safe : True
 
 ## Obsidian Mirror — Attractor Map
@@ -13,14 +13,14 @@ sovereign_safe : True
 |---|---|---|---|---|---|---|
 | 1 | 🟡 **REPLAY** | 13 | 0 | 7 | 0.6500 |  |
 | 2 | 🟡 **DETERMINISM** | 13 | 0 | 7 | 0.6500 |  |
-| 3 | 🟡 **PROVENANCE** | 11 | 1 | 8 | 0.5750 |  |
-| 4 | 🟡 **GOVERNANCE** | 11 | 1 | 8 | 0.5750 |  |
-| 5 | 🟡 **ADMISSION** | 10 | 3 | 7 | 0.5750 |  |
-| 6 | 🟡 **IDENTITY** | 9 | 4 | 7 | 0.5500 |  |
+| 3 | 🟡 **IDENTITY** | 11 | 2 | 7 | 0.6000 |  |
+| 4 | 🟡 **PROVENANCE** | 11 | 1 | 8 | 0.5750 |  |
+| 5 | 🟡 **GOVERNANCE** | 11 | 1 | 8 | 0.5750 |  |
+| 6 | 🟡 **ADMISSION** | 10 | 3 | 7 | 0.5750 |  |
 | 7 | 🟡 **WITNESS** | 9 | 2 | 9 | 0.5000 |  |
 | 8 | ⚪ **COUPLING** | 8 | 1 | 11 | 0.4250 |  |
-| 9 | ⚪ **RECONSTRUCTION** | 4 | 4 | 12 | 0.3000 |  |
-| 10 | ⚪ **COMPRESSION** | 3 | 3 | 14 | 0.2250 |  |
+| 9 | ⚪ **RECONSTRUCTION** | 6 | 2 | 12 | 0.3500 |  |
+| 10 | ⚪ **COMPRESSION** | 5 | 1 | 14 | 0.2750 |  |
 
 ## Interpretation
 

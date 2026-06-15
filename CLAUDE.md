@@ -56,8 +56,8 @@ Non-sovereign sandbox. Status: NON_SOVEREIGN / NO_SHIP. Structure:
 
 ### Layer 2: Append-Only Ledger
 - `town/ledger_v1.ndjson` — hash-chained, cum_hash integrity
-- `tools/helen_say.py` — canonical writer (payload_hash = sha256(canon(payload)))
-- `tools/ndjson_writer.py` — kernel boundary writer
+- `tools/helen_say.py` — canonical writer (payload_hash = sha256(canon(payload))); `--op` values: `fetch` (default), `dialog`, `shell`, `promote_skill`, `seq_correction`
+- `tools/ndjson_writer.py` — kernel boundary writer; uses `fcntl.flock` (exclusive) + re-reads on-disk tail under lock to prevent TOCTOU seq forks
 - **Admissibility**: `helen_say.py` → `ndjson_writer.py` is the only admitted path. Direct appends to `town/ledger_v1.ndjson` are forbidden and rejected by `tools/kernel_guard.sh`.
 
 ### Layer 3: Execution + Autonomy
@@ -128,6 +128,18 @@ Local HAL-role inference driver and epoch runner. Per-agent model assignment is 
 ### `GOVERNANCE/TRANCHE_RECEIPTS/`
 - Contains `TRANCHE_SUB_RECEIPT_V1` — one hypothesis per epoch
 - AUTORESEARCH tranche receipts live here
+
+### `oracle_town/protocols/`
+- `SKILL_ADMISSION_PROTOCOL_V1.md` — 7-gate pipeline for skill-local admission (Temple → Oracle → Mayor → Reducer → Ledger → Replay → Witness)
+- `SOVEREIGN_PROMOTION_PROTOCOL_V1.md` — lawful path from skill-local admission to operator-authorized admitted ledger write; `skill_local_admission ≠ operator_authorized_admission`
+- `SOVEREIGN_LEDGER_SEQ_REPAIR_PROTOCOL_V1.md` — seq fork repair via `LEDGER_SEQ_CORRECTION_V1` packet; operator-authorized only
+- `MAYOR_HANDLER_PROMOTE_SKILL_SPEC_V1.md` — 6-gate `_handle_promote_skill()` spec
+
+### `oracle_town/audits/`
+- `SOVEREIGN_PROMOTION_AUDIT_REFERENCE_DRIFT_WITNESS_V1.md` — post-mortem for seq=287 TOCTOU fork
+- `FIREWALL_BYPASS_AUDIT_8911FD0.md` — authorized firewall bypass record for seq_correction handler
+
+> **Note on `SOVEREIGN_*` filenames**: Legacy filenames refer to operator-authorized admitted ledger capability, not autonomous sovereignty. HELEN does not self-authorize. Operators authorize; reducers admit; ledger records.
 
 ## Gates
 
@@ -220,8 +232,15 @@ GEMINI_API_KEY=... .venv/bin/python tools/helen_simple_ui.py
 # Telegram bot (two-way voice dialogue)
 GEMINI_API_KEY=... .venv/bin/python tools/helen_telegram.py
 
-# One-shot sovereign-routed message (canonical writer)
+# One-shot operator-routed admitted message (canonical writer)
+# --op options: fetch (default), dialog, shell, promote_skill, seq_correction
 .venv/bin/python tools/helen_say.py "your message" --op fetch
+
+# Admitted skill promotion (requires SKILL_PROMOTION_PACKET_V1 JSON as message; operator-authorized)
+.venv/bin/python tools/helen_say.py '{"skill_id":"...","requested_action":"SOVEREIGN_PROMOTE",...}' --op promote_skill
+
+# Ledger seq repair (operator-authorized only; see oracle_town/protocols/SOVEREIGN_LEDGER_SEQ_REPAIR_PROTOCOL_V1.md)
+.venv/bin/python tools/helen_say.py '{"operation":"LEDGER_SEQ_CORRECTION_V1",...}' --op seq_correction
 
 # TTS (Zephyr, Gemini 2.5 Flash)
 GEMINI_API_KEY=... .venv/bin/python oracle_town/skills/voice/gemini_tts/helen_tts.py "text"
@@ -265,10 +284,25 @@ Multiple chat entry points exist; they are **not interchangeable**.
 
 ## Operational Notes
 
-- `town/ledger_v1.ndjson` may show as dirty in `git status` due to live kernel daemon writes. Do not stash, do not commit, do not edit — sovereign firewall path.
+- `town/ledger_v1.ndjson` may show as dirty in `git status` due to live kernel daemon writes. Do not stash, do not commit, do not edit — operator-authorized firewall path.
 - `artifacts/k8_*.json`, `artifacts/k8_trace.ndjson`, `artifacts/k_tau_*.json` are live gate-trace outputs and routinely show dirty after lint runs. They are not stash-eligible; let the gate scripts manage them.
 
+## Key Reference
+
+`docs/HELEN_OS_CTO_GUIDE_V1_1.md` — authoritative architectural state at 2026-06-13 (post seq-repair). Read this first when orienting in the kernel layer. Contains: component live/status table, chain status, admission pipeline, firewall bypass record.
+
 ## Current State
+
+### Update 2026-06-15 (HEAD = 4d1e185)
+
+Skill promotion admission pipeline is now **operationally live**:
+- **`_handle_promote_skill()`** in `oracle_town/kernel/kernel_daemon.py` — 6-gate skill promotion admission handler (parse, schema, fields, checker verdict, hash format, action) + Gate A injection check + MAYOR ratification + NDJSONWriter write. Fails closed on every gate.
+- **`_handle_seq_correction()`** — ledger seq repair handler; routes `LEDGER_SEQ_CORRECTION_V1` packets; used to anchor the seq=287 TOCTOU artifact (now ANCHORED at seq=295, chain PASS).
+- **NDJSONWriter atomicity**: `fcntl.flock` exclusive lock + re-reads on-disk tail under lock, closing the TOCTOU race that caused the original seq fork.
+- **`hal_verdict_from_kernel()` fix**: now passes `kernel_resp["mutations"]` through (was hardcoded `[]`) so turn payloads accurately record admitted ledger writes.
+- **Tests**: verify with `make test`; related coverage includes `test_ndjson_writer_atomic.py`, `test_duplicate_seq_detector.py`, `test_handle_promote_skill.py`, `test_handle_seq_correction.py`.
+- **Protocols filed**: `oracle_town/protocols/` — SKILL_ADMISSION_PROTOCOL_V1, SOVEREIGN_PROMOTION_PROTOCOL_V1, SOVEREIGN_LEDGER_SEQ_REPAIR_PROTOCOL_V1, MAYOR_HANDLER_PROMOTE_SKILL_SPEC_V1.
+- **EXPLORE_MECHANIC E026** (Temple): EXPLORE registered as first-class action (cost 1 QUINT_CORE, output knowledge_fragment:{island}); bootstrap deadlock closed.
 
 ### Update 2026-06-03 (114 commits since the 2026-05-06 snapshot below)
 New work has concentrated in the **operator-surface** and **object-computing** lanes, not the kernel. The constitutional invariants, gates, and sovereign firewall are unchanged. Highlights:

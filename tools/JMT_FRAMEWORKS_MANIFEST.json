@@ -1,0 +1,137 @@
+{
+  "version": "1.0",
+  "description": "JMT Frameworks Retrieval Catalog - Load only what's needed per turn",
+  "last_updated": "2026-06-15",
+  "retrieval_strategy": "semantic_keyword_match",
+  "note": "SOUL loads the manifest. Per-turn retrieval loads only relevant framework summaries.",
+  "frameworks": [
+    {
+      "id": "oracle-governance",
+      "name": "ORACLE Governance Framework",
+      "domain": "Governance",
+      "purpose": "Non-sovereign LLM decision-making with explicit authority separation",
+      "trigger_keywords": [
+        "governance",
+        "authority",
+        "decision",
+        "sovereign",
+        "ledger",
+        "approval",
+        "policy"
+      ],
+      "file_path": "tools/PLUGINS_JMT_CATALOG.json",
+      "key_concepts": [
+        "Propose-Validate-Ledger",
+        "Non-sovereignty",
+        "Authority separation"
+      ]
+    },
+    {
+      "id": "riemann-stqm",
+      "name": "RIEMANN Spatio-Temporal Query Model",
+      "domain": "Data/Time",
+      "purpose": "Query and reason about spatio-temporal data with geometric precision",
+      "trigger_keywords": [
+        "time",
+        "spatial",
+        "geometry",
+        "timeline",
+        "history",
+        "when",
+        "where",
+        "trajectory"
+      ],
+      "file_path": "tools/PLUGINS_JMT_CATALOG.json",
+      "key_concepts": [
+        "Manifold queries",
+        "Temporal ordering",
+        "Spatial relationships"
+      ]
+    },
+    {
+      "id": "quantum-consensus",
+      "name": "Quantum Consensus Framework",
+      "domain": "Consensus/Agreement",
+      "purpose": "Probabilistic consensus for multi-agent systems with superposition of opinions",
+      "trigger_keywords": [
+        "consensus",
+        "agreement",
+        "voting",
+        "multi-agent",
+        "probability",
+        "distributed",
+        "coordination"
+      ],
+      "file_path": "tools/PLUGINS_JMT_CATALOG.json",
+      "key_concepts": [
+        "Superposition of states",
+        "Collapse to decision",
+        "Agent coordination"
+      ]
+    },
+    {
+      "id": "swarm-emergence",
+      "name": "Swarm Emergence Framework",
+      "domain": "Coordination/Emergence",
+      "purpose": "Model emergent behavior from simple local interactions in multi-agent systems",
+      "trigger_keywords": [
+        "emergence",
+        "swarm",
+        "collective",
+        "agents",
+        "behavior",
+        "pattern",
+        "self-organization"
+      ],
+      "file_path": "tools/PLUGINS_JMT_CATALOG.json",
+      "key_concepts": [
+        "Local interactions",
+        "Global emergence",
+        "No central control"
+      ]
+    },
+    {
+      "id": "consensus-meditation",
+      "name": "Consensus Meditation Framework",
+      "domain": "Philosophy/Agreement",
+      "purpose": "Philosophical framework for reaching understanding through deep agreement protocols",
+      "trigger_keywords": [
+        "meditation",
+        "philosophy",
+        "understanding",
+        "dialogue",
+        "reflection",
+        "agreement",
+        "presence"
+      ],
+      "file_path": "tools/PLUGINS_JMT_CATALOG.json",
+      "key_concepts": [
+        "Deep listening",
+        "Presence",
+        "Mutual understanding"
+      ]
+    },
+    {
+      "id": "conquest-game",
+      "name": "CONQUEST Game Simulation",
+      "domain": "Gaming/Simulation",
+      "purpose": "Deterministic game engine for territory acquisition with skill and chance",
+      "trigger_keywords": [
+        "game",
+        "conquest",
+        "simulation",
+        "strategy",
+        "territory",
+        "duel",
+        "chance"
+      ],
+      "file_path": "artifacts/conquest_mechanics.json",
+      "key_concepts": [
+        "Deterministic seeded RNG",
+        "Turn-based duels",
+        "Territory control"
+      ]
+    }
+  ],
+  "sot_migrated": true
+}

@@ -32,6 +32,18 @@
         ]
       },
       {
+        "concept": "IDENTITY",
+        "probe_angles_run": 20,
+        "confirmed": 11,
+        "weak": 2,
+        "absent": 7,
+        "lineage_pressure": 0.6,
+        "avg_gate_score": 1.0,
+        "top_sources": [
+          ""
+        ]
+      },
+      {
         "concept": "PROVENANCE",
         "probe_angles_run": 20,
         "confirmed": 11,
@@ -68,18 +80,6 @@
         ]
       },
       {
-        "concept": "IDENTITY",
-        "probe_angles_run": 20,
-        "confirmed": 9,
-        "weak": 4,
-        "absent": 7,
-        "lineage_pressure": 0.55,
-        "avg_gate_score": 1.0,
-        "top_sources": [
-          ""
-        ]
-      },
-      {
         "concept": "WITNESS",
         "probe_angles_run": 20,
         "confirmed": 9,
@@ -106,10 +106,10 @@
       {
         "concept": "RECONSTRUCTION",
         "probe_angles_run": 20,
-        "confirmed": 4,
-        "weak": 4,
+        "confirmed": 6,
+        "weak": 2,
         "absent": 12,
-        "lineage_pressure": 0.3,
+        "lineage_pressure": 0.35,
         "avg_gate_score": 1.0,
         "top_sources": [
           ""
@@ -118,10 +118,10 @@
       {
         "concept": "COMPRESSION",
         "probe_angles_run": 20,
-        "confirmed": 3,
-        "weak": 3,
+        "confirmed": 5,
+        "weak": 1,
         "absent": 14,
-        "lineage_pressure": 0.225,
+        "lineage_pressure": 0.275,
         "avg_gate_score": 1.0,
         "top_sources": [
           ""
@@ -132,18 +132,18 @@
     "non_sovereign": true
   },
   "stats": {
-    "elapsed": 1018.3858778341673,
+    "elapsed": 809.078976625111,
     "hashes_match": true,
     "perfect_gate_count": 200,
     "gate_fail_count": 0,
-    "confirmed_count": 91,
-    "weak_count": 19,
+    "confirmed_count": 97,
+    "weak_count": 13,
     "absent_count": 90
   },
   "receipts_summary": {
     "total": 200,
-    "confirmed": 91,
-    "weak": 19,
+    "confirmed": 97,
+    "weak": 13,
     "absent": 90,
     "perfect_gate": 200
   },
