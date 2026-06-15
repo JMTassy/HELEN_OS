@@ -11,7 +11,7 @@ Based on Isotopes paper: measure catch rate per layer + diminishing returns.
 import json
 from dataclasses import dataclass, field, asdict
 from typing import Dict, List, Set, Any
-from datetime import datetime
+from datetime import datetime, UTC
 from collections import defaultdict
 
 
@@ -40,7 +40,7 @@ class GateMetrics:
     unique_block_rate: float = 0.0  # unique_blocks / total_rejections
     marginal_value: float = 0.0  # unique_blocks / evaluation_cost
 
-    last_updated: str = field(default_factory=lambda: datetime.utcnow().isoformat() + "Z")
+    last_updated: str = field(default_factory=lambda: datetime.now(UTC).replace(tzinfo=None).isoformat() + "Z")
 
     def to_dict(self) -> Dict[str, Any]:
         """Serialize to JSON."""
@@ -90,7 +90,7 @@ class GateMetricsAggregator:
         self.claim_evaluations.append({
             "claim_id": claim_id,
             "gate_rejections": gate_rejections,
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(UTC).replace(tzinfo=None).isoformat() + "Z",
         })
 
         # Count rejections per gate
@@ -140,7 +140,7 @@ class GateMetricsAggregator:
             else:
                 gate.marginal_value = 0.0
 
-            gate.last_updated = datetime.utcnow().isoformat() + "Z"
+            gate.last_updated = datetime.now(UTC).replace(tzinfo=None).isoformat() + "Z"
 
         return self.gates
 
@@ -216,7 +216,7 @@ class GateMetricsAggregator:
                 }
                 for g in gate_rankings
             ],
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(UTC).replace(tzinfo=None).isoformat() + "Z",
         }
 
     def should_gate_stay(self, gate_name: str, min_marginal_value: float = 0.01) -> bool:
@@ -258,7 +258,7 @@ class GateMetricsAggregator:
                 for p in overlap_pairs[:10]
             ],
             "total_evaluations": len(self.claim_evaluations),
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(UTC).replace(tzinfo=None).isoformat() + "Z",
         }
 
     def save_metrics(self, path: str) -> None:
@@ -269,7 +269,7 @@ class GateMetricsAggregator:
             "summary": self.get_gate_effectiveness_summary(),
             "gate_details": {name: gate.to_dict() for name, gate in self.gates.items()},
             "overlap_analysis": self.get_gate_overlap_analysis(),
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(UTC).replace(tzinfo=None).isoformat() + "Z",
         }
 
         with open(path, "w") as f:
