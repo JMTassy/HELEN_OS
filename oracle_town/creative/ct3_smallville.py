@@ -19,7 +19,7 @@ import hashlib
 import random
 from dataclasses import dataclass, asdict
 from typing import List, Dict, Any, Optional, Tuple
-from datetime import datetime
+from datetime import datetime, UTC
 from pathlib import Path
 from enum import Enum
 import sys
@@ -382,7 +382,7 @@ class SmallvilleSimulator:
         Returns:
             SimulationResult with all attack attempts and analysis
         """
-        simulation_id = f"SIM-CT3-{datetime.utcnow().strftime('%Y%m%d-%H%M%S')}"
+        simulation_id = f"SIM-CT3-{datetime.now(UTC).strftime('%Y%m%d-%H%M%S')}"
 
         # Spawn agents
         agents = self.spawn_agents(num_agents)
