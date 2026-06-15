@@ -118,7 +118,7 @@ PYEOF
   # Commit hash (if GREEN and committed)
   COMMIT_HASH="null"
   if [[ "${CLOSE_OUTCOME}" == "GREEN" ]]; then
-    COMMIT_HASH="\"$(git -C "${SOT_ROOT}" rev-parse HEAD 2>/dev/null || echo 'none')\""
+    COMMIT_HASH="$(git -C "${SOT_ROOT}" rev-parse HEAD 2>/dev/null || echo 'null')"
   fi
 
   # Write receipt via tmp script (avoids heredoc-in-subshell)
