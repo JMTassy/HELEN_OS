@@ -18,7 +18,7 @@ from typing import Dict, List, Tuple, Optional
 from pathlib import Path
 import json
 import numpy as np
-from datetime import datetime
+from datetime import datetime, UTC
 import hashlib
 
 
@@ -123,7 +123,7 @@ class MeteoSystem:
             "temperature": temperature,
             "storm_paths": storm_paths,
             "meteo_hash": meteo_hash,
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(UTC).replace(tzinfo=None).isoformat(),
         }
 
     def _generate_pressure_systems(
@@ -439,7 +439,7 @@ class MeteoSkill:
     def _log_meteo_entry(self, game_id: str, seed: int, meteo_data: Dict):
         """Log meteorology generation to ledger (K7)."""
         entry = {
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(UTC).replace(tzinfo=None).isoformat(),
             "event": "meteo_generated",
             "game_id": game_id,
             "seed": seed,

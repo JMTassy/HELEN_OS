@@ -15,7 +15,7 @@ Workflow:
 from typing import Dict, List, Tuple, Optional
 from pathlib import Path
 import json
-from datetime import datetime
+from datetime import datetime, UTC
 from oracle_town.skills.map_generator_skill import MapGeneratorSkill
 from oracle_town.skills.meteo_skill import MeteoSkill, generate_weather_for_map
 
@@ -243,7 +243,7 @@ class ConquestMapIntegration:
         Path(self.ledger_path).parent.mkdir(parents=True, exist_ok=True)
 
         entry = {
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(UTC).replace(tzinfo=None).isoformat(),
             "event": "conquest_board_generated",
             "game_id": game_id,
             "seed": seed,

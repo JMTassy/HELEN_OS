@@ -13,7 +13,7 @@ K2 Rule: Proposer (MapGeneratorSkill) ≠ Validator (Foreman)
 import json
 from typing import Dict, List, Optional
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, UTC
 from dataclasses import dataclass, asdict
 
 
@@ -70,7 +70,7 @@ class ClaimWorkflow:
             claim: Claim to propose
         """
         if not claim.created_at:
-            claim.created_at = datetime.utcnow().isoformat()
+            claim.created_at = datetime.now(UTC).replace(tzinfo=None).isoformat()
 
         # Append claim to pending.md (Foreman inbox)
         with open(self.pending_path, "a") as f:
@@ -101,7 +101,7 @@ class ClaimWorkflow:
 
         claim = Claim.from_dict(claim_data) if isinstance(claim_data, dict) else claim_data
         claim.status = "accepted"
-        claim.curated_at = datetime.utcnow().isoformat()
+        claim.curated_at = datetime.now(UTC).replace(tzinfo=None).isoformat()
         claim.curator = curator
         claim.curation_reason = reason
 
@@ -126,7 +126,7 @@ class ClaimWorkflow:
 
         claim = Claim.from_dict(claim_data) if isinstance(claim_data, dict) else claim_data
         claim.status = "rejected"
-        claim.curated_at = datetime.utcnow().isoformat()
+        claim.curated_at = datetime.now(UTC).replace(tzinfo=None).isoformat()
         claim.curator = curator
         claim.curation_reason = reason or "No reason provided"
 

@@ -15,7 +15,7 @@ Algorithm:
 import numpy as np
 import json
 from typing import Dict, List, Tuple
-from datetime import datetime
+from datetime import datetime, UTC
 
 
 class ProceduralMapGenerator:
@@ -183,7 +183,7 @@ class ProceduralMapGenerator:
             "seed": self.seed,
             "width": self.width,
             "height": self.height,
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(UTC).replace(tzinfo=None).isoformat(),
             "territories": [
                 {
                     "territory_id": tid,

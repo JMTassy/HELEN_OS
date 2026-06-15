@@ -17,7 +17,7 @@ import json
 import hashlib
 from typing import Dict, Optional, List
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, UTC
 
 from oracle_town.skills.procedural_map import ProceduralMapGenerator
 
@@ -136,7 +136,7 @@ class MapGeneratorSkill:
         Returns:
             Ledger entry ID (for tracking)
         """
-        entry_id = f"MAP_POLICY_{datetime.utcnow().strftime('%Y_%m_%d_%H%M%S')}_{game_id}"
+        entry_id = f"MAP_POLICY_{datetime.now(UTC).replace(tzinfo=None).strftime('%Y_%m_%d_%H%M%S')}_{game_id}"
 
         ledger_entry = {
             "id": entry_id,
@@ -144,7 +144,7 @@ class MapGeneratorSkill:
             "action": "LOCK_MAP_HASH",
             "game_id": game_id,
             "map_hash": map_hash,
-            "locked_at": datetime.utcnow().isoformat(),
+            "locked_at": datetime.now(UTC).replace(tzinfo=None).isoformat(),
             "locked_by": "MapGeneratorSkill",
             "seed": map_data["seed"],
             "width": map_data["width"],
@@ -179,7 +179,7 @@ class MapGeneratorSkill:
             "statement": f"Map generated for {game_id} with {territory_count} territories",
             "map_hash": map_hash,
             "status": "pending",  # Awaiting Foreman approval
-            "created_at": datetime.utcnow().isoformat(),
+            "created_at": datetime.now(UTC).replace(tzinfo=None).isoformat(),
         }
 
     def generate_map(
