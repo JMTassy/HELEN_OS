@@ -371,7 +371,7 @@ class CastleGame:
             return "STABLE"
         elif margin >= 0:
             return "STRUGGLING"
-        elif margin >= -3:
+        elif margin > -3:
             return "CRITICAL"
         else:
             return "COLLAPSE"
