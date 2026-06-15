@@ -46,6 +46,7 @@ class CastleState:
     debt: float = 0.0               # Owed burden
     inertia: float = 0.0            # Stuck resistance
     fatigue: float = 0.0            # Exhaustion
+    victory_streak: int = 0         # Consecutive rounds at legendary conditions
 
     # Opposition
     opposition: OppositionState = field(default_factory=OppositionState)
@@ -346,17 +347,20 @@ class CastleGame:
         return True, msg
 
     def _check_legendary_victory(self) -> bool:
-        """Check if legendary conditions are met."""
-        # Would need to track consecutive rounds
-        # For now, simplified check
+        """Declare victory only after 5 consecutive rounds meeting legendary conditions."""
         margin = compute_structural_margin(self.state)
-        return (
+        conditions_met = (
             self.state.territory >= 8
             and self.state.entropy < 6
             and self.state.debt < 2
             and self.state.opposition.posture == "OBSERVE"
             and margin > 5
         )
+        if conditions_met:
+            self.state.victory_streak += 1
+        else:
+            self.state.victory_streak = 0
+        return conditions_met and self.state.victory_streak >= 5
 
     def get_margin_status(self) -> str:
         """Return status indicator."""

@@ -290,25 +290,59 @@ class TestVictoryConditions:
     """Test victory achievement."""
 
     def test_legendary_victory_condition(self):
-        """Victory achieved when conditions met for 5 consecutive rounds."""
+        """Victory declared only after 5 consecutive rounds meeting legendary conditions."""
         game = CastleGame(seed=42)
-
-        # Manually set victory conditions — entropy must be low for margin > 5
-        game.state.territory = 8
-        game.state.entropy = 2
-        game.state.debt = 1
+        game.state.stability = 10.0
+        game.state.cohesion = 10.0
+        game.state.knowledge = 10.0
+        game.state.territory = 10.0
+        game.state.entropy = 0.5
+        game.state.debt = 0.0
+        game.state.inertia = 0.0
+        game.state.fatigue = 0.0
+        game.state.opposition.aggression = 0.0
+        game.state.opposition.capability = 0.0
         game.state.opposition.posture = "OBSERVE"
 
-        # Execute one round
-        success, msg = game.execute_round(3)  # CELEBRATE (keeps cohesion up)
+        # Rounds 1-4: conditions met but no victory yet
+        for i in range(4):
+            success, msg = game.execute_round(5)  # REST
+            assert success, f"Round {i + 1} should succeed"
+            assert "VICTORY" not in msg, f"Should not win on round {i + 1}"
+            assert not game.victory
 
-        # Check if victory conditions are met (would need to track consecutive rounds in full impl)
-        margin = compute_structural_margin(game.state)
-        assert margin > 5
-        assert game.state.territory >= 8
-        assert game.state.entropy < 6
-        assert game.state.debt < 2
-        assert game.state.opposition.posture == "OBSERVE"
+        # Round 5: legendary victory declared
+        success, msg = game.execute_round(5)
+        assert success
+        assert "VICTORY" in msg
+        assert game.victory
+        assert game.state.victory_streak >= 5
+
+    def test_legendary_victory_requires_consecutive_rounds(self):
+        """Streak resets when conditions break; victory requires 5 unbroken rounds."""
+        game = CastleGame(seed=42)
+        game.state.stability = 10.0
+        game.state.cohesion = 10.0
+        game.state.knowledge = 10.0
+        game.state.territory = 10.0
+        game.state.entropy = 0.5
+        game.state.debt = 0.0
+        game.state.inertia = 0.0
+        game.state.fatigue = 0.0
+        game.state.opposition.aggression = 0.0
+        game.state.opposition.posture = "OBSERVE"
+
+        # Build streak to 3
+        for _ in range(3):
+            game.execute_round(5)  # REST
+        assert game.state.victory_streak == 3
+        assert not game.victory
+
+        # Break streak by spiking entropy above threshold
+        game.state.entropy = 7.0
+        game.execute_round(5)
+        assert game.state.victory_streak == 0
+        assert not game.victory
 
 
 if __name__ == "__main__":
