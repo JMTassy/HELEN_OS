@@ -126,9 +126,14 @@ def _llm(prompt: str) -> str:
                            "scan_gaps": [], "naming_issues": [], "confidence": 0.0})
 
 def parse_result(raw: str, epoch: int) -> dict:
+    import re
     try:
-        # strip markdown fences if present
         text = raw.strip()
+        # strip gemma4 CoT channel blocks: <|channel>thought ... <channel|>
+        text = re.sub(r'<\|channel>.*?<channel\|>', '', text, flags=re.DOTALL).strip()
+        # strip any remaining think/reasoning tags (other model variants)
+        text = re.sub(r'<thinking>.*?</thinking>', '', text, flags=re.DOTALL).strip()
+        # strip markdown fences if present
         if text.startswith("```"):
             text = text.split("```")[1]
             if text.startswith("json"):
