@@ -13,7 +13,7 @@ Structure:
 import json
 from pathlib import Path
 from typing import Optional, Dict, Any, List
-from datetime import datetime
+from datetime import datetime, UTC
 from dataclasses import dataclass, asdict
 
 try:
@@ -135,7 +135,7 @@ def write_receipt(
             [a.to_dict() for a in bound_artifacts] if bound_artifacts else []
         ),
         "metadata": {
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(UTC).replace(tzinfo=None).isoformat() + "Z",
             "environment": {
                 "python_version": "3.9+",
                 "platform": "deterministic",
