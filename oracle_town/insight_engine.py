@@ -30,7 +30,7 @@ Performance:
 import json
 import re
 from collections import Counter, defaultdict
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, UTC
 from pathlib import Path
 from typing import Dict, List, Tuple, Any, Optional
 from dataclasses import dataclass, asdict
@@ -134,7 +134,7 @@ class InsightEngine:
                 confidence=0.9,
                 evidence={"actual_rate": rate, "threshold": 0.6},
                 recommendation="Review policy thresholds or investigate threat surge",
-                timestamp=datetime.utcnow().isoformat() + "Z",
+                timestamp=datetime.now(UTC).replace(tzinfo=None).isoformat() + "Z",
             )
         else:  # rate > 0.9
             return Insight(
@@ -145,7 +145,7 @@ class InsightEngine:
                 confidence=0.85,
                 evidence={"actual_rate": rate, "threshold": 0.9},
                 recommendation="Monitor for false negatives or policy drift",
-                timestamp=datetime.utcnow().isoformat() + "Z",
+                timestamp=datetime.now(UTC).replace(tzinfo=None).isoformat() + "Z",
             )
 
     def _compute_gate_stats(self) -> Dict[str, Dict]:
@@ -173,7 +173,7 @@ class InsightEngine:
                     confidence=min(0.95, rate / 0.3),  # Higher confidence if >30%
                     evidence={"gate": gate, "rejection_rate": rate, "count": len(verdicts)},
                     recommendation=f"Review {gate} patterns or policy thresholds",
-                    timestamp=datetime.utcnow().isoformat() + "Z",
+                    timestamp=datetime.now(UTC).replace(tzinfo=None).isoformat() + "Z",
                 )
 
             stats[gate] = {"rate": rate, "count": len(verdicts), "anomaly": anomaly}
@@ -209,7 +209,7 @@ class InsightEngine:
                     "percentage": rate,
                 },
                 recommendation="Investigate if this is attack pattern or legitimate policy issue",
-                timestamp=datetime.utcnow().isoformat() + "Z",
+                timestamp=datetime.now(UTC).replace(tzinfo=None).isoformat() + "Z",
             )
 
         return None
@@ -276,7 +276,7 @@ class InsightEngine:
                     "peak_verdicts_per_hour": [hourly[h] for h in peak_hours[:3]],
                 },
                 recommendation="Monitor peak hours for coordinated attack patterns",
-                timestamp=datetime.utcnow().isoformat() + "Z",
+                timestamp=datetime.now(UTC).replace(tzinfo=None).isoformat() + "Z",
             )
 
         return None
@@ -326,7 +326,7 @@ class InsightEngine:
                         "ratio": ratio,
                     },
                     recommendation="Normal business hours pattern — monitor for deviations",
-                    timestamp=datetime.utcnow().isoformat() + "Z",
+                    timestamp=datetime.now(UTC).replace(tzinfo=None).isoformat() + "Z",
                 )
 
         return None
@@ -361,7 +361,7 @@ class InsightEngine:
                             "examples": cluster_reasons[:3],
                         },
                         recommendation=f"Monitor {cluster_name}-related activity for trends",
-                        timestamp=datetime.utcnow().isoformat() + "Z",
+                        timestamp=datetime.now(UTC).replace(tzinfo=None).isoformat() + "Z",
                     )
                 )
 
@@ -429,7 +429,7 @@ class InsightEngine:
                             "percentage": rate,
                         },
                         recommendation="Review this gate's effectiveness and false positive rate",
-                        timestamp=datetime.utcnow().isoformat() + "Z",
+                        timestamp=datetime.now(UTC).replace(tzinfo=None).isoformat() + "Z",
                     )
                 )
 
@@ -496,7 +496,7 @@ class InsightEngine:
                         "success_rate": 1.0,
                     },
                     recommendation=f"Consider if {op_type} gates can be simplified",
-                    timestamp=datetime.utcnow().isoformat() + "Z",
+                    timestamp=datetime.now(UTC).replace(tzinfo=None).isoformat() + "Z",
                 )
 
         return None
