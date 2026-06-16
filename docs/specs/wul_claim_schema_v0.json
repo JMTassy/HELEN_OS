@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "wul_claim_schema_v0.json",
+  "title": "WUL Claim V0",
+  "description": "Typed, truth-tagged, admission-gated WUL symbolic claim. Closed taxonomies enforced here. Passage-law transitions require reducer enforcement — documented in $comment fields.",
+  "$comment": "PASSAGE LAW (reducer-enforced, not schema-enforced): (1) No promotion above truth_status=SUPPORTED without a non-null evidence_hash. (2) SPECULATIVE claims: max_admission_state ceiling is PENDING_REVIEW (admission) / REVIEWED (truth); may never reach ADMITTED, SEALED, or REPLAYABLE. (3) REJECTED and SUPERSEDED are terminal negative/succession branches — no further transitions allowed from either state.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "claim_id",
+    "symbolic_form",
+    "natural_text",
+    "claim_class",
+    "truth_status",
+    "evidence",
+    "evidence_hash",
+    "admission_state",
+    "max_admission_state",
+    "replayable",
+    "terminal",
+    "rejection_reason"
+  ],
+  "properties": {
+    "claim_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "symbolic_form": {
+      "type": "string",
+      "minLength": 1
+    },
+    "natural_text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "claim_class": {
+      "type": "string",
+      "enum": ["OBSERVED", "INFERRED", "STRUCTURAL", "FORMAL", "SPECULATIVE"]
+    },
+    "truth_status": {
+      "type": "string",
+      "enum": [
+        "UNVERIFIED",
+        "SUPPORTED",
+        "REVIEWED",
+        "ADMITTED",
+        "SEALED",
+        "REPLAYABLE",
+        "REJECTED",
+        "SUPERSEDED"
+      ]
+    },
+    "evidence": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "evidence_hash": {
+      "type": ["string", "null"],
+      "$comment": "REDUCER ENFORCEMENT REQUIRED: must be non-null for any truth_status above SUPPORTED (REVIEWED, ADMITTED, SEALED, REPLAYABLE). Schema accepts null; reducer must reject promotion without hash."
+    },
+    "admission_state": {
+      "type": "string",
+      "enum": [
+        "PENDING",
+        "PENDING_REVIEW",
+        "REJECTED",
+        "ADMITTED",
+        "SEALED",
+        "REPLAYABLE",
+        "SUPERSEDED"
+      ]
+    },
+    "max_admission_state": {
+      "type": "string",
+      "enum": [
+        "PENDING",
+        "PENDING_REVIEW",
+        "REJECTED",
+        "ADMITTED",
+        "SEALED",
+        "REPLAYABLE",
+        "SUPERSEDED"
+      ],
+      "$comment": "REDUCER ENFORCEMENT REQUIRED: for SPECULATIVE claims, max_admission_state must not exceed PENDING_REVIEW. Reducer must verify admission_state <= max_admission_state at every transition."
+    },
+    "replayable": {
+      "type": "boolean"
+    },
+    "terminal": {
+      "type": "boolean",
+      "$comment": "REDUCER ENFORCEMENT REQUIRED: must be true when admission_state is REJECTED or SUPERSEDED. Must be false for all other admission states."
+    },
+    "rejection_reason": {
+      "type": ["string", "null"],
+      "$comment": "REDUCER ENFORCEMENT REQUIRED: must be non-null when terminal=true."
+    }
+  }
+}
