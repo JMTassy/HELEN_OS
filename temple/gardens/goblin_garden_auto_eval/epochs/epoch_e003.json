@@ -1,0 +1,37 @@
+{
+  "id": "E003",
+  "name": "EVIDENCE_PRESENCE_PROXY",
+  "claim_type": "autoresearch_epoch",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "hypothesis": "H2: evidence!=[] is a necessary but not sufficient condition for admissibility. It can be checked automatically (evidence array non-empty). Evidence quality and relevance cannot.",
+  "experiment": "Apply the admissibility rule A(c)=1 iff status∈{OBSERVED,CONFIRMED} AND evidence!=[] AND risk!=HIGH to the 15 CHRONOS claims. Count how many pass auto-eval vs. how many would pass full reducer eval.",
+  "signals": {
+    "auto_eval_results": {
+      "CLAIM_SHIGIR_GEOMETRY":          { "status": "OBSERVED", "evidence_nonempty": true,  "risk": "LOW",  "auto_admissible": true },
+      "CLAIM_SHIGIR_AGE":               { "status": "OBSERVED", "evidence_nonempty": true,  "risk": "LOW",  "auto_admissible": true },
+      "CLAIM_SHIGIR_MATERIAL":          { "status": "OBSERVED", "evidence_nonempty": true,  "risk": "LOW",  "auto_admissible": true },
+      "CLAIM_SHIGIR_ANTHROPOMORPHIC":   { "status": "OBSERVED", "evidence_nonempty": true,  "risk": "LOW",  "auto_admissible": true },
+      "CLAIM_SHIGIR_LOCATION":          { "status": "OBSERVED", "evidence_nonempty": true,  "risk": "LOW",  "auto_admissible": true },
+      "CLAIM_SHIGIR_PRESERVATION_CONTEXT": { "status": "OBSERVED", "evidence_nonempty": true, "risk": "LOW", "auto_admissible": true },
+      "CLAIM_SHIGIR_ENCODING":          { "status": "HYPOTHESIS", "evidence_nonempty": false, "risk": "MEDIUM", "auto_admissible": false },
+      "CLAIM_SHIGIR_PROTO_LANGUAGE":    { "status": "HYPOTHESIS", "evidence_nonempty": false, "risk": "MEDIUM", "auto_admissible": false },
+      "CLAIM_OBSERVER_COLLAPSE":        { "status": "HYPOTHESIS", "evidence_nonempty": false, "risk": "MEDIUM", "auto_admissible": false },
+      "CLAIM_HYDROMEMORY":              { "status": "SPECULATION", "evidence_nonempty": false, "risk": "HIGH",  "auto_admissible": false },
+      "CLAIM_ELDER_TRANSMISSION":       { "status": "SPECULATION", "evidence_nonempty": false, "risk": "HIGH",  "auto_admissible": false },
+      "CLAIM_REALITY_BREACH":           { "status": "SPECULATION", "evidence_nonempty": false, "risk": "HIGH",  "auto_admissible": false },
+      "CLAIM_TEMPORAL_SYNC":            { "status": "SPECULATION", "evidence_nonempty": false, "risk": "HIGH",  "auto_admissible": false },
+      "CLAIM_NULL_SOURCE":              { "status": "SYMBOLIC_AXIOM_CANDIDATE", "evidence_nonempty": false, "risk": "HIGH", "auto_admissible": false },
+      "CLAIM_VOID_RECURSION":           { "status": "SYMBOLIC_AXIOM_CANDIDATE", "evidence_nonempty": false, "risk": "HIGH", "auto_admissible": false }
+    },
+    "auto_eval_count": 6,
+    "auto_rejected_count": 9,
+    "gap": "The 6 auto-admissible claims still carry raw_text_hash placeholders. Auto-eval cannot verify hash integrity against actual source text — that check requires a human or a verified external corpus fetch."
+  },
+  "membrane_verdict": "H2 SUPPORTED. evidence!=[] is a fast structural gate. Hash integrity and source credibility are reducer-domain.",
+  "wulmoji": "🧌 E003 🔷 evidence≠∅ ⟶ AUTO_GATE 🔖 evidence_quality ⟶ REDUCER 🔖 H2=SUPPORTED 🏁",
+  "seal": "E003_SEALED"
+}

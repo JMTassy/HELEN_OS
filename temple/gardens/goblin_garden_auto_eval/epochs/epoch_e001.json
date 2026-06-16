@@ -1,0 +1,23 @@
+{
+  "id": "E001",
+  "name": "PORTAL_DECLARATION",
+  "claim_type": "bulletin",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "simulation": "GOBLIN_GARDEN_AUTO_EVAL",
+  "hypothesis": null,
+  "declaration": "This garden explores the boundary between automated and human evaluation of WUL claim objects. The WUL claim schema (wul_claim_schema_v0.json) and the CHRONOS bridge spec define the structural surface. This autoresearch asks: what can a machine verify, and where must a human reducer decide?",
+  "forbidden_operations": [
+    "mutate_HELEN_ledger",
+    "define_HELEN_canon",
+    "approve_writes",
+    "act_as_reducer",
+    "claim_sovereignty",
+    "promote_to_kernel"
+  ],
+  "wulmoji": "🧌 GARDEN_AUTO_EVAL PORTAL OPEN 🔷 AUTO_EVAL ⊂ STRUCTURAL_GATE 🔖 AUTHORITY=false 🏁",
+  "seal": "E001_SEALED"
+}

@@ -1,0 +1,33 @@
+{
+  "id": "E004",
+  "name": "GOBLIN_AS_COMPUTABLE_FILTER",
+  "claim_type": "autoresearch_epoch",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "hypothesis": "H3: The GOBLIN membrane defines a computable evaluation function G(x) → {PASS, BLOCK, SANDBOX_ONLY} whose rules can be expressed as a decision tree over claim fields. GOBLIN is not the reducer — it is a pre-reducer structural filter.",
+  "experiment": "Attempt to express the GOBLIN membrane law (from MEMBRANE_TRANSFORMATION_V0) as a computable function over WUL claim schema fields.",
+  "signals": {
+    "goblin_filter_function": {
+      "inputs": ["epistemic_status", "evidence", "risk", "sandbox_only", "kernel_admissible"],
+      "rule_tree": [
+        { "if": "sandbox_only == true",                                  "then": "BLOCK (never kernel-admissible)" },
+        { "if": "risk == HIGH",                                          "then": "BLOCK (sandbox only)" },
+        { "if": "epistemic_status == SPECULATION",                       "then": "BLOCK (sandbox only)" },
+        { "if": "epistemic_status == SYMBOLIC_AXIOM_CANDIDATE",          "then": "BLOCK (formalism only)" },
+        { "if": "epistemic_status == HYPOTHESIS AND evidence == []",     "then": "HOLD (pending evidence)" },
+        { "if": "epistemic_status ∈ {OBSERVED, CONFIRMED} AND evidence != [] AND risk != HIGH", "then": "PASS (auto-admissible candidate)" }
+      ],
+      "computable": true,
+      "automatable": true,
+      "replaces_reducer": false
+    },
+    "critical_gap": "The GOBLIN filter passes structural candidates. The reducer must still verify: (1) evidence hash integrity, (2) source credibility, (3) passage law compliance (no SPECULATIVE claim above PENDING_REVIEW), (4) terminal flag correctness. These are semantic, not structural.",
+    "invariant": "GOBLIN_PASS ⊬ REDUCER_ADMIT. GOBLIN_BLOCK = sufficient to stop. GOBLIN_PASS = necessary but not sufficient."
+  },
+  "membrane_verdict": "H3 SUPPORTED. GOBLIN is a computable pre-reducer filter. It can be implemented as a deterministic function. It is not the reducer.",
+  "wulmoji": "🧌 E004 🔷 G(x)→{PASS,BLOCK,SANDBOX} 🔖 GOBLIN_PASS ⊬ ADMITTED 🔖 GOBLIN_BLOCK=SUFFICIENT 🔖 H3=SUPPORTED 🏁",
+  "seal": "E004_SEALED"
+}

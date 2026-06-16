@@ -1,0 +1,65 @@
+{
+  "id": "E005",
+  "name": "AUTO_EVAL_CEILING_SYNTHESIS",
+  "claim_type": "autoresearch_epoch",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "hypothesis": "H4 (synthesis): The auto-evaluation ceiling is exactly the structural gate — schema validation + GOBLIN filter + admissibility rule A(c). Everything above that ceiling is reducer-domain and requires human authorization.",
+  "experiment": "Synthesize E002–E004 into a two-layer evaluation architecture with a clean ceiling line.",
+  "signals": {
+    "two_layer_architecture": {
+      "layer_A_auto_eval": {
+        "name": "STRUCTURAL_GATE",
+        "what_it_checks": [
+          "schema field presence and types (additionalProperties:false)",
+          "enum membership (claim_class, truth_status, admission_state)",
+          "evidence array non-empty for OBSERVED/CONFIRMED status",
+          "risk field not HIGH for kernel_admissible=true",
+          "sandbox_only flag forces kernel_admissible=false",
+          "GOBLIN filter decision tree (E004)"
+        ],
+        "output": "STRUCTURAL_PASS | STRUCTURAL_BLOCK | HOLD_PENDING_EVIDENCE",
+        "automatable": true,
+        "requires_human": false,
+        "replaces_reducer": false
+      },
+      "layer_B_reducer": {
+        "name": "SEMANTIC_GATE",
+        "what_it_checks": [
+          "evidence hash integrity against actual source bytes",
+          "source credibility and provenance",
+          "passage law compliance (SPECULATIVE ceiling, terminal flag timing)",
+          "truth_status elevation warranted by evidence quality",
+          "proposer != validator (K2/Rule 3)",
+          "MAYOR ratification"
+        ],
+        "output": "ADMITTED | REJECTED | PENDING_REVIEW",
+        "automatable": false,
+        "requires_human": true,
+        "is_the_reducer": true
+      }
+    },
+    "ceiling_law": "AUTO_EVAL_CEILING = STRUCTURAL_GATE_OUTPUT. No auto-eval output crosses into ADMITTED state. STRUCTURAL_PASS is a necessary condition, not a sufficient one.",
+    "key_invariants": [
+      "STRUCTURAL_PASS ⊬ ADMITTED",
+      "STRUCTURAL_BLOCK = sufficient to stop (no further review needed)",
+      "SEMANTIC_GATE = mandatory for any ADMITTED or REPLAYABLE state",
+      "AUTO_EVAL ∩ SEMANTIC_GATE = ∅ (disjoint domains)"
+    ]
+  },
+  "garden_receipt": {
+    "epochs_run": 5,
+    "hypotheses": ["H1", "H2", "H3", "H4"],
+    "all_supported": true,
+    "kernel_mutations": 0,
+    "ledger_mutations": 0,
+    "garden_nutrient": "GOBLIN_AUTO_EVAL_ARCH_V0",
+    "promotion_status": "GARDEN_ONLY — do not promote without peer-review + reducer + MAYOR"
+  },
+  "membrane_verdict": "H4 SUPPORTED. Auto-evaluation ceiling is the structural gate. The reducer is the only path to ADMITTED. This distinction is the core finding.",
+  "wulmoji": "🧌 E005 🔷 AUTO_EVAL⊂STRUCTURAL 🔖 REDUCER⊂SEMANTIC 🔖 AUTO_EVAL∩SEMANTIC=∅ 🔖 H4=SUPPORTED 🔖 GARDEN_SEALED 🏁",
+  "seal": "E005_SEALED — GARDEN_COMPLETE"
+}

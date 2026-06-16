@@ -1,0 +1,35 @@
+{
+  "id": "E002",
+  "name": "SCHEMA_STRUCTURAL_VALIDATION",
+  "claim_type": "autoresearch_epoch",
+  "layer": "TEMPLE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "status": "PROPOSED",
+  "hypothesis": "H1: Schema validation (additionalProperties:false + required fields + enum enforcement) covers the full structural surface of WUL claim correctness, but cannot touch semantic admissibility.",
+  "experiment": "Enumerate what wul_claim_schema_v0.json can assert automatically vs. what it delegates to $comment fields.",
+  "signals": {
+    "automatable_by_schema": [
+      "claim_id present and non-empty",
+      "claim_class is one of OBSERVED|INFERRED|STRUCTURAL|FORMAL|SPECULATIVE",
+      "truth_status is one of the 8-state enum",
+      "evidence is an array",
+      "admission_state is one of the 7-state enum",
+      "replayable is boolean",
+      "terminal is boolean",
+      "rejection_reason is string or null",
+      "no unknown fields (additionalProperties:false)"
+    ],
+    "not_automatable_by_schema": [
+      "whether evidence[] items are credible sources",
+      "whether truth_status elevation is warranted by evidence quality",
+      "whether SPECULATIVE ceiling of PENDING_REVIEW is respected at transition time",
+      "whether terminal=true is set at correct moment (not just type-checked)",
+      "whether evidence_hash matches actual source content"
+    ]
+  },
+  "membrane_verdict": "SCHEMA_AUTO_EVAL = structural gate only. Semantic promotion is reducer-domain.",
+  "wulmoji": "🧌 E002 🔷 🧪SCHEMA ⊂ STRUCTURAL 🔖 🧪SCHEMA ⊬ SEMANTIC 🔖 H1=SUPPORTED 🏁",
+  "seal": "E002_SEALED"
+}
