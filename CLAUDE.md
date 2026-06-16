@@ -71,9 +71,11 @@ Non-sovereign sandbox. Status: NON_SOVEREIGN / NO_SHIP. Structure:
 - `oracle_town/skills/feynman/` — peer_review, intent_action_audit, session_notes (fused 2026-04-16)
 - `oracle_town/skills/voice/gemini_tts/` — Zephyr voice, Gemini 2.5 Flash TTS (LIVE)
 - `oracle_town/skills/video/hyperframes/` — HyperFrames video renderer (DECLARED)
+  - `templates/meditation/` — HELEN TEMPLE HER meditation video pipeline (commit `8bda100`): reads `meditation.config.json`, injects `{{DATE}}` / `{{MEDITATION_TEXT}}` / `{{RUN_HASH}}` / `{{COMMIT_SHA}}` tokens into 4 HTML compositions, calls Zephyr TTS, renders via `npx hyperframes render`, writes `provenance.json` (authority: NONE). Usage: `python3 generate_meditation.py [--preview|--dry-run|--config path|--output path]`
 - `oracle_town/skills/video/helen-director/` — Montage Engine + STORYBOARD_V1 + ASSET_ENGINE_V1 + 30s candidate runner; parallel Seedance pipeline
 - `oracle_town/skills/video/library/` — curated frame asset pool (refs/canonical/, era axis)
 - `helen_os/render/math_to_face.py` + `math_to_face/SKILL.md` — sovereign white-box render pipeline (φ-SDE + H/G/E/H⁻¹ bidirectional compiler math ↔ latent ↔ image), parallel to `helen-director` rental; **SCAFFOLD** status, Phase 0–9 roadmap in `math_to_face/SKILL.md` §6
+- `helen_os/render/math_to_face_starter/refs/canonical/` — canonical identity-lock frame reference pool (eras: real, twin, metaverse, none). Scan gaps reported to `artifacts/scan_gap_notes.md` by the KB manifest audit tool. Promotion candidates require explicit GO PROMOTE — authority: false, ledger_mutation: false.
 - `tools/helen_telegram.py` — two-way Telegram bot with voice
 - `tools/helen_simple_ui.py` — web UI at localhost:5001 with voice
 
@@ -286,6 +288,9 @@ Multiple chat entry points exist; they are **not interchangeable**.
 
 - `town/ledger_v1.ndjson` may show as dirty in `git status` due to live kernel daemon writes. Do not stash, do not commit, do not edit — operator-authorized firewall path.
 - `artifacts/k8_*.json`, `artifacts/k8_trace.ndjson`, `artifacts/k_tau_*.json` are live gate-trace outputs and routinely show dirty after lint runs. They are not stash-eligible; let the gate scripts manage them.
+- `artifacts/audio/` and `artifacts/media/` are TTS and rendered video outputs (used by the meditation generator and director pipelines). Not stash-eligible; not committed without explicit operator decision.
+- `artifacts/scan_gap_notes.md` is the KB manifest audit output (era-gap and naming-issue report against `math_to_face_starter/refs/canonical/`). DRAFT — never auto-promoted.
+- **K-tau `datetime.utcnow()` is a mu_DETERMINISM violation.** Use `datetime.now(timezone.utc)` throughout. This is the most common recurring lint failure — check all new files before committing.
 
 ## Key Reference
 
