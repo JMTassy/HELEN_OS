@@ -200,6 +200,40 @@ Commands:
 
 **PYTHONPATH**: `Makefile` sets `PYTHONPATH := $(CURDIR)` (commit `5b98a3d`, repo-relative). No operator-specific path — `make test` is portable.
 
+**Demo targets** (NON_SOVEREIGN, authority=NONE, no ledger writes):
+
+```bash
+make demo-helen        # boot + coupling + autoresearch + airlock (all four)
+make demo-boot         # boot ritual only
+make demo-coupling     # reality coupling only
+make demo-autoresearch # bounded autoresearch only
+make demo-airlock      # init airlock only
+```
+
+## CI Pipeline
+
+CI runs on every push/PR to `main` via `.github/workflows/`. Three jobs in sequence:
+
+1. **doc-index** — verifies `scratchpad/CLAUDE_MD_LINE_INDEX.txt` and `scratchpad/CLAUDE_MD_SECTIONS_BY_LENGTH.txt` are up-to-date. **After any CLAUDE.md edit, regenerate before committing:**
+   ```bash
+   python3 scratchpad/generate_claude_index.py
+   git add scratchpad/CLAUDE_MD_LINE_INDEX.txt scratchpad/CLAUDE_MD_SECTIONS_BY_LENGTH.txt
+   ```
+   Skipping this step will fail CI with "CLAUDE.md indices are stale!"
+
+2. **verify** — runs `python3 ci_run_checks.py`, which calls `oracle_town/VERIFY_ALL.sh` then a 200-iteration replay determinism check via `oracle_town.core.replay`.
+
+3. **rho-receipt** — K-rho viability receipt lint (requires `jsonschema`; installed via `requirements-ci.txt`).
+
+## AGENTS.md — Subagent Role
+
+`AGENTS.md` at repo root defines the Claude subagent identity: **CLAUDE_HAL_CODEX** (non-sovereign coder). Key rules repeated here for visibility:
+- Make small, reviewable patches; report exact files changed and tests run.
+- Never mutate sovereign ledgers, never promote canon, never edit memory identity objects without explicit instruction.
+- Prefer NO_SHIP over unsafe success.
+- Current coding lane: HELEN Director / render pipeline (receipt sidecars, operator rating enforcement, heuristic filtering, seed selection).
+- Forbidden without explicit approval: scaling render generation, memory mutation, canon promotion, ledger writes, broad refactors.
+
 ## Setup
 
 ```bash

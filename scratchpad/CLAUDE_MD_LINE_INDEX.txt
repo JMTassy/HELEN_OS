@@ -2,154 +2,124 @@ CLAUDE.md — AUTO-GENERATED LINE INDEX
 ================================================================================
 
 - # CLAUDE.md
-  Lines 1–6 | Anchor: #claudemd
+  Lines 1–4 | Anchor: #claudemd
 
-  - ## Status
-    Lines 7–23 | Anchor: #status
+  - ## What This Is
+    Lines 5–8 | Anchor: #what-this-is
 
-  - ## Quick Start
-    Lines 24–25 | Anchor: #quick-start
+  - ## Two Trees — Disambiguation
+    Lines 9–17 | Anchor: #two-trees-disambiguation
 
-    - ### Environment Setup
-      Lines 26–36 | Anchor: #environment-setup
+  - ## Source Scope
+    Lines 18–29 | Anchor: #source-scope
 
-    - ### Run Tests
-      Lines 37–63 | Anchor: #run-tests
+    - ### experiments/helen_mvp_kernel/ (active work surface)
+      Lines 30–44 | Anchor: #experimentshelenmvpkernel-active-work-surface
 
-    - ### Verify Determinism (REPLAY_PROOF_V1)
-      Lines 64–75 | Anchor: #verify-determinism-replayproofv1
+  - ## Repository Identity
+    Lines 45–49 | Anchor: #repository-identity
 
-    - ### Interactive Dialog (CLI)
-      Lines 76–92 | Anchor: #interactive-dialog-cli
+  - ## Architecture Layers
+    Lines 50–51 | Anchor: #architecture-layers
 
-  - ## Architecture: Four-Layer Constitutional Kernel
-    Lines 93–94 | Anchor: #architecture-four-layer-constitutional-kernel
+    - ### Layer 1: Constitutional Membrane
+      Lines 52–56 | Anchor: #layer-1-constitutional-membrane
 
-    - ### Load-Bearing Invariant
-      Lines 95–107 | Anchor: #load-bearing-invariant
+    - ### Layer 2: Append-Only Ledger
+      Lines 57–62 | Anchor: #layer-2-append-only-ledger
 
-    - ### The 4 Layers
-      Lines 108–131 | Anchor: #the-4-layers
+    - ### Layer 3: Execution + Autonomy
+      Lines 63–68 | Anchor: #layer-3-execution-autonomy
 
-    - ### The 12 Core Modules
-      Lines 132–152 | Anchor: #the-12-core-modules
+    - ### Layer 4: Skills + Tools
+      Lines 69–81 | Anchor: #layer-4-skills-tools
 
-    - ### CLI Layer (Post-MVP Enhancement)
-      Lines 153–170 | Anchor: #cli-layer-post-mvp-enhancement
+    - ### Layer 5: TEMPLE Exploration
+      Lines 82–86 | Anchor: #layer-5-temple-exploration
 
-    - ### The 6 Frozen Schemas
-      Lines 171–183 | Anchor: #the-6-frozen-schemas
+    - ### Layer 6: HELEN_DAN_RALPH_V0 (Bounded Execution Loop)
+      Lines 87–97 | Anchor: #layer-6-helendanralphv0-bounded-execution-loop
 
-  - ## The 42 Tests Across 4 Layers (Definition of Done)
-    Lines 184–187 | Anchor: #the-42-tests-across-4-layers-definition-of-done
+    - ### Operator Surface Layer (`apps/helen-surface/`)
+      Lines 98–106 | Anchor: #operator-surface-layer-appshelen-surface
 
-    - ### Layer 1: Constitutional Membrane (28 tests)
-      Lines 188–200 | Anchor: #layer-1-constitutional-membrane-28-tests
+    - ### SOURCEBOUND OBJECT OS (`src/helen_sourcebound_object.py`)
+      Lines 107–109 | Anchor: #sourcebound-object-os-srchelensourceboundobjectpy
 
-    - ### Layer 2: Append-Only Ledger (4 tests)
-      Lines 201–209 | Anchor: #layer-2-append-only-ledger-4-tests
+    - ### Non-sovereign HAL inference (`tools/hal_driver.py`, `tools/run_hal_epoch.py`)
+      Lines 110–112 | Anchor: #non-sovereign-hal-inference-toolshaldriverpy-toolsrunhalepochpy
 
-    - ### Layer 3: Autonomy Step (6 tests)
-      Lines 210–220 | Anchor: #layer-3-autonomy-step-6-tests
+    - ### WUL Packet Validator (P1 compile-time)
+      Lines 113–122 | Anchor: #wul-packet-validator-p1-compile-time
 
-    - ### Layer 4: Ledger Replay (4 tests)
-      Lines 221–233 | Anchor: #layer-4-ledger-replay-4-tests
+  - ## Governance Artifacts
+    Lines 123–124 | Anchor: #governance-artifacts
 
-  - ## Constitutional Laws (Nested & Frozen)
-    Lines 234–235 | Anchor: #constitutional-laws-nested-frozen
+    - ### `GOVERNANCE/CLOSURES/`
+      Lines 125–129 | Anchor: #governanceclosures
 
-    - ### The 4 Laws
-      Lines 236–249 | Anchor: #the-4-laws
+    - ### `GOVERNANCE/TRANCHE_RECEIPTS/`
+      Lines 130–133 | Anchor: #governancetranchereceipts
 
-    - ### The 6 Gates (Reducer)
-      Lines 250–257 | Anchor: #the-6-gates-reducer
+    - ### `oracle_town/protocols/`
+      Lines 134–139 | Anchor: #oracletownprotocols
 
-    - ### Failure Bridge Rejection Rules
-      Lines 258–263 | Anchor: #failure-bridge-rejection-rules
+    - ### `oracle_town/audits/`
+      Lines 140–145 | Anchor: #oracletownaudits
 
-    - ### Reason Code Invariant
-      Lines 264–270 | Anchor: #reason-code-invariant
+  - ## Gates
+    Lines 146–157 | Anchor: #gates
 
-    - ### REPLAY_PROOF_V1 (Determinism Certification)
-      Lines 271–306 | Anchor: #replayproofv1-determinism-certification
+  - ## PULL-Mode Tranche Discipline
+    Lines 158–166 | Anchor: #pull-mode-tranche-discipline
 
-  - ## Key Concepts
-    Lines 307–308 | Anchor: #key-concepts
+  - ## Schema Authority
+    Lines 167–173 | Anchor: #schema-authority
 
-    - ### Canonical Hashing
-      Lines 309–319 | Anchor: #canonical-hashing
+  - ## Key Invariants
+    Lines 174–181 | Anchor: #key-invariants
 
-    - ### Determinism Proof
-      Lines 320–327 | Anchor: #determinism-proof
+  - ## Test Suite
+    Lines 182–212 | Anchor: #test-suite
 
-    - ### State Mutation Rule
-      Lines 328–335 | Anchor: #state-mutation-rule
+  - ## CI Pipeline
+    Lines 213–227 | Anchor: #ci-pipeline
 
-    - ### Receipt Structure
-      Lines 336–349 | Anchor: #receipt-structure
+  - ## AGENTS.md — Subagent Role
+    Lines 228–236 | Anchor: #agentsmd-subagent-role
 
-  - ## Module Isolation & Import Rules
-    Lines 350–351 | Anchor: #module-isolation-import-rules
+  - ## Setup
+    Lines 237–249 | Anchor: #setup
 
-    - ### Safe Imports
-      Lines 352–364 | Anchor: #safe-imports
+  - ## Running HELEN
+    Lines 250–302 | Anchor: #running-helen
 
-    - ### No Cross-Module Mutation
-      Lines 365–371 | Anchor: #no-cross-module-mutation
+    - ### Packaging note
+      Lines 303–305 | Anchor: #packaging-note
 
-  - ## Common Development Tasks
-    Lines 372–373 | Anchor: #common-development-tasks
+  - ## Chat Surfaces
+    Lines 306–320 | Anchor: #chat-surfaces
 
-    - ### Add a New Test
-      Lines 374–380 | Anchor: #add-a-new-test
+  - ## Operational Notes
+    Lines 321–328 | Anchor: #operational-notes
 
-    - ### Debug a Failing Test
-      Lines 381–392 | Anchor: #debug-a-failing-test
+  - ## Key Reference
+    Lines 329–332 | Anchor: #key-reference
 
-    - ### Verify Determinism
-      Lines 393–400 | Anchor: #verify-determinism
+  - ## Current State
+    Lines 333–334 | Anchor: #current-state
 
-    - ### Check Test Coverage
-      Lines 401–408 | Anchor: #check-test-coverage
+    - ### Update 2026-06-15 (HEAD = 4d1e185)
+      Lines 335–345 | Anchor: #update-2026-06-15-head-4d1e185
 
-  - ## Schema Evolution Rules
-    Lines 409–410 | Anchor: #schema-evolution-rules
+    - ### Update 2026-06-03 (114 commits since the 2026-05-06 snapshot below)
+      Lines 346–356 | Anchor: #update-2026-06-03-114-commits-since-the-2026-05-06-snapshot-below
 
-    - ### Frozen Schemas (No Breaking Changes)
-      Lines 411–416 | Anchor: #frozen-schemas-no-breaking-changes
+    - ### Snapshot 2026-05-06
+      Lines 357–374 | Anchor: #snapshot-2026-05-06
 
-    - ### Flexible Schemas (Additive Only)
-      Lines 417–423 | Anchor: #flexible-schemas-additive-only
-
-  - ## Concrete Example: Single Autonomous Research Step
-    Lines 424–475 | Anchor: #concrete-example-single-autonomous-research-step
-
-  - ## A Multi-Step Research Sprint
-    Lines 476–506 | Anchor: #a-multi-step-research-sprint
-
-  - ## Troubleshooting
-    Lines 507–508 | Anchor: #troubleshooting
-
-    - ### Import Error: "No module named helen_os"
-      Lines 509–517 | Anchor: #import-error-no-module-named-helenos
-
-    - ### Test Fails: Schema Unknown
-      Lines 518–522 | Anchor: #test-fails-schema-unknown
-
-    - ### Test Fails: Hash Mismatch
-      Lines 523–527 | Anchor: #test-fails-hash-mismatch
-
-    - ### Test Passes Individually, Fails in Suite
-      Lines 528–534 | Anchor: #test-passes-individually-fails-in-suite
-
-  - ## What's Proven ✅
-    Lines 535–566 | Anchor: #whats-proven
-
-  - ## What's NOT Proven ❌
-    Lines 567–578 | Anchor: #whats-not-proven
-
-  - ## Next Logical Steps
-    Lines 579–608 | Anchor: #next-logical-steps
+  - ## Open Frontiers
+    Lines 375–379 | Anchor: #open-frontiers
 
 ================================================================================
 
