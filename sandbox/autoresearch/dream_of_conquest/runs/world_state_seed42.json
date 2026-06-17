@@ -1,0 +1,43 @@
+{
+  "epoch_id": "E0",
+  "factions": {
+    "CROSS": {
+      "knowledge": 0,
+      "noise": 0.030000000000000002,
+      "proof_tokens": 0,
+      "territory": 1,
+      "trust": 0.8400000000000001
+    },
+    "ROSE": {
+      "knowledge": 2,
+      "noise": 0.030000000000000002,
+      "proof_tokens": 3,
+      "territory": 1,
+      "trust": 0.8400000000000001
+    },
+    "VEIL": {
+      "knowledge": 9,
+      "noise": 0.030000000000000002,
+      "proof_tokens": 0,
+      "territory": 1,
+      "trust": 0.8600000000000001
+    },
+    "WARDEN": {
+      "knowledge": 0,
+      "noise": 0.0,
+      "proof_tokens": 0,
+      "territory": 1,
+      "trust": 0.8200000000000001
+    }
+  },
+  "map": {
+    "claimable": 4,
+    "contested": 0,
+    "dormant": 0,
+    "home_keep": 1,
+    "neutral_islands": 6
+  },
+  "quest_state": "OPEN",
+  "seed": 42,
+  "turn_id": 21
+}
