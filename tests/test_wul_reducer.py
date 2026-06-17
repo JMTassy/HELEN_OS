@@ -22,7 +22,7 @@ from wul_reducer import (  # noqa: E402
     S5_ADMITTED, S6_REPLAYABLE, S_REJECTED, S_SUPERSEDED, S_TERMINAL,
     TERMINAL_REPLAYABLE,
     REJECT_BAD_STATE, REJECT_FORBIDDEN_TRANSITION, REJECT_NO_HASH, REJECT_NO_RECEIPT,
-    REJECT_TERMINAL_FROZEN, REJECT_SPEC_CEILING, REJECT_CEILING_EXCEEDED,
+    REJECT_TERMINAL_FROZEN, REJECT_SPEC_CEILING,
     REJECT_TERMINAL_CONFLICT, REJECT_HUMAN_SEAL_MISSING, REJECT_REPLAY_MISMATCH,
     REJECT_GATE_RED, REJECT_REASON_MISSING,
 )
@@ -123,9 +123,39 @@ def test_forbidden_transition_matrix():
         assert v.reject_code == code
 
 
+# The spec's §5 closed enum — exactly 11 codes. Pins REJECT_CODES to the spec so an
+# extra/ghost member (e.g. the former REJECT_CEILING_EXCEEDED) cannot ship green.
+SPEC_REJECT_CODES = frozenset({
+    "REJECT_BAD_STATE",
+    "REJECT_FORBIDDEN_TRANSITION",
+    "REJECT_NO_HASH",
+    "REJECT_NO_RECEIPT",
+    "REJECT_GATE_RED",
+    "REJECT_TERMINAL_FROZEN",
+    "REJECT_TERMINAL_CONFLICT",
+    "REJECT_SPEC_CEILING",
+    "REJECT_REASON_MISSING",
+    "REJECT_REPLAY_MISMATCH",
+    "REJECT_HUMAN_SEAL_MISSING",
+})
+
+
+def test_reject_enum_matches_spec_exactly():
+    # EQUALITY, not subset — catches an extra member, which subset cannot.
+    assert REJECT_CODES == SPEC_REJECT_CODES
+
+
 def test_reject_enum_is_closed():
     # every code the matrix can raise is a member of the closed enum
     assert set(FORBIDDEN_TRANSITIONS.values()) <= REJECT_CODES
+
+
+def test_no_replay_context_fails_closed():
+    # derived predicates collapse to False without a replay context (attest ⊬ trust)
+    c, _ = valid_candidate()
+    f = derive_facts(c, None)
+    assert f.gate_green is False
+    assert f.det_replay is False
 
 
 # ── BED 02/03 hardening — the point of this sync ─────────────────────────────
