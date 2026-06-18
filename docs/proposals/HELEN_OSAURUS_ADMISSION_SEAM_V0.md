@@ -82,6 +82,28 @@ Sub-frontiers:
                     the over-flag failure mode, now at the seam
 ```
 
+## 4.1 χ-invariants — the proof-obligations (zero cosmic interpretation)
+
+The seam's correctness reduces to three invariants that must hold under any transformation of the
+input (style, narrative, projection). A transform `T(I)` is admissible only if `T(I) ⊨ χ_gov, χ_mem, χ_med`.
+These are plain software properties — not mythology — and they map directly to existing/owed work:
+
+```
+χ_gov  admission requires provenance        — no receipt/evidence path → claim NEVER reaches ADMITTED.
+       = NO RECEIPT = NO CLAIM.              STATUS: holds (reducer L1/P1 + G3 evidence gate). Bindable as a named test.
+χ_mem  replay yields identical verdicts      — same (claim, evidence, review) → same admitted ledger.
+       = determinism / replay-stability.     STATUS: holds (reducer is pure; determinism test exists). Bindable as a named test.
+χ_med  mediation cannot mutate sovereign     — no authority=false path writes S except via helen_say.py → reducer.
+       state without explicit authority.     STATUS: OPEN — this IS Q2 (exclusivity). Not yet ENFORCED (PreToolUse hook
+       = the no-bypass property.             planned/non-enforceable). The one genuinely-new proof-obligation.
+```
+
+Why χ earns its place (by the "new proof-obligation?" test, not % overlap): χ_gov/χ_mem rename
+properties the reducer already has — naming them as a checkable triple is housekeeping. **χ_med is new
+and unmet** — it is the no-bypass property, the precise content of the seam frontier. Binding χ_med to a
+failing/pending test is the honest next artifact: it makes the unbuilt frontier visible as a red bar, not a slogan.
+(Render originates in the Garden; an idea enters the ledger only after evidence/proof/implementation — the membrane.)
+
 ## 5. Phased roadmap (clean route — use Osaurus, add HELEN, fork last)
 
 ```
