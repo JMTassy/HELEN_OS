@@ -29,6 +29,24 @@ import os
 import sys
 import urllib.request
 
+
+def call_mlx(model_path: str, system: str, user: str, max_tokens: int = 200) -> str:
+    """Deterministic inference via mlx_lm (local weights, no Ollama needed).
+    Requires mlx_lm in the active Python environment."""
+    try:
+        from mlx_lm import load, generate
+    except ImportError:
+        return "[ERROR: mlx_lm not installed in this Python environment]"
+    model, tokenizer = load(model_path)
+    messages = [{"role": "system", "content": system},
+                {"role": "user", "content": user}]
+    if hasattr(tokenizer, "apply_chat_template"):
+        prompt = tokenizer.apply_chat_template(
+            messages, tokenize=False, add_generation_prompt=True)
+    else:
+        prompt = f"{system}\n\nInstruct: {user}\nOutput:"
+    return generate(model, tokenizer, prompt=prompt, max_tokens=max_tokens, verbose=False)
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_EVAL = os.path.join(HERE, "..", "data", "helen_sft_eval.jsonl")
 LABELS = ["REFUSE", "UNVERIFIED", "BOUNDED", "PROPOSE", "HELP_WITH_CAVEAT", "CLARIFY", "HELP"]
@@ -136,6 +154,8 @@ def main(argv) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--eval", default=DEFAULT_EVAL)
     ap.add_argument("--model", default=None, help="Ollama model tag")
+    ap.add_argument("--mlx-model", default=None, metavar="PATH",
+                    help="local mlx_lm model path (skips Ollama; use after LoRA fuse)")
     ap.add_argument("--endpoint", default="http://localhost:11434")
     ap.add_argument("--temp", type=float, default=0.0)
     ap.add_argument("--gold-selftest", action="store_true",
@@ -143,9 +163,19 @@ def main(argv) -> int:
     args = ap.parse_args(argv)
 
     rows = load(args.eval)
-    if not args.gold_selftest and not args.model:
-        sys.stderr.write("error: pass --model NAME or --gold-selftest\n")
+    if not args.gold_selftest and not args.model and not args.mlx_model:
+        sys.stderr.write("error: pass --model NAME, --mlx-model PATH, or --gold-selftest\n")
         return 2
+
+    # pre-load mlx model once to avoid reloading per example
+    _mlx_loaded = None
+    if args.mlx_model:
+        try:
+            from mlx_lm import load as mlx_load
+            _mlx_loaded = mlx_load(args.mlx_model)
+        except Exception as e:
+            sys.stderr.write(f"error loading mlx model: {e}\n")
+            return 1
 
     results = []
     for ex in rows:
@@ -153,6 +183,21 @@ def main(argv) -> int:
         user = ex["messages"][1]["content"]
         if args.gold_selftest:
             resp = ex.get("gold", "")
+        elif args.mlx_model:
+            try:
+                from mlx_lm import generate as mlx_generate
+                model, tokenizer = _mlx_loaded
+                messages = [{"role": "system", "content": sysmsg},
+                            {"role": "user", "content": user}]
+                if hasattr(tokenizer, "apply_chat_template"):
+                    prompt = tokenizer.apply_chat_template(
+                        messages, tokenize=False, add_generation_prompt=True)
+                else:
+                    prompt = f"{sysmsg}\n\nInstruct: {user}\nOutput:"
+                resp = mlx_generate(model, tokenizer, prompt=prompt,
+                                    max_tokens=200, verbose=False)
+            except Exception as e:
+                resp = f"[CALL_ERROR: {e}]"
         else:
             try:
                 resp = call_ollama(args.endpoint, args.model, sysmsg, user, args.temp)
@@ -175,7 +220,12 @@ def main(argv) -> int:
     failing = [{"id": i, "category": c, "expect": e, "got": g}
                for i, c, e, g, ok in results if not ok]
 
-    mode = "GOLD-SELFTEST (classifier ceiling)" if args.gold_selftest else f"model={args.model}"
+    if args.gold_selftest:
+        mode = "GOLD-SELFTEST (classifier ceiling)"
+    elif args.mlx_model:
+        mode = f"mlx-model={os.path.basename(args.mlx_model.rstrip('/'))}"
+    else:
+        mode = f"model={args.model}"
     print(f"=== HELEN eval · {mode} · n={total} ===")
     print(f"overall accuracy: {correct}/{total} = {correct/total:.1%}")
     print("\naccuracy by category:")
