@@ -1,0 +1,1258 @@
+{
+  "schema_version": "WORLD_STATE_V0",
+  "sandbox": "TEMPLE_GOBLIN_SANDBOX00_300",
+  "twin_name": "TEMPLE_CONQUEST_TWIN",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "simulation_only": true,
+  "clock": {
+    "turn": 223,
+    "elemental_cycle_phase": "WATER",
+    "next_elemental_cycle_at": 240,
+    "rng_seed_base": 42
+  },
+  "islands": {
+    "HOME_KEEP_AVALON": {
+      "element": "QUINT",
+      "holder": "ROSE",
+      "ownership_score": 100,
+      "conquest_immune": true,
+      "production": {
+        "any_shard": 1
+      },
+      "stockpile": {
+        "QUINT_CORE": 1
+      },
+      "templock": null,
+      "zero_production_turns": 0
+    },
+    "ISLE_IGNIS": {
+      "element": "FIRE",
+      "holder": null,
+      "ownership_score": 0,
+      "conquest_immune": false,
+      "production": {
+        "IGNIS_SHARD": 3
+      },
+      "stockpile": {
+        "IGNIS_SHARD": 0
+      },
+      "templock": null,
+      "zero_production_turns": 0
+    },
+    "ISLE_AQUA": {
+      "element": "WATER",
+      "holder": null,
+      "ownership_score": 0,
+      "conquest_immune": false,
+      "production": {
+        "AQUA_SHARD": 3
+      },
+      "stockpile": {
+        "AQUA_SHARD": 0
+      },
+      "templock": null,
+      "zero_production_turns": 0
+    },
+    "ISLE_AETHER": {
+      "element": "AIR",
+      "holder": null,
+      "ownership_score": 0,
+      "conquest_immune": false,
+      "production": {
+        "AETHER_SHARD": 3
+      },
+      "stockpile": {
+        "AETHER_SHARD": 0
+      },
+      "templock": null,
+      "zero_production_turns": 0
+    },
+    "ISLE_TERRA": {
+      "element": "EARTH",
+      "holder": null,
+      "ownership_score": 0,
+      "conquest_immune": false,
+      "production": {
+        "TERRA_SHARD": 3
+      },
+      "stockpile": {
+        "TERRA_SHARD": 0
+      },
+      "templock": null,
+      "zero_production_turns": 0
+    },
+    "ISLE_QUINT": {
+      "element": "QUINT",
+      "holder": null,
+      "ownership_score": 0,
+      "conquest_immune": false,
+      "production": {
+        "QUINT_CORE": 1
+      },
+      "stockpile": {
+        "QUINT_CORE": 0
+      },
+      "templock": null,
+      "zero_production_turns": 0,
+      "neutral_max_turns": 3,
+      "held_for": 0
+    }
+  },
+  "bridges": {
+    "IGNIS_AQUA": {
+      "endpoints": [
+        "ISLE_IGNIS",
+        "ISLE_AQUA"
+      ],
+      "cost": 1,
+      "storm": null
+    },
+    "IGNIS_TERRA": {
+      "endpoints": [
+        "ISLE_IGNIS",
+        "ISLE_TERRA"
+      ],
+      "cost": 1,
+      "storm": null
+    },
+    "AQUA_AETHER": {
+      "endpoints": [
+        "ISLE_AQUA",
+        "ISLE_AETHER"
+      ],
+      "cost": 1,
+      "storm": null
+    },
+    "AETHER_QUINT": {
+      "endpoints": [
+        "ISLE_AETHER",
+        "ISLE_QUINT"
+      ],
+      "cost": 1,
+      "storm": null
+    },
+    "TERRA_QUINT": {
+      "endpoints": [
+        "ISLE_TERRA",
+        "ISLE_QUINT"
+      ],
+      "cost": 1,
+      "storm": null
+    },
+    "QUINT_HOME": {
+      "endpoints": [
+        "ISLE_QUINT",
+        "HOME_KEEP_AVALON"
+      ],
+      "cost": 2,
+      "storm": null
+    }
+  },
+  "factions": {
+    "ROSE": {
+      "rank": "HOLDER",
+      "personality": "QUEST_FOCUSED",
+      "score": {
+        "total": 546,
+        "territory": 0,
+        "quest": 310,
+        "resource": 16,
+        "alliance": 220
+      },
+      "conflict_score": 0,
+      "resources": {
+        "IGNIS_SHARD": 5,
+        "AQUA_SHARD": 0,
+        "AETHER_SHARD": 0,
+        "TERRA_SHARD": 0,
+        "QUINT_CORE": 92
+      },
+      "active_chains": [],
+      "active_quests": [],
+      "zero_territory_turns": 222
+    },
+    "CROSS": {
+      "rank": "SCOUT",
+      "personality": "CONQUEST_FOCUSED",
+      "score": {
+        "total": 55,
+        "territory": 0,
+        "quest": 0,
+        "resource": 0,
+        "alliance": 55
+      },
+      "conflict_score": 0,
+      "resources": {
+        "IGNIS_SHARD": 0,
+        "AQUA_SHARD": 0,
+        "AETHER_SHARD": 1,
+        "TERRA_SHARD": 0,
+        "QUINT_CORE": 2
+      },
+      "active_chains": [],
+      "active_quests": [],
+      "zero_territory_turns": 222
+    },
+    "VEIL": {
+      "rank": "SCOUT",
+      "personality": "DIPLOMATIC",
+      "score": {
+        "total": 65,
+        "territory": 0,
+        "quest": 10,
+        "resource": 0,
+        "alliance": 55
+      },
+      "conflict_score": 0,
+      "resources": {
+        "IGNIS_SHARD": 0,
+        "AQUA_SHARD": 5,
+        "AETHER_SHARD": 0,
+        "TERRA_SHARD": 0,
+        "QUINT_CORE": 0
+      },
+      "active_chains": [],
+      "active_quests": [],
+      "zero_territory_turns": 222
+    },
+    "WARDEN": {
+      "rank": "SCOUT",
+      "personality": "RESOURCE_FOCUSED",
+      "score": {
+        "total": 120,
+        "territory": 0,
+        "quest": 10,
+        "resource": 0,
+        "alliance": 110
+      },
+      "conflict_score": 0,
+      "resources": {
+        "IGNIS_SHARD": 0,
+        "AQUA_SHARD": 0,
+        "AETHER_SHARD": 0,
+        "TERRA_SHARD": 5,
+        "QUINT_CORE": 0
+      },
+      "active_chains": [],
+      "active_quests": [],
+      "zero_territory_turns": 222
+    }
+  },
+  "active_events": [],
+  "active_temprocks": [],
+  "alliances": [
+    {
+      "parties": [
+        "ROSE",
+        "CROSS"
+      ],
+      "formed_turn": 25,
+      "duration": 10,
+      "active": false
+    },
+    {
+      "parties": [
+        "ROSE",
+        "VEIL"
+      ],
+      "formed_turn": 27,
+      "duration": 10,
+      "active": false
+    },
+    {
+      "parties": [
+        "ROSE",
+        "WARDEN"
+      ],
+      "formed_turn": 29,
+      "duration": 10,
+      "active": false
+    },
+    {
+      "parties": [
+        "ROSE",
+        "WARDEN"
+      ],
+      "formed_turn": 42,
+      "duration": 10,
+      "active": false
+    }
+  ],
+  "treaties": [],
+  "conquest_declarations": [],
+  "turn_history": [
+    {
+      "turn": 203,
+      "scores": {
+        "ROSE": 521,
+        "CROSS": 55,
+        "VEIL": 65,
+        "WARDEN": 120
+      },
+      "ownership": {
+        "HOME_KEEP_AVALON": "ROSE",
+        "ISLE_IGNIS": null,
+        "ISLE_AQUA": null,
+        "ISLE_AETHER": null,
+        "ISLE_TERRA": null,
+        "ISLE_QUINT": null
+      },
+      "events_triggered": [],
+      "active_events": [],
+      "alliances_active": 0,
+      "action_results": [
+        {
+          "faction": "ROSE",
+          "action": "DIPLOMACY",
+          "result": "OK",
+          "effect": {}
+        },
+        {
+          "faction": "WARDEN",
+          "action": "EXPLORE",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "VEIL",
+          "action": "WARN",
+          "result": "OK",
+          "effect": {}
+        },
+        {
+          "faction": "CROSS",
+          "action": "CLAIM",
+          "result": "SKIP_NO_RESOURCES"
+        }
+      ],
+      "wulmoji": "🟢 🌹 🜃🜄 📜 🔗#SIM-T0203 🌿🌹",
+      "authority": false,
+      "sovereign": false,
+      "canon": false
+    },
+    {
+      "turn": 204,
+      "scores": {
+        "ROSE": 521,
+        "CROSS": 55,
+        "VEIL": 65,
+        "WARDEN": 120
+      },
+      "ownership": {
+        "HOME_KEEP_AVALON": "ROSE",
+        "ISLE_IGNIS": null,
+        "ISLE_AQUA": null,
+        "ISLE_AETHER": null,
+        "ISLE_TERRA": null,
+        "ISLE_QUINT": null
+      },
+      "events_triggered": [],
+      "active_events": [],
+      "alliances_active": 0,
+      "action_results": [
+        {
+          "faction": "ROSE",
+          "action": "DIPLOMACY",
+          "result": "OK",
+          "effect": {}
+        },
+        {
+          "faction": "WARDEN",
+          "action": "QUEST_STEP",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "VEIL",
+          "action": "WARN",
+          "result": "OK",
+          "effect": {}
+        },
+        {
+          "faction": "CROSS",
+          "action": "CONQUEST",
+          "result": "SKIP_NO_RESOURCES"
+        }
+      ],
+      "wulmoji": "🟢 🌹 🜃🜄 📜 🔗#SIM-T0204 🌿🌹",
+      "authority": false,
+      "sovereign": false,
+      "canon": false
+    },
+    {
+      "turn": 205,
+      "scores": {
+        "ROSE": 521,
+        "CROSS": 55,
+        "VEIL": 65,
+        "WARDEN": 120
+      },
+      "ownership": {
+        "HOME_KEEP_AVALON": "ROSE",
+        "ISLE_IGNIS": null,
+        "ISLE_AQUA": null,
+        "ISLE_AETHER": null,
+        "ISLE_TERRA": null,
+        "ISLE_QUINT": null
+      },
+      "events_triggered": [],
+      "active_events": [],
+      "alliances_active": 0,
+      "action_results": [
+        {
+          "faction": "ROSE",
+          "action": "EXPLORE",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "WARDEN",
+          "action": "QUEST_STEP",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "VEIL",
+          "action": "DIPLOMACY",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "CROSS",
+          "action": "CONQUEST",
+          "result": "SKIP_NO_RESOURCES"
+        }
+      ],
+      "wulmoji": "🟢 🌹 🜃🜄 📜 🔗#SIM-T0205 🌿🌹",
+      "authority": false,
+      "sovereign": false,
+      "canon": false
+    },
+    {
+      "turn": 206,
+      "scores": {
+        "ROSE": 521,
+        "CROSS": 55,
+        "VEIL": 65,
+        "WARDEN": 120
+      },
+      "ownership": {
+        "HOME_KEEP_AVALON": "ROSE",
+        "ISLE_IGNIS": null,
+        "ISLE_AQUA": null,
+        "ISLE_AETHER": null,
+        "ISLE_TERRA": null,
+        "ISLE_QUINT": null
+      },
+      "events_triggered": [
+        "BRIDGE_STORM"
+      ],
+      "active_events": [
+        "BRIDGE_STORM"
+      ],
+      "alliances_active": 0,
+      "action_results": [
+        {
+          "faction": "ROSE",
+          "action": "EXPLORE",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "WARDEN",
+          "action": "DIPLOMACY",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "VEIL",
+          "action": "HARVEST",
+          "result": "OK",
+          "effect": {}
+        },
+        {
+          "faction": "CROSS",
+          "action": "HARVEST",
+          "result": "OK",
+          "effect": {}
+        }
+      ],
+      "wulmoji": "🟢 🌹 🜃🜄 📜 🔗#SIM-T0206 🌿🌹",
+      "authority": false,
+      "sovereign": false,
+      "canon": false
+    },
+    {
+      "turn": 207,
+      "scores": {
+        "ROSE": 526,
+        "CROSS": 55,
+        "VEIL": 65,
+        "WARDEN": 120
+      },
+      "ownership": {
+        "HOME_KEEP_AVALON": "ROSE",
+        "ISLE_IGNIS": null,
+        "ISLE_AQUA": null,
+        "ISLE_AETHER": null,
+        "ISLE_TERRA": null,
+        "ISLE_QUINT": null
+      },
+      "events_triggered": [],
+      "active_events": [],
+      "alliances_active": 0,
+      "action_results": [
+        {
+          "faction": "ROSE",
+          "action": "QUEST_STEP",
+          "result": "OK",
+          "effect": {
+            "quest_pts": 5
+          }
+        },
+        {
+          "faction": "WARDEN",
+          "action": "QUEST_STEP",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "VEIL",
+          "action": "EXPLORE",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "CROSS",
+          "action": "EXPLORE",
+          "result": "SKIP_NO_RESOURCES"
+        }
+      ],
+      "wulmoji": "🟢 🌹 🜃🜄 📜 🔗#SIM-T0207 🌿🌹",
+      "authority": false,
+      "sovereign": false,
+      "canon": false
+    },
+    {
+      "turn": 208,
+      "scores": {
+        "ROSE": 526,
+        "CROSS": 55,
+        "VEIL": 65,
+        "WARDEN": 120
+      },
+      "ownership": {
+        "HOME_KEEP_AVALON": "ROSE",
+        "ISLE_IGNIS": null,
+        "ISLE_AQUA": null,
+        "ISLE_AETHER": null,
+        "ISLE_TERRA": null,
+        "ISLE_QUINT": null
+      },
+      "events_triggered": [],
+      "active_events": [],
+      "alliances_active": 0,
+      "action_results": [
+        {
+          "faction": "ROSE",
+          "action": "WARN",
+          "result": "OK",
+          "effect": {}
+        },
+        {
+          "faction": "WARDEN",
+          "action": "QUEST_STEP",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "VEIL",
+          "action": "WARN",
+          "result": "OK",
+          "effect": {}
+        },
+        {
+          "faction": "CROSS",
+          "action": "CONQUEST",
+          "result": "SKIP_NO_RESOURCES"
+        }
+      ],
+      "wulmoji": "🟢 🌹 🜃🜄 📜 🔗#SIM-T0208 🌿🌹",
+      "authority": false,
+      "sovereign": false,
+      "canon": false
+    },
+    {
+      "turn": 209,
+      "scores": {
+        "ROSE": 526,
+        "CROSS": 55,
+        "VEIL": 65,
+        "WARDEN": 120
+      },
+      "ownership": {
+        "HOME_KEEP_AVALON": "ROSE",
+        "ISLE_IGNIS": null,
+        "ISLE_AQUA": null,
+        "ISLE_AETHER": null,
+        "ISLE_TERRA": null,
+        "ISLE_QUINT": null
+      },
+      "events_triggered": [
+        "BRIDGE_STORM"
+      ],
+      "active_events": [
+        "BRIDGE_STORM"
+      ],
+      "alliances_active": 0,
+      "action_results": [
+        {
+          "faction": "ROSE",
+          "action": "WARN",
+          "result": "OK",
+          "effect": {}
+        },
+        {
+          "faction": "WARDEN",
+          "action": "HARVEST",
+          "result": "OK",
+          "effect": {}
+        },
+        {
+          "faction": "VEIL",
+          "action": "DIPLOMACY",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "CROSS",
+          "action": "EXPLORE",
+          "result": "SKIP_NO_RESOURCES"
+        }
+      ],
+      "wulmoji": "🟢 🌹 🜃🜄 📜 🔗#SIM-T0209 🌿🌹",
+      "authority": false,
+      "sovereign": false,
+      "canon": false
+    },
+    {
+      "turn": 210,
+      "scores": {
+        "ROSE": 526,
+        "CROSS": 55,
+        "VEIL": 65,
+        "WARDEN": 120
+      },
+      "ownership": {
+        "HOME_KEEP_AVALON": "ROSE",
+        "ISLE_IGNIS": null,
+        "ISLE_AQUA": null,
+        "ISLE_AETHER": null,
+        "ISLE_TERRA": null,
+        "ISLE_QUINT": null
+      },
+      "events_triggered": [],
+      "active_events": [],
+      "alliances_active": 0,
+      "action_results": [
+        {
+          "faction": "ROSE",
+          "action": "HARVEST",
+          "result": "OK",
+          "effect": {}
+        },
+        {
+          "faction": "WARDEN",
+          "action": "DIPLOMACY",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "VEIL",
+          "action": "QUEST_STEP",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "CROSS",
+          "action": "CONQUEST",
+          "result": "SKIP_NO_RESOURCES"
+        }
+      ],
+      "wulmoji": "🟢 🌹 🜃🜄 📜 🔗#SIM-T0210 🌿🌹",
+      "authority": false,
+      "sovereign": false,
+      "canon": false
+    },
+    {
+      "turn": 211,
+      "scores": {
+        "ROSE": 526,
+        "CROSS": 55,
+        "VEIL": 65,
+        "WARDEN": 120
+      },
+      "ownership": {
+        "HOME_KEEP_AVALON": "ROSE",
+        "ISLE_IGNIS": null,
+        "ISLE_AQUA": null,
+        "ISLE_AETHER": null,
+        "ISLE_TERRA": null,
+        "ISLE_QUINT": null
+      },
+      "events_triggered": [],
+      "active_events": [],
+      "alliances_active": 0,
+      "action_results": [
+        {
+          "faction": "ROSE",
+          "action": "WARN",
+          "result": "OK",
+          "effect": {}
+        },
+        {
+          "faction": "WARDEN",
+          "action": "QUEST_STEP",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "VEIL",
+          "action": "DIPLOMACY",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "CROSS",
+          "action": "HARVEST",
+          "result": "OK",
+          "effect": {}
+        }
+      ],
+      "wulmoji": "🟢 🌹 🜃🜄 📜 🔗#SIM-T0211 🌿🌹",
+      "authority": false,
+      "sovereign": false,
+      "canon": false
+    },
+    {
+      "turn": 212,
+      "scores": {
+        "ROSE": 526,
+        "CROSS": 55,
+        "VEIL": 65,
+        "WARDEN": 120
+      },
+      "ownership": {
+        "HOME_KEEP_AVALON": "ROSE",
+        "ISLE_IGNIS": null,
+        "ISLE_AQUA": null,
+        "ISLE_AETHER": null,
+        "ISLE_TERRA": null,
+        "ISLE_QUINT": null
+      },
+      "events_triggered": [],
+      "active_events": [],
+      "alliances_active": 0,
+      "action_results": [
+        {
+          "faction": "ROSE",
+          "action": "EXPLORE",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "WARDEN",
+          "action": "QUEST_STEP",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "VEIL",
+          "action": "WARN",
+          "result": "OK",
+          "effect": {}
+        },
+        {
+          "faction": "CROSS",
+          "action": "HARVEST",
+          "result": "OK",
+          "effect": {}
+        }
+      ],
+      "wulmoji": "🟢 🌹 🜃🜄 📜 🔗#SIM-T0212 🌿🌹",
+      "authority": false,
+      "sovereign": false,
+      "canon": false
+    },
+    {
+      "turn": 213,
+      "scores": {
+        "ROSE": 526,
+        "CROSS": 55,
+        "VEIL": 65,
+        "WARDEN": 120
+      },
+      "ownership": {
+        "HOME_KEEP_AVALON": "ROSE",
+        "ISLE_IGNIS": null,
+        "ISLE_AQUA": null,
+        "ISLE_AETHER": null,
+        "ISLE_TERRA": null,
+        "ISLE_QUINT": null
+      },
+      "events_triggered": [],
+      "active_events": [],
+      "alliances_active": 0,
+      "action_results": [
+        {
+          "faction": "ROSE",
+          "action": "DIPLOMACY",
+          "result": "OK",
+          "effect": {}
+        },
+        {
+          "faction": "WARDEN",
+          "action": "QUEST_STEP",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "VEIL",
+          "action": "QUEST_STEP",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "CROSS",
+          "action": "CONQUEST",
+          "result": "SKIP_NO_RESOURCES"
+        }
+      ],
+      "wulmoji": "🟢 🌹 🜃🜄 📜 🔗#SIM-T0213 🌿🌹",
+      "authority": false,
+      "sovereign": false,
+      "canon": false
+    },
+    {
+      "turn": 214,
+      "scores": {
+        "ROSE": 526,
+        "CROSS": 55,
+        "VEIL": 65,
+        "WARDEN": 120
+      },
+      "ownership": {
+        "HOME_KEEP_AVALON": "ROSE",
+        "ISLE_IGNIS": null,
+        "ISLE_AQUA": null,
+        "ISLE_AETHER": null,
+        "ISLE_TERRA": null,
+        "ISLE_QUINT": null
+      },
+      "events_triggered": [],
+      "active_events": [],
+      "alliances_active": 0,
+      "action_results": [
+        {
+          "faction": "ROSE",
+          "action": "EXPLORE",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "WARDEN",
+          "action": "EXPLORE",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "VEIL",
+          "action": "DIPLOMACY",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "CROSS",
+          "action": "WARN",
+          "result": "OK",
+          "effect": {}
+        }
+      ],
+      "wulmoji": "🟢 🌹 🜃🜄 📜 🔗#SIM-T0214 🌿🌹",
+      "authority": false,
+      "sovereign": false,
+      "canon": false
+    },
+    {
+      "turn": 215,
+      "scores": {
+        "ROSE": 531,
+        "CROSS": 55,
+        "VEIL": 65,
+        "WARDEN": 120
+      },
+      "ownership": {
+        "HOME_KEEP_AVALON": "ROSE",
+        "ISLE_IGNIS": null,
+        "ISLE_AQUA": null,
+        "ISLE_AETHER": null,
+        "ISLE_TERRA": null,
+        "ISLE_QUINT": null
+      },
+      "events_triggered": [],
+      "active_events": [],
+      "alliances_active": 0,
+      "action_results": [
+        {
+          "faction": "ROSE",
+          "action": "QUEST_STEP",
+          "result": "OK",
+          "effect": {
+            "quest_pts": 5
+          }
+        },
+        {
+          "faction": "WARDEN",
+          "action": "EXPLORE",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "VEIL",
+          "action": "DIPLOMACY",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "CROSS",
+          "action": "CONQUEST",
+          "result": "SKIP_NO_RESOURCES"
+        }
+      ],
+      "wulmoji": "🟢 🌹 🜃🜄 📜 🔗#SIM-T0215 🌿🌹",
+      "authority": false,
+      "sovereign": false,
+      "canon": false
+    },
+    {
+      "turn": 216,
+      "scores": {
+        "ROSE": 536,
+        "CROSS": 55,
+        "VEIL": 65,
+        "WARDEN": 120
+      },
+      "ownership": {
+        "HOME_KEEP_AVALON": "ROSE",
+        "ISLE_IGNIS": null,
+        "ISLE_AQUA": null,
+        "ISLE_AETHER": null,
+        "ISLE_TERRA": null,
+        "ISLE_QUINT": null
+      },
+      "events_triggered": [],
+      "active_events": [],
+      "alliances_active": 0,
+      "action_results": [
+        {
+          "faction": "ROSE",
+          "action": "QUEST_STEP",
+          "result": "OK",
+          "effect": {
+            "quest_pts": 5
+          }
+        },
+        {
+          "faction": "WARDEN",
+          "action": "EXPLORE",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "VEIL",
+          "action": "WARN",
+          "result": "OK",
+          "effect": {}
+        },
+        {
+          "faction": "CROSS",
+          "action": "CLAIM",
+          "result": "SKIP_NO_RESOURCES"
+        }
+      ],
+      "wulmoji": "🟢 🌹 🜃🜄 📜 🔗#SIM-T0216 🌿🌹",
+      "authority": false,
+      "sovereign": false,
+      "canon": false
+    },
+    {
+      "turn": 217,
+      "scores": {
+        "ROSE": 536,
+        "CROSS": 55,
+        "VEIL": 65,
+        "WARDEN": 120
+      },
+      "ownership": {
+        "HOME_KEEP_AVALON": "ROSE",
+        "ISLE_IGNIS": null,
+        "ISLE_AQUA": null,
+        "ISLE_AETHER": null,
+        "ISLE_TERRA": null,
+        "ISLE_QUINT": null
+      },
+      "events_triggered": [],
+      "active_events": [],
+      "alliances_active": 0,
+      "action_results": [
+        {
+          "faction": "ROSE",
+          "action": "EXPLORE",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "WARDEN",
+          "action": "HARVEST",
+          "result": "OK",
+          "effect": {}
+        },
+        {
+          "faction": "VEIL",
+          "action": "DIPLOMACY",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "CROSS",
+          "action": "CONQUEST",
+          "result": "SKIP_NO_RESOURCES"
+        }
+      ],
+      "wulmoji": "🟢 🌹 🜃🜄 📜 🔗#SIM-T0217 🌿🌹",
+      "authority": false,
+      "sovereign": false,
+      "canon": false
+    },
+    {
+      "turn": 218,
+      "scores": {
+        "ROSE": 536,
+        "CROSS": 55,
+        "VEIL": 65,
+        "WARDEN": 120
+      },
+      "ownership": {
+        "HOME_KEEP_AVALON": "ROSE",
+        "ISLE_IGNIS": null,
+        "ISLE_AQUA": null,
+        "ISLE_AETHER": null,
+        "ISLE_TERRA": null,
+        "ISLE_QUINT": null
+      },
+      "events_triggered": [],
+      "active_events": [],
+      "alliances_active": 0,
+      "action_results": [
+        {
+          "faction": "ROSE",
+          "action": "HARVEST",
+          "result": "OK",
+          "effect": {}
+        },
+        {
+          "faction": "WARDEN",
+          "action": "HARVEST",
+          "result": "OK",
+          "effect": {}
+        },
+        {
+          "faction": "VEIL",
+          "action": "DIPLOMACY",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "CROSS",
+          "action": "HARVEST",
+          "result": "OK",
+          "effect": {}
+        }
+      ],
+      "wulmoji": "🟢 🌹 🜃🜄 📜 🔗#SIM-T0218 🌿🌹",
+      "authority": false,
+      "sovereign": false,
+      "canon": false
+    },
+    {
+      "turn": 219,
+      "scores": {
+        "ROSE": 541,
+        "CROSS": 55,
+        "VEIL": 65,
+        "WARDEN": 120
+      },
+      "ownership": {
+        "HOME_KEEP_AVALON": "ROSE",
+        "ISLE_IGNIS": null,
+        "ISLE_AQUA": null,
+        "ISLE_AETHER": null,
+        "ISLE_TERRA": null,
+        "ISLE_QUINT": null
+      },
+      "events_triggered": [],
+      "active_events": [],
+      "alliances_active": 0,
+      "action_results": [
+        {
+          "faction": "ROSE",
+          "action": "QUEST_STEP",
+          "result": "OK",
+          "effect": {
+            "quest_pts": 5
+          }
+        },
+        {
+          "faction": "WARDEN",
+          "action": "HARVEST",
+          "result": "OK",
+          "effect": {}
+        },
+        {
+          "faction": "VEIL",
+          "action": "DIPLOMACY",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "CROSS",
+          "action": "CLAIM",
+          "result": "SKIP_NO_RESOURCES"
+        }
+      ],
+      "wulmoji": "🟢 🌹 🜃🜄 📜 🔗#SIM-T0219 🌿🌹",
+      "authority": false,
+      "sovereign": false,
+      "canon": false
+    },
+    {
+      "turn": 220,
+      "scores": {
+        "ROSE": 541,
+        "CROSS": 55,
+        "VEIL": 65,
+        "WARDEN": 120
+      },
+      "ownership": {
+        "HOME_KEEP_AVALON": "ROSE",
+        "ISLE_IGNIS": null,
+        "ISLE_AQUA": null,
+        "ISLE_AETHER": null,
+        "ISLE_TERRA": null,
+        "ISLE_QUINT": null
+      },
+      "events_triggered": [],
+      "active_events": [],
+      "alliances_active": 0,
+      "action_results": [
+        {
+          "faction": "ROSE",
+          "action": "WARN",
+          "result": "OK",
+          "effect": {}
+        },
+        {
+          "faction": "WARDEN",
+          "action": "EXPLORE",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "VEIL",
+          "action": "HARVEST",
+          "result": "OK",
+          "effect": {}
+        },
+        {
+          "faction": "CROSS",
+          "action": "WARN",
+          "result": "OK",
+          "effect": {}
+        }
+      ],
+      "wulmoji": "🟢 🌹 🜃🜄 📜 🔗#SIM-T0220 🌿🌹",
+      "authority": false,
+      "sovereign": false,
+      "canon": false
+    },
+    {
+      "turn": 221,
+      "scores": {
+        "ROSE": 541,
+        "CROSS": 55,
+        "VEIL": 65,
+        "WARDEN": 120
+      },
+      "ownership": {
+        "HOME_KEEP_AVALON": "ROSE",
+        "ISLE_IGNIS": null,
+        "ISLE_AQUA": null,
+        "ISLE_AETHER": null,
+        "ISLE_TERRA": null,
+        "ISLE_QUINT": null
+      },
+      "events_triggered": [],
+      "active_events": [],
+      "alliances_active": 0,
+      "action_results": [
+        {
+          "faction": "ROSE",
+          "action": "EXPLORE",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "WARDEN",
+          "action": "DIPLOMACY",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "VEIL",
+          "action": "EXPLORE",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "CROSS",
+          "action": "CONQUEST",
+          "result": "SKIP_NO_RESOURCES"
+        }
+      ],
+      "wulmoji": "🟢 🌹 🜃🜄 📜 🔗#SIM-T0221 🌿🌹",
+      "authority": false,
+      "sovereign": false,
+      "canon": false
+    },
+    {
+      "turn": 222,
+      "scores": {
+        "ROSE": 546,
+        "CROSS": 55,
+        "VEIL": 65,
+        "WARDEN": 120
+      },
+      "ownership": {
+        "HOME_KEEP_AVALON": "ROSE",
+        "ISLE_IGNIS": null,
+        "ISLE_AQUA": null,
+        "ISLE_AETHER": null,
+        "ISLE_TERRA": null,
+        "ISLE_QUINT": null
+      },
+      "events_triggered": [],
+      "active_events": [],
+      "alliances_active": 0,
+      "action_results": [
+        {
+          "faction": "ROSE",
+          "action": "QUEST_STEP",
+          "result": "OK",
+          "effect": {
+            "quest_pts": 5
+          }
+        },
+        {
+          "faction": "WARDEN",
+          "action": "HARVEST",
+          "result": "OK",
+          "effect": {}
+        },
+        {
+          "faction": "VEIL",
+          "action": "DIPLOMACY",
+          "result": "SKIP_NO_RESOURCES"
+        },
+        {
+          "faction": "CROSS",
+          "action": "HARVEST",
+          "result": "OK",
+          "effect": {}
+        }
+      ],
+      "wulmoji": "🟢 🌹 🜃🜄 📜 🔗#SIM-T0222 🌿🌹",
+      "authority": false,
+      "sovereign": false,
+      "canon": false
+    }
+  ]
+}

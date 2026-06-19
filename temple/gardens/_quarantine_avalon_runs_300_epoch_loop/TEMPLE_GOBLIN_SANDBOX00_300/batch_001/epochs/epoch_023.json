@@ -2,7 +2,7 @@
   "epoch_id": "E023",
   "artifact_name": "QUEST_TYPE_SEAL_LOCAL",
   "artifact_type": "QUEST",
-  "world_model_delta": "CONQUESTLAND_SEAL quest type. Goal: complete 5 prerequisite quests and produce a CONQUESTLAND_SEAL artifact. CONQUESTLAND_SEAL is irreversible within the simulation only. Uses 🔒📜 ACT. This is strictly sandboxed — it does not invoke HELEN SEAL.",
+  "world_model_delta": "CONQUESTLAND_SEAL quest type. Goal: complete 5 prerequisite quests and produce a CONQUESTLAND_SEAL artifact. CONQUESTLAND_SEAL is irreversible within the simulation only. Uses 🔒📜 ACT. This is strictly sandboxed — it does not invoke HELEN's local-seal marker.",
   "WULmoji_surface": "🟣 ✝️ 🜁🜂 🔒📜 🔗#SANDBOX00-E023 🌀🌿",
   "containment_boundary": "temple/gardens/goblin_garden_conquest_avalon/runs/TEMPLE_GOBLIN_SANDBOX00_300/",
   "receipt_status": "PROPOSED",
@@ -10,7 +10,7 @@
   "sovereign": false,
   "canon": false,
   "validator_question": "Is CONQUESTLAND_SEAL strictly sandboxed from HELEN's seal mechanics?",
-  "risk_of_symbol_smuggling": "HIGH — 'SEAL' is HELEN governance vocabulary; must use CONQUESTLAND_SEAL throughout, never just SEAL",
+  "risk_of_symbol_smuggling": "HIGH — local-seal marker is HELEN governance vocabulary; use CONQUESTLAND_SEAL throughout, never a bare local-seal marker",
   "next_epoch_seed": "WARN quest type",
   "group": "QUESTS",
   "batch": "001"

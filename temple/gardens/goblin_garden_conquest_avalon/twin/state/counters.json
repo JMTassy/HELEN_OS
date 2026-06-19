@@ -1,0 +1,49 @@
+{
+  "skips_by_reason": {
+    "ROSE:QUEST_STEP:SKIP_NO_RESOURCES": 1,
+    "WARDEN:QUEST_STEP:SKIP_NO_RESOURCES": 45,
+    "CROSS:CLAIM:SKIP_NO_RESOURCES": 51,
+    "VEIL:DIPLOMACY:SKIP_NO_RESOURCES": 79,
+    "WARDEN:EXPLORE:SKIP_NO_RESOURCES": 44,
+    "VEIL:EXPLORE:SKIP_NO_RESOURCES": 31,
+    "WARDEN:DIPLOMACY:SKIP_NO_RESOURCES": 19,
+    "CROSS:EXPLORE:SKIP_NO_RESOURCES": 21,
+    "ROSE:EXPLORE:SKIP_NO_RESOURCES": 63,
+    "CROSS:CONQUEST:SKIP_NO_RESOURCES": 64,
+    "VEIL:QUEST_STEP:SKIP_NO_RESOURCES": 25
+  },
+  "actions_by_faction": {
+    "ROSE": {
+      "QUEST_STEP": 61,
+      "HARVEST": 37,
+      "DIPLOMACY": 23,
+      "EXPLORE": 63,
+      "WARN": 17
+    },
+    "VEIL": {
+      "WARN": 41,
+      "DIPLOMACY": 79,
+      "EXPLORE": 31,
+      "QUEST_STEP": 25,
+      "HARVEST": 25
+    },
+    "WARDEN": {
+      "QUEST_STEP": 45,
+      "EXPLORE": 44,
+      "DIPLOMACY": 19,
+      "HARVEST": 85,
+      "WARN": 8
+    },
+    "CROSS": {
+      "CLAIM": 51,
+      "EXPLORE": 22,
+      "HARVEST": 53,
+      "CONQUEST": 64,
+      "WARN": 11
+    }
+  },
+  "events_by_type": {
+    "ELEMENTAL_SURGE": 14,
+    "BRIDGE_STORM": 21
+  }
+}
