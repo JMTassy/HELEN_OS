@@ -372,6 +372,42 @@ The dated snapshot below (2026-05-06) remains accurate for AUTORESEARCH, Schema 
 - **Experiments**: minimal MVP terminal kernel landed in `experiments/` (NON_SOVEREIGN, NO_SHIP — sandbox only)
 - **HELEN OS v2 UX**: PROPOSAL-class four-file suite shipped to `docs/proposals/` (commit `442f5ee`). Two-mode top-level toggle (`FOCUS | WITNESS`) + Four-Mode Product Map (FOCUS / WITNESS / ORACLE / TEMPLE). Locked phrases: product tagline `"HELEN suggests. You decide. Everything is recorded."`, constitution phrase `"HELEN sees. HELEN proposes. The gate authorizes…"`, UX canon `"HELEN n'est pas un cockpit…"`. LEGORACLE idle = `Gate Clear · No Active Claim`; SHIP_FORBIDDEN never permanent ambient. CONTEXT STACK is technical default (8 layers); AURA confined to Oracle/Temple as non-authoritative metaphor. Brand rule: Apple-like calm, never macOS chrome clone. Files: `HELEN_OS_V2_USER_CENTRIC_UX.md`, `FOCUS_MODE_TERMINAL_SPEC.md`, `TEMPLE_MODE_VISUAL_BRIEF.md`, `HELEN_OS_V2_VISUAL_CANON_LOCK.md`. Status: PROPOSAL / NON_SOVEREIGN / NO_SHIP — not promoted to canon.
 
+## HELEN OS Look & Feel — Source Atlas Doctrine
+
+HELEN OS uses a Source Atlas visual system. The interface is not a flat dashboard. It is a layered source field:
+- center = source object
+- margins = commentary and objections
+- orbit = references and memory paths
+- bottom rail = actions
+- top banner = governance state
+
+The aesthetic combines:
+- Talmudic page architecture
+- Dante-style vertical cosmology
+- cybernetic HUD overlays
+- semantic voxel memory maps
+- dark source cockpit atmosphere
+- parchment / manuscript commentary layers
+
+The third-eye motif means structural vision only: it sees relation, dependency, and proof paths. It must never imply prophecy, divine authority, or sovereign truth. All mystical, alchemical, or sacred visual elements remain expressive overlays. They do not determine governance status. Governance color remains primary. Proof is mandatory for admitted (🟢), sealed (🟡), and replayable (⚪) objects. No decorative color substitution is allowed.
+
+Palette (strict, one meaning per color): ⚫ unknown · 🔵 observed · 🟣 claim · 🟠 review · 🟢 admitted · 🟡 sealed · ⚪ replayable · 🔴 breach. Background: black/parchment/graphite. Glyph voices: SERIF=source, MONO=receipt/proof, HUMANIST=commentary. Interaction vocabulary: 👁️OBSERVE · 📜CLAIM · 🧪REVIEW · ⚖️ADMIT · 🔒SEAL · 🔁REPLAY · ✂️CUT.
+
+Six locked visual motifs: (1) Voxel Memory Mass — corpus as 3D terrain; (2) Commentary Rings — Talmudic orbit; (3) Wireframe Proof Chamber — deterministic test space; (4) Floating Semantic Cubes — typed 𝕎⁺ objects; (5) CRT/Terminal Overlay — machine witness; (6) Cathedral/Tower Verticality — build upward only through receipts.
+
+Full spec: `docs/proposals/HELEN_SOURCE_ATLAS_V1.md` (PROPOSAL · NON_SOVEREIGN · NO_CLAIM).
+
+## WULMOJI Status Rendering Rule
+
+Agents must not render `🟢 ADMITTED`, `🟡 SEALED`, or `⚪ REPLAYABLE` for any artifact whose frontmatter contains `authority: false`, `claim_status: NO_CLAIM`, `final: HOLD_FOR_OPERATOR`, `git_stage: no`, or `git_commit: no`.
+
+For proposal documents under `docs/proposals/`, the maximum allowed banner is:
+- `🔵 OBSERVED` — merely written or inspected
+- `🟣 CLAIM` — proposed as doctrine
+- `🟠 REVIEW` — under operator evaluation
+
+Promotion to `🟢 ADMITTED` requires an explicit operator admission receipt. Promotion to `🟡 SEALED` requires hash/version lock. Promotion to `⚪ REPLAYABLE` requires replay validation. **Never use green as "successfully written." Green means admitted.**
+
 ## Open Frontiers
 
 - **Closure attestation gap**: ghost-closure detection is the next frontier. Blocked on Schema Authority seam materialization; needs `closure_receipt_v1` + CI ghost detection wired into the gate pipeline.

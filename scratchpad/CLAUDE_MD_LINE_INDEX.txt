@@ -118,8 +118,14 @@ CLAUDE.md — AUTO-GENERATED LINE INDEX
     - ### Snapshot 2026-05-06
       Lines 357–374 | Anchor: #snapshot-2026-05-06
 
+  - ## HELEN OS Look & Feel — Source Atlas Doctrine
+    Lines 375–399 | Anchor: #helen-os-look-feel-source-atlas-doctrine
+
+  - ## WULMOJI Status Rendering Rule
+    Lines 400–410 | Anchor: #wulmoji-status-rendering-rule
+
   - ## Open Frontiers
-    Lines 375–379 | Anchor: #open-frontiers
+    Lines 411–415 | Anchor: #open-frontiers
 
 ================================================================================
 
