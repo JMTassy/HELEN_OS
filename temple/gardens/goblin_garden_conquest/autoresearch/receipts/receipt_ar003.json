@@ -1,0 +1,14 @@
+{
+  "receipt_type": "AUTORESEARCH_EPOCH_RECEIPT_V0",
+  "epoch_id": "AR003",
+  "name": "VEIL_DIPLOMACY_REPAIR",
+  "proof_hash": "AR-4A3418D8",
+  "result": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "layer": "TEMPLE",
+  "ledger": "SLEEPING",
+  "commit": "BLOCKED",
+  "push": "BLOCKED"
+}

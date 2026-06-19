@@ -1,0 +1,22 @@
+{
+  "epoch_id": "AR007",
+  "name": "QUEST_CHAIN_DEPTH_STABILITY",
+  "batch": "AR_001",
+  "seq": 7,
+  "claim_type": "world_model",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "layer": "TEMPLE",
+  "ledger": "SLEEPING",
+  "carry_forward": "ROSE scores +5 per QUEST_STEP. After 122 turns, ROSE has 401 points — mostly quest points. The quest chain has no depth: each QUEST_STEP is independent, with no memory or progression state. This means score is purely additive with no strategy required.",
+  "hypothesis": "Introducing a 3-step quest chain (OBSERVE → STUDY → PROVE) with escalating costs but multiplied rewards (×1, ×2, ×3 score) will create more strategic depth without changing the basic pipeline.",
+  "experiment": "Track ROSE's score trajectory with 3-step chain vs current 1-step. Chain: QUEST_STEP_1 (cost 1 QUINT_CORE, +5), QUEST_STEP_2 (cost 2, +10), QUEST_STEP_3 (cost 3, +20). Faction must complete steps in order.",
+  "metric": "ROSE total score after 50 turns with chain is between 80-150% of current 1-step model. If < 80%, chain is too expensive. If > 150%, chain is too rewarding.",
+  "failure_mode": "Quest chain introduces state machine complexity that the seeded decision engine cannot handle (it has no memory of chain position).",
+  "keep_reject_rule": "KEEP if chain position can be stored in faction.active_quests[] (already exists in world_state). REJECT if requires new state fields not in current schema.",
+  "upgrade_path": "If KEEP: add chain_position field to active_quests. If REJECT: keep 1-step but add quest variety (3 different quest types, same cost).",
+  "wulmoji": "🔍 🟣 🌹 🎯→🎯→🎯  CHAIN_DEPTH_3STEP  📜⏸️",
+  "proof_hash": "AR-A39A3E1A"
+}

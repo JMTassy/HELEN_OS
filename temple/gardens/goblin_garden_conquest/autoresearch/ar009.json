@@ -1,0 +1,22 @@
+{
+  "epoch_id": "AR009",
+  "name": "SYMBOLIC_MAP_LAYOUT_AUDIT",
+  "batch": "AR_001",
+  "seq": 9,
+  "claim_type": "world_model",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "layer": "TEMPLE",
+  "ledger": "SLEEPING",
+  "carry_forward": "The island topology: HOME_KEEP_AVALON (QUINT) — ISLE_IGNIS — ISLE_AQUA — ISLE_AETHER — ISLE_TERRA — ISLE_QUINT. Bridges connect them into a chain with ISLE_QUINT at center. This was designed but not tested for reachability: can every faction reach every island from their starting position via bridge graph?",
+  "hypothesis": "The bridge graph is connected but directionally asymmetric — some factions must traverse more bridges than others to reach key islands, giving early-game positional advantage.",
+  "experiment": "Compute shortest bridge path (Dijkstra on bridge graph) from HOME_KEEP to each island for each faction's start element. Compare path lengths. Check if all islands are reachable within 3 bridge hops.",
+  "metric": "Max shortest path ≤ 3 hops for any faction to any island. If any island requires > 3 hops, topology needs a bridge addition.",
+  "failure_mode": "ISLE_TERRA and ISLE_AQUA may be only reachable via ISLE_IGNIS, creating a bottleneck that advantages FIRE-aligned factions.",
+  "keep_reject_rule": "KEEP if all islands reachable ≤ 3 hops. REJECT (add bridge) if any island > 3 hops or only 1 path exists (single point of failure).",
+  "upgrade_path": "If REJECT: add AQUA_TERRA bridge (shortcut) or TERRA_HOME bridge. If KEEP: document topology as balanced in world_model/.",
+  "wulmoji": "🔍 🔵 🗺️ 🏰→🏝️  TOPOLOGY_REACHABILITY  📜⏸️",
+  "proof_hash": "AR-1C6ABF28"
+}

@@ -1,0 +1,14 @@
+{
+  "receipt_type": "AUTORESEARCH_EPOCH_RECEIPT_V0",
+  "epoch_id": "AR002",
+  "name": "FREE_SCOUT_BOOTSTRAPPING",
+  "proof_hash": "AR-308B4BCF",
+  "result": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "layer": "TEMPLE",
+  "ledger": "SLEEPING",
+  "commit": "BLOCKED",
+  "push": "BLOCKED"
+}

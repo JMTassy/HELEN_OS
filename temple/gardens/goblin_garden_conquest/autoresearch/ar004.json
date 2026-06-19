@@ -1,0 +1,22 @@
+{
+  "epoch_id": "AR004",
+  "name": "ISLE_QUINT_NEUTRAL_LOCK",
+  "batch": "AR_001",
+  "seq": 4,
+  "claim_type": "world_model",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "layer": "TEMPLE",
+  "ledger": "SLEEPING",
+  "carry_forward": "ISLE_QUINT resets to neutral after 3 consecutive turns held. This is an anti-monopoly mechanic. But no faction has held ISLE_QUINT yet (zero territory in 122 turns), so this mechanic has never fired.",
+  "hypothesis": "The ISLE_QUINT 3-turn reset mechanic is correct but will only activate after the SCOUT bootstrap fix. Hypothesis: the 3-turn window is too short — 5 turns would better reward successful conquest while still preventing lock-in.",
+  "experiment": "Change neutral_max_turns from 3 to 5 in world_state template. Simulate 50 turns post-bootstrap fix. Measure ISLE_QUINT ownership change frequency.",
+  "metric": "ISLE_QUINT changes hands 2-5 times per 50 turns. More than 8 changes = too volatile. Fewer than 2 = too stable.",
+  "failure_mode": "5-turn window allows a resource-rich faction to use ISLE_QUINT as a permanent QUINT_CORE engine, dominating the economy.",
+  "keep_reject_rule": "KEEP if ISLE_QUINT changes hands 2-5× per 50 turns and no single faction holds > 40 total turns. REJECT otherwise.",
+  "upgrade_path": "If REJECT-stable: reduce to 4 turns. If REJECT-volatile: increase to 7 turns and add 1-turn cooldown before re-claim.",
+  "wulmoji": "🔍 🟣 ⟂◯⟂ 🏰→🔄  QUINT_NEUTRAL_WINDOW_5  📜⏸️",
+  "proof_hash": "AR-33597004"
+}

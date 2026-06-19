@@ -1,0 +1,14 @@
+{
+  "receipt_type": "AUTORESEARCH_EPOCH_RECEIPT_V0",
+  "epoch_id": "AR008",
+  "name": "BRIDGE_STORM_UTILITY_AUDIT",
+  "proof_hash": "AR-0EF9D3F3",
+  "result": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "layer": "TEMPLE",
+  "ledger": "SLEEPING",
+  "commit": "BLOCKED",
+  "push": "BLOCKED"
+}

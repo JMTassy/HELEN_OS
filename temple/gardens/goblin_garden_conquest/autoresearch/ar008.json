@@ -1,0 +1,22 @@
+{
+  "epoch_id": "AR008",
+  "name": "BRIDGE_STORM_UTILITY_AUDIT",
+  "batch": "AR_001",
+  "seq": 8,
+  "claim_type": "validator",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "layer": "TEMPLE",
+  "ledger": "SLEEPING",
+  "carry_forward": "11 bridge storms fired in 122 turns. Each doubled bridge traversal cost. But since no faction holds territory and no faction traverses bridges (traversal requires a claim action which requires territory), all 11 bridge storms had zero effect.",
+  "hypothesis": "Bridge storms are correctly coded but presuppose territory ownership. They are a dead mechanic until SCOUT bootstrap fix lands. No code change needed — event should remain dormant but not be removed.",
+  "experiment": "Verify that bridge storm effect application checks for active traversal plans before applying the cost. If no traversal, storm fires (logged) but effect is null. Check run_turn.py apply_effects() for this guard.",
+  "metric": "Bridge storm events log correctly with `effect: null_no_traversal` when no faction is traversing. No crash, no silent failure.",
+  "failure_mode": "apply_effects() assumes traversal exists and throws KeyError on missing bridge traversal data.",
+  "keep_reject_rule": "KEEP if apply_effects() gracefully handles 0-traversal case. REJECT (add guard) if it errors.",
+  "upgrade_path": "If REJECT: add `if not active_traversals: continue` guard in apply_effects(). If KEEP: document bridge storm as post-bootstrap mechanic in world_model.",
+  "wulmoji": "🔍 🟡 ⟂◯⟂ 🌉→⚠️  BRIDGE_STORM_GUARD  📜⏸️",
+  "proof_hash": "AR-0EF9D3F3"
+}

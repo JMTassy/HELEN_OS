@@ -1,0 +1,14 @@
+{
+  "receipt_type": "AUTORESEARCH_EPOCH_RECEIPT_V0",
+  "epoch_id": "AR009",
+  "name": "SYMBOLIC_MAP_LAYOUT_AUDIT",
+  "proof_hash": "AR-1C6ABF28",
+  "result": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "layer": "TEMPLE",
+  "ledger": "SLEEPING",
+  "commit": "BLOCKED",
+  "push": "BLOCKED"
+}

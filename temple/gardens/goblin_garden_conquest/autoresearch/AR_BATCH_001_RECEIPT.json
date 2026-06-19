@@ -1,0 +1,29 @@
+{
+  "receipt_type": "AUTORESEARCH_BATCH_RECEIPT_V0",
+  "batch": "AR_001",
+  "epochs_authorized": 10,
+  "epochs_completed": 10,
+  "epoch_ids": [
+    "AR001",
+    "AR002",
+    "AR003",
+    "AR004",
+    "AR005",
+    "AR006",
+    "AR007",
+    "AR008",
+    "AR009",
+    "AR010"
+  ],
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "layer": "TEMPLE",
+  "ledger": "SLEEPING",
+  "validator_result": "PASS",
+  "forbidden_terms": 0,
+  "commit": "BLOCKED",
+  "push": "BLOCKED",
+  "jm_admits": "PENDING",
+  "next_step": "JM_REVIEW — select hypotheses for implementation"
+}

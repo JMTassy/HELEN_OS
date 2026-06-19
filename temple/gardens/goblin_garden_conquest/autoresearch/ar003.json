@@ -1,0 +1,22 @@
+{
+  "epoch_id": "AR003",
+  "name": "VEIL_DIPLOMACY_REPAIR",
+  "batch": "AR_001",
+  "seq": 3,
+  "claim_type": "world_model",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "layer": "TEMPLE",
+  "ledger": "SLEEPING",
+  "carry_forward": "VEIL has DIPLOMACY as its core personality but DIPLOMACY costs 3 QUINT_CORE. VEIL starts with AQUA_SHARD=5, QUINT_CORE=2. After 2 turns, QUINT_CORE is depleted by HOME_KEEP rent. VEIL never earns QUINT_CORE without territory — deadlock.",
+  "hypothesis": "DIPLOMACY should have a non-QUINT_CORE cost path: e.g. cost 3 AQUA_SHARD (VEIL's native resource) for an alliance proposal, instead of 3 QUINT_CORE.",
+  "experiment": "Add resource-specific diplomacy cost: VEIL pays 3 AQUA_SHARD for DIPLOMACY (same mechanical effect). Other factions still pay QUINT_CORE. Measure VEIL alliance count and score over 50 turns.",
+  "metric": "VEIL DIPLOMACY success rate > 50% over 50 turns. VEIL score > 50 (was 65 total in 122 turns).",
+  "failure_mode": "VEIL becomes too strong (alliance bonus stacks indefinitely) and dominates the score table.",
+  "keep_reject_rule": "KEEP if VEIL score is in range 100-300 after 50 turns and at least one other faction has higher score. REJECT if VEIL leads by > 2× next faction.",
+  "upgrade_path": "If REJECT: cap alliance bonus at 3 active alliances max. If KEEP: generalize faction-native resource costs to all actions.",
+  "wulmoji": "🔍 🟡 🌀 🤝→🧾  DIPLOMACY_COST_REPAIR  📜⏸️",
+  "proof_hash": "AR-4A3418D8"
+}

@@ -1,0 +1,14 @@
+{
+  "receipt_type": "AUTORESEARCH_EPOCH_RECEIPT_V0",
+  "epoch_id": "AR007",
+  "name": "QUEST_CHAIN_DEPTH_STABILITY",
+  "proof_hash": "AR-A39A3E1A",
+  "result": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "layer": "TEMPLE",
+  "ledger": "SLEEPING",
+  "commit": "BLOCKED",
+  "push": "BLOCKED"
+}

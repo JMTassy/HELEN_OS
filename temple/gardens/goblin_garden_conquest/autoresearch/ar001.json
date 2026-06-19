@@ -1,0 +1,22 @@
+{
+  "epoch_id": "AR001",
+  "name": "QUEST_SKIP_RATE_REDUCTION",
+  "batch": "AR_001",
+  "seq": 1,
+  "claim_type": "world_model",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "layer": "TEMPLE",
+  "ledger": "SLEEPING",
+  "carry_forward": "In 122 turns, VEIL attempted DIPLOMACY 39 times with 39 skips (0% success). CROSS attempted CLAIM/CONQUEST 61 times with 61 skips. Root cause: resource mismatch between personality and available shards.",
+  "hypothesis": "Adding a personality-aware fallback action (when primary action is resource-impossible, attempt QUEST_STEP instead) will reduce the global skip rate by at least 50%.",
+  "experiment": "Modify faction decision logic: if primary action cost cannot be met, defer to QUEST_STEP (cost: 1 QUINT_CORE) before skipping. Track skip count over 50 turns with vs without fallback.",
+  "metric": "SKIP_COUNT_WITH_FALLBACK < 0.5 × SKIP_COUNT_WITHOUT_FALLBACK over 50 turns.",
+  "failure_mode": "All factions collapse to QUEST_STEP monoculture, reducing score divergence — outcome not useful for game design.",
+  "keep_reject_rule": "KEEP if skip rate drops AND faction score spread (max - min) stays > 100 after 50 turns. REJECT if spread collapses below 50.",
+  "upgrade_path": "If KEEP: implement fallback in run_turn.py as PHASE 2b. If REJECT: try element-based resource exchange instead.",
+  "wulmoji": "🔍 🟣 ⟂◯⟂ 📚→🎯  SKIP_REDUCTION_PROPOSAL  📜⏸️",
+  "proof_hash": "AR-31FBD328"
+}

@@ -1,0 +1,22 @@
+{
+  "epoch_id": "AR006",
+  "name": "LEARNING_PATH_SEQUENCING",
+  "batch": "AR_001",
+  "seq": 6,
+  "claim_type": "world_model",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "layer": "TEMPLE",
+  "ledger": "SLEEPING",
+  "carry_forward": "The BEGINNER_GUIDE establishes: 📚→🎯→🧾→🛡️→👑. In the live sim, ROSE is the only faction advancing along this chain (quest_progress → score). CROSS/VEIL/WARDEN are stuck before 🎯 because they cannot afford the first action.",
+  "hypothesis": "The learning path has a missing first step: 🌱SEED (zero-cost observation) before 📚. Adding a OBSERVE action (cost: 0, reward: 1 knowledge_fragment) gives factions a non-zero entry point.",
+  "experiment": "Add OBSERVE action: available to all factions any turn, cost=0, reward=knowledge_fragment (1 unit). Knowledge fragments accumulate and can be exchanged: 5 knowledge_fragments → 1 QUINT_CORE at ISLE_QUINT. Track time to first QUEST_STEP for CROSS and VEIL.",
+  "metric": "CROSS and VEIL attempt QUEST_STEP before turn 20 (currently never). Time-to-first-quest < 20.",
+  "failure_mode": "Knowledge fragment exchange trivializes QUINT_CORE scarcity — everyone has QUINT_CORE by turn 10.",
+  "keep_reject_rule": "KEEP if exchange rate 5→1 makes knowledge accumulation meaningful (takes 5 turns of OBSERVE to afford 1 QUEST_STEP). REJECT if rate too low (< 3→1) or too high (> 10→1).",
+  "upgrade_path": "If REJECT-trivial: increase exchange rate to 8→1. If KEEP: add knowledge_fragments as a tracked resource in world_state.",
+  "wulmoji": "🔍 🟢 🌱 📚→🎯  OBSERVE_ZERO_COST  📜⏸️",
+  "proof_hash": "AR-CD8A040B"
+}

@@ -1,0 +1,22 @@
+{
+  "epoch_id": "AR005",
+  "name": "BULLETIN_CLARITY_AUDIT",
+  "batch": "AR_001",
+  "seq": 5,
+  "claim_type": "bulletin",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "layer": "TEMPLE",
+  "ledger": "SLEEPING",
+  "carry_forward": "The WULmoji surface per turn is: `🟢 🌹 🜃🜄 📜 🔗#SIM-T0045 🌿🌹`. This renders faction, element pair, act, and proof. But it does not encode the faction action type or outcome in the surface — a reader cannot tell from the WULmoji whether the action succeeded or was skipped.",
+  "hypothesis": "Adding a micro-state marker (🟢=success / 🔴=skip / 🟡=partial) before the faction glyph will make turn bulletins readable without reading the full log.",
+  "experiment": "Extend WULmoji surface format to: `[TURN_STATE] [FACTION] [ACTION_GLYPH] [PAIR] [ACT] [PROOF] [RIBBON]` where ACTION_GLYPH encodes the action type (📚=quest / ⚔️=conquest / 🤝=diplomacy / ⛏️=harvest / 🔍=scout).",
+  "metric": "A reader who sees only the WULmoji surface can correctly identify: faction, outcome, action type in > 90% of test cases (human review of 20 sample turns).",
+  "failure_mode": "WULmoji surface becomes too long (> 12 tokens) and loses scan-ability.",
+  "keep_reject_rule": "KEEP if surface stays ≤ 10 tokens and correctly encodes outcome + action. REJECT if ambiguous or > 10 tokens.",
+  "upgrade_path": "If REJECT: use a 2-token summary only: `[STATE][FACTION]`. If KEEP: update run_turn.py WULmoji emission in PHASE 6.",
+  "wulmoji": "🔍 🔵 👁️  📜→🧾  BULLETIN_CLARITY_AUDIT  📜⏸️",
+  "proof_hash": "AR-2F8013C3"
+}

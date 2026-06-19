@@ -1,0 +1,22 @@
+{
+  "epoch_id": "AR002",
+  "name": "FREE_SCOUT_BOOTSTRAPPING",
+  "batch": "AR_001",
+  "seq": 2,
+  "claim_type": "world_model",
+  "receipt_status": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "layer": "TEMPLE",
+  "ledger": "SLEEPING",
+  "carry_forward": "Zero territory claimed in 122 turns. Root cause: CLAIM requires an island-native shard (e.g. TERRA_SHARD to claim ISLE_TERRA), but unowned islands produce no shards. Classic bootstrap deadlock.",
+  "hypothesis": "A free SCOUT action (cost: 0 resources, reward: 1 random island-native shard) available on turns 1-10 breaks the bootstrap deadlock without making conquest trivial.",
+  "experiment": "Add SCOUT to PHASE 2 available actions for all factions on turns 1-10. SCOUT picks a random unowned island and grants 1 unit of its native shard. Track first CLAIM success turn.",
+  "metric": "FIRST_CLAIM_TURN < 20 with SCOUT vs FIRST_CLAIM_TURN = infinity without.",
+  "failure_mode": "SCOUT trivializes early game — all factions claim territory by turn 5, removing tension.",
+  "keep_reject_rule": "KEEP if first CLAIM happens between turns 8-20. REJECT if before turn 8 (too easy) or after turn 30 (still blocked).",
+  "upgrade_path": "If REJECT-early: SCOUT reward is 0.5 shards (round up after 2 uses). If REJECT-late: add EXPLORE_SHARD_CACHE as a 3-turn preparation action.",
+  "wulmoji": "🔍 🔵 🌹 🗺️→📦  FREE_SCOUT_T1-T10  📜⏸️",
+  "proof_hash": "AR-308B4BCF"
+}
