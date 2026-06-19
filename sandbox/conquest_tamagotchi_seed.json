@@ -1,0 +1,84 @@
+{
+  "seed": 9137,
+  "tick": 0,
+  "epoch": "BONDING",
+  "pressure": 2.0,
+  "map": {
+    "w": 30,
+    "h": 10,
+    "tiles": [
+      "^^^^^^^^^^..***.....~~~~~~..^^",
+      "^^^..A##..=..***..+..~~~~..^^^",
+      "^^...###..=.......+..~~~~...^^",
+      "..+..==...=..***......~~..B##.",
+      ".....==.......***........###..",
+      "..C##....***...........+......",
+      "..###....***....~~~~~~.........",
+      "...............~~~~~~.....+....",
+      "....+.....***..~~~~~~..........",
+      "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+    ]
+  },
+  "domains": {
+    "DIPLOMACY": {"inf": 2, "siege_res": 0, "hunger_dt": 0.0, "stability_dt": 0.0},
+    "SECURITY":  {"inf": 0, "siege_res": 1, "hunger_dt": 0.0, "stability_dt": 0.0},
+    "MATH":      {"inf": 0, "siege_res": 0, "hunger_dt": 0.0, "stability_dt": 0.0}
+  },
+  "agents": {
+    "A": {
+      "archetype": "PRINCESS",
+      "domain": "DIPLOMACY",
+      "castle": "C1",
+      "hunger": 2.0,
+      "morale": 6.0,
+      "stability": 6.0,
+      "influence": 5.0,
+      "plan_tokens": 0,
+      "dormant_ticks": 0,
+      "face": null,
+      "emo": null,
+      "rgb": null,
+      "overlays": [],
+      "cooldowns": {"HOLD": 0, "ADV": 0, "STRK": 0, "PLAN": 0, "BOND": 0}
+    },
+    "B": {
+      "archetype": "WARLORD",
+      "domain": "SECURITY",
+      "castle": "C2",
+      "hunger": 3.0,
+      "morale": 5.0,
+      "stability": 5.0,
+      "influence": 3.0,
+      "plan_tokens": 0,
+      "dormant_ticks": 0,
+      "face": null,
+      "emo": null,
+      "rgb": null,
+      "overlays": [],
+      "cooldowns": {"HOLD": 0, "ADV": 0, "STRK": 0, "PLAN": 0, "BOND": 0}
+    },
+    "C": {
+      "archetype": "ARCHITECT",
+      "domain": "MATH",
+      "castle": "C3",
+      "hunger": 2.0,
+      "morale": 5.0,
+      "stability": 6.0,
+      "influence": 4.0,
+      "plan_tokens": 0,
+      "dormant_ticks": 0,
+      "face": null,
+      "emo": null,
+      "rgb": null,
+      "overlays": [],
+      "cooldowns": {"HOLD": 0, "ADV": 0, "STRK": 0, "PLAN": 0, "BOND": 0}
+    }
+  },
+  "castles": {
+    "C1": {"owner": "A", "pos": [4, 1],  "fortress": 2, "status": "NORMAL", "tiles": 12, "domain": "DIPLOMACY"},
+    "C2": {"owner": "B", "pos": [25, 3], "fortress": 2, "status": "NORMAL", "tiles": 10, "domain": "SECURITY"},
+    "C3": {"owner": "C", "pos": [2, 5],  "fortress": 2, "status": "NORMAL", "tiles": 11, "domain": "MATH"}
+  },
+  "alliances": [],
+  "ledger": []
+}
