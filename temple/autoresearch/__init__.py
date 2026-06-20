@@ -1,0 +1,1 @@
+# NON_SOVEREIGN · AUTHORITY=false · CANON=false · LEDGER_EFFECT=none
