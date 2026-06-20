@@ -12,6 +12,8 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
+import fcntl
+import json
 import uuid
 
 from helen_os.governance.canonical import sha256_prefixed, assert_prefixed_sha256, canonical_json_bytes
@@ -290,21 +292,44 @@ HANDLERS = {
 
 
 class ExecutionRegistry:
-    def __init__(self) -> None:
+    def __init__(self, persist_path: Optional[Path] = None) -> None:
         self._seen: set[str] = set()
+        self._persist_path = persist_path
+        if persist_path is not None and persist_path.exists():
+            for line in persist_path.read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    entry = json.loads(line)
+                    eid = entry.get("execution_identity", "")
+                    if eid:
+                        self._seen.add(eid)
+                except Exception:
+                    pass  # corrupt line — skip without crashing
 
     def register(self, execution_identity: str) -> bool:
         if execution_identity in self._seen:
             return False
         self._seen.add(execution_identity)
+        if self._persist_path is not None:
+            self._persist_path.parent.mkdir(parents=True, exist_ok=True)
+            entry = json.dumps({"execution_identity": execution_identity, "registered_at": utc_now_iso()}) + "\n"
+            with open(self._persist_path, "a", encoding="utf-8") as f:
+                fcntl.flock(f, fcntl.LOCK_EX)
+                try:
+                    f.write(entry)
+                    f.flush()
+                finally:
+                    fcntl.flock(f, fcntl.LOCK_UN)
         return True
 
 
 class BoundedExecutor:
-    def __init__(self, *, base_dir: Path, policy_version: str) -> None:
+    def __init__(self, *, base_dir: Path, policy_version: str, registry_path: Optional[Path] = None) -> None:
         self.base_dir = base_dir
         self.policy_version = policy_version
-        self.registry = ExecutionRegistry()
+        self.registry = ExecutionRegistry(persist_path=registry_path)
 
     def execute(self, request: Dict[str, Any]) -> Tuple[ExecutionDecisionReceipt, ExecutionResultReceipt, Optional[ArtifactWriteReceipt]]:
         tool_type = request.get("tool_type")

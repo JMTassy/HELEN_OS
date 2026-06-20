@@ -46,9 +46,11 @@ logger = logging.getLogger(__name__)
 helen: Optional[HELENMultiModel] = None
 current_avatar = "helen"
 do_next_service = DoNextService(storage_dir=Path(__file__).resolve().parent / "storage" / "do_next_sessions")
+_SANDBOX_DIR = Path(__file__).resolve().parent / "storage" / "action_sandbox"
 action_executor = BoundedExecutor(
-    base_dir=Path(__file__).resolve().parent / "storage" / "action_sandbox",
+    base_dir=_SANDBOX_DIR,
     policy_version="STAGE_B1_V1",
+    registry_path=_SANDBOX_DIR / "_execution_registry.ndjson",
 )
 action_executor.base_dir.mkdir(parents=True, exist_ok=True)
 
@@ -160,6 +162,12 @@ def switch_avatar(name: str):
     """Switch to a different avatar"""
     global current_avatar
 
+    if name.lower() not in AvatarRegistry.AVATARS:
+        return jsonify({
+            "error": f"Unknown avatar: {name}",
+            "available": list(AvatarRegistry.AVATARS.keys()),
+        }), 404
+
     avatar = AvatarRegistry.get_avatar(name)
     current_avatar = name
 
@@ -206,19 +214,33 @@ def query_auto():
             stream=stream,
         )
 
+        lineage = {
+            "name": decision.model_config.name,
+            "provider": decision.model_config.provider.value,
+            "capability": decision.model_config.capability_tier.value,
+        }
+        routing = {
+            "reason": decision.reason,
+            "confidence": decision.confidence,
+        }
+
+        if not response or not response.strip():
+            return jsonify({
+                "success": False,
+                "failure_code": "empty_inference_response",
+                "task_type": task_type.value,
+                "model": lineage,
+                "routing": routing,
+                "avatar": current_avatar,
+                "timestamp": datetime.now().isoformat(),
+            }), 503
+
         return jsonify({
             "success": True,
             "prompt": prompt,
             "task_type": task_type.value,
-            "model": {
-                "name": decision.model_config.name,
-                "provider": decision.model_config.provider.value,
-                "capability": decision.model_config.capability_tier.value,
-            },
-            "routing": {
-                "reason": decision.reason,
-                "confidence": decision.confidence,
-            },
+            "model": lineage,
+            "routing": routing,
             "response": response,
             "avatar": current_avatar,
             "timestamp": datetime.now().isoformat(),
