@@ -230,6 +230,11 @@ def run(
     if repo_root is None:
         repo_root = Path(__file__).resolve().parent.parent.parent
 
+    # Resolve all paths to absolute so relative_to() comparisons work reliably
+    repo_root = repo_root.resolve()
+    input_dir = input_dir.resolve() if not input_dir.is_absolute() else input_dir.resolve()
+    outbox = outbox.resolve() if not outbox.is_absolute() else outbox.resolve()
+
     # Stop condition: check if outbox would be outside allowed prefix
     if not dry_run:
         if not reject_write_outside_outbox(outbox / "_probe", outbox):
@@ -261,9 +266,9 @@ def run(
                 print(f"[SKIP] {source_file}: {errors}", file=sys.stderr)
             continue
 
-        # Stop-condition check on each packet
+        # Stop-condition check on each packet (pass full JSON so "evidence" key is present)
         should_stop, reason = check_stop_conditions(
-            text_output=packet.get("summary", ""),
+            text_output=json.dumps(packet),
             tests_passed=True,
         )
         if should_stop:
