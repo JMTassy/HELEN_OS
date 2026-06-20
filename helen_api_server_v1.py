@@ -22,6 +22,8 @@ from datetime import datetime
 from dataclasses import asdict
 import json
 import logging
+import subprocess
+import sys
 from functools import wraps
 from pathlib import Path
 
@@ -46,7 +48,8 @@ logger = logging.getLogger(__name__)
 helen: Optional[HELENMultiModel] = None
 current_avatar = "helen"
 do_next_service = DoNextService(storage_dir=Path(__file__).resolve().parent / "storage" / "do_next_sessions")
-_SANDBOX_DIR = Path(__file__).resolve().parent / "storage" / "action_sandbox"
+_REPO_ROOT = Path(__file__).resolve().parent
+_SANDBOX_DIR = _REPO_ROOT / "storage" / "action_sandbox"
 action_executor = BoundedExecutor(
     base_dir=_SANDBOX_DIR,
     policy_version="STAGE_B1_V1",
@@ -88,6 +91,38 @@ def internal_error(error):
 # ============================================================================
 # DECORATORS
 # ============================================================================
+
+def _route_executor_receipt(decision, result, artifact) -> bool:
+    """Best-effort: route a successful executor receipt envelope to the sovereign ledger.
+
+    Uses the admissible bridge (helen_say.py --op dialog). Failure is logged
+    and never propagated — the HTTP response is always determined by the executor result.
+    Returns True if the bridge accepted the envelope, False otherwise.
+    """
+    if result.status != "SUCCESS":
+        return False
+    envelope = json.dumps({
+        "schema": "EXECUTOR_RECEIPT_ENVELOPE_V1",
+        "execution_identity": decision.execution_identity,
+        "tool_type": decision.tool_type,
+        "target": decision.normalized_target,
+        "post_state_hash": result.post_state_hash,
+        "policy_version": decision.policy_version,
+        "execution_id": result.execution_id,
+        "artifact_id": artifact.artifact_id if artifact else None,
+    }, separators=(",", ":"))
+    try:
+        subprocess.Popen(
+            [sys.executable, str(_REPO_ROOT / "tools" / "helen_say.py"), envelope, "--op", "dialog"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            cwd=str(_REPO_ROOT),
+        )
+        return True  # fired; ledger write confirmed asynchronously by the kernel
+    except Exception as exc:
+        logger.warning("executor receipt bridge failed to spawn: %s", exc)
+        return False
+
 
 def require_helen(f):
     """Decorator to check if HELEN is initialized"""
@@ -267,6 +302,8 @@ def execute_action():
         return jsonify({"error": "Invalid JSON body"}), 400
 
     decision, result, artifact = action_executor.execute(data)
+
+    _route_executor_receipt(decision, result, artifact)
 
     status_code = 200
     if result.status == "FAILURE":
