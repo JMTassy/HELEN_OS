@@ -1,0 +1,20 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-9598791758a5",
+  "source_refs": [
+    "docs/proposals/EPISTEMIC_SYNTAX_V1.md:249"
+  ],
+  "finding_type": "proposal",
+  "summary": "Scanner findings in docs/proposals/EPISTEMIC_SYNTAX_V1.md: signals=['proposal_marker']",
+  "evidence": [
+    "When many communication acts assert X and verified anchors contradict X, the correct inference is not paralysis or averaging. It is a latent hypothesis: *why do people assert X despite the contradiction?*"
+  ],
+  "risk_flags": [],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-06-20T21:39:44Z"
+}

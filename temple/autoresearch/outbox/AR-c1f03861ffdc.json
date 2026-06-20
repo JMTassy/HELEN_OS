@@ -1,0 +1,24 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-c1f03861ffdc",
+  "source_refs": [
+    "docs/proposals/GOBLIN_JESTER_PROTOCOL_V1.md:33",
+    "docs/proposals/GOBLIN_JESTER_PROTOCOL_V1.md:28"
+  ],
+  "finding_type": "risk",
+  "summary": "Scanner findings in docs/proposals/GOBLIN_JESTER_PROTOCOL_V1.md: signals=['risk_marker']",
+  "evidence": [
+    "risk:      becoming pure blocker",
+    "risk:      becoming carnival"
+  ],
+  "risk_flags": [
+    "contains_risk_markers"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-06-20T21:39:44Z"
+}

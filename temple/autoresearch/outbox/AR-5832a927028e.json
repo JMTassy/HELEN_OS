@@ -1,0 +1,24 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-5832a927028e",
+  "source_refs": [
+    "docs/proposals/GOBLIN_5_EPOCH_AUTORESEARCH.md:68",
+    "docs/proposals/GOBLIN_5_EPOCH_AUTORESEARCH.md:192"
+  ],
+  "finding_type": "risk",
+  "summary": "Scanner findings in docs/proposals/GOBLIN_5_EPOCH_AUTORESEARCH.md: signals=['risk_marker']",
+  "evidence": [
+    "Forbidden:",
+    "**Forbidden:**"
+  ],
+  "risk_flags": [
+    "contains_risk_markers"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-06-20T21:39:44Z"
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-83d2c37481c7",
+  "source_refs": [
+    "docs/proposals/MANIFEST_GATE_V1.md:143"
+  ],
+  "finding_type": "proposal",
+  "summary": "Scanner findings in docs/proposals/MANIFEST_GATE_V1.md: signals=['proposal_marker']",
+  "evidence": [
+    ".venv/bin/python tools/helen_say.py \"MANIFEST_GATE_V1 proposal: add Gate 7 to skill_promotion_reducer + ERR_MANIFEST_NOT_FOUND + ERR_MANIFEST_SKILL_UNAUTHORIZED to reason_codes. Tests at helen_os/tests/test_skill_promotion_manifest_gate.py — 3 red until patch applied. Diff in docs/proposals/MANIFEST"
+  ],
+  "risk_flags": [],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-06-20T21:39:44Z"
+}

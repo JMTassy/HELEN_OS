@@ -45,7 +45,7 @@ The primary axis. Closed palette. One meaning per color.
 | 🟠 | REVIEW | in tension · under review · REV |
 | 🟢 | ADMITTED | pass · ADM · ◆ |
 | 🟡 | SEALED | stable · hash-bound · SEAL · ⬢ |
-| ⚪ | REPLAYABLE | canonical · survives ↻ · REP · ∞ |
+| ⚪ | REPLAYABLE | format-stable · survives ↻ · REP · ∞ |
 | 🔴 | BLOCKED | invariant breach · FAIL · rejected |
 
 **Ladder in color:**
@@ -126,7 +126,10 @@ is malformed. Color 🟢/🟡/⚪ requires 🧾.
 
 ---
 
-## 5. Canonical Examples — 10 Lines (2 per state)
+## 5. Syntax Examples — 10 Lines (2 per state)
+
+> These show what each governance state **looks like in syntax**. They are not claims
+> about this document's own status. This file is `NO_CLAIM / authority=false`.
 
 ### OBSERVED (🔵)
 
@@ -168,6 +171,64 @@ is malformed. Color 🟢/🟡/⚪ requires 🧾.
 ```
 [🔴][⸸][🜂]◇  {⚠️}
 ```
+
+---
+
+## 6. Chromatic Namespace Rule (V1) — Governance vs Garden Maturity
+
+Governance color is a **closed, bracketed** namespace. Garden maturity is a
+**separate, bare, moon-phase** namespace. A bare governance color is not a
+governance state, and maturity must never borrow a governance color — even
+bracketed, reusing 🔴/⚪ in inverted senses (🔴 = *blocked* in governance vs
+*seed/impulse* in the garden) is a permanent cognitive debt.
+
+```
+CHROMATIC_NAMESPACE_RULE_V1
+
+Governance colors are always bracketed:
+[⚫] UNKNOWN
+[🔵] OBSERVED
+[🟣] CLAIM
+[🟠] REVIEW
+[🟢] ADMITTED
+[🟡] SEALED
+[⚪] REPLAYABLE
+[🔴] BLOCKED
+
+A bare governance color is not a governance state.
+
+Garden maturity must not reuse governance colors.
+Use moon-phase carriers instead:
+
+🌑 SEED
+🌒 SPROUT
+🌓 GROWING
+🌔 BLOOMING
+🌕 FRUIT
+🍂 COMPOST
+
+Law:
+[κ] ⊬ κ
+bare κ ⊬ governance
+maturity(x) ⊬ admission(x)
+fruit(x) ⊬ canon(x)
+[🔴] blocks
+🌑 seeds
+
+Dreamt ≠ Claimed.
+Symbol stays symbol.
+Receipt binds only bracketed governance states.
+```
+
+The line that resolves the collision:
+
+```
+[🔴] blocks.  🌑 seeds.
+```
+
+Note the structural symmetry: 🍂 COMPOST is to the maturity gradient what
+[🔴] BLOCKED is to the governance ladder — an **off-gradient sink**, reachable
+from any phase, never a rung you climb toward.
 
 ---
 

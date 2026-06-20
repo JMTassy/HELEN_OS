@@ -1,0 +1,22 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-3521ec730fd4",
+  "source_refs": [
+    "docs/proposals/VISIBLE_REASONING_SURFACE_V1.md:16"
+  ],
+  "finding_type": "risk",
+  "summary": "Scanner findings in docs/proposals/VISIBLE_REASONING_SURFACE_V1.md: signals=['risk_marker']",
+  "evidence": [
+    "- **Risk:** self-analysis drift · fake introspection · fake metrics · quantum / consciousness overclaiming."
+  ],
+  "risk_flags": [
+    "contains_risk_markers"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-06-20T21:39:44Z"
+}

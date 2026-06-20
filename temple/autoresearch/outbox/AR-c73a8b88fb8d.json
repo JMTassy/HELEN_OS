@@ -1,0 +1,24 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-c73a8b88fb8d",
+  "source_refs": [
+    "docs/proposals/PURE_PREDICTOR_GATE_V1.md:314",
+    "docs/proposals/PURE_PREDICTOR_GATE_V1.md:93",
+    "docs/proposals/PURE_PREDICTOR_GATE_V1.md:329"
+  ],
+  "finding_type": "risk",
+  "summary": "Scanner findings in docs/proposals/PURE_PREDICTOR_GATE_V1.md: signals=['proposal_marker', 'gap_marker']",
+  "evidence": [
+    "Example output blocking a dangerous proposal:",
+    "**The mathematical guarantee gap:**",
+    "**HELEN law on this gap:**"
+  ],
+  "risk_flags": [],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-06-20T21:39:44Z"
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-ed9bd849fb7e",
+  "source_refs": [
+    "docs/proposals/TEMPLE_MODE_EXPERIENCE_SCRIPT.md:14",
+    "docs/proposals/TEMPLE_MODE_EXPERIENCE_SCRIPT.md:221"
+  ],
+  "finding_type": "proposal",
+  "summary": "Scanner findings in docs/proposals/TEMPLE_MODE_EXPERIENCE_SCRIPT.md: signals=['proposal_marker', 'gap_marker']",
+  "evidence": [
+    "parent_proposal:       docs/proposals/HELEN_OS_V2_USER_CENTRIC_UX.md (§2.3.4)",
+    "| Path | `town/ledger_v1.ndjson` (sovereign) or scope-internal `experiments/helen_mvp_kernel/ledger/events.ndjson` | TBD (proposed: `temple/sanctuary/<session_id>.ndjson`) — never sovereign |"
+  ],
+  "risk_flags": [],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-06-20T21:39:44Z"
+}

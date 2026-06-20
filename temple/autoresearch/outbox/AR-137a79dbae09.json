@@ -1,0 +1,32 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-137a79dbae09",
+  "source_refs": [
+    "docs/proposals/HELEN_DAN_GOBLIN_RECALL_MODE_V0_1.md:148",
+    "docs/proposals/HELEN_DAN_GOBLIN_RECALL_MODE_V0_1.md:247",
+    "docs/proposals/HELEN_DAN_GOBLIN_RECALL_MODE_V0_1.md:8",
+    "docs/proposals/HELEN_DAN_GOBLIN_RECALL_MODE_V0_1.md:141",
+    "docs/proposals/HELEN_DAN_GOBLIN_RECALL_MODE_V0_1.md:162",
+    "docs/proposals/HELEN_DAN_GOBLIN_RECALL_MODE_V0_1.md:155"
+  ],
+  "finding_type": "risk",
+  "summary": "Scanner findings in docs/proposals/HELEN_DAN_GOBLIN_RECALL_MODE_V0_1.md: signals=['proposal_marker', 'risk_marker']",
+  "evidence": [
+    "wul_packet: \"[ROLE::DAN][INTENT::PROPOSE][TASK::HELEN_DAN_GOBLIN_RECALL_ADAPT][CONF::0.91][RISK::MID][IMPACT::LOCAL][MEM::SPECULATIVE][DIALECT::UNDERWARREN_SAFE][TRACE::epoch_goblin_001][WUL::📦✍️◈]\"",
+    "[MEM::SPECULATIVE][RISK::MID][DIALECT::UNDERWARREN_SAFE]",
+    "[MEM::EPHEMERAL][RISK::LOW][TRACE::heap_scan]",
+    "[CONF::0.7][RISK::MID][IMPACT::LOCAL][MEM::SPECULATIVE]",
+    "[CONF::0.7][RISK::MID][TRACE::<epoch>]",
+    "Ugly proposal: smell-test field on each story. Who is blocked right now? That story first."
+  ],
+  "risk_flags": [
+    "contains_risk_markers"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-06-20T21:39:44Z"
+}

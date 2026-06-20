@@ -1,0 +1,22 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-842e7f4922cf",
+  "source_refs": [
+    "docs/proposals/HELEN_OBSTRUCTION_V0.md:181",
+    "docs/proposals/HELEN_OBSTRUCTION_V0.md:180"
+  ],
+  "finding_type": "proposal",
+  "summary": "Scanner findings in docs/proposals/HELEN_OBSTRUCTION_V0.md: signals=['gap_marker']",
+  "evidence": [
+    "OBLIGATIONS     — provenance_gap: forces source attestation per claim",
+    "RECEIPTS        — provenance_gap: binds evidence to obligation names"
+  ],
+  "risk_flags": [],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-06-20T21:39:44Z"
+}

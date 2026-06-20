@@ -1,0 +1,42 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-5602a344e0d6",
+  "source_refs": [
+    "docs/proposals/KERNEL_TO_AGENTIC_OS_DEEP_DIVE_V0.md:106",
+    "docs/proposals/KERNEL_TO_AGENTIC_OS_DEEP_DIVE_V0.md:123",
+    "docs/proposals/KERNEL_TO_AGENTIC_OS_DEEP_DIVE_V0.md:61",
+    "docs/proposals/KERNEL_TO_AGENTIC_OS_DEEP_DIVE_V0.md:71",
+    "docs/proposals/KERNEL_TO_AGENTIC_OS_DEEP_DIVE_V0.md:154",
+    "docs/proposals/KERNEL_TO_AGENTIC_OS_DEEP_DIVE_V0.md:464",
+    "docs/proposals/KERNEL_TO_AGENTIC_OS_DEEP_DIVE_V0.md:415",
+    "docs/proposals/KERNEL_TO_AGENTIC_OS_DEEP_DIVE_V0.md:334",
+    "docs/proposals/KERNEL_TO_AGENTIC_OS_DEEP_DIVE_V0.md:86",
+    "docs/proposals/KERNEL_TO_AGENTIC_OS_DEEP_DIVE_V0.md:373",
+    "docs/proposals/KERNEL_TO_AGENTIC_OS_DEEP_DIVE_V0.md:45",
+    "docs/proposals/KERNEL_TO_AGENTIC_OS_DEEP_DIVE_V0.md:52"
+  ],
+  "finding_type": "risk",
+  "summary": "Scanner findings in docs/proposals/KERNEL_TO_AGENTIC_OS_DEEP_DIVE_V0.md: signals=['risk_marker']",
+  "evidence": [
+    "risk:        <what breaks if this is wrong>",
+    "**Violation:** treating a claim as a conclusion before it has been judged.",
+    "risk:      Compression silently corrupts provenance hashes or receipt chains.",
+    "risk:      Demo animation presented as evidence of production readiness.",
+    "**Violation:** writing a receipt before knowing which obligation it is supposed to prove.",
+    "**Violation:** using any receipt as evidence for any obligation (LEGORACLE v1 bug — fixed in v1.2.1).",
+    "**Violation:** a critic that outputs SHIP directly, bypassing the reducer.",
+    "**Violation:** any mechanism that bypasses the reducer and writes to the ledger.",
+    "**Sovereignty drift risk:** MEDIUM — if animated values (trust %, memory, POC count) are presented without `DEMO_MODE` flags, users may treat display as evidence. Hard label required.",
+    "**Sovereignty drift risk:** HIGH — marketing agent outputs frequently sound like governance decisions. Every output must carry `class=DRAFT, authority=false`."
+  ],
+  "risk_flags": [
+    "contains_risk_markers"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-06-20T21:39:44Z"
+}

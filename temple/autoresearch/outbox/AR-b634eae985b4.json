@@ -1,0 +1,24 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-b634eae985b4",
+  "source_refs": [
+    "docs/proposals/DAN_GOBLIN.md:30",
+    "docs/proposals/DAN_GOBLIN.md:40",
+    "docs/proposals/DAN_GOBLIN.md:21"
+  ],
+  "finding_type": "proposal",
+  "summary": "Scanner findings in docs/proposals/DAN_GOBLIN.md: signals=['gap_marker']",
+  "evidence": [
+    "Pick the highest-priority story with `status=\"todo\"`.",
+    "2. Select highest-priority story with status=\"todo\".",
+    "- leave story status=\"todo\""
+  ],
+  "risk_flags": [],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-06-20T21:39:44Z"
+}

@@ -194,4 +194,45 @@ Power is earned, not declared.
 
 ---
 
+## 8. Higher-Dimensional Map
+
+For the full math/WUL doctrine, see:
+
+```
+doctrines/high_dimensional_wul_language.md
+```
+
+The beginner version is:
+
+```
+HELEN x CONQUEST x WULMOJI
+= cognition x memory x gate x reducer x ledger x symbolic surface
+```
+
+CONQUEST is allowed to simulate the path:
+
+```
+Knowledge -> Quest -> Receipt -> Boundary -> Power
+```
+
+But it is not allowed to shortcut into real memory:
+
+```
+Symbol -> Ledger  BLOCKED
+Knowledge -> Power  BLOCKED
+Simulation -> Judgment  BLOCKED
+Impulse -> Law  BLOCKED
+```
+
+The safe route is always:
+
+```
+Symbol -> Pattern -> Validator -> Receipt -> Boundary -> Judgment -> Ledger
+```
+
+Inside this garden, that route is practiced only as simulation. The ledger
+still sleeps until an external review admits something.
+
+---
+
 *BEGINNER_GUIDE.md — TEMPLE layer — NON_SOVEREIGN — authority: false — canon: false*

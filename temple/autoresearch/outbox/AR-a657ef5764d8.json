@@ -1,0 +1,28 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-a657ef5764d8",
+  "source_refs": [
+    "docs/proposals/FOCUS_MODE_TERMINAL_SPEC.md:350",
+    "docs/proposals/FOCUS_MODE_TERMINAL_SPEC.md:15",
+    "docs/proposals/FOCUS_MODE_TERMINAL_SPEC.md:151",
+    "docs/proposals/FOCUS_MODE_TERMINAL_SPEC.md:394"
+  ],
+  "finding_type": "risk",
+  "summary": "Scanner findings in docs/proposals/FOCUS_MODE_TERMINAL_SPEC.md: signals=['proposal_marker', 'risk_marker', 'gap_marker']",
+  "evidence": [
+    "parent_proposal:       docs/proposals/HELEN_OS_V2_USER_CENTRIC_UX.md (v2)",
+    "Forbidden: mystical / 8D / sacred phrasings. The renderer **may** flag a",
+    "## §12. Open questions for parent reconciliation",
+    "parent_proposal:       HELEN_OS_V2_USER_CENTRIC_UX (v2)"
+  ],
+  "risk_flags": [
+    "contains_risk_markers"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-06-20T21:39:44Z"
+}

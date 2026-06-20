@@ -1,0 +1,22 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-eec73bbbf239",
+  "source_refs": [
+    "docs/proposals/HELEN_OS_V2_USER_CENTRIC_UX.md:478"
+  ],
+  "finding_type": "risk",
+  "summary": "Scanner findings in docs/proposals/HELEN_OS_V2_USER_CENTRIC_UX.md: signals=['risk_marker']",
+  "evidence": [
+    "- **Forbidden:** walls of charts, permanent telemetry overlays, blinking"
+  ],
+  "risk_flags": [
+    "contains_risk_markers"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-06-20T21:39:44Z"
+}
