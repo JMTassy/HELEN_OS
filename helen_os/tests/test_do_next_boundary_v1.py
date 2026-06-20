@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from helen_os.api.do_next_v1 import DoNextService
+from helen_os.api.do_next_v1 import DoNextService, compute_state_hash, HARD_REJECT_EPOCH
 
 
 def make_service(tmp_path: Path) -> DoNextService:
@@ -67,11 +67,34 @@ def test_session_resumption_receipt_parent(tmp_path: Path):
     assert events["KNOWLEDGE_AUDIT"]["parent_receipt_id"] == events["SESSION_RESUMPTION"]["receipt_id"]
 
 
+def _seed_session(tmp_path: Path, session_id: str, epoch: int) -> None:
+    """Write a pre-populated session file so tests can trigger epoch-based policy."""
+    now = "2026-01-01T00:00:00Z"
+    session = {
+        "schema": "helen_session_state_v1",
+        "session_id": session_id,
+        "created_at": now,
+        "updated_at": now,
+        "epoch": epoch,
+        "run_count": epoch,
+        "continuity_score": 1.0,
+        "memory": [],
+        "receipts": [],
+        "recent_receipts": [],
+        "state_hash": "",
+    }
+    session["state_hash"] = compute_state_hash(session)
+    path = tmp_path / f"{session_id}.json"
+    path.write_text(json.dumps(session, sort_keys=True, separators=(",", ":")), encoding="utf-8")
+
+
 def test_reject_path_no_increment(tmp_path: Path):
+    # Structural trigger: session at epoch hard ceiling → REJECT
+    _seed_session(tmp_path, "session_reject", HARD_REJECT_EPOCH)
     svc = make_service(tmp_path)
     req = {
         "session_id": "session_reject",
-        "user_input": "please reject",
+        "user_input": "a normal request that should be rejected on epoch ceiling",
         "mode": "deterministic",
         "model": "test-model",
     }
@@ -79,17 +102,19 @@ def test_reject_path_no_increment(tmp_path: Path):
     assert result.status_code == 400
     assert result.response.get("reply") is None
     assert result.response.get("receipt_id") is None
-    assert result.response.get("run_id") == 0
-    assert result.response.get("epoch") == 0
+    assert result.response.get("run_id") == HARD_REJECT_EPOCH
+    assert result.response.get("epoch") == HARD_REJECT_EPOCH
 
 
 def test_defer_path(tmp_path: Path):
+    # Structural trigger: explicit policy_directive → DEFER
     svc = make_service(tmp_path)
     req = {
         "session_id": "session_defer",
-        "user_input": "please defer",
+        "user_input": "a normal request explicitly deferred by caller",
         "mode": "deterministic",
         "model": "test-model",
+        "policy_directive": "DEFER",
     }
     result = svc.execute(req)
     assert result.status_code == 200

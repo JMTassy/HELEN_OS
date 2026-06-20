@@ -14,6 +14,10 @@ from helen_os.governance.canonical import canonical_json_bytes, sha256_prefixed,
 SESSION_ID_RE = re.compile(r"^[A-Za-z0-9_]{1,256}$")
 ALLOWED_MODES = {"deterministic", "bounded", "open"}
 RECENT_RECEIPTS_LIMIT = 50
+ALLOWED_POLICY_DIRECTIVES = {"DEFER", "REJECT"}
+
+# Structural audit policy — epoch-based, not text-based
+HARD_REJECT_EPOCH = 1000  # absolute ceiling: reject any session that has run this many times
 
 
 class DoNextError(Exception):
@@ -230,12 +234,19 @@ class DoNextService:
 
     def _audit(self, *, session: Dict[str, Any], request: Dict[str, Any], parent_receipt_id: Optional[str]) -> Tuple[Dict[str, Any], Dict[str, Any]]:
         findings: List[Dict[str, Any]] = []
-        text = str(request.get("user_input") or "").upper()
         routing = "ANNOTATE"
-        if "REJECT" in text:
+
+        # Structural policy check 1: epoch hard ceiling
+        epoch = int(session.get("epoch", 0))
+        if epoch >= HARD_REJECT_EPOCH:
             findings.append({"code": "AUDIT_BLOCK", "severity": "CRITICAL", "routing_effect": "REJECT"})
             routing = "REJECT"
-        elif "DEFER" in text:
+
+        # Structural policy check 2: explicit policy_directive in request
+        elif request.get("policy_directive") == "REJECT":
+            findings.append({"code": "AUDIT_BLOCK", "severity": "CRITICAL", "routing_effect": "REJECT"})
+            routing = "REJECT"
+        elif request.get("policy_directive") == "DEFER":
             findings.append({"code": "AUDIT_DEFER", "severity": "HIGH", "routing_effect": "DEFER"})
             routing = "DEFER"
 
@@ -387,6 +398,7 @@ def validate_request(body: Dict[str, Any]) -> Dict[str, Any]:
         "temperature",
         "top_p",
         "seed",
+        "policy_directive",
     }
     unknown = set(body.keys()) - allowed
     if unknown:
@@ -445,6 +457,10 @@ def validate_request(body: Dict[str, Any]) -> Dict[str, Any]:
         if not isinstance(seed, int) or seed < 0:
             raise DoNextError(400, "seed invalid")
 
+    policy_directive = body.get("policy_directive")
+    if policy_directive is not None and policy_directive not in ALLOWED_POLICY_DIRECTIVES:
+        raise DoNextError(400, "policy_directive invalid")
+
     return {
         "session_id": session_id,
         "user_input": user_input,
@@ -456,6 +472,7 @@ def validate_request(body: Dict[str, Any]) -> Dict[str, Any]:
         "temperature": temperature,
         "top_p": top_p,
         "seed": seed,
+        "policy_directive": policy_directive,
     }
 
 
