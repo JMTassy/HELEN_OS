@@ -499,7 +499,7 @@ def run_batch(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="GOBLIN tranche-gated brainstorm batch runner")
-    parser.add_argument("--mission", required=True, help="Brainstorm mission / topic focus")
+    parser.add_argument("--mission", default="Plant seeds from all my PDFs into the Gardening Garden — turn every document into fertile compost for new growth, novelty (chiddush), and living insight. Use HER as poetic witness. Generate 30 epochs of GOBBLIN planting.", help="Brainstorm mission / topic focus")
     parser.add_argument("--tranche-size", type=int, default=30)
     parser.add_argument("--tranche-index", type=int, default=0)
     parser.add_argument("--batch-id", default=None)

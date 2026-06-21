@@ -21,11 +21,11 @@ from typing import List, Dict, Any, Tuple, Optional
 from datetime import datetime, timezone
 from pathlib import Path
 
-from action_executor import ActionExecutor, Action
-from memory_consolidation import MemoryConsolidator
-from memory_gravity import MemoryGravity
-from consciousness import ProtoConsciousness
-from federation import Egregor, Superteam
+from .action_executor import ActionExecutor, Action
+from .memory_consolidation import MemoryConsolidator
+from .memory_gravity import MemoryGravity
+from .consciousness import ProtoConsciousness
+from .federation import Egregor, Superteam
 
 
 class AutonomyLoop:

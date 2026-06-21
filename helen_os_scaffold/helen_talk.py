@@ -221,6 +221,12 @@ def main() -> int:
 
     # Import late so this file stays "autonomous" for debugging.
     try:
+        # Ensure helen_os_scaffold is in path for relative imports
+        import sys
+        from pathlib import Path
+        scaffold_path = Path(__file__).parent.resolve()
+        if str(scaffold_path) not in sys.path:
+            sys.path.insert(0, str(scaffold_path))
         from helen_os.kernel import GovernanceVM
         from helen_os.cli import _load_config
         cfg = _load_config()

@@ -54,7 +54,7 @@ class Action:
 class ActionPolicy:
     """Load and enforce action policy"""
 
-    def __init__(self, policy_path: str = "helen_os_scaffold/helen_os/action_policy.json", kernel: Any = None):
+    def __init__(self, policy_path: str = "helen_os/action_policy.json", kernel: Any = None):
         self.policy_path = policy_path
         self.kernel = kernel
         self._load_fallback_policy()
@@ -150,7 +150,7 @@ class ActionExecutor:
 
     def __init__(self, policy_path: str = None, ledger_path: str = None, kernel: Any = None):
         self.kernel = kernel
-        self.policy = ActionPolicy(policy_path or "helen_os_scaffold/helen_os/action_policy.json", kernel=kernel)
+        self.policy = ActionPolicy(policy_path or "helen_os/action_policy.json", kernel=kernel)
         self.ledger = ActionLedger(ledger_path or "artifacts/helen_actions.ndjson")
         self.counter = self._next_action_id()
 
