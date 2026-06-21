@@ -22,6 +22,7 @@ from transport.category import (
 )
 from transport.bundle import ObservationBundle
 from transport.factorization import Factorization, universal_factor
+from transport.disintegration import FiniteDisintegration, shannon_entropy
 
 __all__ = [
     "ObservationMap",
@@ -37,4 +38,6 @@ __all__ = [
     "ObservationBundle",
     "Factorization",
     "universal_factor",
+    "FiniteDisintegration",
+    "shannon_entropy",
 ]
