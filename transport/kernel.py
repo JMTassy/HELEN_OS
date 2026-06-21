@@ -78,6 +78,33 @@ class GeneralizedKernel:
             self.is_nontrivial(t, state_space) for _, t in self._generators
         )
 
+    def acts_fiberwise(
+        self,
+        transform: Callable[[Any], Any],
+        state_space: list[Any],
+    ) -> bool:
+        """Every invisible transform preserves every fiber.
+
+        If T ∈ Inv(R) then T(R⁻¹(ℓ)) ⊆ R⁻¹(ℓ) for all ℓ: invisible symmetries
+        act fiberwise. This is logically equivalent to R∘T = R, but stated as
+        the set-inclusion that seeds the later groupoid/bundle viewpoint.
+        """
+        return self.is_invisible(transform, state_space)
+
+    def preserves_fiber(
+        self,
+        transform: Callable[[Any], Any],
+        state: Any,
+        state_space: list[Any],
+    ) -> bool:
+        """Exhibit T(R⁻¹(ℓ)) ⊆ R⁻¹(ℓ) for the fiber through `state`.
+
+        Checks that T maps every member of the fiber back into the same fiber.
+        """
+        target = self.R.observe(state)
+        fiber = self.R.fiber(state, state_space)
+        return all(self.R.observe(transform(x)) == target for x in fiber)
+
     def witness(
         self, state_space: list[Any]
     ) -> tuple[str, Any, Any] | None:

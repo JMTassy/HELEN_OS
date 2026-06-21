@@ -79,6 +79,32 @@ class Reconstructor:
         ]
 
     # ------------------------------------------------------------------
+    # Sections (reconstruction maps) — honest about Choice
+
+    def section(self) -> dict[Any, Any]:
+        """An explicit section C : im(R) → S with R(C(ℓ)) = ℓ.
+
+        Maps each realized observation-key to a chosen representative state
+        (the first encountered in its fiber).
+
+        Foundational note (Volume I, Option A): in pure set theory the
+        existence of a section over an arbitrary index set is NOT automatic —
+        choosing one representative per fiber invokes a choice principle. Here
+        the state space is given concretely and finite, so the selection is
+        constructive (no appeal to the Axiom of Choice is required). For
+        uncountable fibers, existence is a section-when-it-exists statement,
+        not a theorem.
+        """
+        return {key: members[0] for key, members in self._index.items()}
+
+    def section_is_valid(self) -> bool:
+        """Verify the section identity R(C(ℓ)) = ℓ for the explicit section."""
+        for key, rep in self.section().items():
+            if _hashable(self.R.observe(rep)) != key:
+                return False
+        return True
+
+    # ------------------------------------------------------------------
     # Minimal sufficient receipt
 
     def is_sufficient_for(

@@ -21,6 +21,7 @@ from transport.category import (
     compose,
 )
 from transport.bundle import ObservationBundle
+from transport.factorization import Factorization, universal_factor
 
 __all__ = [
     "ObservationMap",
@@ -34,4 +35,6 @@ __all__ = [
     "identity_morphism",
     "compose",
     "ObservationBundle",
+    "Factorization",
+    "universal_factor",
 ]
