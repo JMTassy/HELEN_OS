@@ -23,6 +23,15 @@ from transport.category import (
 from transport.bundle import ObservationBundle
 from transport.factorization import Factorization, universal_factor
 from transport.disintegration import FiniteDisintegration, shannon_entropy
+from transport.statistical import (
+    StatisticalState,
+    StatisticalObservationModel,
+    finite_probability_law,
+    kl_divergence,
+    hellinger_distance,
+    total_variation_distance,
+    fisher_information_1d,
+)
 
 __all__ = [
     "ObservationMap",
@@ -40,4 +49,11 @@ __all__ = [
     "universal_factor",
     "FiniteDisintegration",
     "shannon_entropy",
+    "StatisticalState",
+    "StatisticalObservationModel",
+    "finite_probability_law",
+    "kl_divergence",
+    "hellinger_distance",
+    "total_variation_distance",
+    "fisher_information_1d",
 ]
