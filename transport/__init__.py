@@ -14,6 +14,13 @@ from transport.fiber import FiberSet
 from transport.kernel import GeneralizedKernel
 from transport.quotient import QuotientSpace
 from transport.reconstruction import Reconstructor
+from transport.observer import ObserverClass, is_pathological
+from transport.category import (
+    ObservationMorphism,
+    identity_morphism,
+    compose,
+)
+from transport.bundle import ObservationBundle
 
 __all__ = [
     "ObservationMap",
@@ -21,4 +28,10 @@ __all__ = [
     "GeneralizedKernel",
     "QuotientSpace",
     "Reconstructor",
+    "ObserverClass",
+    "is_pathological",
+    "ObservationMorphism",
+    "identity_morphism",
+    "compose",
+    "ObservationBundle",
 ]
