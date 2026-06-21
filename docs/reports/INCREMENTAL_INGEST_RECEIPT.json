@@ -1,0 +1,22 @@
+{
+  "schema": "INCREMENTAL_INGEST_RECEIPT_V1",
+  "benchmark": {
+    "total_chunks": 27593,
+    "changed_percent": 7.5,
+    "unchanged_percent": 92.5,
+    "projected_speedup": 8.2,
+    "recompute_count": "minimal",
+    "boot_replay_cost_reduction": "90%"
+  },
+  "status": "TRANCHE_2_EVIDENCE_COLLECTED",
+  "next_action": "Implement P1 if reducer approves or HOLD for further measurement",
+  "governance": "NON_SOVEREIGN",
+  "timestamp": "2026-06-21T14:00:00Z",
+  "local_context_classification": {
+    "domain": "MEMORY_SCALING",
+    "claim": "90-95% unchanged chunks enable large gains from incremental ingest before vector index",
+    "obligations": "Evidence first, P0 before P1, no sovereign mutation",
+    "receipts": "CACHE_FEASIBILITY_REPORT.md, this receipt",
+    "status": "COMPATIBLE"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "schema_version": "GOBLIN_BATCH_TRANCHE_V1",
+  "tranche_id": "482fcd310ea4",
+  "batch_id": "d20bb3c7e6ef",
+  "tranche_index": 1,
+  "epochs_run": 30,
+  "mission": "Plant seeds from all my PDFs into the Gardening Garden \u2014 turn every document into fertile compost for new growth, novelty (chiddush), and living insight. Use HER as poetic witness. Generate GOBBLIN epochs that turn PDF content into living garden growth (vegetable, flower, herb, container, indoor, pollinator). Focus on decomposition, humus, return, and renewal. PDFs symbolically represent accumulated knowledge to be broken down and regrown as novel garden insights.",
+  "dry_run": true,
+  "timestamp": "2026-06-21T03:35:39.907485+00:00",
+  "actor": "DAN_GOBLIN",
+  "authority": "NON_SOVEREIGN",
+  "canon": "NO_SHIP",
+  "provider": "dry_run",
+  "model": "deterministic-seed-v0",
+  "backend_signature": "dry_run:deterministic-seed-v0:dry_run:v0",
+  "hal_summary": {
+    "PASS": 30,
+    "WARN": 0,
+    "BLOCK": 0
+  },
+  "escalate_count": 0,
+  "top_entries": [
+    {
+      "epoch_index": 59,
+      "epoch_hash": "68f645b68b485a83",
+      "score": 0.54
+    },
+    {
+      "epoch_index": 58,
+      "epoch_hash": "26455210b5331f7e",
+      "score": 0.54
+    },
+    {
+      "epoch_index": 57,
+      "epoch_hash": "436b993b09979c22",
+      "score": 0.54
+    },
+    {
+      "epoch_index": 56,
+      "epoch_hash": "f73f39080191ca07",
+      "score": 0.54
+    },
+    {
+      "epoch_index": 55,
+      "epoch_hash": "04269c0a4361e548",
+      "score": 0.54
+    }
+  ],
+  "output_file": "/Users/jean-marietassy/Documents/GitHub/helen_os_v1/oracle_town/skills/ops/dan_goblin/brainstorm/batches/d20bb3c7e6ef_tranche_001.jsonl",
+  "reducer_decision": null
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "P0_CACHE_RECEIPT_V1",
+  "benchmark": {
+    "before_time_s": 13.1553,
+    "after_time_s": 6.8681,
+    "speedup": 1.92,
+    "chunks": 27593,
+    "hit_rate": "moderate"
+  },
+  "status": "P0_CACHE_IMPLEMENTED",
+  "files_affected": [
+    "helen_os/knowledge/ingest.py"
+  ],
+  "tests": [
+    "cache_hit",
+    "cache_miss",
+    "dimension_mismatch",
+    "corrupted_fallback"
+  ],
+  "governance": "NON_SOVEREIGN",
+  "timestamp": "2026-06-21T13:46:54Z"
+}
