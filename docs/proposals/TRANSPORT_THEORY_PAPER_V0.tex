@@ -1,0 +1,331 @@
+\documentclass[11pt]{amsart}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{Transport Theory of Observation\\
+A Mathematical Framework for Receipts, Fibers, Kernels and Reconstruction}
+\author{Jean-Marie Tassy}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{example}[definition]{Example}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We introduce a general mathematical theory of observation.
+Rather than studying a system directly, we study the map from reality to
+observable information.
+This produces natural notions of
+observation maps,
+receipt fibers,
+generalized kernels,
+observable quotient spaces,
+transport operators,
+and reconstruction.
+The framework applies independently of any specific application and naturally
+connects to topology, inverse problems, information theory,
+control theory, statistics, and quantum measurement.
+\end{abstract}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Observation Maps}
+
+Let $\mathcal{S}$ be a state space.
+Let $\mathcal{L}$ be an observation space.
+
+\begin{definition}[Observation Map]
+An observation map is a function
+\[
+R: \mathcal{S} \rightarrow \mathcal{L}.
+\]
+The value $R(s)$ is called the receipt (or observation) associated with
+the state $s$.
+\end{definition}
+
+The map need not be
+\begin{itemize}
+\item linear,
+\item continuous,
+\item differentiable,
+\item probabilistic.
+\end{itemize}
+It is purely an observation operator.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Receipt Fibers}
+
+Observation identifies states that appear identical.
+
+\begin{definition}
+The fiber over $\ell \in \mathcal{L}$ is
+\[
+R^{-1}(\ell)
+=
+\{ s \in \mathcal{S} : R(s) = \ell \}.
+\]
+\end{definition}
+
+Equivalently, the fiber through a state $s$ is
+\[
+[s]_R
+=
+\{ x \in \mathcal{S} : R(x) = R(s) \}.
+\]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Observable Equivalence}
+
+\begin{definition}
+Define $s_1 \sim_R s_2$ iff $R(s_1) = R(s_2)$.
+\end{definition}
+
+\begin{lemma}
+The relation $\sim_R$ is an equivalence relation.
+\end{lemma}
+
+\begin{proof}
+Immediate from equality.
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Observable Quotient Space}
+
+\begin{definition}
+The observable quotient is
+\[
+\mathcal{S} / {\sim_R}.
+\]
+Its elements are the receipt fibers.
+\end{definition}
+
+This quotient is the entire observable universe induced by the observer.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Generalized Kernel}
+
+Classical kernels belong to linear algebra.
+Observation suggests a broader concept.
+
+\begin{definition}
+A transformation $T: \mathcal{S} \rightarrow \mathcal{S}$ is invisible to
+the observation map whenever
+\[
+R \circ T = R.
+\]
+The collection of all such transformations is
+\[
+\operatorname{Inv}(R)
+=
+\{ T : R \circ T = R \}.
+\]
+\end{definition}
+
+We call $\operatorname{Inv}(R)$ the generalized kernel (or invariance monoid)
+of the observation.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Invisible Transformations}
+
+\begin{definition}
+A transformation is observable if $R(T(s)) \neq R(s)$ for some state.
+Otherwise it is invisible.
+\end{definition}
+
+Invisible transformations move inside fibers.
+Observable transformations move between fibers.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Reconstruction}
+
+Observation naturally produces an inverse problem.
+
+\begin{definition}
+Given $\ell \in \mathcal{L}$, the reconstruction problem is to determine
+$R^{-1}(\ell)$.
+\end{definition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Faithfulness}
+
+\begin{definition}
+The observation map is faithful if
+\[
+R(s_1) = R(s_2) \Longrightarrow s_1 = s_2.
+\]
+Equivalently, $R$ is injective.
+\end{definition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Transport Theorem}
+
+\begin{theorem}[Non-Reconstructibility]
+If $R$ is not injective, then perfect reconstruction from observations
+is impossible.
+\end{theorem}
+
+\begin{proof}
+If $R(s_1) = R(s_2)$, $s_1 \neq s_2$, then one observation corresponds
+to at least two states. No reconstruction algorithm can uniquely determine
+which state generated the observation.
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Fiber Geometry}
+
+The geometry of fibers determines the information lost by observation.
+Large fibers imply more ambiguity.
+Singleton fibers imply perfect identification.
+
+\begin{definition}[Fiber Diameter]
+Given a secondary metric $d$ on $\mathcal{S}$, the fiber diameter is
+\[
+\operatorname{diam}([s]_R, d)
+=
+\sup \{ d(x, y) : x, y \in [s]_R \}.
+\]
+A complete observation map has $\operatorname{diam}([s]_R, d) = 0$ for
+all $s$. A non-faithful map has strictly positive diameter in some fiber.
+\end{definition}
+
+\begin{remark}
+The diameter is not observable from $R$ alone. It requires a secondary
+observation map $P: \mathcal{S} \rightarrow \mathcal{M}$ to induce a metric
+$d_P(x, y) = d_{\mathcal{M}}(P(x), P(y))$. The fiber geometry under
+$d_P$ measures what $P$ sees that $R$ misses.
+\end{remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Transport Operators}
+
+Given two observation maps $R_1: \mathcal{S} \to \mathcal{L}_1$ and
+$R_2: \mathcal{S} \to \mathcal{L}_2$, one may ask whether there exists
+\[
+T: \mathcal{L}_1 \rightarrow \mathcal{L}_2
+\]
+such that $T \circ R_1 = R_2$.
+
+This defines transport between observation systems.
+
+\begin{definition}[Inter-Fiber Transport]
+Given two fibers $[s]_R$ and $[s']_R$ in the same state space, a transport
+operator is a map
+\[
+\tau: [s]_R \longrightarrow [s']_R
+\]
+that moves between fibers while preserving some specified structure.
+\end{definition}
+
+This connects to parallel transport, gauge transport, optimal transport
+between probability distributions, and functorial semantics.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Completeness}
+
+\begin{definition}
+An observation system is complete whenever every state is uniquely determined
+by its receipt. Equivalently, $R$ is injective.
+\end{definition}
+
+\begin{definition}[Sufficient Observation]
+$R$ is sufficient for a parameter $\theta: \mathcal{S} \to \Theta$ if
+\[
+s_1 \sim_R s_2 \Longrightarrow \theta(s_1) = \theta(s_2).
+\]
+That is, the receipt determines the parameter, even if it does not
+determine the state.
+\end{definition}
+
+This connects to the Lehmann--Scheff\'{e} theorem in statistics:
+a sufficient statistic need not be complete (injective) to uniquely
+determine a parameter.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Examples}
+
+The abstraction appears naturally in many domains.
+
+\begin{example}[Governance receipts]
+$\mathcal{S}$ = system states. $R$ = ledger receipt chain.
+Faithful iff the receipt chain uniquely determines the system state.
+The E11/E12 parallel-session fork is an explicit instance of
+$R(s_1) = R(s_2)$ with $s_1 \neq s_2$.
+\end{example}
+
+\begin{example}[Authority language linter]
+$\mathcal{S}$ = documents. $R(s)$ = warning set output by the linter.
+The fiber $[s]_R$ over the empty warning set contains all documents the
+linter cannot distinguish from clean text. The ``semantic gap'' is the
+fiber diameter under a secondary semantic embedding.
+\end{example}
+
+\begin{example}[Riemann Hypothesis]
+$\mathcal{S}$ = zero configurations $Z$. $R_J(Z)$ = finite-band positivity
+operator applied to $Z$. Faithfulness question: does $R_J(Z_1) = R_J(Z_2)$
+with $Z_1 \neq Z_2$? If yes, finite-band positivity cannot characterize RH.
+\end{example}
+
+\begin{example}[Embedding models]
+$\mathcal{S}$ = semantic meanings. $E: \mathcal{S} \to \mathbb{R}^d$.
+$\operatorname{Inv}(E)$ contains paraphrase, syntax variation, and negation
+in context. Characterizing $\operatorname{Inv}(E)$ is an active research problem.
+\end{example}
+
+\begin{example}[Control theory]
+$\mathcal{S}$ = system states. $R$ = sensor readings. The unobservable
+subspace is the fiber. Observability = faithfulness of $R$.
+\end{example}
+
+\begin{example}[Quantum measurement]
+$\mathcal{S}$ = quantum states. $R$ = measurement operator.
+States modulo global phase occupy the same fiber.
+The observable universe is the projective space $\mathcal{S} / {\sim_R}$.
+\end{example}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Research Directions}
+
+The framework immediately suggests several mathematical programs.
+
+\begin{enumerate}[label=\arabic*.]
+\item Classification of observation maps by fiber structure.
+\item Geometry and topology of receipt fibers.
+\item Algebra of invisible transformations ($\operatorname{Inv}(R)$ as group/monoid).
+\item Information loss invariants: entropy of the quotient map.
+\item Minimal complete receipt systems (analog of minimal sufficient statistics).
+\item Transport between observation categories (functorial).
+\item Entropy of observation: $H(S) - H(S \mid R(S))$.
+\item Stability of fibers under perturbation of $R$.
+\item Reconstruction complexity: cost of moving within a fiber.
+\item Fiber metric axioms: which secondary maps $P$ induce geometrically meaningful fiber distances?
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Central Principle}
+
+Observation does not reveal reality.
+Observation reveals an equivalence class.
+
+\[
+\boxed{
+\text{Reality}
+\longrightarrow
+\text{Observation}
+\longrightarrow
+\text{Fiber}
+}
+\]
+
+The observer never directly accesses $\mathcal{S}$, but only the quotient
+$\mathcal{S} / {\sim_R}$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
