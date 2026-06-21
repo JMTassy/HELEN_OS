@@ -1,0 +1,17 @@
+{
+  "receipt_type": "GARDENING_EPOCH_RECEIPT_V0",
+  "epoch_id": "G099",
+  "name": "POLLINATOR_14_NATIVE",
+  "proof_hash": "G-C3F15785",
+  "result": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "layer": "TEMPLE",
+  "ledger": "SLEEPING",
+  "status": "PROPOSED",
+  "claim_type": "gardening_epoch",
+  "commit": "BLOCKED",
+  "push": "BLOCKED",
+  "generated_at": "2026-06-21T05:32:56.037430"
+}

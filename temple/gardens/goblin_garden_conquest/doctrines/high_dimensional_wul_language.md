@@ -206,6 +206,15 @@ canon claim?
 ledger sleeping?
 ```
 
+Related Temple discussion:
+
+```text
+doctrines/goblin_her_wul_math_discussion.md
+```
+
+This paired discussion adds HER as presence, voice, and poetic witness beside
+the boundary auditor. It does not change the non-sovereignty law.
+
 ## 8. Avalon Portal Functor
 
 Avalon is the transformation layer:

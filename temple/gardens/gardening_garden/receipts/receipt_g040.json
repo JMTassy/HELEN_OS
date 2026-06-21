@@ -1,0 +1,17 @@
+{
+  "receipt_type": "GARDENING_EPOCH_RECEIPT_V0",
+  "epoch_id": "G040",
+  "name": "FLOWER_20_BEAUTY",
+  "proof_hash": "G-5C51ECEC",
+  "result": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "layer": "TEMPLE",
+  "ledger": "SLEEPING",
+  "status": "PROPOSED",
+  "claim_type": "gardening_epoch",
+  "commit": "BLOCKED",
+  "push": "BLOCKED",
+  "generated_at": "2026-06-21T05:32:56.019506"
+}

@@ -1,0 +1,17 @@
+{
+  "receipt_type": "GARDENING_EPOCH_RECEIPT_V0",
+  "epoch_id": "G084",
+  "name": "INDOOR_9_HOUSEPLANT",
+  "proof_hash": "G-65DA389F",
+  "result": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "layer": "TEMPLE",
+  "ledger": "SLEEPING",
+  "status": "PROPOSED",
+  "claim_type": "gardening_epoch",
+  "commit": "BLOCKED",
+  "push": "BLOCKED",
+  "generated_at": "2026-06-21T05:32:56.032907"
+}
