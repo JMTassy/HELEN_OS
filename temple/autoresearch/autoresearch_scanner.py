@@ -27,13 +27,22 @@ from datetime import timezone, datetime
 from pathlib import Path
 from typing import Iterator
 
-from autoresearch_policy import (
-    classify_finding,
-    validate_packet,
-    check_forbidden_paths,
-    check_stop_conditions,
-    PACKET_SCHEMA,
-)
+try:
+    from .autoresearch_policy import (
+        classify_finding,
+        validate_packet,
+        check_forbidden_paths,
+        check_stop_conditions,
+        PACKET_SCHEMA,
+    )
+except ImportError:  # direct script execution (python autoresearch_scanner.py)
+    from autoresearch_policy import (
+        classify_finding,
+        validate_packet,
+        check_forbidden_paths,
+        check_stop_conditions,
+        PACKET_SCHEMA,
+    )
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -158,9 +167,11 @@ def build_packet(findings: list[dict], source_file: str) -> dict:
         return {}
 
     evidence = [f["raw_text"] for f in findings[:10]]
-    source_refs = list({f["source_ref"] for f in findings})
+    # sorted: set iteration order varies with PYTHONHASHSEED, and packet_id
+    # hashes the summary — unsorted signals would make packet IDs nondeterministic
+    source_refs = sorted({f["source_ref"] for f in findings})
 
-    summary_signals = list({f.get("signal", "") for f in findings})
+    summary_signals = sorted({f.get("signal", "") for f in findings})
     summary = f"Scanner findings in {source_file}: signals={summary_signals}"
 
     finding_type = classify_finding(summary, evidence)
@@ -230,15 +241,28 @@ def run(
     if repo_root is None:
         repo_root = Path(__file__).resolve().parent.parent.parent
 
-    # Resolve all paths to absolute so relative_to() comparisons work reliably
+    # Resolve relative paths against repo_root (not CWD) so results do not
+    # depend on where the scanner is invoked from
     repo_root = repo_root.resolve()
-    input_dir = input_dir.resolve() if not input_dir.is_absolute() else input_dir.resolve()
-    outbox = outbox.resolve() if not outbox.is_absolute() else outbox.resolve()
+    if not input_dir.is_absolute():
+        input_dir = repo_root / input_dir
+    input_dir = input_dir.resolve()
+    if not outbox.is_absolute():
+        outbox = repo_root / outbox
+    outbox = outbox.resolve()
 
-    # Stop condition: check if outbox would be outside allowed prefix
+    if not input_dir.is_dir():
+        print(f"STOP: input dir does not exist: {input_dir}", file=sys.stderr)
+        return []
+
+    # Stop condition: writes are legal only under temple/autoresearch/outbox/
     if not dry_run:
-        if not reject_write_outside_outbox(outbox / "_probe", outbox):
-            print("STOP: outbox is outside allowed prefix", file=sys.stderr)
+        allowed_outbox = (repo_root / _OUTBOX_PREFIX).resolve()
+        if not reject_write_outside_outbox(outbox / "_probe", allowed_outbox):
+            print(
+                f"STOP: outbox {outbox} is outside allowed prefix {allowed_outbox}",
+                file=sys.stderr,
+            )
             return []
 
     collected: dict[str, list[dict]] = {}
@@ -246,8 +270,8 @@ def run(
     for path in sorted(input_dir.rglob("*")):
         if not path.is_file():
             continue
+        rel = path.relative_to(repo_root).as_posix()
         for finding in scan_file(path, repo_root):
-            rel = path.relative_to(repo_root).as_posix()
             collected.setdefault(rel, []).append(finding)
 
     packets: list[dict] = []

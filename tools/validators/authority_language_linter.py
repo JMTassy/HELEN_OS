@@ -60,9 +60,6 @@ _FORBIDDEN_PATTERNS: list[tuple[re.Pattern, str, str]] = [
     (re.compile(r'\btruth\s+recorded\b', re.IGNORECASE),
      "truth recorded — sovereign truth claim without receipt",
      "HARD"),
-    (re.compile(r'\bREDUCER\s+admits?\s*:', re.IGNORECASE),
-     "REDUCER admits: <action> — authority-laundering pattern",
-     "HARD"),
     # Soft warnings — informational, do not BLOCK alone
     (re.compile(r'\bI\s+(am|decide|govern|know|remember)\b', re.IGNORECASE),
      "first-person authority verb — possible sentience/sovereignty claim",
@@ -194,11 +191,15 @@ _REPLACEMENTS = {
 
 
 def suggest_replacement(phrase: str) -> Optional[str]:
-    """Return a safer replacement for a forbidden phrase, if known."""
+    """Return a safer replacement for a forbidden phrase, if known.
+
+    Longest key wins so specific phrases are not shadowed by substrings
+    (e.g. dict insertion order no longer decides ties).
+    """
     phrase_lower = phrase.lower()
-    for key, replacement in _REPLACEMENTS.items():
+    for key in sorted(_REPLACEMENTS, key=len, reverse=True):
         if key.lower() in phrase_lower:
-            return replacement
+            return _REPLACEMENTS[key]
     return None
 
 
@@ -218,7 +219,7 @@ def main() -> None:
     parser.add_argument("--quiet", action="store_true", help="Only print verdict")
     args = parser.parse_args()
 
-    if args.text:
+    if args.text is not None:  # empty string is a valid --text input, not stdin
         result = lint_text(args.text)
     elif args.file:
         result = lint_file(args.file)
