@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import Any, Iterable
 
-from transport.observation import ObservationMap, _hashable
+from transport.observation import ObservationMap, _hashable, group_by_observation
 from transport.fiber import FiberSet
 
 
@@ -29,18 +29,8 @@ class QuotientSpace:
         self._build(state_space)
 
     def _build(self, state_space: Iterable[Any]) -> None:
-        buckets: dict[Any, list[Any]] = {}
-        obs_for_key: dict[Any, Any] = {}
-        for s in state_space:
-            obs = self.R.observe(s)
-            key = _hashable(obs)
-            buckets.setdefault(key, []).append(s)
-            obs_for_key[key] = obs
-        for key, members in buckets.items():
-            self._fibers[key] = FiberSet(
-                observation=obs_for_key[key],
-                members=members,
-            )
+        for key, (obs, members) in group_by_observation(self.R, state_space).items():
+            self._fibers[key] = FiberSet(observation=obs, members=members)
 
     # ------------------------------------------------------------------
     # Properties

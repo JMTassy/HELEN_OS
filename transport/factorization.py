@@ -47,8 +47,18 @@ class Factorization:
     # The two factors
 
     def q(self, state: Any) -> int:
-        """q_R : S → S/~_R. Sends a state to its observational class index."""
-        return self._index_of_key[_hashable(self.R.observe(state))]
+        """q_R : S → S/~_R. Sends a state to its observational class index.
+
+        Raises ValueError if the state's observation was not realized by the
+        state space this factorization was built over.
+        """
+        obs = self.R.observe(state)
+        try:
+            return self._index_of_key[_hashable(obs)]
+        except KeyError:
+            raise ValueError(
+                f"observation {obs!r} not in realized quotient"
+            ) from None
 
     def r_bar(self, cls: int) -> Any:
         """R_bar : S/~_R → L. Sends a class to its (unique) observation."""

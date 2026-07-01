@@ -33,7 +33,7 @@ from __future__ import annotations
 
 from typing import Any, Callable, Iterable
 
-from transport.observation import ObservationMap
+from transport.observation import ObservationMap, _hashable
 
 
 def _implies_equal(
@@ -44,14 +44,18 @@ def _implies_equal(
     """True iff A(s)=A(s') implies B(s)=B(s') for all pairs in space.
 
     Equivalently: ~_A ⊆ ~_B  (the A-partition refines the B-partition).
+    Values are compared through their canonical hashable forms, one pass:
+    each A-class must map to a single B-class.
     """
-    n = len(space)
-    for i in range(n):
-        ai = A(space[i])
-        bi = B(space[i])
-        for j in range(i + 1, n):
-            if ai == A(space[j]) and bi != B(space[j]):
+    b_of_a: dict[Any, Any] = {}
+    for s in space:
+        a_key = _hashable(A(s))
+        b_key = _hashable(B(s))
+        if a_key in b_of_a:
+            if b_of_a[a_key] != b_key:
                 return False
+        else:
+            b_of_a[a_key] = b_key
     return True
 
 
@@ -98,20 +102,10 @@ def is_pathological(R: ObservationMap, state_space: Iterable[Any]) -> bool:
     Both are degenerate as observations of a non-trivial reality.
     """
     space = list(state_space)
-    if len(space) < 2:
+    distinct_states = len({_hashable(s) for s in space})
+    if distinct_states < 2:
         return False
-    observations = [R.observe(s) for s in space]
-    distinct = len(set(_freeze(o) for o in observations))
+    distinct = len({_hashable(R.observe(s)) for s in space})
     is_constant = distinct == 1
-    is_injective = distinct == len(space)
+    is_injective = distinct == distinct_states
     return is_constant or is_injective
-
-
-def _freeze(value: Any) -> Any:
-    if isinstance(value, list):
-        return tuple(_freeze(v) for v in value)
-    if isinstance(value, set):
-        return frozenset(value)
-    if isinstance(value, dict):
-        return tuple(sorted((k, _freeze(v)) for k, v in value.items()))
-    return value

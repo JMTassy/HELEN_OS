@@ -19,7 +19,7 @@ from __future__ import annotations
 
 from typing import Any, Callable, Iterable
 
-from transport.observation import ObservationMap, _hashable
+from transport.observation import ObservationMap, _hashable, group_by_observation
 
 
 class ObservationBundle:
@@ -27,20 +27,16 @@ class ObservationBundle:
 
     def __init__(self, state_space: Iterable[Any], R: ObservationMap) -> None:
         self.R = R
-        self._fibers: dict[Any, list[Any]] = {}
-        self._obs: dict[Any, Any] = {}
-        for s in state_space:
-            obs = R.observe(s)
-            key = _hashable(obs)
-            self._fibers.setdefault(key, []).append(s)
-            self._obs[key] = obs
+        grouped = group_by_observation(R, state_space)
+        self._fibers: dict[Any, list[Any]] = {k: v[1] for k, v in grouped.items()}
+        self._obs: dict[Any, Any] = {k: v[0] for k, v in grouped.items()}
 
     # ------------------------------------------------------------------
     # Cardinality invariants
 
     def fiber_size_profile(self) -> dict[Any, int]:
-        """Map each observation to the cardinality of its fiber."""
-        return {self._obs[k]: len(v) for k, v in self._fibers.items()}
+        """Map each observation (canonical hashable form) to its fiber size."""
+        return {k: len(v) for k, v in self._fibers.items()}
 
     def is_size_trivial(self) -> bool:
         """True iff all fibers have equal cardinality.

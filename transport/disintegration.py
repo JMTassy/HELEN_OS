@@ -38,7 +38,7 @@ from __future__ import annotations
 import math
 from typing import Any, Iterable
 
-from transport.observation import ObservationMap, _hashable
+from transport.observation import ObservationMap, _hashable, group_by_observation
 
 
 def shannon_entropy(pmf: dict[Any, float], base: float = 2.0) -> float:
@@ -62,36 +62,41 @@ class FiniteDisintegration:
         weights: dict[Any, float],
     ) -> None:
         self.R = R
+        for s, w in weights.items():
+            if w < 0.0:
+                raise ValueError(f"negative weight for state {s!r}: {w}")
         total = sum(weights.values())
         if total <= 0.0:
             raise ValueError("total mass must be positive")
         # normalized μ over states
         self._mu: dict[Any, float] = {s: w / total for s, w in weights.items()}
         # group states into fibers keyed by observation
-        self._fiber_states: dict[Any, list[Any]] = {}
-        self._obs_of_key: dict[Any, Any] = {}
-        for s in self._mu:
-            obs = R.observe(s)
-            key = _hashable(obs)
-            self._fiber_states.setdefault(key, []).append(s)
-            self._obs_of_key[key] = obs
+        grouped = group_by_observation(R, self._mu)
+        self._fiber_states: dict[Any, list[Any]] = {k: v[1] for k, v in grouped.items()}
+        self._obs_of_key: dict[Any, Any] = {k: v[0] for k, v in grouped.items()}
 
     # ------------------------------------------------------------------
     # ν = R_*μ  (pushforward — what the observer can see)
 
     def pushforward(self) -> dict[Any, float]:
-        """ν(ℓ) = μ(R⁻¹(ℓ)): the receipt distribution."""
-        nu: dict[Any, float] = {}
-        for key, states in self._fiber_states.items():
-            nu[self._obs_of_key[key]] = sum(self._mu[s] for s in states)
-        return nu
+        """ν(ℓ) = μ(R⁻¹(ℓ)): the receipt distribution.
+
+        Keyed by the canonical hashable form of each observation (identical to
+        the observation itself whenever it is hashable).
+        """
+        return {
+            key: sum(self._mu[s] for s in states)
+            for key, states in self._fiber_states.items()
+        }
 
     # ------------------------------------------------------------------
     # μ_ℓ = μ(· | R = ℓ)  (conditional, supported on the fiber)
 
     def conditional(self, observation: Any) -> dict[Any, float]:
         """μ_ℓ: normalized restriction of μ to the fiber over `observation`."""
-        key = _hashable(observation)
+        return self._conditional_by_key(_hashable(observation))
+
+    def _conditional_by_key(self, key: Any) -> dict[Any, float]:
         states = self._fiber_states.get(key, [])
         mass = sum(self._mu[s] for s in states)
         if mass <= 0.0:
@@ -107,10 +112,9 @@ class FiniteDisintegration:
         """
         nu = self.pushforward()
         for key, states in self._fiber_states.items():
-            obs = self._obs_of_key[key]
-            cond = self.conditional(obs)
+            cond = self._conditional_by_key(key)
             for s in states:
-                recon = nu[obs] * cond[s]
+                recon = nu[key] * cond[s]
                 if not math.isclose(recon, self._mu[s], abs_tol=abs_tol):
                     return False
         return True
@@ -132,10 +136,9 @@ class FiniteDisintegration:
         This is the information the receipt cannot recover — the quantitative
         measure of observational information loss.
         """
-        nu = self.pushforward()
         h = 0.0
-        for obs, weight in nu.items():
-            h += weight * shannon_entropy(self.conditional(obs), base)
+        for key, weight in self.pushforward().items():
+            h += weight * shannon_entropy(self._conditional_by_key(key), base)
         return h
 
     def satisfies_chain_rule(self, base: float = 2.0, abs_tol: float = 1e-12) -> bool:

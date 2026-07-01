@@ -11,9 +11,9 @@ Faithfulness criterion: R is faithful iff reconstruction is unique everywhere.
 """
 from __future__ import annotations
 
-from typing import Any, Iterable
+from typing import Any, Callable, Iterable
 
-from transport.observation import ObservationMap, _hashable
+from transport.observation import ObservationMap, _hashable, group_by_observation
 from transport.fiber import FiberSet
 
 
@@ -30,10 +30,8 @@ class Reconstructor:
         self._build(state_space)
 
     def _build(self, state_space: Iterable[Any]) -> None:
-        for s in state_space:
-            obs = self.R.observe(s)
-            key = _hashable(obs)
-            self._index.setdefault(key, []).append(s)
+        for key, (obs, members) in group_by_observation(self.R, state_space).items():
+            self._index[key] = members
             self._obs_map[key] = obs
 
     # ------------------------------------------------------------------
@@ -109,18 +107,17 @@ class Reconstructor:
 
     def is_sufficient_for(
         self,
-        parameter_fn: Any,
+        parameter_fn: Callable[[Any], Any],
         state_space: Iterable[Any],
     ) -> bool:
-        """Test if R is sufficient for parameter_fn.
+        """Test if R is sufficient for parameter_fn over state_space.
 
         R is sufficient for θ = parameter_fn(S) iff R(S) determines θ(S):
         i.e., S1 ~_R S2 ⟹ parameter_fn(S1) = parameter_fn(S2).
 
         If False, the receipt cannot determine the parameter — information lost.
         """
-        states = list(state_space)
-        for key, members in self._index.items():
+        for _, (_, members) in group_by_observation(self.R, state_space).items():
             params = {parameter_fn(s) for s in members}
             if len(params) > 1:
                 return False

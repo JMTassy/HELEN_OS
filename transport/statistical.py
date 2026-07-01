@@ -24,7 +24,7 @@ smooth-manifold assumption is made here.
 from __future__ import annotations
 
 import math
-from typing import Any, Callable, Iterable, Optional
+from typing import Any, Callable, Iterable
 
 from transport.observation import ObservationMap
 
@@ -113,16 +113,13 @@ def fisher_information_1d(
     """
     if len(theta_grid) < 3:
         return []
+    laws = [law_of(th) for th in theta_grid]  # evaluate each θ exactly once
     out: list[float] = []
     for i in range(1, len(theta_grid) - 1):
-        th_lo, th_mid, th_hi = theta_grid[i - 1], theta_grid[i], theta_grid[i + 1]
-        p_lo = law_of(th_lo)
-        p_mid = law_of(th_mid)
-        p_hi = law_of(th_hi)
-        dtheta = th_hi - th_lo
+        p_lo, p_mid, p_hi = laws[i - 1], laws[i], laws[i + 1]
+        dtheta = theta_grid[i + 1] - theta_grid[i - 1]
         info = 0.0
-        for x in p_mid:
-            pmid = p_mid.get(x, 0.0)
+        for x, pmid in p_mid.items():
             plo = p_lo.get(x, 0.0)
             phi = p_hi.get(x, 0.0)
             if pmid <= 0.0 or plo <= 0.0 or phi <= 0.0:
@@ -210,11 +207,12 @@ class StatisticalObservationModel:
 
     def cofiber_pairs(self) -> list[tuple[StatisticalState, StatisticalState]]:
         """All unordered co-fiber pairs (candidates for intra-fiber geometry)."""
+        obs = [self.R.observe(s.state) for s in self._states]  # observe once per state
         pairs = []
         n = len(self._states)
         for i in range(n):
             for j in range(i + 1, n):
-                if self.are_cofiber(self._states[i], self._states[j]):
+                if obs[i] == obs[j]:
                     pairs.append((self._states[i], self._states[j]))
         return pairs
 

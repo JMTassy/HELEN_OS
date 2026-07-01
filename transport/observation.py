@@ -51,11 +51,34 @@ class ObservationMap:
 
 
 def _hashable(value: Any) -> Any:
-    """Make a value hashable for use as a dict key."""
-    if isinstance(value, list):
+    """Canonical hashable form of a value, for use as a dict key.
+
+    Lists/tuples freeze to tuples (recursively), sets to frozensets, dicts to
+    sorted (key, value) tuples. Idempotent: _hashable(_hashable(v)) == _hashable(v).
+    """
+    if isinstance(value, (list, tuple)):
         return tuple(_hashable(v) for v in value)
     if isinstance(value, set):
         return frozenset(value)
     if isinstance(value, dict):
         return tuple(sorted((k, _hashable(v)) for k, v in value.items()))
     return value
+
+
+def group_by_observation(
+    R: ObservationMap, state_space: Iterable[Any]
+) -> dict[Any, tuple[Any, list[Any]]]:
+    """Group states into fibers keyed by the canonical form of R(s).
+
+    Returns {key: (observation, [states])} in first-appearance order.
+    The single place where the fiber-bucketing loop lives.
+    """
+    fibers: dict[Any, tuple[Any, list[Any]]] = {}
+    for s in state_space:
+        obs = R.observe(s)
+        key = _hashable(obs)
+        if key in fibers:
+            fibers[key][1].append(s)
+        else:
+            fibers[key] = (obs, [s])
+    return fibers
