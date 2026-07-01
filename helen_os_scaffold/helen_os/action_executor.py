@@ -54,7 +54,13 @@ class Action:
 class ActionPolicy:
     """Load and enforce action policy"""
 
-    def __init__(self, policy_path: str = "helen_os/action_policy.json", kernel: Any = None):
+    # Anchor to this module, not CWD: from the repo root a CWD-relative
+    # "helen_os/action_policy.json" would point into the sovereign tree
+    # (where the file does not exist) instead of the scaffold
+    DEFAULT_POLICY_PATH = str(Path(__file__).resolve().parent / "action_policy.json")
+
+    def __init__(self, policy_path: str = None, kernel: Any = None):
+        policy_path = policy_path or self.DEFAULT_POLICY_PATH
         self.policy_path = policy_path
         self.kernel = kernel
         self._load_fallback_policy()
@@ -150,7 +156,7 @@ class ActionExecutor:
 
     def __init__(self, policy_path: str = None, ledger_path: str = None, kernel: Any = None):
         self.kernel = kernel
-        self.policy = ActionPolicy(policy_path or "helen_os/action_policy.json", kernel=kernel)
+        self.policy = ActionPolicy(policy_path, kernel=kernel)
         self.ledger = ActionLedger(ledger_path or "artifacts/helen_actions.ndjson")
         self.counter = self._next_action_id()
 

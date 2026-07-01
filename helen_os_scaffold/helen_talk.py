@@ -25,6 +25,13 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 from pathlib import Path
 
+# Make the scaffold root importable regardless of CWD — this must run BEFORE
+# the helen_os imports below, or they silently degrade to the fallbacks even
+# though the kernel import later in main() would succeed
+_SCAFFOLD_ROOT = Path(__file__).resolve().parent
+if str(_SCAFFOLD_ROOT) not in sys.path:
+    sys.path.insert(0, str(_SCAFFOLD_ROOT))
+
 # Add imports for memory and adapter
 try:
     from helen_os.memory import MemoryKernel
@@ -221,12 +228,7 @@ def main() -> int:
 
     # Import late so this file stays "autonomous" for debugging.
     try:
-        # Ensure helen_os_scaffold is in path for relative imports
-        import sys
-        from pathlib import Path
-        scaffold_path = Path(__file__).parent.resolve()
-        if str(scaffold_path) not in sys.path:
-            sys.path.insert(0, str(scaffold_path))
+        # scaffold root already on sys.path (module top)
         from helen_os.kernel import GovernanceVM
         from helen_os.cli import _load_config
         cfg = _load_config()

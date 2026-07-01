@@ -53,7 +53,10 @@ _SANDBOX_DIR = _REPO_ROOT / "storage" / "action_sandbox"
 action_executor = BoundedExecutor(
     base_dir=_SANDBOX_DIR,
     policy_version="STAGE_B1_V1",
-    registry_path=_SANDBOX_DIR / "_execution_registry.ndjson",
+    # registry must live OUTSIDE base_dir: anything under base_dir is
+    # writable through /actions/execute, which would let a client wipe or
+    # poison the dedup state
+    registry_path=_REPO_ROOT / "storage" / "execution_registry.ndjson",
 )
 action_executor.base_dir.mkdir(parents=True, exist_ok=True)
 
@@ -204,7 +207,7 @@ def switch_avatar(name: str):
         }), 404
 
     avatar = AvatarRegistry.get_avatar(name)
-    current_avatar = name
+    current_avatar = name.lower()  # membership above is case-insensitive; keep state a registry key
 
     return jsonify({
         "avatar": current_avatar,

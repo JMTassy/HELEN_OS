@@ -21,11 +21,22 @@ from typing import List, Dict, Any, Tuple, Optional
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .action_executor import ActionExecutor, Action
-from .memory_consolidation import MemoryConsolidator
-from .memory_gravity import MemoryGravity
-from .consciousness import ProtoConsciousness
-from .federation import Egregor, Superteam
+try:
+    from .action_executor import ActionExecutor, Action
+    from .memory_consolidation import MemoryConsolidator
+    from .memory_gravity import MemoryGravity
+    from .consciousness import ProtoConsciousness
+    from .federation import Egregor, Superteam
+except ImportError:
+    # direct script execution (python helen_os/autonomy_loop.py) has no
+    # parent package — fall back to absolute imports via the scaffold root
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+    from helen_os.action_executor import ActionExecutor, Action
+    from helen_os.memory_consolidation import MemoryConsolidator
+    from helen_os.memory_gravity import MemoryGravity
+    from helen_os.consciousness import ProtoConsciousness
+    from helen_os.federation import Egregor, Superteam
 
 
 class AutonomyLoop:
