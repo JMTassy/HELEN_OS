@@ -19,6 +19,17 @@
 #   kernel/kernel_cli.ml      — OCaml kernel boundary
 #   tools/end_session.py      — Session seal writer (uses NDJSONWriter)
 #
+# CONSUMER_ALLOWLIST entries (RULE 2) require an inline citation to the
+# authorization document(s) that license the NDJSONWriter import. Two
+# tiers:
+#   DOCTRINE/AUDIT tier — production import; cites a protocol/spec/audit
+#     doc that names the importing file and the handler(s) it backs.
+#   CONTRACT-TEST tier  — test import; cites tmp_path-only isolation.
+#     Test-tier entries confer NO production-writer authority; a test
+#     file allowlisted here still may not open real ledger paths (see
+#     RULE 1) or bypass CI schema checks.
+# See: KERNEL_GUARD_ALLOWLIST_RECONCILE_V1 (proposal, authority=false).
+#
 # Usage:
 #   bash tools/kernel_guard.sh           # exits 0 if clean, 1 if violation
 #   bash tools/kernel_guard.sh --verbose # prints all checked files
@@ -106,14 +117,28 @@ echo ""
 echo "RULE 2: Checking NDJSONWriter import origins..."
 
 CONSUMER_ALLOWLIST=(
-  "tools/ndjson_writer.py"
-  "tools/end_session.py"
-  "tools/helen_add_lesson.py"
-  "tools/test_kernel_properties.py"
-  "tools/test_meta_invariance.py"
-  "tools/accept_payload_meta.sh"
-  "tools/validate_hash_chain.py"
-  "tools/validate_turn_schema.py"
+  "tools/ndjson_writer.py"            # DOCTRINE: the writer itself
+  "tools/end_session.py"              # DOCTRINE: session seal writer
+  "tools/helen_add_lesson.py"         # DOCTRINE: lesson writer
+  "tools/test_kernel_properties.py"   # CONTRACT-TEST: tmp_path only
+  "tools/test_meta_invariance.py"     # CONTRACT-TEST: tmp_path only
+  "tools/accept_payload_meta.sh"      # DOCTRINE: payload-meta acceptor
+  "tools/validate_hash_chain.py"      # DOCTRINE: hash-chain validator
+  "tools/validate_turn_schema.py"     # DOCTRINE: turn-schema validator
+  # DOCTRINE: promote_skill path per MAYOR_HANDLER_PROMOTE_SKILL_SPEC_V1.md
+  #   (oracle_town/protocols/, "The NDJSONWriter must be imported", §10
+  #   "This is the only path that writes to town/ledger_v1.ndjson") and
+  #   SOVEREIGN_PROMOTION_PROTOCOL_V1.md ("One writer only ... called by
+  #   the kernel daemon on behalf of MAYOR"); ALSO covers seq_correction
+  #   path per FIREWALL_BYPASS_AUDIT_8911FD0.md (oracle_town/audits/).
+  #   Any additional _handle_* writer path added to that file requires
+  #   its own fresh authorization citation appended here — file-level
+  #   allowlisting does not auto-extend to new handlers.
+  "oracle_town/kernel/kernel_daemon.py"
+  # CONTRACT-TEST: verified tmp_path-only, no real-ledger contact.
+  # Allowlisting here does NOT authorize production writes.
+  "helen_os/tests/test_ndjson_writer_atomic.py"
+  "helen_os/tests/test_duplicate_seq_detector.py"
 )
 
 while IFS= read -r -d '' pyfile; do
