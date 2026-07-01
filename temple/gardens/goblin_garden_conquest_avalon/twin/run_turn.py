@@ -132,9 +132,9 @@ def resolve(action, state):
         if island.get("holder") == fname and not island.get("templock"):
             for res, rate in island.get("production", {}).items():
                 res = "QUINT_CORE" if res == "any_shard" else res
-                bonus = min(rate, MAX_STOCKPILE - island["stockpile"].get(res, 0))
-                island["stockpile"][res] = island["stockpile"].get(res, 0) + max(0, bonus)
-                resources[res] = resources.get(res, 0) + max(0, bonus)
+                bonus = max(0, min(rate, MAX_STOCKPILE - island["stockpile"].get(res, 0)))
+                island["stockpile"][res] = island["stockpile"].get(res, 0) + bonus
+                resources[res] = resources.get(res, 0) + bonus
                 effect[res] = bonus
 
     elif atype == "CLAIM":
@@ -214,7 +214,11 @@ def check_events(state):
             total_prod = sum(island.get("production", {}).values())
             if total_prod == 0:
                 island["zero_production_turns"] = island.get("zero_production_turns", 0) + 1
-                if island["zero_production_turns"] >= 5:
+                already_dry = any(
+                    e for e in state["active_events"]
+                    if e["type"] == "RESOURCE_DROUGHT" and e.get("island") == iname
+                )
+                if island["zero_production_turns"] >= 5 and not already_dry:
                     triggered.append({"type": "RESOURCE_DROUGHT", "island": iname, "turn": turn, "duration": 3, "rate_multiplier": 0.5})
             else:
                 island["zero_production_turns"] = 0

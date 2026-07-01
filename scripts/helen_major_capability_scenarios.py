@@ -184,19 +184,33 @@ class ScenarioRunner:
             if isinstance(receipt, dict):
                 by_type.setdefault(str(receipt.get("event_type")), []).append(receipt)
 
-        latest_resumption = by_type.get("SESSION_RESUMPTION", [])[-1]
-        latest_audit = by_type.get("KNOWLEDGE_AUDIT", [])[-1]
-        checks.append(Check(
-            "DONEXT_03_RECEIPT_LINEAGE",
-            "Resumed call has SESSION_RESUMPTION as root parent for KNOWLEDGE_AUDIT and complete execution receipts.",
-            latest_audit.get("parent_receipt_id") == latest_resumption.get("receipt_id")
-            and {"KNOWLEDGE_AUDIT", "DISPATCH_DECISION", "INFERENCE_EXECUTION", "CONCLUSION", "SESSION_COMMIT"}.issubset(events),
-            {
-                "latest_resumption": latest_resumption.get("receipt_id"),
-                "latest_audit_parent": latest_audit.get("parent_receipt_id"),
-                "events": events[-8:],
-            },
-        ))
+        resumptions = by_type.get("SESSION_RESUMPTION", [])
+        audits = by_type.get("KNOWLEDGE_AUDIT", [])
+        if resumptions and audits:
+            latest_resumption = resumptions[-1]
+            latest_audit = audits[-1]
+            checks.append(Check(
+                "DONEXT_03_RECEIPT_LINEAGE",
+                "Resumed call has SESSION_RESUMPTION as root parent for KNOWLEDGE_AUDIT and complete execution receipts.",
+                latest_audit.get("parent_receipt_id") == latest_resumption.get("receipt_id")
+                and {"KNOWLEDGE_AUDIT", "DISPATCH_DECISION", "INFERENCE_EXECUTION", "CONCLUSION", "SESSION_COMMIT"}.issubset(events),
+                {
+                    "latest_resumption": latest_resumption.get("receipt_id"),
+                    "latest_audit_parent": latest_audit.get("parent_receipt_id"),
+                    "events": events[-8:],
+                },
+            ))
+        else:
+            # Missing receipts must record a FAIL, not crash the whole suite
+            checks.append(Check(
+                "DONEXT_03_RECEIPT_LINEAGE",
+                "Resumed call has SESSION_RESUMPTION as root parent for KNOWLEDGE_AUDIT and complete execution receipts.",
+                False,
+                {
+                    "error": "missing SESSION_RESUMPTION or KNOWLEDGE_AUDIT receipts",
+                    "events": events[-8:],
+                },
+            ))
 
         checks.append(Check(
             "DONEXT_04_PERSISTENCE_HASH",

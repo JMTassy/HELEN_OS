@@ -250,7 +250,6 @@ def _render_bed_lines(bed: Dict, max_count: int, color: bool) -> List[str]:
     else:
         bar = _bar(bed["file_count"], max_count)
         seeds = f"{bed['file_count']:>3} seeds"
-    label = f"{indent}{name:<18}".rstrip()
     label = f"{indent}{name:<18}"
     line = f"  {label} {bar}  {seeds}{_flag_text(bed, color)}".rstrip()
     lines = [line]

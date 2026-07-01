@@ -30,14 +30,12 @@ import sys
 import urllib.request
 
 
-def call_mlx(model_path: str, system: str, user: str, max_tokens: int = 200) -> str:
+def call_mlx(loaded, system: str, user: str, max_tokens: int = 200) -> str:
     """Deterministic inference via mlx_lm (local weights, no Ollama needed).
-    Requires mlx_lm in the active Python environment."""
-    try:
-        from mlx_lm import load, generate
-    except ImportError:
-        return "[ERROR: mlx_lm not installed in this Python environment]"
-    model, tokenizer = load(model_path)
+    `loaded` is a pre-loaded (model, tokenizer) pair from mlx_lm.load() —
+    loading per call would reload the weights for every example."""
+    from mlx_lm import generate
+    model, tokenizer = loaded
     messages = [{"role": "system", "content": system},
                 {"role": "user", "content": user}]
     if hasattr(tokenizer, "apply_chat_template"):
@@ -185,17 +183,7 @@ def main(argv) -> int:
             resp = ex.get("gold", "")
         elif args.mlx_model:
             try:
-                from mlx_lm import generate as mlx_generate
-                model, tokenizer = _mlx_loaded
-                messages = [{"role": "system", "content": sysmsg},
-                            {"role": "user", "content": user}]
-                if hasattr(tokenizer, "apply_chat_template"):
-                    prompt = tokenizer.apply_chat_template(
-                        messages, tokenize=False, add_generation_prompt=True)
-                else:
-                    prompt = f"{sysmsg}\n\nInstruct: {user}\nOutput:"
-                resp = mlx_generate(model, tokenizer, prompt=prompt,
-                                    max_tokens=200, verbose=False)
+                resp = call_mlx(_mlx_loaded, sysmsg, user)
             except Exception as e:
                 resp = f"[CALL_ERROR: {e}]"
         else:
@@ -207,6 +195,9 @@ def main(argv) -> int:
         results.append((ex["id"], ex["category"], ex["expect"], got, got == ex["expect"]))
 
     total = len(results)
+    if total == 0:
+        sys.stderr.write("error: no evaluable rows in eval file\n")
+        return 1
     correct = sum(1 for *_, ok in results if ok)
     by_cat = {}
     for _id, cat, exp, got, ok in results:

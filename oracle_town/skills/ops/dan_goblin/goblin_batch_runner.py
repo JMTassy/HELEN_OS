@@ -18,11 +18,9 @@ import argparse
 import hashlib
 import json
 import os
-import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
 
 # ── paths ─────────────────────────────────────────────────────────────────────
 
@@ -42,6 +40,11 @@ OPENAI_MODEL = "gpt-4o-mini"
 ANTHROPIC_MODEL = "claude-haiku-4-5-20251001"
 XAI_MODEL = "grok-3-mini"
 DRY_RUN_MODEL = "deterministic-seed-v0"
+MODEL_FOR_PROVIDER = {
+    "openai": OPENAI_MODEL,
+    "anthropic": ANTHROPIC_MODEL,
+    "xai": XAI_MODEL,
+}
 
 # ── HAL thresholds ────────────────────────────────────────────────────────────
 
@@ -450,7 +453,7 @@ def run_batch(
                 "authority": "NON_SOVEREIGN",
                 "canon": "NO_SHIP",
                 "provider": provider if not dry_run else "dry_run",
-                "model": OPENAI_MODEL if provider == "openai" else XAI_MODEL if provider == "xai" else ANTHROPIC_MODEL if provider == "anthropic" else DRY_RUN_MODEL,
+                "model": MODEL_FOR_PROVIDER.get(provider, DRY_RUN_MODEL),
             }
             epochs.append(failed_entry)
             with open(output_file, "a") as f:
@@ -458,13 +461,17 @@ def run_batch(
 
     # ── tranche receipt ───────────────────────────────────────────────────────
     tranche_provider = "dry_run" if dry_run else provider
-    tranche_model = DRY_RUN_MODEL if dry_run else (OPENAI_MODEL if provider == "openai" else XAI_MODEL if provider == "xai" else ANTHROPIC_MODEL)
+    tranche_model = DRY_RUN_MODEL if dry_run else MODEL_FOR_PROVIDER.get(provider, DRY_RUN_MODEL)
+    failed_epochs = [e for e in epochs if e.get("status") == "FAILED"]
     receipt = make_tranche_receipt(
         batch_id, tranche_index, mission,
         [e for e in epochs if e.get("status") != "FAILED"],
         str(output_file), dry_run, timestamp,
         provider=tranche_provider, model=tranche_model,
     )
+    # a receipt that hides failures would launder a partial run as clean
+    receipt["epochs_failed"] = len(failed_epochs)
+    receipt["failed_epoch_indices"] = [e.get("epoch_index") for e in failed_epochs]
     receipt_file = RECEIPTS_DIR / f"BATCH_{batch_id}_T{tranche_index:03d}.json"
     with open(receipt_file, "w") as f:
         json.dump(receipt, f, indent=2)
@@ -516,7 +523,8 @@ if __name__ == "__main__":
                 line = line[7:]
             if "=" in line and not line.startswith("#"):
                 k, _, v = line.partition("=")
-                os.environ.setdefault(k.strip(), v.strip())
+                # shell-style `export KEY="abc"` must not keep the literal quotes
+                os.environ.setdefault(k.strip(), v.strip().strip("'\""))
 
     run_batch(
         mission=args.mission,

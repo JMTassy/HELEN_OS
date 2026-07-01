@@ -12,16 +12,16 @@ import json
 import hashlib
 import sys
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timezone
 
 ROOT = Path(__file__).parent
 EPOCHS_DIR = ROOT / "epochs"
 RECEIPTS_DIR = ROOT / "receipts"
 OUT_DIR = ROOT / "autoresearch"
 
-EPOCHS_DIR.mkdir(parents=True, exist_ok=True)
-RECEIPTS_DIR.mkdir(parents=True, exist_ok=True)
-OUT_DIR.mkdir(parents=True, exist_ok=True)
+
+def _utc_now() -> str:
+    return datetime.now(timezone.utc).isoformat()
 
 AUTHORITY_BLOCK = {
     "authority": False,
@@ -97,8 +97,10 @@ for i in range(1, 101):
         **AUTHORITY_BLOCK
     })
 
-def epoch_hash(epoch_id: str, name: str) -> str:
-    payload = f"{epoch_id}|{name}|{datetime.now().isoformat()}"
+def epoch_hash(epoch_id: str, name: str, hypothesis: str) -> str:
+    # Hash only stable content — a timestamp here would make the proof
+    # unreproducible (same epoch, different "proof" every run)
+    payload = f"{epoch_id}|{name}|{hypothesis}"
     return "G-" + hashlib.sha256(payload.encode()).hexdigest()[:8].upper()
 
 def scan_for_forbidden(content: str) -> list:
@@ -109,6 +111,10 @@ def scan_for_forbidden(content: str) -> list:
     return hits
 
 def run():
+    EPOCHS_DIR.mkdir(parents=True, exist_ok=True)
+    RECEIPTS_DIR.mkdir(parents=True, exist_ok=True)
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+
     print("=" * 80)
     print("🌱 GARDENING GARDEN — 100-EPOCH BOUNDED AUTORESEARCH")
     print("Theme: Growing and caring for plants (vegetable, flower, herb, container, indoor, native/pollinator)")
@@ -124,7 +130,7 @@ def run():
     for ep in EPOCHS:
         ep_id = ep["id"]
         name = ep["name"]
-        proof = epoch_hash(ep_id, name)
+        proof = epoch_hash(ep_id, name, ep["hypothesis"])
 
         artifact = {
             "epoch_id": ep_id,
@@ -134,7 +140,7 @@ def run():
             "receipt_status": "PROPOSED",
             **{k: v for k, v in ep.items() if k not in ["id", "seq", "name"]},
             "proof_hash": proof,
-            "generated_at": datetime.now().isoformat(),
+            "generated_at": _utc_now(),
         }
 
         content = json.dumps(artifact, ensure_ascii=False)
@@ -158,7 +164,7 @@ def run():
             **AUTHORITY_BLOCK,
             "commit": "BLOCKED",
             "push": "BLOCKED",
-            "generated_at": datetime.now().isoformat(),
+            "generated_at": _utc_now(),
         }
         receipt_file.write_text(json.dumps(receipt, indent=2, ensure_ascii=False), encoding="utf-8")
 
@@ -173,14 +179,16 @@ def run():
         "epochs_completed": len(written),
         "epoch_ids": written,
         **AUTHORITY_BLOCK,
-        "validator_result": "PASS",
-        "forbidden_terms": 0,
+        # NO RECEIPT = NO CLAIM: the receipt must reflect what actually happened
+        "validator_result": "FAIL" if errors else "PASS",
+        "forbidden_terms": len(errors),
+        "errors": errors,
         "commit": "BLOCKED",
         "push": "BLOCKED",
         "jm_admits": "PENDING",
         "next_step": "Review hypotheses for simulation integration or extension of NEVER_ENDING_GARDEN_ZONE.",
         "theme_summary": "🌱 Gardening practices across 6 major types with focus on care, sustainability, and enjoyment.",
-        "generated_at": datetime.now().isoformat(),
+        "generated_at": _utc_now(),
     }
     (OUT_DIR / "GARDENING_BATCH_100_RECEIPT.json").write_text(
         json.dumps(batch_receipt, indent=2, ensure_ascii=False), encoding="utf-8"
@@ -194,6 +202,7 @@ def run():
     print("  authority=false  sovereign=false  canon=false  ledger=SLEEPING")
     print(f"  receipt: autoresearch/GARDENING_BATCH_100_RECEIPT.json")
     print("="*80)
+    return 1 if errors else 0
 
 if __name__ == "__main__":
-    run()
+    sys.exit(run())
