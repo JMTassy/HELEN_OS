@@ -332,6 +332,16 @@ Multiple chat entry points exist; they are **not interchangeable**.
 
 ## Current State
 
+### Update 2026-07-01 (branch `claude/code-review-optimizations-hx26jn`, 8 commits)
+
+Two-week code review + first mechanized governance-algebra work. Highlights:
+
+- **Review fixes shipped** (4 commits, `90964b2`..`9e07ed0`): `transport/` unhashable-observation crashes + O(n²) hotspots; autoresearch scanner fail-open `--write` guard closed (writes now enforced under `temple/autoresearch/outbox/`) + CWD-independent paths + deterministic packet IDs; gardening runner receipts made honest (no more hardcoded PASS) with deterministic proof hashes; API server execution registry moved OUTSIDE the writable action sandbox; scaffold CWD/import fixes. Report-only findings (operator decision pending): executor burn-on-failure + registry TOCTOU (`bounded_executor_v1.py:311`), fire-and-forget ledger bridge (`helen_api_server_v1.py:95`), linter's document-global receipt pardon (test-pinned).
+- **kernel_guard green again** (`5fd6eb9`): RULE 2 `CONSUMER_ALLOWLIST` reconciled with filed authorizations — the daemon entry cites BOTH `MAYOR_HANDLER_PROMOTE_SKILL_SPEC_V1` (promote_skill) AND `FIREWALL_BYPASS_AUDIT_8911FD0` (seq_correction); two contract-test entries in an explicit CONTRACT-TEST tier. The guard had been red on HEAD since ~2026-06-15 (stale allowlist, not an active bypass). Every allowlist entry now requires an inline authorization citation; file-level allowlisting does not auto-extend to new handlers.
+- **WULMOJI palette is now machine-law** (`7b6ee6a`): `tools/wulmoji_palette.py` — canonical glyph tables (GOVERNANCE_STATUS 8, INTERACTION_VERBS 7, CONQUEST_BULLETIN_STATES 5 with game-local meanings + explicit `CROSS_NAMESPACE_REUSE` register). `tests/test_wulmoji_palette_disjointness.py` enforces one-glyph-one-meaning per namespace, STATUS ∩ VERBS = ∅, validator↔table coverage, and a **doctrine-drift detector that parses this file's palette line** — edits to the Source Atlas palette below must keep the table in sync or CI fails.
+- **Drift algebra Δ** (`b09b5a1`, AR-DRIFT-001): `transport/drift.py` — finite premetric over projections (laws D1-D4 exhaustively witnessed); guards are projections (`guard_projection()`), so doc↔guard drift is first-class. Known open instance: the K-tau linter needle `"datetime.now("` also matches the doc-mandated `datetime.now(timezone.utc)` — latent false-positive armed on ~18 agentic-path files; fix (`ktau_needle_fix`) is operator-gated, its Δ=0 acceptance test already exists in `tests/test_transport_drift.py`.
+- **Math garden** (`812ce1c`): `temple/gardens/math_garden/` — 80 PROPOSED one-hypothesis epochs (M001-M080) across ledger algebra / universal property / drift / projection category / fixed points / closure / fiber bundles / representation / completeness. NON_SOVEREIGN, deterministic proof hashes, honest batch receipt. Mechanization tranches are operator-gated; AR-DRIFT-001 is the template.
+
 ### Update 2026-06-15 (HEAD = 4d1e185)
 
 Skill promotion admission pipeline is now **operationally live**:

@@ -109,23 +109,26 @@ CLAUDE.md — AUTO-GENERATED LINE INDEX
   - ## Current State
     Lines 333–334 | Anchor: #current-state
 
+    - ### Update 2026-07-01 (branch `claude/code-review-optimizations-hx26jn`, 8 commits)
+      Lines 335–344 | Anchor: #update-2026-07-01-branch-claudecode-review-optimizations-hx26jn-8-commits
+
     - ### Update 2026-06-15 (HEAD = 4d1e185)
-      Lines 335–345 | Anchor: #update-2026-06-15-head-4d1e185
+      Lines 345–355 | Anchor: #update-2026-06-15-head-4d1e185
 
     - ### Update 2026-06-03 (114 commits since the 2026-05-06 snapshot below)
-      Lines 346–356 | Anchor: #update-2026-06-03-114-commits-since-the-2026-05-06-snapshot-below
+      Lines 356–366 | Anchor: #update-2026-06-03-114-commits-since-the-2026-05-06-snapshot-below
 
     - ### Snapshot 2026-05-06
-      Lines 357–374 | Anchor: #snapshot-2026-05-06
+      Lines 367–384 | Anchor: #snapshot-2026-05-06
 
   - ## HELEN OS Look & Feel — Source Atlas Doctrine
-    Lines 375–399 | Anchor: #helen-os-look-feel-source-atlas-doctrine
+    Lines 385–409 | Anchor: #helen-os-look-feel-source-atlas-doctrine
 
   - ## WULMOJI Status Rendering Rule
-    Lines 400–410 | Anchor: #wulmoji-status-rendering-rule
+    Lines 410–420 | Anchor: #wulmoji-status-rendering-rule
 
   - ## Open Frontiers
-    Lines 411–415 | Anchor: #open-frontiers
+    Lines 421–425 | Anchor: #open-frontiers
 
 ================================================================================
 
