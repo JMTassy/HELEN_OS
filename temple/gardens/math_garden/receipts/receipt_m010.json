@@ -1,0 +1,17 @@
+{
+  "receipt_type": "MATH_GARDEN_EPOCH_RECEIPT_V0",
+  "epoch_id": "M010",
+  "name": "LEDGER_ALGEBRA_REACHABILITY_AS_ORBIT",
+  "proof_hash": "M-C07F1EC5",
+  "result": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "layer": "TEMPLE",
+  "ledger": "SLEEPING",
+  "status": "PROPOSED",
+  "claim_type": "math_epoch",
+  "commit": "BLOCKED",
+  "push": "BLOCKED",
+  "generated_at": "2026-07-01T22:10:37.780893+00:00"
+}

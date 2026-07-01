@@ -1,0 +1,17 @@
+{
+  "receipt_type": "MATH_GARDEN_EPOCH_RECEIPT_V0",
+  "epoch_id": "M027",
+  "name": "DRIFT_ALGEBRA_PARTIAL_DOMAIN_TRILEMMA",
+  "proof_hash": "M-F1417C0C",
+  "result": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "layer": "TEMPLE",
+  "ledger": "SLEEPING",
+  "status": "PROPOSED",
+  "claim_type": "math_epoch",
+  "commit": "BLOCKED",
+  "push": "BLOCKED",
+  "generated_at": "2026-07-01T22:10:37.789023+00:00"
+}

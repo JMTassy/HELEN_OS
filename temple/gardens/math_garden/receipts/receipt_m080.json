@@ -1,0 +1,17 @@
+{
+  "receipt_type": "MATH_GARDEN_EPOCH_RECEIPT_V0",
+  "epoch_id": "M080",
+  "name": "COMPLETENESS_NO_RECEIPT_NO_CLAIM_FORMAL",
+  "proof_hash": "M-858F84A4",
+  "result": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "layer": "TEMPLE",
+  "ledger": "SLEEPING",
+  "status": "PROPOSED",
+  "claim_type": "math_epoch",
+  "commit": "BLOCKED",
+  "push": "BLOCKED",
+  "generated_at": "2026-07-01T22:10:37.814891+00:00"
+}

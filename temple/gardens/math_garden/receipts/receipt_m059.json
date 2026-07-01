@@ -1,0 +1,17 @@
+{
+  "receipt_type": "MATH_GARDEN_EPOCH_RECEIPT_V0",
+  "epoch_id": "M059",
+  "name": "FIBER_BUNDLE_BUNDLE_MORPHISM_CATEGORY",
+  "proof_hash": "M-7E4C98E5",
+  "result": "PROPOSED",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "layer": "TEMPLE",
+  "ledger": "SLEEPING",
+  "status": "PROPOSED",
+  "claim_type": "math_epoch",
+  "commit": "BLOCKED",
+  "push": "BLOCKED",
+  "generated_at": "2026-07-01T22:10:37.803638+00:00"
+}
