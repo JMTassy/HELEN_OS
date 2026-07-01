@@ -32,6 +32,7 @@ from transport.statistical import (
     total_variation_distance,
     fisher_information_1d,
 )
+from transport.drift import Drift, drift, guard_projection
 
 __all__ = [
     "ObservationMap",
@@ -56,4 +57,7 @@ __all__ = [
     "hellinger_distance",
     "total_variation_distance",
     "fisher_information_1d",
+    "Drift",
+    "drift",
+    "guard_projection",
 ]
