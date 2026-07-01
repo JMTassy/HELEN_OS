@@ -83,6 +83,10 @@ def grapheme_clusters(s: str) -> list[str]:
 # ---------------------------------------------------------------------------
 # Grammar constants
 # ---------------------------------------------------------------------------
+# CONQUEST bulletin-grammar states — an intentional subset namespace of the
+# governance palette with game-local meanings. Canonical table + the
+# subset/disjointness law live in tools/wulmoji_palette.py; drift between
+# this set and that table is caught by tests/test_wulmoji_palette_disjointness.py.
 VALID_STATES = frozenset({"🔵", "🟢", "🟣", "⚫", "🔴"})
 
 VALID_FACTIONS = frozenset({"⟂◯⟂", "🌹", "🌀", "✝️"})
