@@ -12,7 +12,9 @@ Always reference past decisions in memory.md before making new recommendations.
 
 - **Read at session start.** Begin every session by reading `.claude/STATE.md` and the relevant skills. Without this, even a top-tier model regresses to restart-from-zero behavior.
 - **Write before walking away.** End every session by updating `.claude/STATE.md` — what was tried, what passed, what failed, what new rules survived. If the session doesn't finish with a write, the next one restarts from zero.
-- **Distill into the skill, not just STATE.** After any non-trivial failure, write the lesson into the skill that produced the artifact (`.claude/commands/*.md`), not only STATE.md. STATE.md is session-scoped; skills travel. The skill gets sharper every run.
+- **Distill into the skill, not just STATE.** After any non-trivial failure, write the lesson into the skill that produced the artifact (`.claude/commands/*.md`), not only STATE.md. STATE.md is session-scoped; skills travel.
+- **Evaluate before committing — keep or revert.** A skill edit is not automatically an improvement. Before committing a change to a skill file, check it against the version it replaces: does it produce a better result on the next real run, or just a different one? If a distilled "lesson" makes the next run worse (more REFUTED verdicts, more operator correction needed, not less), revert it — don't keep it because it's new. This step was previously missing; see `.claude/LOOPS.md`.
+- The skill gets sharper every run only if the Evaluate step actually runs — "we wrote a lesson down" is not the same claim as "the skill got better."
 
 ## Verification Protocol (maker ≠ grader)
 
