@@ -25,7 +25,8 @@
     "meditations/on_not_knowing.md",
     "meditations/on_the_receipt.md",
     "meditations/on_the_gate.md",
-    "meditations/on_the_admitter.md"
+    "meditations/on_the_admitter.md",
+    "meditations/on_composting_another_seat.md"
   ],
   "bulletins": [
     "bulletins/garden_enter.txt",
@@ -39,13 +40,23 @@
     "target": "temple/gardens/goblin_garden_conquest/",
     "authority": false,
     "sovereign": false,
-    "description": "Door to DREAM_OF_CONQUEST — non-sovereign world model garden"
+    "description": "Door to DREAM_OF_CONQUEST \u2014 non-sovereign world model garden"
   },
   "validator": "validate_garden.py",
   "epoch_count": 25,
   "epochs_completed": 25,
-  "forbidden_claim_statuses": ["ADMITTED", "CANON", "SOVEREIGN", "SHIPPED"],
-  "valid_claim_types": ["metaphor", "draft", "prompt", "receipt"],
+  "forbidden_claim_statuses": [
+    "ADMITTED",
+    "CANON",
+    "SOVEREIGN",
+    "SHIPPED"
+  ],
+  "valid_claim_types": [
+    "metaphor",
+    "draft",
+    "prompt",
+    "receipt"
+  ],
   "_meta": {
     "authority": false,
     "not_admitted": true,
