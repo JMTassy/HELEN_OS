@@ -45,3 +45,17 @@ the next session restarts from zero.
 
 2026-07-02 · Built the HELEN skill system (11 skills, 5 agents), amended barbell to local-model middle, created memory/instructions/ROUTING/STATE files, mined 3 grimoire corpora into garden compost (Faust, Sacred Names, Radionics), built WULMOJI_ESOTERIC_TEMPLE_V0.
 Next: dispatch GOBLIN-RELAY-1 when local GPU frees; triage the 6 report-only findings; consider ktau_needle_fix if operator gives GO.
+
+**2026-07-02, self-paced 5-hour loop, cycle 1**: verified and wrote up
+`docs/proposals/EXECUTOR_BURN_ON_FAILURE_AND_REGISTRY_TOCTOU_V1.md`
+(1 of 6 report-only findings) against live code, not restated from
+memory — confirmed both the burn-on-failure ordering and the TOCTOU's
+exact unlocked lines. Committed locally only (`dc096e3`) — one commit
+(`afaf7a3`) is already held pending explicit operator push confirmation,
+this cycle's commit holds alongside it, nothing pushed.
+Next cycle: the fire-and-forget ledger bridge finding
+(`helen_api_server_v1.py:95`) — not yet read this pass. Then the
+linter's document-global receipt pardon. The remaining 3 (twin-sim
+economics, LoRA masking, batch-runner reruns) have no CLAUDE.md file
+reference at all — flag to the operator as needing a pointer rather
+than guessing at their location.
