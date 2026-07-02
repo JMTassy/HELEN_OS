@@ -59,3 +59,29 @@ linter's document-global receipt pardon. The remaining 3 (twin-sim
 economics, LoRA masking, batch-runner reruns) have no CLAUDE.md file
 reference at all — flag to the operator as needing a pointer rather
 than guessing at their location.
+
+**2026-07-02, self-paced loop, cycle 2**: verified and wrote up 2 more
+of the 6 report-only findings:
+- `docs/proposals/FIRE_AND_FORGET_LEDGER_BRIDGE_V1.md` —
+  `_route_executor_receipt()` uses `subprocess.Popen` fire-and-forget
+  with both stdout/stderr to DEVNULL; child exit code never collected;
+  return value discarded at call site. If kernel daemon is down, receipt
+  silently vanishes. Violates NO RECEIPT = NO CLAIM for executor actions.
+- `docs/proposals/LINTER_DOCUMENT_GLOBAL_RECEIPT_PARDON_V1.md` —
+  `lint_text()` line 124 does a single `_RECEIPT_PATTERN.search(text)`
+  over the entire input; one receipt marker anywhere pardons ALL HARD
+  violations everywhere in the document. Tests only exercise short
+  single-context strings so the gap is latent in tests, live in `--file`
+  and `--stdin` modes.
+- Searched for the 3 unlocated findings: `twin-sim economics` has zero
+  hits outside STATE.md itself. `LoRA masking` has generic ML training
+  references only (`data/mlx_lora/`), no specific bug. `batch-runner
+  reruns` maps to `goblin_batch_runner.py` which appends to existing
+  JSONL on re-run (line 437, mode "a") while overwriting the receipt
+  (line 476, mode "w") — a re-run doubles epoch data without receipt
+  awareness. All 3 need operator pointer to confirm which specific
+  finding was originally flagged.
+
+Score: 3 of 6 report-only findings now have verified proposals. 3
+remaining are unlocatable without operator input. 4+3 commits held
+locally, not pushed.
