@@ -98,6 +98,14 @@ checkable, not just well-written.
 
 ## Model routing — the honest state, printed with every run
 
+**Every local-model member call routes through `/local-dispatch`**, not
+a hand-rolled dispatch — per the operational rule accepted alongside
+that skill: any local mining/council/CHIDDUSH/compression task invokes
+`/dispatch` unless explicitly overridden. `/local-dispatch` resolves
+the model via `tools/model_registry.py resolve(<ROLE>)`, so a council
+member's model comes from the same single source of truth this table
+already describes, not a second hardcoded lookup living in this file.
+
 For any `--full` run, print the actual routing table used before the
 verdict — which member ran on which model, live, not assumed. This
 exists specifically because of an unresolved finding from this

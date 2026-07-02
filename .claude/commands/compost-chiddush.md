@@ -19,10 +19,10 @@ Lane assignment:
 - **GOBLIN-4 KNOWLEDGE_CORPUS**: `helen_os/knowledge/` — hardening rate (how many candidate patterns became live lint)
 - **GOBLIN-5 GARDENING_CONTROL**: `temple/gardens/gardening_garden/` — zero-pressure baseline, template invariance measurement
 
-Each GOBLIN: read-only, bounded to ~30 file reads, one tranche, halt before opening a second.
+Each GOBLIN: read-only, bounded to ~30 file reads, one tranche, halt before opening a second. Model routing: each lane invokes `/local-dispatch` — never a hand-rolled curl or an unresolved model string — per the operational rule accepted alongside the local-dispatch skill (any mining/CHIDDUSH task routes through `/dispatch` unless explicitly overridden).
 
 ### Phase 2: CHIDDUSH Compression (1 agent)
-Takes all 5 GOBLIN outputs. Compresses into a single original law. Must run its own circularity self-check. Must name 2+ test predictions the law makes about specific artifacts.
+Takes all 5 GOBLIN outputs. Compresses into a single original law. Must run its own circularity self-check. Must name 2+ test predictions the law makes about specific artifacts. Also routes through `/local-dispatch` — DEEPSEEK r1:14b is the registered fit for compression/reasoning work (`tools/model_registry.py` role `mesh_REASONING`), with cloud fallback only on 2x failure.
 
 ### Phase 3: HAL Adversarial Gate (1 agent)
 Re-verifies every claim against fresh metal (re-reads the actual files, does NOT trust prior reports). Looks for:
