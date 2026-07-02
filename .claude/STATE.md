@@ -32,6 +32,7 @@ the next session restarts from zero.
 - **ktau_needle_fix**: the K-tau linter needle `"datetime.now("` matches the doc-mandated `datetime.now(timezone.utc)`. Proven on metal (permanent Δ>0 in tests/test_transport_drift.py). Fix is operator-gated. Acceptance test already exists.
 - **GOBLIN-RELAY-1**: dual-miner dispatch (ORNITH overlay-v3 vs helen-gemma4-12b) staged, awaiting local GPU dispatch after v4 eval gate. Output → CHIDDUSH+HAL gate.
 - **6 report-only review findings**: executor burn-on-failure, fire-and-forget ledger bridge, linter document-global pardon, twin-sim economics, LoRA masking, batch-runner reruns. All need operator decision.
+- **Cross-seat skill-convention drift**: this repo (helen-conquest, cloud) and the local seat (helen-os-JMTC, Windows/WSL) both independently built a `local-dispatch` skill this session — strong convergence on it being the right gap to fill, but with two different, incompatible conventions: `.claude/commands/<name>.md` flat files (verified working here) vs `.claude/skills/<name>/SKILL.md` with YAML frontmatter + a `SKILL_REGISTRY.json` (that seat's harness). Same disease as HAL's 3-way model drift, caught same-session instead of 17 days later. Not reconciled — different repos, different machines, nothing here can touch the other. Worth naming explicitly if a unified skill format across seats ever becomes a goal.
 
 ## Lessons learned (stage 4 distillations)
 

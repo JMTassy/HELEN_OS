@@ -1,0 +1,2 @@
+date,event_id,source,external_user_present,stake_type,deviation_observed,governance_response,permanent_rule_change,test_or_fixture_added,operator_time_minutes,authority_leakage,revocation_used,transaction_successful,notes
+2026-07-02,AR-TERMINATION-002,helen-conquest,false,internal_audit,0/931 PROPOSED items have owner/review_date/kill_criterion,built lifecycle_stub_inserter.py (dry-run) + this tracker,true,true,45,false,false,true,"seed row -- a real observed event, not fabricated data. Zero external-user events exist yet -- that's the finding, not a gap in this file."
