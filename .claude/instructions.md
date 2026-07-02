@@ -2,11 +2,25 @@
 
 Standing brief for every session. Read before engaging.
 
-## Memory Protocol
+## Memory Protocol (the compound loop)
 
 Every time the operator shares major context about HELEN OS, the business, or architectural decisions, update `.claude/memory.md` with the key details.
 
 Always reference past decisions in memory.md before making new recommendations.
+
+**The 5-stage progression (Continual Learning Bench):** FAIL → INVESTIGATE → VERIFY → DISTILL → CONSULT. The state file `.claude/STATE.md` is where each stage's output is written.
+
+- **Read at session start.** Begin every session by reading `.claude/STATE.md` and the relevant skills. Without this, even a top-tier model regresses to restart-from-zero behavior.
+- **Write before walking away.** End every session by updating `.claude/STATE.md` — what was tried, what passed, what failed, what new rules survived. If the session doesn't finish with a write, the next one restarts from zero.
+- **Distill into the skill, not just STATE.** After any non-trivial failure, write the lesson into the skill that produced the artifact (`.claude/commands/*.md`), not only STATE.md. STATE.md is session-scoped; skills travel. The skill gets sharper every run.
+
+## Verification Protocol (maker ≠ grader)
+
+The agent that produces an artifact NEVER verifies it. Spawn an independent verifier (`/verify`) with no exposure to the maker's reasoning — this is both the K2 anti-violation (proposer ≠ validator) and the Fable-5 verifier-sub-agent pattern.
+
+- Before reporting anything "done", point to the result that proves it. Unverified = say so plainly, marked UNVERIFIED, not FIXED.
+- A REFUTED verdict HALTS the pipeline. Do not proceed past a failed gate.
+- Vision artifacts (UI, charts) require vision-verify — text-only verifiers miss the failure that matters.
 
 ## Response Rules
 
