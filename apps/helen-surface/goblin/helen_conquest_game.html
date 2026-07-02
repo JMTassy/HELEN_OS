@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HELEN DREAMS OF CONQUEST — Knowledge Game</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:100%;height:100%;overflow:hidden;background:#0a0806;
+    font-family:'Courier New',Courier,monospace;color:#f0d9a8}
+
+  /* ── starfield canvas ── */
+  #stars{position:fixed;inset:0;z-index:0}
+
+  /* ── HUD chrome ── */
+  #hud{position:fixed;top:0;left:0;right:0;z-index:10;pointer-events:none;
+       display:flex;flex-direction:column;align-items:center;padding-top:22px;
+       text-shadow:0 2px 12px rgba(0,0,0,.8)}
+  #title{font-size:13px;letter-spacing:.42em;text-transform:uppercase;color:#f0d9a8;font-weight:400}
+  #subtitle{margin-top:6px;font-size:10px;letter-spacing:.08em;color:rgba(240,217,168,.5);
+            font-style:italic}
+
+  #badge{position:fixed;bottom:14px;left:14px;z-index:10;
+         background:rgba(10,8,6,.72);border:1px solid rgba(184,134,11,.35);
+         border-radius:3px;padding:8px 12px;backdrop-filter:blur(6px);
+         font-size:9.5px;letter-spacing:.05em;color:rgba(240,217,168,.6);line-height:1.6}
+  #badge b{color:#d9b464;font-weight:400;letter-spacing:.1em}
+
+  /* ── game container ── */
+  #game{position:fixed;inset:0;z-index:5;display:flex;align-items:center;justify-content:center}
+
+  /* ── screens ── */
+  .screen{display:none;flex-direction:column;align-items:center;text-align:center;
+          max-width:620px;padding:0 24px}
+  .screen.active{display:flex}
+
+  /* ── start screen ── */
+  #start-screen .wonder-ring{width:140px;height:140px;border:1px solid rgba(217,180,100,.3);
+    border-radius:50%;display:flex;align-items:center;justify-content:center;
+    margin-bottom:28px;position:relative}
+  #start-screen .wonder-ring::before{content:'';position:absolute;inset:8px;
+    border:1px solid rgba(217,180,100,.15);border-radius:50%}
+  .orb{width:18px;height:18px;background:radial-gradient(circle at 40% 35%,#fff2cf,#d9a836 60%,#8a5a1e);
+    border-radius:50%;box-shadow:0 0 20px rgba(255,207,138,.5)}
+
+  .start-title{font-size:18px;letter-spacing:.3em;text-transform:uppercase;color:#f5e2b8;margin-bottom:10px}
+  .start-sub{font-size:11px;color:rgba(240,217,168,.55);font-style:italic;margin-bottom:32px;line-height:1.6}
+
+  .btn{pointer-events:all;cursor:pointer;background:rgba(217,180,100,.12);
+       border:1px solid rgba(217,180,100,.4);border-radius:3px;
+       padding:10px 32px;font-family:inherit;font-size:11px;letter-spacing:.15em;
+       text-transform:uppercase;color:#f0d9a8;transition:all .25s ease}
+  .btn:hover{background:rgba(217,180,100,.25);border-color:#d9b464}
+
+  /* ── question screen ── */
+  #q-screen{max-width:660px}
+  .q-progress{font-size:9.5px;letter-spacing:.15em;color:rgba(240,217,168,.4);margin-bottom:6px}
+  .q-wonder{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#d9b464;margin-bottom:14px}
+  .q-text{font-size:14px;line-height:1.7;color:#f5e2b8;margin-bottom:28px;max-width:560px}
+  .q-hint{font-size:9.5px;color:rgba(240,217,168,.35);font-style:italic;margin-bottom:18px}
+
+  .answers{display:flex;flex-direction:column;gap:10px;width:100%;max-width:480px}
+  .ans{pointer-events:all;cursor:pointer;background:rgba(217,180,100,.06);
+       border:1px solid rgba(217,180,100,.22);border-radius:3px;
+       padding:11px 18px;font-family:inherit;font-size:11.5px;letter-spacing:.04em;
+       color:#f0d9a8;text-align:left;transition:all .2s ease;line-height:1.5}
+  .ans:hover{background:rgba(217,180,100,.14);border-color:rgba(217,180,100,.45)}
+  .ans.correct{background:rgba(74,122,58,.25);border-color:#6a9a4a;color:#c8e8a8}
+  .ans.wrong{background:rgba(184,60,40,.2);border-color:#a84a2a;color:#e8a898}
+  .ans.reveal{border-color:rgba(217,180,100,.12);color:rgba(240,217,168,.35);cursor:default}
+  .ans.reveal.correct{background:rgba(74,122,58,.15);border-color:#6a9a4a;color:#a8d898}
+
+  .q-fact{font-size:10px;color:rgba(240,217,168,.55);font-style:italic;line-height:1.6;
+          margin-top:18px;max-width:480px;opacity:0;transition:opacity .4s ease}
+  .q-fact.show{opacity:1}
+
+  .next-btn{margin-top:18px;opacity:0;transition:opacity .3s ease}
+  .next-btn.show{opacity:1}
+
+  /* ── score bar ── */
+  .score-bar{position:fixed;top:68px;right:18px;z-index:10;
+             display:flex;gap:5px;align-items:center}
+  .score-pip{width:10px;height:10px;border-radius:50%;border:1px solid rgba(217,180,100,.3);
+             background:transparent;transition:all .3s ease}
+  .score-pip.hit{background:#6a9a4a;border-color:#6a9a4a;box-shadow:0 0 6px rgba(106,154,74,.4)}
+  .score-pip.miss{background:#a84a2a;border-color:#a84a2a}
+
+  /* ── result screen ── */
+  .result-score{font-size:42px;letter-spacing:.1em;color:#d9b464;margin-bottom:6px}
+  .result-of{font-size:11px;color:rgba(240,217,168,.45);letter-spacing:.1em;margin-bottom:24px}
+  .result-title{font-size:15px;letter-spacing:.2em;text-transform:uppercase;color:#f5e2b8;margin-bottom:10px}
+  .result-msg{font-size:11px;color:rgba(240,217,168,.5);font-style:italic;line-height:1.6;
+              margin-bottom:28px;max-width:440px}
+  .result-list{font-size:10px;color:rgba(240,217,168,.4);line-height:1.8;margin-bottom:24px;text-align:left}
+  .result-list .hit::before{content:'🟢 ';font-size:8px}
+  .result-list .miss::before{content:'🔴 ';font-size:8px}
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<div id="hud">
+  <div id="title">HELEN DREAMS OF CONQUEST</div>
+  <div id="subtitle">a knowledge game dreamt in the garden · no claim of real effect</div>
+</div>
+
+<div id="badge">
+  🌿 <b>GARDEN · NO_CLAIM</b><br>
+  authority=false · canon=false · ledger_effect=none<br>
+  DREAMT ≠ CLAIMED — per GARDEN_NO_CLAIM_RULE_V0
+</div>
+
+<div class="score-bar" id="score-bar"></div>
+
+<div id="game">
+
+  <!-- START -->
+  <div class="screen active" id="start-screen">
+    <div class="wonder-ring"><div class="orb"></div></div>
+    <div class="start-title">Seven Wonders</div>
+    <div class="start-sub">
+      Seven questions about the ancient wonders of the world.<br>
+      How much do you know about what humanity once built?
+    </div>
+    <button class="btn" onclick="startGame()">BEGIN THE DREAM</button>
+  </div>
+
+  <!-- QUESTION -->
+  <div class="screen" id="q-screen">
+    <div class="q-progress" id="q-progress"></div>
+    <div class="q-wonder" id="q-wonder"></div>
+    <div class="q-text" id="q-text"></div>
+    <div class="q-hint" id="q-hint"></div>
+    <div class="answers" id="answers"></div>
+    <div class="q-fact" id="q-fact"></div>
+    <button class="btn next-btn" id="next-btn" onclick="nextQuestion()">CONTINUE</button>
+  </div>
+
+  <!-- RESULT -->
+  <div class="screen" id="result-screen">
+    <div class="result-score" id="result-score"></div>
+    <div class="result-of" id="result-of"></div>
+    <div class="result-title" id="result-title"></div>
+    <div class="result-msg" id="result-msg"></div>
+    <div class="result-list" id="result-list"></div>
+    <button class="btn" onclick="startGame()">DREAM AGAIN</button>
+  </div>
+
+</div>
+
+<script>
+// ── starfield ──────────────────────────────────────────────────────
+(function(){
+  const c = document.getElementById('stars');
+  const ctx = c.getContext('2d');
+  let w, h, pts = [];
+  function resize(){
+    w = c.width = innerWidth;
+    h = c.height = innerHeight;
+  }
+  function init(){
+    resize();
+    pts = [];
+    for(let i = 0; i < 280; i++){
+      pts.push({
+        x: Math.random() * w,
+        y: Math.random() * h * 0.7,
+        r: 0.3 + Math.random() * 1.2,
+        a: 0.15 + Math.random() * 0.45,
+        s: 0.3 + Math.random() * 0.8
+      });
+    }
+  }
+  function draw(t){
+    ctx.clearRect(0, 0, w, h);
+    for(const p of pts){
+      const flicker = 0.7 + 0.3 * Math.sin(t * 0.001 * p.s + p.x);
+      ctx.globalAlpha = p.a * flicker;
+      ctx.fillStyle = '#f5e2b8';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize', resize);
+  init();
+  requestAnimationFrame(draw);
+})();
+
+// ── question bank ──────────────────────────────────────────────────
+const QUESTIONS = [
+  {
+    wonder: "Great Pyramid of Giza",
+    question: "The Great Pyramid was the tallest man-made structure in the world for over 3,800 years. What finally surpassed it in height?",
+    answers: [
+      "Lincoln Cathedral, England",
+      "Cologne Cathedral, Germany",
+      "Hagia Sophia, Constantinople",
+      "Tower of London, England"
+    ],
+    correct: 0,
+    fact: "Lincoln Cathedral's central spire, completed around 1311, reached approximately 160 meters — finally exceeding the Great Pyramid's 146.5 meters after nearly four millennia."
+  },
+  {
+    wonder: "Hanging Gardens of Babylon",
+    question: "The Hanging Gardens are the only ancient wonder whose existence is debated by historians. Which Babylonian king is traditionally credited with building them?",
+    answers: [
+      "Hammurabi",
+      "Nebuchadnezzar II",
+      "Cyrus the Great",
+      "Sargon of Akkad"
+    ],
+    correct: 1,
+    fact: "Ancient sources credit Nebuchadnezzar II with building the gardens for his wife Amytis, who missed the green hills of her homeland Media. Some scholars now suggest they may have been in Nineveh, not Babylon."
+  },
+  {
+    wonder: "Statue of Zeus at Olympia",
+    question: "The Statue of Zeus was made by the sculptor Phidias using a technique called chryselephantine. What two materials does this term describe?",
+    answers: [
+      "Bronze and marble",
+      "Gold and ivory",
+      "Silver and cedar wood",
+      "Copper and limestone"
+    ],
+    correct: 1,
+    fact: "Chryselephantine comes from the Greek chrysos (gold) and elephantinos (ivory). The 12-meter seated Zeus had ivory skin and gold-plated drapery over a wooden frame."
+  },
+  {
+    wonder: "Temple of Artemis at Ephesus",
+    question: "The Temple of Artemis was destroyed and rebuilt multiple times. Its most infamous destruction in 356 BC was caused by an arsonist seeking fame. What was his name?",
+    answers: [
+      "Herostratus",
+      "Alcibiades",
+      "Pausanias",
+      "Eratosthenes"
+    ],
+    correct: 0,
+    fact: "Herostratus burned the temple to immortalize his name. The Ephesians made it a crime to speak his name — yet ancient historians recorded it anyway, and his act gave us the term 'herostratic fame.'"
+  },
+  {
+    wonder: "Mausoleum at Halicarnassus",
+    question: "The Mausoleum at Halicarnassus gave us the word 'mausoleum.' It was built as a tomb for which ruler?",
+    answers: [
+      "Alexander the Great",
+      "King Croesus of Lydia",
+      "Mausolus, satrap of Caria",
+      "Ptolemy I of Egypt"
+    ],
+    correct: 2,
+    fact: "Mausolus ruled Caria from 377-353 BC. His wife Artemisia II commissioned the tomb after his death. It stood for over 1,600 years before earthquakes reduced it to ruins, and Crusader knights used its stones to build a castle."
+  },
+  {
+    wonder: "Colossus of Rhodes",
+    question: "The Colossus of Rhodes was a statue of which Greek god, built to celebrate a military victory?",
+    answers: [
+      "Poseidon, god of the sea",
+      "Ares, god of war",
+      "Helios, god of the sun",
+      "Athena, goddess of wisdom"
+    ],
+    correct: 2,
+    fact: "The bronze statue of Helios stood about 33 meters tall and was built from 292-280 BC to celebrate Rhodes' successful defense against Demetrius I. It stood for only 54 years before an earthquake toppled it."
+  },
+  {
+    wonder: "Lighthouse of Alexandria",
+    question: "The Lighthouse of Alexandria, or Pharos, was one of the tallest structures in the ancient world. In which century was it finally destroyed?",
+    answers: [
+      "5th century AD",
+      "9th century AD",
+      "14th century AD",
+      "It still partially stands today"
+    ],
+    correct: 2,
+    fact: "The Pharos survived for over 1,500 years but was progressively damaged by earthquakes in 956, 1303, and 1323 AD. Its ruins were used by the Mamluk sultan Qaitbay to build a fort on the same site in 1480."
+  }
+];
+
+// ── game state ─────────────────────────────────────────────────────
+let current = 0;
+let score = 0;
+let results = [];
+let answered = false;
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function buildScoreBar(){
+  const bar = document.getElementById('score-bar');
+  bar.innerHTML = '';
+  for(let i = 0; i < QUESTIONS.length; i++){
+    const pip = document.createElement('div');
+    pip.className = 'score-pip';
+    pip.id = 'pip-' + i;
+    bar.appendChild(pip);
+  }
+}
+
+function startGame(){
+  current = 0;
+  score = 0;
+  results = [];
+  answered = false;
+  buildScoreBar();
+  showQuestion();
+}
+
+function showQuestion(){
+  answered = false;
+  const q = QUESTIONS[current];
+  showScreen('q-screen');
+
+  document.getElementById('q-progress').textContent =
+    `WONDER ${current + 1} OF ${QUESTIONS.length}`;
+  document.getElementById('q-wonder').textContent = q.wonder;
+  document.getElementById('q-text').textContent = q.question;
+  document.getElementById('q-hint').textContent = '';
+  document.getElementById('q-fact').textContent = '';
+  document.getElementById('q-fact').classList.remove('show');
+  document.getElementById('next-btn').classList.remove('show');
+
+  const box = document.getElementById('answers');
+  box.innerHTML = '';
+  q.answers.forEach((text, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'ans';
+    btn.textContent = text;
+    btn.onclick = () => selectAnswer(i);
+    box.appendChild(btn);
+  });
+}
+
+function selectAnswer(idx){
+  if(answered) return;
+  answered = true;
+
+  const q = QUESTIONS[current];
+  const btns = document.querySelectorAll('.ans');
+  const pip = document.getElementById('pip-' + current);
+  const isCorrect = idx === q.correct;
+
+  if(isCorrect){
+    score++;
+    btns[idx].classList.add('correct');
+    pip.classList.add('hit');
+    results.push({wonder: q.wonder, correct: true});
+  } else {
+    btns[idx].classList.add('wrong');
+    pip.classList.add('miss');
+    results.push({wonder: q.wonder, correct: false});
+  }
+
+  btns.forEach((b, i) => {
+    if(i !== idx) b.classList.add('reveal');
+    if(i === q.correct && !isCorrect) b.classList.add('correct');
+    b.style.pointerEvents = 'none';
+  });
+
+  const fact = document.getElementById('q-fact');
+  fact.textContent = q.fact;
+  setTimeout(() => fact.classList.add('show'), 200);
+
+  const next = document.getElementById('next-btn');
+  next.textContent = current < QUESTIONS.length - 1 ? 'CONTINUE' : 'SEE RESULTS';
+  setTimeout(() => next.classList.add('show'), 400);
+}
+
+function nextQuestion(){
+  current++;
+  if(current >= QUESTIONS.length){
+    showResults();
+  } else {
+    showQuestion();
+  }
+}
+
+function showResults(){
+  showScreen('result-screen');
+
+  document.getElementById('result-score').textContent = score;
+  document.getElementById('result-of').textContent = `OF ${QUESTIONS.length} WONDERS`;
+
+  const titles = [
+    {min: 0, title: 'WANDERER', msg: 'The wonders remain mysterious to you — but every journey begins with a single step across the desert.'},
+    {min: 2, title: 'SCHOLAR', msg: 'You know the names and some of the stories. The ancient builders would nod in recognition.'},
+    {min: 4, title: 'ARCHITECT', msg: 'You understand what was built and why. The knowledge of the ancients lives in your memory.'},
+    {min: 6, title: 'KEEPER OF WONDERS', msg: 'Nearly perfect. You carry the memory of what humanity once dreamed into stone and bronze.'},
+    {min: 7, title: 'DREAM SOVEREIGN', msg: 'Flawless. Every wonder stands complete in your mind — a living monument to human ambition.'},
+  ];
+
+  let rank = titles[0];
+  for(const t of titles){
+    if(score >= t.min) rank = t;
+  }
+
+  document.getElementById('result-title').textContent = rank.title;
+  document.getElementById('result-msg').textContent = rank.msg;
+
+  const list = document.getElementById('result-list');
+  list.innerHTML = results.map(r =>
+    `<div class="${r.correct ? 'hit' : 'miss'}">${r.wonder}</div>`
+  ).join('');
+}
+</script>
+</body>
+</html>
