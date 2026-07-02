@@ -1,0 +1,91 @@
+{
+  "schema": "MODEL_ROUTING_REGISTRY_V1",
+  "purpose": "Single source of truth for role -> model resolution. Built because three sources (MODEL_ROUTING_V1.md, tools/hal_driver.py, .claude/memory.md) disagreed about HAL's model with nobody having reconciled it. Every call site and skill file should resolve through this registry (tools/model_registry.py), not hardcode a literal tag.",
+  "last_reconciled": "2026-07-02",
+  "authority": false,
+  "canon": false,
+  "note": "This registry does NOT itself change any running code's default. tools/hal_driver.py still defaults to deepseek-r1:14b, contradicting the resolution below. That is a live behavior change on a governance-role component and is flagged, not silently patched -- needs explicit operator GO.",
+
+  "roles": {
+    "HAL": {
+      "resolved_model": "mistral:latest",
+      "status": "RESOLVED_BUT_LIVE_CODE_MISMATCH",
+      "rationale": "MODEL_ROUTING_V1.md section 3+7 (binding, adopted 2026-05-15): HAL is a strict governance-role gate; a creative/reasoning model 'tries to reason its way around the rules instead of just applying them'. deepseek-r1 is explicitly named as a forbidden pattern for this role.",
+      "source_of_truth": "docs/spec/MODEL_ROUTING_V1.md section 3, section 7 forbidden-patterns table",
+      "contradicting_sources": [
+        {"file": "tools/hal_driver.py", "line": "5,17", "value": "deepseek-r1:14b", "note": "the spec's own named-forbidden pattern, live default"},
+        {"file": "tools/run_hal_epoch.py", "line": "14", "value": "deepseek-r1:14b", "note": "same contradiction"},
+        {"file": ".claude/memory.md", "line": "persona table, 2026-07-01", "value": "gemma4:e2b", "note": "third answer, no rationale given, 'metal-verified' against a live daemon observation, not reconciled with the binding spec"}
+      ],
+      "action_needed": "operator decision: (a) fix hal_driver.py to match the binding spec (mistral:latest), or (b) amend the spec if deepseek-r1 or gemma4:e2b is now the intended choice for a documented reason. Currently neither -- it's drift, not decision."
+    },
+    "HER": {
+      "resolved_model": "qwen3.5:9b-ud-q4",
+      "status": "RESOLVED",
+      "rationale": "Consistent across both sources: creative proposer role wants generation diversity over strict compliance.",
+      "source_of_truth": "docs/spec/MODEL_ROUTING_V1.md section 3 + .claude/memory.md persona table (agree)",
+      "fallback_chain": ["qwen3.5:9b", "gemma4:latest"]
+    },
+    "GOBLIN": {
+      "resolved_model": "gemma4:latest",
+      "status": "RESOLVED",
+      "rationale": "Mutator/miner role, not present in MODEL_ROUTING_V1.md (predates GOBLIN's naming) -- resolved from .claude/memory.md metal-verified map only, no independent second source to cross-check against.",
+      "source_of_truth": ".claude/memory.md persona table",
+      "fallback_chain": ["gemma4:e2b"],
+      "gap": "no documented rationale for why gemma4:latest specifically fits the GOBLIN role -- worth writing one down next time this is touched"
+    },
+    "HELEN_narrator": {
+      "resolved_model": "ornith-helen:v1",
+      "status": "RESOLVED_BUT_STALE",
+      "rationale": "Voice/narration role, uses the HELEN-specific fine-tune.",
+      "source_of_truth": ".claude/memory.md persona table",
+      "fallback_chain": ["gemma4:latest", "deterministic template"],
+      "gap": "ornith-helen:v4 passed its eval gate and is registered but unpromoted (per .claude/memory.md decisions log) -- this role still points at v1. Promoting v4 requires an operator .env repoint, explicitly not automated here."
+    },
+    "JESTER": {
+      "resolved_model": "gemma4:e4b",
+      "status": "RESOLVED",
+      "rationale": "Default per --model flag, same call shape as the Temple HAL judge.",
+      "source_of_truth": ".claude/memory.md persona table",
+      "fallback_chain": []
+    },
+    "CLAW": {
+      "resolved_model": null,
+      "status": "RESOLVED_BY_DESIGN",
+      "rationale": "EXECUTION layer should not be an LLM -- deterministic tool dispatcher. Both sources agree this is correct, not a gap.",
+      "source_of_truth": "docs/spec/MODEL_ROUTING_V1.md section 2 + .claude/memory.md"
+    },
+    "KERNEL": {
+      "resolved_model": "qwen3.5:9b-ud-q4",
+      "status": "RESOLVED_BUT_UNTIDY",
+      "rationale": "C-layer role.",
+      "source_of_truth": ".claude/memory.md persona table",
+      "fallback_chain": ["qwen3:14b", "gemma4:latest", "gemma4:e4b", "deepseek-r1:14b", "qwen3.5:9b"],
+      "gap": "memory.md notes 'mistral:latest still lingers here (half-migration)' -- an unfinished migration, not a resolved state. Flagged, not fixed here."
+    },
+    "mesh_CONVERSATION": {
+      "resolved_model": "qwen3.5:9b-ud-q4",
+      "status": "RESOLVED",
+      "source_of_truth": "docs/spec/MODEL_ROUTING_V1.md section 3, dispatch path 1"
+    },
+    "mesh_REASONING": {
+      "resolved_model": "deepseek-r1:14b",
+      "status": "RESOLVED",
+      "source_of_truth": "docs/spec/MODEL_ROUTING_V1.md section 3, dispatch path 1",
+      "note": "this is the ONE role where deepseek-r1 is correctly assigned -- REASONING, not the strict HAL gate. The HAL contradiction above is specifically about the role mismatch, not the model being bad in general."
+    },
+    "barbell_default_miner": {
+      "resolved_model": "helen-gemma4-12b-32k",
+      "status": "RESOLVED",
+      "rationale": "Operator-stated preference, 2026-07-02, for general local gruntwork across the newer skill system -- not part of the original per-agent MODEL_ROUTING_V1.md map, a separate later tier.",
+      "source_of_truth": ".claude/memory.md Model Routing section",
+      "fallback_chain": ["helen-gemma4-12b-64k", "ornith-helen:overlay-v3", "gemma4:latest"]
+    }
+  },
+
+  "open_migrations": [
+    "KERNEL's mistral:latest half-migration (memory.md note, unresolved)",
+    "HELEN_narrator v1 -> v4 promotion (eval-gate PASSED, operator .env repoint pending)",
+    "HAL's three-way drift (see roles.HAL.action_needed above)"
+  ]
+}
