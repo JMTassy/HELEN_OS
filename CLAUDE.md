@@ -120,6 +120,22 @@ Local HAL-role inference driver and epoch runner. Per-agent model assignment is 
 - `docs/specs/WUL_PACKET_SPEC_V0_1.md` — formal spec
 - `docs/proposals/TEMPLE_TRANSMUTATION_REQUEST_WUL_P1_VALIDATOR_V1.json` — bridge artifact from TEMPLE_200_WUL; `authority: NONE`, `bridge_status: PENDING_MAYOR_REVIEW`
 
+### WUL Reducer V0 (admission boundary, reference implementation)
+- `src/wul_reducer.py` — pure function of `(state, target, claim, replay_context)`; NON-SOVEREIGN / NO_SHIP, no ledger effect. Two hardening rules: **replay-derived predicates** (`typed`, `has_hash`, `gate_green`, `seal_valid`, `det_replay` are recomputed, never trusted as caller flags — a claim cannot describe its own validity) and **un-self-conferrable seal** (CanonAdmit needs an external seal object bound to the candidate hash, issued by a role outside the proposer; bare `human_seal=true` is ignored). Unlisted → fail closed.
+- Spec: `docs/wul/REDUCER_SPEC_V0.md` (+ `REDUCER_REVIEW_NOTES.md`); rules/schema: `docs/specs/WUL_REDUCER_RULES_V1.md`, `WUL_CLAIM_SCHEMA_V1.md`, `wul_claim_schema_v0.json`
+- Tests: `tests/test_wul_reducer.py`; mutation testing + reference vectors in `sandbox/wul_reducer/`
+
+### Transport Theory of Observations (`transport/`)
+Standalone mathematical module — **no HELEN, RH, or AI dependencies**; imports do not cross into `helen_os/`. Core objects: `ObservationMap` (R : S → L), `FiberSet`, `GeneralizedKernel`, `QuotientSpace`, `Reconstructor`, plus category/bundle/factorization/disintegration/statistical layers. Tests: `tests/test_transport*.py` (5 files). Companion LaTeX paper + volume docs in `docs/proposals/TRANSPORT_THEORY_*` (authority: false).
+
+### DO_NEXT API boundary (`helen_os/api/do_next_v1.py`)
+- `helen_os/executor/bounded_executor_v1.py` + `do_next_v1.py` — bounded session/receipt API, served by root `helen_api_server_v1.py` (Flask, `localhost:8000`)
+- Audit gate is **structural, not textual**: `epoch >= 1000` → REJECT (session ceiling), explicit `policy_directive` field → DEFER/REJECT. Free-text "REJECT"/"DEFER" keywords deliberately do NOT route (`tests/test_do_next_audit_gate.py` proves it).
+- Executor→ledger bridge: after every BoundedExecutor SUCCESS, `_route_executor_receipt()` fires `helen_say.py --op dialog` via fire-and-forget `subprocess.Popen`; bridge failures never propagate to the HTTP response (`tests/test_executor_ledger_bridge.py`)
+
+### Autoresearch safe scanner (`temple/autoresearch/`)
+`autoresearch_policy.py` (pure-function policy engine) + `autoresearch_scanner.py` (dry-run CLI). Packet invariants (`authority=false`, `ledger_effect=none`, `reducer_required=true`) are structurally enforced; outbox-only writes (`temple/autoresearch/outbox/`), 8 stop conditions fail closed, no ledger/network/subprocess. Doctrine: `docs/proposals/HELEN_AUTORESEARCH_SAFE_ARCHITECTURE_V1.md`. Tests: `tests/test_autoresearch_policy.py` (34 tests). Autoresearch reads; only the reducer writes — autoresearch has no reducer access.
+
 ## Governance Artifacts
 
 ### `GOVERNANCE/CLOSURES/`
@@ -154,6 +170,7 @@ Local HAL-role inference driver and epoch runner. Per-agent model assignment is 
 | LEGORACLE | `helen_os/governance/legoracle_gate_poc.py` | Obligation checking, deterministic SHIP/NO_SHIP, replay-gated (E12) |
 | Kernel Guard | `tools/kernel_guard.sh` | Only allowed writers may touch ledger |
 | Doctrine Admission (DRAFT) | `DOCTRINE_ADMISSION_PROTOCOL_V1` + fixtures | §4 gate for doctrine-class artifacts; fixtures landed, gate not yet active |
+| Authority Language Linter | `tools/validators/authority_language_linter.py` | Authority laundering — admission/reducer/canon language without an attached real reducer receipt; fails closed (`--text`/`--file`/`--stdin`, exit 1 = BLOCK); tests: `tests/test_authority_language_linter.py` (36) |
 
 ## PULL-Mode Tranche Discipline
 
@@ -184,7 +201,7 @@ AUTORESEARCH operates under PULL-mode:
 There are **two test trees** with different scopes:
 
 - `helen_os/tests/` — autoresearch, ledger validator, LEGORACLE replay gate, bounded executor, etc. This is what `make test` runs.
-- `tests/` (repo root) — numbered constitutional invariants (`test_1_mayor_only_writes_decisions.py` … `test_9_mayor_io_allowlist.py`) plus `governance_regression/`. **Not covered by `make test`** — invoke explicitly, e.g. `.venv/bin/pytest tests/ -q`.
+- `tests/` (repo root) — numbered constitutional invariants (`test_1_mayor_only_writes_decisions.py` … `test_9_mayor_io_allowlist.py`), `governance_regression/`, plus the newer non-sovereign suites (transport, WUL reducer, authority linter, autoresearch policy, DO_NEXT audit gate, executor↔ledger bridge, garden). **Not covered by `make test`** — invoke explicitly, e.g. `.venv/bin/pytest tests/ -q`.
 
 Commands:
 
@@ -331,6 +348,18 @@ Multiple chat entry points exist; they are **not interchangeable**.
 `docs/HELEN_OS_CTO_GUIDE_V1_1.md` — authoritative architectural state at 2026-06-13 (post seq-repair). Read this first when orienting in the kernel layer. Contains: component live/status table, chain status, admission pipeline, firewall bypass record.
 
 ## Current State
+
+### Update 2026-06-21 (HEAD = 12ec35a, ~50 commits since 2026-06-15)
+
+Work concentrated in the **WUL admission**, **DO_NEXT boundary**, **autoresearch**, and **standalone-math** lanes. Kernel, gates, and firewall unchanged. Highlights (full detail in the architecture sections above):
+- **WUL Reducer V0** shipped: `src/wul_reducer.py` + spec sync (`docs/wul/REDUCER_SPEC_V0.md`) + mutation coverage; ghost reject code closed — `REJECT_CODES` now exactly matches spec §5. K2 peer-review pass recorded in `docs/wul/REDUCER_REVIEW_NOTES.md` (no exploit found).
+- **DO_NEXT hardening** (HAL fixes #1/#3): keyword audit gate replaced by structural policy engine (epoch ceiling + `policy_directive`); executor receipts wired to the sovereign ledger via fire-and-forget Popen; avatar 404 guard, empty-inference 503, execution-registry persistence.
+- **Autoresearch safe architecture V1**: bounded non-sovereign scanner in `temple/autoresearch/` — outbox-only, 8 stop conditions, 34 tests.
+- **Authority language linter**: `tools/validators/authority_language_linter.py` (36 tests) — blocks admission/canon language lacking a real reducer receipt.
+- **Transport Theory of Observations**: standalone `transport/` module (29 tests) + LaTeX paper V0 + Volume I/II chapters (`docs/proposals/TRANSPORT_THEORY_*`). No HELEN dependencies by design.
+- **HER fine-tune lane** (non-sovereign, NO_SHIP): SFT data `data/helen_sft*.jsonl`, MLX/Unsloth LoRA prep in `data/mlx_lora/` (`TRAIN_HELEN_E2B.md`), held-out adversarial eval via `scripts/eval_helen.py` (`--mlx-model` for local checkpoints). Osaurus admission-seam design consolidated in `docs/proposals/`; χ-invariants bound (χ_gov/χ_mem hold, χ_med open).
+- **TEMPLE gardens**: `TEMPLE_CONQUEST_TWIN` live sim (T223), CONQUEST autoresearch batch 001 (10 epochs, NO_CLAIM), goblin garden auto-eval; Avalon 300-epoch loop quarantined under `temple/gardens/_quarantine_avalon_runs_300_epoch_loop/` → validator GREEN. `scripts/helen_garden.py` ASCII KB visualizer (read-only, deterministic render).
+- **PILE B/C**: scaffold path/import fixes; BOUNDED_RECEIPT doctrine + goblin manifesto.
 
 ### Update 2026-06-15 (HEAD = 4d1e185)
 

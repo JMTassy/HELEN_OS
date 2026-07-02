@@ -52,80 +52,95 @@ CLAUDE.md — AUTO-GENERATED LINE INDEX
     - ### WUL Packet Validator (P1 compile-time)
       Lines 113–122 | Anchor: #wul-packet-validator-p1-compile-time
 
+    - ### WUL Reducer V0 (admission boundary, reference implementation)
+      Lines 123–127 | Anchor: #wul-reducer-v0-admission-boundary-reference-implementation
+
+    - ### Transport Theory of Observations (`transport/`)
+      Lines 128–130 | Anchor: #transport-theory-of-observations-transport
+
+    - ### DO_NEXT API boundary (`helen_os/api/do_next_v1.py`)
+      Lines 131–135 | Anchor: #donext-api-boundary-helenosapidonextv1py
+
+    - ### Autoresearch safe scanner (`temple/autoresearch/`)
+      Lines 136–138 | Anchor: #autoresearch-safe-scanner-templeautoresearch
+
   - ## Governance Artifacts
-    Lines 123–124 | Anchor: #governance-artifacts
+    Lines 139–140 | Anchor: #governance-artifacts
 
     - ### `GOVERNANCE/CLOSURES/`
-      Lines 125–129 | Anchor: #governanceclosures
+      Lines 141–145 | Anchor: #governanceclosures
 
     - ### `GOVERNANCE/TRANCHE_RECEIPTS/`
-      Lines 130–133 | Anchor: #governancetranchereceipts
+      Lines 146–149 | Anchor: #governancetranchereceipts
 
     - ### `oracle_town/protocols/`
-      Lines 134–139 | Anchor: #oracletownprotocols
+      Lines 150–155 | Anchor: #oracletownprotocols
 
     - ### `oracle_town/audits/`
-      Lines 140–145 | Anchor: #oracletownaudits
+      Lines 156–161 | Anchor: #oracletownaudits
 
   - ## Gates
-    Lines 146–157 | Anchor: #gates
+    Lines 162–174 | Anchor: #gates
 
   - ## PULL-Mode Tranche Discipline
-    Lines 158–166 | Anchor: #pull-mode-tranche-discipline
+    Lines 175–183 | Anchor: #pull-mode-tranche-discipline
 
   - ## Schema Authority
-    Lines 167–173 | Anchor: #schema-authority
+    Lines 184–190 | Anchor: #schema-authority
 
   - ## Key Invariants
-    Lines 174–181 | Anchor: #key-invariants
+    Lines 191–198 | Anchor: #key-invariants
 
   - ## Test Suite
-    Lines 182–212 | Anchor: #test-suite
+    Lines 199–229 | Anchor: #test-suite
 
   - ## CI Pipeline
-    Lines 213–227 | Anchor: #ci-pipeline
+    Lines 230–244 | Anchor: #ci-pipeline
 
   - ## AGENTS.md — Subagent Role
-    Lines 228–236 | Anchor: #agentsmd-subagent-role
+    Lines 245–253 | Anchor: #agentsmd-subagent-role
 
   - ## Setup
-    Lines 237–249 | Anchor: #setup
+    Lines 254–266 | Anchor: #setup
 
   - ## Running HELEN
-    Lines 250–302 | Anchor: #running-helen
+    Lines 267–319 | Anchor: #running-helen
 
     - ### Packaging note
-      Lines 303–305 | Anchor: #packaging-note
+      Lines 320–322 | Anchor: #packaging-note
 
   - ## Chat Surfaces
-    Lines 306–320 | Anchor: #chat-surfaces
+    Lines 323–337 | Anchor: #chat-surfaces
 
   - ## Operational Notes
-    Lines 321–328 | Anchor: #operational-notes
+    Lines 338–345 | Anchor: #operational-notes
 
   - ## Key Reference
-    Lines 329–332 | Anchor: #key-reference
+    Lines 346–349 | Anchor: #key-reference
 
   - ## Current State
-    Lines 333–334 | Anchor: #current-state
+    Lines 350–351 | Anchor: #current-state
+
+    - ### Update 2026-06-21 (HEAD = 12ec35a, ~50 commits since 2026-06-15)
+      Lines 352–363 | Anchor: #update-2026-06-21-head-12ec35a-50-commits-since-2026-06-15
 
     - ### Update 2026-06-15 (HEAD = 4d1e185)
-      Lines 335–345 | Anchor: #update-2026-06-15-head-4d1e185
+      Lines 364–374 | Anchor: #update-2026-06-15-head-4d1e185
 
     - ### Update 2026-06-03 (114 commits since the 2026-05-06 snapshot below)
-      Lines 346–356 | Anchor: #update-2026-06-03-114-commits-since-the-2026-05-06-snapshot-below
+      Lines 375–385 | Anchor: #update-2026-06-03-114-commits-since-the-2026-05-06-snapshot-below
 
     - ### Snapshot 2026-05-06
-      Lines 357–374 | Anchor: #snapshot-2026-05-06
+      Lines 386–403 | Anchor: #snapshot-2026-05-06
 
   - ## HELEN OS Look & Feel — Source Atlas Doctrine
-    Lines 375–399 | Anchor: #helen-os-look-feel-source-atlas-doctrine
+    Lines 404–428 | Anchor: #helen-os-look-feel-source-atlas-doctrine
 
   - ## WULMOJI Status Rendering Rule
-    Lines 400–410 | Anchor: #wulmoji-status-rendering-rule
+    Lines 429–439 | Anchor: #wulmoji-status-rendering-rule
 
   - ## Open Frontiers
-    Lines 411–415 | Anchor: #open-frontiers
+    Lines 440–444 | Anchor: #open-frontiers
 
 ================================================================================
 
