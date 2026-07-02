@@ -1,94 +1,160 @@
-# HELEN Council — Five-Advisor Deliberation
+# HELEN Council — Multi-Round, Multi-Model Deliberation
 
-Adapted from the generic 5-advisor council pattern. Not five invented
-personas — five roles HELEN already has, reused for their actual fit.
+Adapted from `0xNyk/council-of-high-intelligence` (18-persona multi-
+provider council). Kept: the structural mechanisms — restate gate,
+cross-examination, dissent enforcement, counted tie-break. Not kept:
+the persona count. Their "18" is sized to their provider access
+(Claude/OpenAI/Gemini/Ollama/NIM/Cursor). HELEN's real diversity
+ceiling is **~6 genuinely distinct model backends** (see `ROUTING.md`)
+— padding to 18 personas on 6 real models would mean most "members"
+are costume changes on the same model, exactly the failure mode their
+own README calls out. Roster size follows model diversity, not vanity.
 
 ## Inputs
 
-$ARGUMENTS — the question or decision to put before the council.
+$ARGUMENTS — the question, plus an optional mode flag: `--quick`
+(default), `--full`, `--duo <role1>,<role2>`.
 
-## The five advisors (mapped, not invented)
+## Modes
 
-| # | Role | HELEN persona | Why the fit is exact, not forced |
+| Mode | Rounds | Roster | When |
 |---|---|---|---|
-| 1️⃣ | **Opposer** | **HAL** | Already the strict, rule-following gate. `MODEL_ROUTING_V1.md` names the exact failure mode a good Opposer avoids: a model that "tries to reason its way around the rules" instead of just applying them. |
-| 2️⃣ | **Essential Thinker** | **JESTER** | Previously an undefined canon role (model-assigned, no doctrine). The jester's actual function — say the unsayable, cut pretense, ignore what the room wants to hear — *is* "ignore the frills, solve the real problem." This gives JESTER a job. |
-| 3️⃣ | **Expander** | **HER** | Already the proposer: "creative cognition... generation diversity > strict compliance." Exact match, no adaptation needed. |
-| 4️⃣ | **Outside Perspective** | **GOBLIN** | `compost-chiddush.md` already specifies GOBLIN lanes as "independent... blind to what the others surface." That blindness-to-priors *is* the outside perspective — someone who doesn't know the assumptions, by design. |
-| 5️⃣ | **Implementer** | **CLAW** | Already "deterministic tool dispatcher... EXECUTION layer should not be an LLM." No cognition, no opinions, just next practical steps. Exact match. |
+| `--quick` | 2 (independent → synthesis) | 5 (original mapping) | routine questions, fast |
+| `--full` | 3 (independent → cross-exam → final) | 6, cross-model routed | consequential decisions |
+| `--duo <a,b>` | 2 (dialectic) | 2, deliberately opposed | exploring one specific tension |
+
+## The roster — sized to real model diversity, not a target number
+
+| Role | HELEN persona | Backend (Full mode) | Why this backend, not just this prompt |
+|---|---|---|---|
+| **Opposer** | HAL | *[flagged — see Model routing]* | strict gate; needs a model that doesn't reason around rules |
+| **Essential Thinker** | JESTER | `deepseek-r1:14b` | reasoning-distilled models are good at stripping to real structure — genuine fit, not arbitrary assignment |
+| **Expander** | HER | `helen-gemma4-12b-32k` | HELEN-tuned, creative-role default per `ROUTING.md` |
+| **Outside Perspective** | GOBLIN | `ornith-helen:overlay-v3` | deliberately a *different* backend than HER — GOBLIN's doctrine is "blind to priors," so cross-model independence matters more here than for any other role |
+| **Systems Voice** *(new)* | KERNEL | `qwen3.5:9b-ud-q4` or `qwen3:14b` | second-order/whole-system consequence tracing — a genuine gap in the original 5, filled by a genuinely different model family, not a re-flavored existing one |
+| **Implementer** | CLAW | deterministic, no LLM | unchanged — "EXECUTION layer should not be an LLM" was already correct |
+
+Quick mode uses the original 5 (Opposer/Essential/Expander/Outside/
+Implementer) and does not guarantee cross-model routing — it's the
+fast path, and the tradeoff is stated, not hidden.
 
 ## Recipe
 
-1. **Activate all five in parallel, each briefed only with the question
-   and their own role** — not the other advisors' framing, not each
-   other's output. This is the GOBLIN-lane discipline applied to all
-   five, not just #4: cross-contamination between advisors defeats the
-   point of having five distinct angles.
-2. **Every advisor marks low-confidence claims UNVERIFIED or says "I
-   don't know"** — this is not new for HELEN, it's the existing
-   Verification Protocol (`instructions.md`) applied to opinion, not
-   just code: unverified is a valid, required answer, not a failure.
-3. **MAYOR phase** — package the five outputs into one comparative
-   packet. MAYOR does not judge, does not eliminate, does not add
-   claims — only organizes, and explicitly flags where advisors
-   contradict each other. Contradiction is signal, not noise to smooth
-   over at this stage.
-4. **REDUCER phase, independent pass** — eliminate weak opinions and
-   produce the one summary. Proposer≠validator: REDUCER must not be
-   the same context that ran MAYOR's packaging, per the existing
-   MAYOR-prepares/REDUCER-decides split (`CLAUDE_MAYOR_CODEX.md`).
+### 0. Problem Restate Gate (new — before any analysis)
 
-## What "eliminate weak opinions" actually means
+Every member restates the question in their own words *before* seeing
+each other's output. If **3 or more members restate it differently**,
+say so explicitly in the final verdict, ahead of any answer: the
+question itself may be the problem, not the space of answers to it.
 
-Not "pick a winner." An advisor's position is eliminated only if:
-- another advisor directly rebuts it, **and**
-- nothing in a fresh read defends it after the rebuttal
+### 1. Round 1 — independent analysis
 
-Otherwise: **surviving disagreement is reported as the finding.** False
-consensus is worse than visible dissent — this follows directly from
-the anti-K2 doctrine already governing this repo (convergence without
-independent verification is suspect, not reassuring).
+Each member gets only: the question + their role definition + the
+restated versions (not attributed to who said what, to avoid anchoring
+on a specific member's framing). Blind to each other's analysis.
 
-## Model routing — flagged, not resolved
+### 2. Round 2 — cross-examination (Full mode only)
 
-`HER` and `GOBLIN`(Expander/Outside) route per `MODEL_ROUTING_V1.md`
-cleanly: big/creative. `HAL`(Opposer) is where this skill must NOT
-hardcode a tag: as of this writing, HAL's model assignment is drifted
-across three disagreeing sources (spec says `mistral:latest`, live
-code in `tools/hal_driver.py` runs `deepseek-r1:14b` — the spec's own
-named forbidden pattern — and this session's `memory.md` says a third
-thing, `gemma4:e2b`). Until that's resolved, this skill uses whatever
-HAL is actually configured to run live, and says so in the output —
-it does not silently pick one and paper over the drift.
+Each member reads all Round-1 output and must do one of two things,
+explicitly, for at least one other member's claim:
+- **rebut** a specific claim with a specific reason, or
+- **support** a specific claim with independent reasoning of their own
+
+No member may pass this round with only "I agree with everyone" —
+that's not cross-examination, it's noise with extra steps.
+
+### 3. Dissent enforcement (new)
+
+After cross-examination, check agreement. **If more than 70% of
+members converge on the same position, two members — preferably a
+polarity pair (Opposer/Expander, Outside/Implementer) — are required
+to write a forced steelman of the rejected minority view**, even if
+they don't believe it. Early consensus is exactly when it's cheapest
+to manufacture false confidence, so this is where the check has to
+bite hardest.
+
+### 4. Round 3 — final positions (Full mode only)
+
+Each member states their final position given Round 2. Positions may
+change; a changed position must say what specifically changed it.
+
+### 5. MAYOR phase — package, don't judge
+
+Organize all rounds into one comparative packet. No new claims, no
+elimination yet — flag contradictions explicitly, including ones that
+survived cross-examination unresolved.
+
+### 6. REDUCER phase — counted tally, not prose impression
+
+An opinion is eliminated only if rebutted **and** left undefended.
+Count it, don't eyeball it: for each contested claim, tally
+support-votes vs. rebut-votes across all members (weighted 1 per
+member, 0.5 per self-declared UNVERIFIED). A tie stays a tie — report
+it as surviving disagreement, don't break it with a narrative flourish.
+This is the fix their own project made in its most recent commit
+(`68cd247`, "counted weighted tally instead of a prose impression") —
+adopted here for the same reason: REDUCER's synthesis has to be
+checkable, not just well-written.
+
+## Model routing — the honest state, printed with every run
+
+For any `--full` run, print the actual routing table used before the
+verdict — which member ran on which model, live, not assumed. This
+exists specifically because of an unresolved finding from this
+session: **HAL's model assignment is drifted three ways** (canonical
+spec says `mistral:latest`; live code in `tools/hal_driver.py` runs
+`deepseek-r1:14b` — the spec's own named-forbidden pattern; this
+session's `memory.md` says `gemma4:e2b`). A council run is actually a
+good forcing function for catching this kind of drift live: if HAL and
+JESTER are supposed to be on different backends but the routing table
+prints the same resolved model for both, that's the bug surfacing on
+its own, not something you had to go looking for.
+
+Until HAL's drift is resolved, `--full` mode uses whatever HAL is
+*actually* configured to run and prints it — it does not silently pick
+the "correct" one per the spec.
 
 ## Output format
 
+Leads with what's unresolved, not with the answer — inverted from a
+normal report, deliberately:
+
 ```
-🏛️ COUNCIL — VERDICT
-⚔️ OPPOSER (HAL) — attack surfaced
-🎯 ESSENTIAL (JESTER) — real problem, stripped
-🌱 EXPANDER (HER) — opportunity surfaced
-👁️ OUTSIDE (GOBLIN) — missing obvious fact
-🔧 IMPLEMENTER (CLAW) — next steps
-🧾 SURVIVING DISAGREEMENT — [none | named, if any]
-🚦 ONE SUMMARY
+🏛️ COUNCIL — [QUICK | FULL | DUO]
+❓ RESTATE GATE — [aligned | 3+ divergent readings: question may be the problem]
+🧾 UNRESOLVED — named, not smoothed over
+🚦 RECOMMENDED NEXT STEPS
+───────────────────────────
+⚔️ OPPOSER
+🎯 ESSENTIAL
+🌱 EXPANDER
+👁️ OUTSIDE
+🔧 IMPLEMENTER
+🌐 SYSTEMS (Full mode only)
+───────────────────────────
+🗳️ TALLY — counted, per contested claim
+🔀 ROUTING TABLE (Full mode only) — member → actual model used
 ```
 
 ## Constraints
 
-- Never let the REDUCER summary paper over real, surviving
-  disagreement between advisors — say it plainly if it's there.
-- "I don't know" is expected output for any advisor whose confidence
-  is genuinely low, not a fallback for when you can't think of
-  anything.
-- MAYOR and REDUCER must be separate context/passes — packaging and
-  verdict collapsing into one step is the exact violation the split
-  exists to prevent.
+- Never let the tally or synthesis paper over real, surviving
+  disagreement — a tie is a reportable outcome, not a synthesis
+  failure.
+- "I don't know" / UNVERIFIED remains valid output for any member —
+  unchanged from the original council skill.
+- MAYOR and REDUCER stay separate passes — packaging ≠ verdict,
+  unchanged.
+- Roster size is capped by genuine model diversity, not by matching
+  any external project's member count. If HELEN's local model
+  inventory grows past 6 real families, the roster can grow with it —
+  not before.
 
 ## Loop Engineering (Fable)
 
-Light question → run inline, five short takes plus one synthesis, no
-subagent spawn needed. Consequential decision, or ultracode active →
-`parallel()` the five advisors as independent agent calls (+ MAYOR +
-REDUCER = 7 calls total), so blindness-to-each-other is structurally
-enforced rather than just instructed.
+`--quick` runs inline, no subagent spawn needed. `--full` fans out as
+6 parallel `agent()` calls for Round 1 (genuinely blind), a `pipeline()`
+for Round 2 (each needs to see Round 1's full set), then MAYOR → REDUCER
+as two more sequential calls — 6 + 6 + 2 ≈ 14 calls for a full
+consequential-decision run. Reserve `--full` for decisions that
+actually warrant that cost; `--quick` for everything else.
