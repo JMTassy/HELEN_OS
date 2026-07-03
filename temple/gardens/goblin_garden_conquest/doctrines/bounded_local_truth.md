@@ -11,6 +11,8 @@ captured: 2026-06-21
 
 # Bounded Local Truth — CONQUEST Application
 
+**CLAIM_TYPE: draft_doctrine**
+
 🔵 OBSERVED · NON_SOVEREIGN · GARDEN_ONLY · NO_CLAIM
 
 Child doctrine of `../BOUNDED_RECEIPT_DOCTRINE_V0.md`.
