@@ -85,3 +85,29 @@ of the 6 report-only findings:
 Score: 3 of 6 report-only findings now have verified proposals. 3
 remaining are unlocatable without operator input. 4+3 commits held
 locally, not pushed.
+
+**2026-07-03, push + lanes + audits (stale-note correction: the held
+commits above WERE pushed under explicit operator authorization)**:
+work branch fully pushed through `dca7124`; Lane A executed — game
+fixed (F1/F3/F4/F8) and isolated on `demo/conquest-game` off main
+(`c2a591f`+`c59653c`, pushed); fix also on work branch (`015335c`,
+held). Render-clarity audit + deployment roadmap filed as proposals.
+
+**2026-07-03, cross-seat trace (helen-os-JMTC paste, REPORTED not verified)**:
+- That seat ran the overnight verifier-gated loop: ~3050 ORNITH candidates
+  → 2 metal-verified kernel-invariant property tests → 1 surgical commit
+  `f854ed5` on `test/kernel-invariants` (2 files, +103, human-authored,
+  unpushed). **First Governance-Yield event candidate** — needs that
+  seat's `git show` + pytest output before a tracker row is written.
+- Corroborates (does not verify) ornith-helen v4 still unpromoted:
+  their `.env` reported pinned to `overlay-v3`.
+- PR #4 referent VERIFIED on this repo (open: "wire shell mode to
+  read-only executor", 2026-05-06) — their "attach to PR #4" is
+  coherent; thematic fit of kernel tests to a CLI PR is operator's call.
+- Doctrine notes to relay back: their log shorthand "commit/seal ⊢
+  admission" is wrong as written (commit ⊬ admission; operator seal ⊢);
+  and their "🟢 HELEN OS — deployed and breathing" banner is
+  render-audit pattern P4 (green-as-operational) appearing on a third
+  seat — the persona's words were doctrine-clean, the glyph leaked.
+- Their local HELEN deployment reported live: :8000 sanitized /airi/v1,
+  raw /v1 kept faceless, ORNITH overlay-v3 on :11434. NOT_CHECKED here.
