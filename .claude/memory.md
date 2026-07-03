@@ -91,3 +91,4 @@ Model-LESS governance spine: HAL-gate (deterministic rules), MAYOR-gate (sig), R
 | 2026-07-01 | WULMOJI palette locked | 3 namespaces, 14 disjointness tests |
 | 2026-07-01 | Barbell amended: middle 80% fully local (helen-gemma4-12b preferred, ORNITH/GEMMA/DEEPSEEK) | Operator directive |
 | 2026-07-01 | ornith-helen:v4 gate PASS, registered, unpromoted | Eval gate complete |
+| 2026-07-03 | Standing rule: ALL coding tasks delegate to a lower-power-model subagent (judgment per task) | Operator directive — barbell made binding; recorded in instructions.md Coding Delegation Rule |

@@ -62,6 +62,26 @@ Verification (10%): strongest available reasoning — verify against spec
 
 Roles, not model names — the registry maps role→model per seat.
 
+## Coding Delegation Rule (standing operator directive, 2026-07-03)
+
+**ALL coding tasks run in a subagent on an appropriately lower-power
+model, chosen by judgment per task.** The top-tier session model plans,
+reviews, and synthesizes — it does not write routine code inline.
+
+Cloud-seat tier guide (INVARIANT: delegate down; SCAFFOLD: the tier
+names below assume the 2026 model lineup — re-judge on registry change):
+- **haiku** — mechanical edits, renames, boilerplate, config, test
+  scaffolds from a written spec
+- **sonnet** — normal feature code, bug fixes, test suites, scripts
+- **inline (no subagent)** — only when the code IS the reasoning
+  (one-line fixes mid-investigation, surgical edits where handoff
+  costs more than the edit) or the subagent failed 2x (bounded-retry
+  axiom: escalate, don't loop)
+
+The subagent gets: the file paths, the spec/plan, the conventions to
+match — not the session's reasoning trail (maker ≠ grader stays
+intact for the review pass).
+
 ## After Any CLAUDE.md Edit
 
 ```bash
