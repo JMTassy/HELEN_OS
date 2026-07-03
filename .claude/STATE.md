@@ -40,6 +40,8 @@ the next session restarts from zero.
 - Vision-verify is underused: screenshot → verifier reads it against goal + design tokens + previous screenshot. Applies to HELEN's 10 operator surfaces (`/vision-audit`, `/surface-iterate`).
 - A skill that never gets written to is wasted scaffolding. After any non-trivial failure, write the lesson into the skill itself, not just here.
 - Convergence evidence is the strongest chiddush: when an independent external system arrives at the same structure HELEN already has, the external system is a witness, not a source. (Faust protocol ↔ gate ordering; Hekspakat 4-mode ↔ FOCUS/WITNESS/ORACLE/TEMPLE.)
+- **Governance-anchored CHIDDUSH ≫ abstract-math CHIDDUSH for yield** (cross-seat REPORTED, 2026-07-03): helen-os-JMTC's loops got ~0% survival on pure-math candidates but 5/6 sound on governance-anchored ones (q49-q54) — concrete referents (files, gates, hashes) act as informal oracles. **Implication against our own backlog**: the math garden's 80 abstract epochs (M001-M080) may have near-zero mechanization yield as posed; consider re-anchoring M-epochs to real gate/ledger code before spending mechanization tranches. Recorded because it cuts against the plan, not despite it.
+- Cross-seat triage divergence is healthy when metal-justified: they ranked q53 (MAYOR sig test) first because MAYOR was a zero-survivor invariant on their repo with a testable stub; this seat ranks q50 (fingerprint retention) first because our measured pain is 87.6% parking and our mayor is behind the sovereign firewall with root constitutional tests already covering it. Same batch, different metal, both right.
 
 ## Last session (stage 5 — resume, don't restart)
 
