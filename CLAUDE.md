@@ -332,6 +332,16 @@ Multiple chat entry points exist; they are **not interchangeable**.
 
 ## Current State
 
+### Update 2026-07-03 (HEAD = 12ec35a)
+
+Four new non-sovereign lanes since 2026-06-15; constitutional invariants, gates, and the firewall unchanged:
+
+- **Transport Theory of Observation** — `transport/` module (`fiber.py`, `kernel.py`, `observation.py`, `quotient.py`, `reconstruction.py`) + `tests/test_transport*.py` + `docs/proposals/TRANSPORT_THEOREM_V0.md` + LaTeX paper Volumes I–II (Observation Axiom, category Obs, Fundamental Factorization, finite disintegration, information geometry). PROPOSAL / non-sovereign.
+- **AUTORESEARCH safe architecture V1** — `temple/autoresearch/` (`autoresearch_policy.py` = packet validator, `autoresearch_scanner.py` = bounded non-sovereign scanner, `outbox/` = AR-*.json packets). Spec: `docs/proposals/HELEN_AUTORESEARCH_SAFE_ARCHITECTURE_V1.md`. Packets are `AUTORESEARCH_PACKET_V1`, always `authority=false`, reducer_required. Tests: `tests/test_autoresearch_policy.py`.
+- **Authority-language linter** — `tools/validators/authority_language_linter.py` (36 tests): hygiene gate against admission-language laundering ("this is canonical", self-admission phrasing) in non-sovereign artifacts.
+- **do_next structural policy engine** — `helen_os/api/do_next_v1.py` replaces the old keyword audit gate; executor receipts now reach the sovereign ledger only via the admissible `helen_say` path (HAL fixes #1/#3). Boundary tests: `helen_os/tests/test_do_next_boundary_v1.py`, `tests/test_do_next_audit_gate.py`.
+- **TEMPLE gardens layer** — `temple/gardens/`: `goblin_meditation_center/` (6 rooms · 5 doctrines · validator), `goblin_garden_conquest/` (25 dream epochs + `dreams/` terrarium draft + `autoresearch/` batch 001 + BEGINNER_GUIDE), `goblin_garden_conquest_avalon/` (10-epoch core + **live twin** at `twin/run_turn.py` + `twin/state/`, seeded-deterministic conquest sim, turn 223), `_quarantine_*` dirs (contained overruns). All NO_CLAIM / `authority=false`; core law **DREAMT ≠ CLAIMED**. Each garden ships its own fail-closed validator — run it before editing garden content.
+
 ### Update 2026-06-15 (HEAD = 4d1e185)
 
 Skill promotion admission pipeline is now **operationally live**:
