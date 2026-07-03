@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>HELEN DREAMS OF CONQUEST — Knowledge Game</title>
+<link rel="icon" href="data:,"><!-- suppress auto favicon request: keeps the console clean when served statically -->
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{width:100%;height:100%;overflow:hidden;background:#0a0806;
@@ -65,8 +66,11 @@
        padding:11px 18px;font-family:inherit;font-size:11.5px;letter-spacing:.04em;
        color:#f0d9a8;text-align:left;transition:all .2s ease;line-height:1.5}
   .ans:hover{background:rgba(217,180,100,.14);border-color:rgba(217,180,100,.45)}
+  /* verdicts carry a glyph channel, not colour alone (WCAG 1.4.1) */
   .ans.correct{background:rgba(74,122,58,.25);border-color:#6a9a4a;color:#c8e8a8}
+  .ans.correct::before{content:'✓ '}
   .ans.wrong{background:rgba(184,60,40,.2);border-color:#a84a2a;color:#e8a898}
+  .ans.wrong::before{content:'✗ '}
   .ans.reveal{border-color:rgba(217,180,100,.12);color:rgba(240,217,168,.35);cursor:default}
   .ans.reveal.correct{background:rgba(74,122,58,.15);border-color:#6a9a4a;color:#a8d898}
 
@@ -74,8 +78,10 @@
           margin-top:18px;max-width:480px;opacity:0;transition:opacity .4s ease}
   .q-fact.show{opacity:1}
 
-  .next-btn{margin-top:18px;opacity:0;transition:opacity .3s ease}
-  .next-btn.show{opacity:1}
+  /* visibility:hidden (not just opacity) — an opacity-0 button still hit-tests,
+     letting a click/Enter skip a question unanswered */
+  .next-btn{margin-top:18px;opacity:0;visibility:hidden;transition:opacity .3s ease}
+  .next-btn.show{opacity:1;visibility:visible}
 
   /* ── score bar ── */
   .score-bar{position:fixed;top:68px;right:18px;z-index:10;
@@ -83,7 +89,7 @@
   .score-pip{width:10px;height:10px;border-radius:50%;border:1px solid rgba(217,180,100,.3);
              background:transparent;transition:all .3s ease}
   .score-pip.hit{background:#6a9a4a;border-color:#6a9a4a;box-shadow:0 0 6px rgba(106,154,74,.4)}
-  .score-pip.miss{background:#a84a2a;border-color:#a84a2a}
+  .score-pip.miss{background:#a84a2a;border-color:#a84a2a;border-radius:2px} /* square = miss: shape channel, not colour alone */
 
   /* ── result screen ── */
   .result-score{font-size:42px;letter-spacing:.1em;color:#d9b464;margin-bottom:6px}
@@ -92,8 +98,11 @@
   .result-msg{font-size:11px;color:rgba(240,217,168,.5);font-style:italic;line-height:1.6;
               margin-bottom:28px;max-width:440px}
   .result-list{font-size:10px;color:rgba(240,217,168,.4);line-height:1.8;margin-bottom:24px;text-align:left}
-  .result-list .hit::before{content:'🟢 ';font-size:8px}
-  .result-list .miss::before{content:'🔴 ';font-size:8px}
+  /* ✓/✗, not 🟢/🔴 — those glyphs carry registered meanings in the WULMOJI
+     palette (governance: admitted/breach; conquest bulletin: RESOLVED/CONTESTED);
+     quiz hit/miss must not mint a third */
+  .result-list .hit::before{content:'✓ ';color:#8ab86a}
+  .result-list .miss::before{content:'✗ ';color:#c86a4a}
 </style>
 </head>
 <body>
@@ -133,7 +142,7 @@
     <div class="q-text" id="q-text"></div>
     <div class="q-hint" id="q-hint"></div>
     <div class="answers" id="answers"></div>
-    <div class="q-fact" id="q-fact"></div>
+    <div class="q-fact" id="q-fact" aria-live="polite"></div>
     <button class="btn next-btn" id="next-btn" onclick="nextQuestion()">CONTINUE</button>
   </div>
 
@@ -369,6 +378,7 @@ function selectAnswer(idx){
 }
 
 function nextQuestion(){
+  if(!answered) return;  // belt-and-braces: never advance past an unanswered question
   current++;
   if(current >= QUESTIONS.length){
     showResults();
