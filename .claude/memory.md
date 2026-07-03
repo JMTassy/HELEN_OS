@@ -9,7 +9,7 @@ Auto-updated context that persists across sessions. Every major context update f
 - **Role**: HELEN OS creator, sole operator, architect
 - **Style**: Fast-moving, visual thinker, speaks in compressed directives. Uses WULmoji. Prefers action over discussion. Will paste large context dumps — mine them, don't ask for clarification.
 
-## Project State (last updated: 2026-07-01)
+## Project State (last updated: 2026-07-03)
 
 ### Architecture
 - Five-layer constitutional AI with append-only governance kernel
@@ -20,8 +20,11 @@ Auto-updated context that persists across sessions. Every major context update f
 - Temple exploration layer: gardens, autoresearch, aura, goblin mode
 
 ### Active Branch
-- `claude/code-review-optimizations-hx26jn` — 10 commits, clean
-- Work: code review fixes, drift algebra, WULMOJI palette, math garden, skills
+- `claude/code-review-optimizations-hx26jn` — count/state: ask git, not
+  this file (point-in-time facts stored here are stale on arrival)
+- Also live: `demo/conquest-game` (isolated game demo off main)
+- Work lanes: review fixes, drift algebra, palette, math garden, skills,
+  render/deployment audits, cross-seat provenance
 
 ### Model Routing (amended 2026-07-01)
 - **Planning (10%)**: Fable 5 — decompose, dispatch plans, stop_conditions
@@ -34,7 +37,7 @@ Auto-updated context that persists across sessions. Every major context update f
 - **Cloud fallback**: Sonnet 5 only when local fails 2x or needs repo tools (Read/Grep/Bash)
 - **Law**: Local default. 2 strikes → escalate. Generation-shaped → local first.
 
-### Persona Model Map (metal-verified 2026-07-01)
+### Persona Model Map (metal-verified 2026-07-01, LOCAL SEAT — resolution authority is `tools/model_registry.py`; this table is a cached view, trust the registry on conflict)
 
 | Persona | Primary Model | Fallback | Locus |
 |---|---|---|---|

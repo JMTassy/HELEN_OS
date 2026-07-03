@@ -40,21 +40,27 @@ If a task appears to require a sovereign write, STOP and report.
 
 ## Model Routing (enforce in all skills)
 
+**Resolution authority: `tools/model_registry.py` — never hardcode
+model names in skills or prose; they rot silently on every upgrade.
+Run `python3 tools/model_registry.py --check-drift` when in doubt.**
+
+Seat-conditional (the barbell describes the SYSTEM, not every seat):
+- **Local seat** (Ollama reachable): local models default, cloud
+  escalation on 2x failure or proof-grade reasoning.
+- **Cloud seat** (no local endpoint — this repo's web sessions): local
+  routing is unexecutable here; do repo-tool work directly, stage
+  local-dispatch payloads for the local seat via `/relay-prompt`
+  instead of pretending to dispatch.
+
+## Barbell Strategy (system-level shape, enforce in all loops)
+
 ```
-DEFAULT:  ORNITH (local GPU, free)
-ESCALATE: Sonnet 5 (code patches, HAL gate, tests)
-RARE:     Fable 5 (orchestration, planning, final verification only)
+Planning     (10%): strongest available reasoning — design loop, success criteria
+Execution    (80%): cheapest sufficient tier per registry — do the work
+Verification (10%): strongest available reasoning — verify against spec
 ```
 
-Rule: ORNITH default. Escalate only on 2x failure or proof-grade reasoning.
-
-## Barbell Strategy (enforce in all loops)
-
-```
-Planning     (10%): Fable 5 — design the loop, set success criteria
-Execution    (80%): ORNITH/Sonnet subagents — do the work
-Verification (10%): Fable 5 — verify against the spec
-```
+Roles, not model names — the registry maps role→model per seat.
 
 ## After Any CLAUDE.md Edit
 
