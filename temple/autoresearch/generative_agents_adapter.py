@@ -128,17 +128,39 @@ def _tokens(text: str) -> set:
     return {w for w in text.lower().split() if len(w) > 2}
 
 
+# Record types admitted into the retrieval working set by default.
+# SEAM 2 (Isabella-drift defense, Park et al. §7.2): an unverified
+# reflection_candidate must NOT re-enter retrieval as if it were an
+# observation — that is the exact contamination vector where "read paper"
+# recursively becomes "loves Shakespeare becomes organizes Shakespeare
+# events". Only grounded observations are retrievable by default; a caller
+# must OPT IN to consider candidates, and even then they are never truth.
+_RETRIEVABLE_DEFAULT = frozenset({"observation"})
+
+
 def retrieve(stream: MemoryStream, query: str, *, now: Optional[str] = None,
-             k: int = 5, decay: float = 0.995) -> List[MemoryRecord]:
+             k: int = 5, decay: float = 0.995,
+             types: frozenset[str] | set[str] | None = None) -> List[MemoryRecord]:
     """Paper's retrieval: recency · importance · relevance, all in [0,1].
 
     relevance is a lexical-overlap stub for V0 (vector embedding is a
     drop-in upgrade). Ties break on record_id — output order is total and
-    stable across runs."""
+    stable across runs.
+
+    SEAM 2: by default only `observation` records are retrievable.
+    reflection_candidate / plan_candidate / proposal / receipt_candidate /
+    model_failure are EXCLUDED from the working set — a reflection cannot
+    launder itself back into grounded memory. Pass `types=` to opt a class
+    in explicitly (e.g. types={"observation","reflection_candidate"}); the
+    caller then owns the drift risk, on the record.
+    """
+    allowed = frozenset(types) if types is not None else _RETRIEVABLE_DEFAULT
     now_dt = datetime.fromisoformat(now) if now else datetime.now(timezone.utc)
     q = _tokens(query)
     scored = []
     for r in stream.records:
+        if r.record_type not in allowed:
+            continue
         hours = max(0.0, (now_dt - datetime.fromisoformat(r.at)).total_seconds() / 3600)
         recency = decay ** hours
         importance = r.importance / 10.0

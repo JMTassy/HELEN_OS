@@ -109,6 +109,45 @@ def test_reflection_cannot_mutate_kernel() -> None:
     assert kernel.state["applied"] == []
 
 
+# ---------------------------------------------------------- SEAM 2: reflection-drift defense
+
+def test_reflection_candidate_excluded_from_retrieval_by_default() -> None:
+    # The Isabella-drift vector (Park et al. §7.2): an unverified reflection
+    # must NOT re-surface via retrieval as if it were grounded observation.
+    s = seeded_stream()
+    refl = reflect(s, at=T2)                        # a reflection_candidate now in the stream
+    got = retrieve(s, "research library goblin", now=T2, k=99)
+    assert refl.record_id not in {r.record_id for r in got}
+    assert all(r.record_type == "observation" for r in got)
+
+
+def test_reflection_candidate_retrievable_only_on_explicit_opt_in() -> None:
+    s = seeded_stream()
+    refl = reflect(s, at=T2)
+    got = retrieve(s, "reflection recurring theme research", now=T2, k=99,
+                   types={"observation", "reflection_candidate"})
+    assert refl.record_id in {r.record_id for r in got}   # caller owns the drift risk, on the record
+
+
+def test_model_failure_never_retrievable_by_default() -> None:
+    s = seeded_stream()
+    fail = ingest_model_output(s, "", at=T2)               # a model_failure record
+    got = retrieve(s, "failed empty model", now=T2, k=99)
+    assert fail.record_id not in {r.record_id for r in got}
+
+
+def test_reflection_of_reflection_cannot_compound_through_retrieval() -> None:
+    # Recursive amplification (read→loves→organizes) is blocked at the source:
+    # reflect() only reads observations, and its output is not retrievable, so
+    # a second reflect() cannot fold the first candidate back in as evidence.
+    s = seeded_stream()
+    r1 = reflect(s, at=T2)
+    r2 = reflect(s, at=T2)                          # reads observations only, not r1
+    assert r1.record_id not in r2.refs             # no candidate cited as evidence
+    assert all(rid in {rec.record_id for rec in s.records
+                       if rec.record_type == "observation"} for rid in r2.refs)
+
+
 # ---------------------------------------------------------- 4. planning
 
 def test_plan_is_candidate_never_executed() -> None:
