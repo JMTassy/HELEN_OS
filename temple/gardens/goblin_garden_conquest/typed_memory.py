@@ -149,7 +149,12 @@ class GardenMemory:
         SEAM3: Generate *reflection candidates* only. Never append directly.
         reflection ⊬ receipt at write-time. Caller must gate.
         """
-        relevant = self.retrieve(query, top_k=8)
+        # SEAM 2b: reflections ground ONLY in observations (leaf facts), never in
+        # derived artifacts (reflections/receipts/plans). Otherwise a prior
+        # reflection re-enters through its own gate-RECEIPT (which embeds its
+        # content) and compounds. Derivation must not feed derivation. This is the
+        # HELEN-strict form of the Generative Agents reflection tree: leaves only.
+        relevant = self.retrieve(query, top_k=8, type_filter=MemoryType.OBSERVATION)
         context = "\n".join([f"- [{e.type.value}] {e.content}" for e in relevant])
         prompt = f"Based on these memories for {self.agent_id}:\n{context}\n\nSynthesize a high-level reflection about: {query}\nReturn a single sentence insight. Cite sources."
         insight = local_reasoner(prompt)
