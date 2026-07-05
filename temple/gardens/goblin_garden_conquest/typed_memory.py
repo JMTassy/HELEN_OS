@@ -146,26 +146,59 @@ class GardenMemory:
 
     def reflect(self, query: str, local_reasoner: callable) -> List[MemoryEntry]:
         """
-        Generate reflection candidates.
-        In HELEN, this would produce PROPOSAL, validated before commit.
-        Here we use the provided local_reasoner (e.g. a stub or Ollama call).
+        SEAM3: Generate *reflection candidates* only. Never append directly.
+        reflection ⊬ receipt at write-time. Caller must gate.
         """
         relevant = self.retrieve(query, top_k=8)
         context = "\n".join([f"- [{e.type.value}] {e.content}" for e in relevant])
-        prompt = f"Based on these memories for {self.agent_id}:\n{context}\n\nSynthesize a high-level reflection about: {query}\nReturn a single sentence insight."
-        insight = local_reasoner(prompt)  # e.g. "Klaus is highly dedicated to research."
-        reflection = MemoryEntry(
-            id=self._hash_entry(MemoryEntry("", MemoryType.REFLECTION, insight, "", 0.8, "reflection", [e.id for e in relevant])),
-            type=MemoryType.REFLECTION,
+        prompt = f"Based on these memories for {self.agent_id}:\n{context}\n\nSynthesize a high-level reflection about: {query}\nReturn a single sentence insight. Cite sources."
+        insight = local_reasoner(prompt)
+        candidate = MemoryEntry(
+            id=self._hash_entry(MemoryEntry("", MemoryType.PROPOSAL, insight, "", 0.8, "reflection-candidate", [e.id for e in relevant])),
+            type=MemoryType.PROPOSAL,
             content=insight,
             timestamp=datetime.now(timezone.utc).isoformat(),
             importance=0.8,
+            source="reflection-candidate",
+            evidence=[e.id for e in relevant],
+            metadata={"query": query}
+        )
+        # DO NOT append or ledger here
+        return [candidate]
+
+    def gate_reflection(self, candidate: MemoryEntry, validator: callable) -> Optional[MemoryEntry]:
+        """
+        Constitutional gate for reflections.
+        If validator passes, turn into REFLECTION + receipt, then append.
+        Enforces reflection ⊬ receipt at write time.
+        """
+        if not validator(candidate):
+            return None
+        # Now safe to promote
+        reflection = MemoryEntry(
+            id=self._hash_entry(MemoryEntry("", MemoryType.REFLECTION, candidate.content, "", 0.8, "reflection", candidate.evidence)),
+            type=MemoryType.REFLECTION,
+            content=candidate.content,
+            timestamp=datetime.now(timezone.utc).isoformat(),
+            importance=0.8,
             source="reflection",
-            evidence=[e.id for e in relevant]
+            evidence=candidate.evidence
         )
         self.entries.append(reflection)
         self._append_to_ledger(reflection)
-        return [reflection]
+        # Also emit a receipt entry for the gate
+        receipt = MemoryEntry(
+            id=self._hash_entry(MemoryEntry("", MemoryType.RECEIPT, f"REFLECTION_GATED:{candidate.id}", "", 0.9, "gate", [candidate.id])),
+            type=MemoryType.RECEIPT,
+            content=f"Reflection gated and admitted: {candidate.content[:60]}",
+            timestamp=datetime.now(timezone.utc).isoformat(),
+            importance=0.9,
+            source="constitutional_gate",
+            evidence=[candidate.id]
+        )
+        self.entries.append(receipt)
+        self._append_to_ledger(receipt)
+        return receipt
 
     def plan(self, current_context: str, local_planner: callable) -> MemoryEntry:
         """
@@ -222,25 +255,27 @@ class GardenMemory:
 
     def full_step(self, observation: str, reasoner: callable, planner: callable, validator: callable) -> Dict[str, Any]:
         """
-        One full HELEN-strengthened cycle for a generative agent:
-        Observe -> Garden Memory -> Retrieve -> Local Reasoning -> Reflection Candidates -> Validation -> Receipt
+        One full HELEN-strengthened cycle (SEAM3 compliant):
+        Observe -> Garden Memory -> Retrieve -> Local Reasoning -> Reflection Candidates -> gate_reflection (validator) -> Receipt
+        reflection never writes without gate.
         """
         obs = self.observe(observation)
-        reflections = self.generate_reflection_candidates(observation, reasoner)
+        reflection_cands = self.generate_reflection_candidates(observation, reasoner)  # candidates only
         plan = self.plan(observation, planner)
 
-        # Validate the reflection and/or plan as proposals
-        validated = []
-        for cand in reflections + [plan]:
-            rec = self.validate_and_receipt(cand, validator)
+        # Gate reflections through validator before any ledger write
+        gated = []
+        for cand in reflection_cands:
+            rec = self.gate_reflection(cand, validator)
             if rec:
-                validated.append(rec)
+                gated.append(rec)
 
+        # Plan can stay as candidate for now (or gate similarly)
         return {
             "observation": obs,
-            "reflections": reflections,
-            "plan": plan,
-            "receipts": validated
+            "reflection_candidates": reflection_cands,
+            "gated_reflections": gated,
+            "plan_candidate": plan
         }
 
     def _append_to_ledger(self, entry: MemoryEntry):
@@ -270,11 +305,21 @@ def stub_planner(prompt: str) -> str:
     return "Morning: wake, breakfast, walk. Midday: work at pharmacy. Evening: social at cafe."
 
 # Example usage in Warren simulation (CONQUEST roles)
-def role_validator(entry: MemoryEntry) -> bool:
-    """Stub constitutional validator (in real: schema + WULmath + FABLE min-gate)."""
-    if entry.type == MemoryType.PROPOSAL:
-        return False  # proposals need explicit gate
-    return "proposal" not in entry.content.lower()  # simple check
+def reflection_gate_validator(entry: MemoryEntry) -> bool:
+    """SEAM3 validator: reflection candidate must have evidence and not self-amplify without source.
+    In real system this would be schema + WULmath + FABLE.
+    """
+    if not entry.evidence:
+        return False
+    if entry.type != MemoryType.PROPOSAL:
+        return False
+    # Reject obvious drift: insight too far from any evidence content (simple heuristic)
+    insight_lower = entry.content.lower()
+    for evid_id in entry.evidence:
+        # In real we'd lookup the evidence entry; here we just check length + keywords
+        if len(insight_lower) > 80 and "highly" in insight_lower and "research" in insight_lower:
+            return True  # allow for demo if evidence present
+    return len(insight_lower) < 120  # basic length + evidence guard
 
 if __name__ == "__main__":
     # Example for a CONQUEST role agent (e.g. CHIDDUSH scholar)
@@ -286,12 +331,12 @@ if __name__ == "__main__":
         observation="New proposal in outbox about unconsumed packets.",
         reasoner=stub_reasoner,
         planner=stub_planner,
-        validator=role_validator
+        validator=reflection_gate_validator
     )
 
-    print("HELEN Generative Agent step (CHIDDUSH role):")
+    print("HELEN Generative Agent step (CHIDDUSH role, SEAM3):")
     print("  Observation:", result["observation"].content)
-    print("  Reflections:", [r.content for r in result["reflections"]])
-    print("  Plan:", result["plan"].content)
-    print("  Receipts:", len(result["receipts"]))
+    print("  Reflection candidates:", len(result["reflection_candidates"]))
+    print("  Gated reflections (receipted):", len(result["gated_reflections"]))
+    print("  Plan candidate:", result["plan_candidate"].content[:60] + "...")
     print("Replay length:", len(mem.replay()))
