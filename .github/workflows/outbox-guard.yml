@@ -1,0 +1,35 @@
+name: outbox-guard
+
+# "A pipeline that only produces is a graveyard with receipts."
+# Fails the build on: BAD_JSON packets, broken consumption-log chain,
+# stale decisions (packet bytes changed), or unconsumed > ceiling.
+# NON_SOVEREIGN — guards the garden sidecar, never the sovereign ledger.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "temple/autoresearch/outbox/**"
+      - "temple/autoresearch/consumption_log.ndjson"
+      - "temple/autoresearch/outbox_mark.py"
+      - "scripts/outbox_guard.py"
+  pull_request:
+    branches: [main]
+    paths:
+      - "temple/autoresearch/outbox/**"
+      - "temple/autoresearch/consumption_log.ndjson"
+      - "temple/autoresearch/outbox_mark.py"
+      - "scripts/outbox_guard.py"
+
+jobs:
+  outbox-guard:
+    runs-on: ubuntu-latest
+    env:
+      OUTBOX_MAX_UNCONSUMED: "30"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Outbox consumption guard (fail closed)
+        run: python scripts/outbox_guard.py
