@@ -1,0 +1,119 @@
+<!doctype html>
+<!--
+  BEAD-V5-PROCEDURAL-CREATURE-SPRITES-001 — cast lineup + selftest harness
+  NON_SOVEREIGN · authority=false · prototype ⊬ canon · 📜 ledger sleeps
+  Shift+S = silhouette lineup · Dev Panel: Show Cast Lineup
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Warren Cast — Procedural Creature Sprites</title>
+<style>
+  body { margin:0; background:#1a2018; color:#cfe0c0; font:13px/1.6 ui-monospace, Menlo, monospace; }
+  h1 { font-size:15px; letter-spacing:.1em; padding:14px 18px 0; }
+  h1 small { opacity:.5; font-weight:normal; }
+  #stage { display:block; margin:8px 18px; image-rendering: pixelated; background:#232b20;
+           border:1px solid #3a4636; border-radius:8px; }
+  #panel { position:fixed; right:14px; top:14px; background:rgba(26,32,24,.92);
+           border:1px solid #3a4636; border-radius:10px; padding:12px 16px; max-width:300px; }
+  #panel b { color:#a8d858; }
+  button { font:inherit; background:#2c3628; color:#cfe0c0; border:1px solid #4a5a44;
+           border-radius:6px; padding:3px 10px; cursor:pointer; margin:2px 2px 2px 0; }
+  button.on { background:#41522f; }
+  .pass { color:#a8d858; } .fail { color:#e07a5a; }
+  #tests { margin:10px 18px; }
+  .seal { opacity:.5; padding:0 18px 20px; font-size:11px; }
+</style>
+</head>
+<body>
+<h1>WARREN CAST <small>— cognitive functions walking around · sprite ⊬ verdict</small></h1>
+<canvas id="stage" width="1280" height="560"></canvas>
+<div id="panel">
+  <b>DEV PANEL</b><br>
+  <button id="lineupBtn" class="on">Show Cast Lineup</button>
+  <button id="silBtn">Silhouette (Shift+S)</button><br>
+  pose:
+  <button data-pose="idle" class="on">idle</button>
+  <button data-pose="work">work</button>
+  <button data-pose="proposal">proposal</button>
+  <button data-pose="damaged">damaged</button><br>
+  HAL verdict:
+  <button data-v="ACCEPTABLE" class="on">ACCEPT</button>
+  <button data-v="HOLD">HOLD</button>
+  <button data-v="DENY">DENY</button><br>
+  state overlay:
+  <button data-s="carrying">carrying</button>
+  <button data-s="proposing">proposing</button>
+  <button data-s="denied">denied</button>
+  <button data-s="held">held</button>
+  <button data-s="admitted">admitted</button>
+</div>
+<div id="tests"><b>SELFTESTS</b><br>running…</div>
+<div class="seal">
+  GOBLIN mutation · HER tending · CHIDDUSH pattern · CLAW refusal · JESTER chaos ·
+  ARCHIVIST memory · WARDEN stillness · STEWARD balance · MAYOR routing · HAL lantern-not-creature<br>
+  authority=false · Garden ADMIT ≠ Kernel ADMISSION · the Bible teaches the law; the cast wears it
+</div>
+<script src="warren_cast_sprites.js"></script>
+<script>
+(function () {
+'use strict';
+const C = window.WarrenCast;
+const ctx = document.getElementById('stage').getContext('2d');
+const names = Object.keys(C.ROLES);
+let silhouette = false, pose = 'idle', verdict = 'ACCEPTABLE';
+const stateFlags = {};
+
+function frame(tms) {
+  const t = tms / 1000;
+  ctx.clearRect(0, 0, 1280, 560);
+  /* three readability rows: 16 · 24 · 32, plus 64 hero row */
+  [[16, 20], [24, 70], [32, 140], [64, 240]].forEach(([size, y]) => {
+    ctx.fillStyle = '#8a9a80'; ctx.font = '11px ui-monospace';
+    ctx.fillText(size + '×' + size, 18, y + size / 2);
+    names.forEach((role, i) => {
+      const x = 70 + i * (size === 64 ? 110 : Math.max(size * 2.4, 44));
+      const npc = { seed: 7 + i, t, pose, verdict, state: { ...stateFlags } };
+      if (silhouette) C.ROLES[role].drawSilhouette(ctx, x, y, size);
+      else C.ROLES[role].drawSprite(ctx, x, y, size, npc);
+      if (size === 64) {
+        C.ROLES[role].drawBadge(ctx, x + 16, y + 74, 32);
+        ctx.fillStyle = '#8a9a80';
+        ctx.fillText(role, x, y + 124);
+      }
+    });
+  });
+  ctx.fillStyle = '#5a6a52';
+  ctx.fillText(silhouette ? 'BLACK-FILL READABILITY TEST — every role must still be identifiable'
+                          : 'pose: ' + pose + ' · HAL: ' + verdict, 70, 420);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+/* controls */
+addEventListener('keydown', e => { if (e.shiftKey && e.code === 'KeyS') toggleSil(); });
+function toggleSil() { silhouette = !silhouette; document.getElementById('silBtn').classList.toggle('on', silhouette); }
+document.getElementById('silBtn').addEventListener('click', toggleSil);
+document.getElementById('lineupBtn').addEventListener('click', () => location.reload());
+document.querySelectorAll('[data-pose]').forEach(b => b.addEventListener('click', () => {
+  pose = b.dataset.pose;
+  document.querySelectorAll('[data-pose]').forEach(x => x.classList.toggle('on', x === b));
+}));
+document.querySelectorAll('[data-v]').forEach(b => b.addEventListener('click', () => {
+  verdict = b.dataset.v;
+  document.querySelectorAll('[data-v]').forEach(x => x.classList.toggle('on', x === b));
+}));
+document.querySelectorAll('[data-s]').forEach(b => b.addEventListener('click', () => {
+  stateFlags[b.dataset.s] = !stateFlags[b.dataset.s];
+  b.classList.toggle('on', !!stateFlags[b.dataset.s]);
+}));
+
+/* selftests */
+const results = C.selftest();
+document.getElementById('tests').innerHTML = '<b>SELFTESTS</b> — ' +
+  results.filter(r => r.pass).length + '/' + results.length + ' pass<br>' +
+  results.map(r => `<span class="${r.pass ? 'pass' : 'fail'}">${r.pass ? '✅' : '🔴'} ${r.name}${r.note ? ' — ' + r.note : ''}</span>`).join('<br>');
+})();
+</script>
+</body>
+</html>
