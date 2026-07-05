@@ -1,0 +1,24 @@
+{
+  "schema": "TRACE_ONLY_CONVERGENCE_REPORT_V1",
+  "loop": "HD-006 TRACE_ONLY_AUTORESEARCH_LOOP_V1",
+  "timestamp": "2026-07-05T21:42:30.358737+00:00",
+  "epochs_requested": 30,
+  "epochs_run": 30,
+  "converged": false,
+  "converged_at_epoch": null,
+  "stability_window": 5,
+  "candidate_invariants": 12,
+  "rejected_metaphors": 8,
+  "hard_laws": [
+    "No location \u2192 no doctrine",
+    "No test \u2192 no gate",
+    "No replay \u2192 no admission"
+  ],
+  "unlocated_doctrines": [],
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_decision": null,
+  "admission": "FORBIDDEN"
+}
