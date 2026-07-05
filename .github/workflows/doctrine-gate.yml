@@ -1,0 +1,43 @@
+name: doctrine-gate
+
+# Activates DOCTRINE_ADMISSION_PROTOCOL_V1 enforcement:
+#   No location → no doctrine. No test → no gate. No replay → no admission.
+# Job 1: the §4 classification harness (fixtures existed since April; now enforced).
+# Job 2: pointer-resolving gate scan over docs/proposals ```claim blocks.
+# NON_SOVEREIGN — gate PASS ⊬ admission; the protocol itself stays UNADMITTED
+# until the §6 ceremony (fresh-context classifier, vector-authors ≠ classifier).
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "DOCTRINE_ADMISSION_PROTOCOL_V1.md"
+      - "tests/test_claim_classification.py"
+      - "tests/fixtures/claim_strata_vectors.json"
+      - "tools/validators/doctrine_gate.py"
+      - "tests/test_doctrine_gate.py"
+      - "docs/proposals/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "DOCTRINE_ADMISSION_PROTOCOL_V1.md"
+      - "tests/test_claim_classification.py"
+      - "tests/fixtures/claim_strata_vectors.json"
+      - "tools/validators/doctrine_gate.py"
+      - "tests/test_doctrine_gate.py"
+      - "docs/proposals/**"
+
+jobs:
+  doctrine-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install pytest
+        run: pip install pytest
+      - name: "§4 claim-strata classification harness (fail closed)"
+        run: pytest tests/test_claim_classification.py tests/test_doctrine_gate.py -q
+      - name: "Doctrine gate scan — claim blocks in docs/proposals"
+        run: python tools/validators/doctrine_gate.py --scan docs/proposals
