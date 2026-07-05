@@ -67,6 +67,23 @@ Temple may not govern.
 - WULmoji bulletins in CONQUEST dialect
 - A 25-epoch Temple autoresearch simulation (non-sovereign / Temple-only)
 - A validator that enforces all of the above
+- `conquest/goblin_warren` skill (custom /warren or /goblin-warren mode). See `oracle_town/skills/conquest/goblin_warren/SKILL.md`. Encodes the full CONQUEST theorem, membranes, V3 loop, receipt-memory, and the rule that Garden change ⊬ Kernel truth.
+
+---
+
+## Warren Town — LIVE-NPC surface
+
+The playable town where the cognitive functions walk, propose, and never rule.
+Interactive version: `warren-town.html` (procedural Canvas, no external assets) — or the
+membrane-gated build at `apps/goblin-warren/warren_town.html` (live feed + safety tests).
+
+![Warren Town LIVE-NPC preview](warren-town-preview.jpg)
+
+*Warren Town LIVE-NPC preview — proposal-only town surface. Visual reference, not admission.*
+
+> This image is concept art / a visual reference, **not** a screenshot and **not** a claim
+> of state. `authority=false · admission=FORBIDDEN · ledger_effect=none · CONQUEST ≠ ADMITTED`.
+> The citizens carry proposals; only the operator + reducer admit. render ⊬ reality.
 
 ---
 
