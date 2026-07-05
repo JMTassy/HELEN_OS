@@ -13,6 +13,13 @@
 
   The membrane twist: clicking an NPC shows its PROPOSALS, never admitted truth.
   An NPC mini-game may create proposals; it may not admit, mutate, or grant ZOL.
+
+  LIVE FEED (GO LIVE-NPC, 2026-07-06): warren_town_feed.js is a static sidecar
+  built by build_warren_feed.py from temple/autoresearch/outbox AR-*.json
+  packets (AUTORESEARCH_PACKET_V1, local-model proposed, FABLE-gated). NPCs
+  CARRY real packets; carrying ⊬ admitting. Operator marks shown are garden
+  marks (operator_pen / triage) — garden mark ⊬ kernel admission. If the feed
+  file is absent the town falls back to canned lines and says so.
 -->
 <html lang="en">
 <head>
@@ -46,32 +53,90 @@
   button.on { background:#4a6a2f; border-color:#6f9a3f; }
   .seal { text-align:center; opacity:.5; font-size:11px; margin-top:8px; }
   .brand { float:right; opacity:.6; font-size:11px; }
+  /* --- AAA polish: objective strip, badges, card inspector --- */
+  #objective { display:flex; align-items:center; gap:10px; justify-content:center;
+    margin:0 0 8px; font-size:12px; }
+  #objective .steps { opacity:.85; }
+  #objective .steps b { color:#e6b84a; }
+  .state-badge { display:inline-block; padding:2px 9px; border-radius:10px; font-size:11px;
+    letter-spacing:.05em; border:1px solid #57509a; background:#231f3a; color:#bfc7ff;
+    white-space:nowrap; }
+  .state-badge.sleeping { border-color:#6f6a3f; background:#2a2618; color:#e6d89a; }
+  button { transition:transform .08s ease, border-color .12s ease, background .12s ease; }
+  button:hover { border-color:#8078d6; }
+  button.on:hover { border-color:#8fc060; }
+  /* card inspector */
+  #panel .card { display:grid; grid-template-columns:auto 1fr; gap:2px 12px; margin-top:6px;
+    font-size:12.5px; }
+  #panel .card .k { opacity:.55; text-align:right; }
+  #panel .card .v { }
+  .pill { display:inline-block; padding:1px 7px; border-radius:9px; font-size:10.5px;
+    letter-spacing:.04em; vertical-align:middle; }
+  .pill.sev-high { background:#5a1f22; color:#ffb0b0; }
+  .pill.sev-medium { background:#4a3a15; color:#f0d488; }
+  .pill.sev-low { background:#1f3a2a; color:#9fe0b8; }
+  .pill.sev-info { background:#242038; color:#b8c0e0; }
+  .pill.auth { background:#231f3a; color:#8fa0e0; }
+  .pill.mark { background:#2a3a1a; color:#c0e090; }
+  .pill.unmarked { background:#2a2618; color:#e6d89a; }
+  .feed-pulse { animation:pulse 2.2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:.6} 50%{opacity:1} }
+  #advanced { display:none; }
+  #advanced.show { display:block; }
+  /* --- AAA polish: world-effect legend, loop bar, term tooltips --- */
+  #legend { font-size:10.5px; opacity:.55; text-align:center; padding:4px 0 0; }
+  #loopbar { text-align:center; font-size:11px; opacity:.7; margin-top:8px; letter-spacing:.04em; }
+  .term { border-bottom:1px dotted #9a8f78; cursor:help; position:relative; }
+  .term:hover::after { content:attr(data-tip); position:absolute; left:0; bottom:130%; z-index:9;
+    width:240px; background:#141018; color:#e8dcc0; border:2px solid #57509a; border-radius:6px;
+    padding:8px 10px; font-size:11px; line-height:1.45; letter-spacing:0; white-space:normal; }
 </style>
 </head>
 <body>
 <div id="wrap">
   <h1>WARREN TOWN</h1>
   <p class="tag">A garden where cognitive functions live, propose, and never rule.</p>
+  <div id="objective">
+    <span class="steps"><b>1.</b> Click a citizen &nbsp;<b>2.</b> Inspect its proposal
+      &nbsp;<b>3.</b> Remember: <b>proposal ⊬ admission</b></span>
+    <span class="state-badge sleeping" id="stateBadge"
+      title="Nothing here can change real state. NPCs carry proposals; only the operator + reducer admit.">AUTH=false · LEDGER=SLEEPING · PROPOSALS ONLY</span>
+  </div>
   <div id="frame">
     <div id="inner"><canvas id="stage" width="640" height="384"></canvas></div>
+    <div id="legend">world effects are <b>VISUAL ONLY</b> — 📜 scroll = carries live packets ·
+      fog = awaiting operator mark · blooms = garden-marked · pale threads = composted metaphor</div>
     <div id="panel">
       <div class="who" id="who">Click an inhabitant to see its proposals.</div>
       <div class="line" id="body">Ten role-bodies wander the garden. Each is a cognitive
         function with a job — none can complete the workflow alone.</div>
       <div class="law" id="law">👁 observe · 📜 propose · ⚖️ gate — proposal ⊬ state · 📜 ledger sleeps</div>
+      <div id="loopbar">📚 Knowledge → 🎯 Quest → 🧾 Proof → 🧪 Validation → 🖊 Decision → 🔁 Replay</div>
     </div>
   </div>
   <div id="bar">
-    <button id="btnObserve" class="on">👁 OBSERVE</button>
-    <button id="btnSilhouette">🎭 SILHOUETTE</button>
-    <button id="btnGate">⚖️ GATE (why can't they rule?)</button>
+    <button id="btnObserve" class="on" title="The town at rest — watch the role-bodies wander.">👁 OBSERVE</button>
+    <button id="btnSilhouette" title="Show each role's abstract silhouette instead of its sprite.">🎭 SILHOUETTE</button>
+    <button id="btnGate" title="Why can't the citizens rule? Garden ADMIT ≠ Kernel ADMISSION.">⚖️ GATE (why can't they rule?)</button>
+    <button id="btnAdvanced" title="Toggle the dense WULmoji grammar / role glossary.">🜁 ADVANCED GRAMMAR</button>
     <span class="brand">🌱 warren · authority=false</span>
   </div>
-  <div class="seal">GOBLIN mutate · HER tend · CHIDDUSH pattern · CLAW refuse · JESTER stress ·
-    ARCHIVIST receipt · WARDEN hold · STEWARD balance · MAYOR route · HAL lantern</div>
+  <div id="advanced">
+    <div class="seal">GOBLIN mutate · HER tend · CHIDDUSH pattern · CLAW refuse · JESTER stress ·
+      ARCHIVIST receipt · WARDEN hold · STEWARD balance · MAYOR route · HAL lantern</div>
+    <div class="seal">🜁 symbol · 🜍 pattern · 🧪 validator · 🧾 receipt · 🛡 boundary · ⚖️ review · 📜 ledger
+      &nbsp;—&nbsp; lawful ascent: 🜁→🜍→🧪→🧾→🛡→⚖️→📜 · forbidden: 🜁→📜</div>
+    <div class="seal">glossary —
+      <span class="term" data-tip="Zone of Lawful influence — play-value inside the Garden. Never convertible to authority, admission, or real-world value.">ZOL</span> ·
+      <span class="term" data-tip="A candidate change. Inspectable, markable, compostable — it cannot change the Kernel.">proposal</span> ·
+      <span class="term" data-tip="The only lawful crossing: a hash-bound record the reducer can check and replay can reconstruct.">receipt</span> ·
+      <span class="term" data-tip="A fail-closed checker. It can refuse; it cannot create truth.">validator</span> ·
+      <span class="term" data-tip="Re-deriving a result from its inputs. If it does not replay, it is not real.">replay</span></div>
+  </div>
 </div>
 
 <script src="warren_cast_sprites.js"></script>
+<script src="warren_town_feed.js"></script>
 <script>
 (function () {
 'use strict';
@@ -173,25 +238,120 @@ const PROPOSALS = {
   MAYOR:    "Two proposals conflict — propose a council routing. (proposal)",
   HAL:      "I do not propose. I only light the verdict when the gate rules.",
 };
+/* live feed sidecar (optional): real AUTORESEARCH packets, carried not admitted */
+const FEED = (window.WarrenFeed && window.WarrenFeed.schema === 'WARREN_FEED_V0')
+  ? window.WarrenFeed : null;
+const feedIdx = {};                       // per-role click cursor for cycling
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+(function announceFeed(){
+  const tag = document.querySelector('.tag');
+  tag.textContent += FEED
+    ? ` · LIVE FEED: ${FEED.packet_count} packets · ${FEED.source_digest.slice(0,8)}`
+    : ' · feed absent — canned fallback (run build_warren_feed.py)';
+})();
+
+/* role-distinct idle motion — speed band, pause band, direction-change cadence.
+   Behavior only; grants nothing. HAL keeps the lantern post by the tent. */
+const MOTION = {
+  GOBLIN:   { spd:[13,18], pause:[.4,1.2], turn:[.5,1.4] },   // quick scavenger bursts
+  HER:      { spd:[4,7],   pause:[1.5,3],  turn:[2.5,5]  },   // slow tending arcs
+  CHIDDUSH: { spd:[7,10],  pause:[2,4],    turn:[1.5,3]  },   // walks, stops to study
+  CLAW:     { spd:[9,12],  pause:[.8,1.6], turn:[3,6]    },   // long straight patrol lines
+  JESTER:   { spd:[14,19], pause:[.2,.6],  turn:[.3,.9]  },   // jitter chaos
+  ARCHIVIST:{ spd:[5,7],   pause:[3,6],    turn:[2,4]    },   // mostly reading
+  WARDEN:   { spd:[3,5],   pause:[4,8],    turn:[2,4]    },   // near-still sentinel
+  STEWARD:  { spd:[8,10],  pause:[1,2],    turn:[1.5,3]  },   // steady rounds
+  MAYOR:    { spd:[7,9],   pause:[1.5,3],  turn:[1,2.5]  },   // pauses to hold court
+  HAL:      { spd:[0,0],   pause:[9,9],    turn:[9,9]    },   // the lantern does not wander
+};
 const npcs = ROLES.map((role,i)=>{
   let x,y,tries=0;
   do { x=rr(5*TILE, (COLS-3)*TILE); y=rr(5*TILE, (ROWS-3)*TILE); tries++; }
   while (!isWalkable(x,y) && tries<80);
-  return { role, x, y, seed:7+i, t:0, dir:rr(0,6.28), speed:rr(6,12),
-           cool:rr(0,3), verdict:['ACCEPTABLE','HOLD','DENY'][i%3] };
+  if (role==='HAL'){ x = tent.x + 36; y = tent.y - 2; }        // lantern post by the tent
+  const m = MOTION[role];
+  const packs = (role !== 'HAL' && FEED && FEED.roles && FEED.roles[role]) || null;
+  return { role, x, y, seed:7+i, t:rr(0,6), dir:rr(0,6.28), speed:rr(m.spd[0],m.spd[1]),
+           cool:rr(0,2), pausing:false, m, packs,
+           carrier: !!(packs && packs.length),
+           hasUnmarked: !!(packs && packs.some(p=>!p.mark)),
+           hasMarked: !!(packs && packs.some(p=>p.mark)),
+           verdict:['ACCEPTABLE','HOLD','DENY'][i%3] };
 });
-let selected = null, showSil = false;
+let selected = null, hovered = null, showSil = false;
+
+/* mycelium patches — composted-metaphor decoration, VISUAL ONLY (see legend).
+   precomputed with the seeded rng → same threads every load */
+const mycelium = [];
+for (let k=0;k<4;k++){
+  let mx, my, tries=0;
+  do { mx=rr(5*TILE,(COLS-12)*TILE); my=rr(5*TILE,(ROWS-3)*TILE); tries++; }
+  while(!isWalkable(mx,my) && tries<50);
+  const segs=[];
+  for (let b=0;b<5;b++){
+    const a=rr(0,6.28), len=rr(8,20);
+    segs.push([mx,my,mx+Math.cos(a)*len,my+Math.sin(a)*len]);
+    segs.push([mx+Math.cos(a)*len*.6, my+Math.sin(a)*len*.6,
+               mx+Math.cos(a+.7)*len, my+Math.sin(a+.7)*len]);
+  }
+  mycelium.push(segs);
+}
+function paintMycelium(){
+  ctx.strokeStyle='rgba(220,215,235,.20)'; ctx.lineWidth=1;
+  for (const segs of mycelium){ for (const [a,b,c2,d] of segs){
+    ctx.beginPath(); ctx.moveTo(a,b); ctx.lineTo(c2,d); ctx.stroke(); } }
+}
 
 function stepNpc(n, dt){
   n.t += dt;
   n.cool -= dt;
-  if (n.cool <= 0){ n.dir = rr(0,6.28); n.cool = rr(1.2,3.5); }
+  if (n.cool <= 0){
+    n.pausing = !n.pausing && Math.random() < .45;
+    n.dir = rr(0,6.28);
+    n.speed = rr(n.m.spd[0], n.m.spd[1]);
+    n.cool = n.pausing ? rr(n.m.pause[0],n.m.pause[1]) : rr(n.m.turn[0],n.m.turn[1]);
+  }
+  if (n.pausing || n.role==='HAL') return;
   const nx = n.x + Math.cos(n.dir)*n.speed*dt;
   const ny = n.y + Math.sin(n.dir)*n.speed*dt;
   if (isWalkable(nx, n.y+12)) n.x = Math.max(4*TILE, Math.min((COLS-2)*TILE, nx));
   else n.dir = Math.PI - n.dir;
   if (isWalkable(n.x, ny+12)) n.y = Math.max(4*TILE, Math.min((ROWS-2)*TILE, ny));
   else n.dir = -n.dir;
+}
+
+/* ---- world effects — VISUAL ONLY (labeled in the legend) ---- */
+const blooms = [];                       // rising petals near garden-marked carriers
+function spawnBlooms(n){
+  if (Math.random() < .02)
+    blooms.push({ x:n.x+4+Math.random()*16, y:n.y+18, vy:-(6+Math.random()*8),
+                  life:1.6, hue:Math.random()<.5?'#e6a0c0':'#e6c84a' });
+}
+function paintBlooms(dt){
+  for (let i=blooms.length-1;i>=0;i--){
+    const b=blooms[i]; b.y += b.vy*dt; b.life -= dt;
+    if (b.life<=0){ blooms.splice(i,1); continue; }
+    ctx.globalAlpha = Math.min(1, b.life);
+    ctx.fillStyle=b.hue; ctx.fillRect(b.x, b.y, 2, 2);
+    ctx.globalAlpha = 1;
+  }
+}
+function paintFog(n, now){
+  ctx.globalAlpha = .11;
+  ctx.fillStyle='#c8c8d8';
+  for (let k=0;k<3;k++){
+    const ox = Math.sin(now/900 + k*2.1 + n.seed)*7;
+    const oy = Math.cos(now/1100 + k*1.7)*3;
+    ctx.beginPath(); ctx.ellipse(n.x+12+ox, n.y+10+oy, 12, 5, 0, 0, 6.28); ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+}
+function paintScroll(n, now){
+  const bob = Math.sin(now/300 + n.seed)*1.5;
+  const x=n.x+8, y=n.y-9+bob;
+  ctx.fillStyle='#e8dcc0'; ctx.fillRect(x, y, 8, 5);       // parchment
+  ctx.fillStyle='#b09a70'; ctx.fillRect(x-1, y, 1, 5); ctx.fillRect(x+8, y, 1, 5); // rolled ends
+  ctx.fillStyle='#6b4a2b'; ctx.fillRect(x+1, y+2, 6, 1);   // ink line
 }
 
 /* ---- render loop ---- */
@@ -233,6 +393,31 @@ cv.addEventListener('click', e=>{
         law=document.getElementById('law');
   if (!hit){ who.textContent='Click an inhabitant to see its proposals.';
     body.textContent='Empty grass. Nothing proposed here.'; return; }
+  const packs = (hit.role !== 'HAL' && FEED && FEED.roles && FEED.roles[hit.role]) || null;
+  if (packs && packs.length){
+    const i = feedIdx[hit.role] || 0;
+    const p = packs[i % packs.length];
+    feedIdx[hit.role] = i + 1;
+    who.innerHTML = `${hit.role} — a ${roleTitle(hit.role)} body ` +
+      `<span class="feed-pulse" style="opacity:.7">· live packet ${(i % packs.length)+1}/${packs.length}</span>`;
+    const sev = (p.severity || 'info');
+    const markRow = p.mark
+      ? `<span class="pill mark">${esc(p.mark)}</span> garden mark only — not admission`
+      : `<span class="pill unmarked">awaiting operator mark</span>`;
+    body.innerHTML =
+      `<div style="margin-bottom:4px">“${esc(p.title || p.summary)}”</div>` +
+      `<div class="card">` +
+        `<span class="k">packet</span><span class="v">${esc(p.packet_id)}</span>` +
+        `<span class="k">finding</span><span class="v">${esc(p.finding_type)} ` +
+          `<span class="pill sev-${sev}">${sev}</span></span>` +
+        `<span class="k">recommend</span><span class="v">${esc(p.recommended_action)}</span>` +
+        `<span class="k">proof</span><span class="v">${esc(p.proof_status||'?')} · replay: ${esc(p.replay_status||'?')}</span>` +
+        `<span class="k">mark</span><span class="v">${markRow}</span>` +
+        `<span class="k">authority</span><span class="v"><span class="pill auth">authority=false · admission=FORBIDDEN</span></span>` +
+      `</div>`;
+    law.textContent = `📜 ${hit.role} carries ⊬ admits — stamping lives in operator_pen.py · 📜 ledger sleeps`;
+    return;
+  }
   who.textContent = `${hit.role} — a ${roleTitle(hit.role)} body`;
   body.innerHTML = `“${PROPOSALS[hit.role]}”` +
     (hit.role==='HAL' ? '' : `<br><span style="opacity:.7">status: PROPOSAL_CANDIDATE · reducer_decision: null</span>`);
@@ -257,6 +442,10 @@ document.getElementById('btnGate').addEventListener('click', ()=>{
     'reducer admits and replay can reconstruct.';
   document.getElementById('law').textContent =
     'proposal ⊬ state · NPC mini-game ⊬ admission · believability ⊬ admissibility · 📜 ledger sleeps';
+});
+document.getElementById('btnAdvanced').addEventListener('click', function(){
+  const a = document.getElementById('advanced');
+  const on = a.classList.toggle('show'); this.classList.toggle('on', on);
 });
 document.getElementById('btnObserve').addEventListener('click', function(){
   selected=null;
