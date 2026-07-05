@@ -20,7 +20,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from temple.autoresearch.outbox_mark import (   # noqa: E402
+from temple.autoresearch.operator_pen import (   # noqa: E402
     load_packets, read_log, verify_chain, effective_decisions, unconsumed,
     DEFAULT_OUTBOX, DEFAULT_LOG,
 )
