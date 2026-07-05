@@ -1,0 +1,270 @@
+<!doctype html>
+<!--
+  WARREN TOWN — top-down pixel world, AI-Town design language, HELEN membrane
+
+  NON_SOVEREIGN · authority=false · canon=false · ledger_effect=none
+  prototype ⊬ canon · NPC proposes ⊬ admits · 📜 ledger sleeps
+
+  Design language reproduced from AI Town (a16z-infra/ai-town): chunky pixel
+  tilemap, wood-framed viewport, bottom button bar, "click an agent to see
+  chat history". ASSETS ARE NOT COPIED — AI Town's tilesheets are third-party
+  licensed (George Bailey / hilau / ansimuz). Everything here is procedural
+  Canvas, same law as warren_cast_sprites.js: no external images, no borrowed IP.
+
+  The membrane twist: clicking an NPC shows its PROPOSALS, never admitted truth.
+  An NPC mini-game may create proposals; it may not admit, mutate, or grant ZOL.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WARREN TOWN — cognitive functions, walking around</title>
+<style>
+  :root { --wood:#6b4a2b; --wood2:#8a5a34; --panel:#2a1e2e; --ink:#e8dcc0; --frame:#3a2440; }
+  html,body { margin:0; height:100%; background:#1a2018; color:var(--ink);
+    font:14px/1.5 ui-monospace, "SF Mono", Menlo, monospace; image-rendering:pixelated;
+    display:flex; align-items:center; justify-content:center; user-select:none; }
+  #wrap { width:min(96vw, 760px); }
+  h1 { text-align:center; letter-spacing:.28em; font-size:22px; margin:6px 0 2px;
+    color:#e6b84a; text-shadow:2px 2px 0 #5a3a10; }
+  .tag { text-align:center; opacity:.75; margin:0 0 8px; font-size:12px; }
+  /* wood frame like AI Town */
+  #frame { border:8px solid var(--wood); border-radius:8px; background:var(--wood2);
+    padding:6px; box-shadow:0 8px 30px rgba(0,0,0,.5); }
+  #inner { border:6px solid var(--frame); border-radius:4px; background:#000; overflow:hidden; }
+  canvas { display:block; width:100%; image-rendering:pixelated; cursor:crosshair; }
+  #panel { background:var(--panel); border-top:6px solid var(--frame); padding:14px 18px;
+    min-height:74px; }
+  #panel .who { color:#e6b84a; font-weight:bold; letter-spacing:.06em; }
+  #panel .line { margin:4px 0; }
+  #panel .law { opacity:.6; font-size:11px; margin-top:8px; }
+  #bar { display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; }
+  button { font:inherit; color:var(--ink); background:#3a3560; border:3px solid #57509a;
+    border-bottom-width:5px; border-radius:6px; padding:8px 16px; cursor:pointer;
+    letter-spacing:.05em; }
+  button:active { border-bottom-width:3px; transform:translateY(2px); }
+  button.on { background:#4a6a2f; border-color:#6f9a3f; }
+  .seal { text-align:center; opacity:.5; font-size:11px; margin-top:8px; }
+  .brand { float:right; opacity:.6; font-size:11px; }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <h1>WARREN TOWN</h1>
+  <p class="tag">A garden where cognitive functions live, propose, and never rule.</p>
+  <div id="frame">
+    <div id="inner"><canvas id="stage" width="640" height="384"></canvas></div>
+    <div id="panel">
+      <div class="who" id="who">Click an inhabitant to see its proposals.</div>
+      <div class="line" id="body">Ten role-bodies wander the garden. Each is a cognitive
+        function with a job — none can complete the workflow alone.</div>
+      <div class="law" id="law">👁 observe · 📜 propose · ⚖️ gate — proposal ⊬ state · 📜 ledger sleeps</div>
+    </div>
+  </div>
+  <div id="bar">
+    <button id="btnObserve" class="on">👁 OBSERVE</button>
+    <button id="btnSilhouette">🎭 SILHOUETTE</button>
+    <button id="btnGate">⚖️ GATE (why can't they rule?)</button>
+    <span class="brand">🌱 warren · authority=false</span>
+  </div>
+  <div class="seal">GOBLIN mutate · HER tend · CHIDDUSH pattern · CLAW refuse · JESTER stress ·
+    ARCHIVIST receipt · WARDEN hold · STEWARD balance · MAYOR route · HAL lantern</div>
+</div>
+
+<script src="warren_cast_sprites.js"></script>
+<script>
+(function () {
+'use strict';
+const C = window.WarrenCast;
+const ROLES = Object.keys(C.ROLES);
+const cv = document.getElementById('stage'), ctx = cv.getContext('2d');
+const W = cv.width, H = cv.height, TILE = 16;
+const COLS = W / TILE, ROWS = H / TILE;
+
+/* deterministic rng so the town is the same every load (replay-friendly) */
+let _s = 20260706;
+const rnd = () => { _s = (_s*1103515245+12345)&0x7fffffff; return _s/0x7fffffff; };
+const rr = (a,b)=>a+rnd()*(b-a);
+function hash2(x,y){ const h=Math.sin(x*127.1+y*311.7)*43758.5453; return h-Math.floor(h); }
+function fbm(x,y){ return hash2(Math.floor(x),Math.floor(y))*.6
+  + hash2(Math.floor(x*2.1),Math.floor(y*2.1))*.4; }
+
+/* ---- procedural tilemap: 0 grass · 1 forest · 2 water · 3 waterfall · 4 flower · 5 stump ---- */
+const map = [];
+for (let r=0;r<ROWS;r++){ map[r]=[];
+  for (let c=0;c<COLS;c++){
+    let t = 0;
+    if (c < 4 && hash2(c,r) > .25) t = 1;                 // left forest wall
+    if (r < 3 && hash2(c*3,r) > .35) t = 1;               // top forest band
+    if (c > COLS-11 && r > 3 && r < ROWS-4 &&
+        (c-(COLS-6))**2/28 + (r-ROWS/2)**2/40 < 1) t = 2; // right pond
+    if (t===0 && rnd() < .04) t = 4;                       // flowers
+    if (t===0 && rnd() < .02) t = 5;                       // stumps
+    map[r][c]=t;
+  }
+}
+/* waterfall lip on the pond's south edge */
+for (let c=0;c<COLS;c++){ for (let r=1;r<ROWS;r++){
+  if (map[r][c]===0 && map[r-1][c]===2) map[r][c]=3; } }
+
+/* structures drawn procedurally over grass: a tent + a crate stack */
+const tent = { x: 7*TILE, y: 12*TILE };
+const crates = { x: 4*TILE, y: 12*TILE };
+
+function isWalkable(px,py){
+  const c=(px/TILE)|0, r=(py/TILE)|0;
+  if (c<0||r<0||c>=COLS||r>=ROWS) return false;
+  const t=map[r][c];
+  return t!==1 && t!==2;                                   // no forest, no water
+}
+
+/* ---- tile painters (NES 3-color ramps, no assets) ---- */
+function paintTile(t,c,r){
+  const x=c*TILE, y=r*TILE, n=hash2(c,r);
+  if (t===2 || t===3){                                    // water
+    ctx.fillStyle = t===3 ? '#7fb8d8' : (n>.5?'#1d5a7a':'#256a8c');
+    ctx.fillRect(x,y,TILE,TILE);
+    ctx.fillStyle='rgba(255,255,255,.18)';
+    ctx.fillRect(x, y+((Date.now()/220+c*3)%TILE|0), TILE, 1);
+    return;
+  }
+  ctx.fillStyle = n>.6?'#5a9a3c':(n>.3?'#4e8c34':'#458029'); // grass ramp
+  ctx.fillRect(x,y,TILE,TILE);
+  ctx.fillStyle='rgba(30,60,20,.25)'; ctx.fillRect(x, y+ (n*TILE|0)%TILE, TILE, 1);
+  if (t===1){                                             // forest canopy
+    ctx.fillStyle='#2f5a24'; ctx.fillRect(x,y,TILE,TILE);
+    ctx.fillStyle='#3f7a2e'; ctx.fillRect(x+2,y+1,TILE-4,TILE-4);
+    ctx.fillStyle='#54a03a'; ctx.fillRect(x+3,y+2,4,3);
+    ctx.fillStyle='#26401c'; ctx.fillRect(x+TILE/2-1,y+TILE-4,2,4); // trunk hint
+  }
+  if (t===4){ ctx.fillStyle=['#e05a8a','#e6c84a','#a86fe0'][n*3|0];
+    ctx.fillRect(x+6,y+6,3,3); ctx.fillStyle='#3f7a2e'; ctx.fillRect(x+7,y+9,1,3); }
+  if (t===5){ ctx.fillStyle='#8a6a3a'; ctx.fillRect(x+5,y+6,6,5);
+    ctx.fillStyle='#a6844c'; ctx.fillRect(x+6,y+6,4,2); }
+}
+function paintTent(){
+  const {x,y}=tent;
+  ctx.fillStyle='#cbb48a'; ctx.beginPath();
+  ctx.moveTo(x, y+22); ctx.lineTo(x+16, y-2); ctx.lineTo(x+32, y+22); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#b09a70'; ctx.fillRect(x, y+22, 32, 4);
+  ctx.fillStyle='#3a2e1e'; ctx.beginPath();                // door
+  ctx.moveTo(x+12,y+22); ctx.lineTo(x+16,y+8); ctx.lineTo(x+20,y+22); ctx.closePath(); ctx.fill();
+}
+function paintCrates(){
+  const {x,y}=crates;
+  for (const [dx,dy] of [[0,10],[10,10],[5,2]]){
+    ctx.fillStyle='#8a5a2c'; ctx.fillRect(x+dx,y+dy,11,11);
+    ctx.fillStyle='#a6743a'; ctx.fillRect(x+dx+1,y+dy+1,9,9);
+    ctx.strokeStyle='#5a3a1a'; ctx.strokeRect(x+dx+.5,y+dy+.5,10,10);
+    ctx.beginPath(); ctx.moveTo(x+dx+1,y+dy+5.5); ctx.lineTo(x+dx+10,y+dy+5.5); ctx.stroke();
+  }
+}
+
+/* ---- NPCs: the 10 cast roles, wandering ---- */
+const PROPOSALS = {
+  GOBLIN:   "A cheap-but-lawful shortcut for the compost path. (proposal)",
+  HER:      "A wounded corner of the garden asks for a healing bloom. (proposal)",
+  CHIDDUSH: "A repeated trace suggests one lawful refinement. (proposal)",
+  CLAW:     "Detected an overreach — recommend HOLD, not admit. (proposal)",
+  JESTER:   "A weird exploit worth a bounded chaos test. (proposal)",
+  ARCHIVIST:"An orphan trace wants a receipt annotation. (proposal)",
+  WARDEN:   "Repeated raid scars — propose a defense upgrade. (proposal)",
+  STEWARD:  "Resource imbalance detected — propose a routing change. (proposal)",
+  MAYOR:    "Two proposals conflict — propose a council routing. (proposal)",
+  HAL:      "I do not propose. I only light the verdict when the gate rules.",
+};
+const npcs = ROLES.map((role,i)=>{
+  let x,y,tries=0;
+  do { x=rr(5*TILE, (COLS-3)*TILE); y=rr(5*TILE, (ROWS-3)*TILE); tries++; }
+  while (!isWalkable(x,y) && tries<80);
+  return { role, x, y, seed:7+i, t:0, dir:rr(0,6.28), speed:rr(6,12),
+           cool:rr(0,3), verdict:['ACCEPTABLE','HOLD','DENY'][i%3] };
+});
+let selected = null, showSil = false;
+
+function stepNpc(n, dt){
+  n.t += dt;
+  n.cool -= dt;
+  if (n.cool <= 0){ n.dir = rr(0,6.28); n.cool = rr(1.2,3.5); }
+  const nx = n.x + Math.cos(n.dir)*n.speed*dt;
+  const ny = n.y + Math.sin(n.dir)*n.speed*dt;
+  if (isWalkable(nx, n.y+12)) n.x = Math.max(4*TILE, Math.min((COLS-2)*TILE, nx));
+  else n.dir = Math.PI - n.dir;
+  if (isWalkable(n.x, ny+12)) n.y = Math.max(4*TILE, Math.min((ROWS-2)*TILE, ny));
+  else n.dir = -n.dir;
+}
+
+/* ---- render loop ---- */
+let last = performance.now();
+function frame(now){
+  const dt = Math.min((now-last)/1000, .05); last = now;
+  for (let r=0;r<ROWS;r++) for (let c=0;c<COLS;c++) paintTile(map[r][c],c,r);
+  paintCrates(); paintTent();
+
+  npcs.forEach(n => stepNpc(n, dt));
+  npcs.sort((a,b)=>a.y-b.y).forEach(n=>{
+    // shadow
+    ctx.fillStyle='rgba(0,0,0,.22)'; ctx.beginPath();
+    ctx.ellipse(n.x+12, n.y+26, 9, 3, 0, 0, 6.28); ctx.fill();
+    const size = 24, npc = { seed:n.seed, t:n.t, pose:'idle', verdict:n.verdict };
+    if (showSil) C.ROLES[n.role].drawSilhouette(ctx, n.x, n.y, size);
+    else C.ROLES[n.role].drawSprite(ctx, n.x, n.y, size, npc);
+    if (selected === n){                                  // selection ring
+      ctx.strokeStyle='#e6b84a'; ctx.lineWidth=1.5;
+      ctx.strokeRect(n.x-2, n.y-2, size+4, size+4);
+    }
+  });
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+/* ---- click to select → show proposals (never admitted truth) ---- */
+cv.addEventListener('click', e=>{
+  const rect = cv.getBoundingClientRect();
+  const px = (e.clientX-rect.left) * (W/rect.width);
+  const py = (e.clientY-rect.top)  * (H/rect.height);
+  let hit=null, best=1e9;
+  for (const n of npcs){
+    const d=(n.x+12-px)**2+(n.y+12-py)**2;
+    if (d<best && d<28*28){ best=d; hit=n; }
+  }
+  selected = hit;
+  const who=document.getElementById('who'), body=document.getElementById('body'),
+        law=document.getElementById('law');
+  if (!hit){ who.textContent='Click an inhabitant to see its proposals.';
+    body.textContent='Empty grass. Nothing proposed here.'; return; }
+  who.textContent = `${hit.role} — a ${roleTitle(hit.role)} body`;
+  body.innerHTML = `“${PROPOSALS[hit.role]}”` +
+    (hit.role==='HAL' ? '' : `<br><span style="opacity:.7">status: PROPOSAL_CANDIDATE · reducer_decision: null</span>`);
+  law.textContent = hit.role==='HAL'
+    ? '⚖️ HAL is a lantern, not a creature — it shows the verdict, it does not make it.'
+    : `📜 ${hit.role} proposes · ⊬ admits · ⊬ mutates · ⊬ grants ZOL — only the operator + reducer admit.`;
+});
+function roleTitle(r){ return {GOBLIN:'mutation',HER:'tending',CHIDDUSH:'pattern',
+  CLAW:'refusal',JESTER:'chaos',ARCHIVIST:'memory',WARDEN:'stillness',
+  STEWARD:'balance',MAYOR:'routing',HAL:'lantern'}[r]; }
+
+/* ---- buttons ---- */
+document.getElementById('btnSilhouette').addEventListener('click', function(){
+  showSil = !showSil; this.classList.toggle('on', showSil);
+});
+document.getElementById('btnGate').addEventListener('click', ()=>{
+  document.getElementById('who').textContent = '⚖️ Why can’t they rule?';
+  document.getElementById('body').innerHTML =
+    'Every inhabitant is a cognitive function. They roam, play mini-games, and surface '+
+    'proposals. But <b>Garden ADMIT ≠ Kernel ADMISSION</b>: a proposal changes the Garden '+
+    'only when the operator stamps it, and reaches the Kernel only through a receipt the '+
+    'reducer admits and replay can reconstruct.';
+  document.getElementById('law').textContent =
+    'proposal ⊬ state · NPC mini-game ⊬ admission · believability ⊬ admissibility · 📜 ledger sleeps';
+});
+document.getElementById('btnObserve').addEventListener('click', function(){
+  selected=null;
+  document.getElementById('who').textContent='👁 OBSERVE — the town at rest.';
+  document.getElementById('body').textContent='Ten role-bodies wander. Click one to read its proposals.';
+  document.getElementById('law').textContent='👁 observe · 📜 propose · ⚖️ gate — proposal ⊬ state';
+});
+})();
+</script>
+</body>
+</html>
