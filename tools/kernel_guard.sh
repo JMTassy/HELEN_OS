@@ -114,6 +114,10 @@ CONSUMER_ALLOWLIST=(
   "tools/accept_payload_meta.sh"
   "tools/validate_hash_chain.py"
   "tools/validate_turn_schema.py"
+  # Operator ruling 2026-07-06 (stale-allowlist drift repair, GAS Prop 7.1(b)):
+  "oracle_town/kernel/kernel_daemon.py"          # kernel boundary itself (β-family; _handle_promote_skill / _handle_seq_correction)
+  "helen_os/tests/test_ndjson_writer_atomic.py"  # writer atomicity regression tests (Thm 4.2 witness)
+  "helen_os/tests/test_duplicate_seq_detector.py" # forked-ledger detector tests (Thm 4.2 witness)
 )
 
 while IFS= read -r -d '' pyfile; do
