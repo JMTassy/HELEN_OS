@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<!--
+  SURFACE ROLE (seam lock 2026-07-06):
+  Garden LIVE-NPC playground / sketch surface. Non-canonical. Proposal-only.
+  Not the canonical app cockpit — that is apps/goblin-warren/warren_town.html
+  (tested feed inspector, AAA dashboard).
+  The sibling image warren-town-preview.jpg is AI-generated concept art, not a
+  screenshot of either surface.
+
+  NON_SOVEREIGN · authority=false · admission=FORBIDDEN · ledger_effect=none
+  garden mark ⊬ kernel admission · render ⊬ reality · CONQUEST ⊬ ADMITTED
+-->
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Goblin Warren • LIVE-NPC (HELEN • 200-epoch triad • ai-town style)</title>
+<style>
+body{margin:0;background:#0a120a;color:#0f0;font:12px monospace}
+canvas{border:2px solid #0a0;image-rendering:pixelated}
+#ui{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.85);padding:6px;border:1px solid #0a0;max-width:280px}
+h1{margin:0;font-size:13px}
+button{background:#111;color:#0f0;border:1px solid #0a0;padding:1px 5px;margin:1px;cursor:pointer}
+.doctrine{font-size:9px;color:#ff0;margin:4px 0}
+#log{height:90px;overflow:auto;font-size:9px;border:1px solid #0a0;padding:2px;background:#000}
+#proposals{font-size:8px;max-height:60px;overflow:auto;border:1px solid #0a0;margin:2px 0;padding:2px}
+</style>
+</head>
+<body>
+<canvas id="c" width="820" height="620"></canvas>
+<div id="ui">
+<h1>🧌 GOBLIN WARREN — LIVE-NPC</h1>
+<div id="st">T:0 | Q:0 | Coh:50</div>
+<div class="doctrine">
+200-EPOCH TRIAD:<br>
+No location → no doctrine.<br>
+No test → no gate.<br>
+No replay → no admission.
+</div>
+<div>
+<button onclick="toggleLive()">⏯ LIVE</button>
+<button onclick="step()">STEP</button>
+<button onclick="stampAll('ADMIT')">ADMIT ALL</button>
+<button onclick="stampAll('DENY')">DENY</button>
+<button onclick="reset()">RESET</button>
+</div>
+<input id="cmd" style="width:180px" placeholder="talk CHIDDUSH | seed party" onkeydown="if(event.key=='Enter')cmd()">
+<button onclick="cmd()">Go</button>
+<div id="sel"></div>
+<div id="props"></div>
+<div id="log"></div>
+<div style="font-size:8px">Click agent • WASD cam • LIVE agents observe/reflect/propose under triad • Stamp to mutate</div>
+</div>
+<script type="module">
+import {ROLES, drawRoleSprite, drawBadge} from './js/procedural_creature_sprites.js';
+const c = document.getElementById('c'), ctx = c.getContext('2d');
+let cam = {x:0,y:0}, agents=[], world={proposals:[],coh:50,chaos:10,time:0}, sel=null, keys={}, liveI=null, isLive=false;
+const TRIAD = ["No location → no doctrine.","No test → no gate.","No replay → no admission."];
+const ROLES = ['GOBLIN','HER','CHIDDUSH','CLAW','JESTER','ARCHIVIST','WARDEN','STEWARD'];
+const AREAS = {GOBLIN:{x:140,y:420},HER:{x:110,y:110},CHIDDUSH:{x:520,y:100},CLAW:{x:580,y:420},JESTER:{x:300,y:290},ARCHIVIST:{x:520,y:100},WARDEN:{x:580,y:420},STEWARD:{x:300,y:290}};
+
+function log(m){ const l=document.getElementById('log'); l.innerHTML=`[T${world.time}] ${m}<br>`+l.innerHTML; while(l.children.length>18)l.removeChild(l.lastChild); }
+function tm(a){ if(!a._m)a._m=[]; return a._m; }
+function obs(a,c,s='env'){ tm(a).push({t:'obs',c,s,ts:world.time}); if(tm(a).length>8)tm(a).shift(); }
+function getRel(a,q){ const ql=q.toLowerCase(); return tm(a).filter(m=>m.c.toLowerCase().includes(ql)).slice(-2); }
+function refCand(a,q){ const r=getRel(a,q); let ins=`${a.r} on ${q}: ${r.map(x=>x.c).join('|').slice(0,48)}`; if(!TRIAD.some(t=>ins.toLowerCase().includes(t.split('→')[0].toLowerCase().trim()))) ins += ` [${TRIAD[world.time%3]}]`; return {t:'ref',c:ins,ts:world.time,e:r.map(x=>x.ts)}; }
+function prop(a){ const r=a.r; let txt = r=='GOBLIN'?'compost in Brume':r=='HER'?'bloom garden':r=='CHIDDUSH'?'pattern hunt':r=='CLAW'?'ceiling check':r=='JESTER'?'bounded chaos':r=='ARCHIVIST'?'bind orphan':r=='WARDEN'?'breach watch':'balance'; return {f:r,txt:`Propose ${txt}`,ts:world.time}; }
+
+function init(){
+  agents = ROLES.map((r,i)=>({id:i,r,x:80+i*80,y:120+(i%3)*140,vx:0,vy:0,_m:[{t:'obs',c:`Born ${r}`,ts:0}],last:0}));
+}
+function upd(){
+  world.time++;
+  agents.forEach(a=>{
+    const tg = AREAS[a.r]||{x:400,y:300};
+    const d = Math.hypot(tg.x-a.x,tg.y-a.y)||1;
+    const sp = a.r=='JESTER'||a.r=='GOBLIN'?1.6:0.95;
+    a.vx = (tg.x-a.x)/d * sp * .55 + (Math.random()-.5)*.7;
+    a.vy = (tg.y-a.y)/d * sp * .55 + (Math.random()-.5)*.7;
+    a.x = Math.max(55,Math.min(765,a.x+a.vx));
+    a.y = Math.max(55,Math.min(565,a.y+a.vy));
+
+    if(world.time % 8 == a.id%4) obs(a,`T${world.time} coh=${world.coh} q=${world.proposals.length}`);
+    if(world.time % 12 == a.id%3){
+      const cand = refCand(a, a.r=='CHIDDUSH'?'patterns':'state');
+      tm(a).push(cand);
+      if(TRIAD.some(t=>cand.c.toLowerCase().includes(t.split('→')[0].toLowerCase().trim()))){
+        const p = prop(a); world.proposals.push(p);
+      }
+    }
+    agents.forEach(b=>{ if(b!=a && Math.hypot(b.x-a.x,b.y-a.y)<38 && Math.random()<.02){
+      const m = `Inter T${world.time} ${b.r}`;
+      obs(a,m,`int-${b.r}`); obs(b,m,`int-${a.r}`);
+    }});
+  });
+  if(world.time%18==0){ const e="Quest seed"; world.events.push({ts:world.time,txt:e}); log('🌱 '+e); }
+  if(world.proposals.length>5) world.proposals.shift();
+}
+function drw(){
+  ctx.fillStyle='#0a120a'; ctx.fillRect(0,0,820,620);
+  ctx.fillStyle='#162216'; ctx.fillRect(35,35,750,550);
+  // areas
+  ctx.fillStyle='#223322'; ctx.fillRect(60,60,160,120); ctx.fillStyle='#0a0'; ctx.fillText('ARCHIVE',75,82);
+  ctx.fillStyle='#1f2f2f'; ctx.fillRect(480,45,210,115); ctx.fillStyle='#0a0'; ctx.fillText('SPIRAL',505,68);
+  ctx.fillStyle='#152215'; ctx.fillRect(50,305,175,165); ctx.fillStyle='#0a0'; ctx.fillText('PAVILION',68,328);
+  ctx.fillStyle='#0f1a0f'; ctx.fillRect(440,320,240,165); ctx.fillStyle='#0a0'; ctx.fillText('BRUME',465,345);
+  ctx.fillStyle='#1a251a'; ctx.fillRect(260,205,140,105); ctx.fillStyle='#0a0'; ctx.fillText('CENTER',285,228);
+
+  agents.forEach(a=>{
+    const sz=24; const act = world.proposals.some(p=>p.f==a.r);
+    drawRoleSprite(ctx,a.x-cam.x,a.y-cam.y,sz,a.r,{seed:a.id*21+world.time,state:act?'proposing':'idle',frame:world.time*.6});
+    drawBadge(ctx,a.x-cam.x+15,a.y-cam.y-5,7,a.r);
+    ctx.fillStyle='#0f0'; ctx.font='7px mono'; ctx.fillText(a.r.slice(0,3),a.x-cam.x-9,a.y-cam.y+18);
+  });
+  ctx.fillStyle='#0f0'; ctx.font='10px mono';
+  ctx.fillText(`T:${world.time} Coh:${world.coh} Cha:${world.chaos} Q:${world.proposals.length}`,10,16);
+  if(keys.w)cam.y-=2; if(keys.s)cam.y+=2; if(keys.a)cam.x-=2; if(keys.d)cam.x+=2;
+}
+function uui(){
+  document.getElementById('status').textContent = `T:${world.time} | Q:${world.proposals.length} | Coh:${world.coh}`;
+  const s = document.getElementById('sel');
+  if(sel){
+    const m = tm(sel).slice(-3).map(x=>`• ${x.c||x.content||''}`.slice(0,42)).join('<br>');
+    s.innerHTML = `<b>${sel.r}</b><br>${m}`;
+  }else s.innerHTML='Click agent';
+  const p = document.getElementById('props');
+  p.innerHTML = world.proposals.slice(0,3).map((pp,i)=>`[${pp.f}] ${pp.txt.slice(0,24)} <button onclick="sp(${i},'ADMIT')">A</button><button onclick="sp(${i},'DENY')">D</button><br>`).join('');
+}
+function sp(i,d){ const p=world.proposals.splice(i,1)[0]; if(!p)return; if(d=='ADMIT'){world.coh=Math.min(100,world.coh+5); agents.forEach(a=>obs(a,`ADMIT ${p.txt}`,'stamp')); log(`✅ ${p.f} ADMITTED`);} else {world.chaos=Math.min(100,world.chaos+3); log(`❌ ${d} ${p.txt}`);} }
+function stampAll(d){ while(world.proposals.length) sp(0,d); }
+function cmd(){ const v=document.getElementById('cmd').value.trim(); if(!v)return; log('> '+v); const l=v.toLowerCase();
+  if(l.includes('admit')) stampAll('ADMIT'); else if(l.includes('deny')) stampAll('DENY');
+  else if(sel && (l.includes('talk')||l.includes('ask'))){ const m=v.replace(/.*(talk|ask)/i,'').trim(); obs(sel,`User: ${m}`,'user'); log(sel.r+' heard'); }
+  else if(l.includes('party')||l.includes('seed')){ world.proposals.push({f:'USER',txt:v,ts:world.time}); log('Seeded.'); }
+  else agents.forEach(a=>obs(a,`User: ${v}`,'user'));
+  document.getElementById('cmd').value='';
+}
+function step(){ upd(); drw(); uui(); }
+function toggleLive(){ isLive=!isLive; if(isLive){ if(liveI)clearInterval(liveI); liveI=setInterval(step,140); log('LIVE ON'); }else{clearInterval(liveI);log('PAUSED');} }
+function drw(){ /* same as before, omitted for brevity - full in file */ ctx.fillStyle='#0a120a';ctx.fillRect(0,0,820,620); ctx.fillStyle='#162216';ctx.fillRect(35,35,750,550); /* areas + agents using drawRoleSprite */ agents.forEach(a=>{const sz=24; const act=world.proposals.some(p=>p.f==a.r); drawRoleSprite(ctx,a.x-cam.x,a.y-cam.y,sz,a.r,{seed:a.id*21+world.time,state:act?'proposing':'idle',frame:world.time*.6}); drawBadge(ctx,a.x-cam.x+15,a.y-cam.y-5,7,a.r); ctx.fillStyle='#0f0';ctx.font='7px mono';ctx.fillText(a.r.slice(0,3),a.x-cam.x-9,a.y-cam.y+18);}); ctx.fillStyle='#0f0';ctx.font='10px mono'; ctx.fillText(`T:${world.time} Coh:${world.coh} Cha:${world.chaos} Q:${world.proposals.length}`,10,16); if(keys.w)cam.y-=2;if(keys.s)cam.y+=2;if(keys.a)cam.x-=2;if(keys.d)cam.x+=2; }
+function game(){ drw(); uui(); requestAnimationFrame(game); }
+c.addEventListener('click',e=>{const r=c.getBoundingClientRect(); const wx=e.clientX-r.left+cam.x,wy=e.clientY-r.top+cam.y; sel=agents.find(a=>Math.hypot(a.x-wx,a.y-wy)<20)||null;});
+addEventListener('keydown',e=>keys[e.key.toLowerCase()]=true); addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
+function init(){ agents=ROLES.map((r,i)=>({id:i,r,x:70+i*85,y:80+(i%3)*160,vx:0,vy:0,_m:[{t:'obs',c:`Born ${r}`,ts:0}]})); }
+window.stampAll = stampAll; window.sp=sp; window.step=step; window.toggleLive=toggleLive;
+init(); log('LIVE-NPC started. Agents use typed memory + 200-epoch triad.'); game();
+</script>
+</body>
+</html>

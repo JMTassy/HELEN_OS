@@ -74,8 +74,17 @@ Temple may not govern.
 ## Warren Town — LIVE-NPC surface
 
 The playable town where the cognitive functions walk, propose, and never rule.
-Interactive version: `warren-town.html` (procedural Canvas, no external assets) — or the
-membrane-gated build at `apps/goblin-warren/warren_town.html` (live feed + safety tests).
+
+### Surface seam (locked 2026-07-06 — two surfaces, one preview, distinct roles)
+
+| Artifact | Role |
+|---|---|
+| `apps/goblin-warren/warren_town.html` | **Canonical interactive app surface** — Warren cockpit / AAA dashboard, real outbox/feed inspector, procedural Canvas, no external assets, safety tests |
+| `temple/gardens/goblin_garden_conquest/warren-town.html` | **Garden LIVE-NPC playground / sketch** — non-canonical concept-and-play lane, not the app cockpit |
+| `temple/gardens/goblin_garden_conquest/warren-town-preview.jpg` | **Concept art only** — AI-generated visual reference; not a screenshot of either surface, not a witness |
+
+No visual reference implies admission. The surfaces are not folded and not renamed;
+this seam note is the boundary.
 
 ![Warren Town LIVE-NPC preview](warren-town-preview.jpg)
 

@@ -2,136 +2,324 @@
 <!--
   WARREN TOWN — top-down pixel world, AI-Town design language, HELEN membrane
 
+  SURFACE ROLE (seam lock 2026-07-06):
+  Canonical Warren app cockpit — procedural Canvas surface. No external assets.
+  Proposal-only. CONQUEST is not admitted.
+  The file temple/gardens/goblin_garden_conquest/warren-town.html is a separate
+  garden LIVE-NPC playground/sketch — it is NOT this cockpit and NOT canonical.
+
   NON_SOVEREIGN · authority=false · canon=false · ledger_effect=none
   prototype ⊬ canon · NPC proposes ⊬ admits · 📜 ledger sleeps
 
   Design language reproduced from AI Town (a16z-infra/ai-town): chunky pixel
-  tilemap, wood-framed viewport, bottom button bar, "click an agent to see
-  chat history". ASSETS ARE NOT COPIED — AI Town's tilesheets are third-party
-  licensed (George Bailey / hilau / ansimuz). Everything here is procedural
-  Canvas, same law as warren_cast_sprites.js: no external images, no borrowed IP.
+  tilemap, framed viewport, click-an-agent-to-inspect. ASSETS ARE NOT COPIED —
+  everything here is procedural Canvas + CSS, same law as warren_cast_sprites.js:
+  no external images, no borrowed IP.
 
-  The membrane twist: clicking an NPC shows its PROPOSALS, never admitted truth.
+  The membrane twist: clicking an NPC shows its PROPOSALS, never claimed truth.
   An NPC mini-game may create proposals; it may not admit, mutate, or grant ZOL.
 
   LIVE FEED (GO LIVE-NPC, 2026-07-06): warren_town_feed.js is a static sidecar
   built by build_warren_feed.py from temple/autoresearch/outbox AR-*.json
   packets (AUTORESEARCH_PACKET_V1, local-model proposed, FABLE-gated). NPCs
   CARRY real packets; carrying ⊬ admitting. Operator marks shown are garden
-  marks (operator_pen / triage) — garden mark ⊬ kernel admission. If the feed
-  file is absent the town falls back to canned lines and says so.
+  marks (operator_pen / triage) — garden mark ⊬ kernel admission.
+
+  AAA_FRAMEWORK_PASS V2 (2026-07-06, operator mockup): dashboard information
+  architecture — top bar (brand · objective · state-at-a-glance · feed status),
+  world viewport (nameplates, HAL bubble, town mood — VISUAL ONLY), side
+  PROPOSAL INSPECTOR card, bottom row (beginner guide · live proposal feed ·
+  law strip · WULmoji grammar simple/advanced), nav bar + readable loop +
+  versioned footer. Zero new authority. If the feed file is absent the town
+  falls back to canned lines and says so, beautifully.
 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>WARREN TOWN — cognitive functions, walking around</title>
+<title>WARREN TOWN — a HELEN conquest framework</title>
 <style>
-  :root { --wood:#6b4a2b; --wood2:#8a5a34; --panel:#2a1e2e; --ink:#e8dcc0; --frame:#3a2440; }
-  html,body { margin:0; height:100%; background:#1a2018; color:var(--ink);
-    font:14px/1.5 ui-monospace, "SF Mono", Menlo, monospace; image-rendering:pixelated;
-    display:flex; align-items:center; justify-content:center; user-select:none; }
-  #wrap { width:min(96vw, 760px); }
-  h1 { text-align:center; letter-spacing:.28em; font-size:22px; margin:6px 0 2px;
-    color:#e6b84a; text-shadow:2px 2px 0 #5a3a10; }
-  .tag { text-align:center; opacity:.75; margin:0 0 8px; font-size:12px; }
-  /* wood frame like AI Town */
-  #frame { border:8px solid var(--wood); border-radius:8px; background:var(--wood2);
-    padding:6px; box-shadow:0 8px 30px rgba(0,0,0,.5); }
-  #inner { border:6px solid var(--frame); border-radius:4px; background:#000; overflow:hidden; }
-  canvas { display:block; width:100%; image-rendering:pixelated; cursor:crosshair; }
-  #panel { background:var(--panel); border-top:6px solid var(--frame); padding:14px 18px;
-    min-height:74px; }
-  #panel .who { color:#e6b84a; font-weight:bold; letter-spacing:.06em; }
-  #panel .line { margin:4px 0; }
-  #panel .law { opacity:.6; font-size:11px; margin-top:8px; }
-  #bar { display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; }
-  button { font:inherit; color:var(--ink); background:#3a3560; border:3px solid #57509a;
-    border-bottom-width:5px; border-radius:6px; padding:8px 16px; cursor:pointer;
-    letter-spacing:.05em; }
-  button:active { border-bottom-width:3px; transform:translateY(2px); }
-  button.on { background:#4a6a2f; border-color:#6f9a3f; }
-  .seal { text-align:center; opacity:.5; font-size:11px; margin-top:8px; }
-  .brand { float:right; opacity:.6; font-size:11px; }
-  /* --- AAA polish: objective strip, badges, card inspector --- */
-  #objective { display:flex; align-items:center; gap:10px; justify-content:center;
-    margin:0 0 8px; font-size:12px; }
-  #objective .steps { opacity:.85; }
-  #objective .steps b { color:#e6b84a; }
-  .state-badge { display:inline-block; padding:2px 9px; border-radius:10px; font-size:11px;
-    letter-spacing:.05em; border:1px solid #57509a; background:#231f3a; color:#bfc7ff;
-    white-space:nowrap; }
-  .state-badge.sleeping { border-color:#6f6a3f; background:#2a2618; color:#e6d89a; }
-  button { transition:transform .08s ease, border-color .12s ease, background .12s ease; }
-  button:hover { border-color:#8078d6; }
-  button.on:hover { border-color:#8fc060; }
-  /* card inspector */
-  #panel .card { display:grid; grid-template-columns:auto 1fr; gap:2px 12px; margin-top:6px;
-    font-size:12.5px; }
-  #panel .card .k { opacity:.55; text-align:right; }
-  #panel .card .v { }
-  .pill { display:inline-block; padding:1px 7px; border-radius:9px; font-size:10.5px;
-    letter-spacing:.04em; vertical-align:middle; }
-  .pill.sev-high { background:#5a1f22; color:#ffb0b0; }
-  .pill.sev-medium { background:#4a3a15; color:#f0d488; }
-  .pill.sev-low { background:#1f3a2a; color:#9fe0b8; }
-  .pill.sev-info { background:#242038; color:#b8c0e0; }
-  .pill.auth { background:#231f3a; color:#8fa0e0; }
-  .pill.mark { background:#2a3a1a; color:#c0e090; }
-  .pill.unmarked { background:#2a2618; color:#e6d89a; }
-  .feed-pulse { animation:pulse 2.2s ease-in-out infinite; }
-  @keyframes pulse { 0%,100%{opacity:.6} 50%{opacity:1} }
-  #advanced { display:none; }
-  #advanced.show { display:block; }
-  /* --- AAA polish: world-effect legend, loop bar, term tooltips --- */
-  #legend { font-size:10.5px; opacity:.55; text-align:center; padding:4px 0 0; }
-  #loopbar { text-align:center; font-size:11px; opacity:.7; margin-top:8px; letter-spacing:.04em; }
-  .term { border-bottom:1px dotted #9a8f78; cursor:help; position:relative; }
-  .term:hover::after { content:attr(data-tip); position:absolute; left:0; bottom:130%; z-index:9;
-    width:240px; background:#141018; color:#e8dcc0; border:2px solid #57509a; border-radius:6px;
-    padding:8px 10px; font-size:11px; line-height:1.45; letter-spacing:0; white-space:normal; }
+  :root { --wood:#6b4a2b; --wood2:#8a5a34; --panel:#14101c; --panel2:#1b1526;
+    --ink:#e8dcc0; --frame:#3a2440; --gold:#e6b84a; --dim:#9a8f78; --edge:#4a3a52;
+    --green:#8fc060; --red:#e07a6a; --blue:#7aa8d8; --purple:#b08ae0; }
+  * { box-sizing:border-box; }
+  html,body { margin:0; min-height:100%; background:#0d0a12; color:var(--ink);
+    font:13px/1.5 ui-monospace, "SF Mono", Menlo, monospace; image-rendering:pixelated;
+    user-select:none; }
+  body { display:flex; justify-content:center; padding:14px 10px 8px; }
+  #app { width:min(98vw, 1240px); display:flex; flex-direction:column; gap:10px; }
+  .card { background:var(--panel); border:2px solid var(--edge); border-radius:10px;
+    padding:12px 16px; }
+  .card h3 { margin:0 0 8px; font-size:11px; letter-spacing:.18em; color:var(--dim);
+    text-transform:uppercase; }
+  .flash { animation:flash 1.2s ease; }
+  @keyframes flash { 0%{box-shadow:0 0 0 3px rgba(230,184,74,.7)} 100%{box-shadow:none} }
+
+  /* ---- TOP BAR ---- */
+  #topbar { display:grid; grid-template-columns: 1.1fr 1.6fr 1fr 1fr; gap:10px; }
+  #brand h1 { margin:0; font-size:20px; letter-spacing:.2em; color:var(--gold);
+    text-shadow:2px 2px 0 #5a3a10; }
+  #brand .sub { font-size:10.5px; opacity:.7; letter-spacing:.12em; }
+  #objective .steps { display:flex; gap:14px; flex-wrap:wrap; font-size:11.5px; }
+  #objective .step b { display:inline-block; width:16px; height:16px; border-radius:50%;
+    background:#3a3560; border:1px solid #57509a; text-align:center; line-height:16px;
+    font-size:10px; margin-right:5px; color:#cfc8ff; }
+  #objective .obj-main { font-weight:bold; font-size:13px; margin-bottom:6px; }
+  #state .rows { font-size:12.5px; line-height:1.7; letter-spacing:.06em; }
+  #state .neq { border-top:1px solid var(--edge); margin-top:6px; padding-top:5px;
+    font-size:11px; opacity:.8; }
+  #feedstatus .big { font-size:20px; color:var(--blue); font-weight:bold; }
+  #feedstatus .pulse { display:inline-block; width:9px; height:9px; border-radius:50%;
+    background:var(--green); margin-right:6px; animation:pulse 1.6s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:.35; transform:scale(.85)} 50%{opacity:1; transform:scale(1.15)} }
+  #feedstatus .digest { font-size:10.5px; opacity:.6; margin-top:2px; }
+
+  /* ---- MAIN ROW: world + inspector ---- */
+  #main { display:grid; grid-template-columns: 1fr 372px; gap:10px; align-items:start; }
+  #worldcard { padding:8px; border:8px solid var(--wood); background:var(--wood2);
+    border-radius:10px; }
+  #inner { border:6px solid var(--frame); border-radius:4px; background:#000;
+    overflow:hidden; position:relative; }
+  canvas#stage { display:block; width:100%; image-rendering:pixelated; cursor:crosshair; }
+  #mood { position:absolute; left:50%; bottom:8px; transform:translateX(-50%);
+    background:rgba(13,10,18,.85); border:2px solid var(--edge); border-radius:8px;
+    padding:4px 12px; font-size:10.5px; white-space:nowrap; }
+  #mood .bar { display:inline-block; width:70px; height:6px; background:#241a28;
+    border-radius:4px; overflow:hidden; vertical-align:middle; margin-left:6px; }
+  #mood .bar i { display:block; height:100%; background:var(--green); }
+  #legend { font-size:10px; opacity:.55; text-align:center; padding:5px 2px 0; }
+
+  /* ---- INSPECTOR ---- */
+  #inspector { min-height:420px; display:flex; flex-direction:column; }
+  #inspHead { display:flex; justify-content:space-between; align-items:center;
+    border-bottom:1px solid var(--edge); padding-bottom:7px; margin-bottom:8px; }
+  #inspHead h3 { margin:0; }
+  #inspClear { cursor:pointer; opacity:.6; border:none; background:none; color:var(--ink);
+    font-size:14px; padding:2px 6px; }
+  #inspClear:hover { opacity:1; }
+  #inspBody { animation:fadein .3s ease; }
+  @keyframes fadein { from{opacity:0; transform:translateY(4px)} to{opacity:1; transform:none} }
+  .insp-top { display:flex; gap:10px; align-items:center; margin-bottom:6px; }
+  .insp-top canvas { border:2px solid var(--edge); border-radius:6px; background:#101418; }
+  .insp-owner { font-weight:bold; letter-spacing:.05em; }
+  .finding-chip { display:inline-block; font-size:9.5px; padding:2px 8px; border-radius:9px;
+    letter-spacing:.08em; text-transform:uppercase; margin-left:6px; vertical-align:middle; }
+  .ft-risk { background:#4a1f22; color:#ffb0a8; }
+  .ft-test_gap { background:#4a3a15; color:#f0d488; }
+  .ft-proposal { background:#2f2244; color:#cdb0f0; }
+  .ft-other { background:#242038; color:#b8c0e0; }
+  .insp-title { font-size:15px; font-weight:bold; color:#f0e6c8; margin:4px 0 8px;
+    line-height:1.35; }
+  .insp-rec { font-size:12px; margin-bottom:10px; }
+  .insp-rec b { color:var(--gold); display:block; font-size:10.5px; letter-spacing:.12em;
+    text-transform:uppercase; }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--edge);
+    border:1px solid var(--edge); border-radius:8px; overflow:hidden; margin-bottom:8px; }
+  .grid2 .cell { background:var(--panel2); padding:8px 10px; font-size:11px; }
+  .grid2 .cell b { display:block; font-size:9.5px; letter-spacing:.12em; opacity:.65;
+    text-transform:uppercase; margin-bottom:2px; }
+  .cell .ok { color:var(--green); } .cell .warn { color:#e6c84a; } .cell .no { color:var(--red); }
+  .sevdots i { display:inline-block; width:9px; height:9px; border-radius:50%;
+    background:#2c2436; margin-right:3px; }
+  .sevdots i.on { background:#e08a4a; }
+  .important { border:1px solid var(--edge); border-left:4px solid var(--gold);
+    background:var(--panel2); border-radius:6px; padding:8px 12px; font-size:11px;
+    line-height:1.6; }
+  .important b { color:var(--gold); letter-spacing:.1em; font-size:10px; }
+  .empty-insp { opacity:.65; text-align:center; padding:44px 10px; font-size:12.5px; }
+  .empty-insp .eye { font-size:30px; display:block; margin-bottom:10px; }
+
+  /* ---- BOTTOM ROW ---- */
+  #bottomrow { display:grid; grid-template-columns: .95fr 1.5fr .95fr 1.1fr; gap:10px;
+    align-items:start; }
+  #guide .g-body { display:flex; gap:10px; }
+  #guide canvas { border:2px solid var(--edge); border-radius:6px; background:#101418;
+    flex:none; }
+  #guide p { margin:0; font-size:11.5px; line-height:1.55; }
+  .mini-btn { display:inline-block; margin-top:8px; font:inherit; font-size:10.5px;
+    color:var(--ink); background:#2a2440; border:2px solid #57509a; border-radius:6px;
+    padding:4px 12px; cursor:pointer; letter-spacing:.06em; transition:background .15s; }
+  .mini-btn:hover { background:#3a3560; }
+  .mini-btn.on { background:#3f5a2e; border-color:#6f9a3f; }
+  #feedlist { display:flex; flex-direction:column; gap:5px; }
+  .frow { display:flex; align-items:center; gap:8px; background:var(--panel2);
+    border:1px solid var(--edge); border-radius:7px; padding:5px 10px; cursor:pointer;
+    font-size:11.5px; transition:border-color .15s, background .15s; }
+  .frow:hover { border-color:#8078d6; background:#241d33; }
+  .frow .t { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .frow .from { opacity:.6; font-size:10.5px; white-space:nowrap; }
+  .frow .new { width:7px; height:7px; border-radius:50%; background:var(--blue);
+    flex:none; animation:pulse 2s ease-in-out infinite; }
+  .frow .markdot { width:7px; height:7px; border-radius:50%; background:var(--green); flex:none; }
+  #law ul { list-style:none; margin:0; padding:0; font-size:11.5px; }
+  #law li { margin:0 0 8px; display:flex; gap:8px; }
+  #law li .ic { flex:none; }
+  #law li b { display:block; font-size:11px; }
+  #law li span.d { opacity:.65; font-size:10.5px; }
+  #wulmoji .modes { float:right; }
+  #wulmoji .glyphs { font-size:15px; line-height:1.9; letter-spacing:.12em;
+    word-break:break-all; }
+  #wulmoji .dense { display:none; font-size:11px; letter-spacing:.02em; opacity:.85;
+    margin-top:6px; border-top:1px solid var(--edge); padding-top:6px; line-height:1.7; }
+  #wulmoji.adv .dense { display:block; }
+  .term { border-bottom:1px dotted var(--dim); cursor:help; position:relative; }
+  .term:hover::after { content:attr(data-tip); position:absolute; left:0; bottom:130%;
+    z-index:9; width:230px; background:#141018; color:var(--ink); border:2px solid #57509a;
+    border-radius:6px; padding:8px 10px; font-size:10.5px; line-height:1.45;
+    letter-spacing:0; white-space:normal; }
+
+  /* ---- NAV + FOOTER ---- */
+  #navbar { display:flex; gap:8px; align-items:center; flex-wrap:wrap;
+    background:var(--panel); border:2px solid var(--edge); border-radius:10px;
+    padding:8px 12px; }
+  #navbar button { font:inherit; font-size:10.5px; color:var(--ink); background:#221c30;
+    border:2px solid var(--edge); border-bottom-width:4px; border-radius:8px;
+    padding:6px 12px; cursor:pointer; letter-spacing:.08em;
+    transition:background .12s, border-color .12s; }
+  #navbar button:hover { background:#332a48; border-color:#8078d6; }
+  #navbar button:active { border-bottom-width:2px; transform:translateY(2px); }
+  #navbar button.on { background:#3f5a2e; border-color:#6f9a3f; }
+  #loopquote { margin-left:auto; font-size:11px; opacity:.75; letter-spacing:.05em;
+    text-align:right; }
+  #footer { display:flex; justify-content:space-between; font-size:10px; opacity:.55;
+    padding:0 6px 6px; letter-spacing:.08em; flex-wrap:wrap; gap:6px; }
+
+  @media (max-width: 980px){
+    #topbar { grid-template-columns:1fr 1fr; }
+    #main { grid-template-columns:1fr; }
+    #bottomrow { grid-template-columns:1fr 1fr; }
+  }
 </style>
 </head>
 <body>
-<div id="wrap">
-  <h1>WARREN TOWN</h1>
-  <p class="tag">A garden where cognitive functions live, propose, and never rule.</p>
-  <div id="objective">
-    <span class="steps"><b>1.</b> Click a citizen &nbsp;<b>2.</b> Inspect its proposal
-      &nbsp;<b>3.</b> Remember: <b>proposal ⊬ admission</b></span>
-    <span class="state-badge sleeping" id="stateBadge"
-      title="Nothing here can change real state. NPCs carry proposals; only the operator + reducer admit.">AUTH=false · LEDGER=SLEEPING · PROPOSALS ONLY</span>
-  </div>
-  <div id="frame">
-    <div id="inner"><canvas id="stage" width="640" height="384"></canvas></div>
-    <div id="legend">world effects are <b>VISUAL ONLY</b> — 📜 scroll = carries live packets ·
-      fog = awaiting operator mark · blooms = garden-marked · pale threads = composted metaphor</div>
-    <div id="panel">
-      <div class="who" id="who">Click an inhabitant to see its proposals.</div>
-      <div class="line" id="body">Ten role-bodies wander the garden. Each is a cognitive
-        function with a job — none can complete the workflow alone.</div>
-      <div class="law" id="law">👁 observe · 📜 propose · ⚖️ gate — proposal ⊬ state · 📜 ledger sleeps</div>
-      <div id="loopbar">📚 Knowledge → 🎯 Quest → 🧾 Proof → 🧪 Validation → 🖊 Decision → 🔁 Replay</div>
+<div id="app">
+
+  <!-- ================= TOP BAR ================= -->
+  <div id="topbar">
+    <div class="card" id="brand">
+      <h1>WARREN TOWN</h1>
+      <div class="sub">A HELEN CONQUEST FRAMEWORK</div>
+    </div>
+    <div class="card" id="objective">
+      <h3>Current Objective</h3>
+      <div class="obj-main" id="objText">Inspect proposals from your citizens.</div>
+      <div class="steps">
+        <span class="step"><b>1</b>Click a citizen</span>
+        <span class="step"><b>2</b>Inspect the proposal</span>
+        <span class="step"><b>3</b><span class="term" data-tip="Your mark is a garden mark recorded by the operator pen. It never becomes kernel admission.">proposal ⊬ admission</span></span>
+      </div>
+    </div>
+    <div class="card" id="state">
+      <h3>State at a Glance</h3>
+      <div class="rows">🛡 AUTH = FALSE<br>💤 LEDGER = SLEEPING<br>📜 PROPOSALS ONLY</div>
+      <div class="neq">CONQUEST ≠ ADMITTED</div>
+    </div>
+    <div class="card" id="feedstatus">
+      <h3>Feed Status</h3>
+      <div id="feedBig" class="big">…</div>
+      <div class="digest" id="feedDigest"></div>
+      <button class="mini-btn" id="btnViewFeed">VIEW FEED</button>
     </div>
   </div>
-  <div id="bar">
-    <button id="btnObserve" class="on" title="The town at rest — watch the role-bodies wander.">👁 OBSERVE</button>
-    <button id="btnSilhouette" title="Show each role's abstract silhouette instead of its sprite.">🎭 SILHOUETTE</button>
-    <button id="btnGate" title="Why can't the citizens rule? Garden ADMIT ≠ Kernel ADMISSION.">⚖️ GATE (why can't they rule?)</button>
-    <button id="btnAdvanced" title="Toggle the dense WULmoji grammar / role glossary.">🜁 ADVANCED GRAMMAR</button>
-    <span class="brand">🌱 warren · authority=false</span>
+
+  <!-- ================= MAIN: WORLD + INSPECTOR ================= -->
+  <div id="main">
+    <div id="worldcard">
+      <div id="inner">
+        <canvas id="stage" width="640" height="384"></canvas>
+        <div id="mood">TOWN MOOD <span style="opacity:.5">(visual only)</span> ·
+          <b id="moodWord">…</b><span class="bar"><i id="moodBar" style="width:40%"></i></span></div>
+      </div>
+      <div id="legend">world effects are <b>VISUAL ONLY</b> — 📜 scroll = carries live packets ·
+        fog = awaiting operator mark · blooms = garden-marked · pale threads = composted metaphor</div>
+    </div>
+
+    <div class="card" id="inspector">
+      <div id="inspHead">
+        <h3>Proposal Inspector</h3>
+        <button id="inspClear" title="Clear selection">✕</button>
+      </div>
+      <div id="inspBody">
+        <div class="empty-insp"><span class="eye">👁</span>
+          Click a citizen to inspect their proposal.<br>
+          <span style="opacity:.6;font-size:11px">Citizens carrying a 📜 scroll hold live packets.
+          Click again to cycle.</span></div>
+      </div>
+    </div>
   </div>
-  <div id="advanced">
-    <div class="seal">GOBLIN mutate · HER tend · CHIDDUSH pattern · CLAW refuse · JESTER stress ·
-      ARCHIVIST receipt · WARDEN hold · STEWARD balance · MAYOR route · HAL lantern</div>
-    <div class="seal">🜁 symbol · 🜍 pattern · 🧪 validator · 🧾 receipt · 🛡 boundary · ⚖️ review · 📜 ledger
-      &nbsp;—&nbsp; lawful ascent: 🜁→🜍→🧪→🧾→🛡→⚖️→📜 · forbidden: 🜁→📜</div>
-    <div class="seal">glossary —
-      <span class="term" data-tip="Zone of Lawful influence — play-value inside the Garden. Never convertible to authority, admission, or real-world value.">ZOL</span> ·
-      <span class="term" data-tip="A candidate change. Inspectable, markable, compostable — it cannot change the Kernel.">proposal</span> ·
-      <span class="term" data-tip="The only lawful crossing: a hash-bound record the reducer can check and replay can reconstruct.">receipt</span> ·
-      <span class="term" data-tip="A fail-closed checker. It can refuse; it cannot create truth.">validator</span> ·
-      <span class="term" data-tip="Re-deriving a result from its inputs. If it does not replay, it is not real.">replay</span></div>
+
+  <!-- ================= BOTTOM ROW ================= -->
+  <div id="bottomrow">
+    <div class="card" id="guide">
+      <h3>📖 Beginner Guide</h3>
+      <div class="g-body">
+        <canvas id="guidePortrait" width="48" height="48"></canvas>
+        <p>Welcome, Operator.<br>WARREN TOWN is a place of <b>proposals, not powers</b>.<br>
+        Explore. Inspect. Decide.<br>You are the mark.</p>
+      </div>
+      <button class="mini-btn" id="btnGuide">VIEW FULL GUIDE</button>
+    </div>
+
+    <div class="card" id="feedcard">
+      <h3>Live Proposal Feed</h3>
+      <div id="feedlist"></div>
+      <button class="mini-btn" id="btnAllPackets">VIEW ALL PACKETS</button>
+    </div>
+
+    <div class="card" id="law">
+      <h3>Law Strip</h3>
+      <ul>
+        <li><span class="ic">🛡</span><span><b>No Claim</b>
+          <span class="d">No ownership of ideas.</span></span></li>
+        <li><span class="ic">🚫</span><span><b>No Ship</b>
+          <span class="d">No external deployment.</span></span></li>
+        <li><span class="ic">⛔</span><span><b>No Admission</b>
+          <span class="d">No proposal becomes truth here.</span></span></li>
+        <li><span class="ic">🖊</span><span><b>Operator Mark Required</b>
+          <span class="d">You decide what to remember.</span></span></li>
+      </ul>
+    </div>
+
+    <div class="card" id="wulmoji">
+      <h3>WULmoji Grammar
+        <span class="modes">
+          <button class="mini-btn on" id="btnSimple">Simple</button>
+          <button class="mini-btn" id="btnAdv">Advanced</button>
+        </span></h3>
+      <div class="glyphs">👁 📜 ⚖️ 🧾 🔁 🛡 🖊 🌱 🜁 🜍</div>
+      <div class="dense">
+        🜁 symbol · 🜍 pattern · 🧪 validator · 🧾 receipt · 🛡 boundary · ⚖️ review · 📜 ledger<br>
+        lawful ascent: 🜁→🜍→🧪→🧾→🛡→⚖️→📜 · forbidden: 🜁→📜<br>
+        NPC carries ⊬ admits · garden mark ⊬ kernel admission · believability ⊬ admissibility ·
+        goal ⊬ authority · DREAMT ≠ CLAIMED<br>
+        glossary —
+        <span class="term" data-tip="Zone of Lawful influence — play-value inside the Garden. Never convertible to authority, admission, or real-world value.">ZOL</span> ·
+        <span class="term" data-tip="A candidate change. Inspectable, markable, compostable — it cannot change the Kernel.">proposal</span> ·
+        <span class="term" data-tip="The only lawful crossing: a hash-bound record the reducer can check and replay can reconstruct.">receipt</span> ·
+        <span class="term" data-tip="A fail-closed checker. It can refuse; it cannot create truth.">validator</span> ·
+        <span class="term" data-tip="Re-deriving a result from its inputs. If it does not replay, it is not real.">replay</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= NAV BAR ================= -->
+  <div id="navbar">
+    <button data-nav="world" class="on">🏘 WORLD</button>
+    <button data-nav="inspector">🔍 INSPECTOR</button>
+    <button data-nav="law">🛡 LAW</button>
+    <button data-nav="feed">📡 FEED</button>
+    <button data-nav="objective">🎯 OBJECTIVE</button>
+    <button data-nav="replay">🔁 REPLAY</button>
+    <button data-nav="grammar">📖 GRAMMAR</button>
+    <button data-nav="guide">📘 GUIDE</button>
+    <button data-nav="silhouette">🎭 SILHOUETTE</button>
+    <span id="loopquote">“ KNOWLEDGE → QUEST → PROOF → VALIDATION →<br>DECISION → REPLAY ”</span>
+  </div>
+
+  <div id="footer">
+    <span>HELEN CONQUEST FRAMEWORK · AUTHORITY = FALSE · LEDGER = SLEEPING ·
+      PROPOSALS ONLY · CONQUEST ≠ ADMITTED</span>
+    <span>VER. 0.1.0-AAA · procedural only · no external assets</span>
   </div>
 </div>
 
@@ -151,28 +339,30 @@ let _s = 20260706;
 const rnd = () => { _s = (_s*1103515245+12345)&0x7fffffff; return _s/0x7fffffff; };
 const rr = (a,b)=>a+rnd()*(b-a);
 function hash2(x,y){ const h=Math.sin(x*127.1+y*311.7)*43758.5453; return h-Math.floor(h); }
-function fbm(x,y){ return hash2(Math.floor(x),Math.floor(y))*.6
-  + hash2(Math.floor(x*2.1),Math.floor(y*2.1))*.4; }
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+/* ---- live feed sidecar (optional): real AUTORESEARCH packets, carried not claimed ---- */
+const FEED = (window.WarrenFeed && window.WarrenFeed.schema === 'WARREN_FEED_V0')
+  ? window.WarrenFeed : null;
+const feedIdx = {};                       // per-role click cursor for cycling
 
 /* ---- procedural tilemap: 0 grass · 1 forest · 2 water · 3 waterfall · 4 flower · 5 stump ---- */
 const map = [];
 for (let r=0;r<ROWS;r++){ map[r]=[];
   for (let c=0;c<COLS;c++){
     let t = 0;
-    if (c < 4 && hash2(c,r) > .25) t = 1;                 // left forest wall
-    if (r < 3 && hash2(c*3,r) > .35) t = 1;               // top forest band
+    if (c < 4 && hash2(c,r) > .25) t = 1;
+    if (r < 3 && hash2(c*3,r) > .35) t = 1;
     if (c > COLS-11 && r > 3 && r < ROWS-4 &&
-        (c-(COLS-6))**2/28 + (r-ROWS/2)**2/40 < 1) t = 2; // right pond
-    if (t===0 && rnd() < .04) t = 4;                       // flowers
-    if (t===0 && rnd() < .02) t = 5;                       // stumps
+        (c-(COLS-6))**2/28 + (r-ROWS/2)**2/40 < 1) t = 2;
+    if (t===0 && rnd() < .04) t = 4;
+    if (t===0 && rnd() < .02) t = 5;
     map[r][c]=t;
   }
 }
-/* waterfall lip on the pond's south edge */
 for (let c=0;c<COLS;c++){ for (let r=1;r<ROWS;r++){
   if (map[r][c]===0 && map[r-1][c]===2) map[r][c]=3; } }
 
-/* structures drawn procedurally over grass: a tent + a crate stack */
 const tent = { x: 7*TILE, y: 12*TILE };
 const crates = { x: 4*TILE, y: 12*TILE };
 
@@ -180,27 +370,27 @@ function isWalkable(px,py){
   const c=(px/TILE)|0, r=(py/TILE)|0;
   if (c<0||r<0||c>=COLS||r>=ROWS) return false;
   const t=map[r][c];
-  return t!==1 && t!==2;                                   // no forest, no water
+  return t!==1 && t!==2;
 }
 
 /* ---- tile painters (NES 3-color ramps, no assets) ---- */
 function paintTile(t,c,r){
   const x=c*TILE, y=r*TILE, n=hash2(c,r);
-  if (t===2 || t===3){                                    // water
+  if (t===2 || t===3){
     ctx.fillStyle = t===3 ? '#7fb8d8' : (n>.5?'#1d5a7a':'#256a8c');
     ctx.fillRect(x,y,TILE,TILE);
     ctx.fillStyle='rgba(255,255,255,.18)';
     ctx.fillRect(x, y+((Date.now()/220+c*3)%TILE|0), TILE, 1);
     return;
   }
-  ctx.fillStyle = n>.6?'#5a9a3c':(n>.3?'#4e8c34':'#458029'); // grass ramp
+  ctx.fillStyle = n>.6?'#5a9a3c':(n>.3?'#4e8c34':'#458029');
   ctx.fillRect(x,y,TILE,TILE);
   ctx.fillStyle='rgba(30,60,20,.25)'; ctx.fillRect(x, y+ (n*TILE|0)%TILE, TILE, 1);
-  if (t===1){                                             // forest canopy
+  if (t===1){
     ctx.fillStyle='#2f5a24'; ctx.fillRect(x,y,TILE,TILE);
     ctx.fillStyle='#3f7a2e'; ctx.fillRect(x+2,y+1,TILE-4,TILE-4);
     ctx.fillStyle='#54a03a'; ctx.fillRect(x+3,y+2,4,3);
-    ctx.fillStyle='#26401c'; ctx.fillRect(x+TILE/2-1,y+TILE-4,2,4); // trunk hint
+    ctx.fillStyle='#26401c'; ctx.fillRect(x+TILE/2-1,y+TILE-4,2,4);
   }
   if (t===4){ ctx.fillStyle=['#e05a8a','#e6c84a','#a86fe0'][n*3|0];
     ctx.fillRect(x+6,y+6,3,3); ctx.fillStyle='#3f7a2e'; ctx.fillRect(x+7,y+9,1,3); }
@@ -212,7 +402,7 @@ function paintTent(){
   ctx.fillStyle='#cbb48a'; ctx.beginPath();
   ctx.moveTo(x, y+22); ctx.lineTo(x+16, y-2); ctx.lineTo(x+32, y+22); ctx.closePath(); ctx.fill();
   ctx.fillStyle='#b09a70'; ctx.fillRect(x, y+22, 32, 4);
-  ctx.fillStyle='#3a2e1e'; ctx.beginPath();                // door
+  ctx.fillStyle='#3a2e1e'; ctx.beginPath();
   ctx.moveTo(x+12,y+22); ctx.lineTo(x+16,y+8); ctx.lineTo(x+20,y+22); ctx.closePath(); ctx.fill();
 }
 function paintCrates(){
@@ -225,12 +415,12 @@ function paintCrates(){
   }
 }
 
-/* ---- NPCs: the 10 cast roles, wandering ---- */
+/* ---- NPCs: the 10 cast roles ---- */
 const PROPOSALS = {
   GOBLIN:   "A cheap-but-lawful shortcut for the compost path. (proposal)",
   HER:      "A wounded corner of the garden asks for a healing bloom. (proposal)",
   CHIDDUSH: "A repeated trace suggests one lawful refinement. (proposal)",
-  CLAW:     "Detected an overreach — recommend HOLD, not admit. (proposal)",
+  CLAW:     "Detected an overreach — recommend HOLD. (proposal)",
   JESTER:   "A weird exploit worth a bounded chaos test. (proposal)",
   ARCHIVIST:"An orphan trace wants a receipt annotation. (proposal)",
   WARDEN:   "Repeated raid scars — propose a defense upgrade. (proposal)",
@@ -238,37 +428,28 @@ const PROPOSALS = {
   MAYOR:    "Two proposals conflict — propose a council routing. (proposal)",
   HAL:      "I do not propose. I only light the verdict when the gate rules.",
 };
-/* live feed sidecar (optional): real AUTORESEARCH packets, carried not admitted */
-const FEED = (window.WarrenFeed && window.WarrenFeed.schema === 'WARREN_FEED_V0')
-  ? window.WarrenFeed : null;
-const feedIdx = {};                       // per-role click cursor for cycling
-const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-(function announceFeed(){
-  const tag = document.querySelector('.tag');
-  tag.textContent += FEED
-    ? ` · LIVE FEED: ${FEED.packet_count} packets · ${FEED.source_digest.slice(0,8)}`
-    : ' · feed absent — canned fallback (run build_warren_feed.py)';
-})();
+function roleTitle(r){ return {GOBLIN:'mutation',HER:'tending',CHIDDUSH:'pattern',
+  CLAW:'refusal',JESTER:'chaos',ARCHIVIST:'memory',WARDEN:'stillness',
+  STEWARD:'balance',MAYOR:'routing',HAL:'lantern'}[r]; }
 
-/* role-distinct idle motion — speed band, pause band, direction-change cadence.
-   Behavior only; grants nothing. HAL keeps the lantern post by the tent. */
+/* role-distinct idle motion — behavior only; grants nothing. HAL keeps the lantern post. */
 const MOTION = {
-  GOBLIN:   { spd:[13,18], pause:[.4,1.2], turn:[.5,1.4] },   // quick scavenger bursts
-  HER:      { spd:[4,7],   pause:[1.5,3],  turn:[2.5,5]  },   // slow tending arcs
-  CHIDDUSH: { spd:[7,10],  pause:[2,4],    turn:[1.5,3]  },   // walks, stops to study
-  CLAW:     { spd:[9,12],  pause:[.8,1.6], turn:[3,6]    },   // long straight patrol lines
-  JESTER:   { spd:[14,19], pause:[.2,.6],  turn:[.3,.9]  },   // jitter chaos
-  ARCHIVIST:{ spd:[5,7],   pause:[3,6],    turn:[2,4]    },   // mostly reading
-  WARDEN:   { spd:[3,5],   pause:[4,8],    turn:[2,4]    },   // near-still sentinel
-  STEWARD:  { spd:[8,10],  pause:[1,2],    turn:[1.5,3]  },   // steady rounds
-  MAYOR:    { spd:[7,9],   pause:[1.5,3],  turn:[1,2.5]  },   // pauses to hold court
-  HAL:      { spd:[0,0],   pause:[9,9],    turn:[9,9]    },   // the lantern does not wander
+  GOBLIN:   { spd:[13,18], pause:[.4,1.2], turn:[.5,1.4] },
+  HER:      { spd:[4,7],   pause:[1.5,3],  turn:[2.5,5]  },
+  CHIDDUSH: { spd:[7,10],  pause:[2,4],    turn:[1.5,3]  },
+  CLAW:     { spd:[9,12],  pause:[.8,1.6], turn:[3,6]    },
+  JESTER:   { spd:[14,19], pause:[.2,.6],  turn:[.3,.9]  },
+  ARCHIVIST:{ spd:[5,7],   pause:[3,6],    turn:[2,4]    },
+  WARDEN:   { spd:[3,5],   pause:[4,8],    turn:[2,4]    },
+  STEWARD:  { spd:[8,10],  pause:[1,2],    turn:[1.5,3]  },
+  MAYOR:    { spd:[7,9],   pause:[1.5,3],  turn:[1,2.5]  },
+  HAL:      { spd:[0,0],   pause:[9,9],    turn:[9,9]    },
 };
 const npcs = ROLES.map((role,i)=>{
   let x,y,tries=0;
   do { x=rr(5*TILE, (COLS-3)*TILE); y=rr(5*TILE, (ROWS-3)*TILE); tries++; }
   while (!isWalkable(x,y) && tries<80);
-  if (role==='HAL'){ x = tent.x + 36; y = tent.y - 2; }        // lantern post by the tent
+  if (role==='HAL'){ x = tent.x + 36; y = tent.y - 2; }
   const m = MOTION[role];
   const packs = (role !== 'HAL' && FEED && FEED.roles && FEED.roles[role]) || null;
   return { role, x, y, seed:7+i, t:rr(0,6), dir:rr(0,6.28), speed:rr(m.spd[0],m.spd[1]),
@@ -278,10 +459,10 @@ const npcs = ROLES.map((role,i)=>{
            hasMarked: !!(packs && packs.some(p=>p.mark)),
            verdict:['ACCEPTABLE','HOLD','DENY'][i%3] };
 });
+const npcByRole = {}; npcs.forEach(n=>npcByRole[n.role]=n);
 let selected = null, hovered = null, showSil = false;
 
-/* mycelium patches — composted-metaphor decoration, VISUAL ONLY (see legend).
-   precomputed with the seeded rng → same threads every load */
+/* mycelium patches — composted-metaphor decoration, VISUAL ONLY (see legend) */
 const mycelium = [];
 for (let k=0;k<4;k++){
   let mx, my, tries=0;
@@ -321,7 +502,7 @@ function stepNpc(n, dt){
 }
 
 /* ---- world effects — VISUAL ONLY (labeled in the legend) ---- */
-const blooms = [];                       // rising petals near garden-marked carriers
+const blooms = [];
 function spawnBlooms(n){
   if (Math.random() < .02)
     blooms.push({ x:n.x+4+Math.random()*16, y:n.y+18, vy:-(6+Math.random()*8),
@@ -348,10 +529,36 @@ function paintFog(n, now){
 }
 function paintScroll(n, now){
   const bob = Math.sin(now/300 + n.seed)*1.5;
-  const x=n.x+8, y=n.y-9+bob;
-  ctx.fillStyle='#e8dcc0'; ctx.fillRect(x, y, 8, 5);       // parchment
-  ctx.fillStyle='#b09a70'; ctx.fillRect(x-1, y, 1, 5); ctx.fillRect(x+8, y, 1, 5); // rolled ends
-  ctx.fillStyle='#6b4a2b'; ctx.fillRect(x+1, y+2, 6, 1);   // ink line
+  const x=n.x+8, y=n.y-16+bob;
+  ctx.fillStyle='#e8dcc0'; ctx.fillRect(x, y, 8, 5);
+  ctx.fillStyle='#b09a70'; ctx.fillRect(x-1, y, 1, 5); ctx.fillRect(x+8, y, 1, 5);
+  ctx.fillStyle='#6b4a2b'; ctx.fillRect(x+1, y+2, 6, 1);
+}
+function paintNameplate(n, hover){
+  const label = n.role;
+  ctx.font='7px ui-monospace, monospace';
+  const w2 = ctx.measureText(label).width+8;
+  ctx.fillStyle = hover ? 'rgba(30,24,40,.95)' : 'rgba(20,16,24,.72)';
+  ctx.fillRect(n.x+12-w2/2, n.y-9, w2, 9);
+  if (hover){ ctx.strokeStyle='rgba(230,184,74,.6)'; ctx.lineWidth=.5;
+    ctx.strokeRect(n.x+12-w2/2, n.y-9, w2, 9); }
+  ctx.fillStyle = hover ? '#f0e6c8' : '#cfc4a8'; ctx.textAlign='center';
+  ctx.fillText(label, n.x+12, n.y-2); ctx.textAlign='left';
+}
+function paintHalBubble(){
+  const h = npcByRole.HAL; if (!h) return;
+  const lines = ['I do not propose.', 'I light verdicts.'];
+  ctx.font='7px ui-monospace, monospace';
+  const bw = Math.max(...lines.map(l=>ctx.measureText(l).width))+10, bh = 20;
+  const bx = h.x+12-bw/2, by = h.y-34;
+  ctx.fillStyle='rgba(240,235,220,.92)';
+  ctx.fillRect(bx, by, bw, bh);
+  ctx.fillStyle='rgba(240,235,220,.92)'; ctx.beginPath();
+  ctx.moveTo(h.x+8,by+bh); ctx.lineTo(h.x+16,by+bh); ctx.lineTo(h.x+12,by+bh+5);
+  ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#2a2030'; ctx.textAlign='center';
+  ctx.fillText(lines[0], h.x+12, by+8); ctx.fillText(lines[1], h.x+12, by+16);
+  ctx.textAlign='left';
 }
 
 /* ---- render loop ---- */
@@ -359,27 +566,32 @@ let last = performance.now();
 function frame(now){
   const dt = Math.min((now-last)/1000, .05); last = now;
   for (let r=0;r<ROWS;r++) for (let c=0;c<COLS;c++) paintTile(map[r][c],c,r);
-  paintCrates(); paintTent();
+  paintMycelium(); paintCrates(); paintTent();
 
   npcs.forEach(n => stepNpc(n, dt));
-  npcs.sort((a,b)=>a.y-b.y).forEach(n=>{
-    // shadow
+  npcs.slice().sort((a,b)=>a.y-b.y).forEach(n=>{
     ctx.fillStyle='rgba(0,0,0,.22)'; ctx.beginPath();
     ctx.ellipse(n.x+12, n.y+26, 9, 3, 0, 0, 6.28); ctx.fill();
+    if (n.hasUnmarked) paintFog(n, now);
     const size = 24, npc = { seed:n.seed, t:n.t, pose:'idle', verdict:n.verdict };
     if (showSil) C.ROLES[n.role].drawSilhouette(ctx, n.x, n.y, size);
     else C.ROLES[n.role].drawSprite(ctx, n.x, n.y, size, npc);
-    if (selected === n){                                  // selection ring
+    if (n.carrier) paintScroll(n, now);
+    if (n.hasMarked) spawnBlooms(n);
+    paintNameplate(n, hovered===n);
+    if (selected === n){
       ctx.strokeStyle='#e6b84a'; ctx.lineWidth=1.5;
       ctx.strokeRect(n.x-2, n.y-2, size+4, size+4);
     }
   });
+  paintHalBubble();
+  paintBlooms(dt);
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
 
-/* ---- click to select → show proposals (never admitted truth) ---- */
-cv.addEventListener('click', e=>{
+/* ---- pointer feedback ---- */
+function npcAt(e){
   const rect = cv.getBoundingClientRect();
   const px = (e.clientX-rect.left) * (W/rect.width);
   const py = (e.clientY-rect.top)  * (H/rect.height);
@@ -388,70 +600,262 @@ cv.addEventListener('click', e=>{
     const d=(n.x+12-px)**2+(n.y+12-py)**2;
     if (d<best && d<28*28){ best=d; hit=n; }
   }
+  return hit;
+}
+cv.addEventListener('mousemove', e=>{
+  hovered = npcAt(e);
+  cv.style.cursor = hovered ? 'pointer' : 'crosshair';
+});
+
+/* ---- inspector ---- */
+const inspBody = document.getElementById('inspBody');
+function setInspector(html){
+  inspBody.style.animation='none'; void inspBody.offsetWidth; inspBody.style.animation='';
+  inspBody.innerHTML = html;
+}
+function portraitHTML(role, id){
+  return `<canvas id="${id}" width="48" height="48" data-role="${esc(role)}"></canvas>`;
+}
+function drawPortrait(id){
+  const el = document.getElementById(id); if (!el) return;
+  const pctx = el.getContext('2d');
+  pctx.clearRect(0,0,48,48);
+  C.ROLES[el.dataset.role].drawSprite(pctx, 4, 4, 40, { seed:7, t:0, pose:'idle' });
+}
+const SEV_N = { info:1, low:2, medium:3, high:4 };
+function sevDots(sev){
+  const n = SEV_N[sev] || 1;
+  let s='';
+  for (let i=0;i<4;i++) s += `<i class="${i<n?'on':''}"></i>`;
+  return `<span class="sevdots">${s}</span> ${esc(sev)}`;
+}
+function ftClass(ft){ return ['risk','test_gap','proposal'].includes(ft) ? 'ft-'+ft : 'ft-other'; }
+
+function inspectorEmpty(){
+  setInspector(`<div class="empty-insp"><span class="eye">👁</span>
+    Click a citizen to inspect their proposal.<br>
+    <span style="opacity:.6;font-size:11px">Citizens carrying a 📜 scroll hold live packets.
+    Click again to cycle.</span></div>`);
+}
+function inspectorHal(){
+  setInspector(`
+    <div class="insp-top">${portraitHTML('HAL','pHal')}
+      <div><span class="insp-owner">HAL — the lantern</span><br>
+      <span style="opacity:.6;font-size:11px">heuristic auditor · owns no proposals</span></div></div>
+    <div class="insp-title">“${esc(PROPOSALS.HAL)}”</div>
+    <div class="important"><b>THE GATE, EXPLAINED</b><br>
+      HAL carries nothing and rules nothing. It is a lantern, not a creature —
+      it shows the gate's verdict, it does not make it. Verdicts belong to the gate;
+      marks belong to the operator; the reducer alone admits, and only from a receipt
+      replay can reconstruct.</div>`);
+  drawPortrait('pHal');
+}
+function inspectorCanned(n){
+  setInspector(`
+    <div class="insp-top">${portraitHTML(n.role,'pC')}
+      <div><span class="insp-owner">${esc(n.role)}'S PROPOSAL</span>
+      <span class="finding-chip ft-other">canned</span><br>
+      <span style="opacity:.6;font-size:11px">a ${esc(roleTitle(n.role))} body · no live packet assigned</span></div></div>
+    <div class="insp-title">“${esc(PROPOSALS[n.role])}”</div>
+    <div class="grid2">
+      <div class="cell"><b>Mark Status</b><span class="warn">no packet — nothing to mark</span></div>
+      <div class="cell"><b>Authority</b><span class="no">FALSE</span> · No Authority</div>
+    </div>
+    <div class="important"><b>IMPORTANT</b><br>
+      This is a canned placeholder line. Run build_warren_feed.py to route live
+      outbox packets to the citizens. CONQUEST ≠ ADMITTED.</div>`);
+  drawPortrait('pC');
+}
+function inspectorPacket(n, p, idx, total){
+  const marked = !!p.mark;
+  setInspector(`
+    <div class="insp-top">${portraitHTML(n.role,'pP')}
+      <div><span class="insp-owner">${esc(n.role)}'S PROPOSAL</span>
+      <span class="finding-chip ${ftClass(p.finding_type)}">${esc(p.finding_type)}</span><br>
+      <span style="opacity:.6;font-size:11px">packet ${idx+1}/${total} · click citizen again to cycle</span></div></div>
+    <div class="insp-title">${esc(p.title || p.summary)}</div>
+    <div class="insp-rec"><b>Recommended Action</b>${esc(p.recommended_action)}</div>
+    <div class="grid2">
+      <div class="cell"><b>Mark Status</b>
+        ${marked
+          ? `<span class="ok">🌱 Marked: ${esc(p.mark)}</span><br><span style="opacity:.7">Garden mark only — not admission.</span>`
+          : `<span class="warn">⏳ Awaiting operator mark</span><br><span style="opacity:.7">The pen lives in operator_pen.py.</span>`}</div>
+      <div class="cell"><b>Authority</b><span class="no">🛡 FALSE</span><br>
+        <span style="opacity:.7">No Authority · admission: FORBIDDEN</span></div>
+      <div class="cell"><b>Proof Status</b>${esc(p.proof_status||'?')}</div>
+      <div class="cell"><b>Replay Status</b>${esc(p.replay_status||'?')}</div>
+      <div class="cell"><b>Source Digest</b>${FEED ? esc(FEED.source_digest.slice(0,8))+'…' : '—'}</div>
+      <div class="cell"><b>Severity (candidate)</b>${sevDots(p.severity||'info')}</div>
+    </div>
+    <div style="font-size:10.5px;opacity:.6;margin-bottom:8px">
+      🆔 ${esc(p.packet_id)} · proposer: ${esc(p.proposer)} · scanned: ${esc(String(p.scanned_at))}
+      · reducer_decision: null</div>
+    <div class="important"><b>IMPORTANT</b><br>
+      This is a proposal candidate only. Your mark is a garden mark, not admission.
+      CONQUEST ≠ ADMITTED.</div>
+    <div style="margin-top:6px">“${esc(p.summary)}”</div>`);
+  drawPortrait('pP');
+}
+function inspectorGuide(){
+  setInspector(`
+    <div class="insp-title">📘 Full Guide</div>
+    <div style="font-size:12px;line-height:1.7">
+      <b>1.</b> Click a citizen — 📜 scroll means it carries live packets.<br>
+      <b>2.</b> Inspect the card: title, severity, proof, replay, mark status.<br>
+      <b>3.</b> Click the citizen again to cycle through its packets.<br>
+      <b>4.</b> Use the feed panel to jump straight to any packet.<br>
+      <b>5.</b> Marking happens OUTSIDE the town (operator_pen.py) — the town only shows.<br><br>
+      The loop: 📚 Knowledge → 🎯 Quest → 🧾 Proof → 🧪 Validation → 🖊 Decision → 🔁 Replay.<br>
+      Nothing in this window can change the Kernel. proposal ⊬ admission.</div>`);
+}
+function inspectorReplay(){
+  setInspector(`
+    <div class="insp-title">🔁 Replay</div>
+    <div style="font-size:12px;line-height:1.7">
+      The feed is deterministic: same outbox bytes → same feed bytes.<br><br>
+      <b>Source digest:</b> ${FEED ? esc(FEED.source_digest) : '— (feed absent)'}<br>
+      <b>Packets:</b> ${FEED ? FEED.packet_count : 0} ·
+      <b>skipped (BAD_JSON):</b> ${FEED && FEED.skipped ? FEED.skipped.length : 0}<br><br>
+      Re-derive and verify locally:<br>
+      <code style="font-size:11px;opacity:.8">python3 apps/goblin-warren/build_warren_feed.py --check</code></div>
+    <div class="important" style="margin-top:8px"><b>LAW</b><br>
+      If it does not replay, it is not real. The town renders the feed;
+      it cannot rewrite it.</div>`);
+}
+
+/* ---- click to select → inspector (never claimed truth) ---- */
+cv.addEventListener('click', e=>{
+  const hit = npcAt(e);
   selected = hit;
-  const who=document.getElementById('who'), body=document.getElementById('body'),
-        law=document.getElementById('law');
-  if (!hit){ who.textContent='Click an inhabitant to see its proposals.';
-    body.textContent='Empty grass. Nothing proposed here.'; return; }
-  const packs = (hit.role !== 'HAL' && FEED && FEED.roles && FEED.roles[hit.role]) || null;
-  if (packs && packs.length){
+  if (!hit){ inspectorEmpty(); return; }
+  if (hit.role === 'HAL'){ inspectorHal(); return; }
+  if (hit.packs && hit.packs.length){
     const i = feedIdx[hit.role] || 0;
-    const p = packs[i % packs.length];
+    inspectorPacket(hit, hit.packs[i % hit.packs.length], i % hit.packs.length, hit.packs.length);
     feedIdx[hit.role] = i + 1;
-    who.innerHTML = `${hit.role} — a ${roleTitle(hit.role)} body ` +
-      `<span class="feed-pulse" style="opacity:.7">· live packet ${(i % packs.length)+1}/${packs.length}</span>`;
-    const sev = (p.severity || 'info');
-    const markRow = p.mark
-      ? `<span class="pill mark">${esc(p.mark)}</span> garden mark only — not admission`
-      : `<span class="pill unmarked">awaiting operator mark</span>`;
-    body.innerHTML =
-      `<div style="margin-bottom:4px">“${esc(p.title || p.summary)}”</div>` +
-      `<div class="card">` +
-        `<span class="k">packet</span><span class="v">${esc(p.packet_id)}</span>` +
-        `<span class="k">finding</span><span class="v">${esc(p.finding_type)} ` +
-          `<span class="pill sev-${sev}">${sev}</span></span>` +
-        `<span class="k">recommend</span><span class="v">${esc(p.recommended_action)}</span>` +
-        `<span class="k">proof</span><span class="v">${esc(p.proof_status||'?')} · replay: ${esc(p.replay_status||'?')}</span>` +
-        `<span class="k">mark</span><span class="v">${markRow}</span>` +
-        `<span class="k">authority</span><span class="v"><span class="pill auth">authority=false · admission=FORBIDDEN</span></span>` +
-      `</div>`;
-    law.textContent = `📜 ${hit.role} carries ⊬ admits — stamping lives in operator_pen.py · 📜 ledger sleeps`;
     return;
   }
-  who.textContent = `${hit.role} — a ${roleTitle(hit.role)} body`;
-  body.innerHTML = `“${PROPOSALS[hit.role]}”` +
-    (hit.role==='HAL' ? '' : `<br><span style="opacity:.7">status: PROPOSAL_CANDIDATE · reducer_decision: null</span>`);
-  law.textContent = hit.role==='HAL'
-    ? '⚖️ HAL is a lantern, not a creature — it shows the verdict, it does not make it.'
-    : `📜 ${hit.role} proposes · ⊬ admits · ⊬ mutates · ⊬ grants ZOL — only the operator + reducer admit.`;
+  inspectorCanned(hit);
 });
-function roleTitle(r){ return {GOBLIN:'mutation',HER:'tending',CHIDDUSH:'pattern',
-  CLAW:'refusal',JESTER:'chaos',ARCHIVIST:'memory',WARDEN:'stillness',
-  STEWARD:'balance',MAYOR:'routing',HAL:'lantern'}[r]; }
+document.getElementById('inspClear').addEventListener('click', ()=>{
+  selected = null; inspectorEmpty();
+});
 
-/* ---- buttons ---- */
-document.getElementById('btnSilhouette').addEventListener('click', function(){
-  showSil = !showSil; this.classList.toggle('on', showSil);
+/* ---- feed status + list + town mood (all display-only) ---- */
+const allPackets = [];
+if (FEED){
+  for (const role of Object.keys(FEED.roles).sort()){
+    FEED.roles[role].forEach((p, idx)=>allPackets.push({ role, idx, p }));
+  }
+}
+const SEV_ORDER = { high:0, medium:1, low:2, info:3 };
+allPackets.sort((a,b)=>
+  (SEV_ORDER[a.p.severity]??9)-(SEV_ORDER[b.p.severity]??9) ||
+  a.p.packet_id.localeCompare(b.p.packet_id));
+const unmarkedCount = allPackets.filter(x=>!x.p.mark).length;
+
+(function renderStatus(){
+  const big = document.getElementById('feedBig'), dg = document.getElementById('feedDigest');
+  if (FEED && FEED.packet_count){
+    big.innerHTML = `<span class="pulse"></span>${FEED.packet_count} LIVE ·
+      <span style="color:var(--gold)">${unmarkedCount} awaiting mark</span>`;
+    dg.textContent = `digest ${FEED.source_digest.slice(0,12)}…` +
+      (FEED.skipped && FEED.skipped.length ? ` · ⚠ ${FEED.skipped.length} skipped (BAD_JSON)` : '');
+  } else {
+    big.textContent = '🌫 feed asleep';
+    dg.textContent = 'run build_warren_feed.py to wake the couriers';
+  }
+  /* town mood — a playful read of mark progress. VISUAL ONLY, grants nothing. */
+  const word = document.getElementById('moodWord'), bar = document.getElementById('moodBar');
+  if (FEED && FEED.packet_count){
+    const ratio = 1 - unmarkedCount/FEED.packet_count;
+    word.textContent = ratio===0 ? 'Curious' : ratio<0.34 ? 'Stirring' : ratio<0.67 ? 'Busy' : 'Settled';
+    bar.style.width = Math.max(8, ratio*100) + '%';
+  } else { word.textContent = 'Dreaming'; bar.style.width='8%'; }
+})();
+
+const feedListEl = document.getElementById('feedlist');
+let showAll = false;
+function timeOf(p){ const s=String(p.scanned_at); return s.length>=19 ? s.slice(11,19) : s; }
+function renderFeedList(){
+  if (!allPackets.length){
+    feedListEl.innerHTML = `<div style="opacity:.6;font-size:11.5px;padding:8px 2px">
+      🌫 No live packets. The citizens speak in canned lines until the feed is rebuilt —
+      the town stays lovely either way.</div>`;
+    document.getElementById('btnAllPackets').style.display='none';
+    return;
+  }
+  const rows = showAll ? allPackets : allPackets.slice(0,4);
+  feedListEl.innerHTML = rows.map((x,i)=>`
+    <div class="frow" data-i="${allPackets.indexOf(x)}">
+      <span class="finding-chip ${ftClass(x.p.finding_type)}">${esc(x.p.finding_type)}</span>
+      <span class="t">${esc(x.p.title || x.p.summary)}</span>
+      <span class="from">from ${esc(x.role)} · ${esc(timeOf(x.p))}</span>
+      ${x.p.mark ? '<span class="markdot" title="garden-marked (not admission)"></span>'
+                 : '<span class="new" title="awaiting operator mark"></span>'}
+    </div>`).join('');
+  feedListEl.querySelectorAll('.frow').forEach(row=>{
+    row.addEventListener('click', ()=>{
+      const x = allPackets[+row.dataset.i];
+      const n = npcByRole[x.role];
+      selected = n;
+      feedIdx[x.role] = x.idx + 1;
+      inspectorPacket(n, x.p, x.idx, n.packs.length);
+      document.getElementById('inspector').classList.remove('flash');
+      void document.getElementById('inspector').offsetWidth;
+      document.getElementById('inspector').classList.add('flash');
+    });
+  });
+  const btn = document.getElementById('btnAllPackets');
+  btn.textContent = showAll ? 'SHOW FEWER' : `VIEW ALL PACKETS (${allPackets.length})`;
+}
+renderFeedList();
+document.getElementById('btnAllPackets').addEventListener('click', ()=>{
+  showAll = !showAll; renderFeedList();
 });
-document.getElementById('btnGate').addEventListener('click', ()=>{
-  document.getElementById('who').textContent = '⚖️ Why can’t they rule?';
-  document.getElementById('body').innerHTML =
-    'Every inhabitant is a cognitive function. They roam, play mini-games, and surface '+
-    'proposals. But <b>Garden ADMIT ≠ Kernel ADMISSION</b>: a proposal changes the Garden '+
-    'only when the operator stamps it, and reaches the Kernel only through a receipt the '+
-    'reducer admits and replay can reconstruct.';
-  document.getElementById('law').textContent =
-    'proposal ⊬ state · NPC mini-game ⊬ admission · believability ⊬ admissibility · 📜 ledger sleeps';
+document.getElementById('btnViewFeed').addEventListener('click', ()=>{
+  const el = document.getElementById('feedcard');
+  el.scrollIntoView({behavior:'smooth', block:'center'});
+  el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
 });
-document.getElementById('btnAdvanced').addEventListener('click', function(){
-  const a = document.getElementById('advanced');
-  const on = a.classList.toggle('show'); this.classList.toggle('on', on);
+document.getElementById('btnGuide').addEventListener('click', inspectorGuide);
+
+/* guide portrait */
+(function(){ const el=document.getElementById('guidePortrait');
+  const pctx = el.getContext('2d');
+  C.ROLES.GOBLIN.drawSprite(pctx, 4, 4, 40, { seed:7, t:0, pose:'idle' }); })();
+
+/* ---- wulmoji simple/advanced ---- */
+const wm = document.getElementById('wulmoji');
+document.getElementById('btnSimple').addEventListener('click', function(){
+  wm.classList.remove('adv'); this.classList.add('on');
+  document.getElementById('btnAdv').classList.remove('on');
 });
-document.getElementById('btnObserve').addEventListener('click', function(){
-  selected=null;
-  document.getElementById('who').textContent='👁 OBSERVE — the town at rest.';
-  document.getElementById('body').textContent='Ten role-bodies wander. Click one to read its proposals.';
-  document.getElementById('law').textContent='👁 observe · 📜 propose · ⚖️ gate — proposal ⊬ state';
+document.getElementById('btnAdv').addEventListener('click', function(){
+  wm.classList.add('adv'); this.classList.add('on');
+  document.getElementById('btnSimple').classList.remove('on');
+});
+
+/* ---- nav bar ---- */
+function goTo(id){ const el=document.getElementById(id);
+  el.scrollIntoView({behavior:'smooth', block:'center'});
+  el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); }
+document.querySelectorAll('#navbar button').forEach(b=>{
+  b.addEventListener('click', function(){
+    const nav = this.dataset.nav;
+    if (nav==='silhouette'){ showSil=!showSil; this.classList.toggle('on', showSil); return; }
+    document.querySelectorAll('#navbar button').forEach(x=>{
+      if (x.dataset.nav!=='silhouette') x.classList.remove('on'); });
+    this.classList.add('on');
+    if (nav==='world') goTo('worldcard');
+    else if (nav==='inspector') goTo('inspector');
+    else if (nav==='law') goTo('law');
+    else if (nav==='feed') goTo('feedcard');
+    else if (nav==='objective') goTo('objective');
+    else if (nav==='grammar'){ goTo('wulmoji'); }
+    else if (nav==='guide'){ inspectorGuide(); goTo('inspector'); }
+    else if (nav==='replay'){ inspectorReplay(); goTo('inspector'); }
+  });
 });
 })();
 </script>
