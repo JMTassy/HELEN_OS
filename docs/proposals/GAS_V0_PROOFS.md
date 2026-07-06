@@ -215,16 +215,21 @@ nothing.
   constitutional suites pass; the three flagged imports are β-side
   components and test scaffolding, none a dialogue-surface write path. No
   `D → L` arrow was found.
-- **7.1(b): FALSE at `dace8b02`.** The designated gate returns FAIL, and
-  its CI job has been red on `main` across the recent push history while
-  pushes continued to land. By this program's own fail-closed discipline,
-  **Proposition 7.1 is NOT PROVED while its own verifier is red** —
-  supported-by-inspection is not certified-by-gate, and substituting the
-  former for the latter is exactly the laundering the layer discipline
-  forbids.
+- **7.1(b): FALSE at `dace8b02` → TRUE at `ad32250`.** At `dace8b02` the
+  designated gate returned FAIL and its CI job was red on `main` while
+  pushes continued to land; by this program's own fail-closed discipline,
+  Proposition 7.1 stayed NOT PROVED while its own verifier was red —
+  supported-by-inspection is not certified-by-gate. On 2026-07-06 the
+  operator ruled on remediation items 1–2 (packet `AR-cecf4c5b553f` →
+  pen mark `acted`); the allowlist was amended by that ruling and the gate
+  re-run at commit `ad32250` returned, verbatim:
+  `[PASS] kernel_guard: 0 violations found.`
 
-**Status: OPEN — blocked on an operator/MAYOR ruling**, with a precise
-remediation packet:
+**Status: CLOSED at `ad32250`** — Proposition 7.1 holds: 7.1(a) supported
+by inspection and suites, 7.1(b) certified by the designated gate, both at
+the same commit, within the §5 trust boundary. Remediation item 3 (making
+the gate *blocking* in CI) remains open as an operator option. Historical
+remediation packet preserved below as issued:
 
 > **Remediation packet (operator decision required; not executed by the
 > drafting agent — the guard is a gate, and agents do not edit gates to

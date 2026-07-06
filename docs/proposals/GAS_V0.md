@@ -315,12 +315,15 @@ be *shown* to.
 *Proof & live verdicts:* GAS_V0_PROOFS.md §5. Split: **7.1(a)**
 architectural conformance — SUPPORTED (guard RULE 1 + RULE 3 pass
 repo-wide, 22 boundary/atomicity tests pass, 36 constitutional tests pass;
-no `D → L` arrow found). **7.1(b)** self-certification — **FALSE at
-`dace8b02`**: the designated gate (`kernel_guard.sh` RULE 2) returns FAIL
-on 3 stale consumer-allowlist entries, and its CI job is red on `main`.
-*Status:* **OPEN — fail-closed.** Not proved while its own verifier is
-red; blocked on the operator ruling in the GAS_V0_PROOFS.md §5
-remediation packet.
+no `D → L` arrow found). **7.1(b)** self-certification — was FALSE at
+`dace8b02` (gate RULE 2 red on 3 stale consumer-allowlist entries);
+**TRUE at `ad32250`** after the operator ruled on packet
+`AR-cecf4c5b553f` (allowlist amended, gate re-run:
+`[PASS] kernel_guard: 0 violations found.`).
+*Status:* **CLOSED at `ad32250`** — Proposition 7.1 holds within the
+GAS_V0_PROOFS.md §5 trust boundary. The OPEN→CLOSED transition itself
+followed the model's own path: finding → typed packet → operator mark →
+gate re-verification. Third field exhibit.
 
 | Abstract (Layer I) | HELEN realization |
 |---|---|
