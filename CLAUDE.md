@@ -332,55 +332,12 @@ Multiple chat entry points exist; they are **not interchangeable**.
 
 ## Current State
 
-### Update 2026-07-03 (HEAD = 12ec35a)
+**Do not trust dated state — run `git log` and `make test`.** Architecture details live in the sections above; the strata below keep only facts stated nowhere else. Constitutional invariants, gates, and the firewall are unchanged across all strata.
 
-Four new non-sovereign lanes since 2026-06-15; constitutional invariants, gates, and the firewall unchanged:
-
-- **Transport Theory of Observation** — `transport/` module (`fiber.py`, `kernel.py`, `observation.py`, `quotient.py`, `reconstruction.py`) + `tests/test_transport*.py` + `docs/proposals/TRANSPORT_THEOREM_V0.md` + LaTeX paper Volumes I–II (Observation Axiom, category Obs, Fundamental Factorization, finite disintegration, information geometry). PROPOSAL / non-sovereign.
-- **AUTORESEARCH safe architecture V1** — `temple/autoresearch/` (`autoresearch_policy.py` = packet validator, `autoresearch_scanner.py` = bounded non-sovereign scanner, `outbox/` = AR-*.json packets). Spec: `docs/proposals/HELEN_AUTORESEARCH_SAFE_ARCHITECTURE_V1.md`. Packets are `AUTORESEARCH_PACKET_V1`, always `authority=false`, reducer_required. Tests: `tests/test_autoresearch_policy.py`.
-- **Authority-language linter** — `tools/validators/authority_language_linter.py` (36 tests): hygiene gate against admission-language laundering ("this is canonical", self-admission phrasing) in non-sovereign artifacts.
-- **do_next structural policy engine** — `helen_os/api/do_next_v1.py` replaces the old keyword audit gate; executor receipts now reach the sovereign ledger only via the admissible `helen_say` path (HAL fixes #1/#3). Boundary tests: `helen_os/tests/test_do_next_boundary_v1.py`, `tests/test_do_next_audit_gate.py`.
-- **TEMPLE gardens layer** — `temple/gardens/`: `goblin_meditation_center/` (6 rooms · 5 doctrines · validator), `goblin_garden_conquest/` (25 dream epochs + `dreams/` terrarium draft + `autoresearch/` batch 001 + BEGINNER_GUIDE), `goblin_garden_conquest_avalon/` (10-epoch core + **live twin** at `twin/run_turn.py` + `twin/state/`, seeded-deterministic conquest sim, turn 223), `_quarantine_*` dirs (contained overruns). All NO_CLAIM / `authority=false`; core law **DREAMT ≠ CLAIMED**. Each garden ships its own fail-closed validator — run it before editing garden content.
-
-### Update 2026-06-15 (HEAD = 4d1e185)
-
-Skill promotion admission pipeline is now **operationally live**:
-- **`_handle_promote_skill()`** in `oracle_town/kernel/kernel_daemon.py` — 6-gate skill promotion admission handler (parse, schema, fields, checker verdict, hash format, action) + Gate A injection check + MAYOR ratification + NDJSONWriter write. Fails closed on every gate.
-- **`_handle_seq_correction()`** — ledger seq repair handler; routes `LEDGER_SEQ_CORRECTION_V1` packets; used to anchor the seq=287 TOCTOU artifact (now ANCHORED at seq=295, chain PASS).
-- **NDJSONWriter atomicity**: `fcntl.flock` exclusive lock + re-reads on-disk tail under lock, closing the TOCTOU race that caused the original seq fork.
-- **`hal_verdict_from_kernel()` fix**: now passes `kernel_resp["mutations"]` through (was hardcoded `[]`) so turn payloads accurately record admitted ledger writes.
-- **Tests**: verify with `make test`; related coverage includes `test_ndjson_writer_atomic.py`, `test_duplicate_seq_detector.py`, `test_handle_promote_skill.py`, `test_handle_seq_correction.py`.
-- **Protocols filed**: `oracle_town/protocols/` — SKILL_ADMISSION_PROTOCOL_V1, SOVEREIGN_PROMOTION_PROTOCOL_V1, SOVEREIGN_LEDGER_SEQ_REPAIR_PROTOCOL_V1, MAYOR_HANDLER_PROMOTE_SKILL_SPEC_V1.
-- **EXPLORE_MECHANIC E026** (Temple): EXPLORE registered as first-class action (cost 1 QUINT_CORE, output knowledge_fragment:{island}); bootstrap deadlock closed.
-
-### Update 2026-06-03 (114 commits since the 2026-05-06 snapshot below)
-New work has concentrated in the **operator-surface** and **object-computing** lanes, not the kernel. The constitutional invariants, gates, and sovereign firewall are unchanged. Highlights:
-- **Operator surfaces** (`apps/helen-surface/`): HOME V1/V1.1 receipted-agency surface, `helen2027` HOME (9.2/10), Semantic Cockpit V0.2 with dwell-detection POINTER V0/V1, live connector badges (Gmail/Calendar/GitHub) and ring-heat via `helen_status_api.py`, phone→cockpit live event bridge.
-- **SOURCEBOUND OBJECT OS V0**: executable primitive + `helen object create` + receipt + contract + tests (see architecture section). "ADMISSIBLE OBJECT COMPUTING V1" implementation proof.
-- **Non-sovereign HAL inference**: `tools/hal_driver.py` + `tools/run_hal_epoch.py`; `docs/spec/MODEL_ROUTING_V1.md` role-fit routing; local Ollama `qwen3.6` runtime.
-- **Video**: `helen_awakening` v1/v2 (2-shot parallel Kling, palindrome A·B·A), portrait v1/v2 (Pillow OS composite before Kling), STORYBOARD_V1 proof-of-continuity capture list.
-- **TEMPLE**: GOBLIN_TEMPLE_INNER_MEMORY hidden meditation room, Akashic Records interface, live LLM fragments, WULmoji scatter map, LNSA sacred-awakening knowledge archive.
-- **Telegram**: HER_TEMPLE_PRESENCE_V1 `/her` command (poetic sandbox voice), Groq fallback for HER temple responses.
-
-The dated snapshot below (2026-05-06) remains accurate for AUTORESEARCH, Schema Authority, gates, and the DAN/RALPH loop — those lanes did not advance. **Run the test suite and `git log` rather than trusting any dated state here.**
-
-### Snapshot 2026-05-06
-
-- **AUTORESEARCH**: E11 LEGORACLE + E12 replay gate shipped. Two parallel sessions diverged; **reconciliation in flight, not yet ruled**. Reconciliation hypothesis at `docs/proposals/AUTORESEARCH_E11_E12_RECONCILIATION.md` (commit `0d06b33`); §3 read-only SHA-diff experiment executed and reports landed at `docs/reports/AUTORESEARCH_E11_E12_*` (commit `d43ec64`). Headline finding: **H₁ partially falsified** — three artifact-level STRUCTURAL_CHANGE rows (test + fixtures), but the falsifier-specific check is **negative** (LEGORACLE gate logic and replay determinism logic unaffected; `legoracle_v13rc.py` SHA matches). Recommendation candidates for MAYOR: REQUEST_MORE_EVIDENCE (SHA_DIFF report) or REVOKE_AND_RERUN (RECONCILIATION_REPORT_V0). **Awaiting fresh-context peer-review (Rule 3) → operator countersignature → MAYOR ruling**. E13 remains blocked. Kernel daemon currently down.
-- **Knowledge corpus**: T4 (source-provenance floor) + T6 (intensity floor) landed for symbolic-knowledge ingestion. Symbolic sources collected in `helen_os/knowledge/symbolic_sources/` (DRAFT classifications).
-- **SKILL_REGISTRY_V1**: 75 skills audited (51 canonical, 3 legacy, 3 duplicate, 18 external)
-- **Voice**: Zephyr (Gemini TTS) — LIVE
-- **Video**: HyperFrames — DECLARED (npm allowlist pending); `helen-director` skill + Montage Engine + `STORYBOARD_V1` + `ASSET_ENGINE_V1` + 30s candidate runner shipped. `video/library/` promotes 11 hero stills to `refs/canonical/` with locked era axis (cyberpunk / medieval / renaissance / modern / ww2 / french_revolution / pyramids).
-- **HELEN character**: `HELEN_CHARACTER_V2` + `HELEN_DESIGN.md` + `HELEN_PRIMER.md` shipped — character-consistency method validated
-- **TEMPLE/AURA**: First raw terminal sample captured (`temple/subsandbox/aura/`); grimoire path now exists. Non-sovereign, never auto-promoted.
-- **HELEN_DAN_RALPH_V0**: Epoch runner live (`scripts/ralph/ralph.sh`). HD-001 GREEN (commit `d8adb50`). HD-002 (complexity_extractor → aura_score.py) and HD-003 (failure-memory consultation) are next.
-- **WUL Packet Validator**: P1 shipped. `src/wul_packet_validator.py` + `tests/test_wul_packet_validator.py` (29/29 green). Spec at `docs/specs/WUL_PACKET_SPEC_V0_1.md`. Transmutation request pending MAYOR review.
-- **GOBLIN MODE**: Proposal shipped to `docs/proposals/HELEN_DAN_GOBLIN_RECALL_MODE_V0_1.md`. NON_SOVEREIGN, NO_SHIP, UNDERWARREN_SAFE.
-- **Telegram**: Two-way bot with voice — LIVE (not daemonized)
-- **Schema Authority**: Governance decision SHIPPED (Actions 1-5 partial, 6-9 open)
-- **Doctrine Admission**: `DOCTRINE_ADMISSION_PROTOCOL_V1` gate — DRAFT; §4 fixtures + harness landed
-- **Experiments**: minimal MVP terminal kernel landed in `experiments/` (NON_SOVEREIGN, NO_SHIP — sandbox only)
-- **HELEN OS v2 UX**: PROPOSAL-class four-file suite shipped to `docs/proposals/` (commit `442f5ee`). Two-mode top-level toggle (`FOCUS | WITNESS`) + Four-Mode Product Map (FOCUS / WITNESS / ORACLE / TEMPLE). Locked phrases: product tagline `"HELEN suggests. You decide. Everything is recorded."`, constitution phrase `"HELEN sees. HELEN proposes. The gate authorizes…"`, UX canon `"HELEN n'est pas un cockpit…"`. LEGORACLE idle = `Gate Clear · No Active Claim`; SHIP_FORBIDDEN never permanent ambient. CONTEXT STACK is technical default (8 layers); AURA confined to Oracle/Temple as non-authoritative metaphor. Brand rule: Apple-like calm, never macOS chrome clone. Files: `HELEN_OS_V2_USER_CENTRIC_UX.md`, `FOCUS_MODE_TERMINAL_SPEC.md`, `TEMPLE_MODE_VISUAL_BRIEF.md`, `HELEN_OS_V2_VISUAL_CANON_LOCK.md`. Status: PROPOSAL / NON_SOVEREIGN / NO_SHIP — not promoted to canon.
+- **2026-07-03** (`12ec35a`): `transport/` math program (Vols I–II, `tests/test_transport*.py`, `docs/proposals/TRANSPORT_THEOREM_V0.md`) · AUTORESEARCH safe architecture V1 (`temple/autoresearch/` — `autoresearch_policy.py` packet validator, `outbox/` AR-*.json packets, always `authority=false`, reducer_required; spec `docs/proposals/HELEN_AUTORESEARCH_SAFE_ARCHITECTURE_V1.md`) · authority-language linter (`tools/validators/authority_language_linter.py`) · `do_next_v1` structural policy engine (`helen_os/api/do_next_v1.py`; executor receipts reach the ledger only via `helen_say`) · `temple/gardens/` layer — core law **DREAMT ≠ CLAIMED**; every garden ships a fail-closed validator — run it before editing garden content.
+- **2026-06-15** (`4d1e185`): skill-promotion admission LIVE — 6-gate `_handle_promote_skill()` + `_handle_seq_correction()` in the kernel daemon; NDJSONWriter `fcntl.flock` + on-disk tail re-read closes the TOCTOU race (seq=287 fork ANCHORED at seq=295, chain PASS); `hal_verdict_from_kernel()` now passes `mutations` through; EXPLORE mechanic E026 unlocked. Protocols in `oracle_town/protocols/`; coverage via `make test` (`test_ndjson_writer_atomic.py`, `test_handle_promote_skill.py`, …).
+- **2026-06-03**: operator surfaces (`apps/helen-surface/`) · SOURCEBOUND OBJECT OS · local HAL inference (`tools/hal_driver.py`, `docs/spec/MODEL_ROUTING_V1.md`) · `helen_awakening` / portrait video lanes + STORYBOARD_V1 · GOBLIN_TEMPLE inner memory rooms + Akashic interface · Telegram `/her` HER-presence command (Groq fallback).
+- **2026-05-06 uniques**: SKILL_REGISTRY_V1 audit (75 skills: 51 canonical / 3 legacy / 3 duplicate / 18 external) · knowledge corpus T4/T6 floors + `symbolic_sources/` DRAFTs · HELEN_CHARACTER_V2 consistency method (`HELEN_DESIGN.md`, `HELEN_PRIMER.md`) · video/library era axis (11 hero stills, 7 locked eras) · HD-001 GREEN, HD-002/HD-003 next (DAN/RALPH) · HELEN OS v2 UX four-file suite (FOCUS | WITNESS, locked phrases incl. "HELEN suggests. You decide. Everything is recorded.") — PROPOSAL, never promoted. AUTORESEARCH E11/E12 reconciliation status: see Open Frontiers.
 
 ## HELEN OS Look & Feel — Source Atlas Doctrine
 
