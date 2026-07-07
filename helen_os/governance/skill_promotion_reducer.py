@@ -22,7 +22,7 @@ def reduce_promotion_packet(
     """
     Pure reduction function: packet + state → decision.
 
-    Enforces 7 gates in order:
+    Enforces 8 gates in order:
     1. Schema validity
     2. Manifest legitimacy (if manifests registry present)
     3. Receipt presence
@@ -30,6 +30,7 @@ def reduce_promotion_packet(
     5. Parent capability
     6. Doctrine match
     7. Evaluation pass threshold
+    8. Capability manifest SHA verification (if capability_manifests registry present)
     """
     # Gate 1: Schema validity
     valid, err = validate_schema("SKILL_PROMOTION_PACKET_V1", "1.0.0", packet)
@@ -85,6 +86,24 @@ def reduce_promotion_packet(
     # Gate 7: Evaluation threshold
     if not packet["evaluation"]["passed"]:
         return ReductionResult("REJECTED", ReasonCode.ERR_THRESHOLD_NOT_MET.value)
+
+    # Gate 8: Capability manifest SHA verification
+    capability_manifests = active_state.get("capability_manifests")
+    if capability_manifests is not None:
+        cap_sha = packet.get("capability_manifest_sha256", "")
+        if not cap_sha:
+            return ReductionResult(
+                "REJECTED", ReasonCode.ERR_MANIFEST_HASH_MISSING.value
+            )
+        cap_entry = capability_manifests.get(packet.get("skill_id", ""))
+        if cap_entry is None:
+            return ReductionResult(
+                "REJECTED", ReasonCode.ERR_MANIFEST_REGISTRY_MISS.value
+            )
+        if cap_sha != cap_entry.get("sha256", ""):
+            return ReductionResult(
+                "REJECTED", ReasonCode.ERR_MANIFEST_HASH_MISMATCH.value
+            )
 
     # Bonus gate: Transfer requirement
     if (
