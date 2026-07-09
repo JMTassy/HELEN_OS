@@ -311,6 +311,63 @@ class TestInitDeterminismAgainstChaos:
         print(f"✓ No hallucinated threads. Corpus: {corpus_thread_ids}, Returned: {returned_thread_ids}")
 
 
+class TestRecencyTiebreak:
+    """Criterion 3: equal-salience unresolved threads rank newer-first."""
+
+    def _run(self, threads: dict) -> list:
+        corpus = {
+            "metadata": {"name": "HELEN", "role": "governance agent", "authority": "NONE"},
+            "threads": threads,
+            "tensions": {},
+            "topics": {},
+            "recent_events": [],
+        }
+        epoch = {"skill_library_state_v1": {"active_skills": {}}}
+        boot = {"session_id": "tiebreak-probe", "timestamp": "2026-07-09T00:00:00Z"}
+        out = json.loads(init_helen_from_state(corpus, epoch, boot))
+        return out["top_3_threads"]
+
+    def test_newer_ranks_before_older_same_salience(self):
+        """NEW_THREAD (2026-07-09) must precede OLD_THREAD (2026-01-01) when salience is tied."""
+        threads = {
+            "OLD_THREAD": {"status": "unresolved", "salience": 5, "last_updated": "2026-01-01"},
+            "NEW_THREAD": {"status": "unresolved", "salience": 5, "last_updated": "2026-07-09"},
+        }
+        ranked = self._run(threads)
+        assert ranked[0] == "NEW_THREAD", f"Expected NEW_THREAD first, got {ranked}"
+
+    def test_insertion_order_does_not_determine_rank(self):
+        """Ranking must be identical regardless of dict insertion order."""
+        threads_a = {
+            "OLD_THREAD": {"status": "unresolved", "salience": 5, "last_updated": "2026-01-01"},
+            "NEW_THREAD": {"status": "unresolved", "salience": 5, "last_updated": "2026-07-09"},
+        }
+        threads_b = {
+            "NEW_THREAD": {"status": "unresolved", "salience": 5, "last_updated": "2026-07-09"},
+            "OLD_THREAD": {"status": "unresolved", "salience": 5, "last_updated": "2026-01-01"},
+        }
+        assert self._run(threads_a) == self._run(threads_b), \
+            "Rank must not depend on insertion order"
+
+    def test_missing_last_updated_ranks_last_in_tie(self):
+        """Thread with no last_updated should rank after threads that have one."""
+        threads = {
+            "DATELESS": {"status": "unresolved", "salience": 5},
+            "DATED":    {"status": "unresolved", "salience": 5, "last_updated": "2026-07-09"},
+        }
+        ranked = self._run(threads)
+        assert ranked[0] == "DATED", f"Expected DATED first, got {ranked}"
+
+    def test_higher_salience_still_wins_over_recency(self):
+        """Salience dominates recency: older high-salience beats newer low-salience."""
+        threads = {
+            "HIGH_OLD": {"status": "unresolved", "salience": 20, "last_updated": "2026-01-01"},
+            "LOW_NEW":  {"status": "unresolved", "salience": 5,  "last_updated": "2026-07-09"},
+        }
+        ranked = self._run(threads)
+        assert ranked[0] == "HIGH_OLD", f"Expected HIGH_OLD first, got {ranked}"
+
+
 if __name__ == "__main__":
     # Run without pytest for quick check
     replayer = DirtyLogReplayer("helen_os/test_fixtures/dirty_logs_10_sessions.jsonl")

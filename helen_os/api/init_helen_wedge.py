@@ -111,11 +111,12 @@ def _top_threads(corpus: dict, n: int = 3) -> list[str]:
         is_unresolved = 1 if status == "unresolved" else 0
         score = (is_unresolved * 1000) + salience
 
-        scored.append((thread_id, score))
+        scored.append((thread_id, score, last_updated))
 
-    # Sort by score descending, take top N
-    scored.sort(key=lambda x: x[1], reverse=True)
-    return [tid for tid, _ in scored[:n]]
+    # Sort by score descending; use last_updated as tiebreaker (newer first).
+    # Empty/missing last_updated ("") sorts last under reverse=True — safe fallback.
+    scored.sort(key=lambda x: (x[1], x[2]), reverse=True)
+    return [tid for tid, *_ in scored[:n]]
 
 
 def _extract_tensions(corpus: dict) -> list[str]:
