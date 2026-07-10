@@ -134,7 +134,11 @@ def rank(
     repeat_penalty = set(anti_loop_targets or [])
     scores: list[SurfaceScore] = []
 
-    for surface in ALLOWED_SURFACES:
+    # sorted() iteration + name tie-break below: frozenset order is
+    # PYTHONHASHSEED-dependent, and the 0.80 anti-loop penalty can produce
+    # exact score ties (e.g. init_ranking_weights 24.0*0.8 == context_ranking
+    # 19.2). Ranking must be a pure function of its inputs (mu_DETERMINISM).
+    for surface in sorted(ALLOWED_SURFACES):
         observed = observed_rankings.get(surface)
         l, e, r, c, b = _blend_evidence(surface, observed)
 
@@ -155,7 +159,7 @@ def rank(
             evidence_override=(observed is not None),
         ))
 
-    scores.sort(key=lambda s: s.score, reverse=True)
+    scores.sort(key=lambda s: (-s.score, s.surface))
 
     return RankingResult(
         ranked=tuple(scores),
