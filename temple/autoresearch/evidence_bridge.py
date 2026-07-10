@@ -13,10 +13,23 @@ writes. Outcome recording is the swarm's (or operator's) job — see
 goblin_swarm.record_outcome().
 
 Outcome semantics (per history entry):
-  KEEP      — experiment kept by operator/measurer rule  → strong positive
-  DISCARD   — experiment discarded                       → strong negative
-  MEASURED  — baseline measured, verdict pending         → mild positive (data exists)
+  KEEP      — operator verdict (outcome_actor='operator' REQUIRED) → strong positive
+  DISCARD   — operator verdict (outcome_actor='operator' REQUIRED) → strong negative
+  MEASURED  — baseline measured, verdict pending         → explored (see below)
   PENDING / absent — proposal only, no data              → no contribution
+
+KEEP/DISCARD entries missing outcome_actor='operator' are IGNORED: the
+state file is unchained garden JSON, so the bridge refuses to count a
+verdict that doesn't carry the operator stamp record_outcome enforces at
+write time (defense at read time too; forged entries steer nothing).
+
+MEASURED honesty note: a lone MEASURED yields 0.6, and because
+surface_ranker blends observed evidence at 60% onto a 1-10 scale where
+default evidence sits at 6-8, a 0.6 signal DEMOTES high-default surfaces.
+That is intended explore/exploit behavior — measured-but-unjudged surfaces
+regress toward the mean, rotating attention to unexplored ones — but it
+means MEASURED is an exploration marker, not a reward. Only operator
+KEEP/DISCARD move a surface decisively.
 
 Signal formula (documented, deterministic):
   score = 0.5 + 0.4 * (keeps - discards) / contribs + 0.1 * (1 if any MEASURED else 0)
@@ -88,12 +101,16 @@ def observed_rankings(
             outcome = entry.get("outcome")
             if outcome not in _CONTRIBUTING:
                 continue
-            contribs += 1
-            if outcome == _POSITIVE:
-                keeps += 1
-            elif outcome == _NEGATIVE:
-                discards += 1
+            if outcome in (_POSITIVE, _NEGATIVE):
+                if entry.get("outcome_actor") != "operator":
+                    continue  # unstamped verdict: refused, steers nothing
+                contribs += 1
+                if outcome == _POSITIVE:
+                    keeps += 1
+                else:
+                    discards += 1
             else:
+                contribs += 1
                 measured_any = True
         if contribs == 0:
             continue  # no evidence → stays None

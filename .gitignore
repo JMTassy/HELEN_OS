@@ -46,3 +46,5 @@ logs/
 storage/
 oracle_town/skills/ops/dan_goblin/scratch/
 temple/gardens/**/runs/
+temple/autoresearch/loop_state.lock
+temple/autoresearch/*.pen.tmp

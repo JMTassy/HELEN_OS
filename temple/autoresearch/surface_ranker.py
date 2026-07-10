@@ -171,7 +171,9 @@ def rank(
 def assert_not_forbidden(surface: str) -> None:
     """Raise ValueError if surface touches a forbidden domain."""
     lower = surface.lower()
-    for forbidden in FORBIDDEN_SURFACES:
+    # sorted(): a name matching two forbidden domains must raise the same
+    # message every run — error text flows into hashed receipts downstream
+    for forbidden in sorted(FORBIDDEN_SURFACES):
         if forbidden in lower:
             raise ValueError(
                 f"FORBIDDEN SURFACE: {surface!r} matches forbidden domain {forbidden!r}. "

@@ -59,7 +59,72 @@ def _entry(target: str, outcome: str | None = None, **extra) -> dict:
     e = {"target": target, "score": 1.0, **extra}
     if outcome is not None:
         e["outcome"] = outcome
+        # the bridge refuses KEEP/DISCARD not stamped by the operator;
+        # fixtures model lawfully-recorded verdicts unless a test overrides
+        if outcome in ("KEEP", "DISCARD") and "outcome_actor" not in extra:
+            e["outcome_actor"] = "operator"
     return e
+
+
+def test_evidence_bridge_refuses_unstamped_verdicts(tmp_path):
+    """Forged KEEP/DISCARD without outcome_actor='operator' steers nothing."""
+    path = _write_state(tmp_path, [
+        _entry("skill_routing", "KEEP", outcome_actor="goblin_swarm"),
+        {"target": "context_ranking", "score": 1.0, "outcome": "KEEP"},
+    ])
+    rankings = evidence_bridge.observed_rankings(path)
+    assert rankings["skill_routing"] is None
+    assert rankings["context_ranking"] is None
+
+
+def test_operator_can_upgrade_pending_and_measured(tmp_path):
+    """The swarm stamps PENDING/MEASURED; the operator pen must still land."""
+    path = _write_state(tmp_path, [
+        _entry("prompt_compression", "PENDING", outcome_actor="goblin_swarm"),
+    ])
+    ok = goblin_swarm.record_outcome(
+        "prompt_compression", "KEEP", loop_state_path=path, actor="operator",
+        note="baseline acceptable",
+    )
+    assert ok is True
+    entries = json.loads(path.read_text())["target_history"]
+    assert entries[0]["outcome"] == "KEEP"
+    assert entries[0]["outcome_actor"] == "operator"
+    assert entries[0]["outcome_note"] == "baseline acceptable"
+    # final verdicts are never rewritten
+    assert goblin_swarm.record_outcome(
+        "prompt_compression", "DISCARD", loop_state_path=path, actor="operator",
+    ) is False
+
+
+def test_goblins_cannot_upgrade_stamped_entries(tmp_path):
+    """Goblin MEASURED only lands on outcome-less entries, never overwrites."""
+    path = _write_state(tmp_path, [
+        _entry("skill_routing", "PENDING", outcome_actor="goblin_swarm"),
+    ])
+    assert goblin_swarm.record_outcome(
+        "skill_routing", "MEASURED", 1.0, loop_state_path=path,
+    ) is False
+
+
+def test_report_hash_excludes_wall_clock():
+    """Content hashes must be replay-stable: volatile keys never contribute."""
+    base = {"TARGET": "prompt_compression", "selected_score": 24.0}
+    h1 = goblin_swarm._sha256_canon({**base, "observed_at": "2026-07-10T00:00:01Z"})
+    h2 = goblin_swarm._sha256_canon({**base, "observed_at": "2026-07-10T23:59:59Z",
+                                     "swarm_started": "x", "run_at": "y"})
+    assert h1 == h2
+    h3 = goblin_swarm._sha256_canon({**base, "selected_score": 19.2})
+    assert h3 != h1
+
+
+def test_measurers_cover_all_allowed_surfaces():
+    """Every allowed surface has a deterministic baseline instrument."""
+    assert set(goblin_swarm.MEASURERS) == set(surface_ranker.ALLOWED_SURFACES)
+    for name, fn in goblin_swarm.MEASURERS.items():
+        a, b = fn(), fn()
+        assert a == b, f"measurer {name} not deterministic"
+        assert isinstance(a, float)
 
 
 def _clean_report(**overrides) -> dict:

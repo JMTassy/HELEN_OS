@@ -1,0 +1,76 @@
+{
+  "schema": "TWO_STAGE_LOOP_STATE_V0",
+  "target_history": [
+    {
+      "target": "init_ranking_weights",
+      "score": 24.0,
+      "observed_ranking": null,
+      "run_at": "2026-07-10T12:57:11Z",
+      "outcome": "MEASURED",
+      "measured": 24.0,
+      "outcome_at": "2026-07-10T12:57:11Z",
+      "outcome_actor": "goblin_swarm"
+    },
+    {
+      "target": "context_ranking",
+      "score": 19.2,
+      "observed_ranking": null,
+      "run_at": "2026-07-10T12:57:11Z",
+      "outcome": "MEASURED",
+      "measured": 0.0,
+      "outcome_at": "2026-07-10T12:57:11Z",
+      "outcome_actor": "goblin_swarm"
+    },
+    {
+      "target": "sandbox_visual_grammar",
+      "score": 18.6667,
+      "observed_ranking": null,
+      "run_at": "2026-07-10T12:57:11Z",
+      "outcome": "KEEP",
+      "measured": 0.0,
+      "outcome_at": "2026-07-10T12:57:36Z",
+      "outcome_actor": "operator",
+      "outcome_note": "misuse baseline 0 confirmed on tracked surfaces"
+    },
+    {
+      "target": "init_ranking_weights",
+      "score": 16.8,
+      "observed_ranking": 0.6,
+      "run_at": "2026-07-10T12:57:11Z",
+      "outcome": "MEASURED",
+      "measured": 24.0,
+      "outcome_at": "2026-07-10T12:57:11Z",
+      "outcome_actor": "goblin_swarm"
+    },
+    {
+      "target": "init_ranking_weights",
+      "score": 16.8,
+      "observed_ranking": 0.6,
+      "run_at": "2026-07-10T12:57:11Z",
+      "outcome": "MEASURED",
+      "measured": 24.0,
+      "outcome_at": "2026-07-10T12:57:11Z",
+      "outcome_actor": "goblin_swarm"
+    },
+    {
+      "target": "sandbox_visual_grammar",
+      "score": 17.0666,
+      "observed_ranking": 0.9,
+      "run_at": "2026-07-10T12:57:36Z",
+      "outcome": "MEASURED",
+      "measured": 0.0,
+      "outcome_at": "2026-07-10T12:57:36Z",
+      "outcome_actor": "goblin_swarm"
+    },
+    {
+      "target": "sandbox_visual_grammar",
+      "score": 17.0666,
+      "observed_ranking": 0.8,
+      "run_at": "2026-07-10T12:57:36Z",
+      "outcome": "MEASURED",
+      "measured": 0.0,
+      "outcome_at": "2026-07-10T12:57:36Z",
+      "outcome_actor": "goblin_swarm"
+    }
+  ]
+}
