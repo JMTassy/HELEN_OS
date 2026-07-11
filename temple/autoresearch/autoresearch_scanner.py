@@ -158,9 +158,9 @@ def build_packet(findings: list[dict], source_file: str) -> dict:
         return {}
 
     evidence = [f["raw_text"] for f in findings[:10]]
-    source_refs = list({f["source_ref"] for f in findings})
+    source_refs = sorted({f["source_ref"] for f in findings})
 
-    summary_signals = list({f.get("signal", "") for f in findings})
+    summary_signals = sorted({f.get("signal", "") for f in findings})
     summary = f"Scanner findings in {source_file}: signals={summary_signals}"
 
     finding_type = classify_finding(summary, evidence)
