@@ -39,7 +39,9 @@ from autoresearch_policy import (
 # Constants
 # ---------------------------------------------------------------------------
 
-_OUTBOX_PREFIX = "temple/autoresearch/outbox"
+# Define the canonical outbox robustly from the scanner's own location
+CANONICAL_OUTBOX = Path(__file__).resolve().parent / "outbox"
+
 _SCANNABLE_SUFFIXES = frozenset({".md", ".txt", ".json", ".ndjson"})
 _SECRET_FILENAME_SIGNALS = frozenset({
     ".env", ".key", ".pem", "id_rsa", "id_ed25519",
@@ -235,10 +237,14 @@ def run(
     input_dir = input_dir.resolve() if not input_dir.is_absolute() else input_dir.resolve()
     outbox = outbox.resolve() if not outbox.is_absolute() else outbox.resolve()
 
-    # Stop condition: check if outbox would be outside allowed prefix
+    # Enforce outbox must be canonical (non-dry-run writes only to canonical location)
     if not dry_run:
-        if not reject_write_outside_outbox(outbox / "_probe", outbox):
-            print("STOP: outbox is outside allowed prefix", file=sys.stderr)
+        if outbox.resolve() != CANONICAL_OUTBOX.resolve():
+            print(
+                f"STOP: --outbox is not the canonical temple/autoresearch/outbox. "
+                f"Got {outbox.resolve()}, expected {CANONICAL_OUTBOX.resolve()}",
+                file=sys.stderr
+            )
             return []
 
     collected: dict[str, list[dict]] = {}
@@ -266,7 +272,12 @@ def run(
                 print(f"[SKIP] {source_file}: {errors}", file=sys.stderr)
             continue
 
-        # Stop-condition check on each packet (pass full JSON so "evidence" key is present)
+        # Stop-condition check on each packet (pass full JSON so "evidence" key is present).
+        # The read-only dry-run scanner enforces input-integrity (fail-closed on malformed
+        # output) + the secret/evidence conditions. The git-staged / kernel-path / queue-ceiling
+        # / self-action conditions are the responsibility of an ACTING autoresearch loop, not
+        # this reader: it has no subprocess/git access (forbidden), and outbox file-count is a
+        # stock of content-addressed candidates, not a live operator-review-queue depth.
         should_stop, reason = check_stop_conditions(
             text_output=json.dumps(packet),
             tests_passed=True,

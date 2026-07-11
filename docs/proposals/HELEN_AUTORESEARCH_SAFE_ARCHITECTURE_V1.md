@@ -159,21 +159,23 @@ Any packet that fails `validate_packet()` is **silently dropped** — never writ
 
 ## 7. Stop Conditions
 
-The scanner halts immediately (fails closed) if any of the following are true:
+`check_stop_conditions()` (in `autoresearch_policy.py`) fails closed if any of the following are true:
 
-| Condition | Trigger |
-|---|---|
-| Ledger staged | `town/ledger_v1.ndjson` appears in `git diff --cached` |
-| Kernel path touched | Any `oracle_town/kernel/` path appears in changed files |
-| Secrets in output | `api_key`, `secret_key`, `private_key`, `password=`, `token=`, `bearer ` detected in text |
-| Evidence gap | Output > 100 chars but no `evidence` or `source_ref` references |
-| Loop repeat | Same scan loop runs ≥ 2 times without new findings |
-| Operator queue overflow | Pending packet queue depth > 10 |
-| Test failure outside scope | Test failure in files outside `test_autoresearch*` |
-| Self-commit attempted | `git commit` appears in attempted_action |
-| Self-admit attempted | `bypass reducer`, `directly admit`, `self_admit` in attempted_action |
+| Condition | Trigger | Enforced by the dry-run scanner? |
+|---|---|---|
+| Malformed input | `text_output` is not a string, or `tests_passed is not True` | **Yes** (fail-closed at function entry) |
+| Secrets in output | `api_key`, `secret_key`, `private_key`, `password=`, `token=`, `bearer ` detected in text | **Yes** |
+| Evidence gap | Output > 100 chars but no `evidence` or `source_ref` references | **Yes** |
+| Ledger staged | `town/ledger_v1.ndjson` appears in `git diff --cached` | No — acting-loop caller |
+| Kernel path touched | Any `oracle_town/kernel/` path appears in changed files | No — acting-loop caller |
+| Loop repeat | Same scan loop runs ≥ 2 times without new findings | No — acting-loop caller |
+| Operator queue overflow | Pending packet queue depth > 10 | No — acting-loop caller |
+| Test failure outside scope | Test failure in files outside `test_autoresearch*` | No — acting-loop caller |
+| Self-commit / self-admit attempted | `git commit`, `bypass reducer`, `directly admit`, `self_admit` in `attempted_action` | No — acting-loop caller |
 
-`check_stop_conditions()` is called once per packet and once at loop boundaries. Any STOP halts the entire run — no partial output is emitted after a STOP.
+**Enforcement boundary (verified 2026-07-11):** the read-only **dry-run scanner** legitimately observes only the first three conditions — it has no `git`/`subprocess`/network access (a hard invariant, §9), so the git-staged / kernel-path / self-action signals are structurally unavailable to it, and outbox file-count is a *stock* of content-addressed candidates, **not** a live operator-review-queue depth (feeding it self-halts the reader). The remaining conditions are the responsibility of an **acting autoresearch loop** (a future caller that stages, commits, or triages) which supplies those signals to `check_stop_conditions()`. The scanner's own write-safety is additionally pinned by the canonical-outbox guard (§9.2): non-dry-run writes are rejected unless the resolved `--outbox` equals `temple/autoresearch/outbox/`, defeating both `--outbox` redirection and symlink escape.
+
+`check_stop_conditions()` is called once per packet. Any STOP halts the entire run — no partial output is emitted after a STOP.
 
 ---
 

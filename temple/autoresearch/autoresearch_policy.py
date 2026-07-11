@@ -246,6 +246,12 @@ def check_stop_conditions(
     Returns (should_stop, reason). If should_stop=True, caller must halt immediately.
     Fails closed: any ambiguous condition stops the run.
     """
+    # Input validation — fail closed on malformed input
+    if text_output is None or not isinstance(text_output, str):
+        return (True, "STOP_MALFORMED: text_output is not a string")
+    if tests_passed is not True:
+        return (True, "STOP_TESTS_NOT_PASSED")
+
     staged = staged_files or []
     changed = changed_files or []
 
