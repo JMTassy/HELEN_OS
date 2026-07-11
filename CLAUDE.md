@@ -257,6 +257,8 @@ CI runs on every push/PR to `main` via `.github/workflows/`. Three jobs in seque
 
 Full protocol (the split, the ≤500-token dispatch rule, local GPU model routing, cost gate V0.2, membrane law): **`docs/policies/FABLE_LOCAL_GPU_ROUTING_V1.md`**. Read it in full when on Fable.
 
+**In-session execution**, where the local-GPU seat is unreachable: Fable is the scarce MAYOR orchestrator; delegate all heavy reading, sweeps, test runs, and first drafts to a **Haiku subagent swarm** (`Agent` tool, `model: "haiku"`), default HAL/HER duo, adversarially cross-checked before ruling. Full protocol: **`docs/policies/HAIKU_SWARM_ROUTING_V1.md`**.
+
 ## Setup
 
 ```bash

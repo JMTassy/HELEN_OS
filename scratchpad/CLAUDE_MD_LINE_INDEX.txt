@@ -101,49 +101,49 @@ CLAUDE.md — AUTO-GENERATED LINE INDEX
     Lines 245–253 | Anchor: #agentsmd-subagent-role
 
   - ## FABLE Model Routing Directive
-    Lines 254–259 | Anchor: #fable-model-routing-directive
+    Lines 254–261 | Anchor: #fable-model-routing-directive
 
   - ## Setup
-    Lines 260–272 | Anchor: #setup
+    Lines 262–274 | Anchor: #setup
 
   - ## Running HELEN
-    Lines 273–325 | Anchor: #running-helen
+    Lines 275–327 | Anchor: #running-helen
 
     - ### Packaging note
-      Lines 326–328 | Anchor: #packaging-note
+      Lines 328–330 | Anchor: #packaging-note
 
   - ## Chat Surfaces
-    Lines 329–343 | Anchor: #chat-surfaces
+    Lines 331–345 | Anchor: #chat-surfaces
 
   - ## Operational Notes
-    Lines 344–351 | Anchor: #operational-notes
+    Lines 346–353 | Anchor: #operational-notes
 
   - ## Key Reference
-    Lines 352–355 | Anchor: #key-reference
+    Lines 354–357 | Anchor: #key-reference
 
   - ## Current State
-    Lines 356–357 | Anchor: #current-state
+    Lines 358–359 | Anchor: #current-state
 
     - ### Update 2026-06-21 (HEAD = 12ec35a, ~50 commits since 2026-06-15)
-      Lines 358–369 | Anchor: #update-2026-06-21-head-12ec35a-50-commits-since-2026-06-15
+      Lines 360–371 | Anchor: #update-2026-06-21-head-12ec35a-50-commits-since-2026-06-15
 
     - ### Update 2026-06-15 (HEAD = 4d1e185)
-      Lines 370–380 | Anchor: #update-2026-06-15-head-4d1e185
+      Lines 372–382 | Anchor: #update-2026-06-15-head-4d1e185
 
     - ### Update 2026-06-03 (114 commits since the 2026-05-06 snapshot below)
-      Lines 381–391 | Anchor: #update-2026-06-03-114-commits-since-the-2026-05-06-snapshot-below
+      Lines 383–393 | Anchor: #update-2026-06-03-114-commits-since-the-2026-05-06-snapshot-below
 
     - ### Snapshot 2026-05-06
-      Lines 392–409 | Anchor: #snapshot-2026-05-06
+      Lines 394–411 | Anchor: #snapshot-2026-05-06
 
   - ## HELEN OS Look & Feel — Source Atlas Doctrine
-    Lines 410–434 | Anchor: #helen-os-look-feel-source-atlas-doctrine
+    Lines 412–436 | Anchor: #helen-os-look-feel-source-atlas-doctrine
 
   - ## WULMOJI Status Rendering Rule
-    Lines 435–445 | Anchor: #wulmoji-status-rendering-rule
+    Lines 437–447 | Anchor: #wulmoji-status-rendering-rule
 
   - ## Open Frontiers
-    Lines 446–450 | Anchor: #open-frontiers
+    Lines 448–452 | Anchor: #open-frontiers
 
 ================================================================================
 
