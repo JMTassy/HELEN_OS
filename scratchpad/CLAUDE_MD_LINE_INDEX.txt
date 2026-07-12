@@ -100,23 +100,26 @@ CLAUDE.md — AUTO-GENERATED LINE INDEX
   - ## Chat Surfaces
     Lines 306–320 | Anchor: #chat-surfaces
 
+  - ## LNSA — Session Discipline Protocol
+    Lines 321–330 | Anchor: #lnsa-session-discipline-protocol
+
   - ## Operational Notes
-    Lines 321–328 | Anchor: #operational-notes
+    Lines 331–338 | Anchor: #operational-notes
 
   - ## Key Reference
-    Lines 329–332 | Anchor: #key-reference
+    Lines 339–342 | Anchor: #key-reference
 
   - ## Current State
-    Lines 333–341 | Anchor: #current-state
+    Lines 343–351 | Anchor: #current-state
 
   - ## HELEN OS Look & Feel — Source Atlas Doctrine
-    Lines 342–366 | Anchor: #helen-os-look-feel-source-atlas-doctrine
+    Lines 352–376 | Anchor: #helen-os-look-feel-source-atlas-doctrine
 
   - ## WULMOJI Status Rendering Rule
-    Lines 367–377 | Anchor: #wulmoji-status-rendering-rule
+    Lines 377–387 | Anchor: #wulmoji-status-rendering-rule
 
   - ## Open Frontiers
-    Lines 378–382 | Anchor: #open-frontiers
+    Lines 388–392 | Anchor: #open-frontiers
 
 ================================================================================
 

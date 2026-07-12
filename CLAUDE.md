@@ -318,6 +318,16 @@ Multiple chat entry points exist; they are **not interchangeable**.
 
 **`--ledger :memory:` gotcha** — when the configured ledger is a sealed sovereign file (e.g. `storage/ledger_epoch*_work.ndjson`), `helen talk --reply` writes the receipt **before** the LLM call and crashes with `LNSA_ERROR: Sovereign ledger is SEALED. No further mutations allowed.` Pass `--ledger :memory:` for ephemeral chat or `--ledger storage/chat_dev.ndjson` for persistent dev. See `HELEN_CHAT_MODES.md`.
 
+## LNSA — Session Discipline Protocol
+
+`LNSA.py` + `LNSA_SKILL.md` are a self-contained working-memory tool, distinct from the sovereign ledger. Runs in-process and produces a session JSON, not `town/ledger_v1.ndjson`.
+
+- **Activation:** `python3 LNSA.py`, or `/lnsa` / `hi helen` inside a Claude session.
+- **Five phases:** Exploration → Tension → Drafting → Editorial → Termination.
+- **Termination contract:** every session ends `SHIP` (artifact + location + impact named) or `ABORT` (failure mode named). Open-ended pauses are forbidden by design — the "Termination is sacred" invariant in operator form.
+- **What it records:** claims (R/C/T/W/M tagged), contradictions (both versions kept), challenges, revisions, final decision.
+- **Naming collision:** `LNSA_ERROR` strings in `tools/helen_say.py` refer to the sovereign ledger seal, not to `LNSA.py`. Don't conflate them.
+
 ## Operational Notes
 
 - `town/ledger_v1.ndjson` may show as dirty in `git status` due to live kernel daemon writes. Do not stash, do not commit, do not edit — operator-authorized firewall path.
