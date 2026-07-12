@@ -1,0 +1,200 @@
+<!doctype html>
+<!--
+  THE DAILY VERDICT V1 — playable prototype (viral organ)
+  NON_SOVEREIGN · authority=false · canon=false · ledger_effect=none
+  Laws (see warren_quests/daily_verdict_v1.json):
+    same UTC date => same scroll worldwide (sha256, offline-verifiable)
+    verdict not purchasable · consequence cosmetic-first
+    world split revealed post-stamp only (offline v1: hash-derived, LABELED)
+    missed day = fog at HOLD; streak counts stamps and NEVER resets
+  Self-contained: no external assets, no backend, localStorage only.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>THE DAILY VERDICT — Goblin Warren</title>
+<style>
+  :root { --ink:#e8dcc0; --gold:#e6b84a; --purple:#b08ae0; --dim:#9a8f78;
+          --panel:#14101c; --panel2:#1b1526; --edge:#4a3a52;
+          --try:#8fc060; --hold:#e6c85a; --compost:#e07a6a; }
+  * { box-sizing:border-box; margin:0; }
+  body { background:#0d0a12; color:var(--ink); min-height:100vh;
+         font:16px/1.5 ui-monospace,"SF Mono",Menlo,monospace;
+         display:flex; justify-content:center; padding:18px 12px; }
+  #app { width:min(96vw,520px); display:flex; flex-direction:column; gap:14px; }
+  .panel { background:var(--panel); border:2px solid var(--edge); border-radius:12px; padding:16px; }
+  h1 { font-size:18px; color:var(--gold); letter-spacing:2px; text-align:center; }
+  .sub { text-align:center; color:var(--dim); font-size:11px; margin-top:4px; }
+  #scrollCard { background:var(--panel2); border-color:var(--purple); }
+  #title { color:var(--purple); font-size:16px; margin-bottom:8px; }
+  #scrollText { font-size:15px; }
+  #verify { color:var(--dim); font-size:10px; margin-top:10px; word-break:break-all; }
+  #stamps { display:flex; gap:10px; }
+  .stamp { flex:1; padding:14px 6px; border-radius:10px; border:2px solid var(--edge);
+           background:var(--panel2); color:var(--ink); font:inherit; font-size:14px;
+           cursor:pointer; transition:transform .06s; }
+  .stamp:active { transform:scale(.96); }
+  .stamp.try { border-color:var(--try); }  .stamp.hold { border-color:var(--hold); }
+  .stamp.compost { border-color:var(--compost); }
+  .stamp:disabled { opacity:.45; cursor:default; }
+  #result { display:none; }
+  #consequence { font-size:15px; color:var(--gold); }
+  #splitWrap { margin-top:12px; }
+  .bar { display:flex; height:16px; border-radius:8px; overflow:hidden; margin-top:4px; }
+  .bar>div { height:100%; }
+  .b-try{background:var(--try)} .b-hold{background:var(--hold)} .b-compost{background:var(--compost)}
+  #splitLabel { color:var(--dim); font-size:10px; margin-top:4px; }
+  #week { display:flex; gap:6px; justify-content:center; font-size:26px; }
+  .dayCell { text-align:center; }
+  .dayCell small { display:block; font-size:9px; color:var(--dim); }
+  #streak { text-align:center; color:var(--dim); font-size:12px; margin-top:6px; }
+  #shareBtn { width:100%; padding:12px; border-radius:10px; border:2px solid var(--gold);
+              background:var(--panel2); color:var(--gold); font:inherit; cursor:pointer; }
+  #footer { text-align:center; color:var(--dim); font-size:10px; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="panel">
+    <h1>🏰 THE DAILY VERDICT</h1>
+    <div class="sub">one scroll · every warren · same everywhere</div>
+  </div>
+
+  <div class="panel" id="scrollCard">
+    <div id="title">…</div>
+    <div id="scrollText">unrolling the scroll…</div>
+    <div id="verify"></div>
+  </div>
+
+  <div class="panel" id="stampPanel">
+    <div id="stamps">
+      <button class="stamp try"     id="b-TRY">🟢<br>TRY IT</button>
+      <button class="stamp hold"    id="b-HOLD">🟡<br>HOLD IT</button>
+      <button class="stamp compost" id="b-COMPOST">🔴<br>COMPOST IT</button>
+    </div>
+  </div>
+
+  <div class="panel" id="result">
+    <div id="consequence"></div>
+    <div id="splitWrap">
+      <div class="bar" id="splitBar"></div>
+      <div id="splitLabel"></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div id="week"></div>
+    <div id="streak"></div>
+  </div>
+
+  <button id="shareBtn">share the week ↗</button>
+  <div id="footer">playable sandbox · no claim · no ship · verdicts are not purchasable<br>
+    missed days wait in fog at HOLD — your streak never breaks</div>
+</div>
+
+<script>
+const SALT = "WARREN_DAILY_V1:";
+const VERDICTS = { TRY:"🟢", HOLD:"🟡", COMPOST:"🔴" };
+const FOG = "🌫";
+const LS_KEY = "warren_daily_verdicts_v1";
+let BANK = null, today = null, dilemma = null;
+
+const utcDate = (offsetDays=0) => {
+  const d = new Date(Date.now() + offsetDays*86400000);
+  return d.toISOString().slice(0,10);                 // YYYY-MM-DD in UTC
+};
+async function sha256hex(s) {
+  const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
+  return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("");
+}
+async function pickIndex(date, n) {
+  const h = await sha256hex(SALT + date);
+  return { idx: parseInt(h.slice(0,8),16) % n, h8: h.slice(0,8) };
+}
+async function offlineSplit(date, id) {                // labeled estimate, v1
+  const h = await sha256hex(SALT + date + ":" + id + ":split");
+  let a = parseInt(h.slice(0,2),16), b = parseInt(h.slice(2,4),16), c = parseInt(h.slice(4,6),16);
+  const t = a+b+c || 1;
+  const p = [Math.round(100*a/t), Math.round(100*b/t)];
+  return [p[0], p[1], 100-p[0]-p[1]];
+}
+const store = () => JSON.parse(localStorage.getItem(LS_KEY) || "{}");
+const save  = (s) => localStorage.setItem(LS_KEY, JSON.stringify(s));
+
+async function loadBank() {
+  // packet lives beside this prototype in the repo; embedded fetch with fallback
+  try {
+    const r = await fetch("../warren_quests/daily_verdict_v1.json");
+    BANK = (await r.json()).bank;
+  } catch(e) {
+    document.getElementById("scrollText").textContent =
+      "serve this folder over http (python3 -m http.server) so the scroll bank can load.";
+    throw e;
+  }
+}
+function renderWeek() {
+  const s = store(), week = document.getElementById("week");
+  week.innerHTML = "";
+  for (let i=6;i>=0;i--) {
+    const d = utcDate(-i);
+    const cell = document.createElement("div"); cell.className = "dayCell";
+    cell.innerHTML = (s[d] ? VERDICTS[s[d]] : FOG) + "<small>" + d.slice(5) + "</small>";
+    week.appendChild(cell);
+  }
+  const stamped = Object.keys(s).length;
+  document.getElementById("streak").textContent =
+    "🪙 " + stamped + " day" + (stamped===1?"":"s") + " stamped — fog holds, never breaks";
+}
+function shareText() {
+  const s = store();
+  let row = "";
+  for (let i=6;i>=0;i--) { const d = utcDate(-i); row += s[d] ? VERDICTS[s[d]] : FOG; }
+  return "THE DAILY VERDICT — " + dilemma.title + "\n" + row + "\nstamped by the warren";
+}
+async function reveal(verdict) {
+  document.getElementById("consequence").textContent =
+    VERDICTS[verdict] + " " + dilemma.consequences[verdict];
+  const [pt, ph, pc] = await offlineSplit(today, dilemma.id);
+  const bar = document.getElementById("splitBar");
+  bar.innerHTML = `<div class="b-try" style="width:${pt}%"></div>` +
+                  `<div class="b-hold" style="width:${ph}%"></div>` +
+                  `<div class="b-compost" style="width:${pc}%"></div>`;
+  document.getElementById("splitLabel").textContent =
+    `🟢 ${pt}% · 🟡 ${ph}% · 🔴 ${pc}% — warren estimate (offline v1, not live data)`;
+  document.getElementById("result").style.display = "block";
+  for (const v of Object.keys(VERDICTS))
+    document.getElementById("b-"+v).disabled = true;
+}
+async function stamp(verdict) {
+  const s = store();
+  if (s[today]) return;                    // final for the day — not purchasable, not re-rollable
+  s[today] = verdict; save(s);
+  await reveal(verdict); renderWeek();
+}
+async function main() {
+  await loadBank();
+  today = utcDate(0);
+  const { idx, h8 } = await pickIndex(today, BANK.length);
+  dilemma = BANK[idx];
+  document.getElementById("title").textContent = "📜 " + dilemma.title;
+  document.getElementById("scrollText").textContent = dilemma.scroll;
+  document.getElementById("verify").textContent =
+    `verify offline: sha256("${SALT}${today}")[0:8] = ${h8} → % ${BANK.length} = #${idx}`;
+  const s = store();
+  if (s[today]) await reveal(s[today]);    // already stamped: show, don't re-ask
+  else for (const v of Object.keys(VERDICTS))
+    document.getElementById("b-"+v).onclick = () => stamp(v);
+  renderWeek();
+  document.getElementById("shareBtn").onclick = async () => {
+    const txt = shareText();
+    if (navigator.share) { try { await navigator.share({ text: txt }); return; } catch(e){} }
+    await navigator.clipboard.writeText(txt);
+    document.getElementById("shareBtn").textContent = "copied — paste anywhere ✓";
+    setTimeout(()=>document.getElementById("shareBtn").textContent="share the week ↗", 1600);
+  };
+}
+main();
+</script>
+</body>
+</html>
