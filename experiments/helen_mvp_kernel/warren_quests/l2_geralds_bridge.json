@@ -1,0 +1,74 @@
+{
+  "schema": "WARREN_QUEST_PACKET_V1",
+  "quest_id": "L2_GERALDS_BRIDGE",
+  "stage_asset": "warren_scene_bridge_stream_v1.jpeg",
+  "stage_sha256_16": "0275810891558bfa",
+  "teaches": "better prompt = objective + context + constraints + success test",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+
+  "economy": {
+    "lambda": 1.0,
+    "kappa": 0.5,
+    "rho": 0.5,
+    "conservation": "kappa <= 1 - rho (mass-conserving compost)",
+    "slot_deposit_w0": 10.0,
+    "counterexample_deposit_w0": 40.0,
+    "mint_per_full_compost_of_w0": "lambda * kappa * w0 / (1 - rho) == w0",
+    "audit": "cumulative ZOL <= lambda * total detail deposited (Law 3)"
+  },
+
+  "slots": [
+    {"id": "objective",  "label": "What must exist?",        "example": "a small bridge for Gerald"},
+    {"id": "context",    "label": "Where / for whom?",       "example": "across the stream, before sunset"},
+    {"id": "material",   "label": "Made of what?",           "example": "wood and rope"},
+    {"id": "strength",   "label": "Strong enough for what?", "example": "Gerald crossing safely"},
+    {"id": "deadline",   "label": "By when?",                "example": "before sunset"},
+    {"id": "test",       "label": "How do we know it worked?", "example": "Gerald crosses; far bank reached"}
+  ],
+
+  "telephone": {
+    "determinism": "mutation depends ONLY on which slots are empty — same gaps, same comedy, every replay",
+    "hops": ["LULU", "PIP", "NIB"],
+    "mutations": {
+      "objective": {"hop": "LULU", "outcome": "SUNSET_FRIDGE",
+        "line": "Build Gerald a... thing? A sunset-colored fridge appears."},
+      "context":   {"hop": "PIP",  "outcome": "BRIDGE_OVER_PATH",
+        "line": "A lovely bridge. Over the footpath. The stream giggles."},
+      "material":  {"hop": "PIP",  "outcome": "PUDDING_BRIDGE",
+        "line": "Berry pudding arches majestically. Briefly."},
+      "strength":  {"hop": "NIB",  "outcome": "LEAF_BRIDGE",
+        "line": "It holds a leaf. Gerald is heavier than a leaf."},
+      "deadline":  {"hop": "NIB",  "outcome": "MOONLIGHT_BRIDGE",
+        "line": "Finished beautifully. At midnight. Gerald went home."},
+      "test":      {"hop": "NIB",  "outcome": "HALF_BRIDGE",
+        "line": "It ends mid-stream. Nobody checked the far bank."}
+    },
+    "fail_is_compost": "every wrong outcome auto-composts into a lesson hint for its slot (+1 hint, no punishment)"
+  },
+
+  "tiers": [
+    {"tier": 1, "name": "PLANK", "requires_slots": ["objective", "material"],
+     "mint_zol": 10, "gerald_state": "crosses nervously"},
+    {"tier": 2, "name": "ARCH", "requires_slots": ["objective", "context", "material", "strength", "deadline", "test"],
+     "mint_zol": 30, "gerald_state": "crosses whistling"},
+    {"tier": 3, "name": "KEYSTONE",
+     "requires_slots": ["objective", "context", "material", "strength", "deadline", "test"],
+     "requires_counterexample": "player names one way the bridge could still fail (Forge falsifier as gameplay)",
+     "mint_zol": 20, "gerald_state": "crosses, then dances"}
+  ],
+
+  "jackpot": {
+    "name": "GLING_GLING",
+    "mint_zol": 40,
+    "condition": "first-try KEYSTONE — the Receipt Forge ceremony composts all residues to completion",
+    "why_100_exactly": "total deposits = 6 slots x 10 + counterexample 40 = 100; with kappa = 1-rho the geometric series of repeated compost mints exactly the deposit: 10+30+20+40 = 100 = JACKPOT board value. The economy is tight against Law 3.",
+    "audit_check": "10 + 30 + 20 + 40 == 100 == lambda * (6*10 + 40)"
+  },
+
+  "replay": {
+    "storage": "localStorage trace: slots_filled[], outcomes[], zol_minted, composts[]",
+    "law1_callback": "the SUNSET_FRIDGE, once summoned, keeps >= c_phi salience forever and may reappear in L4 market as a curiosity item"
+  }
+}
