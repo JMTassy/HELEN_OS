@@ -1,0 +1,60 @@
+{
+  "schema": "WARREN_QUEST_PACKET_V1",
+  "quest_id": "L3_STONE_CIRCLE",
+  "stage_asset": "warren_scene_stone_circle_v1.jpeg",
+  "stage_sha256_16": "8f555f45a91d3b9c",
+  "teaches": "evidence or mushroom — confidence is not correctness; only tests and compost pay",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+
+  "economy": {
+    "lambda": 1.0,
+    "kappa": 0.5,
+    "rho": 0.5,
+    "claim_deposit_w0": 10.0,
+    "moves": {
+      "TEST":            {"mint": 5, "note": "first compost pass through the tiny experiment"},
+      "RESOLVE_FALSE":   {"mint": 5, "note": "completion compost of a tested-false claim — full value; rejection is compost"},
+      "RESOLVE_TRUE":    {"mint": 0, "note": "claim is CARVED instead — permanent lesson, door-key material (long-term value, not instant ZOL)"},
+      "COMPOST_UNTESTED": {"mint": 5, "note": "soil without understanding; residue keeps whispering at the c_phi floor"},
+      "BELIEVE":         {"mint": 0, "note": "belief is not work. chalk only, washable, and it can come back to bite"}
+    },
+    "audit": "max run = every claim tested and resolved = 8 x 10 = 80 = lambda * total deposits (Law 3, tight)"
+  },
+
+  "evidence_ladder": {
+    "SPOKEN": "tier III — someone said it (sparkles included)",
+    "CHALK":  "tier II — written on the bench, testable, washable",
+    "CARVED": "tier I — tested true; an ogham stroke is added to the dolmen, permanent"
+  },
+
+  "deck": [
+    {"id": "MOON_CABBAGE",  "claim": "Moon cabbage makes goblins 400% smarter!",            "speaker": "ZAZ",  "sparkle": 5, "test": "memory quiz before/after cabbage", "truth": false, "reveal": "quiz unchanged. cabbage does glow though. compost it."},
+    {"id": "STEW_SLEEP",    "claim": "Goblins slept 7.2h after stew; quiz scores +18%.",     "speaker": "PIP",  "sparkle": 1, "test": "repeat the stew night, run the quiz", "truth": true,  "reveal": "replicates. carve it."},
+    {"id": "GLOWCAP_LUNCH", "claim": "The Royal Munch Menu proves glowcaps boost wisdom.",   "speaker": "NIB",  "sparkle": 3, "test": "read the document type",             "truth": false, "reveal": "it is a lunch menu. menus are not evidence."},
+    {"id": "BRIDGE_ROPE",   "claim": "Rope bridges outlast pudding bridges.",                "speaker": "LULU", "sparkle": 1, "test": "one rainy day, both bridges",        "truth": true,  "reveal": "pudding lost. carve it. (Gerald nods, L2 callback)"},
+    {"id": "TREE_HUMS",     "claim": "The Akashic Tree hums louder near fresh receipts.",    "speaker": "PIP",  "sparkle": 4, "test": "hum-meter with and without receipt", "truth": true,  "reveal": "it does. sparkle CAN be true — that is why you test."},
+    {"id": "SHINY_GOLD",    "claim": "If it shines, it is gold.",                            "speaker": "ZAZ",  "sparkle": 5, "test": "bite three shiny things",            "truth": false, "reveal": "two were beetles. Lulu: if it shines too much, probably not real gold."},
+    {"id": "COMPOST_SOIL",  "claim": "Composted problems make better soil.",                 "speaker": "LULU", "sparkle": 2, "test": "two garden plots, one composted",    "truth": true,  "reveal": "greener plot. carve it. (the post-it was right)"},
+    {"id": "FRIDGE_SUNSET", "claim": "The sunset fridge keeps sunsets fresh.",               "speaker": "NIB",  "sparkle": 5, "test": "open it at noon",                    "truth": false, "reveal": "it keeps leftovers at exactly sunset temperature. beautiful. useless. compost."}
+  ],
+
+  "law_staging": {
+    "law2_whisper": "any claim neither tested nor fully resolved keeps >= c_phi salience and WHISPERS during later trials (ambient audio + faint glow on its stone)",
+    "law1_return": "a BELIEVEd untested claim returns as a witness in a later trial; if a dependent claim fails, the chalk visibly washes off in the rain",
+    "dependency_lesson": "trial 2 cites trial 1 chalk: building on untested belief doubles the collapse"
+  },
+
+  "trial_structure": {
+    "trials": 3,
+    "claims_per_trial": [3, 3, 2],
+    "trial_2_dependency": "one trial-2 claim cites the player's trial-1 BELIEVE choices",
+    "trial_3_finale": "FRIDGE_SUNSET + one whispering leftover from earlier — the circle remembers what you skipped"
+  },
+
+  "replay": {
+    "determinism": "truth values are fixed in the deck — same choices, same reveals, every run",
+    "storage": "localStorage: moves[], carved[], chalk[], whispers[], zol_minted"
+  }
+}
