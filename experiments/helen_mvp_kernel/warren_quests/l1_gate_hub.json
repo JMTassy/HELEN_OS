@@ -1,0 +1,60 @@
+{
+  "schema": "WARREN_QUEST_PACKET_V1",
+  "quest_id": "L1_GATE_HUB",
+  "stage_asset": "warren_scene_gate_hub_v1.jpeg",
+  "stage_sha256_16": "ca5fb0e496d437bf",
+  "teaches": "doors are opened by learning, and learning never expires",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+
+  "door_law": {
+    "constants": {"c_phi": 0.125169442295, "key_memory_w0": 10.0, "theta": 2.0},
+    "salience": "sigma(t) = l0 + w0 * exp(-(1 - phi^-t) / ln(phi))",
+    "open_rule": "door open at time t iff sigma(t) >= theta",
+    "permanent_open": "l0 >= theta - c_phi*w0 = 0.748306 — compost ~7.5% of the key-memory into lesson and the door NEVER rusts",
+    "rust_time_if_unlearned": 3.094996,
+    "rust_note": "with l0 = 0 the door dims shut at exactly t* = 3.095 game-units; the arch vines visibly grey as sigma approaches theta",
+    "reopen": "a rusted door is not dead — one compost on its key-memory reopens it instantly (Law 1: the trace never left)"
+  },
+
+  "doors": [
+    {"to": "L2_GERALDS_BRIDGE", "key_memory": "FIRST_COMPOST",
+     "key_source": "any compost action in L0 GARDEN",
+     "tutorial": true, "note": "trivially learnable — teaches the gate rule itself"},
+    {"to": "L3_STONE_CIRCLE", "key_memory": "BRIDGE_LESSON",
+     "key_source": "ARCH tier or higher in L2 (the six-slot prompt carved)"},
+    {"to": "L4_VILLAGE_CROSS", "key_memory": "FIRST_CARVED_TRUTH",
+     "key_source": "at least one CARVED claim in L3 (a tested truth)"},
+    {"to": "L5_UNDER_THE_POOL", "key_memory": "ALL_THREE_LAWS",
+     "key_source": "witness Law 1, Law 2, Law 3 each at least once",
+     "locked_in_v1": true,
+     "inscription": "the formula is carved on the arch already: l0 >= theta - c_phi*w0. the pool waits."}
+  ],
+
+  "pool_replay": {
+    "mechanic": "touch the pool -> the swirl offers every event on the replay strip",
+    "brightness": "brightness(event) = sigma_event(now) / sigma_event(0), in (0,1] — old un-composted events glow dim but NEVER vanish (Law 1)",
+    "sound": "each replayed event replays its original chime at floor volume"
+  },
+
+  "world_graph": {
+    "nodes": ["L0_GARDEN", "L1_GATE_HUB", "L2_GERALDS_BRIDGE", "L3_STONE_CIRCLE", "L4_VILLAGE_CROSS", "L5_UNDER_THE_POOL"],
+    "edges": [
+      {"from": "L0_GARDEN", "to": "L1_GATE_HUB", "condition": "always (home path)"},
+      {"from": "L1_GATE_HUB", "to": "L2_GERALDS_BRIDGE", "condition": "door: FIRST_COMPOST"},
+      {"from": "L1_GATE_HUB", "to": "L3_STONE_CIRCLE", "condition": "door: BRIDGE_LESSON"},
+      {"from": "L1_GATE_HUB", "to": "L4_VILLAGE_CROSS", "condition": "door: FIRST_CARVED_TRUTH"},
+      {"from": "L2_GERALDS_BRIDGE", "to": "L4_VILLAGE_CROSS", "condition": "shortcut over Gerald's bridge (KEYSTONE tier only)"},
+      {"from": "L3_STONE_CIRCLE", "to": "L4_VILLAGE_CROSS", "condition": "forest path (always, once L3 entered)"},
+      {"from": "L1_GATE_HUB", "to": "L5_UNDER_THE_POOL", "condition": "door: ALL_THREE_LAWS (locked_in_v1)"}
+    ],
+    "key_dag": "FIRST_COMPOST(L0) -> BRIDGE_LESSON(L2) -> FIRST_CARVED_TRUTH(L3) — keys form a chain with no cycles; progress is always earnable",
+    "spiral_marks": "path spirals on the ground render the player's own edge-traversal history — breadcrumbs are the replay strip made walkable"
+  },
+
+  "replay": {
+    "determinism": "door states are pure functions of (l0, w0, theta, age); graph conditions are pure predicates on the replay strip",
+    "storage": "localStorage: key_memories{l0,w0,born_at}, doors_opened[], edges_walked[]"
+  }
+}
