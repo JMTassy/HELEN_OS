@@ -11,8 +11,13 @@ Discretization:
 With Pi_QAM(z) = 0 this becomes:
     z_{t+dt} = z_t * (1 - dt * phi^{-t})
 
-A monotone exponential contraction toward 0. Phase 0 success criterion is
-hash determinism, not the contraction rate itself.
+A monotone contraction with a strictly POSITIVE floor — not a contraction
+to zero. Total drift mass int_0^inf phi^(-t) dt = 1/ln(phi) is finite, so
+the product converges to c > 0 (c = 0.112408840028 for dt=0.1; continuous
+limit e^(-1/ln phi) = 0.125169442295). An earlier version of this docstring
+claimed contraction "toward 0"; corrected 2026-07-12 per Law 5 — see
+experiments/helen_mvp_kernel/THEOREM_PHI_CONTRACTION_FLOOR_V1.md.
+Phase 0 success criterion is hash determinism, not the contraction rate.
 """
 
 from __future__ import annotations

@@ -458,3 +458,33 @@ hal_final_verdict:   DONE
 > The math is now receipt-bound.
 > Same input + same seed -> same hashes. 3 runs. Verified.
 > The organism has its first deterministic vital sign.
+
+---
+
+## CORRECTION 2026-07-12 (Law 5 — corrections stay visible)
+
+Epoch 6 of this loop described the zero-noise, zero-projection flow as
+"a monotone exponential contraction toward 0." **That claim is false and is
+hereby corrected.** The total drift mass ∫₀^∞ φ^(−t) dt = 1/ln φ ≈ 2.0781 is
+finite, so the contraction factor has a strictly positive floor:
+
+    continuous limit:   e^(−1/ln φ) = 0.125169442295
+    discrete (dt=0.1):  0.112408840028  (infinite product)
+    discrete (T=5):     0.136252952251
+
+The epoch-10 receipt already witnessed this without our noticing: the recorded
+`z_T_summary.max` = 0.136252952251 IS the discrete contraction factor to all
+12 decimals (max z₀ entry = cos(tiny) = 1.0). The flow keeps ≈ 12.5 % of the
+off-anchor latent forever; it never annihilates it.
+
+Everything else in this loop stands: the replay-determinism result (8/8, 3×
+hash-identical) is unaffected — determinism was the success criterion, and the
+determinism claims were correct. Only the qualitative description of the
+asymptotics was wrong.
+
+Full statement, proof, dichotomy, and executable witness:
+`experiments/helen_mvp_kernel/THEOREM_PHI_CONTRACTION_FLOOR_V1.md` +
+`experiments/helen_mvp_kernel/helen_os/tests/test_phi_contraction_floor.py`
+(7/7 PASS).
+
+The corrected bet is the receipt.
