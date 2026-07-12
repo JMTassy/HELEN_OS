@@ -6,25 +6,8 @@ window.WarrenFeed = {
   "authority": false,
   "canon": false,
   "ledger_effect": "none",
-  "packet_count": 29,
+  "packet_count": 24,
   "roles": {
-    "ARCHIVIST": [
-      {
-        "admission": "FORBIDDEN",
-        "authority": false,
-        "finding_type": "test_gap",
-        "mark": "acted",
-        "packet_id": "AR-eee30b74e78d",
-        "proof_status": "grounded",
-        "proposer": "gemma4-12b:latest (HELEN Insights Proposer, local Ollama)",
-        "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
-        "replay_status": "in_digest",
-        "scanned_at": "2026-07-03T03:46:44Z",
-        "severity": "high",
-        "summary": "All four temple garden validators are fail-closed but none run in CI; a past 300-epoch sibling run broke validate_avalon.py and was only caught manually days later. Wiring the validators into CI closes the regression window.",
-        "title": "All four temple garden validators are fail-closed but none run in CI;…"
-      }
-    ],
     "CHIDDUSH": [
       {
         "admission": "FORBIDDEN",
@@ -93,30 +76,15 @@ window.WarrenFeed = {
         "authority": false,
         "finding_type": "risk",
         "mark": null,
-        "packet_id": "AR-3b7799cb88a0",
-        "proof_status": "grounded",
-        "proposer": "unknown proposer",
-        "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
-        "replay_status": "in_digest",
-        "scanned_at": "2026-07-05T21:15:36Z",
-        "severity": "high",
-        "summary": "Scanner findings in docs/reports/OPTIMIZATION_PROPOSALS.md: signals=['risk_marker']",
-        "title": "Scanner findings in docs/reports/OPTIMIZATION_PROPOSALS.md"
-      },
-      {
-        "admission": "FORBIDDEN",
-        "authority": false,
-        "finding_type": "risk",
-        "mark": null,
-        "packet_id": "AR-622d76f69257",
+        "packet_id": "AR-5832a927028e",
         "proof_status": "grounded",
         "proposer": "unknown proposer",
         "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
         "replay_status": "in_digest",
         "scanned_at": "2026-06-20T21:39:44Z",
         "severity": "high",
-        "summary": "Scanner findings in docs/proposals/HELEN_LANGUAGE_V1_BEGINNER.md: signals=['risk_marker']",
-        "title": "Scanner findings in docs/proposals/HELEN_LANGUAGE_V1_BEGINNER.md"
+        "summary": "Scanner findings in docs/proposals/GOBLIN_5_EPOCH_AUTORESEARCH.md: signals=['risk_marker']",
+        "title": "Scanner findings in docs/proposals/GOBLIN_5_EPOCH_AUTORESEARCH.md"
       },
       {
         "admission": "FORBIDDEN",
@@ -138,15 +106,15 @@ window.WarrenFeed = {
         "authority": false,
         "finding_type": "risk",
         "mark": null,
-        "packet_id": "AR-ea91f2b2230c",
+        "packet_id": "AR-cecf4c5b553f",
         "proof_status": "grounded",
-        "proposer": "unknown proposer",
+        "proposer": "FABLE (Claude session, GAS proof tranche)",
         "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
         "replay_status": "in_digest",
-        "scanned_at": "2026-07-05T21:15:36Z",
+        "scanned_at": "2026-07-06T00:00:00Z",
         "severity": "high",
-        "summary": "Scanner findings in docs/proposals/HELEN_SANDBOX_AGENT_ADAPTER_V0.md: signals=['risk_marker']",
-        "title": "Scanner findings in docs/proposals/HELEN_SANDBOX_AGENT_ADAPTER_V0.md"
+        "summary": "Three CI gates are red on main at HEAD dace8b02 (Kernel Guard: 3 stale CONSUMER_ALLOWLIST NDJSONWriter imports incl. kernel_daemon.py admission handlers; Oracle Town Verification; payload_meta), and pushes continue to land over the failures. Red-gate normalization erodes the certification layer: invariants may hold while their verification silently rots (Inv holds != Inv certified). Blocks GAS Prop 7.1(b).",
+        "title": "Three CI gates are red on main at HEAD dace8b02 (Kernel Guard: 3 stal…"
       }
     ],
     "GOBLIN": [
@@ -234,45 +202,30 @@ window.WarrenFeed = {
         "authority": false,
         "finding_type": "risk",
         "mark": null,
-        "packet_id": "AR-3521ec730fd4",
+        "packet_id": "AR-5602a344e0d6",
         "proof_status": "grounded",
         "proposer": "unknown proposer",
         "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
         "replay_status": "in_digest",
         "scanned_at": "2026-06-20T21:39:44Z",
         "severity": "high",
-        "summary": "Scanner findings in docs/proposals/VISIBLE_REASONING_SURFACE_V1.md: signals=['risk_marker']",
-        "title": "Scanner findings in docs/proposals/VISIBLE_REASONING_SURFACE_V1.md"
+        "summary": "Scanner findings in docs/proposals/KERNEL_TO_AGENTIC_OS_DEEP_DIVE_V0.md: signals=['risk_marker']",
+        "title": "Scanner findings in docs/proposals/KERNEL_TO_AGENTIC_OS_DEEP_DIVE_V0.md"
       },
       {
         "admission": "FORBIDDEN",
         "authority": false,
         "finding_type": "risk",
         "mark": null,
-        "packet_id": "AR-5832a927028e",
+        "packet_id": "AR-941d3bbb6333",
         "proof_status": "grounded",
         "proposer": "unknown proposer",
         "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
         "replay_status": "in_digest",
         "scanned_at": "2026-06-20T21:39:44Z",
         "severity": "high",
-        "summary": "Scanner findings in docs/proposals/GOBLIN_5_EPOCH_AUTORESEARCH.md: signals=['risk_marker']",
-        "title": "Scanner findings in docs/proposals/GOBLIN_5_EPOCH_AUTORESEARCH.md"
-      },
-      {
-        "admission": "FORBIDDEN",
-        "authority": false,
-        "finding_type": "risk",
-        "mark": null,
-        "packet_id": "AR-944b83d2fa9e",
-        "proof_status": "grounded",
-        "proposer": "unknown proposer",
-        "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
-        "replay_status": "in_digest",
-        "scanned_at": "2026-07-05T21:15:36Z",
-        "severity": "high",
-        "summary": "Scanner findings in docs/specs/HERALDIC_SYMBOL_SET_V0_1.md: signals=['risk_marker']",
-        "title": "Scanner findings in docs/specs/HERALDIC_SYMBOL_SET_V0_1.md"
+        "summary": "Scanner findings in docs/proposals/TEMPLE_MODE_VISUAL_BRIEF.md: signals=['proposal_marker', 'risk_marker']",
+        "title": "Scanner findings in docs/proposals/TEMPLE_MODE_VISUAL_BRIEF.md"
       },
       {
         "admission": "FORBIDDEN",
@@ -373,62 +326,32 @@ window.WarrenFeed = {
       {
         "admission": "FORBIDDEN",
         "authority": false,
-        "finding_type": "test_gap",
-        "mark": "acted",
-        "packet_id": "AR-1f936d1bda4b",
-        "proof_status": "grounded",
-        "proposer": "gemma4-12b:latest (HELEN Insights Proposer, local Ollama)",
-        "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
-        "replay_status": "in_digest",
-        "scanned_at": "2026-07-03T03:43:51Z",
-        "severity": "high",
-        "summary": "New sandbox agent adapter (tools/helen_sandbox_agent_adapter.py) lacks corresponding unit tests or integration verification.",
-        "title": "New sandbox agent adapter (tools/helen_sandbox_agent_adapter.py) lack…"
-      },
-      {
-        "admission": "FORBIDDEN",
-        "authority": false,
         "finding_type": "risk",
         "mark": null,
-        "packet_id": "AR-332110575215",
-        "proof_status": "grounded",
-        "proposer": "gemma4-12b:latest (HELEN Insights Proposer, local Ollama)",
-        "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
-        "replay_status": "in_digest",
-        "scanned_at": "2026-07-03T03:45:04Z",
-        "severity": "high",
-        "summary": "24 accumulated AUTORESEARCH packets all carry recommended_action=ROUTE_TO_OPERATOR_FOR_REVIEW, but no triage tool or documented operator-review workflow exists for the outbox — the pipeline produces into an unconsumed queue.",
-        "title": "24 accumulated AUTORESEARCH packets all carry recommended_action=ROUT…"
-      },
-      {
-        "admission": "FORBIDDEN",
-        "authority": false,
-        "finding_type": "risk",
-        "mark": null,
-        "packet_id": "AR-5602a344e0d6",
+        "packet_id": "AR-3521ec730fd4",
         "proof_status": "grounded",
         "proposer": "unknown proposer",
         "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
         "replay_status": "in_digest",
         "scanned_at": "2026-06-20T21:39:44Z",
         "severity": "high",
-        "summary": "Scanner findings in docs/proposals/KERNEL_TO_AGENTIC_OS_DEEP_DIVE_V0.md: signals=['risk_marker']",
-        "title": "Scanner findings in docs/proposals/KERNEL_TO_AGENTIC_OS_DEEP_DIVE_V0.md"
+        "summary": "Scanner findings in docs/proposals/VISIBLE_REASONING_SURFACE_V1.md: signals=['risk_marker']",
+        "title": "Scanner findings in docs/proposals/VISIBLE_REASONING_SURFACE_V1.md"
       },
       {
         "admission": "FORBIDDEN",
         "authority": false,
         "finding_type": "risk",
         "mark": null,
-        "packet_id": "AR-941d3bbb6333",
+        "packet_id": "AR-622d76f69257",
         "proof_status": "grounded",
         "proposer": "unknown proposer",
         "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
         "replay_status": "in_digest",
         "scanned_at": "2026-06-20T21:39:44Z",
         "severity": "high",
-        "summary": "Scanner findings in docs/proposals/TEMPLE_MODE_VISUAL_BRIEF.md: signals=['proposal_marker', 'risk_marker']",
-        "title": "Scanner findings in docs/proposals/TEMPLE_MODE_VISUAL_BRIEF.md"
+        "summary": "Scanner findings in docs/proposals/HELEN_LANGUAGE_V1_BEGINNER.md: signals=['risk_marker']",
+        "title": "Scanner findings in docs/proposals/HELEN_LANGUAGE_V1_BEGINNER.md"
       },
       {
         "admission": "FORBIDDEN",
@@ -465,6 +388,6 @@ window.WarrenFeed = {
   "schema": "WARREN_FEED_V0",
   "skipped": [],
   "source": "temple/autoresearch/outbox",
-  "source_digest": "160062a4b6da4dab2413cfb36bd8fb23bd29646f55da1c7ce78b916f214d521c",
+  "source_digest": "d694ee7259ac198cb8c87d7cda151bb79bb90af0159111aed664dec7887e8c5a",
   "sovereign": false
 };
