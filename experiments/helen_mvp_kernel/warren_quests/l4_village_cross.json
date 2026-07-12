@@ -1,0 +1,73 @@
+{
+  "schema": "WARREN_QUEST_PACKET_V1",
+  "quest_id": "L4_VILLAGE_CROSS",
+  "stage_asset": "warren_scene_village_cross_v1.jpeg",
+  "stage_sha256_16": "99414da494aade85",
+  "teaches": "the ZOL loop closed — wallets are audits, prices remember the garden, trade cleans the world",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+
+  "economy": {
+    "lambda": 1.0,
+    "kappa": 0.5,
+    "rho": 0.5,
+    "druid_audit": {
+      "rule": "wallet_zol <= lambda * cumulative_composted_detail",
+      "on_violation": "purchase REFUSED; druid shows the inequality carved on a slate, goblin-style",
+      "druid_line": "Your leaves outnumber your compost, little one. The mathematics says no.",
+      "scenarios": [
+        {"wallet": 80,  "composted": 100, "verdict": "TRADE"},
+        {"wallet": 100, "composted": 100, "verdict": "TRADE"},
+        {"wallet": 120, "composted": 100, "verdict": "REFUSED"}
+      ]
+    },
+    "communal_compost": {
+      "mechanic": "SELL berries = deposit detail at the market forge; the village composts it WITH you",
+      "berry_basket_w0": 4.0,
+      "mint_per_basket": 2.0,
+      "split": {"player": 1.0, "village_fund": 1.0},
+      "village_fund_effect": "every 5 ZOL in the fund lowers garden toxicity tau by 0.01 — trading literally cleans the garden (Law 2: active goblins required)",
+      "conservation": "player + village = mint = lambda*kappa*w0; no leaf created uncounted"
+    }
+  },
+
+  "price_law": {
+    "formula": "price(item, tau) = round(base * (1 + sensitivity * tau))",
+    "tau": "garden toxicity in [0,1], from the status board",
+    "canon_reconciliation": "the two operator design boards show the SAME shop at two moments of garden history: board A at tau=0.0 (healthy), board B at tau=0.5 (sick garden, taxed prices). The price discrepancy between boards is not an error — it is weather.",
+    "items": [
+      {"id": "MUSHROOM_HAT",    "base": 50,  "sensitivity": 1.0,   "tau0_price": 50,  "tau05_price": 75},
+      {"id": "PROPOSAL_SCROLL", "base": 100, "sensitivity": 1.0,   "tau0_price": 100, "tau05_price": 150},
+      {"id": "GARDEN_BOOSTER",  "base": 75,  "sensitivity": 0.667, "tau0_price": 75,  "tau05_price": 100,
+       "note": "garden goods resist the garden tax — the village subsidizes its own cure"},
+      {"id": "WARREN_COLORS",   "base": 60,  "sensitivity": 1.0,   "tau0_price": 60,  "tau05_price": 90},
+      {"id": "BUG_PASSPORT",    "base": 120, "sensitivity": 0.5,   "tau0_price": 120, "tau05_price": 150,
+       "note": "bugs travel regardless; Gerald has connections"}
+    ]
+  },
+
+  "curiosity_stall": {
+    "law1_rule": "items whose salience floored still exist — c_phi never releases them. The stall sells the past.",
+    "stock": [
+      {"id": "SUNSET_FRIDGE",  "from": "L2_GERALDS_BRIDGE", "price_base": 40,
+       "tag": "keeps leftovers at exactly sunset temperature. beautiful. useless. beloved."},
+      {"id": "PUDDING_PLANK",  "from": "L2_GERALDS_BRIDGE", "price_base": 15,
+       "tag": "one surviving plank of the pudding bridge. do not lean."},
+      {"id": "WASHED_CHALK",   "from": "L3_STONE_CIRCLE",   "price_base": 5,
+       "tag": "chalk dust of a belief that rain corrected. a humble souvenir."}
+    ],
+    "availability": "an item appears ONLY if the player's replay strip contains its source event — the stall is a mirror, not a menu"
+  },
+
+  "npcs": {
+    "druids": {"count": 2, "role": "wallet auditors at the cross; show inequalities, never anger"},
+    "berry_goblins": {"count": 4, "role": "communal compost workers; celebrate every basket"},
+    "stall_keeper": {"role": "NIB moonlighting; names every curiosity twice"}
+  },
+
+  "replay": {
+    "determinism": "prices are pure functions of (base, sensitivity, tau); audit is a pure inequality; same state, same market, every visit",
+    "storage": "localStorage: wallet, cumulative_composted, village_fund, tau, purchases[]"
+  }
+}
