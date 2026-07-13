@@ -1,0 +1,26 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-9d167217e823",
+  "target": "summarization_weights",
+  "hypothesis": "_score_proposal() docstring claims 1.0 requires 'specific effects' but implementation only checks len(effects) >= 1; any vague string scores 1.0 identically to a precise one",
+  "finding_type": "gap",
+  "summary": "Quality score is binary in practice: 0.0 (invalid) or 1.0 (any non-empty effect). Vagueness promised but unimplemented.",
+  "evidence": [
+    "helen_os/autonomy/self_improve_loop_v1.py:486 — docstring: '1.0 = all required fields present + non-empty + **specific** effects'",
+    "helen_os/autonomy/self_improve_loop_v1.py:504-509 — actual check: len(effects) >= 1 and not noop → 1.0 (no specificity test)",
+    "helen_os/autonomy/self_improve_loop_v1.py:70 — PROPOSAL_QUALITY_THRESHOLD = 0.5; gate uses 'gte', so 0.5 also PASS",
+    "helen_os/eval/autoresearch_eval_receipt_v1.py:59 — 'gte': candidate_value >= threshold → PASS",
+    "Result: vague effect ['improves things'] and specific effect ['reduces speak() tokens by 20% at >10 turns'] both score 1.0, indistinguishable in eval receipt"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "proposed_tweak": "Add _has_specific_effects(effects: list[str]) -> bool helper that checks effect strings against a vagueness wordlist {'improve', 'enhance', 'better', 'increase performance', 'more efficient'}; return 0.75 if vague, 1.0 if specific. Gate still passes both (0.75 >= 0.5) but eval receipts become informative.",
+  "metric": "quality_score distribution across cycles: pre-tweak all PASS proposals show 1.0; post-tweak vague proposals show 0.75, specific show 1.0 — observable via eval_receipt.candidate_value field in cycle results",
+  "rule": "keep if vague/specific distributions diverge in test run of 5 cycles; reject if vagueness check causes false negatives on demonstrably specific effects",
+  "next": "Stub test: 3 proposals (vague effects, specific effects, noop) through _score_proposal() — verify 0.75 / 1.0 / 0.5 distribution before routing to Mayor",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-07-13T00:00:00Z"
+}
