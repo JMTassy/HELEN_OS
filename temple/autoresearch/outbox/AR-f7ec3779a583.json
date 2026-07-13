@@ -1,0 +1,26 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-f7ec3779a583",
+  "target": "prompt_compression",
+  "hypothesis": "helen.py:speak() passes unbounded get_history() to LLM; helen_talk.py already uses [-20:] slice — applying same tail=20 cap to speak() bounds context without altering on-disk replay record",
+  "finding_type": "gap",
+  "summary": "Unbounded history in helen.py:speak() — no tail limit before LLM call",
+  "evidence": [
+    "helen_os_scaffold/helen_os/helen.py:53 — history = self.memory.get_history() (no bound)",
+    "helen_os_scaffold/helen_os/helen.py:57 — full history passed to adapter.generate()",
+    "helen_os_scaffold/helen_talk.py:373 — raw_history = memory.get_history()[-20:] (already bounded)",
+    "helen_os_scaffold/helen_os/memory.py:116-124 — get_history() reads every NDJSON line unconditionally",
+    "helen_os_scaffold/helen_os/api/do_next.py:585 — do_next path already caps at max_context_messages=10"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "proposed_tweak": "Add optional tail: int = None param to memory.get_history(); pass tail=20 from helen.py:speak() to match helen_talk.py convention",
+  "metric": "len(memory.get_history()) vs len(memory.get_history(tail=20)) for session with >20 turns",
+  "rule": "keep if LLM response quality stable; reject if tail=20 drops critical context",
+  "next": "Validate with stub adapter test: session of 30 turns, confirm speak() sends exactly 20 history entries",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-07-13T00:00:00Z"
+}
