@@ -225,30 +225,26 @@ def init_to_json(output: InitOutput) -> str:
     )
 
 
-# FastAPI endpoint
-from fastapi import FastAPI
+# FastAPI endpoint — optional; core functions remain importable without fastapi installed
+try:
+    from fastapi import FastAPI
 
-app = FastAPI()
+    app = FastAPI()
 
+    @app.post("/init")
+    async def api_init_helen(boot_ctx: dict):
+        """
+        POST /init with boot_context → returns deterministic state.
 
-@app.post("/init")
-async def api_init_helen(boot_ctx: dict):
-    """
-    POST /init with boot_context → returns deterministic state.
+        Idempotent: same boot_context → same response (bit-for-bit).
+        """
+        corpus = load_corpus()
+        epoch_state = load_epoch_state()
+        output = init_helen(corpus, epoch_state, boot_ctx)
+        return json.loads(init_to_json(output))
 
-    Idempotent: same boot_context → same response (bit-for-bit).
-    """
-    # Load corpus (from disk or cache)
-    corpus = load_corpus()
-
-    # Load epoch state (from last ledger replay)
-    epoch_state = load_epoch_state()
-
-    # Compute init
-    output = init_helen(corpus, epoch_state, boot_ctx)
-
-    # Return as JSON
-    return json.loads(init_to_json(output))
+except ImportError:
+    app = None
 
 
 def load_corpus() -> dict:

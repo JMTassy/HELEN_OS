@@ -6,8 +6,25 @@ window.WarrenFeed = {
   "authority": false,
   "canon": false,
   "ledger_effect": "none",
-  "packet_count": 24,
+  "packet_count": 26,
   "roles": {
+    "ARCHIVIST": [
+      {
+        "admission": "FORBIDDEN",
+        "authority": false,
+        "finding_type": "gap",
+        "mark": null,
+        "packet_id": "AR-9d167217e823",
+        "proof_status": "ungrounded",
+        "proposer": "unknown proposer",
+        "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+        "replay_status": "in_digest",
+        "scanned_at": "2026-07-13T00:00:00Z",
+        "severity": "info",
+        "summary": "Quality score is binary in practice: 0.0 (invalid) or 1.0 (any non-empty effect). Vagueness promised but unimplemented.",
+        "title": "Quality score is binary in practice: 0.0 (invalid) or 1.0 (any non-em…"
+      }
+    ],
     "CHIDDUSH": [
       {
         "admission": "FORBIDDEN",
@@ -105,7 +122,7 @@ window.WarrenFeed = {
         "admission": "FORBIDDEN",
         "authority": false,
         "finding_type": "risk",
-        "mark": null,
+        "mark": "acted",
         "packet_id": "AR-cecf4c5b553f",
         "proof_status": "grounded",
         "proposer": "FABLE (Claude session, GAS proof tranche)",
@@ -320,6 +337,21 @@ window.WarrenFeed = {
         "severity": "low",
         "summary": "Scanner findings in docs/proposals/TEMPLE_MODE_EXPERIENCE_SCRIPT.md: signals=['proposal_marker', 'gap_marker']",
         "title": "Scanner findings in docs/proposals/TEMPLE_MODE_EXPERIENCE_SCRIPT.md"
+      },
+      {
+        "admission": "FORBIDDEN",
+        "authority": false,
+        "finding_type": "gap",
+        "mark": null,
+        "packet_id": "AR-f7ec3779a583",
+        "proof_status": "ungrounded",
+        "proposer": "unknown proposer",
+        "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+        "replay_status": "in_digest",
+        "scanned_at": "2026-07-13T00:00:00Z",
+        "severity": "info",
+        "summary": "Unbounded history in helen.py:speak() — no tail limit before LLM call",
+        "title": "Unbounded history in helen.py:speak()"
       }
     ],
     "WARDEN": [
@@ -388,6 +420,6 @@ window.WarrenFeed = {
   "schema": "WARREN_FEED_V0",
   "skipped": [],
   "source": "temple/autoresearch/outbox",
-  "source_digest": "d694ee7259ac198cb8c87d7cda151bb79bb90af0159111aed664dec7887e8c5a",
+  "source_digest": "367966ed654a391b7d9186786a45315ab3eed03d1cf5ad1e05c1944be66559ea",
   "sovereign": false
 };
