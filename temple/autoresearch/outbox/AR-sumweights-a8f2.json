@@ -1,0 +1,27 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sumweights-a8f2",
+  "target": "summarization_weights",
+  "hypothesis": "PROPOSAL_QUALITY_THRESHOLD=0.5 makes gate 7 a validity gate not a quality gate; noop_v1 (score=0.5) passes identically to specific-effects proposals (score=1.0)",
+  "finding_type": "gap",
+  "summary": "Four scoring bands (1.0 / 0.75 / 0.5 / 0.0) with threshold at 0.5 mean the 'quality gate' only blocks schema-invalid proposals. Noop proposals pass. Evidence: self_improve_loop_v1.py:70, assembler:162, reducer:86.",
+  "evidence": [
+    "self_improve_loop_v1.py:70 — PROPOSAL_QUALITY_THRESHOLD = 0.5",
+    "eval/autoresearch_eval_receipt_v1.py:59 — gte: candidate_value >= threshold → PASS; 0.5>=0.5=PASS for noop",
+    "eval/autoresearch_promotion_case_v1.py:162 — eval_passed = eval_receipt['result'] == 'PASS'",
+    "governance/skill_promotion_reducer.py:86 — if not packet['evaluation']['passed']: REJECT",
+    "tests/test_score_proposal_specificity.py:29-32 — noop_v1 scores 0.5, confirmed",
+    "tests/test_score_proposal_specificity.py:56 — test asserts score >= 0.5; no end-to-end noop rejection test exists"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "proposed_tweak": "Raise PROPOSAL_QUALITY_THRESHOLD from 0.5 to 0.75 at self_improve_loop_v1.py:70. One-line change. Blocks noop_v1 (0.5 < 0.75 = FAIL) and scores-0.5 proposals at gate 7. Vague-effects proposals (0.75) still pass. Update test_score_proposal_specificity.py:56 assertion to score >= 0.75.",
+  "metric": "noop_v1 proposal through full pipeline (assemble_promotion_packet → reduce_promotion_packet) → reducer returns ERR_THRESHOLD_NOT_MET instead of ADMITTED",
+  "rule": "keep if noop blocked and vague-effects (0.75) survive; reject if vague-effects also blocked or if any legitimate proposal regresses",
+  "next": "End-to-end test: noop_v1 proposal → assemble → reduce; assert decision==REJECTED, reason_code==ERR_THRESHOLD_NOT_MET",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-07-14"
+}
