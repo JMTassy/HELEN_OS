@@ -150,14 +150,16 @@ class DispatchRouter:
             return InputType.CLAIM_EXTRACTION_REQUEST
         if "source_id" in input_obj and "content" in input_obj:
             return InputType.SOURCE_INGEST
+        # memory_op must precede claim_id: a write memory op targeting a claim must
+        # reach KERNEL (sovereign), not AGENT (non-sovereign).
+        if "memory_op" in input_obj:
+            return InputType.MEMORY_REQUEST
         if "claim_id" in input_obj:
             return InputType.CLAIM_OBJECT
         if "claims" in input_obj and isinstance(input_obj.get("claims"), list):
             return InputType.CLAIM_BUNDLE
         if "artifact_type" in input_obj:
             return InputType.ARTIFACT_REQUEST
-        if "memory_op" in input_obj:
-            return InputType.MEMORY_REQUEST
         if "unresolved_pointers" in input_obj or "pointer" in input_obj:
             return InputType.UNRESOLVED_POINTER
         if input_obj.get("think") is True or "think_preparation" in input_obj:

@@ -392,5 +392,55 @@ class TestManifestAndStoreRefs:
         assert receipt.store_refs == store_refs
 
 
+class TestMemoryOpPrecedence:
+    """Regression: memory_op must be classified before claim_id.
+
+    A write memory op that also carries a claim_id must reach KERNEL
+    (SOVEREIGN), not AGENT (NON_SOVEREIGN). The old ordering shadowed
+    memory_op with claim_id, silently bypassing the sovereign gate.
+    """
+
+    def test_memory_write_with_claim_id_routes_to_kernel(self):
+        """claim_id + memory_op=write must route to KERNEL, not AGENT."""
+        router = DispatchRouter(session_id="test_sess")
+        receipt, _ = router.route({"claim_id": "c123", "memory_op": "write", "data": "v"})
+
+        assert receipt.primary_route == RouteType.KERNEL, (
+            f"Expected KERNEL, got {receipt.primary_route} — "
+            "memory_op check must precede claim_id in _classify_input()"
+        )
+        assert receipt.route_authority_class == RouteAuthorityClass.SOVEREIGN
+
+    def test_memory_delete_with_claim_id_routes_to_kernel(self):
+        """claim_id + memory_op=delete must also route to KERNEL."""
+        router = DispatchRouter(session_id="test_sess")
+        receipt, _ = router.route({"claim_id": "c456", "memory_op": "delete"})
+
+        assert receipt.primary_route == RouteType.KERNEL
+        assert receipt.route_authority_class == RouteAuthorityClass.SOVEREIGN
+
+    def test_memory_read_with_claim_id_routes_to_agent(self):
+        """claim_id + memory_op=read may still route to AGENT (read is non-sovereign)."""
+        router = DispatchRouter(session_id="test_sess")
+        receipt, _ = router.route({"claim_id": "c789", "memory_op": "read"})
+
+        assert receipt.primary_route == RouteType.AGENT
+        assert receipt.route_authority_class == RouteAuthorityClass.NON_SOVEREIGN
+
+    def test_memory_op_alone_write_routes_to_kernel(self):
+        """Baseline: memory_op=write without claim_id still routes to KERNEL."""
+        router = DispatchRouter(session_id="test_sess")
+        receipt, _ = router.route({"memory_op": "write", "data": "v"})
+
+        assert receipt.primary_route == RouteType.KERNEL
+
+    def test_claim_id_alone_routes_to_agent(self):
+        """Baseline: claim_id alone (no memory_op) still routes to AGENT."""
+        router = DispatchRouter(session_id="test_sess")
+        receipt, _ = router.route({"claim_id": "c000", "text": "some claim"})
+
+        assert receipt.primary_route == RouteType.AGENT
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
