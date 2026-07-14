@@ -1,0 +1,26 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-575d4b83a114",
+  "target": "context_ranking",
+  "hypothesis": "capability_gaps injected into run_self_improve_loop() prompt are unbounded and unranked; primacy bias causes model to fixate on first gap regardless of importance",
+  "finding_type": "gap",
+  "summary": "No deduplication, no cap, no ranking on capability_gaps before prompt injection at self_improve_loop_v1.py:266. Caller-order determines what HELEN proposes.",
+  "evidence": [
+    "helen_os/autonomy/self_improve_loop_v1.py:218 — capability_gaps: List[str] — no bound on list length, no dedup contract",
+    "helen_os/autonomy/self_improve_loop_v1.py:266 — all gaps injected verbatim: capability_gaps='\\n'.join(f'- {g}' for g in capability_gaps)",
+    "helen_os/autonomy/self_improve_loop_v1.py:263-267 — no _rank_capability_gaps() call exists anywhere in module",
+    "helen_os/tests/ — no test for run_self_improve_loop() directly; capability_gaps injection path uncovered",
+    "Prior art (admitted_skills at line 265): json.dumps(admitted_skills, sort_keys=True) — alphabetical sort exists for skills but zero ordering for gaps"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "proposed_tweak": "Add _rank_capability_gaps(gaps: List[str], max_gaps: int = 8) -> List[str] that: (1) deduplicates by exact match preserving first occurrence, (2) truncates to max_gaps. Call it at line 266 before join. Pure non-sovereign function, no ledger, no schema.",
+  "metric": "Prompt substring length for capability_gaps section: before tweak, passes 50 gaps → 50 lines injected; after tweak, same input → max 8 unique lines injected. Observable by inspecting prompt at self_improve_loop_v1.py:263.",
+  "rule": "keep if dedup+cap does not drop genuinely distinct gaps in a test with 20 inputs including 5 near-duplicates; reject if false-dedup collapses distinct gaps",
+  "next": "Unit test: _rank_capability_gaps(20_gaps_with_5_duplicates) — assert len(result) <= 8 and no duplicates in output",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-07-14T00:00:00Z"
+}
