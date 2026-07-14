@@ -76,6 +76,15 @@ REQUIRED_PROPOSAL_FIELDS = frozenset({
     "capability_gap_addressed",
 })
 
+_VAGUE_EFFECT_TERMS = {
+    "improve",
+    "enhance",
+    "better",
+    "optimize",
+    "increase performance",
+    "more efficient",
+}
+
 # Bootstrap initial skill library (used when no library is provided)
 BOOTSTRAP_SKILL_LIBRARY_STATE: Dict[str, Any] = {
     "schema_name": "SKILL_LIBRARY_STATE_V1",
@@ -481,13 +490,35 @@ def _call_ollama(
 
 # ── Proposal quality scoring ──────────────────────────────────────────────────
 
+def _has_specific_effects(effects: list) -> bool:
+    for effect in effects:
+        if not isinstance(effect, str):
+            continue
+        text = effect.strip().lower()
+        if not text:
+            continue
+        has_quantity = any(char.isdigit() for char in text)
+        has_identifier = any(token in text for token in ("()", "_", ".", "/"))
+        has_constraint = any(
+            token in text
+            for token in ("while", "without", "under", "above", "below", "when")
+        )
+        vague_only = any(term in text for term in _VAGUE_EFFECT_TERMS)
+        if has_quantity or has_identifier or has_constraint:
+            return True
+        if not vague_only and len(text.split()) >= 6:
+            return True
+    return False
+
+
 def _score_proposal(proposal: Dict[str, Any]) -> float:
     """
     Score a parsed skill proposal for quality (0.0 → 1.0).
 
-    1.0 = all required fields present + non-empty + specific effects
-    0.5 = all required fields present
-    0.0 = missing required fields or empty values
+    1.0 = complete proposal with specific expected effects
+    0.75 = complete proposal with vague expected effects
+    0.5 = complete noop proposal
+    0.0 = invalid or incomplete proposal
     """
     if not isinstance(proposal, dict):
         return 0.0
@@ -496,17 +527,19 @@ def _score_proposal(proposal: Dict[str, Any]) -> float:
     if missing:
         return 0.0
 
-    for f in REQUIRED_PROPOSAL_FIELDS:
-        v = proposal[f]
-        if v is None or v == "" or v == []:
+    for field in REQUIRED_PROPOSAL_FIELDS:
+        value = proposal[field]
+        if value is None or value == "" or value == []:
             return 0.0
 
     effects = proposal.get("expected_effects", [])
     has_effects = isinstance(effects, list) and len(effects) >= 1
     is_noop = proposal.get("skill_id", "") == "noop_v1"
 
-    if has_effects and not is_noop:
-        return 1.0
+    if is_noop:
+        return 0.5
+    if has_effects:
+        return 1.0 if _has_specific_effects(effects) else 0.75
     return 0.5
 
 
