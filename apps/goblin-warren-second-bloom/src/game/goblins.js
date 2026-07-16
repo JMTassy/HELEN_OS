@@ -23,7 +23,10 @@ export const PROFILES = Object.freeze({
     curiosity: 0.2, diligence: 0.95, temperament: 'calm', sociality: 0.3,
     affinity: { WARNING: 1.0, RESOURCE: 0.5, RELATIONAL: 0.1 },
     actThreshold: 100, // acts only on peaked (strong) traces
-    moveTicksPerUnit: 26, orientTicks: 6, pauseTicks: 4, actTicks: 10,
+    // Staged for legibility (animation = information): pause 0.8s, head-turn
+    // then body-turn across 1.0s, deliberate walk. Each causal beat separated
+    // in time so the player can read the chain.
+    moveTicksPerUnit: 26, orientTicks: 10, pauseTicks: 8, actTicks: 10,
   },
   LULU: {
     name: 'Lulu', role: 'explorer',
@@ -97,6 +100,8 @@ export function tickGoblin(g, world, emit) {
     case 'PAUSED':
       if (g.stateTicks >= p.pauseTicks) {
         g.state = 'ORIENTING'; g.stateTicks = 0;
+        // head turns first (renderer stages it), body follows mid-orient
+        g.prevFacing = g.facing;
         g.facing = g.targetTrace.position[0] >= g.position[0] ? 1 : -1;
         emit('bram_oriented', { trace: g.targetTrace.trace_id });
       }

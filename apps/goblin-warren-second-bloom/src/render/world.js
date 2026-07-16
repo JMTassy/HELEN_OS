@@ -18,7 +18,26 @@ export class WorldRenderer {
     this.cx = canvas.getContext('2d');
     this.world = world;
     this.reduceParticles = !!opts.reduceParticles;
-    this.anim = 0; // render-time only; never feeds logic
+    this.anim = 0;   // render-time only; never feeds logic
+    this.fx = [];    // transient effects (board vocabulary: tap pulse, notice spark)
+    world.bus.on('mark_tap', (e) => this.#spawnFx('pulse', e.object));
+    world.bus.on('trace_peak', (e) => this.#spawnFx('peak', e.object));
+    world.bus.on('bram_paused', () => this.#spawnFx('spark', 'BRAM'));
+    world.bus.on('wood_delivered', () => this.#spawnFx('ripple', 'FIRE'));
+  }
+
+  #spawnFx(kind, targetId) {
+    let pos;
+    if (targetId === 'BRAM') {
+      const g = this.world.goblin('BRAM');
+      pos = [...g.position];
+    } else if (targetId === 'FIRE') {
+      pos = [...this.world.firePosition];
+    } else {
+      const o = this.world.objects.get(targetId);
+      pos = o ? [...o.position] : [...this.world.firePosition];
+    }
+    this.fx.push({ kind, pos, age: 0 });
   }
 
   px(p) { return [p[0] * this.cv.width, p[1] * this.cv.height]; }
@@ -47,6 +66,7 @@ export class WorldRenderer {
     this.#drawFire(fx, fy);
     this.#drawTraces();
     for (const g of world.goblins) this.#drawGoblin(g);
+    this.#drawFx();
 
     // gentle vignette keeps focus center-warm
     const vin = cx.createRadialGradient(cv.width / 2, cv.height / 2, cv.width * 0.3, cv.width / 2, cv.height / 2, cv.width * 0.75);
@@ -145,13 +165,48 @@ export class WorldRenderer {
     }
   }
 
+  #drawFx() {
+    const cx = this.cx;
+    this.fx = this.fx.filter(f => f.age < 40);
+    for (const f of this.fx) {
+      f.age += 1;
+      const [x, y] = this.px(f.pos);
+      const t = f.age / 40;
+      cx.globalAlpha = 1 - t;
+      if (f.kind === 'pulse') {          // tap pulse — immediate input feedback
+        cx.strokeStyle = PAL.trace; cx.lineWidth = 3;
+        cx.beginPath(); cx.arc(x, y - 12, 8 + t * 46, 0, 7); cx.stroke();
+      } else if (f.kind === 'peak') {    // trace intensify flash
+        cx.strokeStyle = PAL.hint; cx.lineWidth = 4;
+        cx.beginPath(); cx.arc(x, y - 12, 20 + t * 30, 0, 7); cx.stroke();
+      } else if (f.kind === 'spark') {   // notice spark above Bram's head
+        cx.fillStyle = PAL.flameHot; cx.font = `${16 - t * 6}px serif`;
+        cx.fillText('✦', x + 8, y - 38 - t * 14);
+      } else if (f.kind === 'ripple') {  // delivery warmth ripple
+        cx.strokeStyle = PAL.flame; cx.lineWidth = 5;
+        cx.beginPath(); cx.arc(x, y, 12 + t * 70, 0, 7); cx.stroke();
+      }
+      cx.globalAlpha = 1;
+    }
+  }
+
   #drawGoblin(g) {
     const cx = this.cx;
     const [x, y] = this.px(g.position);
     const body = g.goblin_id === 'LULU' ? PAL.lulu : PAL.goblin;
     const bob = (g.state === 'MOVING' || g.state === 'CARRYING') && !this.reduceParticles
       ? Math.abs(this.#flick(4, 0.6, 3)) : 0;
-    cx.save(); cx.translate(x, y - bob); cx.scale(g.facing, 1);
+
+    // Staged orientation: head turns toward the trace FIRST (eye looks back
+    // over the shoulder), body rotates only in the second half. Animation =
+    // information — the player reads notice before movement.
+    let drawFacing = g.facing;
+    let eyeBack = false;
+    if (g.state === 'ORIENTING' && g.prevFacing !== undefined && g.prevFacing !== g.facing) {
+      const t = g.stateTicks / g.profile.orientTicks;
+      if (t < 0.5) { drawFacing = g.prevFacing; eyeBack = true; }
+    }
+    cx.save(); cx.translate(x, y - bob); cx.scale(drawFacing, 1);
 
     if (g.state === 'SLEEPING') {
       cx.fillStyle = PAL.goblinDark;
@@ -166,8 +221,8 @@ export class WorldRenderer {
     cx.beginPath(); cx.arc(0, -17, 8, 0, 7); cx.fill();
     cx.beginPath(); cx.moveTo(-7, -20); cx.lineTo(-16, -26); cx.lineTo(-6, -25); cx.closePath(); cx.fill();
     cx.beginPath(); cx.moveTo(7, -20); cx.lineTo(16, -26); cx.lineTo(6, -25); cx.closePath(); cx.fill();
-    // eye
-    cx.fillStyle = '#101010'; cx.beginPath(); cx.arc(4, -18, 1.6, 0, 7); cx.fill();
+    // eye (looks back over the shoulder during the head-turn beat)
+    cx.fillStyle = '#101010'; cx.beginPath(); cx.arc(eyeBack ? -4 : 4, -18, 1.6, 0, 7); cx.fill();
     // state tells
     if (g.state === 'PAUSED') {
       cx.fillStyle = PAL.text; cx.font = 'bold 14px monospace';
