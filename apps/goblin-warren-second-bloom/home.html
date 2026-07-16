@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Goblin Warren: Second Bloom — wake the fire</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='13' font-size='13'%3E🔥%3C/text%3E%3C/svg%3E">
+<style>
+  /* ── design tokens ─────────────────────────────────────────────────── */
+  @property --kindle { syntax: '<number>'; initial-value: 0; inherits: true; }
+  @property --shine  { syntax: '<angle>';  initial-value: 0deg; inherits: false; }
+  :root {
+    color-scheme: dark;
+    --night: #120e20; --parchment: #f0e6d2; --amber: #ffb347; --hot: #ffe08a;
+    --moss: #5d8a4a; --violet: #6d5a8f; --trace: #7dffb0;
+    --kindle: 0;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--night); color: var(--parchment);
+    font-family: Georgia, 'Times New Roman', serif; overflow-x: hidden; }
+
+  /* ── hero ───────────────────────────────────────────────────────────── */
+  #hero { position: relative; height: 100svh; display: grid; place-items: center; }
+  #sky { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .hero-inner { position: relative; text-align: center; z-index: 2; padding: 0 20px; }
+  h1 {
+    margin: 0; font-size: clamp(2.4rem, 8vw, 5.5rem); letter-spacing: 0.04em;
+    background: linear-gradient(calc(100deg + var(--shine)),
+      #c98f3d 10%, var(--hot) 38%, #fff3c4 50%, var(--hot) 62%, #c98f3d 90%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: shine 7s linear infinite;
+    filter: drop-shadow(0 0 calc(6px + var(--kindle) * 26px) rgba(255,180,80,calc(0.25 + var(--kindle) * 0.5)));
+  }
+  @keyframes shine { to { --shine: 360deg; } }
+  .subtitle { font-style: italic; opacity: 0.85; font-size: clamp(1rem, 2.6vw, 1.4rem); margin-top: 10px; }
+  #kindle-cue { margin-top: 8vh; font-size: 1.05rem; opacity: 0.9;
+    animation: breathe 2.6s ease-in-out infinite; user-select: none; }
+  @keyframes breathe { 50% { opacity: 0.45; } }
+  #enter {
+    margin-top: 22px; display: none; padding: 14px 34px; font-family: inherit;
+    font-size: 1.15rem; color: var(--night); background: linear-gradient(180deg, var(--hot), var(--amber));
+    border: none; border-radius: 999px; cursor: pointer;
+    box-shadow: 0 0 34px rgba(255,180,80,0.55); }
+  #enter.lit { display: inline-block; animation: pop 0.5s ease-out; }
+  @keyframes pop { from { transform: scale(0.6); opacity: 0; } }
+  .scroll-hint { position: absolute; bottom: 18px; left: 50%; translate: -50% 0;
+    opacity: 0.55; font-size: 0.9rem; z-index: 2; }
+
+  /* ── sections ───────────────────────────────────────────────────────── */
+  section { max-width: 1060px; margin: 0 auto; padding: 12vh 22px; position: relative; }
+  h2 { font-size: clamp(1.6rem, 4.5vw, 2.6rem); color: var(--hot); font-weight: normal; margin: 0 0 6px; }
+  .kicker { text-transform: uppercase; letter-spacing: 0.28em; font-size: 0.72rem;
+    color: var(--trace); opacity: 0.8; }
+  p.lede { font-size: 1.15rem; line-height: 1.65; max-width: 640px; opacity: 0.92; }
+  .whisper { font-style: italic; opacity: 0.6; font-size: 0.95rem; }
+
+  /* scroll-driven reveals (graceful without support) */
+  .reveal { opacity: 1; }
+  @supports (animation-timeline: view()) {
+    .reveal { opacity: 0; translate: 0 34px;
+      animation: rise linear both; animation-timeline: view(); animation-range: entry 5% entry 42%; }
+    @keyframes rise { to { opacity: 1; translate: 0 0; } }
+  }
+
+  /* ── the ladder / live diorama ─────────────────────────────────────── */
+  #diorama-wrap { display: grid; grid-template-columns: 1fr; gap: 26px; align-items: center; }
+  @media (min-width: 860px) { #diorama-wrap { grid-template-columns: 1.25fr 1fr; } }
+  #diorama { width: 100%; aspect-ratio: 16/10; border-radius: 16px;
+    border: 1px solid rgba(255,200,120,0.25); box-shadow: 0 10px 50px rgba(0,0,0,0.55);
+    background: #171226; }
+  .ladder li { margin: 14px 0; line-height: 1.5; list-style: none; position: relative; padding-left: 34px; }
+  .ladder li::before { content: attr(data-glyph); position: absolute; left: 0; top: 1px; font-size: 20px; }
+  .ladder b { color: var(--hot); font-weight: normal; }
+  #chain { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 18px; font-size: 0.8rem; }
+  #chain span { padding: 5px 10px; border: 1px solid rgba(125,255,176,0.35); border-radius: 999px;
+    opacity: 0.45; transition: all 0.25s; white-space: nowrap; }
+  #chain span.on { opacity: 1; background: rgba(125,255,176,0.12); box-shadow: 0 0 12px rgba(125,255,176,0.3); }
+
+  /* ── cast ───────────────────────────────────────────────────────────── */
+  #cast-grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin-top: 30px; }
+  .card { border: 1px solid rgba(255,200,120,0.22); border-radius: 16px; padding: 22px;
+    background: linear-gradient(180deg, rgba(36,27,51,0.85), rgba(20,14,30,0.9));
+    transition: transform 0.35s cubic-bezier(.2,.8,.2,1), box-shadow 0.35s; }
+  .card:hover { transform: translateY(-6px) rotate(-0.5deg); box-shadow: 0 18px 44px rgba(0,0,0,0.5); }
+  .card canvas { width: 84px; height: 84px; image-rendering: pixelated; float: right; }
+  .card h3 { margin: 0; color: var(--hot); font-weight: normal; font-size: 1.35rem; }
+  .card .role { font-size: 0.8rem; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.6; }
+  .axes { margin-top: 14px; display: grid; gap: 7px; clear: both; }
+  .axis { display: grid; grid-template-columns: 86px 1fr; align-items: center; gap: 10px; font-size: 0.8rem; }
+  .bar { height: 7px; border-radius: 99px; background: rgba(255,255,255,0.08); overflow: hidden; }
+  .bar i { display: block; height: 100%; width: calc(var(--v) * 100%); border-radius: 99px;
+    background: linear-gradient(90deg, var(--moss), var(--trace)); }
+
+  /* ── seven levels path ─────────────────────────────────────────────── */
+  #levels svg { width: 100%; height: auto; overflow: visible; }
+  #trail { stroke-dasharray: 2400; stroke-dashoffset: 2400; }
+  @supports (animation-timeline: view()) {
+    #trail { animation: drawTrail linear both; animation-timeline: view(); animation-range: entry 0% exit 80%; }
+    @keyframes drawTrail { to { stroke-dashoffset: 0; } }
+  }
+  .lvl text { fill: var(--parchment); font-size: 15px; font-family: Georgia, serif; }
+  .lvl .concept { fill: var(--trace); font-size: 11px; font-style: italic; opacity: 0.75; }
+  .lvl circle { fill: #241b33; stroke: var(--amber); stroke-width: 2; }
+
+  /* ── mycelium ──────────────────────────────────────────────────────── */
+  #myco { width: 100%; aspect-ratio: 21/9; border-radius: 16px; cursor: crosshair;
+    border: 1px solid rgba(125,255,176,0.25); box-shadow: inset 0 0 60px rgba(0,0,0,0.6); }
+  details { margin-top: 18px; opacity: 0.85; }
+  summary { cursor: pointer; color: var(--trace); }
+  details p { font-size: 0.95rem; line-height: 1.6; max-width: 640px; }
+
+  footer { text-align: center; padding: 8vh 20px 12vh; opacity: 0.75; font-size: 0.9rem; line-height: 1.9; }
+  footer .law { color: var(--trace); letter-spacing: 0.12em; }
+  a { color: var(--hot); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+    #kindle-cue { animation: none; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO — hold the ember; the page wakes ═══ -->
+<div id="hero">
+  <canvas id="sky"></canvas>
+  <div class="hero-inner">
+    <div class="kicker reveal">a cozy living-world game · a playable model of how agents behave</div>
+    <h1>GOBLIN&nbsp;WARREN</h1>
+    <div class="subtitle">Second Bloom — wake the dark with your hands.<br>Let the small ones carry what you cannot.</div>
+    <div id="kindle-cue">🔥 press and hold the night to kindle it</div>
+    <button id="enter" onclick="location.href='index.html'">Enter the Warren → play Level 1</button>
+  </div>
+  <div class="scroll-hint">⌄ the Warren continues below</div>
+</div>
+
+<!-- ═══ THE LADDER — the real engine, playing itself ═══ -->
+<section id="ladder">
+  <div class="kicker reveal">the embodied delegation ladder</div>
+  <h2 class="reveal">Watch Bram decide. Nobody orders him.</h2>
+  <p class="lede reveal">This is not a video. Below is the <b>actual game engine</b> —
+    deterministic, seeded, replaying Level&nbsp;1 forever. The player kindles, drags a twig,
+    fails to lift the heavy wood… then <b>marks</b> it. The mark is not a command.
+    It is a glow in the world. Bram notices it <i>himself</i>.</p>
+  <div id="diorama-wrap" class="reveal">
+    <canvas id="diorama" width="800" height="500"></canvas>
+    <div>
+      <ul class="ladder">
+        <li data-glyph="🔥"><b>Your body.</b> Hold the ember — warmth answers.</li>
+        <li data-glyph="✋"><b>Your hands.</b> Drag the twig — direct help.</li>
+        <li data-glyph="🪨"><b>Your limit.</b> The big wood will not move.</li>
+        <li data-glyph="✨"><b>Your mark.</b> A signal in the world — not an order.</li>
+        <li data-glyph="🤝"><b>His choice.</b> Bram pauses, turns his head, walks, carries.</li>
+      </ul>
+      <div id="chain">
+        <span data-e="mark_tap">mark</span><span data-e="trace_peak">trace&nbsp;peaks</span>
+        <span data-e="bram_paused">he&nbsp;pauses</span><span data-e="bram_oriented">head&nbsp;turns</span>
+        <span data-e="bram_moving">he&nbsp;walks</span><span data-e="wood_delivered">he&nbsp;delivers</span>
+        <span data-e="lantern_lit">lantern&nbsp;lit</span>
+      </div>
+      <p class="whisper">Every run identical from the same seed. Causality you can replay is causality you can trust.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ THE CAST ═══ -->
+<section id="cast">
+  <div class="kicker reveal">three small agents, three ways of noticing</div>
+  <h2 class="reveal">The same mark. Different eyes.</h2>
+  <p class="lede reveal">Goblins are not tools. Each carries their own attention.
+    Learning <i>who notices what</i> is the whole game — and quietly, it is how every
+    many-agent system on Earth works too.</p>
+  <div id="cast-grid">
+    <div class="card reveal"><canvas data-g="BRAM" width="28" height="28"></canvas>
+      <h3>Bram</h3><div class="role">the repairer</div>
+      <p>Steady, a little gruff, allergic to broken things. Sees warnings first, always.</p>
+      <div class="axes">
+        <div class="axis">diligence <div class="bar"><i style="--v:.95"></i></div></div>
+        <div class="axis">curiosity <div class="bar"><i style="--v:.2"></i></div></div>
+        <div class="axis">warmth <div class="bar"><i style="--v:.55"></i></div></div>
+      </div></div>
+    <div class="card reveal"><canvas data-g="LULU" width="28" height="28"></canvas>
+      <h3>Lulu</h3><div class="role">the explorer</div>
+      <p>Chases the faint, the new, the strange. Finds what everyone else walks past.</p>
+      <div class="axes">
+        <div class="axis">diligence <div class="bar"><i style="--v:.5"></i></div></div>
+        <div class="axis">curiosity <div class="bar"><i style="--v:.95"></i></div></div>
+        <div class="axis">warmth <div class="bar"><i style="--v:.7"></i></div></div>
+      </div></div>
+    <div class="card reveal"><canvas data-g="PIP" width="28" height="28"></canvas>
+      <h3>Pip</h3><div class="role">the observer</div>
+      <p>Keeps the memories. What the Warren remembers, it becomes.</p>
+      <div class="axes">
+        <div class="axis">diligence <div class="bar"><i style="--v:.6"></i></div></div>
+        <div class="axis">curiosity <div class="bar"><i style="--v:.75"></i></div></div>
+        <div class="axis">warmth <div class="bar"><i style="--v:.85"></i></div></div>
+      </div></div>
+  </div>
+</section>
+
+<!-- ═══ SEVEN LEVELS ═══ -->
+<section id="levels">
+  <div class="kicker reveal">one idea per level — seven ideas, one garden</div>
+  <h2 class="reveal">The campaign is a slow bloom.</h2>
+  <svg viewBox="0 0 1000 560" aria-label="seven level campaign map">
+    <path id="trail" d="M60,80 C300,40 380,180 300,240 C220,300 120,330 220,400 C320,470 520,340 620,300 C720,260 880,300 900,180"
+      fill="none" stroke="#7dffb0" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+    <g class="lvl"><circle cx="60" cy="80" r="17"/><text x="60" y="86" text-anchor="middle">1</text>
+      <text x="90" y="74">The Dying Fire</text><text class="concept" x="90" y="92">doing vs. delegating</text></g>
+    <g class="lvl"><circle cx="330" cy="212" r="17"/><text x="330" y="218" text-anchor="middle">2</text>
+      <text x="358" y="206">The Quiet Signal</text><text class="concept" x="358" y="224">different eyes, different signals</text></g>
+    <g class="lvl"><circle cx="180" cy="345" r="17"/><text x="180" y="351" text-anchor="middle">3</text>
+      <text x="208" y="339">Matcha Morning</text><text class="concept" x="208" y="357">care changes what's possible</text></g>
+    <g class="lvl"><circle cx="330" cy="432" r="17"/><text x="330" y="438" text-anchor="middle">4</text>
+      <text x="358" y="426">The Warren Remembers</text><text class="concept" x="358" y="444">yesterday shapes today</text></g>
+    <g class="lvl"><circle cx="620" cy="300" r="17"/><text x="620" y="306" text-anchor="middle">5</text>
+      <text x="648" y="294">The Night Market</text><text class="concept" x="648" y="312">two hands, many needs</text></g>
+    <g class="lvl"><circle cx="800" cy="282" r="17"/><text x="800" y="288" text-anchor="middle">6</text>
+      <text x="828" y="276">The Fog Path</text><text class="concept" x="828" y="294">small things grow when ignored</text></g>
+    <g class="lvl"><circle cx="900" cy="180" r="17"/><text x="900" y="186" text-anchor="middle">7</text>
+      <text x="700" y="150">Second Bloom</text><text class="concept" x="700" y="168">the garden takes your shape</text></g>
+  </svg>
+  <p class="whisper reveal">No score. No good or bad player. The final garden blooms into the shape of how you tended it.</p>
+</section>
+
+<!-- ═══ MYCELIUM — stigmergy as living mathematics ═══ -->
+<section id="mycelium">
+  <div class="kicker reveal">leave a trace — the warren remembers</div>
+  <h2 class="reveal">Touch the dark. Watch it think.</h2>
+  <p class="lede reveal">Click or drag below. Each touch seeds a living field that spreads,
+    merges, and remembers — like mycelium under the Warren's floor.
+    Nothing commands it. Your traces <i>become the environment</i>, and the
+    environment does the rest.</p>
+  <canvas id="myco" class="reveal"></canvas>
+  <details class="reveal">
+    <summary>for the curious — what is this, really?</summary>
+    <p>A <b>Gray–Scott reaction–diffusion system</b> — two chemicals feeding and
+    consuming each other under pure mathematics (Turing, 1952), computed live on
+    your GPU. It is also how ants, cells, and modern AI agent swarms coordinate:
+    not by command, but by signals left in a shared world. The game's word for
+    it is a <i>mark</i>. Science calls it <i>stigmergy</i>. You just did it.</p>
+  </details>
+</section>
+
+<footer>
+  <div class="law">THE HEAP MAY SPEAK · THE LEDGER MUST VERIFY</div>
+  playable level 1 · 47 invariants green · deterministic to the tick · no network, no account, no tracking<br>
+  <a href="index.html">play</a> · built from the compost of every earlier Warren · Goblin Warren: Second Bloom
+</footer>
+
+<script type="module">
+import { World } from './src/core/state.js';
+import { L1_DYING_FIRE } from './src/content/levels/L1_DYING_FIRE.js';
+import { WorldRenderer } from './src/render/world.js';
+import { INPUT } from './src/core/events.js';
+import { TICKS_PER_SECOND } from './src/core/determinism.js';
+
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ═══ 1 · HERO SKY — WebGL2 fbm night, embers, kindleable fire ═══ */
+const sky = document.getElementById('sky');
+const gl = sky.getContext('webgl2', { antialias: false });
+let kindle = 0, holding = false, heroLit = false;
+
+if (gl) {
+  const vs = `#version 300 es
+  void main(){ vec2 p=vec2((gl_VertexID<<1)&2, gl_VertexID&2);
+    gl_Position=vec4(p*2.0-1.0,0.0,1.0); }`;
+  const fs = `#version 300 es
+  precision highp float;
+  uniform vec2 R; uniform float T; uniform float K;
+  out vec4 O;
+  float h(vec2 p){ return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453); }
+  float n(vec2 p){ vec2 i=floor(p),f=fract(p); f=f*f*(3.0-2.0*f);
+    return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y); }
+  float fbm(vec2 p){ float v=0.0,a=0.5;
+    for(int i=0;i<5;i++){ v+=a*n(p); p=p*2.03+vec2(1.7,9.2); a*=0.5; } return v; }
+  void main(){
+    vec2 uv=gl_FragCoord.xy/R; vec2 q=uv*vec2(R.x/R.y,1.0);
+    // night gradient
+    vec3 c=mix(vec3(0.05,0.04,0.10),vec3(0.09,0.07,0.16),uv.y);
+    // drifting valley fog
+    float fog=fbm(q*2.2+vec2(T*0.02,T*0.008));
+    c+=vec3(0.10,0.08,0.18)*fog*(1.0-uv.y)*0.9;
+    // faint aurora ribbon, breathes with kindling
+    float band=exp(-pow((uv.y-0.72-0.06*fbm(q*1.5+T*0.03))*9.0,2.0));
+    c+=vec3(0.15,0.5,0.35)*band*(0.10+0.10*K)*fbm(q*3.0-T*0.05);
+    // stars
+    vec2 sp=floor(q*90.0); float s=h(sp);
+    if(s>0.995){ float tw=0.5+0.5*sin(T*(1.5+3.0*h(sp+7.0))+s*40.0);
+      c+=vec3(0.9,0.85,0.7)*tw*smoothstep(0.995,1.0,s)*(1.0-uv.y*0.5)*20.0*(1.0-K*0.4); }
+    // the fire: a warm dome at bottom center that grows with K
+    vec2 fp=vec2(0.5*R.x/R.y,0.16); float d=length(q-fp);
+    float fire=exp(-d*d*(14.0-10.0*K))*(0.25+1.6*K);
+    float lick=fbm(vec2(q.x*8.0,q.y*5.0-T*(0.6+1.4*K)));
+    c+=vec3(1.0,0.55,0.18)*fire*(0.75+0.5*lick);
+    c+=vec3(1.0,0.85,0.45)*exp(-d*d*40.0)*K*1.2*lick;
+    // rising embers when lit
+    if(K>0.05){
+      vec2 e=vec2(fract(q.x*17.0+h(vec2(floor(q.x*17.0),0.0))), fract(q.y-T*(0.05+0.12*K)));
+      float em=step(0.985,h(floor(vec2(q.x*17.0,(q.y+T*0.1)*13.0))));
+      c+=vec3(1.0,0.5,0.2)*em*K*smoothstep(0.5,0.0,uv.y)*0.8;
+    }
+    // gentle vignette
+    c*=1.0-0.45*length(uv-0.5);
+    O=vec4(c,1.0);
+  }`;
+  const prog = gl.createProgram();
+  for (const [type, src] of [[gl.VERTEX_SHADER, vs], [gl.FRAGMENT_SHADER, fs]]) {
+    const sh = gl.createShader(type); gl.shaderSource(sh, src); gl.compileShader(sh);
+    if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) console.error(gl.getShaderInfoLog(sh));
+    gl.attachShader(prog, sh);
+  }
+  gl.linkProgram(prog); gl.useProgram(prog);
+  const uR = gl.getUniformLocation(prog, 'R'), uT = gl.getUniformLocation(prog, 'T'), uK = gl.getUniformLocation(prog, 'K');
+  const fitSky = () => { sky.width = sky.clientWidth; sky.height = sky.clientHeight; gl.viewport(0, 0, sky.width, sky.height); };
+  addEventListener('resize', fitSky); fitSky();
+  let t0 = performance.now(), tPrev = t0;
+  (function skyLoop(now) {
+    const dt = Math.min(0.1, (now - tPrev) / 1000); tPrev = now;
+    // time-based, not frame-based: ~3.5s of held warmth lights the night
+    kindle += holding ? dt * 0.29 : (heroLit ? 0 : -dt * 0.5);
+    kindle = Math.min(1, Math.max(heroLit ? 0.85 : 0, kindle));
+    if (kindle >= 1 && !heroLit) {
+      heroLit = true;
+      document.getElementById('kindle-cue').textContent = '🌸 the night is warm now';
+      document.getElementById('enter').classList.add('lit');
+    }
+    document.documentElement.style.setProperty('--kindle', kindle.toFixed(3));
+    gl.uniform2f(uR, sky.width, sky.height);
+    gl.uniform1f(uT, reduced ? 40 : (now - t0) / 1000);
+    gl.uniform1f(uK, kindle);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    requestAnimationFrame(skyLoop);
+  })(t0);
+  const hero = document.getElementById('hero');
+  hero.addEventListener('pointerdown', () => holding = true);
+  addEventListener('pointerup', () => holding = false);
+}
+
+/* ═══ 2 · DIORAMA — the real Level 1 engine on autoplay, forever ═══ */
+const dio = document.getElementById('diorama');
+let dworld, drender, script, scriptIdx = 0, restartAt = 0;
+function bootDiorama() {
+  dworld = new World(structuredClone(L1_DYING_FIRE), 7);
+  drender = new WorldRenderer(dio, dworld, { reduceParticles: reduced });
+  // scripted operator, tick-scheduled: (tick, fn)
+  let kindleTicks = 0;
+  script = [
+    { at: 8,  run: () => {} },
+    ...Array.from({ length: 14 }, (_, i) => ({ at: 10 + i, run: () => dworld.dispatch(INPUT.KINDLE) })),
+    { at: 34, run: () => dworld.dispatch(INPUT.DRAG, { objectId: 'TWIG' }) },
+    { at: 52, run: () => dworld.dispatch(INPUT.DRAG, { objectId: 'BIGWOOD' }) },
+    { at: 74, run: () => dworld.dispatch(INPUT.MARK, { objectId: 'BIGWOOD' }) },
+  ];
+  scriptIdx = 0;
+  // causal chain HUD chips light with real engine events
+  document.querySelectorAll('#chain span').forEach(s => s.classList.remove('on'));
+  for (const chip of document.querySelectorAll('#chain span')) {
+    dworld.bus.on(chip.dataset.e, () => chip.classList.add('on'));
+  }
+  dworld.bus.on('level_complete', () => { restartAt = dworld.scheduler.tick + 45; });
+  restartAt = 0;
+}
+bootDiorama();
+let dAcc = 0, dLast = performance.now(), dioVisible = true;
+new IntersectionObserver(es => dioVisible = es[0].isIntersecting).observe(dio);
+(function dioLoop(now) {
+  dAcc += now - dLast; dLast = now;
+  const STEP = 1000 / TICKS_PER_SECOND;
+  while (dAcc >= STEP) {
+    dAcc -= STEP;
+    if (!dioVisible) continue;
+    while (scriptIdx < script.length && script[scriptIdx].at <= dworld.scheduler.tick) {
+      script[scriptIdx].run(); scriptIdx++;
+    }
+    dworld.tick();
+    if (restartAt && dworld.scheduler.tick >= restartAt) bootDiorama();
+  }
+  if (dioVisible) drender.draw();
+  requestAnimationFrame(dioLoop);
+})(dLast);
+
+/* ═══ 3 · CAST portraits — tiny procedural goblins ═══ */
+for (const cv of document.querySelectorAll('.card canvas')) {
+  const c = cv.getContext('2d');
+  const body = { BRAM: '#5d8a4a', LULU: '#6d5a8f', PIP: '#7a9a5a' }[cv.dataset.g];
+  c.fillStyle = body;
+  c.beginPath(); c.ellipse(14, 18, 6.5, 8.5, 0, 0, 7); c.fill();      // body
+  c.beginPath(); c.arc(14, 8, 5.5, 0, 7); c.fill();                    // head
+  c.beginPath(); c.moveTo(9, 6); c.lineTo(2, 2); c.lineTo(9, 3); c.fill();   // ears
+  c.beginPath(); c.moveTo(19, 6); c.lineTo(26, 2); c.lineTo(19, 3); c.fill();
+  c.fillStyle = '#101010'; c.beginPath(); c.arc(16, 7.5, 1.1, 0, 7); c.fill();
+  if (cv.dataset.g === 'PIP') { c.fillStyle = '#d8c9a0'; c.fillRect(18, 14, 7, 9); } // book
+  if (cv.dataset.g === 'BRAM') { c.strokeStyle = '#8a6d3b'; c.lineWidth = 2; c.beginPath(); c.moveTo(6, 14); c.lineTo(2, 22); c.stroke(); } // tool
+}
+
+/* ═══ 4 · MYCELIUM — Gray-Scott reaction-diffusion on GPU ═══ */
+const myco = document.getElementById('myco');
+const g2 = myco.getContext('webgl2');
+if (g2) {
+  const W = 384, H = 164;
+  myco.width = W * 2; myco.height = H * 2;
+  const quad = `#version 300 es
+  void main(){ vec2 p=vec2((gl_VertexID<<1)&2, gl_VertexID&2);
+    gl_Position=vec4(p*2.0-1.0,0.0,1.0); }`;
+  const simFs = `#version 300 es
+  precision highp float; uniform sampler2D S; uniform vec2 R; uniform vec3 P; out vec4 O;
+  void main(){
+    vec2 uv=gl_FragCoord.xy/R; vec2 px=1.0/R;
+    vec2 c=texture(S,uv).rg;
+    vec2 lap=texture(S,uv+vec2(px.x,0)).rg+texture(S,uv-vec2(px.x,0)).rg
+            +texture(S,uv+vec2(0,px.y)).rg+texture(S,uv-vec2(0,px.y)).rg-4.0*c;
+    float A=c.r,B=c.g, rxn=A*B*B;
+    float f=0.0455, k=0.062;
+    A+=1.0*lap.r*0.2097-rxn+f*(1.0-A);
+    B+=0.5*lap.g*0.2097+rxn-(k+f)*B;
+    if(P.z>0.5 && distance(uv*R/R.y,P.xy*R/R.y)<0.035) B=0.9;
+    O=vec4(clamp(A,0.0,1.0),clamp(B,0.0,1.0),0.0,1.0);
+  }`;
+  const viewFs = `#version 300 es
+  precision highp float; uniform sampler2D S; uniform vec2 R; out vec4 O;
+  void main(){
+    vec2 uv=gl_FragCoord.xy/R; float b=texture(S,uv).g;
+    vec3 bg=vec3(0.055,0.045,0.11);
+    vec3 vein=mix(vec3(0.10,0.45,0.28),vec3(0.49,1.0,0.69),smoothstep(0.15,0.5,b));
+    vec3 c=mix(bg,vein,smoothstep(0.08,0.28,b));
+    c+=vec3(1.0,0.72,0.3)*smoothstep(0.45,0.7,b)*0.35; // fruiting glow
+    O=vec4(c,1.0);
+  }`;
+  function mkProg(fsSrc) {
+    const p = g2.createProgram();
+    for (const [t, s] of [[g2.VERTEX_SHADER, quad], [g2.FRAGMENT_SHADER, fsSrc]]) {
+      const sh = g2.createShader(t); g2.shaderSource(sh, s); g2.compileShader(sh);
+      if (!g2.getShaderParameter(sh, g2.COMPILE_STATUS)) console.error(g2.getShaderInfoLog(sh));
+      g2.attachShader(p, sh);
+    }
+    g2.linkProgram(p); return p;
+  }
+  const simP = mkProg(simFs), viewP = mkProg(viewFs);
+  const texs = [0, 1].map(() => {
+    const t = g2.createTexture(); g2.bindTexture(g2.TEXTURE_2D, t);
+    const seed = new Float32Array(W * H * 4);
+    for (let i = 0; i < W * H; i++) { seed[i * 4] = 1; seed[i * 4 + 1] = 0; }
+    g2.texImage2D(g2.TEXTURE_2D, 0, g2.RGBA32F, W, H, 0, g2.RGBA, g2.FLOAT, seed);
+    g2.texParameteri(g2.TEXTURE_2D, g2.TEXTURE_MIN_FILTER, g2.NEAREST);
+    g2.texParameteri(g2.TEXTURE_2D, g2.TEXTURE_MAG_FILTER, g2.NEAREST);
+    g2.texParameteri(g2.TEXTURE_2D, g2.TEXTURE_WRAP_S, g2.CLAMP_TO_EDGE);
+    g2.texParameteri(g2.TEXTURE_2D, g2.TEXTURE_WRAP_T, g2.CLAMP_TO_EDGE);
+    return t;
+  });
+  g2.getExtension('EXT_color_buffer_float');
+  const fbo = g2.createFramebuffer();
+  let cur = 0, pointer = [0.5, 0.5, 0];
+  let seeded = false;
+  const seedAt = (u, v) => { pointer = [u, 1 - v, 1]; seeded = true; };
+  myco.addEventListener('pointerdown', e => {
+    const r = myco.getBoundingClientRect();
+    seedAt((e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height);
+  });
+  myco.addEventListener('pointermove', e => {
+    if (e.buttons) {
+      const r = myco.getBoundingClientRect();
+      seedAt((e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height);
+    }
+  });
+  addEventListener('pointerup', () => pointer[2] = 0);
+  // gentle self-seed so the field lives before first touch
+  setTimeout(() => { if (!seeded) { pointer = [0.5, 0.45, 1]; setTimeout(() => pointer[2] = 0, 400); } }, 1600);
+
+  let mycoVisible = false;
+  new IntersectionObserver(es => mycoVisible = es[0].isIntersecting).observe(myco);
+  const uSimS = g2.getUniformLocation(simP, 'S'), uSimR = g2.getUniformLocation(simP, 'R'), uSimP = g2.getUniformLocation(simP, 'P');
+  const uVS = g2.getUniformLocation(viewP, 'S'), uVR = g2.getUniformLocation(viewP, 'R');
+  (function mycoLoop() {
+    if (mycoVisible) {
+      const steps = reduced ? 2 : 9;
+      for (let i = 0; i < steps; i++) {
+        g2.bindFramebuffer(g2.FRAMEBUFFER, fbo);
+        g2.framebufferTexture2D(g2.FRAMEBUFFER, g2.COLOR_ATTACHMENT0, g2.TEXTURE_2D, texs[1 - cur], 0);
+        g2.viewport(0, 0, W, H);
+        g2.useProgram(simP);
+        g2.activeTexture(g2.TEXTURE0); g2.bindTexture(g2.TEXTURE_2D, texs[cur]);
+        g2.uniform1i(uSimS, 0); g2.uniform2f(uSimR, W, H); g2.uniform3f(uSimP, ...pointer);
+        g2.drawArrays(g2.TRIANGLES, 0, 3);
+        cur = 1 - cur;
+      }
+      g2.bindFramebuffer(g2.FRAMEBUFFER, null);
+      g2.viewport(0, 0, myco.width, myco.height);
+      g2.useProgram(viewP);
+      g2.activeTexture(g2.TEXTURE0); g2.bindTexture(g2.TEXTURE_2D, texs[cur]);
+      g2.uniform1i(uVS, 0); g2.uniform2f(uVR, myco.width, myco.height);
+      g2.drawArrays(g2.TRIANGLES, 0, 3);
+    }
+    requestAnimationFrame(mycoLoop);
+  })();
+}
+</script>
+</body>
+</html>
