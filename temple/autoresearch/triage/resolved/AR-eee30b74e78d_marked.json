@@ -1,0 +1,8 @@
+{
+  "packet_id": "AR-eee30b74e78d",
+  "decision": "acted",
+  "note": "",
+  "timestamp": "2026-07-05T21:18:12.324428+00:00",
+  "authority": false,
+  "source": "outbox_consume.py --mark"
+}

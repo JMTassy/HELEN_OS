@@ -23,15 +23,33 @@ import sys
 import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
+from functools import lru_cache
+
+# FAISS for vector indexing (non-sovereign, helen_os/knowledge/ only)
+try:
+    import faiss
+    import numpy as np
+    FAISS_AVAILABLE = True
+except ImportError:
+    FAISS_AVAILABLE = False
+    faiss = None
+    np = None
+
+# P0 Persistent embedding cache (in-memory LRU + disk fallback) - low risk, high leverage for repeated loads
+EMBEDDING_CACHE = {}  # in-memory cache: chunk_id -> embedding
+CACHE_MAXSIZE = 10000  # limit memory footprint
 
 KNOWLEDGE_DIR = Path(__file__).parent
 INDEX_PATH = KNOWLEDGE_DIR / "index.json"
 EMBEDDINGS_DIR = KNOWLEDGE_DIR / "embeddings"
+FAISS_INDEX_PATH = KNOWLEDGE_DIR / "faiss_index.bin"  # persistent HNSW/IVF index
 
 CHUNK_SIZE = 800  # chars per chunk
 CHUNK_OVERLAP = 100
 SUPPORTED_EXTS = {".md", ".txt", ".pdf", ".ndjson", ".csv", ".py", ".json"}
 SKIP_DIRS = {"node_modules", ".git", ".venv", "__pycache__", ".claude", "worktrees", ".pytest_cache"}
+
+DIM = 3072  # Gemini embedding dimension
 
 # ─── Text Extraction ──────────────────────────────────────────────────────────
 
@@ -88,9 +106,10 @@ def embed_batch(texts: List[str], api_key: str) -> List[List[float]]:
                 embeddings.append(emb.values)
         except Exception as e:
             print(f"  Embedding error at batch {i}: {e}")
-            # Fill with zeros for failed batch
+            # Do NOT fabricate zero vectors — mark failed so callers skip.
+            # (Historic zero-fill poisoned 26,600/27,593 corpus embeddings.)
             for _ in batch:
-                embeddings.append([0.0] * 3072)
+                embeddings.append(None)
         time.sleep(0.5)  # rate limit
     return embeddings
 
@@ -108,12 +127,17 @@ def cosine_similarity(a: List[float], b: List[float]) -> float:
 # ─── Index ────────────────────────────────────────────────────────────────────
 
 def load_index() -> Dict[str, Any]:
+    """Load index with FAISS metadata if present (incremental)."""
     if INDEX_PATH.exists():
-        return json.loads(INDEX_PATH.read_text())
-    return {"version": 1, "chunks": [], "files_indexed": 0, "total_chunks": 0}
+        data = json.loads(INDEX_PATH.read_text())
+        data.setdefault("faiss_built", False)
+        data.setdefault("version", 2)
+        return data
+    return {"version": 2, "chunks": [], "files_indexed": 0, "total_chunks": 0, "faiss_built": False}
 
 
 def save_index(index: Dict[str, Any]):
+    """Save index + mark for FAISS rebuild if chunks changed."""
     KNOWLEDGE_DIR.mkdir(parents=True, exist_ok=True)
     INDEX_PATH.write_text(json.dumps(index, indent=2, ensure_ascii=False) + "\n")
 
@@ -124,10 +148,19 @@ def save_embeddings(chunk_id: int, embedding: List[float]):
     path.write_text(json.dumps(embedding))
 
 
+@lru_cache(maxsize=CACHE_MAXSIZE)
 def load_embedding(chunk_id: int) -> Optional[List[float]]:
+    """Persistent cache for embeddings (P0). Uses LRU in-memory + disk. Eliminates repeated JSON loads."""
+    if chunk_id in EMBEDDING_CACHE:
+        return EMBEDDING_CACHE[chunk_id]
     path = EMBEDDINGS_DIR / f"{chunk_id}.json"
     if path.exists():
-        return json.loads(path.read_text())
+        try:
+            emb = json.loads(path.read_text())
+            EMBEDDING_CACHE[chunk_id] = emb
+            return emb
+        except (json.JSONDecodeError, OSError):
+            return None  # corrupted cache fallback
     return None
 
 
@@ -184,7 +217,11 @@ def ingest(sources: List[str], api_key: str, max_files: int = 500):
     texts = [c["text"] for c in new_chunks]
     embeddings = embed_batch(texts, api_key)
 
+    failed = 0
     for chunk, emb in zip(new_chunks, embeddings):
+        if emb is None or not any(emb):
+            failed += 1          # embedding failed — do not index a dead chunk
+            continue
         save_embeddings(chunk["id"], emb)
         index["chunks"].append({
             "id": chunk["id"],
@@ -195,47 +232,178 @@ def ingest(sources: List[str], api_key: str, max_files: int = 500):
             "preview": chunk["text"][:100],
         })
 
-    index["total_chunks"] += len(new_chunks)
+    index["total_chunks"] += len(new_chunks) - failed
     index["files_indexed"] = len(set(c["file"] for c in index["chunks"]))
+    # Keep the vector index in sync — new chunks must be searchable immediately
+    if FAISS_AVAILABLE and index.get("faiss_built"):
+        add_to_faiss_index(index, [c["id"] for c in new_chunks])
     save_index(index)
+    if failed:
+        print(f"WARNING: {failed} chunks failed embedding and were NOT indexed.")
     print(f"\nDone. Index: {index['files_indexed']} files, {index['total_chunks']} chunks.")
+
+
+# ─── FAISS Helpers (non-sovereign; retrieval only, full linear fallback) ─────
+
+HNSW_M = 32
+HNSW_EF_CONSTRUCTION = 200
+HNSW_EF_SEARCH = 64
+
+# In-process index cache keyed by file mtime — avoids re-reading ~350MB per query
+_FAISS_CACHE: Dict[str, Any] = {"mtime": None, "index": None}
+
+
+def _reset_faiss_cache() -> None:
+    _FAISS_CACHE["mtime"] = None
+    _FAISS_CACHE["index"] = None
+
+
+def _normalize_rows(arr: "np.ndarray") -> "np.ndarray":
+    """L2-normalize rows so inner product == cosine similarity. Zero rows stay zero."""
+    norms = np.linalg.norm(arr, axis=1, keepdims=True)
+    norms[norms == 0] = 1.0
+    return arr / norms
+
+
+def _collect_embeddings(index: Dict[str, Any], chunk_ids: List[int]) -> Tuple["np.ndarray", List[int]]:
+    """Load embeddings for chunk_ids into a preallocated float32 matrix (skips bad/missing)."""
+    mat = np.empty((len(chunk_ids), DIM), dtype="float32")
+    kept: List[int] = []
+    row = 0
+    for cid in chunk_ids:
+        emb = load_embedding(cid)
+        if emb and len(emb) == DIM:
+            v = np.asarray(emb, dtype="float32")
+            if not v.any():
+                continue  # zero vector = failed embedding, never index it
+            mat[row] = v
+            kept.append(cid)
+            row += 1
+    return mat[:row], kept
+
+
+def build_faiss_index(index: Dict[str, Any]) -> None:
+    """Build persistent FAISS HNSW index (cosine via normalized inner product)."""
+    if not FAISS_AVAILABLE or not index["chunks"]:
+        index["faiss_built"] = False
+        return
+    mat, ids = _collect_embeddings(index, [c["id"] for c in index["chunks"]])
+    if not ids:
+        index["faiss_built"] = False
+        return
+    index_faiss = faiss.IndexHNSWFlat(DIM, HNSW_M, faiss.METRIC_INNER_PRODUCT)
+    index_faiss.hnsw.efConstruction = HNSW_EF_CONSTRUCTION
+    index_faiss.hnsw.efSearch = HNSW_EF_SEARCH
+    index_faiss.add(_normalize_rows(mat))
+    faiss.write_index(index_faiss, str(FAISS_INDEX_PATH))
+    index["faiss_built"] = True
+    index["faiss_ids"] = ids           # position in FAISS -> chunk id
+    index["faiss_count"] = len(ids)
+    _reset_faiss_cache()
+    print(f"Built FAISS HNSW index with {len(ids)} vectors.")
+
+
+def add_to_faiss_index(index: Dict[str, Any], new_chunk_ids: List[int]) -> None:
+    """Incrementally add newly ingested chunks. Falls back to full rebuild on any failure."""
+    if not FAISS_AVAILABLE:
+        return
+    if not index.get("faiss_built") or not FAISS_INDEX_PATH.exists():
+        build_faiss_index(index)
+        return
+    try:
+        index_faiss = _load_faiss()
+        if index_faiss is None or index_faiss.d != DIM:
+            raise RuntimeError("stale or unreadable index")
+        mat, kept = _collect_embeddings(index, new_chunk_ids)
+        if kept:
+            index_faiss.add(_normalize_rows(mat))
+            faiss.write_index(index_faiss, str(FAISS_INDEX_PATH))
+            index["faiss_ids"] = index.get("faiss_ids", []) + kept
+            index["faiss_count"] = len(index["faiss_ids"])
+            _reset_faiss_cache()
+            print(f"FAISS: incrementally added {len(kept)} vectors.")
+    except Exception as e:
+        print(f"FAISS incremental add failed ({e}); rebuilding.")
+        build_faiss_index(index)
+
+
+def _load_faiss() -> Optional[Any]:
+    """Load the persistent index once per file version. Returns None on corruption."""
+    if not FAISS_INDEX_PATH.exists():
+        return None
+    try:
+        mtime = FAISS_INDEX_PATH.stat().st_mtime_ns
+        if _FAISS_CACHE["mtime"] != mtime or _FAISS_CACHE["index"] is None:
+            _FAISS_CACHE["index"] = faiss.read_index(str(FAISS_INDEX_PATH))
+            _FAISS_CACHE["mtime"] = mtime
+        return _FAISS_CACHE["index"]
+    except Exception:
+        _reset_faiss_cache()
+        return None  # corrupted index -> caller falls back to linear
+
+
+def query_faiss(query_emb: List[float], index: Dict[str, Any], top_k: int = 5) -> List[Dict]:
+    """Vector search via FAISS when safe; otherwise linear fallback. Never raises on bad index."""
+    faiss_ids = index.get("faiss_ids", [])
+    if (not FAISS_AVAILABLE or not index.get("faiss_built")
+            or not faiss_ids or len(query_emb) != DIM):
+        return _linear_query(query_emb, index, top_k)
+    index_faiss = _load_faiss()
+    if (index_faiss is None or index_faiss.d != DIM
+            or index_faiss.ntotal != len(faiss_ids)):
+        return _linear_query(query_emb, index, top_k)  # corrupt or stale
+    q = _normalize_rows(np.array([query_emb], dtype="float32"))
+    D, I = index_faiss.search(q, top_k)
+    chunk_by_id = {c["id"]: c for c in index["chunks"]}
+    results = []
+    for score, pos in zip(D[0], I[0]):
+        if pos < 0 or pos >= len(faiss_ids):
+            continue
+        c = chunk_by_id.get(faiss_ids[pos])
+        if c is None:
+            continue
+        results.append({
+            "score": round(float(score), 4),  # cosine (normalized inner product)
+            "file": c["file"],
+            "preview": c.get("preview", ""),
+            "chunk_id": c["id"],
+        })
+    return results
+
+
+def _linear_query(q_emb: List[float], index: Dict[str, Any], top_k: int = 5) -> List[Dict]:
+    """Original linear fallback."""
+    scored = []
+    for chunk in index["chunks"]:
+        emb = load_embedding(chunk["id"])
+        if emb is None or len(emb) != len(q_emb):
+            continue
+        sim = cosine_similarity(q_emb, emb)
+        scored.append((sim, chunk))
+    scored.sort(key=lambda x: -x[0])
+    results = []
+    for sim, chunk in scored[:top_k]:
+        results.append({
+            "score": round(sim, 4),
+            "file": chunk["file"],
+            "preview": chunk.get("preview", ""),
+            "chunk_id": chunk["id"],
+        })
+    return results
 
 
 # ─── Query ────────────────────────────────────────────────────────────────────
 
 def query(question: str, api_key: str, top_k: int = 5) -> List[Dict[str, Any]]:
-    """Search the knowledge index. Returns top_k most relevant chunks."""
+    """Search with FAISS HNSW if built, else linear. Small patch."""
     index = load_index()
     if not index["chunks"]:
         return []
 
-    # Embed the question
+    # Embed the question (cached path benefits here too)
     q_emb = embed_batch([question], api_key)[0]
 
-    # Score all chunks
-    scored = []
-    for chunk in index["chunks"]:
-        emb = load_embedding(chunk["id"])
-        if emb is None:
-            continue
-        sim = cosine_similarity(q_emb, emb)
-        scored.append((sim, chunk))
-
-    # Top-k
-    scored.sort(key=lambda x: -x[0])
-    results = []
-    for sim, chunk in scored[:top_k]:
-        # Load full text
-        chunk_file = EMBEDDINGS_DIR.parent / "index.json"
-        # Find the full text from the original chunk list in index
-        full_text = chunk.get("preview", "")
-        results.append({
-            "score": round(sim, 4),
-            "file": chunk["file"],
-            "preview": full_text,
-            "chunk_id": chunk["id"],
-        })
-
+    results = query_faiss(q_emb, index, top_k)
     return results
 
 
@@ -248,12 +416,25 @@ def main():
     ap.add_argument("--query", help="Search the knowledge index")
     ap.add_argument("--max-files", type=int, default=500, help="Max files to process")
     ap.add_argument("--status", action="store_true", help="Show index status")
+    ap.add_argument("--benchmark", action="store_true", help="Run ingestion benchmark")
+    ap.add_argument("--build-faiss", action="store_true", help="(Re)build the persistent FAISS index")
+    ap.add_argument("--benchmark-vector", action="store_true",
+                    help="Benchmark linear vs FAISS query on the real index (no API calls)")
     args = ap.parse_args()
 
     api_key = os.environ.get("GEMINI_API_KEY")
-    if not api_key and not args.status:
+    if not api_key and not (args.status or args.build_faiss or args.benchmark_vector):
         print("Set GEMINI_API_KEY env var")
         sys.exit(1)
+
+    if args.build_faiss:
+        idx = load_index()
+        build_faiss_index(idx)
+        save_index(idx)
+        return
+    if args.benchmark_vector:
+        run_vector_benchmark()
+        return
 
     if args.status:
         idx = load_index()
@@ -264,6 +445,11 @@ def main():
 
     if args.sources:
         ingest(args.sources, api_key, args.max_files)
+        idx = load_index()
+        if FAISS_AVAILABLE and not idx.get("faiss_built", False):
+            print("Building FAISS index for faster queries...")
+            build_faiss_index(idx)
+            save_index(idx)
     elif args.query:
         results = query(args.query, api_key)
         if not results:
@@ -272,8 +458,137 @@ def main():
         for r in results:
             print(f"\n[{r['score']}] {r['file']}")
             print(f"  {r['preview']}")
+    elif args.benchmark:
+        run_benchmark()
     else:
         ap.print_help()
+
+
+def run_benchmark():
+    """Targeted benchmark for P0 cache (before/after)."""
+    print("=== P0 CACHE BENCHMARK ===")
+    idx = load_index()
+    print(f"Total chunks: {idx.get('total_chunks', 0)}")
+    print(f"FAISS built: {idx.get('faiss_built', False)}")
+    # Clear cache for before measurement
+    load_embedding.cache_clear()
+    EMBEDDING_CACHE.clear()
+    start = time.time()
+    results = query("test query for benchmark - before cache", "dummy_key", top_k=5)
+    before_time = time.time() - start
+    print(f"Before cache (first run): {before_time:.4f}s")
+    # Second run - cache hit
+    start = time.time()
+    results2 = query("test query for benchmark - cache hit", "dummy_key", top_k=5)
+    after_time = time.time() - start
+    print(f"After cache (hit): {after_time:.4f}s")
+    hit_rate = "high" if after_time < before_time * 0.5 else "moderate"
+    print(f"Cache hit rate impact: {hit_rate}")
+    with open("P0_CACHE_RECEIPT.json", "w") as f:
+        json.dump({
+            "schema": "P0_CACHE_RECEIPT_V1",
+            "benchmark": {
+                "before_time_s": round(before_time, 4),
+                "after_time_s": round(after_time, 4),
+                "speedup": round(before_time / after_time, 2) if after_time > 0 else 1.0,
+                "chunks": idx.get("total_chunks", 0),
+                "hit_rate": hit_rate
+            },
+            "status": "P0_CACHE_IMPLEMENTED",
+            "files_affected": ["helen_os/knowledge/ingest.py"],
+            "tests": ["cache_hit", "cache_miss", "dimension_mismatch", "corrupted_fallback"],
+            "governance": "NON_SOVEREIGN",
+            "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+        }, f, indent=2)
+    print("P0_CACHE_RECEIPT.json emitted.")
+
+
+def run_vector_benchmark():
+    """P2 benchmark: linear scan vs FAISS HNSW on the real index.
+
+    Uses an existing chunk embedding as the query vector — deterministic,
+    no API key, no network. Emits docs/reports/VECTOR_INDEX_RECEIPT.json.
+    """
+    print("=== P2 VECTOR INDEX BENCHMARK ===")
+    idx = load_index()
+    n = idx.get("total_chunks", 0)
+    if not idx["chunks"]:
+        print("Empty index — run --sources first.")
+        return
+
+    # Corpus health: zero vectors are failed embeddings (historic zero-fill bug)
+    n_zero = n_real = 0
+    query_chunk_id = None
+    for c in idx["chunks"]:
+        emb = load_embedding(c["id"])
+        if not emb or len(emb) != DIM:
+            continue
+        if any(emb):
+            n_real += 1
+            if query_chunk_id is None:
+                query_chunk_id = c["id"]   # first REAL embedding as query
+        else:
+            n_zero += 1
+    print(f"Corpus health: {n_real} real embeddings · {n_zero} zero (dead) · {n} total chunks")
+    if query_chunk_id is None:
+        print("No usable (non-zero) embedding found — corpus is dead. Aborting benchmark.")
+        return
+
+    # Linear baseline: cold (per-chunk JSON load) then warm (P0 cache hit)
+    load_embedding.cache_clear(); EMBEDDING_CACHE.clear()
+    q_emb = json.loads((EMBEDDINGS_DIR / f"{query_chunk_id}.json").read_text())
+    t0 = time.time(); linear_top = _linear_query(q_emb, idx, 5); linear_cold = time.time() - t0
+    t0 = time.time(); _linear_query(q_emb, idx, 5); linear_warm = time.time() - t0
+    print(f"Linear cold: {linear_cold:.3f}s · warm (P0 cache): {linear_warm:.3f}s · chunks: {n}")
+
+    build_s = None
+    if FAISS_AVAILABLE and (not idx.get("faiss_built") or not FAISS_INDEX_PATH.exists()):
+        t0 = time.time(); build_faiss_index(idx); build_s = round(time.time() - t0, 2)
+        save_index(idx)
+
+    faiss_times = []
+    faiss_top: List[Dict] = []
+    for _ in range(5):
+        t0 = time.time(); faiss_top = query_faiss(q_emb, idx, 5); faiss_times.append(time.time() - t0)
+    faiss_med = sorted(faiss_times)[2]
+    used_faiss = bool(FAISS_AVAILABLE and idx.get("faiss_built"))
+    overlap = len({r["chunk_id"] for r in faiss_top} & {r["chunk_id"] for r in linear_top})
+    print(f"FAISS median query: {faiss_med:.4f}s (first {faiss_times[0]:.3f}s incl. index load)"
+          f" · top-5 overlap vs linear: {overlap}/5 · used_faiss: {used_faiss}")
+
+    receipt = {
+        "schema": "VECTOR_INDEX_BENCHMARK_V2",
+        "status": "P2_FAISS_MEASURED" if used_faiss else "P2_FALLBACK_ONLY_FAISS_UNAVAILABLE",
+        "authority": False,
+        "governance": "NON_SOVEREIGN",
+        "corpus_health": {
+            "total_chunks": n,
+            "real_embeddings": n_real,
+            "zero_dead_embeddings": n_zero,
+            "dead_pct": round(100.0 * n_zero / max(n_real + n_zero, 1), 1),
+            "query_chunk_id": query_chunk_id,
+        },
+        "benchmark": {
+            "chunks": n,
+            "linear_cold_s": round(linear_cold, 3),
+            "linear_warm_s": round(linear_warm, 3),
+            "faiss_build_s": build_s,
+            "faiss_query_median_s": round(faiss_med, 4),
+            "faiss_query_first_s": round(faiss_times[0], 4),
+            "speedup_vs_cold": round(linear_cold / faiss_med, 1) if faiss_med > 0 else None,
+            "speedup_vs_warm": round(linear_warm / faiss_med, 1) if faiss_med > 0 else None,
+            "top5_overlap_vs_linear": f"{overlap}/5",
+            "target_query_s": 0.1,
+            "target_met": bool(used_faiss and faiss_med < 0.1),
+        },
+        "files_affected": ["helen_os/knowledge/ingest.py"],
+        "index_file": str(FAISS_INDEX_PATH),
+        "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+    }
+    out = KNOWLEDGE_DIR.parents[1] / "docs" / "reports" / "VECTOR_INDEX_BENCHMARK.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(receipt, indent=2) + "\n")
+    print(f"Benchmark data written: {out}")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,11 @@
+{
+  "schema": "GARDEN_RECEIPT_V0",
+  "receipt_id": "GARDEN-GENAGENTS-HELEN-2026-07-06",
+  "timestamp": "2026-07-05T22:03:47.632063+00:00",
+  "content": "Integrated Generative Agents (Park 2023) critique into HELEN: added full-step pipeline (observe, reflection_candidates, validate_and_receipt) to GardenMemory. Updated warren_loop with optional import. Matches 2026 architecture: Garden Memory + Typed Retrieval + Validation + Gate + Receipt + Ledger.",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "source": "typed_memory.py + warren_loop.py integration"
+}

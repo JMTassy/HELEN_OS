@@ -1,0 +1,14 @@
+{
+  "schema": "GOBLIN_OBJECTION_CARD_V0",
+  "packet_id": "AR-5602a344e0d6",
+  "model": "gemma4-12b:latest",
+  "response_raw": "<|channel>thought\n<channel|>```json\n{\n  \"strongest_no\": \"The packet identifies critical systemic flaws—specifically the bypass of the reducer and the corruption of provenance hashes—but fails to provide a remediation path or a validation protocol for the 'KERNE_TO_AGENTIC_OS' transition. Proposing a route to an operator for a 'deep dive' document that admits to internal architectural violations (like the LEGORACLE v1 bug) without first isolating the blast radius of the 'Sovereignty drift' is a recursive loop of failure. We cannot route a risk that admits to bypassing the very mechanism (the reducer) required to process the route.\",\n  \" weird_failure_mode\": \"If routed, the operator might interpret the 'DEMO_MODE' flags as a mandate to deploy the demo animation as a production receipt, causing the system to commit a 'provenance-less' state to the ledger, effectively 'hallucinating' a successful migration while the underlying kernel remains unverified.\",\n  \" Cheap_falsifier\": \"grep 'COMMIT' docs/proposals/KERNEL_TO_AGENTIC_OS_DEEP_DIVE_V0.md | grep -v 'DEMO_MODE'\",\n  \"goblin_verdict_hint\": \"REJECT\"\n}\n```",
+  "response_sha256": "d3fbd7b18beeafa909f3703e0f88432677d7a7d75a3f046f432846c9b721621a",
+  "elapsed_s": 19.5,
+  "generated_at": "2026-07-06T09:47:49.933470+00:00",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim": "ATTACK_ONLY — hint ⊬ decision · goblin ⊬ pen"
+}

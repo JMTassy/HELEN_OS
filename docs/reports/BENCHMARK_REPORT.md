@@ -26,3 +26,45 @@
 - Drawer count: 27,593 chunks (from index).
 
 Evidence precedes optimization. No code modified yet.
+
+---
+
+## P2 VECTOR INDEX — MEASURED (2026-07-02)
+
+**Implementation:** FAISS `IndexHNSWFlat(3072, M=32, METRIC_INNER_PRODUCT)` over
+L2-normalized Gemini embeddings (inner product == cosine). Persistent at
+`helen_os/knowledge/faiss_index.bin` (331 MB, 27,593 vectors). In-process
+mtime-keyed cache — the index file is read once per version, not per query.
+
+**Measured (27,593 chunks, M3 Pro, .venv-knowledge python3.13):**
+
+| Path | Time |
+|---|---|
+| Linear cold (per-chunk JSON load) | 15.354 s |
+| Linear warm (P0 LRU cache) | 8.499 s |
+| FAISS build (one-time) | 29.65 s |
+| FAISS first query (incl. index load) | 0.086 s |
+| FAISS median query | **0.0017 s** |
+
+Speedup: **8,906× vs cold · 4,930× vs warm.** Top-5 overlap vs exact linear: **5/5**.
+Target `<0.1s`: **MET**.
+
+**Corrections applied to the drafted FAISS code:**
+1. Metric fixed — draft used default L2 on unnormalized vectors with `score = 1 - dist`
+   (wrong ordering, negative scores); now normalized inner product = true cosine.
+2. Staleness fixed — newly ingested chunks are now incrementally added
+   (`add_to_faiss_index`); draft silently excluded them forever.
+3. Per-query `faiss.read_index` removed (mtime-cached singleton).
+4. Fail-closed fallbacks — corrupted bin, dimension mismatch, and
+   ntotal/faiss_ids drift all fall back to the exact linear scan (tested).
+
+**Tests:** `helen_os/tests/test_knowledge_vector_index.py` — 6/6 PASS under
+`.venv-knowledge`; auto-skips where faiss/numpy absent (main `.venv` unaffected).
+
+**Environment note:** `faiss-cpu` could not be installed into the main `.venv`
+(Homebrew python 3.14.4/3.12 pyexpat↔libexpat mismatch breaks pip — machine
+drift, needs operator-level brew repair). Dedicated `.venv-knowledge`
+(python3.13 + faiss-cpu + numpy + pytest) created in SOT root.
+
+Receipt: `docs/reports/VECTOR_INDEX_RECEIPT.json`. authority=false ·
+NON_SOVEREIGN · reducer NOT invoked. No receipt = no claim.

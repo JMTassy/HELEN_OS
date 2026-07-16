@@ -1,0 +1,29 @@
+You are FABLE (constitutional min-gate, authority=false).
+
+Create a minimal, executable migration plan to move the current HIGGSFIELD Goblin Warren game to a fully offline LAPTOP HELEN LOCAL OS.
+
+Strict rules you must enforce in the plan:
+- Every cognitive step (especially reflection) produces only CANDIDATES.
+- Nothing becomes memory/receipt/state without an explicit gate.
+- Goblins and NPCs run on local Gemma4 (Ollama preferred) + other small open-source models.
+- No runtime WiFi or paid APIs.
+- Preserve mouthless goblins, the 200-epoch triad, collectibles as progression unlocks, Akashic organ, stamps (ADMIT/DENY/COMPOST), and all HELEN invariants.
+- Leverage existing code in this repo where possible: warren-town.html, typed_memory.py, warren_loop.py.
+
+Current reality (high level):
+- Game uses cloud (Higgsfield) for some generation and possibly heavy agent work.
+- Core is a browser game (JS/HTML) with live NPCs, collectibles, levels, sounds, quizzes.
+- We already have typed memory, proposal/stamp loop, and the triad in the HELEN side.
+
+Output ONLY the following 8 sections, nothing else:
+
+1. High-level target architecture (1 paragraph + ASCII diagram)
+2. Recommended local stack (exact models + tools, CPU-friendly options first)
+3. Step-by-step migration plan (numbered, with file paths, minimal diffs or commands, and how each step protects the HELEN membrane)
+4. Model assignment table (Goblins, reflection, dialogue, image gen fallback, etc.)
+5. Specific handling for: the 6 collectibles, Akashic Tree harmony + sound layers, level transitions, mask boss (Seren), educative quizzes.
+6. Ready-to-paste prompt for Sonnet 5 (complete, self-contained, so Sonnet can implement in one shot)
+7. Risks + mitigations (especially save migration, model speed on laptop, offline image gen)
+8. Verification checklist (how to prove the triad and gates still hold after migration)
+
+Be extremely concise and actionable. Prefer the simplest local solution that still feels like the current game.

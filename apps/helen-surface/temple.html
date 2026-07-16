@@ -59,6 +59,16 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 .i-sep{width:1px;height:9px;background:rgba(0,212,255,.10);margin:0 14px}
 .i-doc{font-size:7.5px;letter-spacing:.10em;text-transform:uppercase;color:rgba(201,148,12,.40);white-space:nowrap}
 .i-push{margin-left:auto;font-size:7px;letter-spacing:.08em;text-transform:uppercase;color:rgba(0,212,255,.20)}
+@media (max-width:480px){
+  #entry-block{left:12px;right:12px;width:auto}
+  #pulse-panel{top:auto;bottom:96px;left:12px;right:12px;width:auto}
+  #scratchpad,#sp-response{width:calc(100vw - 24px)}
+  #kb-hint{display:none}
+  #info-strip{height:36px;padding:0 12px}
+  .i-flow,.i-arr,.i-sep{display:none}
+  .i-doc{font-size:10px;color:rgba(201,148,12,.85)}
+  .i-push{font-size:9px;color:rgba(0,212,255,.6)}
+}
 </style>
 </head>
 <body>
@@ -763,6 +773,14 @@ function frame(t){
 function updateClock(){document.getElementById('t-clock').textContent=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
 updateClock();setInterval(updateClock,1000);
 requestAnimationFrame(frame);
+
+// Local-view detector: file:// means no public URL yet
+if(location.protocol==='file:'){
+  const b=document.createElement('div');
+  b.textContent='You are viewing HELEN locally. Publish to get a public URL.';
+  b.style.cssText='position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#c9a43a;color:#07070a;font:700 12px/1.4 monospace;text-align:center;padding:6px 10px;letter-spacing:.04em';
+  document.body.appendChild(b);
+}
 </script>
 </body>
 </html>

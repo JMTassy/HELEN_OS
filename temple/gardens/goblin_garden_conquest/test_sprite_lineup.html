@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Goblin Warren - Procedural Creature Sprites Test (BEAD-V5)</title>
+<style>body { background:#111; color:#0f0; font-family:monospace; } canvas { border:1px solid #333; image-rendering: pixelated; }</style>
+</head>
+<body>
+<h1>BEAD-V5-PROCEDURAL-CREATURE-SPRITES-001</h1>
+<p>authority=false | sovereign=false | canon=false</p>
+<canvas id="c" width="900" height="400"></canvas>
+<div>
+  <button onclick="toggleSilhouette()">Shift+S toggle Silhouette (black fill test)</button>
+  <button onclick="showDevPanel()">Dev Panel: Show Cast Lineup</button>
+  <button onclick="runTests()">Run Selftests</button>
+</div>
+<pre id="log"></pre>
+<script type="module">
+import { ROLES, drawRoleSprite, drawBadge, drawSilhouette, drawCastLineup, runSelftests } from './js/procedural_creature_sprites.js';
+
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let silhouetteMode = false;
+
+let frame = 0;
+function draw() {
+  ctx.fillStyle = '#111';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  let x = 20;
+  Object.keys(ROLES).forEach((role, i) => {
+    const npc = { seed: 100 + i, state: i % 3 === 0 ? 'proposing' : (i % 2 ? 'damaged' : 'idle'), frame: frame };
+    if (silhouetteMode) {
+      drawSilhouette(ctx, x, 50, 32, role);
+    } else {
+      drawRoleSprite(ctx, x, 50, 32, role, npc);
+      drawBadge(ctx, x + 36, 50, 16, role);
+    }
+    ctx.fillStyle = '#0f0';
+    ctx.fillText(role, x, 100);
+    x += 90;
+  });
+  ctx.fillText('Shift+S for silhouette | All procedural | NES style | frame ' + frame.toFixed(0), 20, 380);
+}
+
+function toggleSilhouette() {
+  silhouetteMode = !silhouetteMode;
+  draw();
+}
+
+let anim = setInterval(() => { frame += 1; draw(); }, 200);
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 's' || e.key === 'S') {
+    if (e.shiftKey) toggleSilhouette();
+  }
+});
+
+draw();
+
+function showDevPanel() {
+  const log = document.getElementById('log');
+  log.textContent = 'CAST LINEUP\n' + Object.keys(ROLES).map(r => r + ': ' + (ROLES[r].isObject ? 'OBJECT' : 'CREATURE')).join('\n');
+  drawCastLineup(ctx, 20, 150, 24, silhouetteMode);
+}
+
+function runTests() {
+  const results = runSelftests();
+  document.getElementById('log').textContent = 'Selftests: ' + (results ? 'PASS' : 'FAIL');
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key.toLowerCase() === 's' && e.shiftKey) {
+    toggleSilhouette();
+  }
+});
+
+draw();
+console.log('Loaded. Press Shift+S. Click buttons.');
+</script>
+</body>
+</html>

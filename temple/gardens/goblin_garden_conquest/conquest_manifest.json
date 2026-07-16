@@ -13,7 +13,7 @@
   "dream_world_simulation_only": true,
   "valid_claim_types": [
     "metaphor", "simulation", "draft_doctrine", "world_model",
-    "quest", "bulletin", "validator", "receipt"
+    "quest", "bulletin", "validator", "receipt", "warren_skill", "goblin_mode"
   ],
   "forbidden_claim_statuses": ["ADMITTED", "CANON", "SOVEREIGN", "SHIPPED"],
   "epochs": {
@@ -46,6 +46,9 @@
   "validator": "validate_conquest_garden.py",
   "epoch_count": 25,
   "epochs_completed": 0,
+  "skills": [
+    "conquest/goblin_warren (custom /warren mode — Garden/Kernel membrane, receipted play, V3 loop)"
+  ],
   "_meta": {
     "authority": false,
     "not_admitted": true,

@@ -1,0 +1,22 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-944b83d2fa9e",
+  "source_refs": [
+    "docs/specs/HERALDIC_SYMBOL_SET_V0_1.md:167"
+  ],
+  "finding_type": "risk",
+  "summary": "Scanner findings in docs/specs/HERALDIC_SYMBOL_SET_V0_1.md: signals=['risk_marker']",
+  "evidence": [
+    "**Drift warning:**"
+  ],
+  "risk_flags": [
+    "contains_risk_markers"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-07-05T21:15:36Z"
+}

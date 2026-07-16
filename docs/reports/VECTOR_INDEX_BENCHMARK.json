@@ -1,0 +1,31 @@
+{
+  "schema": "VECTOR_INDEX_BENCHMARK_V2",
+  "status": "P2_FAISS_MEASURED",
+  "authority": false,
+  "governance": "NON_SOVEREIGN",
+  "corpus_health": {
+    "total_chunks": 27593,
+    "real_embeddings": 993,
+    "zero_dead_embeddings": 26600,
+    "dead_pct": 96.4,
+    "query_chunk_id": 0
+  },
+  "benchmark": {
+    "chunks": 27593,
+    "linear_cold_s": 12.707,
+    "linear_warm_s": 7.121,
+    "faiss_build_s": null,
+    "faiss_query_median_s": 0.0013,
+    "faiss_query_first_s": 0.0174,
+    "speedup_vs_cold": 10035.1,
+    "speedup_vs_warm": 5623.5,
+    "top5_overlap_vs_linear": "5/5",
+    "target_query_s": 0.1,
+    "target_met": true
+  },
+  "files_affected": [
+    "helen_os/knowledge/ingest.py"
+  ],
+  "index_file": "/Users/jean-marietassy/Documents/GitHub/helen_os_v1/helen_os/knowledge/faiss_index.bin",
+  "timestamp": "2026-07-02T19:59:02Z"
+}

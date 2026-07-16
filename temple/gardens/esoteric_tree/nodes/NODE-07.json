@@ -1,0 +1,16 @@
+{
+  "schema": "ESOTERIC_TREE_NODE_V0",
+  "node": 7,
+  "law": "Inv holds ⊬ Inv certified — soundness and certification rot independently",
+  "witness": "docs/proposals/GAS_V0_PROOFS.md §6 (the certification-rot exhibit)",
+  "model": "gemma4-12b:latest",
+  "response_raw": "<|channel>thought\n<channel|>```json\n{\n  \"esoteric_name\": \"The Rotting Seal of Inv\",\n\"whisper\": \"The certificate is a withered husk,\\nIt holds the weight of the Inv,\\nYet the rot eats the marrow from within,\\nSoundness decays while the paper remains crisp,\\nThey dance in separate deaths.\",\n\"glyph\": \"A jagged iron key hanging from a piece of moldy parchment.\",\n\"mantra\": \"The rot remains, the seal holds, both decay alone.\"\n}\n```",
+  "response_sha256": "c30ba7d6c37383c42d5c65093ff7150de1dabbdda84a26a2bed011111a74d207",
+  "generated_at": "2026-07-06T09:58:46.279910+00:00",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "reduction": "every mystical render reduces to the checkable law above"
+}

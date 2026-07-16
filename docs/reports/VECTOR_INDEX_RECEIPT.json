@@ -1,0 +1,72 @@
+{
+  "object": "P2_FAISS_HNSW_VECTOR_INDEX",
+  "status": "PASS",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer": "not_invoked",
+  "push": "blocked",
+  "files_modified": [
+    "helen_os/knowledge/ingest.py",
+    "docs/reports/BENCHMARK_REPORT.md"
+  ],
+  "files_created": [
+    "helen_os/tests/test_knowledge_vector_index.py",
+    "helen_os/tests/test_knowledge_vector_gate.py",
+    "helen_os/knowledge/faiss_index.bin",
+    "docs/reports/VECTOR_INDEX_RECEIPT.json",
+    "docs/reports/VECTOR_INDEX_BENCHMARK.json",
+    "docs/reports/P2_FAISS_HNSW_REPORT.md",
+    "docs/reports/DONE_GATE_RECEIPT.md",
+    ".venv-knowledge (python3.13 + faiss-cpu + numpy + pytest, local only)"
+  ],
+  "tests_run": [
+    "test_build_and_query_parity", "test_incremental_add", "test_persistent_reload",
+    "test_dimension_mismatch_falls_back", "test_corrupted_index_falls_back",
+    "test_stale_index_falls_back", "test_deleted_chunk_not_returned",
+    "test_result_shape_unchanged", "test_linear_fallback_without_faiss",
+    "test_boot_without_faiss_import", "test_no_sovereign_paths_touched",
+    "test_zero_vectors_excluded_from_index"
+  ],
+  "tests_passed": true,
+  "corpus_health_disclosure": {
+    "total_chunks": 27593,
+    "real_embeddings": 993,
+    "zero_dead_embeddings": 26600,
+    "dead_pct": 96.4,
+    "cause": "historic embed_batch zero-fill on API failure during original ingest (pre-existing, found by peer review #1)",
+    "fixes_applied": "embed_batch no longer fabricates zeros; failed chunks not indexed; zero vectors excluded from FAISS build; corpus health reported by --benchmark-vector",
+    "operator_action_needed": "re-ingest sources with working GEMINI_API_KEY to re-embed 26,600 dead chunks"
+  },
+  "benchmark_before": {
+    "chunks": 27593,
+    "linear_cold_s": 12.707,
+    "linear_warm_p0_cache_s": 7.121
+  },
+  "benchmark_after": {
+    "index_vectors": 993,
+    "faiss_query_median_s": 0.0013,
+    "faiss_query_first_s_incl_load": 0.017,
+    "index_disk": "12M",
+    "top5_overlap_vs_linear": "5/5",
+    "target_query_s": 0.1,
+    "target_met": true
+  },
+  "speedup": {"vs_linear_cold": 9774.0, "vs_linear_warm": 5477.0},
+  "fallback_verified": true,
+  "forbidden_paths_touched": false,
+  "authority_lint": "PASS",
+  "anti_ghost": "PASS",
+  "capability_registry": "retrieval_only",
+  "objection_tried": "Could FAISS/HNSW return stale, dimension-mismatched, or semantically wrong chunks while hiding behind faster latency?",
+  "objection_answer": "Peer review #1 CONFIRMED this objection: 96.4% of corpus embeddings were zero vectors returning score-0 garbage (pre-existing corpus poisoning, present in linear path too). Remediated: zeros excluded at ingest and at index build (tested); deleted chunks filtered (tested); dim-mismatch/corrupt/stale fall back to exact linear (tested); parity 5/5 on real embeddings.",
+  "review_history": [
+    {"review": 1, "verifier": "peer-review subagent (fresh context)", "verdict": "ABORT",
+     "findings": ["criterion 5: self-match failed on zero-embedding chunk -> exposed 96.4% dead corpus",
+                  "criterion 3: receipt rewritten mid-review (proposer process fault, acknowledged)"]},
+    {"review": 2, "verifier": "peer-review subagent (fresh context)", "verdict": "SEE DONE_GATE_RECEIPT.md"}
+  ],
+  "environment_note": "faiss-cpu not installable in main .venv (Homebrew python 3.14.4 pyexpat/libexpat mismatch breaks pip); dedicated .venv-knowledge used; main venv boots with FAISS_AVAILABLE=False and full linear fallback (proven).",
+  "timestamp": "2026-07-02T20:35:00Z",
+  "final": "HOLD_FOR_OPERATOR"
+}

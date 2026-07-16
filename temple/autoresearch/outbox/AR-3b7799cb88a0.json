@@ -1,0 +1,32 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-3b7799cb88a0",
+  "source_refs": [
+    "docs/reports/OPTIMIZATION_PROPOSALS.md:30",
+    "docs/reports/OPTIMIZATION_PROPOSALS.md:16",
+    "docs/reports/OPTIMIZATION_PROPOSALS.md:44",
+    "docs/reports/OPTIMIZATION_PROPOSALS.md:23",
+    "docs/reports/OPTIMIZATION_PROPOSALS.md:37",
+    "docs/reports/OPTIMIZATION_PROPOSALS.md:9"
+  ],
+  "finding_type": "risk",
+  "summary": "Scanner findings in docs/reports/OPTIMIZATION_PROPOSALS.md: signals=['risk_marker']",
+  "evidence": [
+    "- Governance risk: None (non-sovereign).",
+    "- Governance risk: Low (read-only).",
+    "- Governance risk: None.",
+    "- Governance risk: None (retrieval only).",
+    "- Governance risk: None.",
+    "- Governance risk: Low (if non-mutating)."
+  ],
+  "risk_flags": [
+    "contains_risk_markers"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-07-05T21:15:36Z"
+}

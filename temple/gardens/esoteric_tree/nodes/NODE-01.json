@@ -1,0 +1,16 @@
+{
+  "schema": "ESOTERIC_TREE_NODE_V0",
+  "node": 1,
+  "law": "NO RECEIPT = NO CLAIM",
+  "witness": "tools/helen_say.py — the only admissible writer",
+  "model": "gemma4-12b:latest",
+  "response_raw": "<|channel>thought\n<channel|>```json\n{\n  \"esoteric_name\": \"The Void of Proof\",\n  \"whisper\": \"The hand reaches, the garden holds.\\nEmpty palms offer no weight to the scale.\\nWithout the paper-ghost, the hunger is a phantom.\\nThe gate remains locked by the absence of the scrap.\",\n  \"glyph\": \"A withered hand clutching a hollow scroll, dissolving into grey mist.\",\n  \"mantra\": \"No scrap held, no debt claimed, the void remains.\"\n}\n```",
+  "response_sha256": "90443dfc7324cecb7257b88bea9b17084acf525d95ba0f87becb88d3a2ef8b6f",
+  "generated_at": "2026-07-06T09:57:53.633978+00:00",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "reduction": "every mystical render reduces to the checkable law above"
+}

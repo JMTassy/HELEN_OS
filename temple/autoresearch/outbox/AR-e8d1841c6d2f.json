@@ -1,0 +1,37 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-e8d1841c6d2f",
+  "source_refs": [
+    "oracle_town/VERIFY_ALL.sh",
+    "ci_run_checks.py",
+    "oracle_town/core/replay.py",
+    ".github/workflows/ci.yml"
+  ],
+  "finding_type": "test_gap",
+  "summary": "Oracle Town Verification CI is structurally unable to pass: VERIFY_ALL.sh steps 3-4 require oracle_town/runs/ (create_adversarial_runs.py + runA/B/C frozen artifacts) which was never committed to git (no history). Steps 1-2 pass (module self-tests + 23 integration tests green locally). The script ends with a hardcoded K0-K9 success banner printed unconditionally if reached - verification theater risk. Second of the three red gates on main explained.",
+  "evidence": [
+    "local run 2026-07-06: suites 1-2 pass (10+13 tests), step 3 fails ENOENT oracle_town/runs/create_adversarial_runs.py, set -e aborts",
+    "git log -- oracle_town/runs/ returns empty: never committed on any branch reachable from main",
+    ".gitignore ignores only temple/gardens/**/runs/ - not an ignore accident",
+    "replay.py main() targets oracle_town/runs/run{A,B,C} which do not exist; determinism step 4 would fail identically",
+    "success banner (K0-K9 checklist) is echo-only, printed unconditionally when reached"
+  ],
+  "risk_flags": [
+    "structural_ci_failure",
+    "verification_theater",
+    "missing_fixtures"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-07-06T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (Claude session, oracle-town deep dive)",
+    "gate": "autoresearch_policy.validate_packet",
+    "loop": "ORACLE_TOWN_DEEP_DIVE",
+    "epoch": 1
+  }
+}

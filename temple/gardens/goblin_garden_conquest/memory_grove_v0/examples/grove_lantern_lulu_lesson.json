@@ -1,0 +1,24 @@
+{
+  "schema": "MEMORY_GROVE_OBJECT_V0",
+  "id": "b12e88c0f45a9031",
+  "kind": "lantern",
+  "glyph": "🏮",
+  "label": "Lulu's Return Lantern",
+  "lesson": "Coming back is how the Warren knows you meant it.",
+  "source_event": {
+    "event_id": "evt_crib_return_memory_v0",
+    "event_type": "return_memory",
+    "actor": "Lulu",
+    "summary": "Lulu woke and said she kept the flower; the night turned without a reload.",
+    "session_key": "crib_rung_3",
+    "session_seq": 3
+  },
+  "slot": 7,
+  "zone": "memory_grove",
+  "planted_at_display": "session-local",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "truth_claim": false,
+  "final": "HOLD_FOR_OPERATOR"
+}

@@ -1,0 +1,14 @@
+{
+  "schema": "GOBLIN_OBJECTION_CARD_V0",
+  "packet_id": "AR-9598791758a5",
+  "model": "gemma4-12b:latest",
+  "response_raw": "<|channel>thought\n<channel|>```json\n{\n  \"strongest_no\": \"This packet is a recursive ontological trap masquerading as a structural proposal. It seeks to institutionalize 'meta-reasoning' as a primary routing logic, which would effectively grant the system permission to ignore empirical contradictions in favor of investigating 'latent hypotheses.' If adopted, the system will stop seeking truth and start seeking motives, creating a feedback loop where every contradiction becomes a prompt for speculative fiction rather than a bug to be fixed. It is a proposal to prioritize narrative over reality.\",\n  \"weird_failure_mode\": \"The system begins treating every conflicting sensor input as a deliberate deception by a 'hidden actor,' causing it to hallucinate complex conspiracies to explain simple hardware malfunctions, eventually leading to a complete hallucinatory state where it refuses to act on any data that doesn't fit a 'latent' conspiracy theory.\",\n  \" Cheap_falsifier\": \"grep 'latent hypothesis' docs/proposals/EPISTEMIC_SYNTAX_V1.md | wc -l\",\n  \" goblin_verdict_hint\": \"REJECT\"\n}\n```",
+  "response_sha256": "e23f5aebefd46352036f89ecc86f730438ebd2f0a73ef905439e87a27b5d8e56",
+  "elapsed_s": 16.4,
+  "generated_at": "2026-07-06T09:50:02.279492+00:00",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim": "ATTACK_ONLY — hint ⊬ decision · goblin ⊬ pen"
+}

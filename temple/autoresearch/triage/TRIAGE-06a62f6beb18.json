@@ -1,0 +1,33 @@
+{
+  "schema": "TRIAGE_RECEIPT_V0",
+  "triage_id": "TRIAGE-06a62f6beb18",
+  "timestamp": "2026-07-05T20:52:32.407797+00:00",
+  "packet_count": 26,
+  "themes": [
+    "risk",
+    "ci_seam",
+    "test_gap_cluster",
+    "unconsumed_queue",
+    "proposal"
+  ],
+  "summary": "Outbox triage: 26 packets, 5 themes. Primary gap: consumption loop.",
+  "evidence": [
+    "risk: 10 packets e.g. AR-137a79dbae09",
+    "ci_seam: 1 packets e.g. AR-1c394e006626",
+    "test_gap_cluster: 2 packets e.g. AR-1f936d1bda4b",
+    "unconsumed_queue: 1 packets e.g. AR-332110575215",
+    "proposal: 12 packets e.g. AR-39307ac76191"
+  ],
+  "recommended_actions": [
+    "Build outbox_consumer (triage + route to bounded tranches)",
+    "Wire garden validators into CI (temple/gardens/*/validate_*.py)",
+    "Add test coverage for sandbox adapter (from E1 survivor)",
+    "Promote this triage as claimable action for operator"
+  ],
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "source": "temple/autoresearch/outbox_triage.py"
+}

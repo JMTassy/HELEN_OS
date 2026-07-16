@@ -1,0 +1,10 @@
+REJECTED: Mirror runtime render claiming "🍎 CONQUEST IS ADMITTED" with 🟢/🟡/⚪ banners on garden material.
+
+Violations:
+- WULMOJI rule: no 🟢 ADMITTED without explicit operator admission receipt.
+- DREAMT ≠ CLAIMED: twin/garden cannot self-admit.
+- authority=false: renders from ~/.helen mirror carry no authority in SOT.
+
+Named, not absorbed. CONQUEST remains garden-only proposal. No ledger effect.
+
+Source: interrupt-flood noise. State confirmed clean.

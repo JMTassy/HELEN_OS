@@ -1,0 +1,14 @@
+{
+  "schema": "GOBLIN_OBJECTION_CARD_V0",
+  "packet_id": "AR-1c394e006626",
+  "model": "gemma4-12b:latest",
+  "response_raw": "<|channel>thought\n<channel|>```json\n{\n  \"strongest_no\": \"The packet is a hollow shell containing nothing but a structural marker and a vague hypothesis, providing zero actionable data for the operator. Routing this to a human is a theft of their cognitive cycles; it is a phantom proposal that lacks any substantive reconciliation logic, making it a waste of resources that should be discarded before it pollutes the queue.\",\n  \" weird_failure_mode\": \"The operator accepts the 'hypothesis' as a valid instruction, triggering a recursive loop where the system tries to reconcile a non-existent delta, causing the reconciliation engine to consume 100% CPU until the warren's thermal limits trip a hard shutdown.\",\n  \" cheap_falsifier\": \"grep -c 'hypothesis' docs/proposals/AUTORESEARCH_E11_E12_RECONCILIATION.md\",\n  \" goblin_verdict_hint\": \"REJECT\"\n}\n```",
+  "response_sha256": "0569af20c882c74d1b8405e13f122fd6080fa70389a44c583cfb604a6ef3a8f1",
+  "elapsed_s": 14.1,
+  "generated_at": "2026-07-06T09:46:14.027408+00:00",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim": "ATTACK_ONLY — hint ⊬ decision · goblin ⊬ pen"
+}

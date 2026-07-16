@@ -1,0 +1,33 @@
+{
+  "world": "DREAM_OF_CONQUEST",
+  "sovereign": false,
+  "authority": false,
+  "simulation_only": true,
+  "turn": 0,
+  "goal": "test bloom",
+  "factions": [
+    "ROSE",
+    "SPIRAL",
+    "BOUND",
+    "PERP"
+  ],
+  "territories": {
+    "brume": "neutral",
+    "archive": "ROSE",
+    "spiral_hall": "SPIRAL"
+  },
+  "resources": {
+    "mushrooms": 10,
+    "knowledge": 5,
+    "prestige": 3
+  },
+  "cohesion": 50,
+  "chaos": 20,
+  "buildings": [],
+  "goblin_habits": [
+    "compost_disaster"
+  ],
+  "recent_stamps": [],
+  "claim_log": [],
+  "last_epoch": 0
+}

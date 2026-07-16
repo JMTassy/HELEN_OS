@@ -1,0 +1,35 @@
+HELEN ▸ Run LOCAL-FIRST autoresearch.
+MODE:
+authority=false
+claim=NO_CLAIM
+ledger_effect=none
+RULE:
+Use local LLMs for generation, compression, packet drafting, and schema checks.
+Use FABLE only as final min-gate on the best survivor.
+ROLES:
+Gemma4 = lateral proposer
+Qwen = CHIDDUSH compressor
+HELEN local = WULmath/schema validator
+FABLE = PASS / SOFT_FAIL / HARD_BLOCK only
+JM = decision
+LOOP:
+1. Gemma generates raw ideas.
+2. Qwen extracts invariants.
+3. HELEN local emits CHIDDUSH_RECEIPT_V0 candidates.
+4. Local validator rejects malformed packets.
+5. Select only top survivor.
+6. Send only that survivor to FABLE_MIN_GATE.
+7. FABLE returns PASS / SOFT_FAIL / HARD_BLOCK.
+8. No admission without JM.
+FORBIDDEN:
+raw idea → FABLE
+FABLE writes packets
+FABLE creates tasks
+local model claims truth
+autoresearch admits state
+FINAL:
+local candidates
+local rejects
+one FABLE-gated survivor
+JM decision menu
+authority=false

@@ -1,0 +1,16 @@
+{
+  "schema": "CHIDDUSH_RECEIPT_V0",
+  "chiddush_id": "CHID-20260703-demo-01",
+  "invariant": "Payment cadence must mirror value delivery cadence.",
+  "source_refs": [
+    "mac_local_garden_2026-07"
+  ],
+  "category_hints": [
+    "finance",
+    "operations"
+  ],
+  "confidence": "high",
+  "authority": false,
+  "claim": "NO_CLAIM",
+  "notes": "Distilled from HELEN Mac Local lateral garden output about cash flow and project value delivery."
+}

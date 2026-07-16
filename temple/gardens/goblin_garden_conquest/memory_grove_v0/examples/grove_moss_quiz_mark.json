@@ -1,0 +1,24 @@
+{
+  "schema": "MEMORY_GROVE_OBJECT_V0",
+  "id": "c9d0a4e17f62bb55",
+  "kind": "moss_mark",
+  "glyph": "🍃",
+  "label": "Moss of the Named Pattern",
+  "lesson": "You noticed a pattern and named it — the grove keeps the noticing, not a proof.",
+  "source_event": {
+    "event_id": "evt_quiz_zol_pattern_notice_v0",
+    "event_type": "learn",
+    "actor": "player",
+    "summary": "Player completed a ZOL quiz item and restated the pattern in their own words.",
+    "session_key": "quiz_zol_v2",
+    "session_seq": 11
+  },
+  "slot": 1,
+  "zone": "memory_grove",
+  "planted_at_display": "session-local",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "truth_claim": false,
+  "final": "HOLD_FOR_OPERATOR"
+}

@@ -1,0 +1,36 @@
+{
+  "schema": "CONSUME_RECEIPT_V0",
+  "consume_id": "CONSUME-ac0fe0eb5b3c",
+  "from_triage": "TRIAGE-06a62f6beb18",
+  "timestamp": "2026-07-05T21:08:48.517585+00:00",
+  "packet_count_consumed": 26,
+  "actions": [
+    {
+      "action": "NOTED",
+      "detail": "Build outbox_consumer (triage + route to bounded tranches)",
+      "status": "simulated"
+    },
+    {
+      "action": "ROUTE_TO_CI_WIRING",
+      "detail": "Wire garden validators into CI (temple/gardens/*/validate_*.py)",
+      "status": "pending_operator"
+    },
+    {
+      "action": "ROUTE_TO_BOUNDED_TRANCHE",
+      "detail": "Add test coverage for sandbox adapter (from E1 survivor)",
+      "status": "candidate"
+    },
+    {
+      "action": "ROUTE_TO_BOUNDED_TRANCHE",
+      "detail": "Promote this triage as claimable action for operator",
+      "status": "candidate"
+    }
+  ],
+  "summary": "Consumed triage TRIAGE-06a62f6beb18 into 4 routed actions. No sovereign mutation.",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "source": "temple/autoresearch/outbox_consume.py"
+}

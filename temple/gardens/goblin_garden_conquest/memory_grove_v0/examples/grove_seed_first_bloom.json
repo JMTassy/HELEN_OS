@@ -1,0 +1,24 @@
+{
+  "schema": "MEMORY_GROVE_OBJECT_V0",
+  "id": "a7f3c91e2b04d6e8",
+  "kind": "seed",
+  "glyph": "🌱",
+  "label": "First Bloom Seed",
+  "lesson": "You offered the seed. It became our first bloom.",
+  "source_event": {
+    "event_id": "evt_crib_first_bloom_v0",
+    "event_type": "teach",
+    "actor": "Lulu",
+    "summary": "Lulu celebrated the planted seed and named it OUR FIRST BLOOM.",
+    "session_key": "crib_rung_2",
+    "session_seq": 2
+  },
+  "slot": 3,
+  "zone": "memory_grove",
+  "planted_at_display": "session-local",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "truth_claim": false,
+  "final": "HOLD_FOR_OPERATOR"
+}

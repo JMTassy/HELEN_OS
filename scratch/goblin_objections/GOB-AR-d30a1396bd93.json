@@ -1,0 +1,14 @@
+{
+  "schema": "GOBLIN_OBJECTION_CARD_V0",
+  "packet_id": "AR-d30a1396bd93",
+  "model": "gemma4-12b:latest",
+  "response_raw": "<|channel>thought\n<channel|>```json\n{\n  \"strongest_no\": \"The packet is structurally hollow and lacks sufficient substantiation to justify an escalation to an operator. The 'evidence' field contains only a label ('doctrine_candidate:') without any underlying logic, metrics, or technical specifications. Routing this to a human operator is a waste of high-value resources, as the 'proposal' is currently nothing more than a placeholder marker in a markdown file, providing zero actionable data for a meaningful review.\",\n  \"weird_failure_mode\": \"The operator receives a 'doctrine' packet that is literally empty, causing them to assume the system has suffered a catastrophic data-loss event or a silent corruption of the documentation pipeline, leading to a full manual audit of the entire proposal directory.\",\n  \"cheap_falsifier\": \"grep -r \\\"doctrine_candidate:\\\" docs/proposals/SAFE_NOETIC_METABOLISM_T9_V0.md | wc -l\",\n  \"goblin_verdict_hint\": \"REJECT\"\n}\n```",
+  "response_sha256": "d0041e39392fedd914fed828a7abcc19185d972695c206320a0dbc8cc3e06115",
+  "elapsed_s": 14.7,
+  "generated_at": "2026-07-06T09:51:43.049555+00:00",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim": "ATTACK_ONLY — hint ⊬ decision · goblin ⊬ pen"
+}

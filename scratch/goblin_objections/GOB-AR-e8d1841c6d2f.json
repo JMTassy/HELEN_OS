@@ -1,0 +1,14 @@
+{
+  "schema": "GOBLIN_OBJECTION_CARD_V0",
+  "packet_id": "AR-e8d1841c6d2f",
+  "model": "gemma4-12b:latest",
+  "response_raw": "<|channel>thought\n<channel|>```json\n{\n  \"strongest_no\": \"The packet describes a total collapse of the verification chain where the CI is literally lying to the operator. If the script prints a success banner based on a hardcoded checklist (K0-K9) rather than actual artifact validation, then the entire 'Oracle Town' integrity is compromised. We cannot act on a 'finding' that identifies a structural lie without first establishing if the lie is being exploited by an external actor or if the CI environment itself is compromised. Proceeding risks validating a theater of security that masks a total absence of adversarial testing.\",\n  \"weird_failure_mode\": \"If we 'fix' the CI by committing the missing artifacts, we might inadvertently bake a static, non-adversarial snapshot into the main branch, creating a 'Golden Image' that masks evolving vulnerabilities while making the CI green indefinitely.\",\n  \" cheap_falsifier\": \"ls -R oracle_town/runs/ || echo 'EMPTY'\",\n  \"goblin_verdict_hint\": \"REJECT\"\n}\n```",
+  "response_sha256": "14eeb3a72b1c4ac8b481f517996b002b30f9933353dfcf5088ea736b27dd2a3b",
+  "elapsed_s": 16.5,
+  "generated_at": "2026-07-06T09:51:59.542724+00:00",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim": "ATTACK_ONLY — hint ⊬ decision · goblin ⊬ pen"
+}

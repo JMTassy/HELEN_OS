@@ -1,0 +1,14 @@
+{
+  "schema": "GOBLIN_OBJECTION_CARD_V0",
+  "packet_id": "AR-ed9bd849fb7e",
+  "model": "gemma4-12b:latest",
+  "response_raw": "<|channel>thought\n<channel|>```json\n{\n  \"strongest_no\": \"This proposal is a phantom branch trying to graft a 'temple' structure onto the sovereign ledger path without establishing the actual migration logic. It proposes a path (`temple/sanctuary/<session_id>.ndjson`) that exists in a vacuum, failing to define how the `town/ledger_v1.ndjson` data actually flows into this new scope. Without a defined transformation mapping or a bridge mechanism, moving to 'temple' mode is just creating a disconnected silo that will lead to data fragmentation and loss of state integrity across the OS.\",\n  \"weird_failure_mode\": \"The system might successfully write to the sanctuary path but fail to update the global state pointer, causing the UI to display the old ledger while the backend operates on the new one, effectively creating a 'ghost' session where users see old data but interact with a disconnected reality.\",\n  \" peep_falsifier\": \"grep -r 'temple/sanctuary/' docs/proposals/ | wc -l\",\n  \"goblin_verdict_hint\": \"DEFER\"\n}\n```",
+  "response_sha256": "67db2d703d762b65f8c2f93ec6c5d0e4b936cf48f0bde73722d1a087a19d4ceb",
+  "elapsed_s": 17.2,
+  "generated_at": "2026-07-06T09:52:31.192183+00:00",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim": "ATTACK_ONLY — hint ⊬ decision · goblin ⊬ pen"
+}

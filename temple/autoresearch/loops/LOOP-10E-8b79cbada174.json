@@ -1,0 +1,102 @@
+{
+  "schema": "AUTORESEARCH_LOOP_RECEIPT_V0",
+  "loop_id": "LOOP-10E-8b79cbada174",
+  "timestamp": "2026-07-05T21:15:36.549687+00:00",
+  "epochs": [
+    {
+      "epoch": "E01",
+      "input": "docs/proposals",
+      "candidates": 25,
+      "novel": 2,
+      "verdict": "EMITTED",
+      "packet": "AR-ea91f2b2230c"
+    },
+    {
+      "epoch": "E02",
+      "input": "docs/specs",
+      "candidates": 3,
+      "novel": 3,
+      "verdict": "EMITTED",
+      "packet": "AR-944b83d2fa9e"
+    },
+    {
+      "epoch": "E03",
+      "input": "docs/spec",
+      "candidates": 0,
+      "novel": 0,
+      "verdict": "NO_NOVEL_SIGNAL",
+      "packet": ""
+    },
+    {
+      "epoch": "E04",
+      "input": "docs/reports",
+      "candidates": 4,
+      "novel": 4,
+      "verdict": "EMITTED",
+      "packet": "AR-3b7799cb88a0"
+    },
+    {
+      "epoch": "E05",
+      "input": "docs/protocols",
+      "candidates": 1,
+      "novel": 1,
+      "verdict": "BLOCKED_BY_BUDGET",
+      "packet": "AR-2b76da7c3c87 (not written)"
+    },
+    {
+      "epoch": "E06",
+      "input": "temple/gardens/goblin_garden_conquest",
+      "candidates": 2,
+      "novel": 2,
+      "verdict": "BLOCKED_BY_BUDGET",
+      "packet": "AR-79cc8f4d628b (not written)"
+    },
+    {
+      "epoch": "E07",
+      "input": "temple/gardens/gardening_garden",
+      "candidates": 100,
+      "novel": 100,
+      "verdict": "BLOCKED_BY_BUDGET",
+      "packet": "AR-40e8b802553f (not written)"
+    },
+    {
+      "epoch": "E08",
+      "input": "temple/autoresearch",
+      "candidates": 28,
+      "novel": 28,
+      "verdict": "BLOCKED_BY_BUDGET",
+      "packet": "AR-6bbe516cf2e5 (not written)"
+    },
+    {
+      "epoch": "E09",
+      "input": "temple/subsandbox",
+      "candidates": 4,
+      "novel": 4,
+      "verdict": "BLOCKED_BY_BUDGET",
+      "packet": "AR-b5c1357b58a2 (not written)"
+    },
+    {
+      "epoch": "E10",
+      "input": "artifacts",
+      "candidates": 3,
+      "novel": 3,
+      "verdict": "BLOCKED_BY_BUDGET",
+      "packet": "AR-20bb9174427c (not written)"
+    }
+  ],
+  "emitted_packets": [
+    "AR-ea91f2b2230c",
+    "AR-944b83d2fa9e",
+    "AR-3b7799cb88a0"
+  ],
+  "emission_budget_start": 3,
+  "guard_ceiling": 30,
+  "dedupe_rule": "source_ref overlap with existing outbox = not novel",
+  "pull_mode": "one hypothesis per epoch, top-ranked by risk>test_gap>proposal",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "source": "/tmp/loop10.py (ephemeral runner)"
+}

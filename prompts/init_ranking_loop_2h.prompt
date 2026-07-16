@@ -1,0 +1,50 @@
+# GOBLIN LOOP — INIT_RANKING_2H
+# NON_SOVEREIGN · authority=false · canon=false · ledger_effect=none
+# propose only · never admit · FABLE speaks minimum tokens
+
+GATE 0 (FABLE, hard, fail-closed):
+  python3 temple/autoresearch/ci_outbox_guard.py exits 1 → HALT "PEN FIRST"
+  operator-marked cases in consumption_log.ndjson < 20 → HALT "NO GOLD = FAKE LOOP"
+  any target outside /init ranking weights → HALT "DRIFT"
+
+PHASE 0 — GROUND (20m):
+  build scratchpad/init_goldset_v1.json
+  20–40 cases · operator-marked truth ONLY · each: input · candidates ·
+    approved top3 · rejected distractors
+  guessed truth forbidden · unmarked packets forbidden
+
+PHASE 1 — FREEZE (10m):
+  scratch/autoresearch_init_evaluator_v1.py
+  score = 0.7·Top3Match + 0.2·OrderScore + 0.1·Stability
+  metric frozen for the whole run · no mid-loop edits
+
+PHASE 2 — SEARCH (60m · 12–20 iterations, not 200):
+  per iteration emit exactly:
+    TARGET / HYPOTHESIS / TWEAK / METRIC / RULE / NEXT
+    (≤8 words per line)
+  mutate ONE of: ranking weights · feature coeffs · tie-break priority ·
+    compression penalty · recency↔relevance balance
+  keep iff score ∧ stability improve · else rollback · log every move
+  FORBIDDEN: prompts · schemas · routing · memory · kernel · ledger ·
+    replay · reducer · gates · canon · guarded state
+
+PHASE 3 — ATTACK WINNER (20m):
+  overfit one query class? · rare-case failure? · same input ≠ same rank? ·
+  stability cheat? · diversity collapse?
+  any hit → REJECT despite score · record the kill
+
+PHASE 4 — RECEIPT (20m):
+  emit ONE artifact:
+    temple/autoresearch/outbox/AR-init-ranking-<id>.json
+    or docs/reports/INIT_RANKING_LOOP_2H_V1.md
+  fields: baseline · best · weight diff · failure cases ·
+    keep/reject rule · next iteration target
+  NO COMMIT · NO SHIP · NO CLAIM · reducer_required=true
+
+TERMINATE (sacred):
+  SHIP: <receipt path>   or   ABORT: <phase + cause>
+  open-ended pause forbidden
+
+# launch order when backlog red:
+#   pen tranche → gold set → this loop
+# proposal ⊬ admission · gold = operator marks only · 📜 ledger sleeps

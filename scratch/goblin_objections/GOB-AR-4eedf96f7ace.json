@@ -1,0 +1,14 @@
+{
+  "schema": "GOBLIN_OBJECTION_CARD_V0",
+  "packet_id": "AR-4eedf96f7ace",
+  "model": "gemma4-12b:latest",
+  "response_raw": "<|channel>thought\n<channel|>```json\n{\n  \"strongest_no\": \"The packet is a recursive loop of circular logic; it identifies a proposal marker within a document that is itself the proposal, providing zero extrinsic validation of the actual content. Proceeding treats a structural signal as a substantive fact, effectively laundering a void into a review queue without verifying if the 'T7 candidate' actually exists outside of this self-referential string.\",\n  \" weird_failure_mode\": \"The operator receives a packet that points to a phantom scope, causing them to waste cycles investigating a non-existent 'OVERLAY' constant, potentially triggering a 'Ghost Hunt' state where the system tries to resolve a null reference as a valid architectural change.\",\n  \" cheap_falsifier\": \"grep 'OVERLAY_DOES_NOT_PROMOTE' docs/proposals/MRGTK_v0.md\",\n  \" goblin_verdict_hint\": \"DEFER\"\n}\n```",
+  "response_sha256": "722d62742318b3795e170f5112bbc8e6bcc7636d6022b68c93ca22a7cf1bb509",
+  "elapsed_s": 13.8,
+  "generated_at": "2026-07-06T09:47:30.431709+00:00",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim": "ATTACK_ONLY — hint ⊬ decision · goblin ⊬ pen"
+}

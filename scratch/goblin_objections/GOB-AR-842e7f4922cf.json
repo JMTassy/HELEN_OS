@@ -1,0 +1,14 @@
+{
+  "schema": "GOBLIN_OBJECTION_CARD_V0",
+  "packet_id": "AR-842e7f4922cf",
+  "model": "gemma4-12b:latest",
+  "response_raw": "<|channel>thought\n<channel|>```json\n{\n  \"strongest_no\": \"The packet is a hollow shell of semantic noise masquerading as a structural finding. By identifying 'gap_markers' as a signal without defining the actual delta or the consequence of the gap, the proposal provides zero actionable intelligence. It is a tautology: it points to a gap because there is a gap, providing no utility for the Warren's integrity. Proceeding would waste Operator cycles on a ghost signal that lacks both magnitude and direction.\",\n  \"weird_failure_mode\": \"The Operator might interpret 'gap_marker' as a valid structural requirement, leading the system to automatically generate 'provenance' for non-existent obligations, effectively hallucinating a lineage of phantom debts.\",\n  \" cheap_falsifier\": \"grep 'gap_marker' docs/proposals/HELEN_OBSTRUCTION_V0.md | wc -l\",\n  \"goblin_verdict_hint\": \"REJECT\"\n}\n```",
+  "response_sha256": "f3c4bfdb8b98f63e1150041f368e8fea66d4916b3ca01df63c22adbb34fe96bb",
+  "elapsed_s": 14.1,
+  "generated_at": "2026-07-06T09:49:17.443818+00:00",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim": "ATTACK_ONLY — hint ⊬ decision · goblin ⊬ pen"
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "ESOTERIC_TREE_NODE_V0",
+  "node": 8,
+  "law": "AUTHORITY IS IN THE VERIFIED POSITION, NOT THE OBJECT",
+  "witness": "tools/kernel_guard.sh (the allowlist IS the position)",
+  "model": "gemma4-12b:latest",
+  "response_raw": "<|channel>thought\n<channel|>```json\n{\n  \"esoteric_name\": \"The Anchored Throne of Verity\",\n  \"whisper\": \"Look not at the stone, but the weight it bears.\\nThe object is a phantom, a shifting shadow in the mist.\\nOnly the position, etched in the marrow of the Void,\\nholds the stamp of the True.\\nThe throne remains, though the king turns to dust.\",\n  \"glyph\": \"A heavy iron chair suspended in mid-air, resting upon a single point of solidified shadow.\",\n  \"mantra\": \"The seat holds the power, the seat is the truth.\"\n}\n```",
+  "response_sha256": "3f602101123f4f511179b3cb721bb9277d22547b5c6828c54435b6ce891bf010",
+  "generated_at": "2026-07-06T09:58:55.766901+00:00",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "reduction": "every mystical render reduces to the checkable law above"
+}

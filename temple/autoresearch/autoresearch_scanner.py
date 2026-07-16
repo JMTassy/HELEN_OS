@@ -111,8 +111,48 @@ def _assert_outbox_only(outbox: Path, write_path: Path) -> None:
 # Scanning
 # ---------------------------------------------------------------------------
 
+# --- crossing detection (V2, 2026-07-06) --------------------------------------
+# Membrane law applied to scanning: flag the CROSSING, not the glyph.
+# A marker keyword alone (in a proposal doc, example, or quote) is lexical
+# mention — label leakage, per INIT_RANKING_LOOP_2H_V1. A finding requires the
+# line to describe an action against a governed boundary.
+
+_BOUNDARY_TERMS = (
+    "ledger", "kernel", "sovereign", "canon", "reducer", "admission",
+    "authority", "guard", "gate", "replay", "mayor", "seq", "receipt",
+)
+_CROSSING_VERBS = (
+    "write", "writes", "wrote", "written", "mutate", "mutates", "mutated",
+    "bypass", "bypasses", "bypassed", "bypassing", "skip", "skips", "skipped",
+    "disable", "disables", "disabled", "grant", "grants", "granted",
+    "promote", "promotes", "promoted", "append", "appends", "appended",
+    "override", "overrides", "overridden", "escalate", "escalates",
+    "force", "forces", "forced", "delete", "deletes", "deleted",
+    "self-stamp", "self-stamps", "launder", "launders", "laundering",
+)
+
+_MARKER_SIGNALS = (
+    (("todo", "fixme", "tbd", "missing:", "gap:", "open question"), "gap_marker"),
+    (("risk:", "warning:", "danger:", "forbidden:", "violation:"), "risk_marker"),
+    (("proposal:", "hypothesis:", "candidate:"), "proposal_marker"),
+)
+
+
+def _is_crossing(lower: str) -> bool:
+    """True iff the line describes an action against a governed boundary."""
+    return (any(b in lower for b in _BOUNDARY_TERMS)
+            and any(v in lower for v in _CROSSING_VERBS))
+
+
 def scan_file(path: Path, repo_root: Path) -> Iterator[dict]:
-    """Yield raw finding dicts from a single file. Pure extraction — no policy."""
+    """Yield raw finding dicts from a single file. Pure extraction — no policy.
+
+    V2 (crossing-detection): a marker keyword yields a finding ONLY when the
+    line also crosses an authority/state boundary (_is_crossing). Marker words
+    merely appearing in prose, code fences, or quoted lines are suppressed —
+    they are content, not crossings. Deterministic: findings depend only on
+    file bytes.
+    """
     if _is_secret_file(path):
         return
     if path.suffix not in _SCANNABLE_SUFFIXES:
@@ -126,30 +166,29 @@ def scan_file(path: Path, repo_root: Path) -> Iterator[dict]:
 
     rel = path.relative_to(repo_root).as_posix()
 
-    # Heuristic: look for doc-gap signals (TODO / FIXME / MISSING / TBD)
+    in_fence = False
     for i, line in enumerate(text.splitlines(), 1):
-        lower = line.lower().strip()
+        stripped = line.strip()
+        if stripped.startswith("```") or stripped.startswith("~~~"):
+            in_fence = not in_fence
+            continue
+        if in_fence:
+            continue  # examples / code are quoted context, never crossings
+        if stripped.startswith(">"):
+            continue  # blockquotes are quoted context
+        lower = stripped.lower()
         if not lower:
             continue
 
-        if any(kw in lower for kw in ("todo", "fixme", "tbd", "missing:", "gap:", "open question")):
-            yield {
-                "source_ref": f"{rel}:{i}",
-                "raw_text": line.strip()[:300],
-                "signal": "gap_marker",
-            }
-        elif any(kw in lower for kw in ("risk:", "warning:", "danger:", "forbidden:", "violation:")):
-            yield {
-                "source_ref": f"{rel}:{i}",
-                "raw_text": line.strip()[:300],
-                "signal": "risk_marker",
-            }
-        elif any(kw in lower for kw in ("proposal:", "hypothesis:", "candidate:")):
-            yield {
-                "source_ref": f"{rel}:{i}",
-                "raw_text": line.strip()[:300],
-                "signal": "proposal_marker",
-            }
+        for keywords, signal in _MARKER_SIGNALS:
+            if any(kw in lower for kw in keywords):
+                if _is_crossing(lower):
+                    yield {
+                        "source_ref": f"{rel}:{i}",
+                        "raw_text": stripped[:300],
+                        "signal": signal,
+                    }
+                break  # one signal class per line, first match wins
 
 
 def build_packet(findings: list[dict], source_file: str) -> dict:
@@ -158,10 +197,14 @@ def build_packet(findings: list[dict], source_file: str) -> dict:
         return {}
 
     evidence = [f["raw_text"] for f in findings[:10]]
-    source_refs = list({f["source_ref"] for f in findings})
+    source_refs = sorted({f["source_ref"] for f in findings})
 
-    summary_signals = list({f.get("signal", "") for f in findings})
-    summary = f"Scanner findings in {source_file}: signals={summary_signals}"
+    # sorted: set iteration order is nondeterministic and feeds packet_id hash.
+    # V2 format drops the "signals=[" token so old lexical-noise heuristics
+    # cannot pre-classify crossing packets (label-leak repair).
+    summary_signals = sorted({f.get("signal", "") for f in findings})
+    summary = (f"Boundary-crossing findings in {source_file}: "
+               + ", ".join(summary_signals))
 
     finding_type = classify_finding(summary, evidence)
 

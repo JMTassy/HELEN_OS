@@ -1,0 +1,34 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-eee30b74e78d",
+  "source_refs": [
+    "temple/gardens/goblin_meditation_center/validate_garden.py",
+    "temple/gardens/goblin_garden_conquest/validate_conquest_garden.py",
+    "temple/gardens/goblin_garden_conquest_avalon/validate_avalon.py",
+    ".github/workflows"
+  ],
+  "finding_type": "test_gap",
+  "summary": "All four temple garden validators are fail-closed but none run in CI; a past 300-epoch sibling run broke validate_avalon.py and was only caught manually days later. Wiring the validators into CI closes the regression window.",
+  "evidence": [
+    "grep for validate_garden|validate_avalon|validate_conquest across .github/workflows/ returns nothing",
+    "historical incident 2026-06-19: 300-epoch runs/ tree tripped validate_avalon.py (5 errors) and required manual quarantine (commit 07bdf88)",
+    "GATE NOTE: proposer emitted one phantom path (gobrin_garden_conquest_avalon) — corrected to disk-verified refs by FABLE_MIN_GATE"
+  ],
+  "risk_flags": [
+    "manual_detection_delay",
+    "regression_risk"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-07-03T03:46:44Z",
+  "provenance": {
+    "proposer": "gemma4-12b:latest (HELEN Insights Proposer, local Ollama)",
+    "gate": "FABLE_MIN_GATE (Claude, fresh-role) — PASS",
+    "loop": "FABLE_GEMMA_3EPOCH_V0",
+    "epoch": 3
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schema": "TRACE_ONLY_AUTORESEARCH_LOOP_V0",
+  "epochs": 100,
+  "seed": "A doctrine is admissible for implementation only if it can be located, enforced, and replay-tested.",
+  "final_kernel": [
+    "No location → no doctrine.",
+    "No test → no gate.",
+    "No replay → no admission."
+  ],
+  "status": "converged_on_triad",
+  "authority": false,
+  "admission": "FORBIDDEN",
+  "note": "The loop explored the triad across 100 epochs. The strongest compressed kernel is the three-line form."
+}

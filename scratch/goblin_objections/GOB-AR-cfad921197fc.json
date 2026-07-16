@@ -1,0 +1,14 @@
+{
+  "schema": "GOBLIN_OBJECTION_CARD_V0",
+  "packet_id": "AR-cfad921197fc",
+  "model": "gemma4-12b:latest",
+  "response_raw": "<|channel>thought\n<channel|>```json\n{\n  \"strongest_no\": \"The proposal is a recursive loop of bureaucratic stagnation; routing a documentation marker to an operator is a waste of cycles that provides zero functional value to the warren's integrity. We are moving a needle that isn't connected to a gear, simply ensuring the queue remains occupied by meaningless metadata while the actual infrastructure rots. It is a vanity task designed to inflate activity metrics without altering the reality of the code.\",\n  \"weird_failure_mode\": \"The operator's review queue becomes saturated with thousands of 'gap_marker' notifications, triggering a priority inversion where critical system alerts are buried under a mountain of documentation status updates.\",\n  \" cheapest_falsifier\": \"grep -r 'gap_marker' docs/proposals/.\",\n  \" goblin_verdict_hint\": \"REJECT\"\n}\n```",
+  "response_sha256": "70ba91db409d3c8f0bda5b8280e30f248411d991f7a0123a14fbfc589c06c145",
+  "elapsed_s": 12.5,
+  "generated_at": "2026-07-06T09:51:28.319527+00:00",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim": "ATTACK_ONLY — hint ⊬ decision · goblin ⊬ pen"
+}

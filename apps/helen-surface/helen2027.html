@@ -1086,6 +1086,14 @@ function updateClock(){
 }
 updateClock();setInterval(updateClock,1000);
 
+// Local-view detector: file:// means no public URL yet
+if(location.protocol==='file:'){
+  const b=document.createElement('div');
+  b.textContent='You are viewing HELEN locally. Publish to get a public URL.';
+  b.style.cssText='position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#b8860b;color:#fff;font:600 12px/1.4 "Space Mono",monospace;text-align:center;padding:6px 10px;letter-spacing:.04em';
+  document.body.appendChild(b);
+}
+
 function toast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg;t.classList.add('on');

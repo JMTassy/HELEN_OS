@@ -1,0 +1,17 @@
+{
+  "schema": "TRACE_ONLY_AUTORESEARCH_LOOP_V0",
+  "loop_id": "LOOP-TRACE-200E",
+  "epochs": 200,
+  "seed": "A doctrine is admissible for implementation only if it can be located, enforced, and replay-tested.",
+  "distribution": {
+    "No location \u2192 no doctrine.": 66,
+    "No test \u2192 no gate.": 67,
+    "No replay \u2192 no admission.": 67
+  },
+  "unique_forms": 3,
+  "fixed_point": "The triad: No location \u2192 no doctrine. No test \u2192 no gate. No replay \u2192 no admission.",
+  "conclusion": "200 epochs confirms the three-line kernel as the minimal replayable doctrine. No further compression emerged. Cycle is stable.",
+  "timestamp": "2026-07-05T22:21:50.588354+00:00",
+  "authority": false,
+  "admission": "FORBIDDEN"
+}

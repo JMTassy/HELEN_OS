@@ -1,0 +1,13 @@
+{
+  "schema": "CHIDDUSH_RECEIPT_V0",
+  "chiddush_id": "CHID-20260703-034554-0a9f9aa1",
+  "invariant": "Payment cadence must mirror value delivery cadence.",
+  "source_refs": [
+    "mac_local_garden"
+  ],
+  "category_hints": [],
+  "confidence": "medium",
+  "authority": false,
+  "claim": "NO_CLAIM",
+  "notes": "Compressed from HELEN Mac Local lateral garden. Not yet collapsed."
+}

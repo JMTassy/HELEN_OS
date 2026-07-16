@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "memory_grove_object_v0.json",
+  "title": "MEMORY_GROVE_OBJECT_V0",
+  "description": "Non-sovereign render-layer memory token for Goblin Warren. authority=false always. Does not write ledger/kernel/canon.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "kind",
+    "glyph",
+    "label",
+    "lesson",
+    "source_event",
+    "slot",
+    "authority",
+    "canon",
+    "ledger_effect",
+    "truth_claim",
+    "final"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "MEMORY_GROVE_OBJECT_V0"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 64,
+      "description": "Deterministic id: sha256(canon(source_event.event_id|kind|actor))[:16] or equivalent pure function."
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["seed", "lantern", "moss_mark", "bug_label", "tiny_shrine"]
+    },
+    "glyph": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 8
+    },
+    "label": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "description": "Short player-facing name. No admission language."
+    },
+    "lesson": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 240,
+      "description": "One-line kept lesson. Local memory, not doctrine."
+    },
+    "source_event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_id", "event_type", "actor", "summary"],
+      "properties": {
+        "event_id": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 128
+        },
+        "event_type": {
+          "type": "string",
+          "enum": ["teach", "learn", "name_bug", "return_memory", "notice"]
+        },
+        "actor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "description": "Who taught/learned (e.g. Lulu, Ritchie, player)."
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 280
+        },
+        "session_key": {
+          "type": "string",
+          "maxLength": 64,
+          "description": "Optional stable session/rung key for display (e.g. crib_rung_2)."
+        },
+        "session_seq": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Optional monotonic sequence within local session for tie-break; not wall clock."
+        }
+      }
+    },
+    "slot": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 11,
+      "description": "Deterministic layout slot 0..11 from pure hash of id. Not random."
+    },
+    "zone": {
+      "type": "string",
+      "const": "memory_grove",
+      "description": "Fixed render zone id for v0."
+    },
+    "planted_at_display": {
+      "type": "string",
+      "description": "Optional human display timestamp. NEVER used for layout or id."
+    },
+    "authority": {
+      "type": "boolean",
+      "const": false
+    },
+    "canon": {
+      "type": "boolean",
+      "const": false
+    },
+    "ledger_effect": {
+      "type": "string",
+      "const": "none"
+    },
+    "truth_claim": {
+      "type": "boolean",
+      "const": false
+    },
+    "final": {
+      "type": "string",
+      "const": "HOLD_FOR_OPERATOR"
+    },
+    "forbidden_words_check": {
+      "type": "string",
+      "description": "Optional lint hint. Implementations must reject labels containing ADMITTED|CANON|SHIP|LEDGER_WRITE."
+    }
+  }
+}

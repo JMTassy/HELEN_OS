@@ -313,6 +313,7 @@
     <button data-nav="grammar">📖 GRAMMAR</button>
     <button data-nav="guide">📘 GUIDE</button>
     <button data-nav="silhouette">🎭 SILHOUETTE</button>
+    <button data-nav="combat" id="btnCombatSQ" title="Debug: open combat side quest (Shift+C)">⚔ COMBAT SQ</button>
     <span id="loopquote">“ KNOWLEDGE → QUEST → PROOF → VALIDATION →<br>DECISION → REPLAY ”</span>
   </div>
 
@@ -325,6 +326,7 @@
 
 <script src="warren_cast_sprites.js"></script>
 <script src="warren_town_feed.js"></script>
+<script src="combat_sidequest_v0.js"></script>
 <script>
 (function () {
 'use strict';
@@ -855,7 +857,78 @@ document.querySelectorAll('#navbar button').forEach(b=>{
     else if (nav==='grammar'){ goTo('wulmoji'); }
     else if (nav==='guide'){ inspectorGuide(); goTo('inspector'); }
     else if (nav==='replay'){ inspectorReplay(); goTo('inspector'); }
+    else if (nav==='combat'){ openCombatDebug(); }
   });
+});
+
+/* ---- COMBAT SIDE QUEST V0 (debug trigger only; host commits result cosmetically) ----
+   Isolated module: apps/goblin-warren/combat_sidequest_v0.js
+   Does NOT write outbox, pen, ledger, or FEED. Snapshot is the open town view only.
+   Shift+C also opens. Result → toast + optional window.__lastCombatTrace. */
+const combatToast = (function(){
+  let el = null;
+  return function(msg){
+    if (!el){
+      el = document.createElement('div');
+      el.id = 'combat-sq-toast';
+      el.style.cssText = 'position:fixed;bottom:18px;left:50%;transform:translateX(-50%);'+
+        'z-index:10000;background:#1b1526;border:1px solid #e6b84a;color:#e8dcc0;'+
+        'padding:10px 14px;border-radius:8px;font:12px/1.4 monospace;max-width:90vw;'+
+        'box-shadow:0 8px 24px rgba(0,0,0,.45)';
+      document.body.appendChild(el);
+    }
+    el.textContent = msg;
+    el.style.display = 'block';
+    clearTimeout(el._t);
+    el._t = setTimeout(()=>{ el.style.display='none'; }, 5200);
+  };
+})();
+
+function openCombatDebug(){
+  if (!window.CombatSideQuestV0){
+    combatToast('Combat module missing — load combat_sidequest_v0.js');
+    return;
+  }
+  if (window.CombatSideQuestV0.isCombatSideQuestOpen()){
+    combatToast('Combat already open');
+    return;
+  }
+  /* snapshot: only cosmetic UI flags we may have toggled (none required) */
+  const snapshot = { selectedRole: selected && selected.role, t: Date.now() };
+  window.CombatSideQuestV0.openCombatSideQuest({
+    sourceZoneId: 'warren_town',
+    sourceTraceId: FEED ? FEED.source_digest : null,
+    encounterSeed: 0xC0A7 ^ ((Date.now() / 1000) | 0),
+    difficultyPreset: 'normal'
+  }, function(result){
+    /* restore: combat overlay removed by module; re-assert town still interactive */
+    selected = selected; // no-op preserve
+    window.__lastCombatTrace = {
+      schema: 'combat_trace_critter_rescue_v0',
+      host: 'warren_town',
+      snapshot: snapshot,
+      result: result,
+      authority: false,
+      claim: 'NO_CLAIM',
+      note: 'Cosmetic only. Host logged result; no outbox/pen/ledger write.'
+    };
+    const line = result.status === 'completed'
+      ? `⚔ Combat complete · saved ${result.crittersSaved} · trace ${result.rewardTraceId}`
+      : `⚔ Combat ${result.status} · saved ${result.crittersSaved} · no reward`;
+    combatToast(line + ' · global town unchanged');
+    console.info('[warren_town] combat side quest result', window.__lastCombatTrace);
+  });
+}
+document.getElementById('btnCombatSQ').addEventListener('click', function(e){
+  e.stopPropagation();
+  openCombatDebug();
+});
+window.addEventListener('keydown', function(e){
+  if (e.shiftKey && (e.code === 'KeyC' || e.key === 'C')){
+    if (window.CombatSideQuestV0 && window.CombatSideQuestV0.isCombatSideQuestOpen()) return;
+    e.preventDefault();
+    openCombatDebug();
+  }
 });
 })();
 </script>

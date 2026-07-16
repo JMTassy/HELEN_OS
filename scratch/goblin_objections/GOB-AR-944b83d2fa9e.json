@@ -1,0 +1,14 @@
+{
+  "schema": "GOBLIN_OBJECTION_CARD_V0",
+  "packet_id": "AR-944b83d2fa9e",
+  "model": "gemma4-12b:latest",
+  "response_raw": "<|channel>thought\n<channel|>```json\n{\n  \"strongest_no\": \"The packet is a circular tautology that provides zero actionable intelligence. It identifies a 'risk marker' because it contains a 'risk marker', effectively reporting that a warning exists without explaining the underlying vulnerability, the scope of the drift, or the actual impact on the HERALDIC_SYMBOL_SET. Acting on this would force an operator to review a string of text that is neither a bug nor a breach, but merely a labeling artifact that satisfies a regex without describing a reality.\",\n  \"weird_failure_mode\": \"The operator spends three hours manually auditing a harmless markdown header, leading to 'Reviewer Fatigue' where they begin approving actual high-severity risks because they have been conditioned to see every minor documentation drift as a critical priority.\",\n  \"cheap_falsifier\": \"grep -r 'Drift warning' docs/Specs/HERALDIC_SYMBOL_SET_V0_1.md | wc -l\",\n  \"goblin_verdict_hint\": \"REJECT\"\n}\n```",
+  "response_sha256": "a9b4c1b25aca542fc5f40aef63707837a0006f5ebb5c8f0b64448db51ff26503",
+  "elapsed_s": 15.0,
+  "generated_at": "2026-07-06T09:49:45.905295+00:00",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim": "ATTACK_ONLY — hint ⊬ decision · goblin ⊬ pen"
+}

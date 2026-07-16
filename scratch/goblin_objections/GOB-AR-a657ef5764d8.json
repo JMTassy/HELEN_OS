@@ -1,0 +1,14 @@
+{
+  "schema": "GOBLIN_OBJECTION_CARD_V0",
+  "packet_id": "AR-a657ef5764d8",
+  "model": "gemma4-12b:latest",
+  "response_raw": "<|channel>thought\n<channel|>```json\n{\n  \"strongest_no\": \"The packet is a recursive loop of administrative noise; it identifies a 'risk' that is merely the existence of other documentation markers. Routing this to an Operator is a waste of high-level cognitive cycles on a tautology. If the renderer flags a phrase, that is a rendering issue, not a structural risk requiring manual intervention. We are feeding the Overseer scraps of paper that say 'there is writing on this paper', which is neither a risk nor a discovery.\",\n  \"weird_failure_mode\": \"By routing this to an Operator, the automated system might interpret the 'risk' as a critical security breach, triggering a full-system lockdown or a purge of the FOCUS_MODE_TERMINAL_SPEC file, deleting the very documentation we are trying to refine.\",\n  \" cheapest_falsifier\": \"grep 'risk_marker' docs/proposals/FOCUS_MODE_TERMINAL_SPEC.md | wc -l\",\n  \" goblin_verdict_hint\": \"REJECT\"\n}\n```",
+  "response_sha256": "e5574ee0f6d3b7413d1c6cd8ca6db098c3550d3178995ab755a556c7dfda63e2",
+  "elapsed_s": 16.2,
+  "generated_at": "2026-07-06T09:50:18.468251+00:00",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim": "ATTACK_ONLY — hint ⊬ decision · goblin ⊬ pen"
+}

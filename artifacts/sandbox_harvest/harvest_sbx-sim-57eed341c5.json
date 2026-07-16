@@ -1,0 +1,62 @@
+{
+  "schema": "HELEN_SANDBOX_HARVEST_V0",
+  "trace_id": "sbx-sim-57eed341c5",
+  "operator_task": "demo sidecar emission for receipt",
+  "diff_summary": "Added regression guard in widget and tightened assertion in test_widget.py. No behavior change for happy path. [SIMULATE]",
+  "tests_run": {
+    "passed": 12,
+    "failed": 0,
+    "total": 12,
+    "command": "python -m pytest tests/test_widget.py -q --tb=no",
+    "summary": "12 passed in 0.8s"
+  },
+  "files_touched": [
+    "src/widget.py",
+    "tests/test_widget.py"
+  ],
+  "forbidden_paths_touched": [],
+  "capability_claims": [
+    "inspect_files",
+    "read_source",
+    "run_tests",
+    "propose_patch",
+    "generate_diff"
+  ],
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "status": "HOLD_FOR_OPERATOR",
+  "final": "HOLD_FOR_OPERATOR",
+  "local_receipt": {
+    "trace_id": "sbx-sim-57eed341c5",
+    "packet_hash": "4432b3329e0fa293999549206f8c19d4d228ab7c993a4945a113fcbe32d1dbab",
+    "generated_at": "2026-06-22T17:10:24.185498+00:00",
+    "authority": "NON_SOVEREIGN",
+    "canon": "NO_SHIP",
+    "ledger_effect": "none"
+  },
+  "helen_checks": {
+    "anti_ghost": "PASS",
+    "anti_ghost_findings": [],
+    "capability_registry": "PASS",
+    "capability_findings": [
+      "accepted safe claims: inspect_files, read_source, run_tests, propose_patch, generate_diff"
+    ],
+    "authority_linter": "PASS",
+    "authority_detail": {
+      "verdict": "PASS",
+      "receipt_found": false,
+      "hard_violations": [],
+      "soft_warnings": [],
+      "text_length": 144,
+      "authority": false,
+      "sovereign": false,
+      "ledger_effect": "none"
+    },
+    "forbidden_path": "PASS",
+    "forbidden_findings": [],
+    "overall": "HOLD_FOR_OPERATOR"
+  },
+  "_simulate": true
+}

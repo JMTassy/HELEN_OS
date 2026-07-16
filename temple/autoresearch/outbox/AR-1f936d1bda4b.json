@@ -1,0 +1,31 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-1f936d1bda4b",
+  "source_refs": [
+    "tools/helen_sandbox_agent_adapter.py",
+    "docs/proposals/HELEN_SANDBOX_AGENT_ADAPTER_V0.md"
+  ],
+  "finding_type": "test_gap",
+  "summary": "New sandbox agent adapter (tools/helen_sandbox_agent_adapter.py) lacks corresponding unit tests or integration verification.",
+  "evidence": [
+    "tools/helen_sandbox_agent_adapter.py exists untracked; grep across tests/ and helen_os/tests/ finds zero references to sandbox_agent_adapter",
+    "companion proposal HELEN_SANDBOX_AGENT_ADAPTER_V0.md exists untracked"
+  ],
+  "risk_flags": [
+    "unverified_logic",
+    "regression_risk"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-07-03T03:43:51Z",
+  "provenance": {
+    "proposer": "gemma4-12b:latest (HELEN Insights Proposer, local Ollama)",
+    "gate": "FABLE_MIN_GATE (Claude, fresh-role) — PASS",
+    "loop": "FABLE_GEMMA_3EPOCH_V0",
+    "epoch": 1
+  }
+}

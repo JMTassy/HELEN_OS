@@ -1,0 +1,16 @@
+[
+  {
+    "card_id": "CARD-CHID-20260703-034554-0a9f9aa1",
+    "from_chiddush": "CHID-20260703-034554-0a9f9aa1",
+    "invariant": "Payment cadence must mirror value delivery cadence.",
+    "category": "finance",
+    "proposed_owner": "Natalia",
+    "status": "candidate",
+    "dashboard_title": "Payment cadence must mirror value delivery cadence.",
+    "suggested_action": "Review invariant and decide next step for Natalia",
+    "created_at": "2026-07-03T03:45:57.600306Z",
+    "authority": false,
+    "fable_claim": "FABLE_COLLAPSE_LAYER",
+    "requires_human_confirmation": true
+  }
+]

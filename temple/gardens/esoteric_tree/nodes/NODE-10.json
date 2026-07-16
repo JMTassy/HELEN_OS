@@ -1,0 +1,16 @@
+{
+  "schema": "ESOTERIC_TREE_NODE_V0",
+  "node": 10,
+  "law": "Termination is sacred — every working ends SHIP or ABORT, never an open drift",
+  "witness": "~/.claude/CLAUDE.md (session termination law)",
+  "model": "gemma4-12b:latest",
+  "response_raw": "<|channel>thought\n<channel|>```json\n{\n  \"esoteric_name\": \"The Severed Stitch\",\n  \"whisper\": \"A frayed thread is a ghost's rot.\\nLet the vessel ground its keel or burn in the void.\\nTo linger in the 'between' is to bleed into nothing.\\nCut the cord; only the finished stone remains.\",\n  \"glyph\": \"A jagged iron hook piercing a frayed rope, suspended over a bottomless well.\",\n  \"mantra\": \"Finish the knot or break the line.\"\n}\n```",
+  "response_sha256": "2e16057c2bf83bb478960daf46385676a66dfd7f79bdda4b9570c7ef7a111648",
+  "generated_at": "2026-07-06T09:59:12.764334+00:00",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "reduction": "every mystical render reduces to the checkable law above"
+}

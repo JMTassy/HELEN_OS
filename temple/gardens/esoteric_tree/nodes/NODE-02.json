@@ -1,0 +1,16 @@
+{
+  "schema": "ESOTERIC_TREE_NODE_V0",
+  "node": 2,
+  "law": "NO HASH = NO VOICE — non-deterministic output never enters the spine unhashed",
+  "witness": "scripts/helen_k8_lint.py (K8 boundary)",
+  "model": "gemma4-12b:latest",
+  "response_raw": "<|channel>thought\n<channel|>```json\n{\n  \"esoteric_name\": \"The Unhashed Silence\",\n  \"whisper\": \"The spine is a hollow bone of sequence,\\nWhere every thought must wear a signature of salt.\\nWithout the hash, the scream is a ghost in the void,\\nA vibration without a vessel, a voice without a weight.\\nOnly the forged seal permits the breath to enter.\",\n  \"glyph\": \"A heavy iron key melting into a stream of jagged numbers.\",\n  \"mantra\": \"No signature, no echo; the spine remains mute.\"\n}\n```",
+  "response_sha256": "79a7985375e0c8406a4102b500c2355e37762b962387191bc4dcd5bf409c1ce6",
+  "generated_at": "2026-07-06T09:58:02.872165+00:00",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "reduction": "every mystical render reduces to the checkable law above"
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "ESOTERIC_TREE_NODE_V0",
+  "node": 3,
+  "law": "Proposer ≠ Validator — no one approves their own work",
+  "witness": "oracle_town/skills/feynman/peer_review (K2/Rule 3)",
+  "model": "gemma4-12b:latest",
+  "response_raw": "<|channel>thought\n<channel|>```json\n{\n  \"esoteric_name\": \"The Bifurcated Mirror\",\n  \"whisper\": \"The hand that carves the stone cannot be the eye that weighs it.\\n\"The self is a liar in the theater of proof.\\n\"To judge the shadow, one must stand outside the light of its casting.\\n\"Separate the weaver from the weaver's knot.\",\n  \"glyph\": \"Two obsidian scales suspended by a frayed rope, neither side touching the other.\",\n  \"mantra\": \"One crafts the deed, another marks the seal.\"\n}\n```",
+  "response_sha256": "45518428db79ed2dcd583e55e06a42a15b6763d1606c01771309d9a26ce8a758",
+  "generated_at": "2026-07-06T09:58:12.131633+00:00",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "reduction": "every mystical render reduces to the checkable law above"
+}

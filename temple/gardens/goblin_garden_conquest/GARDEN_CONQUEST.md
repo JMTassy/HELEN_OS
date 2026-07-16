@@ -82,6 +82,7 @@ The playable town where the cognitive functions walk, propose, and never rule.
 | `apps/goblin-warren/warren_town.html` | **Canonical interactive app surface** — Warren cockpit / AAA dashboard, real outbox/feed inspector, procedural Canvas, no external assets, safety tests |
 | `temple/gardens/goblin_garden_conquest/warren-town.html` | **Garden LIVE-NPC playground / sketch** — non-canonical concept-and-play lane, not the app cockpit |
 | `temple/gardens/goblin_garden_conquest/warren-town-preview.jpg` | **Concept art only** — AI-generated visual reference; not a screenshot of either surface, not a witness |
+| `temple/gardens/goblin_garden_conquest/warren-home-concept.png` | **Concept art only** — locked north star for the WARREN HOME player shell; spec at `WARREN_HOME_SPEC_V0.md`; not a screenshot, not a witness |
 
 No visual reference implies admission. The surfaces are not folded and not renamed;
 this seam note is the boundary.
