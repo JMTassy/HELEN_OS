@@ -1,0 +1,27 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-promptcomp-e3a1",
+  "target": "prompt_compression",
+  "hypothesis": "memory.get_history() (memory.py:116) has no tail param; both helen.py:speak() and server.py:59 read full NDJSON then slice in Python. Adding tail=Optional[int] to get_history() closes both call sites at once.",
+  "finding_type": "gap",
+  "summary": "Prior packet AR-f7ec3779a583 proposed tail=20 at helen.py:speak() only. New evidence: server.py:59 has identical gap — full NDJSON read, Python slice at return. Source fix (memory.py:116) remains unimplemented. Two unbounded call sites, one source fix.",
+  "evidence": [
+    "helen_os_scaffold/helen_os/memory.py:116 — get_history() reads all NDJSON lines unconditionally; no tail param",
+    "helen_os_scaffold/helen_os/helen.py:53 — history = self.memory.get_history() (unbounded, prior packet)",
+    "helen_os_scaffold/server.py:59-60 — history = memory.get_history(); return history[-limit:] (full read + Python slice, NEW)",
+    "helen_os_scaffold/helen_talk.py:373 — raw_history = memory.get_history()[-20:] (correctly bounded, already cited)",
+    "helen_os_scaffold/helen_os/api/do_next.py:585 — max_context_messages=10 cap already applied (correctly handled)"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "proposed_tweak": "Add tail: Optional[int] = None to memory.get_history(); use collections.deque(maxlen=tail) when set. Update helen.py:speak() to get_history(tail=20) and server.py:59 to get_history(tail=limit), removing the Python slice. Three files, six lines total.",
+  "metric": "stub test: session of 30 turns; assert len(memory.get_history(tail=20)) == 20; assert memory.get_history() returns 30; assert server /api/history?limit=5 returns 5 entries",
+  "rule": "keep if both call sites bounded and do_next path unaffected; reject if any replay or test regression",
+  "next": "Add tail param to memory.py:116; update helen.py:53 and server.py:59; add stub test; run helen_os_scaffold/tests/",
+  "prior_packet": "AR-f7ec3779a583",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-07-16"
+}
