@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Goblin Warren: Second Bloom — The Dying Fire</title>
+<style>
+  :root { color-scheme: dark; }
+  html, body { margin: 0; height: 100%; background: #12101c; overflow: hidden;
+    font-family: Georgia, 'Times New Roman', serif; color: #f0e6d2; }
+  #stage { position: fixed; inset: 0; touch-action: none; cursor: pointer; }
+  .hud-card { position: fixed; background: rgba(20,14,30,0.82); border: 1px solid rgba(255,200,120,0.25);
+    border-radius: 12px; padding: 10px 16px; font-size: 17px; line-height: 1.45;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.5); }
+  #hud-objective { top: 14px; left: 14px; max-width: 46vw; }
+  #hud-controls { position: fixed; top: 14px; right: 14px; display: flex; gap: 8px; }
+  .hud-btn { background: rgba(30,22,44,0.9); color: #f0e6d2; border: 1px solid rgba(255,200,120,0.35);
+    border-radius: 10px; font-size: 20px; padding: 8px 14px; cursor: pointer; }
+  .hud-btn:hover { background: rgba(60,44,80,0.9); }
+  .hud-btn.wide { font-size: 16px; width: 100%; margin-top: 10px; font-family: inherit; }
+  #hud-banner { top: 70px; left: 50%; transform: translateX(-50%); }
+  #hud-complete { top: 50%; left: 50%; transform: translate(-50%,-50%); max-width: 340px; text-align: center; }
+  #hud-complete h2 { margin: 4px 0 10px; font-weight: normal; }
+  .quiet { opacity: 0.75; font-size: 14px; font-style: italic; }
+  .hud-hint { position: fixed; bottom: 12vh; left: 50%; transform: translateX(-50%);
+    background: rgba(255,217,122,0.14); border: 1px solid rgba(255,217,122,0.5);
+    border-radius: 10px; padding: 8px 14px; font-size: 15px; }
+  .hidden { display: none !important; }
+  #dev-inspector { position: fixed; bottom: 8px; left: 8px; font: 11px monospace;
+    background: rgba(0,0,0,0.75); padding: 8px; border-radius: 6px; white-space: pre;
+    max-height: 40vh; overflow: auto; color: #7dffb0; }
+</style>
+</head>
+<body>
+<canvas id="stage"></canvas>
+<div id="dev-inspector" class="hidden"></div>
+<script type="module">
+import { World } from './src/core/state.js';
+import { L1_DYING_FIRE } from './src/content/levels/L1_DYING_FIRE.js';
+import { WorldRenderer } from './src/render/world.js';
+import { Hud } from './src/ui/hud.js';
+import { save, load, clear, resumeBanner } from './src/game/persistence.js';
+import { TICKS_PER_SECOND } from './src/core/determinism.js';
+import { INPUT } from './src/core/events.js';
+
+const canvas = document.getElementById('stage');
+const inspector = document.getElementById('dev-inspector');
+let world, renderer, hud;
+let calm = false;
+
+function boot() {
+  world = new World(structuredClone(L1_DYING_FIRE), 7);
+  renderer = new WorldRenderer(canvas, world, { reduceParticles: calm });
+  document.querySelectorAll('.hud-card, #hud-controls').forEach(n => n.remove());
+  hud = new Hud(document.body, world, {
+    toggleCalm() { calm = !calm; renderer.reduceParticles = calm; },
+    restart() { clear(); boot(); },
+  });
+  const banner = resumeBanner(load());
+  if (banner) hud.showBanner(banner);
+  world.bus.on('*', () => save({
+    fireState: world.fire.state,
+    marked: world.traces.length > 0,
+    completed: world.completed,
+  }));
+}
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+boot();
+
+// ── input bindings (V0: pointer; tactile pack rebinds these later) ──────────
+const hit = (px, py, pos, r) =>
+  Math.hypot(px - pos[0] * canvas.width, py - pos[1] * canvas.height) < r;
+
+let holding = null;   // 'FIRE' | 'BIGWOOD'
+let dragging = null;  // 'TWIG'
+let downAt = null;
+
+canvas.addEventListener('pointerdown', (e) => {
+  const { offsetX: x, offsetY: y } = e;
+  downAt = [x, y];
+  const twig = world.objects.get('TWIG');
+  const wood = world.objects.get('BIGWOOD');
+  if (twig && !twig.consumed && hit(x, y, twig.dragPos || twig.position, 42)) {
+    dragging = 'TWIG';
+  } else if (wood && wood.visible && !wood.consumed && hit(x, y, wood.position, 56)) {
+    holding = 'BIGWOOD';
+  } else if (hit(x, y, world.firePosition, 70)) {
+    holding = 'FIRE';
+  }
+});
+
+canvas.addEventListener('pointermove', (e) => {
+  if (dragging === 'TWIG') {
+    world.objects.get('TWIG').dragPos = [e.offsetX / canvas.width, e.offsetY / canvas.height];
+  }
+});
+
+canvas.addEventListener('pointerup', (e) => {
+  const { offsetX: x, offsetY: y } = e;
+  if (dragging === 'TWIG') {
+    if (hit(x, y, world.firePosition, 80)) world.dispatch(INPUT.DRAG, { objectId: 'TWIG' });
+    else world.objects.get('TWIG').dragPos = null;
+    dragging = null;
+  } else if (holding === 'BIGWOOD') {
+    const moved = downAt && Math.hypot(x - downAt[0], y - downAt[1]) > 14;
+    const wood = world.objects.get('BIGWOOD');
+    if (moved || !wood.glowHint) {
+      world.dispatch(INPUT.DRAG, { objectId: 'BIGWOOD' });
+      wood.wiggle = 12; // render-only shake; logic already refused the move
+    } else {
+      world.dispatch(INPUT.MARK, { objectId: 'BIGWOOD' });
+    }
+  }
+  holding = null; downAt = null;
+});
+
+// backtick = dev inspector (never the default player experience)
+window.addEventListener('keydown', (e) => {
+  if (e.key === '`') inspector.classList.toggle('hidden');
+});
+
+// ── loops: logical ticks fixed-step; render on rAF; KINDLE while held ───────
+const TICK_MS = 1000 / TICKS_PER_SECOND;
+let acc = 0, last = performance.now();
+function frame(now) {
+  acc += now - last; last = now;
+  while (acc >= TICK_MS) {
+    acc -= TICK_MS;
+    if (holding === 'FIRE') world.dispatch(INPUT.KINDLE);
+    world.tick();
+  }
+  renderer.draw();
+  if (!inspector.classList.contains('hidden')) {
+    inspector.textContent = JSON.stringify(world.snapshot(), null, 1);
+  }
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
