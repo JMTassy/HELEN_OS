@@ -1,0 +1,27 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-init-rank-d9c2",
+  "target": "init_ranking",
+  "hypothesis": "_top_threads() reads last_updated at line 104 but score formula at line 112 only uses is_unresolved+salience; equal-salience threads rank by dict insertion order, violating docstring criterion '3. recent activity'",
+  "finding_type": "gap",
+  "summary": "init_helen_wedge.py:_top_threads() collects last_updated per thread (line 104) but the score formula (line 112) is (is_unresolved*1000)+salience only. Recency is a documented criterion (docstring line 92) but a dead letter. Observed: OLD_HIGH_SAL (2025-01-01) outranks NEW_HIGH_SAL (2026-07-16) at equal salience=9 because dict insertion order wins ties. Test test_high_impact_thread_ranked only asserts len(top_3)>0 — no rank assertion.",
+  "evidence": [
+    "helen_os/api/init_helen_wedge.py:92 — docstring says '3. recent activity' as ranking criterion",
+    "helen_os/api/init_helen_wedge.py:104 — last_updated = thread_obj.get('last_updated', '') — read but never used",
+    "helen_os/api/init_helen_wedge.py:112 — score = (is_unresolved * 1000) + salience — no recency term",
+    "helen_os/api/init_helen_wedge.py:117 — scored.sort(key=lambda x: x[1], reverse=True) — last_updated absent from sort key",
+    "helen_os/tests/test_init_determinism_against_chaos.py:224-242 — test_high_impact_thread_ranked asserts only len(top_3)>0, no recency coverage",
+    "Observed: _top_threads({'OLD_HIGH_SAL':salience=9,last_updated=2025-01, 'NEW_HIGH_SAL':salience=9,last_updated=2026-07}) returns ['OLD_HIGH_SAL','NEW_HIGH_SAL'] — insertion wins"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "proposed_tweak": "Change scored.sort() at line 117 from key=lambda x: x[1] to key=lambda x: (x[1], x[2]), and append last_updated string to each tuple at line 114 as third element. ISO timestamps sort lexicographically correctly — no datetime parsing needed. Two-line change.",
+  "metric": "Unit test: _top_threads(corpus_with_OLD_and_NEW_at_equal_salience_9) → NEW_HIGH_SAL is result[0]; OLD_HIGH_SAL is result[1]",
+  "rule": "keep if new-thread-same-salience outranks old-thread and all existing determinism tests still pass; reject if any equal-salience tie produces non-determinism or if unresolved-status priority is disturbed",
+  "next": "Add tuple element: scored.append((thread_id, score, last_updated)); update sort key to x[1:3]; add stub test asserting recency-tie-break; run helen_os/tests/test_init_determinism_against_chaos.py",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-07-16"
+}
