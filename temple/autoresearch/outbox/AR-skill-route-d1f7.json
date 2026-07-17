@@ -1,0 +1,34 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-skill-route-d1f7",
+  "target_surface": "skill_routing",
+  "epoch": "E10",
+  "source_refs": [
+    "helen_dispatch_v1_router.py:339",
+    "helen_dispatch_v1_router.py:129-169"
+  ],
+  "finding_type": "gap",
+  "summary": "Dead comment: _compute_route() Rule 9 says 'or SKILL if multi-step intent' but no NLU detection exists. All USER_QUERY text routes to AGENT regardless of content. Explicit-field path (claim_extraction, audit_type) reaches SKILL; natural-language equivalent never does.",
+  "evidence": [
+    "helen_dispatch_v1_router.py:339: '# Rule 9: User queries → AGENT (single transform) or SKILL if multi-step intent' — comment is unimplemented",
+    "probe: {'text': 'extract all claims from document X'} → AGENT (expected SKILL for multi-step)",
+    "probe: {'text': 'audit the last 10 entries and batch summarize'} → AGENT",
+    "probe: {'claim_extraction': True, 'source': 'doc_1'} → SKILL (explicit field works)",
+    "gap: _classify_input() at line 129 checks fields only, never inspects input_obj['text'] content"
+  ],
+  "hypothesis": "If _classify_input() detects multi-step keywords in USER_QUERY text, SKILL route count increases with no false blocks on simple queries.",
+  "proposed_tweak": "In _classify_input(), after field checks, inspect input_obj.get('text','') for terms ('extract','audit','batch','validate','check'); return CLAIM_EXTRACTION_REQUEST or AUDIT_REQUEST to reach SKILL branch. Proposal only — no write.",
+  "metric": "Run probe: 3 multi-step text queries + 3 simple queries; success = all multi-step → SKILL, all simple → AGENT.",
+  "keep_rule": "KEEP if multi-step detection ≥3/3 correct, simple passthrough ≥3/3 correct; REJECT if any false block.",
+  "next": "Implement keyword list; run probe suite; measure.",
+  "risk_flags": [
+    "keyword list must be short and conservative — over-broad terms produce false SKILL routes for simple queries"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-07-17T00:00:00Z"
+}
