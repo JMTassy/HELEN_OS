@@ -59,6 +59,7 @@ Non-sovereign sandbox. Status: NON_SOVEREIGN / NO_SHIP. Structure:
 - `tools/helen_say.py` — canonical writer (payload_hash = sha256(canon(payload))); `--op` values: `fetch` (default), `dialog`, `shell`, `promote_skill`, `seq_correction`
 - `tools/ndjson_writer.py` — kernel boundary writer; uses `fcntl.flock` (exclusive) + re-reads on-disk tail under lock to prevent TOCTOU seq forks
 - **Admissibility**: `helen_say.py` → `ndjson_writer.py` is the only admitted path. Direct appends to `town/ledger_v1.ndjson` are forbidden and rejected by `tools/kernel_guard.sh`.
+- **`CONSUMER_ALLOWLIST`** (`tools/kernel_guard.sh` RULE 2): the closed set of files permitted to import the writer. Adding a consumer requires an operator ruling (last: `+3` at `ad32250`, 2026-07-06 — kernel daemon + two Thm 4.2 witness tests).
 
 ### Layer 3: Execution + Autonomy
 - `helen_os/executor/` — bounded executor (non-sovereign: runs tasks, emits envelopes, no verdicts)
@@ -120,6 +121,37 @@ Local HAL-role inference driver and epoch runner. Per-agent model assignment is 
 - `docs/specs/WUL_PACKET_SPEC_V0_1.md` — formal spec
 - `docs/proposals/TEMPLE_TRANSMUTATION_REQUEST_WUL_P1_VALIDATOR_V1.json` — bridge artifact from TEMPLE_200_WUL; `authority: NONE`, `bridge_status: PENDING_MAYOR_REVIEW`
 
+## Digital Metabolism & Autoresearch Organs
+
+The active research frontier (2026-07). Everything here is **NON_SOVEREIGN · authority=false · ledger_effect=none**; only the operator's collapse produces state (`gate PASS ⊬ admission`; `Fable card ⊬ task · JM decision ⊢ admin reality`).
+
+### Digital Metabolism (`docs/proposals/HELEN_DIGITAL_METABOLISM_V0.md`, PROPOSAL)
+Models HELEN as a typed metabolism, not a prompt sequence. Nine-stage pathway `🌌→🌱→🔥→🔍→📖→👤→⚖️→📜→🌍`; LLMs are interchangeable "enzymes." **No stage may be skipped.**
+- `tools/helen_metabolism.py` — local metabolism simulator (`--demo`, `--stage`)
+- `tools/chiddush_compressor.py` — raw lateral output → `CHIDDUSH_RECEIPT_V0` (a *chiddush* = a compressed novel invariant; the only object type FABLE processes)
+- `tools/chiddush_compost.py` — composts garden output through CHIDDUSH → local validation → FABLE min-gate
+- `tools/fable_jmt_collapse.py` — FABLE collapse layer: CHIDDUSH receipts → dashboard candidate cards
+- **G_σ Organ Separation Gate** (`src/separation_gate.py`) mechanically proves the metabolism's separation laws — run `python3 src/separation_gate.py`.
+
+### Autoresearch organs (`temple/autoresearch/`)
+The "consumption organ" stack — the loop had generation/compression/validation but no *consumer* that could fail the build; that was the identified 10× lever.
+- `two_stage_loop.py` — observe-then-experiment loop (Stage 1 OBSERVE, git-reads only; Stage 2 CLASSIFY→RANK→ANTI_LOOP→PLAN→REPORT→STOP). Fixes "decides before observing." Hard law: no loop targets the same surface twice without new evidence.
+- `observation_packet.py` (read-only snapshot), `dirty_state.py` (pure predicate), `surface_ranker.py` (score `(L×E×R)/(10×(C+B))`)
+- `outbox_triage.py` (lens/eye), `outbox_consume.py` (pen/hand), `ci_outbox_guard.py` (immune gate — CI-enforced via `.github/workflows/outbox-guard.yml`)
+- `operator_pen.py` — the **only** writer of marks; `consumption_log.ndjson` is a hash-chained operator organ (read via `read_log`/`verify_chain`/`effective_decisions`; never write from surfaces)
+- `outbox/AR-*.json` — `AUTORESEARCH_PACKET_V1` proposals, always `authority=false · reducer_required=true`
+- `tools/local_first_autoresearch.py` — local-first pipeline (Gemma4 propose → Qwen CHIDDUSH → local WULmath validate → FABLE min-gate → JM decision)
+- `generative_agents_adapter.py` + `tools/helen_sandbox_agent_adapter.py` — wraps one sandbox coding-agent run into a `HELEN_SANDBOX_HARVEST_V0` packet behind the membrane (AntiGhost / CapabilityRegistry / AuthorityLinter / forbidden-path checks); every run ends `HOLD_FOR_OPERATOR`. Maps Park et al. 2023 (observe→retrieve→reflect→plan) onto typed, receipted, replayable HELEN — see `docs/proposals/GENERATIVE_AGENTS_VS_HELEN_V1.md`.
+
+### Goblin Warren surface (`apps/goblin-warren/` — has its own scoped `CLAUDE.md`)
+A NON_SOVEREIGN Garden surface that *renders* the autoresearch organs as a goblin town. **Read `apps/goblin-warren/CLAUDE.md` before editing** — the single subsystem law is **SURFACE CANNOT MARK** (`dream shown ⊬ dream admitted · meter ⊬ state`). Spans three dirs:
+- Surface: `apps/goblin-warren/` — builders (`build_warren_home.py` / `build_warren_feed.py`) emit deterministic `window.*` JS sidecars; `--check` is a replay witness. Never hand-edit the `.js`.
+- Garden: `temple/gardens/goblin_garden_conquest/` — `warren_loop.py` game loop, `typed_memory.py` (GardenMemory), `live_npc.py` (constitutional generative NPC; membrane at every arrow blocks the paper's "Isabella drift"), `memory_grove_v0/` (visible memory objects bound to source events — "Memory can bloom, but truth is still earned"), `validate_conquest_garden.py` (**fail-closed — run before editing garden content**).
+- Skill: `oracle_town/skills/conquest/goblin_warren/` — the `/warren` operating mode (Garden ADMIT ≠ Kernel ADMISSION).
+
+### GAS — Governed Admissibility Systems (`docs/proposals/GAS_V0.md` + `GAS_V0_PROOFS.md`)
+Standalone math program, Transport Theory **Vol III: Governed Dynamics** — which state *transitions* are admitted and why governance is invariant, extending Vol I's `R = R̄ ∘ q_R` from state-reading to state-change. HELEN is one concrete instance (§7). `🟣 CLAIM · NO_CLAIM · HOLD_FOR_OPERATOR`. Prop 7.1(b) certified TRUE at `ad32250` (kernel_guard `[PASS] 0 violations`).
+
 ## Governance Artifacts
 
 ### `GOVERNANCE/CLOSURES/`
@@ -152,8 +184,9 @@ Local HAL-role inference driver and epoch runner. Per-agent model assignment is 
 | K-rho | `scripts/helen_rho_lint.py` | Numeric consistency of rho traces |
 | K-wul | `scripts/helen_wul_lint.py` | Canonical WUL compile+validate (oracle_town compiler) |
 | LEGORACLE | `helen_os/governance/legoracle_gate_poc.py` | Obligation checking, deterministic SHIP/NO_SHIP, replay-gated (E12) |
-| Kernel Guard | `tools/kernel_guard.sh` | Only allowed writers may touch ledger |
-| Doctrine Admission (DRAFT) | `DOCTRINE_ADMISSION_PROTOCOL_V1` + fixtures | §4 gate for doctrine-class artifacts; fixtures landed, gate not yet active |
+| Kernel Guard | `tools/kernel_guard.sh` | Only allowed writers may touch ledger (`CONSUMER_ALLOWLIST`) |
+| G_σ Organ Separation | `src/separation_gate.py` | Six falsifiable σ predicates proving the Digital Metabolism separation laws (triage≠consume, surface≠mark, proposer≠validator, HAL≠builder, dreamt≠claimed, render≠state) |
+| Doctrine Admission | `tools/validators/doctrine_gate.py` + `DOCTRINE_ADMISSION_PROTOCOL_V1` | §4 gate for doctrine-class claims in `docs/proposals/`; **now CI-enforced** (`.github/workflows/doctrine-gate.yml`) |
 
 ## PULL-Mode Tranche Discipline
 
@@ -166,10 +199,10 @@ AUTORESEARCH operates under PULL-mode:
 
 ## Schema Authority
 
-- **Canonical**: `helen_os/governance/schema_registry.py` → `helen_os/schemas/` (47 files, 100% governance-indexed)
+- **Canonical**: `helen_os/governance/schema_registry.py` → `helen_os/schemas/` (67 files, 100% governance-indexed)
 - **Legacy (deprecated, 0 consumers)**: `helen_os/schema_registry.py`, `helen_os/validators.py`
 - **Governance audit tools**: `helen_os/governance/schema_index_audit.py` (dual-recognizer), `helen_os/governance/root_schemas_consumer_audit.py` (runtime/doc/orphan classifier)
-- Root `schemas/` still has 19 files pending migration (classified; delete deferred)
+- **Seam 1 CLOSED** (`b93a40d`, 2026-07-17): the last orphaned legacy schema was purged. Root `schemas/` no longer holds loose files — only the `helen_dan/` and `helen_promotion/` subdirs remain (still pending migration). `scripts/purge_legacy_schemas.sh` is the safe-by-default (dry-run) purge tool; it guards against bare `SchemaRegistry()` callers before executing.
 
 ## Key Invariants
 
@@ -184,7 +217,7 @@ AUTORESEARCH operates under PULL-mode:
 There are **two test trees** with different scopes:
 
 - `helen_os/tests/` — autoresearch, ledger validator, LEGORACLE replay gate, bounded executor, etc. This is what `make test` runs.
-- `tests/` (repo root) — numbered constitutional invariants (`test_1_mayor_only_writes_decisions.py` … `test_9_mayor_io_allowlist.py`) plus `governance_regression/`. **Not covered by `make test`** — invoke explicitly, e.g. `.venv/bin/pytest tests/ -q`.
+- `tests/` (repo root) — numbered constitutional invariants (`test_1_mayor_only_writes_decisions.py` … `test_9_mayor_io_allowlist.py`), `governance_regression/`, plus the newer organ/gate suites: `test_sigma_gate.py` (G_σ separation), `test_doctrine_gate.py` / `test_doctrine_replay.py`, `test_two_stage_autoresearch.py`, `test_local_first_autoresearch.py`, `test_generative_agents_adapter.py`, `test_outbox_triage.py` / `test_outbox_mark.py`, `test_triage_cannot_consume.py`, `test_scanner_crossing.py`, `test_live_npc.py`. **Not covered by `make test`** — invoke explicitly, e.g. `.venv/bin/pytest tests/ -q`. Full suite was 743 green at `b93a40d` (run it — do not trust this number).
 
 Commands:
 
@@ -212,7 +245,9 @@ make demo-airlock      # init airlock only
 
 ## CI Pipeline
 
-CI runs on every push/PR to `main` via `.github/workflows/`. Three jobs in sequence:
+CI runs on every push/PR to `main` via `.github/workflows/`. There are **seven workflow files**, not one:
+
+**`ci.yml`** — three jobs in sequence:
 
 1. **doc-index** — verifies `scratchpad/CLAUDE_MD_LINE_INDEX.txt` and `scratchpad/CLAUDE_MD_SECTIONS_BY_LENGTH.txt` are up-to-date. **After any CLAUDE.md edit, regenerate before committing:**
    ```bash
@@ -224,6 +259,15 @@ CI runs on every push/PR to `main` via `.github/workflows/`. Three jobs in seque
 2. **verify** — runs `python3 ci_run_checks.py`, which calls `oracle_town/VERIFY_ALL.sh` then a 200-iteration replay determinism check via `oracle_town.core.replay`.
 
 3. **rho-receipt** — K-rho viability receipt lint (requires `jsonschema`; installed via `requirements-ci.txt`).
+
+**Additional gate workflows** (each fails closed):
+
+- **`doctrine-gate.yml`** — §4 claim-strata classification harness (`test_claim_classification.py`, `test_doctrine_gate.py`) + `doctrine_gate.py --scan docs/proposals`. Blocks over-strong claim banners in proposal docs.
+- **`determinism-gates.yml`** — K8 / K-tau / replay determinism enforcement.
+- **`garden-validators.yml`** — runs each garden's fail-closed validator (e.g. `validate_conquest_garden.py`); enforces **DREAMT ≠ CLAIMED**.
+- **`kernel_guard.yml`** — `tools/kernel_guard.sh`: only `CONSUMER_ALLOWLIST` writers may touch the ledger.
+- **`outbox-guard.yml`** — `temple/autoresearch/ci_outbox_guard.py`: AUTORESEARCH outbox packets must carry `authority=false` and be reducer-required.
+- **`payload_meta.yml`** — payload/meta acceptance gate (`tools/accept_payload_meta.sh`).
 
 ## AGENTS.md — Subagent Role
 
@@ -334,6 +378,7 @@ Multiple chat entry points exist; they are **not interchangeable**.
 
 **Do not trust dated state — run `git log` and `make test`.** Architecture details live in the sections above; the strata below keep only facts stated nowhere else. Constitutional invariants, gates, and the firewall are unchanged across all strata.
 
+- **2026-07-17** (`95c59f6`): **Consumption Organ / Digital Metabolism** (`tools/helen_metabolism.py`, `chiddush_compost.py`, `chiddush_compressor.py`; `docs/proposals/HELEN_DIGITAL_METABOLISM_V0.md`) — typed metabolic pathway 🌌→🌱→🔥→🔍→📖→👤→⚖️→📜→🌍, no stage skipping · **G_σ Organ Separation Gate** (`src/separation_gate.py`, `tests/test_sigma_gate.py`) — six falsifiable σ predicates · **Goblin Warren surface** (`apps/goblin-warren/` with its own scoped `CLAUDE.md`; garden `temple/gardens/goblin_garden_conquest/`; skill `oracle_town/skills/conquest/goblin_warren/`) — SURFACE CANNOT MARK, marks only via `temple/autoresearch/operator_pen.py` · **two-stage observe→experiment autoresearch loop** (`temple/autoresearch/two_stage_loop.py`, `local_first_autoresearch.py`) · **Generative Agents adapter** (`temple/autoresearch/generative_agents_adapter.py`, `tools/helen_sandbox_agent_adapter.py`; `docs/proposals/GENERATIVE_AGENTS_VS_HELEN_V1.md`) — Park et al. observe→retrieve→reflect→plan behind the membrane · **GAS paper** (`docs/proposals/GAS_V0.md` + `GAS_V0_PROOFS.md`, Transport Vol III; Prop 7.1(b) TRUE at `ad32250`) · **doctrine gate now CI-enforced** · **Seam 1 CLOSED** (legacy schemas purged) · **live NPC** + **memory grove v0** gardens.
 - **2026-07-03** (`12ec35a`): `transport/` math program (Vols I–II, `tests/test_transport*.py`, `docs/proposals/TRANSPORT_THEOREM_V0.md`) · AUTORESEARCH safe architecture V1 (`temple/autoresearch/` — `autoresearch_policy.py` packet validator, `outbox/` AR-*.json packets, always `authority=false`, reducer_required; spec `docs/proposals/HELEN_AUTORESEARCH_SAFE_ARCHITECTURE_V1.md`) · authority-language linter (`tools/validators/authority_language_linter.py`) · `do_next_v1` structural policy engine (`helen_os/api/do_next_v1.py`; executor receipts reach the ledger only via `helen_say`) · `temple/gardens/` layer — core law **DREAMT ≠ CLAIMED**; every garden ships a fail-closed validator — run it before editing garden content.
 - **2026-06-15** (`4d1e185`): skill-promotion admission LIVE — 6-gate `_handle_promote_skill()` + `_handle_seq_correction()` in the kernel daemon; NDJSONWriter `fcntl.flock` + on-disk tail re-read closes the TOCTOU race (seq=287 fork ANCHORED at seq=295, chain PASS); `hal_verdict_from_kernel()` now passes `mutations` through; EXPLORE mechanic E026 unlocked. Protocols in `oracle_town/protocols/`; coverage via `make test` (`test_ndjson_writer_atomic.py`, `test_handle_promote_skill.py`, …).
 - **2026-06-03**: operator surfaces (`apps/helen-surface/`) · SOURCEBOUND OBJECT OS · local HAL inference (`tools/hal_driver.py`, `docs/spec/MODEL_ROUTING_V1.md`) · `helen_awakening` / portrait video lanes + STORYBOARD_V1 · GOBLIN_TEMPLE inner memory rooms + Akashic interface · Telegram `/her` HER-presence command (Groq fallback).
@@ -379,4 +424,4 @@ Promotion to `🟢 ADMITTED` requires an explicit operator admission receipt. Pr
 
 - **Closure attestation gap**: ghost-closure detection is the next frontier. Blocked on Schema Authority seam materialization; needs `closure_receipt_v1` + CI ghost detection wired into the gate pipeline.
 - **AUTORESEARCH E11/E12 reconciliation**: hypothesis + experiment landed (see Current State). Awaiting peer-review → countersign → MAYOR ruling. E13 stays blocked until then.
-- **Doctrine Admission gate activation**: fixtures in place, gate not yet enforcing.
+- **Doctrine Admission gate**: gate is now **CI-enforcing** (`tools/validators/doctrine_gate.py`, `.github/workflows/doctrine-gate.yml`). Nuance: the *protocol it enforces* (`DOCTRINE_ADMISSION_PROTOCOL_V1`) stays UNADMITTED per its own §6 — needs a fresh-context classifier — and `gate PASS ⊬ admission`.
