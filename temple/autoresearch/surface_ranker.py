@@ -49,7 +49,7 @@ FORBIDDEN_SURFACES: frozenset[str] = frozenset({
 # Formula: score = (L × E × R) / (10 × (C + B))
 _DEFAULT_PARAMS: dict[str, tuple[int, int, int, int, int]] = {
     #                              L   E   R   C   B
-    "init_ranking_weights":       (9,  8, 10,  2,  1),  # score=24.0  (default highest)
+    "init_ranking_weights":       (9,  6, 10,  2,  1),  # score=18.0  (E lowered: no cold-start self-selection)
     "context_ranking":            (8,  8,  9,  2,  1),  # score=19.2
     "sandbox_visual_grammar":     (8,  7, 10,  2,  1),  # score=18.67 (matches operator example)
     "prompt_compression":         (7,  7,  9,  3,  1),  # score=11.025
