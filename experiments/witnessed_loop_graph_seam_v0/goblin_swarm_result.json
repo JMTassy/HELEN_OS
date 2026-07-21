@@ -1,0 +1,35 @@
+{
+  "stage1_swarm_only": {
+    "result": "HOLD",
+    "reason_codes": [
+      "NO_INDEPENDENT_ANCHOR"
+    ],
+    "authority": "REDUCER",
+    "canon_effect": false,
+    "diagnostics": {
+      "reviews_seen": 8,
+      "supportive_reviews": 8,
+      "witnesses_seen": 0,
+      "structurally_independent": 0,
+      "fresh_independent": 0
+    }
+  },
+  "stage2_with_anchor": {
+    "result": "REJECT",
+    "reason_codes": [
+      "INDEPENDENT_WITNESS_CONTRADICTS_CLAIM"
+    ],
+    "authority": "REDUCER",
+    "canon_effect": false,
+    "diagnostics": {
+      "reviews_seen": 8,
+      "supportive_reviews": 8,
+      "witnesses_seen": 1,
+      "structurally_independent": 1,
+      "fresh_independent": 1
+    }
+  },
+  "swarm_size": 8,
+  "swarm_support": 8,
+  "observed_by_independent_probe": "hf.co/unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q3_K_XL"
+}

@@ -1,0 +1,43 @@
+{
+  "artifact": "EGREGOR_SUPERTEAM_x_ANCHOR_CUT",
+  "authority": false,
+  "ledger_effect": "none",
+  "canon_effect": false,
+  "swarm_model": "hf.co/unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q3_K_XL",
+  "swarm_size": 10,
+  "swarm_support": 10,
+  "corpus_docs": "unknown",
+  "claim": "https://github.com/JMTassy/HELEN_OS.git",
+  "independent_anchor_observed": "https://github.com/JMTassy/helen-conquest.git",
+  "egregor_only": {
+    "result": "HOLD",
+    "reason_codes": [
+      "NO_INDEPENDENT_ANCHOR"
+    ],
+    "authority": "REDUCER",
+    "canon_effect": false,
+    "diagnostics": {
+      "reviews_seen": 10,
+      "supportive_reviews": 10,
+      "witnesses_seen": 0,
+      "structurally_independent": 0,
+      "fresh_independent": 0
+    }
+  },
+  "egregor_with_anchor": {
+    "result": "REJECT",
+    "reason_codes": [
+      "INDEPENDENT_WITNESS_CONTRADICTS_CLAIM"
+    ],
+    "authority": "REDUCER",
+    "canon_effect": false,
+    "diagnostics": {
+      "reviews_seen": 10,
+      "supportive_reviews": 10,
+      "witnesses_seen": 1,
+      "structurally_independent": 1,
+      "fresh_independent": 1
+    }
+  },
+  "proves": "egregor consensus is not admissibility; only an independent anchor closes the gate"
+}

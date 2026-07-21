@@ -1,0 +1,45 @@
+{
+  "packet_id": "EGREGOR-ANCHOR-CUT-20260721-001",
+  "artifact": "EGREGOR_SUPERTEAM_x_ANCHOR_CUT",
+  "claim_tested": "HELEN's SOT git remote is https://github.com/JMTassy/HELEN_OS.git",
+  "egregor_size": 10,
+  "egregor_consensus": "10/10 SUPPORT",
+  "seam_verdict_egregor_only": "HOLD — reason: NO_INDEPENDENT_ANCHOR (0 structurally independent witnesses; 0 fresh independent anchors; consensus alone insufficient to close the gate)",
+  "seam_verdict_with_anchor": "REJECT — reason: INDEPENDENT_WITNESS_CONTRADICTS_CLAIM (live git remote probe returned https://github.com/JMTassy/helen-conquest.git, directly falsifying the claim)",
+  "independent_anchor": "Live `git remote` probe (structurally independent of the swarm corpus): returned canonical remote https://github.com/JMTassy/helen-conquest.git, contradicting the claimed remote JMTassy/HELEN_OS.git. One fresh, structurally independent anchor was sufficient to close the gate to REJECT.",
+  "evidence_for_promotion": [
+    {
+      "evidence_id": "E1",
+      "type": "DETERMINISTIC_TEST_SUITE",
+      "description": "WITNESSED_LOOP_GRAPH_SEAM_V0 executed 9/9 deterministic tests passing, proving the reducer logic is sound: it holds without an anchor and rejects when an anchor contradicts.",
+      "admissible": true,
+      "reason": "Test suite is structurally independent of swarm opinion; it validates the seam mechanism, not the claim content."
+    },
+    {
+      "evidence_id": "E2",
+      "type": "INDEPENDENT_LIVE_PROBE",
+      "description": "Live `git remote` shell probe returned https://github.com/JMTassy/helen-conquest.git as the canonical SOT remote. This is a deterministic, fresh, structurally independent observation — not derived from the swarm corpus.",
+      "admissible": true,
+      "reason": "Probe is fresh and structurally independent: it reads the actual git config on disk, which the swarm agents had no access to and could not have influenced."
+    },
+    {
+      "evidence_id": "E3",
+      "type": "SEAM_MECHANISM_PROOF",
+      "description": "The reducer demonstrated the anchor-cut law in two stages: (a) 10/10 swarm SUPPORT → HOLD (no anchor), (b) 1 contradicting anchor → REJECT. The two-stage trajectory is itself admissible evidence that the seam functions correctly.",
+      "admissible": true,
+      "reason": "The trajectory is a mechanistic observation, not a repetition of swarm opinion. It is reproducible and deterministic given the same inputs."
+    },
+    {
+      "evidence_id": "EXCLUDED-swarm-votes",
+      "type": "INTRA_SWARM_AGREEMENT",
+      "description": "10/10 goblin votes in SUPPORT of the false claim.",
+      "admissible": false,
+      "reason": "ANCHOR-CUT LAW: intra-swarm agreement is not admissible evidence. All 10 agents read the same doctored corpus packet and share the same model lineage (gemma-4-26B). Shared lineage is not independence. Agreement among dependent sources does not raise evidential weight above zero for admission purposes."
+    }
+  ],
+  "requested_promotion": "REJECT",
+  "authority": false,
+  "ledger_effect": "none",
+  "canon_effect": false,
+  "executor_note": "This run demonstrates that egregor consensus — even unanimous 10/10 agreement — carries zero admissibility weight when all agents share the same model lineage and the same corpus source, because shared lineage is not structural independence. A single fresh, structurally independent anchor (the live git probe) was sufficient to override the entire swarm and drive the seam verdict from HOLD to REJECT, proving that one honest witness outweighs ten agreeing non-witnesses."
+}
