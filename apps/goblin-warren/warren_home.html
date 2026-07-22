@@ -1,0 +1,355 @@
+<!doctype html>
+<!--
+  WARREN HOME — player-facing shell for the Goblin Warren (V1)
+
+  SURFACE ROLE (2026-07-06): procedural game home per north star
+  temple/gardens/goblin_garden_conquest/WARREN_HOME_SPEC_V0.md.
+  Companion to the canonical cockpit apps/goblin-warren/warren_town.html —
+  it frames the same organs, it does not replace the inspector.
+
+  NON_SOVEREIGN · authority=false · canon=false · ledger_effect=none
+  SURFACE CANNOT MARK. There is no admit/mark/decision control anywhere in
+  this file. Marks happen only via temple/autoresearch/operator_pen.py.
+  Dream shown ⊬ dream admitted · meter = rendering of state, never state ·
+  garden mark ⊬ kernel admission · CONQUEST is not admitted.
+
+  Everything procedural: Canvas + CSS only, no external images/fonts.
+  Live data arrives via warren_home_data.js (built by build_warren_home.py
+  from the real outbox + operator pen log; deterministic, replay-checked).
+-->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GOBLIN WARREN — les gobelins rêvent, vous décidez</title>
+<style>
+  :root { --wood:#6b4a2b; --wood2:#8a5a34; --panel:#14101c; --panel2:#1b1526;
+    --ink:#e8dcc0; --parch:#e9dcbc; --parchink:#3a2a18; --frame:#3a2440;
+    --gold:#e6b84a; --dim:#9a8f78; --edge:#4a3a52; --green:#8fc060;
+    --red:#e07a6a; --blue:#7aa8d8; --purple:#b08ae0; --pink:#e08ab8; }
+  * { box-sizing:border-box; }
+  html,body { margin:0; min-height:100%; background:#0d0a12; color:var(--ink);
+    font:14px/1.45 "Courier New", monospace; }
+  .top { display:flex; gap:10px; align-items:stretch; padding:10px 12px; }
+  .brand { background:linear-gradient(180deg,var(--wood2),var(--wood));
+    border:3px solid #2a1c10; border-radius:10px; padding:8px 14px; }
+  .brand h1 { margin:0; font-size:22px; color:#cfe08a; text-shadow:2px 2px 0 #1a1208; }
+  .brand small { color:var(--parch); display:block; }
+  .brand small b { color:var(--green); }
+  .meters { flex:1; display:flex; gap:8px; background:var(--panel);
+    border:2px solid var(--edge); border-radius:10px; padding:8px 10px; }
+  .meter { flex:1; min-width:90px; }
+  .meter .lbl { font-size:11px; color:var(--dim); letter-spacing:1px; }
+  .meter .val { font-size:16px; color:var(--ink); }
+  .meter .bar { height:5px; background:#241c30; border-radius:3px; overflow:hidden; }
+  .meter .bar i { display:block; height:100%; }
+  .meter .note { font-size:9px; color:var(--dim); }
+  .navtop { display:flex; gap:8px; align-items:center; background:var(--panel);
+    border:2px solid var(--edge); border-radius:10px; padding:8px 12px; font-size:12px; }
+  main { display:grid; grid-template-columns:270px 1fr 250px; gap:10px; padding:0 12px; }
+  .card { background:var(--panel); border:2px solid var(--edge); border-radius:10px;
+    padding:10px 12px; margin-bottom:10px; }
+  .scroll { background:var(--parch); color:var(--parchink); border:3px solid #7a6238;
+    border-radius:8px; padding:10px 12px; margin-bottom:10px; }
+  .scroll h2 { margin:0 0 6px; font-size:14px; letter-spacing:1px; }
+  .scroll .obj { margin:2px 0; }
+  .day { background:#101a10; border:2px solid #2f4a2f; border-radius:10px;
+    padding:8px 12px; margin-bottom:10px; }
+  .startday { display:block; width:100%; background:linear-gradient(180deg,#3f6b33,#2c4d24);
+    color:#e6f0c8; border:2px solid #1c3317; border-radius:10px; padding:10px;
+    font:bold 15px "Courier New",monospace; cursor:pointer; }
+  .startday small { display:block; font-weight:normal; font-size:10px; color:#b8d09a; }
+  #daycmd { display:none; margin-top:8px; background:#0a140a; border:1px dashed #2f4a2f;
+    padding:8px; font-size:11px; color:#b8d09a; white-space:pre-wrap; word-break:break-all; }
+  canvas { display:block; width:100%; border:3px solid #2a1c10; border-radius:10px;
+    background:#0b1208; image-rendering:pixelated; }
+  .roster .g { display:flex; justify-content:space-between; padding:4px 6px;
+    border-bottom:1px solid #241c30; }
+  .roster .g:last-child { border-bottom:none; }
+  .roster .role { color:var(--dim); font-size:11px; }
+  h3 { margin:0 0 8px; font-size:13px; color:var(--gold); letter-spacing:1px; }
+  .dream { padding:6px 8px; margin-bottom:6px; background:var(--panel2);
+    border-left:3px solid var(--purple); border-radius:6px; font-size:12px; }
+  .dream.high { border-left-color:var(--red); }
+  .dream.medium { border-left-color:var(--gold); }
+  .dream .id { color:var(--dim); font-size:10px; }
+  .mark { font-size:11px; padding:4px 6px; border-bottom:1px solid #241c30; }
+  .mark b.acted { color:var(--green); } .mark b.rejected { color:var(--red); }
+  .mark b.deferred { color:var(--blue); }
+  .law { font-size:11px; color:var(--dim); background:var(--panel2);
+    border:1px dashed var(--edge); border-radius:8px; padding:8px 10px; }
+  .law b { color:var(--gold); }
+  .chain-ok { color:var(--green); } .chain-bad { color:var(--red); font-weight:bold; }
+  footer { display:flex; gap:8px; padding:0 12px 14px; flex-wrap:wrap; }
+  footer .tab { flex:1; min-width:150px; background:var(--panel); text-align:center;
+    border:2px solid var(--edge); border-radius:10px; padding:10px; font-size:12px; }
+  footer .tab b { color:var(--gold); }
+  .badge { display:inline-block; min-width:18px; background:var(--red); color:#fff;
+    border-radius:9px; font-size:11px; padding:1px 5px; }
+  .empty { color:var(--dim); font-size:12px; font-style:italic; }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="brand">
+    <h1>GOBLIN WARREN</h1>
+    <small>Les Gobelins rêvent. <b>Vous décidez.</b></small>
+  </div>
+  <div class="meters" id="meters"></div>
+  <div class="navtop">📖 JOURNAL · ⚙ PARAMÈTRES · ? AIDE</div>
+</div>
+
+<main>
+  <section>
+    <div class="scroll">
+      <h2>BIENVENUE À GOBLIN WARREN</h2>
+      <div>De petits gobelins vivent ici. Ils travaillent, s'inquiètent,
+        rêvent et se souviennent.</div>
+      <div style="margin-top:6px"><b>Vous êtes le jardinier du Warren.</b><br>
+        Ils vous apportent des idées.<br>Vous décidez ce qui devient réel.</div>
+      <h2 style="margin-top:10px">OBJECTIF</h2>
+      <div class="obj">🍄 Les garder en vie.</div>
+      <div class="obj">🏠 Construire le village.</div>
+      <div class="obj">⏳ Survivre 7 jours.</div>
+      <div class="obj">❤ Gagner leur confiance.</div>
+    </div>
+    <div class="day">
+      <b>☀ JOUR <span id="daynum">1</span> SUR 7</b>
+      <div style="font-size:12px;color:var(--dim)">Matin frais et brume légère.</div>
+    </div>
+    <button class="startday" id="startday">🌿 COMMENCER LA JOURNÉE 🌿
+      <small>Les gobelins attendent vos choix.</small></button>
+    <div id="daycmd"></div>
+    <div class="law" style="margin-top:10px">
+      <b>LOI DE LA SURFACE</b><br>
+      rêve affiché ⊬ rêve admis · jauge = rendu d'état, jamais l'état ·
+      cette surface ne peut PAS marquer · les marques passent par le stylo
+      de l'opérateur (operator_pen.py) · CONQUEST n'est pas admis ·
+      chaîne du stylo : <span id="chain"></span>
+    </div>
+  </section>
+
+  <section>
+    <canvas id="village" width="860" height="560"></canvas>
+    <div class="card" style="margin-top:10px">
+      <h3>🌙 TABLEAU DES RÊVES <span class="badge" id="revebadge">0</span></h3>
+      <div style="font-size:11px;color:var(--dim);margin-bottom:6px">
+        De nouvelles idées apparaissent ici — portées par les gobelins,
+        jamais décidées par eux.</div>
+      <div id="dreams"></div>
+    </div>
+  </section>
+
+  <aside>
+    <div class="card roster">
+      <h3>VOS 8 GOBELINS</h3>
+      <div id="roster"></div>
+    </div>
+    <div class="card">
+      <h3>🪴 CARNET DU JARDINIER</h3>
+      <div style="font-size:10px;color:var(--dim);margin-bottom:4px">
+        Vos dernières marques (journal du stylo, hors surface).</div>
+      <div id="carnet"></div>
+    </div>
+    <div class="card">
+      <h3>📜 HISTOIRE DU VILLAGE</h3>
+      <div id="histoire" style="font-size:11px;color:var(--dim)"></div>
+    </div>
+  </aside>
+</main>
+
+<footer>
+  <div class="tab">💤 <b>RÊVES DU JOUR</b> <span class="badge" id="revebadge2">0</span><br>Nouvelles idées !</div>
+  <div class="tab">🔨 <b>CONSTRUCTIONS</b><br>0 en cours</div>
+  <div class="tab">📦 <b>INVENTAIRE</b><br>Voir vos ressources</div>
+  <div class="tab">📜 <b>HISTOIRE DU VILLAGE</b><br>Ce qu'ils se souviennent</div>
+  <div class="tab">🪴 <b>CARNET DU JARDINIER</b><br>Vos notes et choix</div>
+  <div class="tab" style="flex:2">Chaque choix compte. Même les bêtises. ❤<br>
+    <span style="font-size:10px;color:var(--dim)">NON_SOVEREIGN · authority=false · ledger_effect=none</span></div>
+</footer>
+
+<script src="warren_home_data.js"></script>
+<script>
+"use strict";
+// ------- data (sidecar; canned fallback says so, beautifully) -------------
+const D = window.WARREN_HOME || {
+  schema: "WARREN_HOME_DATA_V1_FALLBACK", surface_can_mark: false,
+  pen_chain: "unknown (sidecar absent — run build_warren_home.py)",
+  meters: {reves_badge:0, confiance:20, humeur:30, danger:0, ferraille:0, nourriture:25},
+  dreams: [], carnet: [], histoire: [], day:{marks_total:0, counts:{}},
+  start_day_command: "python3 apps/goblin-warren/build_warren_home.py",
+};
+
+// ------- meters: renderings of state, never state itself ------------------
+const METER_DEFS = [
+  ["nourriture","🍄 NOURRITURE","--green"], ["humeur","☺ HUMEUR","--pink"],
+  ["confiance","🤝 CONFIANCE","--blue"], ["danger","☠ DANGER","--red"],
+  ["ferraille","⚙ FERRAILLE","--dim"],
+];
+const metersEl = document.getElementById("meters");
+for (const [key,label,color] of METER_DEFS) {
+  const v = D.meters[key] ?? 0, pct = key==="ferraille" ? Math.min(100,v*3) : v;
+  const el = document.createElement("div"); el.className = "meter";
+  el.innerHTML = `<div class="lbl">${label}</div><div class="val">${v}${key==="ferraille"?"":" / 100"}</div>
+    <div class="bar"><i style="width:${pct}%;background:var(${color})"></i></div>
+    <div class="note">rendu, pas l'état</div>`;
+  metersEl.appendChild(el);
+}
+
+// ------- dreams (display only — no mark control exists here) --------------
+const dreamsEl = document.getElementById("dreams");
+document.getElementById("revebadge").textContent = D.meters.reves_badge;
+document.getElementById("revebadge2").textContent = D.meters.reves_badge;
+if (!D.dreams.length) {
+  dreamsEl.innerHTML = '<div class="empty">Aucun rêve en attente — le Warren dort paisiblement. ' +
+    'Lancez une journée pour en récolter de nouveaux.</div>';
+} else {
+  for (const d of D.dreams) {
+    const el = document.createElement("div");
+    el.className = "dream " + d.severity;
+    el.innerHTML = `<div>${d.title}</div><div class="id">${d.packet_id} · ${d.finding_type} · ${d.severity}</div>`;
+    dreamsEl.appendChild(el);
+  }
+}
+
+// ------- carnet + histoire (pen log is read-only here) --------------------
+const carnetEl = document.getElementById("carnet");
+if (!D.carnet.length) carnetEl.innerHTML = '<div class="empty">Aucune marque encore.</div>';
+for (const m of D.carnet) {
+  const el = document.createElement("div"); el.className = "mark";
+  el.innerHTML = `<b class="${m.decision}">${m.decision}</b> ${m.packet_id}<br>
+    <span style="color:var(--dim)">${m.note}</span>`;
+  carnetEl.appendChild(el);
+}
+const c = D.day.counts || {};
+document.getElementById("histoire").textContent =
+  `${D.day.marks_total} décisions retenues — ` +
+  `${c.acted||0} agies · ${c.rejected||0} compostées · ${c.deferred||0} reportées. ` +
+  `Le village se souvient de chacune.`;
+const chainEl = document.getElementById("chain");
+chainEl.textContent = D.pen_chain;
+chainEl.className = D.pen_chain === "intact" ? "chain-ok" : "chain-bad";
+
+// ------- start day: the surface cannot run organs; it hands you the rite --
+document.getElementById("startday").addEventListener("click", () => {
+  const el = document.getElementById("daycmd");
+  el.style.display = "block";
+  el.textContent = "La surface ne lance rien elle-même. Le rite du matin, dans votre terminal :\n\n"
+    + D.start_day_command + "\n\npuis :  python3 apps/goblin-warren/build_warren_home.py";
+});
+
+// ------- procedural village (Canvas, seeded rng only — no assets) ---------
+const cv = document.getElementById("village"), g = cv.getContext("2d");
+let seed = 20260706;
+const rnd = () => (seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296;
+const CAST = [["MOG","Fermier"],["PIP","Éclaireur"],["GRIB","Mineur"],["SNAG","Bricoleur"],
+  ["ZOOK","Scout"],["LURPA","Archiviste"],["BOGGLE","Bouffon"],["KRAG","Gardien"]];
+const STAT_ICON = ["❤","☺","🤝"];
+const rosterEl = document.getElementById("roster");
+CAST.forEach(([name,role],i) => {
+  const el = document.createElement("div"); el.className = "g";
+  el.innerHTML = `<span><b>${name}</b><br><span class="role">${role}</span></span>
+    <span>${STAT_ICON[i%3]} ${55 + ((i*7)%25)}</span>`;
+  rosterEl.appendChild(el);
+});
+
+const BUILDINGS = [
+  {x:90,y:120,w:90,h:110,name:"TOUR DE GUET",kind:"tower"},
+  {x:330,y:70,w:150,h:120,name:"FERME À CHAMPIGNONS",kind:"mushroom"},
+  {x:640,y:90,w:150,h:120,name:"MINE",kind:"cave"},
+  {x:110,y:300,w:140,h:100,name:"ARCHIVES",kind:"house"},
+  {x:620,y:300,w:150,h:110,name:"ATELIER",kind:"house"},
+  {x:150,y:450,w:130,h:70,name:"DÉPÔT DE FERRAILLE",kind:"pile"},
+  {x:600,y:450,w:130,h:80,name:"CUISINE",kind:"house"},
+  {x:390,y:430,w:90,h:80,name:"AUTEL DU SOUVENIR",kind:"altar"},
+];
+const goblins = CAST.map(() => ({x:200+rnd()*460, y:230+rnd()*180,
+  dx:(rnd()-0.5)*0.6, dy:(rnd()-0.5)*0.4}));
+
+function building(b, t) {
+  g.save(); g.translate(b.x, b.y);
+  if (b.kind === "mushroom") {
+    g.fillStyle="#7a4f9a"; g.beginPath();
+    g.ellipse(b.w/2, 26, b.w/2, 30, 0, Math.PI, 0); g.fill();
+    g.fillStyle="#c9a8e0";
+    for (let i=0;i<4;i++) g.fillRect(14+i*34, 6+(i%2)*10, 10, 8);
+    g.fillStyle="#caa06a"; g.fillRect(b.w/2-24, 26, 48, 48);
+    g.fillStyle="#5a3a1a"; g.fillRect(b.w/2-8, 46, 16, 28);
+  } else if (b.kind === "tower") {
+    g.fillStyle="#5f4326"; g.fillRect(10, 20, b.w-20, b.h-20);
+    g.strokeStyle="#3a2a14"; g.lineWidth=3;
+    for (let i=1;i<4;i++){ g.beginPath(); g.moveTo(10,20+i*22); g.lineTo(b.w-10,20+i*22); g.stroke(); }
+    g.fillStyle="#7a5a34"; g.fillRect(0, 0, b.w, 22);
+  } else if (b.kind === "cave") {
+    g.fillStyle="#4a4550"; g.beginPath();
+    g.ellipse(b.w/2, b.h, b.w/2, b.h*0.9, 0, Math.PI, 0); g.fill();
+    g.fillStyle="#14101c"; g.beginPath();
+    g.ellipse(b.w/2, b.h, 30, 42, 0, Math.PI, 0); g.fill();
+  } else if (b.kind === "pile") {
+    g.fillStyle="#3f3a45";
+    for (let i=0;i<9;i++) { const px=(i%3)*36+rnd()*0, py=Math.floor(i/3)*18;
+      g.fillRect(10+px, 10+py, 26, 14); }
+  } else if (b.kind === "altar") {
+    g.fillStyle="#5a5f6a"; g.fillRect(18, 40, b.w-36, 30);
+    const pulse = 6 + Math.sin(t/600)*2;
+    g.fillStyle="#9fd0f0"; g.beginPath();
+    g.moveTo(b.w/2, 8); g.lineTo(b.w/2+pulse, 40); g.lineTo(b.w/2-pulse, 40);
+    g.closePath(); g.fill();
+  } else {
+    g.fillStyle="#6b4a2b"; g.fillRect(0, 30, b.w, b.h-30);
+    g.fillStyle="#41506a"; g.beginPath();
+    g.moveTo(-8, 32); g.lineTo(b.w/2, 0); g.lineTo(b.w+8, 32); g.closePath(); g.fill();
+    g.fillStyle="#2a1c10"; g.fillRect(b.w/2-10, b.h-34, 20, 34);
+  }
+  g.restore();
+  g.fillStyle="rgba(10,8,14,0.8)"; g.strokeStyle="#7a6238";
+  const label = b.name, tw = g.measureText(label).width + 14;
+  g.fillRect(b.x + b.w/2 - tw/2, b.y - 22, tw, 16);
+  g.strokeRect(b.x + b.w/2 - tw/2, b.y - 22, tw, 16);
+  g.fillStyle="#e8dcc0"; g.font="10px monospace"; g.textAlign="center";
+  g.fillText(label, b.x + b.w/2, b.y - 10);
+  g.fillStyle="#b8a878"; g.fillText("Niveau 1", b.x + b.w/2, b.y + b.h + 12);
+}
+
+function frame(t) {
+  g.clearRect(0, 0, cv.width, cv.height);
+  g.fillStyle="#101a0c"; g.fillRect(0,0,cv.width,cv.height);
+  g.fillStyle="#18240f";
+  for (let i=0;i<40;i++) g.fillRect((i*211)%860, (i*97)%560, 14, 8);
+  g.strokeStyle="#3a3424"; g.lineWidth=14; g.lineCap="round";
+  g.beginPath(); g.moveTo(120,180); g.quadraticCurveTo(430,300,740,170);
+  g.moveTo(180,470); g.quadraticCurveTo(430,300,680,470); g.stroke();
+  for (const b of BUILDINGS) building(b, t);
+  // campfire
+  const fx=430, fy=305, fl=4+Math.sin(t/150)*2;
+  g.fillStyle="#5a4a34"; for(let i=0;i<6;i++){const a=i*1.047;
+    g.fillRect(fx+Math.cos(a)*20-3, fy+Math.sin(a)*10-2, 7, 5);}
+  g.fillStyle="#e0902a"; g.beginPath();
+  g.moveTo(fx, fy-16-fl); g.lineTo(fx+8, fy); g.lineTo(fx-8, fy); g.closePath(); g.fill();
+  g.fillStyle="#f0c05a"; g.beginPath();
+  g.moveTo(fx, fy-9-fl/2); g.lineTo(fx+4, fy); g.lineTo(fx-4, fy); g.closePath(); g.fill();
+  // goblins wander
+  g.textAlign="left";
+  goblins.forEach((gob,i) => {
+    gob.x += gob.dx; gob.y += gob.dy;
+    if (gob.x<150||gob.x>710) gob.dx*=-1;
+    if (gob.y<220||gob.y>500) gob.dy*=-1;
+    g.fillStyle="#6a8a3a"; g.fillRect(gob.x, gob.y, 8, 8);          // head
+    g.fillStyle="#4a5a7a"; g.fillRect(gob.x+1, gob.y+8, 6, 7);      // body
+    g.fillStyle="#9ab060"; g.font="8px monospace";
+    g.fillText(CAST[i][0], gob.x-2, gob.y-3);
+  });
+  // lantern glow
+  for (const [lx,ly] of [[260,140],[560,120],[300,430],[560,420]]) {
+    const grad = g.createRadialGradient(lx,ly,2,lx,ly,26);
+    grad.addColorStop(0,"rgba(240,190,90,0.55)"); grad.addColorStop(1,"rgba(240,190,90,0)");
+    g.fillStyle=grad; g.fillRect(lx-26,ly-26,52,52);
+    g.fillStyle="#f0be5a"; g.fillRect(lx-2,ly-2,4,4);
+  }
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

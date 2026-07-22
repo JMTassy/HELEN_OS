@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Combat Side Quest V0 — standalone</title>
+<style>
+  body { margin:0; min-height:100vh; background:#0a0810; color:#e8dcc0;
+    font:14px/1.45 ui-monospace,monospace; display:flex; flex-direction:column;
+    align-items:center; padding:24px; gap:12px; }
+  h1 { margin:0; color:#e6b84a; font-size:18px; }
+  .law { color:#9a8f78; font-size:12px; max-width:640px; text-align:center; }
+  button { background:#2c4d24; color:#e6f0c8; border:1px solid #1c3317;
+    border-radius:8px; padding:10px 16px; cursor:pointer; font:bold 13px monospace; }
+  button.sec { background:#2a2030; color:#e8dcc0; border-color:#4a3a52; }
+  pre { background:#14101c; border:1px solid #3a2a48; border-radius:8px;
+    padding:12px; max-width:720px; width:100%; font-size:11px; overflow:auto; }
+  a { color:#b08ae0; }
+</style>
+</head>
+<body>
+  <h1>⚔ Combat Side Quest V0 — standalone</h1>
+  <p class="law">authority=false · claim=NO_CLAIM · isolated module · no global mutation<br>
+    Protect critters from a corrupted-trace disturbance. ~90s. Enter accept · Space attack · Shift dodge.</p>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+    <button type="button" id="go">Open encounter</button>
+    <button type="button" class="sec" id="fx">FX: full</button>
+    <a href="warren_town.html">← WARREN TOWN (host)</a>
+  </div>
+  <pre id="log">awaiting result…</pre>
+  <script src="combat_sidequest_v0.js"></script>
+  <script>
+  var log = document.getElementById('log');
+  var reduced = false;
+  document.getElementById('go').onclick = function () {
+    CombatSideQuestV0.openCombatSideQuest({
+      sourceZoneId: 'standalone',
+      sourceTraceId: null,
+      encounterSeed: 0xBEEF,
+      difficultyPreset: 'normal'
+    }, function (result) {
+      log.textContent = JSON.stringify(result, null, 2);
+    });
+  };
+  document.getElementById('fx').onclick = function () {
+    reduced = !reduced;
+    CombatSideQuestV0.setCombatReducedEffects(reduced);
+    this.textContent = reduced ? 'FX: reduced' : 'FX: full';
+  };
+  </script>
+</body>
+</html>
