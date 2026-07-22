@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Goblin Warren — Live index</title>
+<style>
+  :root { --bg:#efe7d8; --ink:#2a241c; --dim:#7a6f5c; --card:#faf6ec; --edge:#d8ceba; --go:#2e5940; --gold:#b8860b; }
+  body { margin:0; font:16px/1.45 system-ui,sans-serif; background:var(--bg); color:var(--ink);
+    max-width:560px; margin-inline:auto; padding:24px 16px 40px; }
+  h1 { font-size:1.35rem; margin:0 0 4px; }
+  .sub { color:var(--dim); font-size:0.9rem; margin-bottom:18px; }
+  a.card {
+    display:block; background:var(--card); border:1px solid var(--edge); border-radius:14px;
+    padding:14px 16px; margin:0 0 10px; text-decoration:none; color:var(--ink);
+    box-shadow:0 3px 10px rgba(60,50,30,0.08);
+  }
+  a.card strong { display:block; color:var(--go); margin-bottom:2px; }
+  a.card span { font-size:0.85rem; color:var(--dim); }
+  .tag { font-size:0.7rem; color:var(--gold); text-transform:uppercase; letter-spacing:.08em; margin-bottom:12px; }
+  .law { margin-top:18px; font-size:0.72rem; color:var(--dim); text-align:center; }
+  video { width:100%; border-radius:12px; border:1px solid var(--edge); margin:8px 0 16px; background:#111; }
+</style>
+</head>
+<body>
+  <div class="tag">HELEN · Goblin Warren · public preview</div>
+  <h1>Goblin Warren — live</h1>
+  <p class="sub">One page to open the surfaces. Non-sovereign · authority=false · Garden ADMIT ≠ Kernel ADMISSION.</p>
+
+  <h2 style="font-size:0.95rem;margin:0 0 8px">Intro video (10s)</h2>
+  <video controls playsinline
+    src="surfaces/goblin-warren-intro/renders/goblin_warren_intro.mp4"
+    poster="">
+    Your browser can’t play this video.
+  </video>
+  <a class="card" href="surfaces/goblin-warren-intro/renders/goblin_warren_intro.mp4" target="_blank" rel="noopener">
+    <strong>Open intro .mp4 directly</strong>
+    <span>Download / open full screen</span>
+  </a>
+
+  <h2 style="font-size:0.95rem;margin:18px 0 8px">Playable / display shells</h2>
+  <a class="card" href="warren_home.html"><strong>Warren Home</strong><span>Player shell — dreams / carnet (display only)</span></a>
+  <a class="card" href="warren_town.html"><strong>Warren Town</strong><span>Proposal feed town (surface cannot mark)</span></a>
+  <a class="card" href="combat_sidequest_v0.html"><strong>Combat sidequest</strong><span>Standalone encounter module</span></a>
+  <a class="card" href="cast_lineup.html"><strong>Cast lineup</strong><span>Sprite cast board</span></a>
+  <a class="card" href="warren_graphism.html"><strong>Graphism</strong><span>Art / graphism board</span></a>
+  <a class="card" href="surfaces/free-graphics-demo.html"><strong>Free graphics demo</strong><span>$0 paper-collage stamp shell</span></a>
+
+  <p class="law">Hosted via GitHub Pages from JMTassy/helen-conquest · not Kernel · not admission</p>
+</body>
+</html>
