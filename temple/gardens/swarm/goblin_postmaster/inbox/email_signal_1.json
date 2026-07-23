@@ -1,0 +1,7 @@
+{
+  "subject": "Research digest: distributed cognition",
+  "pattern": "Three independent papers this week on cognitive load reduction via structured handoffs. Pattern: organizations that enforce typed deliverables between teams have lower coordination overhead than those using free-form communication.",
+  "motifs": ["typed handoff reduces coordination cost", "structure reduces cognitive load"],
+  "wild_connections": ["medieval guild handoffs — journeyman to master — only the artifact crosses, not the process"],
+  "why": "convergent external signal for the typed artifact / blindness protocol hypothesis"
+}

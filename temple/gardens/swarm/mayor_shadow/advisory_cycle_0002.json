@@ -1,0 +1,22 @@
+{
+  "schema": "MAYOR_SHADOW_ADVISORY_V0",
+  "cycle": 2,
+  "ranked": [
+    {
+      "claim_id": "CLM-eb7bc6b1",
+      "shadow_rank": 10
+    }
+  ],
+  "objections": [
+    {
+      "claim_id": "CLM-eb7bc6b1",
+      "objection": "Stub claim \u2014 requires real HAL LLM synthesis before MAYOR can evaluate."
+    }
+  ],
+  "advisory": true,
+  "note": "MAYOR-SHADOW ranks only. No verdicts. No receipts. Advisory input for JM's Dawn Report.",
+  "actor": "MAYOR_SHADOW",
+  "authority": false,
+  "ledger_effect": "none",
+  "created_at": "2026-07-23T15:13:16.949366+00:00"
+}

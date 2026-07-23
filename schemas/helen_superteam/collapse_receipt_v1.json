@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "helen_superteam_collapse_receipt_v1",
+  "title": "CollapseReceipt",
+  "description": "JM's collapse act: freezes one garden block and its ancestry chain, copies to temple/proposals/. authority=false — the actual ledger entry requires JM running helen_say manually. Collapse selects; it never deletes.",
+  "authority": "NON_SOVEREIGN",
+  "canon": "NO_SHIP",
+  "lifecycle": "COLLAPSED",
+  "type": "object",
+  "required": [
+    "collapse_id",
+    "block_hash",
+    "block_id",
+    "block_type",
+    "ancestry_chain",
+    "collapsed_at",
+    "collapsed_by",
+    "destination",
+    "authority",
+    "ledger_effect",
+    "actor",
+    "note"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "collapse_id": {
+      "type": "string",
+      "description": "Unique collapse identifier. Format: COL-<hash8>.",
+      "pattern": "^COL-[a-f0-9]{8}$"
+    },
+    "block_hash": {
+      "type": "string",
+      "description": "SHA-256 hash of the collapsed artifact's content."
+    },
+    "block_id": {
+      "type": "string",
+      "description": "The artifact ID (SEED-*, INS-*, CLM-*) that was collapsed."
+    },
+    "block_type": {
+      "type": "string",
+      "description": "Which Lego block tier was collapsed.",
+      "enum": ["DreamSeed", "InsightCandidate", "ClaimCandidate"]
+    },
+    "ancestry_chain": {
+      "type": "array",
+      "description": "Full chain of parent artifact hashes from this block back to its DreamSeed roots.",
+      "items": { "type": "string" }
+    },
+    "collapsed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "collapsed_by": {
+      "type": "string",
+      "description": "Who performed the collapse. Should be 'JM' — only the operator collapses."
+    },
+    "destination": {
+      "type": "string",
+      "description": "Where the frozen block was copied. Always temple/proposals/ for Z3 staging."
+    },
+    "siblings_preserved": {
+      "type": "array",
+      "description": "IDs of sibling artifacts at the same block type that remain uncollapsed in Z2.",
+      "items": { "type": "string" }
+    },
+    "authority": {
+      "type": "boolean",
+      "const": false,
+      "description": "Always false. Collapse is non-sovereign. The ledger entry requires helen_say (JM's act)."
+    },
+    "ledger_effect": {
+      "type": "string",
+      "const": "none",
+      "description": "Always none. Collapse does not write to the ledger directly."
+    },
+    "actor": {
+      "type": "string",
+      "const": "COLLAPSE_CLI",
+      "description": "Always COLLAPSE_CLI. The tool performs the freeze; JM performs the collapse."
+    },
+    "note": {
+      "type": "string",
+      "description": "Human-readable note about what was collapsed and why."
+    }
+  }
+}

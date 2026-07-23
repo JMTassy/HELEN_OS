@@ -1,0 +1,22 @@
+{
+  "insight_id": "INS-b0b18d9f",
+  "derived_from_seed_ids": [
+    "SEED-ef238ba8",
+    "SEED-96688811",
+    "SEED-c85a44a2"
+  ],
+  "insight_sentence": "Across 3 signals, a pattern emerges around: blindness as protocol, typed handoff, role differentiation. [HER stub — LLM synthesis needed for real chiddush]",
+  "source_refs": [
+    "https://x.com/test/1234567",
+    "https://arxiv.org/abs/2507.test",
+    "email:Research digest: distributed cognition"
+  ],
+  "resonance": "The motifs ['blindness as protocol', 'typed handoff', 'role differentiation'] appear across unrelated sources — this convergence feels non-accidental.",
+  "possible_use": "If the pattern holds, it may inform the next HELEN OS architectural decision or research hypothesis.",
+  "uncertainty": "Stub output — real HER requires LLM synthesis. Motif clustering is surface-level.",
+  "evidence_needed": "A real LLM pass over the seed fragments to extract genuine chiddush and test whether the pattern survives scrutiny.",
+  "claim_status": "CANDIDATE",
+  "authority": false,
+  "actor": "HER",
+  "created_at": "2026-07-23T15:13:16.948399+00:00"
+}

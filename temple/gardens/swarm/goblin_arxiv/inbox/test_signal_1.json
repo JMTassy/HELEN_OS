@@ -1,0 +1,12 @@
+{
+  "url": "https://arxiv.org/abs/2507.test",
+  "title": "Emergent Blindness in Multi-Agent Systems",
+  "fragments": [
+    "agents with restricted context windows outperform full-context agents on coordination tasks",
+    "information asymmetry between agents produces sharper role differentiation",
+    "typed handoffs reduce error propagation by 40% in simulation"
+  ],
+  "motifs": ["blindness as protocol", "typed handoff", "role differentiation"],
+  "wild_connections": ["Talmudic commentary — the gloss cannot see the original during composition"],
+  "why": "directly validates the HELEN superteam blindness protocol — independent empirical signal"
+}
