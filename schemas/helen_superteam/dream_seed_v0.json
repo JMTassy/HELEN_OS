@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "helen_superteam_dream_seed_v0",
+  "title": "DreamSeed",
+  "description": "GOBLIN output. Free lateral brainstorm from any raw input. NO RECEIPT = NO CLAIM. GOBLINs may dream everything but prove nothing.",
+  "authority": "NON_SOVEREIGN",
+  "canon": "NO_SHIP",
+  "lifecycle": "COMPOST",
+  "type": "object",
+  "required": [
+    "seed_id",
+    "source_refs",
+    "raw_fragments",
+    "motifs",
+    "wild_connections",
+    "why_it_feels_interesting",
+    "claim_status",
+    "authority",
+    "actor",
+    "created_at"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "seed_id": {
+      "type": "string",
+      "description": "Unique seed identifier. Format: SEED-<hash8>.",
+      "pattern": "^SEED-[a-f0-9]{8}$"
+    },
+    "source_refs": {
+      "type": "array",
+      "description": "Pointers to raw input sources. Files, URLs, snippets, labels — anything.",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "raw_fragments": {
+      "type": "array",
+      "description": "Verbatim or near-verbatim extracts from the raw input. No interpretation yet.",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "motifs": {
+      "type": "array",
+      "description": "Recurring patterns, themes, or tensions GOBLIN notices across fragments.",
+      "items": { "type": "string" }
+    },
+    "wild_connections": {
+      "type": "array",
+      "description": "Lateral leaps. Associations to other domains, memories, or absurd analogies. No filter.",
+      "items": { "type": "string" }
+    },
+    "why_it_feels_interesting": {
+      "type": "string",
+      "description": "GOBLIN's gut read. Why does this signal feel alive? Not an argument — a feeling.",
+      "minLength": 10
+    },
+    "input_type": {
+      "type": "string",
+      "description": "Optional: type of raw input (pdf, tweet, article, noise, failure, fragment, dream, other).",
+      "enum": ["pdf", "tweet", "article", "noise", "failure", "fragment", "dream", "json", "ndjson", "other"]
+    },
+    "claim_status": {
+      "type": "string",
+      "const": "NO_CLAIM",
+      "description": "Always NO_CLAIM. GOBLINs do not make claims."
+    },
+    "authority": {
+      "type": "boolean",
+      "const": false,
+      "description": "Always false. DreamSeeds carry no authority."
+    },
+    "actor": {
+      "type": "string",
+      "const": "GOBLIN",
+      "description": "Always GOBLIN. Only GOBLINs emit DreamSeeds."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 UTC timestamp."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional freeform GOBLIN notes. Ephemeral — not promoted."
+    }
+  }
+}

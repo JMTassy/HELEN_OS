@@ -1,0 +1,89 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "helen_superteam_validation_receipt_candidate_v0",
+  "title": "ValidationReceiptCandidate",
+  "description": "MAYOR output. Independent binary civic review of a ClaimCandidate. MAYOR may validate the candidate packet but cannot admit it into kernel truth. ledger_effect: none.",
+  "authority": "NON_SOVEREIGN",
+  "canon": "NO_SHIP",
+  "lifecycle": "VALIDATED_CLAIM_CANDIDATE",
+  "type": "object",
+  "required": [
+    "validation_id",
+    "claim_id",
+    "mayor_verdict",
+    "evidence_inspected",
+    "missing_evidence",
+    "reason",
+    "next_gate",
+    "claim_status",
+    "authority",
+    "ledger_effect",
+    "actor",
+    "created_at"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "validation_id": {
+      "type": "string",
+      "description": "Unique validation identifier. Format: VAL-<hash8>.",
+      "pattern": "^VAL-[a-f0-9]{8}$"
+    },
+    "claim_id": {
+      "type": "string",
+      "description": "The ClaimCandidate this review covers.",
+      "pattern": "^CLM-[a-f0-9]{8}$"
+    },
+    "mayor_verdict": {
+      "type": "string",
+      "description": "MAYOR's binary decision. YES = passes to admission queue. NO = rejected here. HOLD = blocked pending evidence.",
+      "enum": ["YES", "NO", "HOLD"]
+    },
+    "evidence_inspected": {
+      "type": "array",
+      "description": "Which evidence refs MAYOR actually reviewed. May differ from what HAL listed.",
+      "items": { "type": "string" }
+    },
+    "missing_evidence": {
+      "type": "string",
+      "description": "What evidence MAYOR needed but did not find. Empty string if verdict is YES with full evidence."
+    },
+    "reason": {
+      "type": "string",
+      "description": "MAYOR's stated reason for the verdict. Compact and specific.",
+      "minLength": 10
+    },
+    "dissent": {
+      "type": "string",
+      "description": "Any reservations MAYOR holds even on YES verdict. What remains uncertain. Empty string if none."
+    },
+    "next_gate": {
+      "type": "string",
+      "description": "Where this packet goes next. On YES: ADMISSION_REVIEW. On NO: REJECT_LOG. On HOLD: HOLD_QUEUE.",
+      "enum": ["ADMISSION_REVIEW", "REJECT_LOG", "HOLD_QUEUE"]
+    },
+    "claim_status": {
+      "type": "string",
+      "const": "VALIDATED_CLAIM_CANDIDATE",
+      "description": "Always VALIDATED_CLAIM_CANDIDATE. A YES verdict is not kernel truth."
+    },
+    "authority": {
+      "type": "boolean",
+      "const": false,
+      "description": "Always false. MAYOR validation is not sovereign authority."
+    },
+    "ledger_effect": {
+      "type": "string",
+      "const": "none",
+      "description": "Always none. Validation does not touch the ledger."
+    },
+    "actor": {
+      "type": "string",
+      "const": "MAYOR",
+      "description": "Always MAYOR. Only MAYOR emits ValidationReceiptCandidates."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}
