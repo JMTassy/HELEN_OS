@@ -207,22 +207,22 @@ def test_score_formula_numerics():
 # ---------------------------------------------------------------------------
 
 def test_default_ranking_init_weights_highest():
-    """With no observed rankings, init_ranking_weights must score highest."""
+    """With no observed rankings, context_ranking wins cold-start (E11: init E lowered 8→6)."""
     rankings = {s: None for s in ALLOWED_SURFACES}
     result = surface_ranker.rank(rankings)
-    assert result.selected == "init_ranking_weights"
-    assert result.selected_score == pytest.approx(24.0, abs=0.01)
+    assert result.selected == "context_ranking"
+    assert result.selected_score == pytest.approx(19.2, abs=0.01)
 
 
 def test_default_ranking_order():
-    """Verify full default ranking order matches calibrated values."""
+    """Verify full default ranking order matches calibrated values (E11: init E=6, score=18.0)."""
     rankings = {s: None for s in ALLOWED_SURFACES}
     result = surface_ranker.rank(rankings)
     scored = {s.surface: s.score for s in result.ranked}
-    # init_ranking_weights is highest
-    assert scored["init_ranking_weights"] > scored["context_ranking"]
+    # context_ranking wins cold-start; sandbox_visual_grammar second; init_ranking_weights third
     assert scored["context_ranking"] > scored["sandbox_visual_grammar"]
-    assert scored["sandbox_visual_grammar"] > scored["prompt_compression"]
+    assert scored["sandbox_visual_grammar"] > scored["init_ranking_weights"]
+    assert scored["init_ranking_weights"] > scored["prompt_compression"]
     assert scored["prompt_compression"] > scored["summarization_weights"]
     assert scored["summarization_weights"] > scored["skill_routing"]
 

@@ -1,0 +1,29 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sumweights-e10",
+  "target": "summarization_weights",
+  "epoch": "E10",
+  "parent_packet": "AR-sumweights-a8f2",
+  "hypothesis": "PROPOSAL_QUALITY_THRESHOLD=0.5 is a constant drift: test fixtures already hardcode threshold=0.75 (test_autoresearch_eval_receipt_pipeline.py:84,99), confirming 0.75 was the original intent; the loop constant regressed to 0.5, making noop_v1 (score=0.5) a PASS via gte instead of FAIL",
+  "finding_type": "constant_drift",
+  "summary": "Test fixtures at helen_os/tests/test_autoresearch_eval_receipt_pipeline.py:84,99 use threshold=0.75 for both PASS and FAIL receipts. The loop constant (self_improve_loop_v1.py:70) is 0.5. No test imports PROPOSAL_QUALITY_THRESHOLD directly — drift went undetected. Raising the constant to 0.75 restores alignment with fixture intent and blocks noop_v1 at gate 7.",
+  "evidence": [
+    "self_improve_loop_v1.py:70 — PROPOSAL_QUALITY_THRESHOLD = 0.5 (only 2 references in entire codebase)",
+    "self_improve_loop_v1.py:339 — comparison_rule='gte' → 0.5>=0.5=PASS for noop",
+    "test_autoresearch_eval_receipt_pipeline.py:84 — _make_passing_receipt() hardcodes threshold=0.75",
+    "test_autoresearch_eval_receipt_pipeline.py:99 — _make_failing_receipt() hardcodes threshold=0.75",
+    "No test imports PROPOSAL_QUALITY_THRESHOLD — constant drift undetected",
+    "test_score_proposal_specificity.py:56 — asserts score >= 0.5; no e2e reducer integration"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "proposed_tweak": "One-line: raise PROPOSAL_QUALITY_THRESHOLD from 0.5 to 0.75 at self_improve_loop_v1.py:70. Aligns loop with test fixture intent. Update test_score_proposal_specificity.py:56 assertion from score>=0.5 to score>=0.75. Add: from helen_os.autonomy.self_improve_loop_v1 import PROPOSAL_QUALITY_THRESHOLD; assert PROPOSAL_QUALITY_THRESHOLD == 0.75 to pin the constant.",
+  "metric": "noop_v1 (score=0.5) through full pipeline (score → gte → eval_receipt.passed=False → reducer) returns REJECTED / ERR_THRESHOLD_NOT_MET; vague-effects (score=0.75) still returns ADMITTED",
+  "rule": "keep if noop blocked and vague-effects survive; reject if vague-effects also blocked or threshold=0.75 causes any ADMITTED regression in existing tests",
+  "next": "Write one integration test: build noop_v1 eval_receipt with PROPOSAL_QUALITY_THRESHOLD as threshold, assemble, reduce; assert decision==REJECTED and reason_code==ERR_THRESHOLD_NOT_MET; import constant directly to pin against future drift",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-07-18"
+}

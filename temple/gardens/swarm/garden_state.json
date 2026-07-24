@@ -1,0 +1,60 @@
+{
+  "schema": "GARDEN_STATE_V1",
+  "current_cycle": 2,
+  "started_at": "2026-07-23T15:13:08.668669+00:00",
+  "authority": false,
+  "ledger_effect": "none",
+  "artifacts": {
+    "SEED-ef238ba8": {
+      "artifact_id": "SEED-ef238ba8",
+      "artifact_type": "DreamSeed",
+      "npc": "goblin_arxiv",
+      "path": "temple/gardens/swarm/goblin_arxiv/SEED-ef238ba8.json",
+      "content_hash": "0e83ec69f8184485ec77c91c0bd481b27b90ff90d8b4b5b9e193762cc0484907",
+      "created_cycle": 1,
+      "composted": false,
+      "collapsed": false
+    },
+    "SEED-96688811": {
+      "artifact_id": "SEED-96688811",
+      "artifact_type": "DreamSeed",
+      "npc": "goblin_agora",
+      "path": "temple/gardens/swarm/goblin_agora/SEED-96688811.json",
+      "content_hash": "020019e45244ca93fed33e5d7eed7603a602b90fb1aa8814c6989541543a2a39",
+      "created_cycle": 1,
+      "composted": false,
+      "collapsed": false
+    },
+    "SEED-c85a44a2": {
+      "artifact_id": "SEED-c85a44a2",
+      "artifact_type": "DreamSeed",
+      "npc": "goblin_postmaster",
+      "path": "temple/gardens/swarm/goblin_postmaster/SEED-c85a44a2.json",
+      "content_hash": "a69d80db46cb04f77c6a1e7b13deb05d0350739e0241237aaaf40f7efe2bfa8f",
+      "created_cycle": 2,
+      "composted": false,
+      "collapsed": false
+    },
+    "INS-b0b18d9f": {
+      "artifact_id": "INS-b0b18d9f",
+      "artifact_type": "InsightCandidate",
+      "npc": "her",
+      "path": "temple/gardens/swarm/her/INS-b0b18d9f.json",
+      "content_hash": "b00f5d3583bd9fe75c706ed9fa02cfb1a7450229a772a6bf405270a9d52035ae",
+      "created_cycle": 2,
+      "composted": false,
+      "collapsed": false
+    },
+    "CLM-eb7bc6b1": {
+      "artifact_id": "CLM-eb7bc6b1",
+      "artifact_type": "ClaimCandidate",
+      "npc": "hal",
+      "path": "temple/gardens/swarm/hal/CLM-eb7bc6b1.json",
+      "content_hash": "35ab2d98a9c5f87b277c02cdfca55f858777a7a37a5fdac08b7cde856c6562cb",
+      "created_cycle": 2,
+      "composted": false,
+      "collapsed": false
+    }
+  },
+  "compost_hashes": []
+}

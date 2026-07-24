@@ -1,0 +1,25 @@
+{
+  "seed_id": "SEED-ef238ba8",
+  "source_refs": [
+    "https://arxiv.org/abs/2507.test"
+  ],
+  "raw_fragments": [
+    "agents with restricted context windows outperform full-context agents on coordination tasks",
+    "information asymmetry between agents produces sharper role differentiation",
+    "typed handoffs reduce error propagation by 40% in simulation"
+  ],
+  "motifs": [
+    "blindness as protocol",
+    "typed handoff",
+    "role differentiation"
+  ],
+  "wild_connections": [
+    "Talmudic commentary — the gloss cannot see the original during composition"
+  ],
+  "why_it_feels_interesting": "directly validates the HELEN superteam blindness protocol — independent empirical signal",
+  "input_type": "article",
+  "claim_status": "NO_CLAIM",
+  "authority": false,
+  "actor": "GOBLIN",
+  "created_at": "2026-07-23T15:13:08.670012+00:00"
+}

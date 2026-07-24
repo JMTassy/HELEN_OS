@@ -1,0 +1,20 @@
+{
+  "seed_id": "SEED-96688811",
+  "source_refs": [
+    "https://x.com/test/1234567"
+  ],
+  "raw_fragments": [
+    "The best AI systems I've seen don't give each agent full context. They give each agent a typed artifact and a role. The role is the model. The artifact is the trust boundary."
+  ],
+  "motifs": [
+    "typed artifact as trust boundary",
+    "role is the model"
+  ],
+  "wild_connections": [],
+  "why_it_feels_interesting": "resonates exactly with HAL/HER blindness design — convergent signal from outside HELEN",
+  "input_type": "tweet",
+  "claim_status": "NO_CLAIM",
+  "authority": false,
+  "actor": "GOBLIN",
+  "created_at": "2026-07-23T15:13:08.670482+00:00"
+}

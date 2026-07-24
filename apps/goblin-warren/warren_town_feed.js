@@ -6,7 +6,7 @@ window.WarrenFeed = {
   "authority": false,
   "canon": false,
   "ledger_effect": "none",
-  "packet_count": 37,
+  "packet_count": 42,
   "roles": {
     "ARCHIVIST": [
       {
@@ -23,6 +23,21 @@ window.WarrenFeed = {
         "severity": "info",
         "summary": "No deduplication, no cap, no ranking on capability_gaps before prompt injection at self_improve_loop_v1.py:266. Caller-order determines what HELEN proposes.",
         "title": "No deduplication, no cap, no ranking on capability_gaps before prompt…"
+      },
+      {
+        "admission": "FORBIDDEN",
+        "authority": false,
+        "finding_type": "phantom_default",
+        "mark": null,
+        "packet_id": "AR-ctx-rank-stab-e11",
+        "proof_status": "grounded",
+        "proposer": "unknown proposer",
+        "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+        "replay_status": "in_digest",
+        "scanned_at": "2026-07-17T00:00:00Z",
+        "severity": "low",
+        "summary": "autoresearch_loop.py:98 calls evaluate() without stability_ranked. Evaluator defaults stab=1.0 when argument is None (line 62). Every logged ExperimentEntry.stability=1.0 is phantom — never measured. Score formula bakes in +0.2 from fictional perfect stability; operators reading epoch logs cannot distinguish measured stability from the default.",
+        "title": "autoresearch_loop.py:98 calls evaluate() without stability_ranked"
       },
       {
         "admission": "FORBIDDEN",
@@ -68,6 +83,51 @@ window.WarrenFeed = {
         "severity": "info",
         "summary": "Prior packet AR-f7ec3779a583 proposed tail=20 at helen.py:speak() only. New evidence: server.py:59 has identical gap — full NDJSON read, Python slice at return. Source fix (memory.py:116) remains unimplemented. Two unbounded call sites, one source fix.",
         "title": "Prior packet AR-f7ec3779a583 proposed tail=20 at helen.py:speak() only"
+      },
+      {
+        "admission": "FORBIDDEN",
+        "authority": false,
+        "finding_type": "gap",
+        "mark": null,
+        "packet_id": "AR-sandbox-vgrammar-f2a9",
+        "proof_status": "ungrounded",
+        "proposer": "unknown proposer",
+        "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+        "replay_status": "in_digest",
+        "scanned_at": "2026-07-17",
+        "severity": "info",
+        "summary": "apps/helen-surface/goblin/garden_conquest_avalon.html:639,642 — AVALON epoch ticker renders 🟢 for E06 and E09 to signal story-arc progress. The file header is titled 'TEMPLE SANDBOX', bottom-strip declares authority=false / sovereign=false / commit=blocked. CLAUDE.md WULMOJI rule: 'Agents must not render 🟢 ADMITTED for any artifact whose frontmatter contains authority: false.' One-meaning-per-color is breached: a non-admitted garden item carries the ADMITTED color. Secondary gap: CSS palette uses --green (#00ff88) as dominant branding color throughout the sandbox, creating visual ambiguity between 'admitted' (🟢 governance) and 'styled' (CSS --green). Source Atlas Doctrine: 'No decorative color substitution is allowed.'",
+        "title": "apps/helen-surface/goblin/garden_conquest_avalon.html:639,642 — AVALO…"
+      },
+      {
+        "admission": "FORBIDDEN",
+        "authority": false,
+        "finding_type": "gap",
+        "mark": null,
+        "packet_id": "AR-sumweights-a8f2",
+        "proof_status": "ungrounded",
+        "proposer": "unknown proposer",
+        "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+        "replay_status": "in_digest",
+        "scanned_at": "2026-07-14",
+        "severity": "info",
+        "summary": "Four scoring bands (1.0 / 0.75 / 0.5 / 0.0) with threshold at 0.5 mean the 'quality gate' only blocks schema-invalid proposals. Noop proposals pass. Evidence: self_improve_loop_v1.py:70, assembler:162, reducer:86.",
+        "title": "Four scoring bands (1.0 / 0.75 / 0.5 / 0.0) with threshold at 0.5 mea…"
+      },
+      {
+        "admission": "FORBIDDEN",
+        "authority": false,
+        "finding_type": "constant_drift",
+        "mark": null,
+        "packet_id": "AR-sumweights-e10",
+        "proof_status": "ungrounded",
+        "proposer": "unknown proposer",
+        "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+        "replay_status": "in_digest",
+        "scanned_at": "2026-07-18",
+        "severity": "info",
+        "summary": "Test fixtures at helen_os/tests/test_autoresearch_eval_receipt_pipeline.py:84,99 use threshold=0.75 for both PASS and FAIL receipts. The loop constant (self_improve_loop_v1.py:70) is 0.5. No test imports PROPOSAL_QUALITY_THRESHOLD directly — drift went undetected. Raising the constant to 0.75 restores alignment with fixture intent and blocks noop_v1 at gate 7.",
+        "title": "Test fixtures at helen_os/tests/test_autoresearch_eval_receipt_pipeli…"
       }
     ],
     "CHIDDUSH": [
@@ -463,15 +523,30 @@ window.WarrenFeed = {
         "authority": false,
         "finding_type": "gap",
         "mark": null,
-        "packet_id": "AR-sumweights-a8f2",
+        "packet_id": "AR-promptcomp-fieldmismatch-e9",
         "proof_status": "ungrounded",
+        "proposer": "unknown proposer",
+        "recommended_action": "?",
+        "replay_status": "in_digest",
+        "scanned_at": "?",
+        "severity": "low",
+        "summary": "E9 observation: memory.py NDJSON entries use actor+value schema; adapters.py context reader expects metadata.role+content. Field mismatch silently injects empty user messages — chat history is invisible to the LLM.",
+        "title": "E9 observation: memory.py NDJSON entries use actor+value schema; adap…"
+      },
+      {
+        "admission": "FORBIDDEN",
+        "authority": false,
+        "finding_type": "gap",
+        "mark": null,
+        "packet_id": "AR-skill-route-d1f7",
+        "proof_status": "grounded",
         "proposer": "unknown proposer",
         "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
         "replay_status": "in_digest",
-        "scanned_at": "2026-07-14",
-        "severity": "info",
-        "summary": "Four scoring bands (1.0 / 0.75 / 0.5 / 0.0) with threshold at 0.5 mean the 'quality gate' only blocks schema-invalid proposals. Noop proposals pass. Evidence: self_improve_loop_v1.py:70, assembler:162, reducer:86.",
-        "title": "Four scoring bands (1.0 / 0.75 / 0.5 / 0.0) with threshold at 0.5 mea…"
+        "scanned_at": "2026-07-17T00:00:00Z",
+        "severity": "low",
+        "summary": "Dead comment: _compute_route() Rule 9 says 'or SKILL if multi-step intent' but no NLU detection exists. All USER_QUERY text routes to AGENT regardless of content. Explicit-field path (claim_extraction, audit_type) reaches SKILL; natural-language equivalent never does.",
+        "title": "Dead comment: _compute_route() Rule 9 says 'or SKILL if multi-step in…"
       }
     ],
     "WARDEN": [
@@ -585,6 +660,6 @@ window.WarrenFeed = {
   "schema": "WARREN_FEED_V0",
   "skipped": [],
   "source": "temple/autoresearch/outbox",
-  "source_digest": "6d01a937719e58201b9999fefb1369a5e303a17a5d2d9298b95accfd89a7ff51",
+  "source_digest": "2a86e8e414a55da6e3fcd96e81af35a3ad55a099e88b64135293dc28615fa9a7",
   "sovereign": false
 };

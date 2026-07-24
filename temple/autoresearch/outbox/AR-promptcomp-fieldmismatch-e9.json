@@ -1,0 +1,30 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-promptcomp-fieldmismatch-e9",
+  "target_surface": "prompt_compression",
+  "epoch": "E9",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "reducer_required": true,
+  "finding_type": "gap",
+  "summary": "E9 observation: memory.py NDJSON entries use actor+value schema; adapters.py context reader expects metadata.role+content. Field mismatch silently injects empty user messages — chat history is invisible to the LLM.",
+  "evidence": [
+    "helen_os_scaffold/helen_os/memory.py:77-84 — NDJSON entry: {event_id, key, value, actor, status, timestamp}",
+    "helen_os_scaffold/helen_os/adapters.py:21 — role = h.get('metadata', {}).get('role') → None (no metadata key in NDJSON)",
+    "helen_os_scaffold/helen_os/adapters.py:24-25 — elif role not in ['user','system'] → role='user' (all entries fall here)",
+    "helen_os_scaffold/helen_os/adapters.py:26 — content = h.get('content', '') → '' (field is 'value', not 'content')",
+    "helen_os_scaffold/helen_os/helen.py:53,57 — history = memory.get_history(); context = [system_msg] + history — full mismatch-schema list passed to adapter",
+    "helen_os_scaffold/helen_os/helen.py:90-99 — add_fact(key='user_input', value=..., actor='user') and add_fact(key='helen_response', value=..., actor='helen') — correct keys never mapped"
+  ],
+  "mechanism": "adapters.OllamaAdapter/OpenAIAdapter.generate() maps role from h['metadata']['role'] and content from h['content']. NDJSON entries have neither field. Result: every history entry → {role:'user', content:''} silent empty message. LLM has no access to prior conversation context despite it being stored.",
+  "proposed_tweak": "Two options — (A) map at read time in get_history(): return entries with metadata.role from actor and content from value; (B) map at inject time in helen.py:57 via list comprehension: [{'metadata':{'role':e['actor']},'content':e['value']} for e in history]. Option A is single-source fix (one method, closes all call sites). Proposal only — no write.",
+  "metric": "Before fix: adapter sees content='' for all history entries. After fix: adapter sees content=user_message for actor='user' entries and content=her_response for actor='helen' entries. Observable: LLM response incorporates prior turn context (e.g. second message 'what did I just say?' returns correct answer).",
+  "keep_rule": "KEEP if: adapter receives non-empty content for helen/user history entries; helen chat response demonstrates continuity across turns. REJECT if: mapping introduces sovereign fields (avoid injecting event_id/status into LLM prompt).",
+  "next": "Implement Option A: add tail param AND field mapping to get_history(). Test with two-turn chat; verify second response references first turn.",
+  "risk_flags": [
+    "Option A changes get_history() return schema — verify helen_talk.py:373 and server.py:59 slices still work on new format",
+    "actor='helen' must map to role='assistant' for Ollama/OpenAI API compliance (adapters.py:22 already handles this — helen→assistant mapping present)"
+  ]
+}

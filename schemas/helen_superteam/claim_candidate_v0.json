@@ -1,0 +1,108 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "helen_superteam_claim_candidate_v0",
+  "title": "ClaimCandidate",
+  "description": "HAL output. Turns best insight candidates into explicit, testable claim candidates. HAL may frame a claim but cannot validate truth.",
+  "authority": "NON_SOVEREIGN",
+  "canon": "NO_SHIP",
+  "lifecycle": "CLAIM_CANDIDATE",
+  "type": "object",
+  "required": [
+    "claim_id",
+    "claim_sentence",
+    "claim_type",
+    "source_refs",
+    "evidence_refs",
+    "evidence_requirement",
+    "test_or_review_path",
+    "risk_if_wrong",
+    "hal_reason",
+    "derived_from_insight_id",
+    "claim_status",
+    "authority",
+    "actor",
+    "created_at"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "claim_id": {
+      "type": "string",
+      "description": "Unique claim identifier. Format: CLM-<hash8>.",
+      "pattern": "^CLM-[a-f0-9]{8}$"
+    },
+    "claim_sentence": {
+      "type": "string",
+      "description": "The claim in one falsifiable sentence. HAL demands precision.",
+      "minLength": 20,
+      "maxLength": 500
+    },
+    "claim_type": {
+      "type": "string",
+      "description": "Category of claim.",
+      "enum": [
+        "architecture",
+        "behavior",
+        "performance",
+        "correctness",
+        "governance",
+        "epistemics",
+        "design",
+        "other"
+      ]
+    },
+    "source_refs": {
+      "type": "array",
+      "description": "Original source pointers from the insight lineage.",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "evidence_refs": {
+      "type": "array",
+      "description": "Existing artifacts, files, or data that partially support the claim. May be empty.",
+      "items": { "type": "string" }
+    },
+    "evidence_requirement": {
+      "type": "string",
+      "description": "What evidence would fully establish or refute the claim. Concrete and specific.",
+      "minLength": 20
+    },
+    "test_or_review_path": {
+      "type": "string",
+      "description": "How to test or review this claim. A concrete method: unit test, audit, replay, peer review, experiment.",
+      "minLength": 20
+    },
+    "risk_if_wrong": {
+      "type": "string",
+      "description": "What is the blast radius if this claim is wrong and admitted? Grounds MAYOR's review.",
+      "minLength": 10
+    },
+    "hal_reason": {
+      "type": "string",
+      "description": "HAL's case for why this insight deserves ClaimCandidate status. Why it's testable enough.",
+      "minLength": 20
+    },
+    "derived_from_insight_id": {
+      "type": "string",
+      "description": "The InsightCandidate this was framed from.",
+      "pattern": "^INS-[a-f0-9]{8}$"
+    },
+    "claim_status": {
+      "type": "string",
+      "const": "CLAIM_CANDIDATE",
+      "description": "Always CLAIM_CANDIDATE. Not a validated claim."
+    },
+    "authority": {
+      "type": "boolean",
+      "const": false
+    },
+    "actor": {
+      "type": "string",
+      "const": "HAL",
+      "description": "Always HAL. Only HAL emits ClaimCandidates."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

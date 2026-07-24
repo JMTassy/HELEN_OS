@@ -1,0 +1,27 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sandbox-vgrammar-f2a9",
+  "target": "sandbox_visual_grammar",
+  "hypothesis": "garden_conquest_avalon.html epoch ticker uses 🟢 for story-arc 'completion' of E06 and E09, overloading the governance color ADMITTED inside a file that declares authority=false — WULMOJI Status Rendering Rule breach.",
+  "finding_type": "gap",
+  "summary": "apps/helen-surface/goblin/garden_conquest_avalon.html:639,642 — AVALON epoch ticker renders 🟢 for E06 and E09 to signal story-arc progress. The file header is titled 'TEMPLE SANDBOX', bottom-strip declares authority=false / sovereign=false / commit=blocked. CLAUDE.md WULMOJI rule: 'Agents must not render 🟢 ADMITTED for any artifact whose frontmatter contains authority: false.' One-meaning-per-color is breached: a non-admitted garden item carries the ADMITTED color. Secondary gap: CSS palette uses --green (#00ff88) as dominant branding color throughout the sandbox, creating visual ambiguity between 'admitted' (🟢 governance) and 'styled' (CSS --green). Source Atlas Doctrine: 'No decorative color substitution is allowed.'",
+  "evidence": [
+    "apps/helen-surface/goblin/garden_conquest_avalon.html:639 — '(6) 🟢 🌹 🜂🜍 🔒📜 🔗#AVALON-E06' inside AVALON EPOCH MARCH ticker",
+    "apps/helen-surface/goblin/garden_conquest_avalon.html:642 — '(9) 🟢 🌀 🜄🜁 📜 🔗#AVALON-E09' inside AVALON EPOCH MARCH ticker",
+    "apps/helen-surface/goblin/garden_conquest_avalon.html:677-679 — GARDEN LAW: authority=false, sovereign=false, commit=blocked",
+    "apps/helen-surface/goblin/garden_conquest_avalon.html:6 — <title>GARDEN_CONQUEST_AVALON — TEMPLE SANDBOX</title>",
+    "apps/helen-surface/goblin/garden_conquest_avalon.html:14 — --green: #00ff88 used as dominant branding color (body color, headings, badges) alongside WULMOJI 🟢",
+    "CLAUDE.md §WULMOJI Status Rendering Rule — 'must not render 🟢 ADMITTED for any artifact with authority: false'"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "proposed_tweak": "Replace 🟢 with 🟠 (REVIEW) at lines 639 and 642 in garden_conquest_avalon.html. AVALON epochs completed in the garden arc are at most under review — not operator-admitted. Two-character change per line; no logic change. Secondary: annotate CSS --green as 'UI/branding palette' in a comment to distinguish from 🟢 governance meaning.",
+  "metric": "grep -P '\\x{1F7E2}' apps/helen-surface/**/*.html returns 0 hits in non-sovereign surfaces; operator surfaces that do use 🟢 must reference an admitted receipt",
+  "rule": "keep if epoch ticker uses 🟠 or 🔵 for non-admitted milestones and CSS branding color is annotated distinct from governance palette; reject if story arc requires its own color meaning (in which case operator must define an extension token separate from WULMOJI)",
+  "next": "Audit all apps/helen-surface/**/*.html for decorative 🟢 / 🟡 / ⚪ usage; surface any file rendering them without an admitted receipt reference",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-07-17"
+}

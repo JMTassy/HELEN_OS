@@ -1,0 +1,38 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-ctx-rank-stab-e11",
+  "target_surface": "context_ranking",
+  "epoch": "E11",
+  "source_refs": [
+    "helen_kernel/evaluator.py:62",
+    "helen_kernel/autoresearch_loop.py:98",
+    "tests/test_evaluator.py:108-109"
+  ],
+  "finding_type": "phantom_default",
+  "summary": "autoresearch_loop.py:98 calls evaluate() without stability_ranked. Evaluator defaults stab=1.0 when argument is None (line 62). Every logged ExperimentEntry.stability=1.0 is phantom — never measured. Score formula bakes in +0.2 from fictional perfect stability; operators reading epoch logs cannot distinguish measured stability from the default.",
+  "evidence": [
+    "evaluator.py:62: 'stab = stability_score(ranked, stability_ranked) if stability_ranked is not None else 1.0'",
+    "autoresearch_loop.py:90: evaluate(before_top3, ground_truth, current_weights) — no stability_ranked (baseline, acceptable)",
+    "autoresearch_loop.py:98: evaluate(ranked, ground_truth, candidate) — no stability_ranked (phantom +0.2 per candidate epoch)",
+    "autoresearch_loop.py:108: stability=result.stability — always logs 1.0",
+    "test_evaluator.py:108: comment explicitly acknowledges 'stability defaults to 1.0 when stability_ranked is None'",
+    "probe: evaluate(['a','b','c'], ['a','b','c'], {}) → score=1.0 (includes 0.2*1.0 phantom stability)",
+    "probe: evaluate(['a','b','c'], ['a','b','c'], {}, stability_ranked=['x','y','z']) → score=0.8 (real instability detected)"
+  ],
+  "hypothesis": "If autoresearch_loop.py passes stability_ranked=before_top3 at line 98, logged stability reflects real ranking shift and scores vary meaningfully across epochs rather than hiding behind constant 1.0.",
+  "proposed_tweak": "helen_kernel/autoresearch_loop.py line 98: change evaluate(ranked, ground_truth, candidate) to evaluate(ranked, ground_truth, candidate, stability_ranked=before_top3). Proposal only — no write. One-line reversible change.",
+  "metric": "Run existing test_evaluate_score_formula with stability_ranked=['x','y','z'] (non-overlapping): expect score=0.5*1.0+0.3*1.0+0.2*0.0=0.8, not 1.0. In loop: epoch log shows stability<1.0 when candidate reorders top3.",
+  "keep_rule": "KEEP if: (1) test_evaluate_score_formula updated to pass stability_ranked and score drops to 0.8 when top3 diverges; (2) loop epoch entries show variable stability across epochs; REJECT if false REJECT outcomes increase (candidate penalized for low stability when weight mutation legitimately reorders).",
+  "next": "Implement one-line change; update test_evaluate_score_formula to supply stability_ranked; re-run 50 tests; compare epoch log stability variance before/after.",
+  "risk_flags": [
+    "Passing before_top3 as stability_ranked penalizes weight mutations that legitimately reorder. Operator should confirm stability weight (0.2) is appropriate before activating.",
+    "Baseline call at line 90 should remain without stability_ranked (no prior run) — only candidate evaluations at line 98 need it."
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-07-17T00:00:00Z"
+}

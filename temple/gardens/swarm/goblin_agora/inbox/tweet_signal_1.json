@@ -1,0 +1,6 @@
+{
+  "url": "https://x.com/test/1234567",
+  "text": "The best AI systems I've seen don't give each agent full context. They give each agent a typed artifact and a role. The role is the model. The artifact is the trust boundary.",
+  "motifs": ["typed artifact as trust boundary", "role is the model"],
+  "why": "resonates exactly with HAL/HER blindness design — convergent signal from outside HELEN"
+}

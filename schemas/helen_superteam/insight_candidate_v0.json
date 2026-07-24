@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "helen_superteam_insight_candidate_v0",
+  "title": "InsightCandidate",
+  "description": "HER output. Deep sensemaking from DreamSeeds — chiddush extraction. HER may distill meaning but resonance is not evidence.",
+  "authority": "NON_SOVEREIGN",
+  "canon": "NO_SHIP",
+  "lifecycle": "CANDIDATE",
+  "type": "object",
+  "required": [
+    "insight_id",
+    "derived_from_seed_ids",
+    "insight_sentence",
+    "source_refs",
+    "resonance",
+    "possible_use",
+    "uncertainty",
+    "evidence_needed",
+    "claim_status",
+    "authority",
+    "actor",
+    "created_at"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "insight_id": {
+      "type": "string",
+      "description": "Unique insight identifier. Format: INS-<hash8>.",
+      "pattern": "^INS-[a-f0-9]{8}$"
+    },
+    "derived_from_seed_ids": {
+      "type": "array",
+      "description": "Which DreamSeeds this insight was extracted from. Min 1.",
+      "items": {
+        "type": "string",
+        "pattern": "^SEED-[a-f0-9]{8}$"
+      },
+      "minItems": 1
+    },
+    "insight_sentence": {
+      "type": "string",
+      "description": "The insight in one sentence. Precise. HER's best distillation of what is genuinely new here (chiddush).",
+      "minLength": 20,
+      "maxLength": 500
+    },
+    "source_refs": {
+      "type": "array",
+      "description": "Original source pointers inherited or refined from seeds.",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "resonance": {
+      "type": "string",
+      "description": "Why this matters emotionally, structurally, or aesthetically. Not an argument — a reading.",
+      "minLength": 10
+    },
+    "possible_use": {
+      "type": "string",
+      "description": "Where this insight might be useful if it turns out to be true or valid.",
+      "minLength": 10
+    },
+    "uncertainty": {
+      "type": "string",
+      "description": "What HER is not sure about. What might make this insight wrong or irrelevant.",
+      "minLength": 10
+    },
+    "evidence_needed": {
+      "type": "string",
+      "description": "What evidence would make this insight stronger or weaker. Handed to HAL as input.",
+      "minLength": 10
+    },
+    "claim_status": {
+      "type": "string",
+      "const": "CANDIDATE",
+      "description": "Always CANDIDATE. InsightCandidates are not claims."
+    },
+    "authority": {
+      "type": "boolean",
+      "const": false
+    },
+    "actor": {
+      "type": "string",
+      "const": "HER",
+      "description": "Always HER. Only HER emits InsightCandidates."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}
