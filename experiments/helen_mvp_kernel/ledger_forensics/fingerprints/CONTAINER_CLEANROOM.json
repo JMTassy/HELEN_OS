@@ -1,0 +1,1668 @@
+{
+  "authority": false,
+  "canon": false,
+  "device": {
+    "float_repr_check": "0.30000000000000004",
+    "fs_encoding": "utf-8",
+    "git_branch": "claude/setup-helen-os-node-b4uj8",
+    "git_dirty": true,
+    "git_head": "60b061c1b0484a994980b6d521a32a97547240b1",
+    "hash_randomization": "unset",
+    "machine": "x86_64",
+    "platform": "Linux-6.18.5-x86_64-with-glibc2.39",
+    "preferred_encoding": "utf-8",
+    "python": "3.11.15",
+    "python_impl": "CPython",
+    "tz": "unset"
+  },
+  "label": "CONTAINER_CLEANROOM_2026-07-12",
+  "ledger_effect": "none",
+  "ledgers": [
+    {
+      "bytes": 245312,
+      "checkpoints": {
+        "0": "ef6e2f8387204c17",
+        "112": "43408894d96295d4",
+        "128": "53cd11d926725053",
+        "144": "a91c6830da0faf53",
+        "16": "e3df80191238651e",
+        "160": "d0c79cd3612c8ec2",
+        "176": "682f8370349f54de",
+        "192": "af75f54b9bfb0aee",
+        "208": "80490a0c0ed8a6d8",
+        "224": "a50e185f1508d396",
+        "240": "828d541555087f82",
+        "256": "00ebf67d71e40d1b",
+        "32": "d81aced229771d3a",
+        "48": "1cf091a59da0d990",
+        "64": "f5c94899945633e9",
+        "80": "8334fb294ae5736d",
+        "96": "f84ebe25135f7169"
+      },
+      "content_sha256": "b43fa33e668e772851b51d67098d58ff710f18bfd42c13e37663c4c64a06e1a7",
+      "final_cum_hash": "d4569e442f7fdf40de333eba9b5d4b136c61c8b7a39fc8d38169837bf2b48398",
+      "integrity": {
+        "cum_hash_mismatch": 0,
+        "cum_hash_recomputed_ok": 264,
+        "first_cum_mismatch": null,
+        "first_linkage_breaks": [],
+        "first_payload_mismatch": null,
+        "linkage_breaks": 0,
+        "payload_hash_mismatch": 0,
+        "payload_hash_recomputed_ok": 264
+      },
+      "line_ending": "LF",
+      "malformed_lines": 0,
+      "path": "/home/user/helen-conquest/town/ledger_v1.ndjson",
+      "per_seq": {
+        "0": {
+          "c": "8cc12f5148d6",
+          "p": "ef6e2f838720",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "1": {
+          "c": "080b0e887087",
+          "p": "e551ffda3409",
+          "t": "turn",
+          "tamper": false
+        },
+        "10": {
+          "c": "d772793877fe",
+          "p": "44e8887b260c",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "100": {
+          "c": "c7f0e0e64347",
+          "p": "1e9f3424faa5",
+          "t": "turn",
+          "tamper": false
+        },
+        "101": {
+          "c": "fd7cafbac7b7",
+          "p": "ab71443c08f0",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "102": {
+          "c": "293a0e618284",
+          "p": "657376b60c7b",
+          "t": "turn",
+          "tamper": false
+        },
+        "103": {
+          "c": "862239ca93af",
+          "p": "050650d44dd5",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "104": {
+          "c": "c016aa4cbc9b",
+          "p": "39a8d8c08208",
+          "t": "turn",
+          "tamper": false
+        },
+        "105": {
+          "c": "d39f840a284f",
+          "p": "1d0dfb815d70",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "106": {
+          "c": "7d50a50fb6ce",
+          "p": "939ccdc71368",
+          "t": "turn",
+          "tamper": false
+        },
+        "107": {
+          "c": "d14c63056faa",
+          "p": "e86e3ea6134e",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "108": {
+          "c": "046a28d40af4",
+          "p": "37f60eb4af37",
+          "t": "turn",
+          "tamper": false
+        },
+        "109": {
+          "c": "e63ec349af2f",
+          "p": "44a0a3839f2d",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "11": {
+          "c": "f48e5066d87f",
+          "p": "1fa7667635e0",
+          "t": "turn",
+          "tamper": false
+        },
+        "110": {
+          "c": "6cd05357bc74",
+          "p": "f3463a89376b",
+          "t": "turn",
+          "tamper": false
+        },
+        "111": {
+          "c": "9146768099b3",
+          "p": "6d3e8a96715b",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "112": {
+          "c": "b247d7f7600d",
+          "p": "43408894d962",
+          "t": "turn",
+          "tamper": false
+        },
+        "113": {
+          "c": "c331ce6cbef4",
+          "p": "720e6666f928",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "114": {
+          "c": "aecde8a32262",
+          "p": "f8ccf204d853",
+          "t": "turn",
+          "tamper": false
+        },
+        "115": {
+          "c": "65d9c25ed943",
+          "p": "052e975e3848",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "116": {
+          "c": "2156573994da",
+          "p": "ea5c7ceb7928",
+          "t": "turn",
+          "tamper": false
+        },
+        "117": {
+          "c": "10517ed9b64a",
+          "p": "1702816c1dc7",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "118": {
+          "c": "6b81ea9814bf",
+          "p": "1cf3f7af6714",
+          "t": "turn",
+          "tamper": false
+        },
+        "119": {
+          "c": "bb43443a58df",
+          "p": "28238b7249ab",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "12": {
+          "c": "51665d94b61a",
+          "p": "7ae5c8910a1e",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "120": {
+          "c": "3c76ec53896f",
+          "p": "c0553e9e17ac",
+          "t": "turn",
+          "tamper": false
+        },
+        "121": {
+          "c": "ff50e519e00e",
+          "p": "8b8fdfe51a21",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "122": {
+          "c": "77ee1efcd289",
+          "p": "4af7a2779d57",
+          "t": "turn",
+          "tamper": false
+        },
+        "123": {
+          "c": "a4ba424d8a9a",
+          "p": "79da1296f5a8",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "124": {
+          "c": "d16ff98549ab",
+          "p": "afa84a664caf",
+          "t": "turn",
+          "tamper": false
+        },
+        "125": {
+          "c": "ff19d851991d",
+          "p": "fc8006d25ef6",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "126": {
+          "c": "7fd4ec66f39d",
+          "p": "bda2440e51b4",
+          "t": "turn",
+          "tamper": false
+        },
+        "127": {
+          "c": "5f51d63bd0ff",
+          "p": "e20cab439f43",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "128": {
+          "c": "7e9cc65e3e8f",
+          "p": "53cd11d92672",
+          "t": "turn",
+          "tamper": false
+        },
+        "129": {
+          "c": "f6fdac0a3ab7",
+          "p": "16d187f5e0be",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "13": {
+          "c": "cdea7c5610f6",
+          "p": "f72353c7ae19",
+          "t": "turn",
+          "tamper": false
+        },
+        "130": {
+          "c": "641156de7680",
+          "p": "92765ad315c6",
+          "t": "turn",
+          "tamper": false
+        },
+        "131": {
+          "c": "12db438f899b",
+          "p": "27971ede7355",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "132": {
+          "c": "4a2c8235897d",
+          "p": "29dee28f09d4",
+          "t": "turn",
+          "tamper": false
+        },
+        "133": {
+          "c": "899aaa4ddeaa",
+          "p": "0388c3d3776f",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "134": {
+          "c": "c5cd5086819e",
+          "p": "ce7fe89ab7f0",
+          "t": "turn",
+          "tamper": false
+        },
+        "135": {
+          "c": "ad584fa4a8d6",
+          "p": "b76b4b9f5464",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "136": {
+          "c": "c4dc6e9ccaf0",
+          "p": "0d3f99bf1d06",
+          "t": "turn",
+          "tamper": false
+        },
+        "137": {
+          "c": "27a13d5a8d12",
+          "p": "cfa525b4b8ea",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "138": {
+          "c": "3eb856332c1b",
+          "p": "48f08cc46c88",
+          "t": "turn",
+          "tamper": false
+        },
+        "139": {
+          "c": "962f450193c4",
+          "p": "06c6d1c39cb1",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "14": {
+          "c": "ca31c1aac907",
+          "p": "03e7dbce106c",
+          "t": "seal",
+          "tamper": false
+        },
+        "140": {
+          "c": "1f0416db62d8",
+          "p": "269cc77ef2cd",
+          "t": "turn",
+          "tamper": false
+        },
+        "141": {
+          "c": "6ea9cb4170e0",
+          "p": "167d77da91b6",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "142": {
+          "c": "30b13a4cdf38",
+          "p": "e88f983d4162",
+          "t": "turn",
+          "tamper": false
+        },
+        "143": {
+          "c": "05f2efd32b42",
+          "p": "2d986ac685e8",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "144": {
+          "c": "1d1193e44709",
+          "p": "a91c6830da0f",
+          "t": "turn",
+          "tamper": false
+        },
+        "145": {
+          "c": "1fe2fe48e851",
+          "p": "62080048757a",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "146": {
+          "c": "534dc306baca",
+          "p": "c7691a63abde",
+          "t": "turn",
+          "tamper": false
+        },
+        "147": {
+          "c": "e106bd3c09ad",
+          "p": "5b1b9be4906a",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "148": {
+          "c": "5317d566ca75",
+          "p": "acb8eafa5bfe",
+          "t": "turn",
+          "tamper": false
+        },
+        "149": {
+          "c": "28622f9ec6ef",
+          "p": "addd07923869",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "15": {
+          "c": "560881c11820",
+          "p": "f081a2149d09",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "150": {
+          "c": "7a3e8c241108",
+          "p": "cf6db81bd0f6",
+          "t": "turn",
+          "tamper": false
+        },
+        "151": {
+          "c": "86f0610441d1",
+          "p": "5b1b9be4906a",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "152": {
+          "c": "b17c9d9849b2",
+          "p": "f82415e9e30c",
+          "t": "turn",
+          "tamper": false
+        },
+        "153": {
+          "c": "f086a1bb9796",
+          "p": "5b1b9be4906a",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "154": {
+          "c": "7f7bb589e50e",
+          "p": "cfc4a625a0a6",
+          "t": "turn",
+          "tamper": false
+        },
+        "155": {
+          "c": "2075ec63db93",
+          "p": "addd07923869",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "156": {
+          "c": "b9472744434a",
+          "p": "890fe5eeced9",
+          "t": "turn",
+          "tamper": false
+        },
+        "157": {
+          "c": "0a27762ebfac",
+          "p": "40b862b074d4",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "158": {
+          "c": "f93acf893dd2",
+          "p": "c5f822c98b7b",
+          "t": "turn",
+          "tamper": false
+        },
+        "159": {
+          "c": "b8ff85a3d166",
+          "p": "021caee04a05",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "16": {
+          "c": "2da122c1f6dd",
+          "p": "e3df80191238",
+          "t": "turn",
+          "tamper": false
+        },
+        "160": {
+          "c": "1f332d75b3fc",
+          "p": "d0c79cd3612c",
+          "t": "turn",
+          "tamper": false
+        },
+        "161": {
+          "c": "e15b568fac15",
+          "p": "f2207e32fbf5",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "162": {
+          "c": "921fa742e2f0",
+          "p": "a057f7faa251",
+          "t": "turn",
+          "tamper": false
+        },
+        "163": {
+          "c": "7d9f0d38e5c1",
+          "p": "828d54155508",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "164": {
+          "c": "44c77398805c",
+          "p": "8f82f07d1e5e",
+          "t": "turn",
+          "tamper": false
+        },
+        "165": {
+          "c": "73f0546ec532",
+          "p": "828d54155508",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "166": {
+          "c": "9dbb2b5729a3",
+          "p": "f40177e82025",
+          "t": "turn",
+          "tamper": false
+        },
+        "167": {
+          "c": "7a80ce1cded0",
+          "p": "5b1b9be4906a",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "168": {
+          "c": "44ffac4055a1",
+          "p": "ba62eef6919f",
+          "t": "turn",
+          "tamper": false
+        },
+        "169": {
+          "c": "1556a60a735c",
+          "p": "40b862b074d4",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "17": {
+          "c": "0f48d2e2fdc0",
+          "p": "addd07923869",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "170": {
+          "c": "0c5a3fce3727",
+          "p": "b7a772356c86",
+          "t": "turn",
+          "tamper": false
+        },
+        "171": {
+          "c": "db5b1fcb0798",
+          "p": "51948c48e69c",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "172": {
+          "c": "597ea3fcc6fd",
+          "p": "c92c24d814a7",
+          "t": "turn",
+          "tamper": false
+        },
+        "173": {
+          "c": "5c364d9a9822",
+          "p": "9b9cd185c591",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "174": {
+          "c": "0aab9d0dea17",
+          "p": "d798a6612e7a",
+          "t": "turn",
+          "tamper": false
+        },
+        "175": {
+          "c": "99d18d11909d",
+          "p": "1af59393cfc6",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "176": {
+          "c": "40281c93b297",
+          "p": "682f8370349f",
+          "t": "turn",
+          "tamper": false
+        },
+        "177": {
+          "c": "70c69307bce0",
+          "p": "5577f80c240c",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "178": {
+          "c": "b679ca8a6648",
+          "p": "77f9dda51129",
+          "t": "turn",
+          "tamper": false
+        },
+        "179": {
+          "c": "def6c85ea5d0",
+          "p": "eae652d5508f",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "18": {
+          "c": "c81c9c4a17a2",
+          "p": "4d968adf74fa",
+          "t": "turn",
+          "tamper": false
+        },
+        "180": {
+          "c": "9ee807211f05",
+          "p": "6d2fed3b32ac",
+          "t": "turn",
+          "tamper": false
+        },
+        "181": {
+          "c": "dcf32208535b",
+          "p": "d7459a98e19b",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "182": {
+          "c": "c4d3ba7d20df",
+          "p": "c10c8104b9f1",
+          "t": "turn",
+          "tamper": false
+        },
+        "183": {
+          "c": "95c2727e7922",
+          "p": "923f02b5cc19",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "184": {
+          "c": "07d862163fb0",
+          "p": "0746e0e3a877",
+          "t": "turn",
+          "tamper": false
+        },
+        "185": {
+          "c": "b8d897c8f84c",
+          "p": "fa2ed37e4ea7",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "186": {
+          "c": "011b1cc7c101",
+          "p": "70a44de7e7a5",
+          "t": "turn",
+          "tamper": false
+        },
+        "187": {
+          "c": "90b04b69af02",
+          "p": "16a78ffe6a3c",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "188": {
+          "c": "fbe9fbe3eddd",
+          "p": "8f9c5e205759",
+          "t": "turn",
+          "tamper": false
+        },
+        "189": {
+          "c": "3c13221c2a2f",
+          "p": "976de5a7357c",
+          "t": "k8_fail",
+          "tamper": false
+        },
+        "19": {
+          "c": "6917ef3b9cfe",
+          "p": "e22000c91aba",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "190": {
+          "c": "7715d4e018d4",
+          "p": "3ef3e1e550a4",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "191": {
+          "c": "bf172ce279e9",
+          "p": "b0ab7cfe44ac",
+          "t": "turn",
+          "tamper": false
+        },
+        "192": {
+          "c": "073f44accc56",
+          "p": "af75f54b9bfb",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "193": {
+          "c": "598fa89cb229",
+          "p": "79a70c9a1756",
+          "t": "turn",
+          "tamper": false
+        },
+        "194": {
+          "c": "4a862e7f9975",
+          "p": "33606a06e124",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "195": {
+          "c": "e7c2cb6ef75b",
+          "p": "bc724c24aad8",
+          "t": "turn",
+          "tamper": false
+        },
+        "196": {
+          "c": "db04f14d3e45",
+          "p": "16553382c8ed",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "197": {
+          "c": "3abffcd06411",
+          "p": "cc96a765f776",
+          "t": "turn",
+          "tamper": false
+        },
+        "198": {
+          "c": "aae16e9b5c27",
+          "p": "dca82a58a592",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "199": {
+          "c": "74cd383994ee",
+          "p": "b26d1db7885b",
+          "t": "turn",
+          "tamper": false
+        },
+        "2": {
+          "c": "43a8174dc31f",
+          "p": "44664ab93c3b",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "20": {
+          "c": "369fc80ed9f4",
+          "p": "b86caf60e3ec",
+          "t": "turn",
+          "tamper": false
+        },
+        "200": {
+          "c": "b3415eb3edfb",
+          "p": "2e6cf7616e82",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "201": {
+          "c": "2ce0868bc06a",
+          "p": "8e85303aba63",
+          "t": "turn",
+          "tamper": false
+        },
+        "202": {
+          "c": "13fa5f191219",
+          "p": "c414f4c429b1",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "203": {
+          "c": "a3da9f73a90f",
+          "p": "d5432b403abe",
+          "t": "turn",
+          "tamper": false
+        },
+        "204": {
+          "c": "9300da2cbbff",
+          "p": "6443e3d8f1b3",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "205": {
+          "c": "f4f682c981c0",
+          "p": "2c9ea098c449",
+          "t": "turn",
+          "tamper": false
+        },
+        "206": {
+          "c": "eb409f5c78e9",
+          "p": "53ea0fe01367",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "207": {
+          "c": "1f0bc12a55a4",
+          "p": "8540dd93ca7d",
+          "t": "turn",
+          "tamper": false
+        },
+        "208": {
+          "c": "6945df836e72",
+          "p": "80490a0c0ed8",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "209": {
+          "c": "d23fd84cd14d",
+          "p": "f40315a96949",
+          "t": "turn",
+          "tamper": false
+        },
+        "21": {
+          "c": "cfe4bd1fca7f",
+          "p": "27704d453783",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "210": {
+          "c": "a87e49867035",
+          "p": "f46e9b24160a",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "211": {
+          "c": "d7ad827a8da8",
+          "p": "4f6c619eedfc",
+          "t": "turn",
+          "tamper": false
+        },
+        "212": {
+          "c": "2a0170eff7f0",
+          "p": "fc66c7103f6d",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "213": {
+          "c": "39993c7f0ac2",
+          "p": "f3e9d2dde6ea",
+          "t": "turn",
+          "tamper": false
+        },
+        "214": {
+          "c": "455af5273abe",
+          "p": "5986ef418cf1",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "215": {
+          "c": "98f1880f2089",
+          "p": "f096e74aaeac",
+          "t": "turn",
+          "tamper": false
+        },
+        "216": {
+          "c": "dcc5ea19ac94",
+          "p": "4a307c228104",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "217": {
+          "c": "a17799d11923",
+          "p": "6846bf08a173",
+          "t": "turn",
+          "tamper": false
+        },
+        "218": {
+          "c": "47f60cae744c",
+          "p": "bbae64596a35",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "219": {
+          "c": "01d99b7816bb",
+          "p": "8e013212e404",
+          "t": "turn",
+          "tamper": false
+        },
+        "22": {
+          "c": "ae1049b8520a",
+          "p": "4cab9be7f6f3",
+          "t": "turn",
+          "tamper": false
+        },
+        "220": {
+          "c": "01d05dfee72e",
+          "p": "5b1b9be4906a",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "221": {
+          "c": "e0331f0b2262",
+          "p": "590036a0e914",
+          "t": "turn",
+          "tamper": false
+        },
+        "222": {
+          "c": "6639579e27dd",
+          "p": "553ddacdb6ea",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "223": {
+          "c": "3c3ff049be55",
+          "p": "38865e425c7f",
+          "t": "turn",
+          "tamper": false
+        },
+        "224": {
+          "c": "1211d479ec64",
+          "p": "a50e185f1508",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "225": {
+          "c": "9565e92806a0",
+          "p": "ce5dda113546",
+          "t": "turn",
+          "tamper": false
+        },
+        "226": {
+          "c": "9ff738889988",
+          "p": "823b1819fc73",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "227": {
+          "c": "3e4c08a77e12",
+          "p": "df9d2da4eec2",
+          "t": "turn",
+          "tamper": false
+        },
+        "228": {
+          "c": "b39eee239baa",
+          "p": "1f4501ba8cbb",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "229": {
+          "c": "a14f9e7a38fe",
+          "p": "7dfeb6979778",
+          "t": "turn",
+          "tamper": false
+        },
+        "23": {
+          "c": "fb191eca9ea6",
+          "p": "986d4bdba3a0",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "230": {
+          "c": "d71f30114886",
+          "p": "677e4aff7674",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "231": {
+          "c": "7c228201f7f3",
+          "p": "0153431e3efc",
+          "t": "turn",
+          "tamper": false
+        },
+        "232": {
+          "c": "ccf9ff7d7c2f",
+          "p": "c1715778a2f0",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "233": {
+          "c": "136b9e0d8ec5",
+          "p": "03466bf7dd68",
+          "t": "turn",
+          "tamper": false
+        },
+        "234": {
+          "c": "97c8cbeab2c5",
+          "p": "fdcfab2cf6ea",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "235": {
+          "c": "9c741a587af8",
+          "p": "3c49b043d42a",
+          "t": "turn",
+          "tamper": false
+        },
+        "236": {
+          "c": "1d7295ffa933",
+          "p": "fdcfab2cf6ea",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "237": {
+          "c": "9a1b13d2b6ef",
+          "p": "a510716933fb",
+          "t": "turn",
+          "tamper": false
+        },
+        "238": {
+          "c": "e874023c59c5",
+          "p": "5b1b9be4906a",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "239": {
+          "c": "4472463e3943",
+          "p": "426309c51293",
+          "t": "turn",
+          "tamper": false
+        },
+        "24": {
+          "c": "52d0f45bc676",
+          "p": "ec9fedace9ab",
+          "t": "turn",
+          "tamper": false
+        },
+        "240": {
+          "c": "70ef31f16f24",
+          "p": "828d54155508",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "241": {
+          "c": "d73409f17a78",
+          "p": "43a45d777788",
+          "t": "turn",
+          "tamper": false
+        },
+        "242": {
+          "c": "3ce6ce6efe92",
+          "p": "97e379424148",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "243": {
+          "c": "17449069d4a6",
+          "p": "39416d3fdbf1",
+          "t": "turn",
+          "tamper": false
+        },
+        "244": {
+          "c": "a8863c3937b8",
+          "p": "395d6bdeeb9d",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "245": {
+          "c": "e18a7652e11f",
+          "p": "0ea7a5067d14",
+          "t": "turn",
+          "tamper": false
+        },
+        "246": {
+          "c": "852bc9711755",
+          "p": "d6d7649c69aa",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "247": {
+          "c": "1b973f8d324d",
+          "p": "75d7f086a254",
+          "t": "turn",
+          "tamper": false
+        },
+        "248": {
+          "c": "96b284b07cb1",
+          "p": "3b31f2b5470d",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "249": {
+          "c": "751b377019e9",
+          "p": "8332c74b494a",
+          "t": "turn",
+          "tamper": false
+        },
+        "25": {
+          "c": "5ffddaa9aeb3",
+          "p": "8b8343a71cdc",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "250": {
+          "c": "911ea8fafb3b",
+          "p": "3b31f2b5470d",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "251": {
+          "c": "d11d2f459b64",
+          "p": "5aaee6fae62e",
+          "t": "turn",
+          "tamper": false
+        },
+        "252": {
+          "c": "2ac22f2bc429",
+          "p": "3b31f2b5470d",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "253": {
+          "c": "b96ace7b2382",
+          "p": "76f1613a0b23",
+          "t": "turn",
+          "tamper": false
+        },
+        "254": {
+          "c": "4d77b2b89c5f",
+          "p": "e88f8143f6a6",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "255": {
+          "c": "957d88a8b434",
+          "p": "909e2a126907",
+          "t": "turn",
+          "tamper": false
+        },
+        "256": {
+          "c": "2e030df74919",
+          "p": "00ebf67d71e4",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "257": {
+          "c": "0de13fbf9125",
+          "p": "88486db3708d",
+          "t": "turn",
+          "tamper": false
+        },
+        "258": {
+          "c": "4d2ca731f928",
+          "p": "fc9a0beb32e7",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "259": {
+          "c": "88b9abeab241",
+          "p": "7b44850b3319",
+          "t": "turn",
+          "tamper": false
+        },
+        "26": {
+          "c": "bb1ed4736ead",
+          "p": "8015ec6289e7",
+          "t": "turn",
+          "tamper": false
+        },
+        "260": {
+          "c": "0cd954a1795d",
+          "p": "00defd3104a5",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "261": {
+          "c": "58abcee1e661",
+          "p": "c3a120aac369",
+          "t": "turn",
+          "tamper": false
+        },
+        "262": {
+          "c": "51b701c9e59e",
+          "p": "c067861c37e6",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "263": {
+          "c": "d4569e442f7f",
+          "p": "3a18f46ae9b3",
+          "t": "turn",
+          "tamper": false
+        },
+        "27": {
+          "c": "e20900b74eb4",
+          "p": "b76b4b9f5464",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "28": {
+          "c": "54747294b36d",
+          "p": "c7028066c3b7",
+          "t": "turn",
+          "tamper": false
+        },
+        "29": {
+          "c": "5f21af183712",
+          "p": "cfa525b4b8ea",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "3": {
+          "c": "e3c14dd87ef5",
+          "p": "e82eddedd67c",
+          "t": "turn",
+          "tamper": false
+        },
+        "30": {
+          "c": "674a7317692f",
+          "p": "67d816ad9256",
+          "t": "turn",
+          "tamper": false
+        },
+        "31": {
+          "c": "36180dd7c59f",
+          "p": "91f961617d9a",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "32": {
+          "c": "fe7a8473c5b4",
+          "p": "d81aced22977",
+          "t": "turn",
+          "tamper": false
+        },
+        "33": {
+          "c": "e93b6dae3061",
+          "p": "3afff8135087",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "34": {
+          "c": "4bd4c1e0b14a",
+          "p": "4d6fe4b55809",
+          "t": "turn",
+          "tamper": false
+        },
+        "35": {
+          "c": "ce819d14422e",
+          "p": "5490a23c29c5",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "36": {
+          "c": "86b9e3882049",
+          "p": "2902a752759d",
+          "t": "turn",
+          "tamper": false
+        },
+        "37": {
+          "c": "f1e3dc8fdad7",
+          "p": "6c2116fecd2a",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "38": {
+          "c": "f1011e129235",
+          "p": "e8dd3bafdbac",
+          "t": "turn",
+          "tamper": false
+        },
+        "39": {
+          "c": "011fc3f0dbc7",
+          "p": "bdaa4203cd92",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "4": {
+          "c": "740f56b80728",
+          "p": "0d73a1dd67fb",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "40": {
+          "c": "dce95f0fb61c",
+          "p": "ccb48785c7e2",
+          "t": "turn",
+          "tamper": false
+        },
+        "41": {
+          "c": "41085aadc0d3",
+          "p": "986d4bdba3a0",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "42": {
+          "c": "a60d95a5c734",
+          "p": "185854bade5a",
+          "t": "turn",
+          "tamper": false
+        },
+        "43": {
+          "c": "a02010b29116",
+          "p": "8f8a495c452a",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "44": {
+          "c": "fbf5e16abff4",
+          "p": "f16efedfe1e8",
+          "t": "turn",
+          "tamper": false
+        },
+        "45": {
+          "c": "9e86ad392d5c",
+          "p": "5b1b9be4906a",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "46": {
+          "c": "7a1a3827e14c",
+          "p": "424f64f48e63",
+          "t": "turn",
+          "tamper": false
+        },
+        "47": {
+          "c": "14beaa8be343",
+          "p": "818d9ad98dc1",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "48": {
+          "c": "a7eeb731a637",
+          "p": "1cf091a59da0",
+          "t": "turn",
+          "tamper": false
+        },
+        "49": {
+          "c": "89efb141c4f3",
+          "p": "4252e225cc06",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "5": {
+          "c": "3e214c57bd22",
+          "p": "4f982c73cb0f",
+          "t": "turn",
+          "tamper": false
+        },
+        "50": {
+          "c": "b4caf063877b",
+          "p": "8b82684280d2",
+          "t": "turn",
+          "tamper": false
+        },
+        "51": {
+          "c": "06dcf799f9f4",
+          "p": "1129f7cd3a71",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "52": {
+          "c": "8d1b37b5f7d7",
+          "p": "a3737d616c68",
+          "t": "turn",
+          "tamper": false
+        },
+        "53": {
+          "c": "0da449bfaa73",
+          "p": "767d569ab83d",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "54": {
+          "c": "6ab28e134033",
+          "p": "b30580fa3fcf",
+          "t": "turn",
+          "tamper": false
+        },
+        "55": {
+          "c": "380bc3776d6f",
+          "p": "ebbae5932f9e",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "56": {
+          "c": "c3ef22e70ceb",
+          "p": "0c2801a208b1",
+          "t": "turn",
+          "tamper": false
+        },
+        "57": {
+          "c": "e3c3b4f025ac",
+          "p": "b77718b9127f",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "58": {
+          "c": "d71e9c66a882",
+          "p": "d4fce8ccf740",
+          "t": "turn",
+          "tamper": false
+        },
+        "59": {
+          "c": "33527d484151",
+          "p": "f98e1247d92b",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "6": {
+          "c": "f66849b35464",
+          "p": "1e70951cad3f",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "60": {
+          "c": "c54a68e10b56",
+          "p": "64f1d2933a8a",
+          "t": "turn",
+          "tamper": false
+        },
+        "61": {
+          "c": "13e4119c918d",
+          "p": "0c41209ab249",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "62": {
+          "c": "045f82c5ea33",
+          "p": "00e852a8fe08",
+          "t": "turn",
+          "tamper": false
+        },
+        "63": {
+          "c": "39b7b93d78b3",
+          "p": "8ada3ba0e7c8",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "64": {
+          "c": "8439060d5b4b",
+          "p": "f5c948999456",
+          "t": "turn",
+          "tamper": false
+        },
+        "65": {
+          "c": "d0820d1a3830",
+          "p": "351bd04af34d",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "66": {
+          "c": "8f511fe2f592",
+          "p": "787888d30cd2",
+          "t": "turn",
+          "tamper": false
+        },
+        "67": {
+          "c": "b42dc7c49da2",
+          "p": "5b1b9be4906a",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "68": {
+          "c": "f32db36aa569",
+          "p": "8ea487b7b433",
+          "t": "turn",
+          "tamper": false
+        },
+        "69": {
+          "c": "ad749f5c3bfc",
+          "p": "2ef4c51e4a53",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "7": {
+          "c": "7da80daab5af",
+          "p": "e1b2dd903439",
+          "t": "turn",
+          "tamper": false
+        },
+        "70": {
+          "c": "e64536f22b7c",
+          "p": "dc8d821ae433",
+          "t": "turn",
+          "tamper": false
+        },
+        "71": {
+          "c": "e4efaa54d763",
+          "p": "818d9ad98dc1",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "72": {
+          "c": "6df03ab94d8f",
+          "p": "d2040a81dc05",
+          "t": "turn",
+          "tamper": false
+        },
+        "73": {
+          "c": "e6e1c2e6b880",
+          "p": "4252e225cc06",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "74": {
+          "c": "06b69dd08da6",
+          "p": "9c66928a4f4f",
+          "t": "turn",
+          "tamper": false
+        },
+        "75": {
+          "c": "b1d7091e07fb",
+          "p": "ab71443c08f0",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "76": {
+          "c": "966be7b88fad",
+          "p": "ea0e69a1d4ab",
+          "t": "turn",
+          "tamper": false
+        },
+        "77": {
+          "c": "e5e89dd7bf7d",
+          "p": "050650d44dd5",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "78": {
+          "c": "f48fff7bedc2",
+          "p": "36fb41baadb2",
+          "t": "turn",
+          "tamper": false
+        },
+        "79": {
+          "c": "168d0a42ba5b",
+          "p": "1d0dfb815d70",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "8": {
+          "c": "5daa26faf86f",
+          "p": "5ed47e9e8283",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "80": {
+          "c": "95d50e0e747c",
+          "p": "8334fb294ae5",
+          "t": "turn",
+          "tamper": false
+        },
+        "81": {
+          "c": "c6c868ab0334",
+          "p": "f9eda769c5e2",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "82": {
+          "c": "f4121313aac6",
+          "p": "6b6f4fbe316d",
+          "t": "turn",
+          "tamper": false
+        },
+        "83": {
+          "c": "fadd86d76727",
+          "p": "2ef4c51e4a53",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "84": {
+          "c": "3ff60cfcb34b",
+          "p": "7d411efb08e2",
+          "t": "turn",
+          "tamper": false
+        },
+        "85": {
+          "c": "7430fd0558d3",
+          "p": "818d9ad98dc1",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "86": {
+          "c": "d9c189da7bb2",
+          "p": "ea0b81141769",
+          "t": "turn",
+          "tamper": false
+        },
+        "87": {
+          "c": "f1b90342edff",
+          "p": "4252e225cc06",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "88": {
+          "c": "d782d9030309",
+          "p": "38347e29b923",
+          "t": "turn",
+          "tamper": false
+        },
+        "89": {
+          "c": "596ccd8e2824",
+          "p": "ab71443c08f0",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "9": {
+          "c": "668e702bcbc6",
+          "p": "e37dbc02bd98",
+          "t": "turn",
+          "tamper": false
+        },
+        "90": {
+          "c": "c02ffe603ff4",
+          "p": "73c2e96bf322",
+          "t": "turn",
+          "tamper": false
+        },
+        "91": {
+          "c": "7fa3c6db80ba",
+          "p": "050650d44dd5",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "92": {
+          "c": "4ffb30c4795b",
+          "p": "fa10120d4ed2",
+          "t": "turn",
+          "tamper": false
+        },
+        "93": {
+          "c": "1c6d71e5d39c",
+          "p": "1d0dfb815d70",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "94": {
+          "c": "c2964b091f92",
+          "p": "0d8b79b33486",
+          "t": "turn",
+          "tamper": false
+        },
+        "95": {
+          "c": "0ef4f96b6145",
+          "p": "2ef4c51e4a53",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "96": {
+          "c": "6357579c1b50",
+          "p": "f84ebe25135f",
+          "t": "turn",
+          "tamper": false
+        },
+        "97": {
+          "c": "64ed3ee33679",
+          "p": "818d9ad98dc1",
+          "t": "user_msg",
+          "tamper": false
+        },
+        "98": {
+          "c": "fa7fa2e163e9",
+          "p": "1f8c7ad06a7f",
+          "t": "turn",
+          "tamper": false
+        },
+        "99": {
+          "c": "771e6f8b6fb7",
+          "p": "4252e225cc06",
+          "t": "user_msg",
+          "tamper": false
+        }
+      },
+      "present": true,
+      "raw_sha256": "152e951097c5ad4aca7ec47b65aa8677c8b91d7a0264275e624c40991ad4ee0e",
+      "rows": 264,
+      "seq": {
+        "count": 264,
+        "max": 263,
+        "min": 0,
+        "monotone": true,
+        "unique": true
+      },
+      "trailing_newline": true
+    },
+    {
+      "bytes": 0,
+      "line_ending": "NONE",
+      "malformed_lines": 0,
+      "path": "/home/user/helen-conquest/experiments/helen_mvp_kernel/ledger/events.ndjson",
+      "present": true,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "rows": 0,
+      "trailing_newline": false
+    }
+  ],
+  "repo_root": "/home/user/helen-conquest",
+  "schema": "LEDGER_DEVICE_FINGERPRINT_V1"
+}
