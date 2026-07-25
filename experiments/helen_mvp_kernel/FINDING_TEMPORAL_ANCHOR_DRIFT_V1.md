@@ -114,3 +114,36 @@ closure     : confirms FRICTION_PROTOCOL_V1's law one level up — the
               still found something real
 status      : reported · N=1 · re-derivable
 ```
+
+---
+
+## COROBORATION 2026-07-25 — second instance, cross-session rather than cross-time
+
+The operator pasted a recap from a *different* HELEN session: a luxury-marketing
+pilot (Manucurist), a sourced-law corpus, a built skill, and three named concepts
+sitting at an operator gate awaiting an ADMIT stamp.
+
+Checked against this repository:
+
+    manucurist / "rayon vert" / carnation corpus ....... ABSENT
+    numbered luxury laws (concept-miroir, hallmark glocal) ABSENT
+    any luxury-marketing skill or campaign lane ........ ABSENT
+    origin/main tip ................................... 1e4a5b1 (unmoved)
+
+The work exists only in that session's context. It is not committed, not
+pushed, and carries no receipt. If that session ends, the corpus, the skill,
+the three concepts, and the gate state end with it.
+
+This is the same anchor-drift class as §2-3 above, rotated ninety degrees:
+instance one was **one assistant, two moments** (68 days, discovered by a
+rejected push). Instance two is **two sessions, one moment** (discovered by
+a grep that found nothing). Both share the signature: state believed current
+is local to a writer, invisible from outside it, and only a mechanism —
+never reasoning — reveals the gap.
+
+N is now 2. The second instance was found the same way as the first: by
+running a check against real state instead of accepting a report about it.
+
+Operational note: an ADMIT stamp issued from this session would have been a
+claim without a receipt — the artifacts being admitted are not visible here.
+Refusing it is the same VETO_RECEIPT shape as FRICTION_PROTOCOL_V1 §6.
