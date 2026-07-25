@@ -1,0 +1,34 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-skillroute-rule2b-dead-f3c7",
+  "target_surface": "skill_routing",
+  "epoch": "E13",
+  "source_refs": [
+    "helen_dispatch_v1_router.py:165",
+    "helen_dispatch_v1_router.py:285-291"
+  ],
+  "finding_type": "dead_branch",
+  "summary": "Rule 2b (line 285-291) is unreachable. _classify_input() returns THINK_PREPARATION for any input with think=True (line 165), so input_type is never USER_QUERY when think=True — the Rule 2b conjunction can never be satisfied. Both Rule 2a and the dead Rule 2b route to RouteType.THINK, so there is no current functional regression, but the dead branch hides a design ambiguity: THINK_PREPARATION (explicit prep intent) and USER_QUERY+think=True (query that needs thinking) are collapsed to the same input type with no way to distinguish them at the routing layer.",
+  "evidence": [
+    "_classify_input() line 165: 'if input_obj.get(\"think\") is True or \"think_preparation\" in input_obj: return InputType.THINK_PREPARATION' — fires before USER_QUERY default",
+    "Rule 2b line 285: 'if (input_type == InputType.USER_QUERY and input_obj.get(\"think\") is True)' — input_type is THINK_PREPARATION here, never USER_QUERY",
+    "Probe confirmed: router._classify_input({'think': True, 'text': '...'}) → THINK_PREPARATION, not USER_QUERY",
+    "No test file covers dispatch router think-routing paths (find tests/ -name '*dispatch*' returned empty)"
+  ],
+  "hypothesis": "If Rule 2b is removed (or _classify_input reordered), no functional regression occurs; dead code is eliminated and the THINK_PREPARATION vs USER_QUERY+think ambiguity is surfaced explicitly.",
+  "proposed_tweak": "Remove lines 285-291 (Rule 2b dead branch) from _route(). Both cases already reach Rule 2a (line 277-283) via _classify_input returning THINK_PREPARATION. Alternatively: add a comment noting the collapse and marking 2b for future intent-differentiation. One-line or comment-only change.",
+  "metric": "After removal: route({'think': True, 'text': '...'}) still returns RouteType.THINK; all existing dispatcher behavior unchanged; dead code eliminated.",
+  "keep_rule": "KEEP if removal leaves all THINK routes unchanged and no test regression; REJECT if any other classification path depends on Rule 2b being present.",
+  "next": "Add a minimal probe test: assert _classify_input({'think': True}) == THINK_PREPARATION; assert dispatch({'think': True}) route == THINK; remove Rule 2b; re-run probe.",
+  "risk_flags": [
+    "Low risk — both 2a and 2b return identical (RouteType.THINK, [RouteType.SKILL, RouteType.AGENT]) so removal is purely cosmetic at current router state",
+    "Medium future risk — if 2a and 2b were ever intended to diverge, the dead branch masked the design gap; surfacing it now is correct"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-07-25T00:00:00Z"
+}
