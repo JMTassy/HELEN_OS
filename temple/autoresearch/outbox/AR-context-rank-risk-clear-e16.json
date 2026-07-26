@@ -1,0 +1,46 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-context-rank-risk-clear-e16",
+  "target_surface": "context_ranking",
+  "epoch": "E16",
+  "parent_epoch": "E15",
+  "source_refs": [
+    "helen_os/persona_entry_shell/init_airlock.py:102-107",
+    "helen_os/persona_entry_shell/context_packet.py:28",
+    "scripts/demos/demo_init_airlock.py:61-66",
+    "helen_os/tests/test_init_airlock.py:66"
+  ],
+  "finding_type": "risk_clearance",
+  "summary": "E15 medium semantic risk flag cleared. E15 flagged: 'if any consumer explicitly asserts prior_context keys == 4, will break'. Full codebase grep for key-count assertions on prior_context returns 0 hits. Consumers access specific keys only (loaded_from, epoch_state[epoch_id]) — never asserting key-set equality or len(). 20/20 test_init_airlock tests green. E15 fix is structurally safe to apply.",
+  "evidence": [
+    "grep -rn 'prior_context' across full repo: only init_airlock.py, context_packet.py, demo_init_airlock.py — no key-count assertion anywhere",
+    "demo_init_airlock.py:66: asserts packet2.prior_context['epoch_state']['epoch_id'] == 'E50' — key access, not key-set check",
+    "test_init_airlock.py:66: asserts packet.prior_context['loaded_from'] == 'storage' — key access only",
+    "context_packet.py:28: prior_context typed as dict[str, Any] | None — open dict, tolerates any keys",
+    "20/20 test_init_airlock tests: PASS (current unpatched state green — no regressions)",
+    "E15 fix still unaplied: init_airlock.py:102-107 prior dict has 4 keys (missing companion_state, live_context)"
+  ],
+  "risk_clearance": {
+    "flag": "Medium semantic risk — consumer asserts prior_context keys == 4",
+    "status": "CLEARED",
+    "evidence": "0 key-count assertions found across entire codebase; all consumers use named key access only"
+  },
+  "proposed_tweak": "E15 fix cleared for application: add two lines to prior dict at init_airlock.py:105-106: 'companion_state': boot_ctx.companion_state, 'live_context': boot_ctx.live_context. No schema change required.",
+  "hypothesis": "If prior dict expanded with companion_state/live_context, memory_source='storage' carries real companion data — and no existing consumer breaks (key-count risk cleared).",
+  "metric": "Run 20 existing tests (must stay green) + new companion-only probe: tmpdir with only companion_state_v1.json → assert prior_context['companion_state'] is not None.",
+  "keep_rule": "KEEP if 20 tests green + companion probe passes; REJECT if any consumer breaks on new keys (none identified).",
+  "next": "Apply init_airlock.py:102-107 two-line expansion + write test_companion_only_storage_prior_propagates; run make test.",
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-07-26T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (claude-sonnet-4-6, FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (risk flag cleared by full grep + 20 tests green)",
+    "epoch": "E16",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
