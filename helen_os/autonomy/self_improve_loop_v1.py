@@ -67,7 +67,7 @@ BOOTSTRAP_SKILL_VERSION = "1.0.0"
 LAW_SURFACE_VERSION = "KERNEL_V2.0"
 
 # Proposal quality eval threshold (score must be >= to pass gate 6)
-PROPOSAL_QUALITY_THRESHOLD = 0.5
+PROPOSAL_QUALITY_THRESHOLD = 0.75
 
 # Required fields for a valid skill proposal JSON
 REQUIRED_PROPOSAL_FIELDS = frozenset({

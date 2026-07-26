@@ -4,6 +4,7 @@ authority=false  sovereign=false  ledger_effect=none
 """
 from helen_os.autonomy.self_improve_loop_v1 import (
     _score_proposal,
+    PROPOSAL_QUALITY_THRESHOLD,
     REQUIRED_PROPOSAL_FIELDS,
 )
 
@@ -53,4 +54,17 @@ def test_gate_threshold_preserved_for_vague():
          "expected_effects": ["enhance performance"]}
     score = _score_proposal(p)
     assert score == 0.75
-    assert score >= 0.5
+    assert score >= PROPOSAL_QUALITY_THRESHOLD
+
+
+def test_proposal_quality_threshold_is_0_75():
+    # Pin constant against future drift — noop_v1 (score=0.5) must not pass gate
+    assert PROPOSAL_QUALITY_THRESHOLD == 0.75
+
+
+def test_noop_score_below_threshold():
+    # Confirms noop_v1 score (0.5) < threshold (0.75) — noop blocked at gate
+    p = {**_base(), "skill_id": "noop_v1",
+         "expected_effects": ["leave behavior unchanged"]}
+    score = _score_proposal(p)
+    assert score < PROPOSAL_QUALITY_THRESHOLD
