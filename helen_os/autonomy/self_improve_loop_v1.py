@@ -69,6 +69,10 @@ LAW_SURFACE_VERSION = "KERNEL_V2.0"
 # Proposal quality eval threshold (score must be >= to pass gate 6)
 PROPOSAL_QUALITY_THRESHOLD = 0.75
 
+# Penalty applied when capability_gap_addressed == "UNKNOWN"
+# Vague+UNKNOWN → 0.65 (below gate); specific+UNKNOWN → 0.90 (still passes)
+UNKNOWN_GAP_PENALTY = 0.10
+
 # Required fields for a valid skill proposal JSON
 REQUIRED_PROPOSAL_FIELDS = frozenset({
     "skill_id", "description", "kind",
@@ -515,10 +519,12 @@ def _score_proposal(proposal: Dict[str, Any]) -> float:
     """
     Score a parsed skill proposal for quality (0.0 → 1.0).
 
-    1.0 = complete proposal with specific expected effects
-    0.75 = complete proposal with vague expected effects
-    0.5 = complete noop proposal
-    0.0 = invalid or incomplete proposal
+    1.0  = complete proposal with specific effects and named gap
+    0.90 = complete proposal with specific effects, gap="UNKNOWN"
+    0.75 = complete proposal with vague effects and named gap
+    0.65 = complete proposal with vague effects, gap="UNKNOWN" (below gate)
+    0.5  = complete noop proposal
+    0.0  = invalid or incomplete proposal
     """
     if not isinstance(proposal, dict):
         return 0.0
@@ -538,9 +544,16 @@ def _score_proposal(proposal: Dict[str, Any]) -> float:
 
     if is_noop:
         return 0.5
-    if has_effects:
-        return 1.0 if _has_specific_effects(effects) else 0.75
-    return 0.5
+    if not has_effects:
+        return 0.5
+
+    score = 1.0 if _has_specific_effects(effects) else 0.75
+
+    gap = proposal.get("capability_gap_addressed", "")
+    if isinstance(gap, str) and gap.strip().upper() == "UNKNOWN":
+        score -= UNKNOWN_GAP_PENALTY
+
+    return score
 
 
 # ── Skill library mutation (only on reducer ADMITTED) ─────────────────────────
