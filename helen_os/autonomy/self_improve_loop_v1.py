@@ -97,6 +97,13 @@ _VAGUE_EFFECT_TERMS = {
     "extend",
 }
 
+# Word-boundary matcher — bare substring containment collided with technical
+# vocabulary (fix ⊂ suffix/prefix, extend ⊂ extended). sorted() for
+# deterministic alternation order (mu_DETERMINISM).
+_VAGUE_EFFECT_PATTERN = re.compile(
+    r"\b(?:" + "|".join(re.escape(term) for term in sorted(_VAGUE_EFFECT_TERMS)) + r")\b"
+)
+
 # Bootstrap initial skill library (used when no library is provided)
 BOOTSTRAP_SKILL_LIBRARY_STATE: Dict[str, Any] = {
     "schema_name": "SKILL_LIBRARY_STATE_V1",
@@ -515,7 +522,7 @@ def _has_specific_effects(effects: list) -> bool:
             token in text
             for token in ("while", "without", "under", "above", "below", "when")
         )
-        vague_only = any(term in text for term in _VAGUE_EFFECT_TERMS)
+        vague_only = _VAGUE_EFFECT_PATTERN.search(text) is not None
         if has_quantity or has_identifier or has_constraint:
             return True
         if not vague_only and len(text.split()) >= 6:
