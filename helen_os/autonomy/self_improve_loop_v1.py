@@ -87,6 +87,14 @@ _VAGUE_EFFECT_TERMS = {
     "optimize",
     "increase performance",
     "more efficient",
+    "boost",
+    "fix",
+    "streamline",
+    "faster",
+    "reliable",
+    "accurate",
+    "effective",
+    "extend",
 }
 
 # Bootstrap initial skill library (used when no library is provided)
