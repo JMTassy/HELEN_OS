@@ -171,3 +171,54 @@ peuvent former un second article (organisation & design). Actes organisationnels
 (HANDOFF, APPROVAL, REJECTION, REQUEST_CHANGE, BUDGET_CHANGE, CLIENT_FEEDBACK, DELIVERY) et couche
 ORGANIZATIONAL MEMORY (qui reprenait les projets? quels binômes? quels savoir-faire partis?) →
 spécifiés au programme de recherche, implémentation NAS en cours (handoff_edges live).
+
+---
+# V0.2 — FORMALISATION + COMPLEXITÉ (revue opérateur ronde 2, 2026-08-01)
+
+## F1. Le pipeline formel
+Corpus → Context Compiler → Context Packet → Reasoner → Proposal → Governance Chain → Institutional Memory.
+Définitions:
+  ContextPacket P = (CoreLaws, DomainLaws, Evidence, CounterEvidence, Anchors, Task)
+  ContextCompiler 𝒫 : C → P   (C = corpus accessible)
+  y = M(𝒫(C, S, L, E, T))    (hypothèse V0.1: à M constant, Var(y) dominée par 𝒫)
+
+## F2. CONTEXT COMPILATION COMPLEXITY (le chapitre algorithmique)
+PROBLÈME (Minimal Constitutional Packet, MCP):
+  minimize  tokens(P)
+  s.t.      RequiredLaws(T) ⊆ P            (toutes les lois nécessaires présentes)
+            RequiredEvidence(T) ⊆ P         (toutes les preuves nécessaires présentes)
+            ∀e∈P: Contradictions(e)∩C ⊆ P   (les contradictions connues voyagent avec leurs preuves)
+            tokens(P) ≤ B                   (budget)
+
+DURETÉ (esquisse): réduction depuis WEIGHTED SET COVER — éléments à couvrir = lois/preuves requises;
+ensembles = fragments de sources (chaque fragment couvre un sous-ensemble de lois, coût = tokens);
+un packet minimal admissible = une couverture de coût minimal. SET-COVER ≤p MCP ⇒ **MCP est NP-difficile**;
+la contrainte de contradiction (fermeture) et la structure L0-toujours-présent ne relâchent pas la dureté
+(L0 fixe une partie de la couverture, le reste demeure set-cover).
+
+COMPILATEUR PRATIQUE: l'approximation GLOUTONNE de set-cover (ratio ln n) devient l'algorithme de
+référence: à chaque étape, ajouter le fragment maximisant (lois+preuves nouvellement couvertes)/tokens,
+puis fermer par les contradictions. Garanties: couverture complète si atteignable sous B; sinon ÉCHEC
+DÉCLARÉ (jamais de packet silencieusement incomplet — la troncature est un événement, pas un accident).
+OBSERVATION: la compilation manuelle de PACKET V2 (sections de loi + noyau transverse) était une
+instance humaine de ce glouton — extraction des fragments à plus haute densité normative par token.
+Corollaire mesurable: le ratio tokens(P_greedy)/tokens(P_naïf) et le taux d'échec-déclaré sous budget
+deviennent des métriques de qualité du compilateur (programme 18.1 étendu).
+
+## F3. Deux papiers, un fil
+PAPIER A (communauté IA/systèmes): Constitutional Context Engineering — Packet, Compiler, complexité
+MCP, Anchor-Cut, agence non souveraine, invariants NS1-NS5.
+PAPIER B (gestion des connaissances/archivistique): Institutional Memory Reconstruction — corpus
+d'agence, Responsibility Graph, actes organisationnels de première classe, NAS virtuel probant,
+mémoire causale, registre des absences.
+Liés par le fil unique, désormais canonique:
+
+> **LE CONTEXTE N'EST PAS UNE ENTRÉE DU MODÈLE ; C'EST UN ARTEFACT INSTITUTIONNEL GOUVERNÉ.**
+
+HELEN OS déplace le problème: des poids vers la compilation · de la génération vers la gouvernance ·
+de la mémoire documentaire vers la mémoire causale · de la vérité supposée vers la contestabilité rejouable.
+
+## F4. Structure éditoriale cible (papier A)
+1 Problem (availability ≠ co-presence) · 2 Architecture (Packet + chaîne non souveraine) ·
+3 Complexity (MCP, dureté, glouton) · 4 Evaluation (Anchor-Cut + ablations 18.1) ·
+5 Limitations (ADMITTED≠TRUE, collusion, omission) · 6 Research Program.
