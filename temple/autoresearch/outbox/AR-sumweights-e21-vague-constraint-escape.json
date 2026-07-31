@@ -1,0 +1,43 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sumweights-e21-vague-constraint-escape",
+  "target_surface": "summarization_weights",
+  "epoch": "E21",
+  "parent_epoch": "E20",
+  "source_refs": [
+    "helen_os/autonomy/self_improve_loop_v1.py:519-529",
+    "helen_os/tests/test_score_proposal_specificity.py"
+  ],
+  "finding_type": "gap",
+  "summary": "In _has_specific_effects() (line 526), constraint markers (while/without/under/above/below/when) unconditionally override vague-term detection. An effect like 'optimize while loading' has vague_only=True and has_constraint=True; line 526 fires has_constraint first, returning True (SPECIFIC) instead of False (VAGUE). This inflates _score_proposal() from 0.75 to 1.0 for such effects, and the inflated score is recorded as candidate_value in the eval_receipt — misrepresenting quality in the audit trail. No existing test covers vague+constraint combination.",
+  "evidence": [
+    "probe: _has_specific_effects(['optimize while loading']) → True (SPECIFIC) — vague=True, constraint=True, no quantity/identifier",
+    "probe: _has_specific_effects(['fix without regressions']) → True (SPECIFIC) — same escape path",
+    "probe: _has_specific_effects(['boost when cache is warm']) → True (SPECIFIC) — same escape path",
+    "self_improve_loop_v1.py:526: 'if has_quantity or has_identifier or has_constraint:' — has_constraint fires before vague check is applied",
+    "self_improve_loop_v1.py:347-357: quality_score fed directly into eval_receipt.candidate_value — inflated score persists in audit trail",
+    "test_score_proposal_specificity.py: test_specific_with_constraint_scores_1_0 uses a quantity+constraint case ('0.9 without') — vague+constraint-only combination untested"
+  ],
+  "hypothesis": "If constraint marker is required to co-exist with non-vague text (i.e. has_constraint only overrides when vague_only=False), eval_receipt.candidate_value for vague+constraint effects corrects from 1.0 to 0.75. Legitimate specific+constraint effects (with quantity or identifier) remain unaffected.",
+  "proposed_tweak": "helen_os/autonomy/self_improve_loop_v1.py line 526: change 'if has_quantity or has_identifier or has_constraint:' to 'if has_quantity or has_identifier or (has_constraint and not vague_only):'. One-line change. Proposal only — operator must apply.",
+  "metric": "_score_proposal({'skill_id':'x_v1','expected_effects':['optimize while loading'],...}) == 0.75 (not 1.0). All 12 existing tests in test_score_proposal_specificity.py remain green. Eval receipt candidate_value for vague+constraint proposals corrects to 0.75.",
+  "keep_rule": "KEEP if 12 existing tests green + vague+constraint probe scores 0.75; REJECT if any legitimate specific+constraint proposal (quantity or identifier present) regresses to 0.75",
+  "next": "Add test_vague_plus_constraint_not_inflated: 'optimize while loading' → 0.75. Verify 'retain entity recall above 0.9 without increasing latency' → 1.0 (has_quantity wins). Operator applies 1-line fix; run make test.",
+  "risk_flags": [
+    "Low — fix narrows the return-True condition; all existing tests cover the cases that still return True (quantity+constraint, identifier+constraint)",
+    "Zero known consumers assert score == 1.0 for vague+constraint effects — no audit trail breakage expected"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-07-31T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (live probe confirmed, existing tests verified clean)",
+    "epoch": "E21",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
