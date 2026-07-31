@@ -27,6 +27,22 @@ Une constitution n'est plus un ensemble de règles textuelles — c'est un langa
 certaines transitions existent et d'autres sont impossibles. Hypothesis<T> ⟶ Admission<T> n'est pas
 interdit par convention: la flèche n'existe pas. Ce n'est pas une règle, c'est une erreur de typage.
 
+## Feuille de route révisée (CCC-0 → CCC-8, revue math 2026-08-01)
+CCC-0 Core syntax · CCC-1 Operational semantics (typed LTS) · CCC-2 Provenance semantics (reachability,
+hashes, source closure) · CCC-3 Authority calculus (linear leases, non-amplification, revocation) ·
+CCC-4 Context compilation (coverage, classification, anchors, conflicts) · CCC-5 Metatheory (subject
+reduction, no silent admission, replay determinism, clearance non-interference) · CCC-6 Optimization
+(minimal & robust packets, approximation) · CCC-7 Experimental semantics (ablations, model controls,
+anchor-cut) · CCC-8 HELEN correspondence (prove modules refine the calculus).
+
+## Le relation finale
+HELEN OS ⊨ CCC. HELEN n'est plus la théorie — c'est une implémentation dont on doit DÉMONTRER
+qu'elle satisfait les invariants. Définition compacte: CCC = (𝒪 objets typés, 𝒥 jugements, 𝒭 règles
+de transition, 𝒫 provenance, 𝒱 validation); jugement Γ;Λ⊢x:τ (Γ épistémique, Λ capacités linéaires).
+> CCC est un calcul typé de compilation contextuelle et de transitions institutionnelles, où aucune
+> proposition ne peut acquérir silencieusement autorité, effet ou admission, et où toute transformation
+> admissible demeure rejouable et reliée à sa provenance.
+
 ## Programme scientifique (concis)
 Étudier la compilation du contexte comme un calcul formel, puis démontrer expérimentalement que, pour
 certaines classes de tâches normatives et multisources, les propriétés de ce calcul expliquent une part

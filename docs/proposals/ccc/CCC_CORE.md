@@ -26,3 +26,8 @@ L'interdiction n'est pas une règle écrite qu'on peut oublier — elle est ABSE
 ## Packet (l'objet compilé)
 Packet = (CoreLaws, DomainLaws, Evidence, CounterEvidence, Anchors, Task).
 Context Compiler:  P : (C,S,L,E,T) ↦ K.  (correction/équivalence/minimalité: voir CCC_SEMANTICS)
+
+---
+# V0.1 (2026-08-01): structure primaire = système de transitions étiquetées typé 𝔥=(Q,Λ,→); la
+# catégorie se dérive après (voir CCC_SAFETY V0.1). Objet = produit Claim⟨Epistemic,Institutional,
+# Classification⟩ (voir CCC_TYPES V0.1). Le graphe des morphismes reste la constitution.

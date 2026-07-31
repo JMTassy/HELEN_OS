@@ -28,3 +28,10 @@ Une admission mal fondée NE COMPILE PAS.
 ## Invariants de type (dérivés des axiomes)
 Hypothesis<T> ≠ Admission<T> · Receipt<T> ≠ Truth<T> · Permission<T> ≠ Action<T> ·
 Action<T> ≠ Reality<T> · Evaluation<T> ≠ Correctness<T> · Custody<T> ≠ Verification<T>.
+
+---
+# V0.1 (2026-08-01): SÉPARER trois systèmes de types (épistémique/institutionnel/opérationnel) — ne
+# pas les enfiler en une chaîne. x : Claim⟨EpistemicStatus, InstitutionalStatus, Classification⟩.
+# Contexte de capacité LINÉAIRE/affine (permission bornée = non réutilisable):
+#   Γ⊢d:Decision   Λ⊢ℓ:Lease(c,1)  ⊢  authorize(d,ℓ):Permission(c) ,  puis Λ'=Λ\{ℓ}.
+# Séparation des types (remplace la non-collapse naïve): Γ⊢x:A ∧ A⋠B ⇒ Γ⊬x:B.
