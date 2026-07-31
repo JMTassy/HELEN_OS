@@ -29,7 +29,7 @@ import hashlib
 from pathlib import Path
 from typing import Dict, List, Tuple, Optional, Any
 from dataclasses import dataclass, asdict, field
-from datetime import datetime, UTC
+from datetime import datetime, timezone
 
 
 @dataclass
@@ -40,7 +40,7 @@ class PolicyChange:
     old_value: Any
     new_value: Any
     reason: str
-    timestamp: str = field(default_factory=lambda: datetime.now(UTC).replace(tzinfo=None).isoformat())
+    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).replace(tzinfo=None).isoformat())
 
     def to_dict(self) -> Dict:
         return asdict(self)
@@ -83,7 +83,7 @@ class SimulationResult:
 
     # Audit trail
     policy_changes: List[Dict]
-    timestamp: str = field(default_factory=lambda: datetime.now(UTC).replace(tzinfo=None).isoformat())
+    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).replace(tzinfo=None).isoformat())
 
     def to_dict(self) -> Dict:
         return asdict(self)
@@ -161,7 +161,7 @@ class ScenarioSimulator:
                     new_decision=new_decision,
                     changed=True,
                     reason=f"Policy change caused {old_decision} → {new_decision}",
-                    timestamp=verdict.get('timestamp', datetime.now(UTC).replace(tzinfo=None).isoformat()),
+                    timestamp=verdict.get('timestamp', datetime.now(timezone.utc).replace(tzinfo=None).isoformat()),
                 ))
 
             if new_decision == 'ACCEPT':
