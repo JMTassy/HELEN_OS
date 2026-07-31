@@ -222,3 +222,58 @@ de la mémoire documentaire vers la mémoire causale · de la vérité supposée
 1 Problem (availability ≠ co-presence) · 2 Architecture (Packet + chaîne non souveraine) ·
 3 Complexity (MCP, dureté, glouton) · 4 Evaluation (Anchor-Cut + ablations 18.1) ·
 5 Limitations (ADMITTED≠TRUE, collusion, omission) · 6 Research Program.
+
+---
+# V0.3 — CANONS FINAUX (revue opérateur ronde 3, 2026-08-01) — dernier élargissement; V1 = resserrement
+
+## C1. Définition canonique de la non-souveraineté (à inscrire telle quelle)
+> Un système est non souverain s'il peut proposer, interpréter, recommander et transformer, mais ne
+> peut ni s'accorder lui-même une permission, ni certifier seul sa propre action, ni modifier ses
+> règles d'admission, ni effacer son historique, ni convertir sans médiation une proposition en état partagé.
+Invariants formels (raffinent NS1-NS5): ¬SelfAuthorize · ¬SelfCertify · ¬SelfAmendAdmissionLaw ·
+¬EraseHistory · Proposal ⇏ AdmittedState.
+
+## C2. L'hypothèse scientifique resserrée
+Pas seulement "Var(y) dépend de P" mais:
+  ΔQuality(y | Pᵢ,Pⱼ, M constant)  >  ΔQuality(y | Mᵢ,Mⱼ, P constant)
+pour certaines classes de tâches (institutionnelles, documentaires, normatives).
+« La variation de la qualité du contexte compilé peut produire davantage d'effet que le changement
+de modèle lui-même. » Falsifiable, mesurable, publiable.
+
+## C3. La table reçu ≠ vérité (encadré permanent, version complète)
+| Objet | Ce qu'il établit | Ce qu'il n'établit pas |
+|---|---|---|
+| document_id | qu'un objet documentaire a été créé/enregistré | que son contenu est exact |
+| message_id | qu'un système a accepté/enregistré un message | qu'il a été lu ou compris |
+| réponse humaine | qu'une réaction a été reçue | qu'elle est sincère, exacte ou représentative |
+| signature | qu'un acteur a signé un objet donné | que l'objet est juste ou vrai |
+| receipt technique | qu'une opération déterminée a été observée | que son effet réel correspond à l'intention |
+| admission | qu'un état a été accepté sous une procédure | qu'il correspond au monde |
+| évaluation | qu'un correcteur a produit un jugement | que ce jugement est correct |
+
+## C4. Échelle de postures épistémiques (chaque assertion importante en porte une)
+OBSERVED (directement supporté par une source) · DERIVED (transformation déterministe) ·
+INFERRED (hypothèse multi-indices) · THEORETICAL (interprétation de haut niveau) ·
+CONTESTED (sources contradictoires) · UNRESOLVED (preuve insuffisante).
+Exemple gradué: la phrase de handoff citée = OBSERVED · « A délègue la responsabilité à B » =
+INFERRED · « l'agence opérait par patterns récurrents de handoff » = THEORETICAL.
+
+## C5. Les deux articles — titres et thèses canoniques
+A — **Constitutional Context Compilation for Non-Sovereign AI Systems**: « Les performances et la
+sûreté d'un système d'IA dépendent non seulement des modèles et du corpus, mais de la composition
+gouvernée, versionnée et rejouable du contexte actif. »
+B — **From Document Archives to Evidential Institutional Memory**: « Une organisation n'est pas
+seulement un ensemble de documents, mais un graphe de transformations, de responsabilités, de
+versions, de décisions et de preuves. »
+
+## C6. Phrase fondatrice
+EN: **HELEN OS governs not only what an AI may do, but what it is allowed to see, combine, infer,
+evaluate, and promote into institutional reality.**
+FR: HELEN OS ne gouverne pas seulement ce qu'une IA peut faire, mais ce qu'elle peut voir, combiner,
+inférer, évaluer et promouvoir dans la réalité institutionnelle.
+
+## ROADMAP V1 (directive opérateur): ne plus élargir — RESSERRER.
+1. Réécriture V1 = white paper 6 sections (structure F4), postures appliquées ligne à ligne.
+2. Invariants NS formalisés en tests exécutables (CI candidates).
+3. PACKET V2 → PROTOCOLE EXPÉRIMENTAL REPRODUCTIBLE: harnais d'ablation 18.1 (retirer une loi L0 à
+   la fois, mesurer quelle sonde tombe; multi-runs, seeds de sondes, publication du harnais).
