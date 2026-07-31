@@ -277,3 +277,9 @@ inférer, évaluer et promouvoir dans la réalité institutionnelle.
 2. Invariants NS formalisés en tests exécutables (CI candidates).
 3. PACKET V2 → PROTOCOLE EXPÉRIMENTAL REPRODUCTIBLE: harnais d'ablation 18.1 (retirer une loi L0 à
    la fois, mesurer quelle sonde tombe; multi-runs, seeds de sondes, publication du harnais).
+
+---
+# NOTE DE NIVEAU (2026-08-01, ronde 4-5)
+Ce document est le NIVEAU 2 (architecture). La théorie générale (axiomes A1-A4, algèbre de la
+séparation ≢, système de types épistémiques, sémantique formelle du compilateur) vit au NIVEAU 1:
+docs/proposals/CONSTITUTIONAL_CONTEXT_CALCULUS_V0.md. HELEN OS = une implémentation du calcul.
