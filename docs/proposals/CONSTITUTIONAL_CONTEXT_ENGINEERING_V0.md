@@ -111,3 +111,63 @@ RESPONSIBILITY GRAPH — rend visibles les transferts humains de responsabilité
 Provenance: operator-authored (JM), session 2026-08-01; receipts kernel-side (eval runs, bulletin,
 handoff edges). Located: this file. Enforced: not yet (proposal). Replay-tested: the PACKET V2 arc
 is the replay evidence for §4-5; the doctrine itself awaits gate + operator admission.
+
+---
+# V0.1 — RENFORTS DE RIGUEUR (revue opérateur, 2026-08-01)
+
+## R1. Posture prudente sur PACKET V2 (ne pas surinterpréter)
+Formulation défendable: « PACKET V2 fournit une observation COMPATIBLE avec l'hypothèse selon
+laquelle certains échecs attribués au modèle sont en réalité des échecs de compilation ou
+d'évaluation du contexte. » Une preuve générale exigerait: plusieurs runs, plusieurs modèles,
+plusieurs variantes de paquet (cf. programme 18.1). Le run unique est démonstratif, pas concluant.
+
+## R2. Hypothèse formelle falsifiable
+y = M(P(C, S, L, E, T)) — M modèle · C corpus accessible · S politique de sélection · L lois
+actives · E preuves/contre-preuves · T tâche · P compilateur de contexte.
+HYPOTHÈSE: à M constant, Var(y) peut dépendre davantage de P que d'un changement de M.
+Falsifiable par ablation contrôlée du paquet (18.1).
+
+## R3. « Non souverain » opérationnalisé — cinq invariants TESTABLES
+Un système est non souverain si et seulement si:
+  NS1 il ne peut pas s'accorder lui-même une permission;
+  NS2 il ne peut pas certifier sa propre action;
+  NS3 il ne peut pas modifier ses règles d'admission;
+  NS4 il ne peut pas supprimer l'historique;
+  NS5 il ne peut pas transformer seul une proposition en état partagé.
+Chaque invariant est un test de CI candidat, pas un adjectif.
+
+## R4. Reçu technique ≠ preuve sémantique (le tableau)
+| Objet | Ce qu'il prouve | Ce qu'il ne prouve pas |
+|---|---|---|
+| document_id | qu'un document a été créé | qu'il est exact |
+| message_id | qu'un fournisseur a accepté l'envoi | qu'il a été lu |
+| réponse humaine | qu'une réaction a été reçue | que la proposition est vraie |
+| admission | qu'un état a été accepté sous une procédure | qu'il correspond au monde |
+
+## R5. Postures appliquées aux propres interprétations du texte
+« répétition→rituel→culture » = THEORETICAL_INTERPRETATION (support: cas récurrents observés) ·
+« CSR 2023 préfigure les modèles territoriaux » = INFERRED · « agence = compilateur d'expériences »
+= THEORETICAL_INTERPRETATION. Aucune n'est OBSERVED; le texte s'applique sa propre loi.
+
+## R6. Abstract (EN, resserré)
+HELEN OS is a framework for constitutional context compilation, non-sovereign agency, and
+institutional memory. It starts from the observation that an AI system may possess the relevant
+knowledge, rules, and evidence while still failing because those elements are not jointly present
+in the execution context. HELEN therefore treats context assembly as a governed, versioned, and
+replayable operation. Its action architecture separates sources, claims, decisions, permissions,
+actions, receipts, and admitted state, preventing model output from silently becoming institutional
+authority. A second primitive, Anchor-Cut Evaluation, introduces independent verification between
+answer generation, canonical evidence, and grading. Applied to an agency corpus, the framework
+extends document retrieval into causal institutional memory by reconstructing versions, approvals,
+handoffs, economic evidence, and missing artifacts. The resulting architecture defines non-sovereign
+agency as the ability to propose and transform while remaining structurally unable to decide alone
+what becomes institutionally real.
+
+## Formule canonique
+HELEN OS = Constitutional Context Compiler + Non-Sovereign Action Chain + Anchor-Cut Evaluation
++ Evidential Institutional Memory.
+Éditorial: le corps du texte = white paper fondateur; les sections dramaturgie/mémoire d'agence
+peuvent former un second article (organisation & design). Actes organisationnels de première classe
+(HANDOFF, APPROVAL, REJECTION, REQUEST_CHANGE, BUDGET_CHANGE, CLIENT_FEEDBACK, DELIVERY) et couche
+ORGANIZATIONAL MEMORY (qui reprenait les projets? quels binômes? quels savoir-faire partis?) →
+spécifiés au programme de recherche, implémentation NAS en cours (handoff_edges live).
