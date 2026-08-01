@@ -1,0 +1,47 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-initrank-e25-docstring-stale",
+  "target_surface": "init_ranking_weights",
+  "epoch": "E25",
+  "parent_epoch": "E24",
+  "source_refs": [
+    "temple/autoresearch/surface_ranker.py:13",
+    "tests/test_two_stage_autoresearch.py:13"
+  ],
+  "finding_type": "documentation_mismatch",
+  "summary": "surface_ranker.py line 13 claims 'init_ranking_weights scores highest (24.0)' — wrong on both count and winner. After E11 lowered init E from 8→6 (to prevent cold-start self-selection), the actual cold-start winner is context_ranking at 19.2, and init_ranking_weights scores 18.0 (third place). The test file docstring (test_two_stage_autoresearch.py:13) repeats the stale '24.0 / highest' claim. The test BODY at lines 209–213 was correctly updated post-E11 (asserts context_ranking selected, score≈19.2) but the surrounding prose was never patched. No code is broken; but the module's opening invariant statement is now a false architectural claim that would mislead any new contributor consulting the docstring.",
+  "evidence": [
+    "live probe: _score(9, 6, 10, 2, 1) = 18.0 — NOT 24.0",
+    "live probe: _score(8, 8,  9, 2, 1) = 19.2 — context_ranking WINS",
+    "live probe: rank({s: None ...}).selected == 'context_ranking' — init_ranking_weights ranks THIRD",
+    "surface_ranker.py:52 comment reads '# score=18.0  (E lowered: no cold-start self-selection)' — correct inline note, contradicts line 13",
+    "test_two_stage_autoresearch.py:209-213 asserts context_ranking selected and score≈19.2 — test body correct",
+    "test_two_stage_autoresearch.py:13 says 'init_ranking_weights scores highest (24.0)' — stale",
+    "Old E=8 would give _score(9,8,10,2,1)=24.0 — matches pre-E11 docstring; E11 lowered E but never updated docstring",
+    "31/31 tests pass on current codebase confirming no regression"
+  ],
+  "hypothesis": "If surface_ranker.py:13 and test_two_stage_autoresearch.py:13 are updated to reflect the post-E11 cold-start winner (context_ranking, 19.2), the module's self-description is consistent with both the inline comment at line 52 and the test assertions at lines 209-227, eliminating the false invariant that init_ranking_weights is the default first target.",
+  "proposed_tweak": "Two documentation-only changes (no behavior change):\n1. surface_ranker.py line 13: replace 'Default rankings ensure init_ranking_weights scores highest (24.0) so the loop\\ndefaults to the safest non-sovereign improvement path.' with 'Default cold-start winner: context_ranking (19.2). init_ranking_weights ranks third (18.0, E=6: E11 no-cold-start-self-selection rule). Safest non-sovereign path is context_ranking by default.'\n2. test_two_stage_autoresearch.py line 13: replace '8.  Default ranking: init_ranking_weights scores highest (24.0)' with '8.  Default ranking: context_ranking scores highest (19.2, E11: init E lowered 8→6)'\nProposal only — operator must apply.",
+  "metric": "grep -n '24\\.0' temple/autoresearch/surface_ranker.py → 0 matches. grep -n 'context_ranking.*19' temple/autoresearch/surface_ranker.py → ≥1 match. python3 -m pytest tests/test_two_stage_autoresearch.py -q → 31 passed. Grep for 'highest (24' across tests/ and temple/ → 0 matches.",
+  "keep_rule": "KEEP if 31 tests stay green and grep '24\\.0' in surface_ranker.py returns 0; REJECT if any test references '24.0' as a PASS condition (would expose a deeper invariant dependency) or if docstring change introduces new vague terms",
+  "next": "Operator applies two-line patch; run make test + python3 -m pytest tests/test_two_stage_autoresearch.py; also update two_stage_loop.py:92 experiment template for init_ranking_weights which currently says 'Increase weight of context_ranking by 0.05 in init_ranking_weights config' — may now be obsolete since context_ranking already wins cold-start (E26 candidate).",
+  "risk_flags": [
+    "Minimal — docstring-only, no behavior change, no schema change",
+    "Verify no test does assertEquals(module.__doc__, ...) — would fail on docstring change",
+    "two_stage_loop.py experiment template for init_ranking_weights (line 92) also references context_ranking adjustment — mark for E26 review but do not change in E25"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-01T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (live probe confirmed: rank() selects context_ranking=19.2; init_ranking_weights=18.0; 31 tests green; docstring mismatch verified at two sites)",
+    "epoch": "E25",
+    "parent_epoch": "E24",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
