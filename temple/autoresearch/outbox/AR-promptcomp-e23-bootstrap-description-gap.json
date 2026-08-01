@@ -1,0 +1,45 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-promptcomp-e23-bootstrap-description-gap",
+  "target_surface": "prompt_compression",
+  "epoch": "E23",
+  "parent_epoch": "E22",
+  "source_refs": [
+    "helen_os/autonomy/self_improve_loop_v1.py:108-120",
+    "helen_os/autonomy/self_improve_loop_v1.py:281-284"
+  ],
+  "finding_type": "gap",
+  "summary": "E22 proposed changing admitted_skills at line 281 from ID-list to {sid: {description, gap}} dict. E22 fix not yet applied (line 281 still uses .keys()). Deeper issue: even if E22 is applied, BOOTSTRAP_SKILL_LIBRARY_STATE (lines 108-120) stores helen_autoresearch_v1 without 'description' or 'capability_gap_addressed' fields. The E22 dict comprehension (data.get('description', ''), data.get('capability_gap_addressed', 'UNKNOWN')) would produce {\"helen_autoresearch_v1\": {\"description\": \"\", \"gap\": \"UNKNOWN\"}} — semantically identical to an ID-only entry. Because bootstrap is always in cycle-0 context, the LLM can propose a semantic duplicate of the autoresearch capability in every cold-start run, passing all gate checks.",
+  "evidence": [
+    "line 113-117: BOOTSTRAP_SKILL_LIBRARY_STATE['active_skills']['helen_autoresearch_v1'] has only active_version, status, last_decision_id — no description, no capability_gap_addressed",
+    "live probe: 'description' in skill_library['active_skills']['helen_autoresearch_v1'] → False",
+    "E22 dict comprehension: data.get('description', '') → '' for bootstrap; data.get('capability_gap_addressed', 'UNKNOWN') → 'UNKNOWN'",
+    "Result under E22 fix: {'helen_autoresearch_v1': {'description': '', 'gap': 'UNKNOWN'}} — zero semantic dedup signal",
+    "_admit_skill_to_library (lines 583-590) stores description for every cycle-admitted skill, but bootstrap bypasses _admit_skill_to_library entirely",
+    "no test asserts BOOTSTRAP_SKILL_LIBRARY_STATE entries contain description or gap fields"
+  ],
+  "hypothesis": "If BOOTSTRAP_SKILL_LIBRARY_STATE includes 'description' and 'capability_gap_addressed' for helen_autoresearch_v1, then after E22 fix the cycle-0 prompt context will carry semantic signal for every admitted skill including bootstrap, enabling LLM dedup across all cases.",
+  "proposed_tweak": "helen_os/autonomy/self_improve_loop_v1.py lines 113-117: extend BOOTSTRAP_SKILL_LIBRARY_STATE['active_skills'][BOOTSTRAP_SKILL_ID] dict with 'description': 'Bounded self-improvement loop — propose, gate, admit one skill per cycle via non-sovereign ledger' and 'capability_gap_addressed': 'incremental_capability_expansion'. Proposal only — operator must apply.",
+  "metric": "python3 -c \"from helen_os.autonomy.self_improve_loop_v1 import BOOTSTRAP_SKILL_LIBRARY_STATE; s=BOOTSTRAP_SKILL_LIBRARY_STATE['active_skills']['helen_autoresearch_v1']; assert 'description' in s and s['description'], 'bootstrap missing description'\" exits 0. Combined with E22 fix: assert admitted_skills prompt string contains 'incremental_capability_expansion' for bootstrap entry.",
+  "keep_rule": "KEEP if bootstrap entry description non-empty AND make test stays green; REJECT if description string introduces vague terms caught by _score_proposal VAGUE_EFFECT_TERMS guard (test first)",
+  "next": "Operator applies E22 fix (line 281) + E23 fix (lines 113-117); run make test; assert prompt string includes bootstrap description in cycle-0 context; re-run test_score_proposal_specificity.py",
+  "risk_flags": [
+    "Low — adding two string fields to a dict literal; no schema change, no import change",
+    "Description text must not contain vague terms — run it through _score_proposal sanity check before committing",
+    "Bootstrap bypasses _admit_skill_to_library; fix must be in BOOTSTRAP_SKILL_LIBRARY_STATE directly, not in _admit_skill_to_library"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-01T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (live probe confirmed: bootstrap description absent; E22 fix not yet applied)",
+    "epoch": "E23",
+    "parent_epoch": "E22",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
