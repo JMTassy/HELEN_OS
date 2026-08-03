@@ -1,0 +1,41 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-summ-weights-e29-fallback-bias",
+  "target_surface": "summarization_weights",
+  "epoch": "E29",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "reducer_required": true,
+  "finding_type": "gap",
+  "summary": "ENGINE.py SOURCE_WEIGHT fallback is 1.0 — the maximum weight (equal to 'plugins'). Any unit with source_id='' (default), 'symbolic_sources', or any unregistered id silently scores at the top tier. symbolic_sources/ corpus has no registered source_id in sources.py. No tests cover this fallback path.",
+  "evidence": [
+    "helen_os/knowledge/engine.py:53-57 — SOURCE_WEIGHT: plugins=1.0, helen_os=0.9, apple_notes=0.8",
+    "helen_os/knowledge/engine.py:342 — source_w = SOURCE_WEIGHT.get(unit.source_id, 1.0) — fallback=1.0",
+    "helen_os/knowledge/engine.py:73 — KnowledgeUnit.source_id: str = '' (default empty string)",
+    "helen_os/knowledge/sources.py:39-61 — SOURCES registry: 3 entries only; no 'symbolic_sources' entry",
+    "helen_os/knowledge/symbolic_sources/ — 6 files present; no source_id registered for this corpus",
+    "live probe: SOURCE_WEIGHT.get('', 1.0)=1.0; SOURCE_WEIGHT.get('symbolic_sources', 1.0)=1.0",
+    "helen_os/tests/ — zero tests assert SOURCE_WEIGHT fallback behavior or source_id coverage"
+  ],
+  "mechanism": "ingest_corpus(source_id='') is the default call signature. Any unit missing explicit source tagging gets source_id=''. At retrieval, source_w=SOURCE_WEIGHT.get('', 1.0)=1.0 — equal to plugins (highest). Unregistered symbolic content outranks helen_os codebase (0.9) and apple_notes (0.8) silently.",
+  "hypothesis": "If SOURCE_WEIGHT fallback is lowered from 1.0 to 0.5 (below all registered sources), untagged and unknown-source units will rank below all registered corpus boundaries, preventing silent promotion of unvetted content.",
+  "proposed_tweak": "helen_os/knowledge/engine.py line 342: change 'SOURCE_WEIGHT.get(unit.source_id, 1.0)' to 'SOURCE_WEIGHT.get(unit.source_id, 0.5)'. Proposal only — operator must apply. Optionally add 'symbolic_sources' entry to SOURCE_WEIGHT at 0.3 (below all three registered sources) to match T4/T6 floor doctrine.",
+  "metric": "python3 -c: build two KnowledgeUnits — one source_id='plugins' (expect w=1.0), one source_id='' (expect w=0.5 after fix, currently 1.0). Assert empty-source unit ranks lower than plugins unit in a single-query result set.",
+  "keep_rule": "KEEP if: empty-source unit scores below all registered sources AND existing retrieval tests (test_knowledge_vector_index.py, test_knowledge_vector_gate.py) stay green. REJECT if: any existing test depends on unknown sources ranking at 1.0.",
+  "next": "Add test_source_weight_fallback: two-unit retrieval, assert source_id='' ranks below source_id='plugins'. Register 'symbolic_sources' in SOURCE_WEIGHT at 0.3 to enforce T4/T6 floor doctrine.",
+  "risk_flags": [
+    "Low — single constant change; no schema or API change",
+    "If any caller intentionally ingests without source_id expecting top-tier ranking, that assumption breaks silently — search for ingest_corpus calls without source_id param first",
+    "Only one ingest_corpus call site found (engine.py:18 docstring example); no production caller omits source_id"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "scanned_at": "2026-08-03T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (live probe confirmed: SOURCE_WEIGHT.get('', 1.0)=1.0; SOURCE_WEIGHT.get('symbolic_sources', 1.0)=1.0)",
+    "epoch": "E29",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
