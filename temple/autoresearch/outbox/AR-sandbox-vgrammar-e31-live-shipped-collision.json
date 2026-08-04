@@ -1,0 +1,38 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sandbox-vgrammar-e31-live-shipped-collision",
+  "target": "sandbox_visual_grammar",
+  "epoch": "E31",
+  "parent_epoch": "E30",
+  "finding_type": "semantic_collision",
+  "hypothesis": "If STATE_COLOR maps 'shipped' and 'live' to the same hex (#00ff88), a viewer cannot distinguish a governance-admitted claim from an operationally running file — violating the one-meaning-per-color rule.",
+  "summary": "cockpit_v4.html renders 'shipped' (governance ADMITTED) and 'live' (process running) in identical green (#00ff88). CSS at L64 and L67 both use var(--grn). STATE_COLOR at L234: shipped:'#00ff88', live:'#00ff88'. Source Atlas Doctrine: one meaning per color; 'no decorative color substitution is allowed.' 🟢 = ADMITTED only. Liveness is an operational state, not a governance verdict — it maps to 🔵 OBSERVED in the SA palette. The node graph renders STARSHIP_V3 (shipped claim) and temple.html (live source) in the same color, silently collapsing governance and operational semantics.",
+  "evidence": [
+    "cockpit_v4.html:17 — --grn:#00ff88 (single CSS var for both meanings)",
+    "cockpit_v4.html:64 — .si-state.shipped{color:var(--grn)} — ADMITTED color",
+    "cockpit_v4.html:67 — .si-state.live{color:var(--grn)} — LIVE color (same var)",
+    "cockpit_v4.html:234 — shipped:'#00ff88', live:'#00ff88' (explicit collision in STATE_COLOR map)",
+    "cockpit_v4.html:241 — STARSHIP_V3 state='shipped' renders green",
+    "cockpit_v4.html:247 — temple.html state='live' renders green (identical)",
+    "CLAUDE.md §HELEN OS Look & Feel — 'one meaning per color'; 🟢=admitted, 🔵=observed",
+    "CLAUDE.md §WULMOJI — 'No decorative color substitution is allowed'"
+  ],
+  "proposed_tweak": "1. Add --teal:#00b4d8 CSS var (distinct from --grn, --blue, --cyan). 2. Change .si-state.live to color:var(--teal). 3. Change STATE_COLOR live:'#00ff88' to live:'#00b4d8'. Three lines; no logic change; reverses trivially. 'Live' (operational running) maps to blue-adjacent teal, consistent with 🔵 OBSERVED semantics.",
+  "metric": "grep '#00ff88' cockpit_v4.html → count drops from 3 to 2 (source + shipped only). A 'live' node and a 'shipped' node render in visually distinct colors on the canvas.",
+  "rule": "KEEP if live node color is distinct from shipped and all existing CSS class usages stay consistent; REJECT if 'live' has a different SA palette meaning already established in another surface (audit required).",
+  "next": "Audit index.html badge.live (L133: color:var(--green)) for the same collision — badge.live also uses --green for liveness, same ambiguity in a different surface.",
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-04T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (live probe: cockpit_v4.html:64,67,234 confirmed identical #00ff88 for shipped+live; index.html clean; governance + operational semantics confirmed distinct in SA doctrine)",
+    "epoch": "E31",
+    "parent_epoch": "E30",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
