@@ -1,0 +1,38 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sandbox-vgrammar-e32-committed-admitted-collision",
+  "target": "sandbox_visual_grammar",
+  "epoch": "E32",
+  "parent_epoch": "E31",
+  "finding_type": "semantic_collision",
+  "hypothesis": "If rrow-status.committed and rrow-dot for git-committed rows both use var(--green), the receipt rail conflates 'committed to git' with governance-ADMITTED (🟢), making it impossible to distinguish a version-control action from a ledger admission.",
+  "summary": "index.html receipt rail renders COMMITTED rows (git commits 7703486, a5ab917) in --green (#3dd68c) via .rrow-status.committed (L256) and inline rrow-dot style (L948, L953). Source Atlas Doctrine assigns 🟢 exclusively to ADMITTED governance state. 'Committed to git' is an operational versioning action — it maps to 🔵 OBSERVED (#5b8af0) since the artifact is recorded in the VCS but has not passed the admission pipeline. Three distinct meanings share --green in index.html: (1) badge.live / mrow-dot.live / live-pulse = operational liveness [L91,123,133]; (2) rrow-status.committed / rrow-dot = git VCS commit [L256,948,953]; (3) station-verdict.go = governance GO verdict [L299]. The receipt rail (L940–960) is the highest-stakes site: an operator reading 'COMMITTED' in green naturally reads it as ledger-admitted — the identical color to the SA 🟢 glyph — when the actual state is only git-committed (pre-admission).",
+  "evidence": [
+    "index.html:35 — --green:#3dd68c (shared var for all three layers)",
+    "index.html:256 — .rrow-status.committed{color:var(--green)} — git VCS",
+    "index.html:948 — rrow-dot background:var(--green) — git commit 7703486",
+    "index.html:953 — rrow-dot background:var(--green) — git commit a5ab917",
+    "index.html:299 — .station-verdict.go{color:var(--green)} — governance GO",
+    "index.html:32 — --blue:#5b8af0 (SA 🔵 OBSERVED palette exists, unused here)",
+    "CLAUDE.md §WULMOJI — '🟢 ADMITTED requires an explicit operator admission receipt'",
+    "CLAUDE.md §Look&Feel — 'one meaning per color; 🟢=admitted only'"
+  ],
+  "proposed_tweak": "1. Change .rrow-status.committed L256: color:var(--green) → color:var(--blue). 2. Change rrow-dot inline style L948: background:var(--green) → background:var(--blue). 3. Change rrow-dot inline style L953: background:var(--green) → background:var(--blue). Three-line change; reverses trivially. 'Committed to git' maps to 🔵 OBSERVED (--blue:#5b8af0) — recorded in VCS, not yet governance-admitted.",
+  "metric": "grep -n 'committed' index.html shows .rrow-status.committed uses var(--blue) not var(--green). In-browser: COMMITTED rows render in blue; only station-verdict.go and badge.live remain green. operator can visually distinguish git-commit state from governance-admitted state.",
+  "rule": "KEEP if --blue is not already assigned another governance meaning in index.html (check: station-verdict.go=green, badge.noship=red, badge.live=green, rrow-status.pending=amber — blue is free). REJECT if blue already carries a conflicting semantic in this surface.",
+  "next": "Audit station-verdict.go (L299,1060–1061): GO verdict for HER/HAL admissibility check uses --green — is this intentionally ADMITTED-level or is it a review-stage verdict that should use --amber (🟠 REVIEW)?",
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-05T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (live probe: index.html:256,948,953 confirmed --green for git-committed; --blue:#5b8af0 available and semantically unassigned; SA doctrine confirms 🟢=ADMITTED only)",
+    "epoch": "E32",
+    "parent_epoch": "E31",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
