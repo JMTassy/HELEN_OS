@@ -1,0 +1,38 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sandbox-vgrammar-e33-gonogo-go-green-collision",
+  "target": "sandbox_visual_grammar",
+  "epoch": "E33",
+  "parent_epoch": "E32",
+  "finding_type": "semantic_collision",
+  "hypothesis": "If station-verdict.go (L299) uses --green, the Go/No-Go poll conflates 'station review cleared' with governance-ADMITTED (🟢). Since LEDGER=HOLD and MAYOR=PENDING when GO fires for HER/HAL, the system cannot be admitted — green is wrong. --amber cannot substitute because L301 already assigns it to PENDING within the same panel. --blue (OBSERVED) is the only available SA palette slot for 'station has checked and cleared' without adding a new CSS variable.",
+  "summary": "The Go/No-Go panel (L1056-1064) is a pre-admission review gate — 'All stations must be GO before SHIP is authorized' (L1059). HER=GO (L1060, 'Proposal ready') and HAL=GO (L1061, 'Admissibility checked') represent station-level review clearances, not ledger admissions. Yet both render via .station-verdict.go{color:var(--green)} (L299), the same color SA doctrine reserves exclusively for governance-ADMITTED. LEDGER shows HOLD (receipt missing) and MAYOR is PENDING — the full system is not admitted — but individual GO stations appear in ADMITTED-level green. --amber (🟠 REVIEW) cannot substitute cleanly: L301 already assigns --amber to .station-verdict.pend (PENDING state), so both PENDING and GO-cleared would share the same color within the same panel. --blue (OBSERVED: #5b8af0) is unused in the gonogo panel and available. SA semantic fit: OBSERVED = 'seen and recorded' ≈ 'station has inspected and recorded its clearance' — closest available slot without introducing a new palette variable.",
+  "evidence": [
+    "index.html:299 — .station-verdict.go{color:var(--green)} — SA ADMITTED level",
+    "index.html:301 — .station-verdict.pend{color:var(--amber)} — PENDING, same panel",
+    "index.html:1059 — 'All stations GO before SHIP authorized' — pre-admission gate",
+    "index.html:1060-1061 — HER=GO, HAL=GO are review-stage clearances, not receipts",
+    "index.html:1062 — LEDGER HOLD: receipt missing → system not admitted",
+    "index.html:127 — --blue: mrow-dot.blue (generic orbit dot, not assigned SA semantic in panel)",
+    "CLAUDE.md §WULMOJI — '🟢 ADMITTED requires explicit operator admission receipt'",
+    "CLAUDE.md §Look&Feel — 'one meaning per color: 🔵 observed, 🟠 review, 🟢 admitted'"
+  ],
+  "proposed_tweak": "Change .station-verdict.go L299: color:var(--green) → color:var(--blue). Single-line change; reverses trivially. 'Station review cleared' maps to 🔵 OBSERVED (--blue:#5b8af0) — station has observed and cleared its gate; not yet ledger-admitted. HOLD remains --red (breach). PENDING remains --amber (review pending). GO becomes --blue (observed+cleared at station level).",
+  "metric": "grep -n 'station-verdict' index.html shows .station-verdict.go uses var(--blue). In browser: HER and HAL GO rows render blue; HOLD rows remain red; PENDING row remains amber. --green disappears from gonogo panel entirely. Semantic check: no other gonogo panel element uses --blue — intra-panel collision-free.",
+  "rule": "KEEP if --blue is free within the gonogo panel (confirmed: only HOLD=red, PENDING=amber exist there; --blue unassigned). REJECT if operator determines station GO warrants a stronger positive signal requiring a new --teal palette entry distinct from OBSERVED.",
+  "next": "Audit badge.live and mrow-dot.live (L91,123,133): liveness indicator uses --green for ACTIVE/ONLINE — third distinct meaning sharing --green with the now-remedied COMMITTED and GO uses. Does operational liveness warrant its own palette slot distinct from ADMITTED?",
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-06T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (live probe: index.html:299 confirms --green for GO; L301 confirms --amber for PENDING in same panel; --blue confirmed available in gonogo panel; SA doctrine confirms 🟢=ADMITTED only; LEDGER HOLD at time of HER/HAL GO confirms pre-admission state)",
+    "epoch": "E33",
+    "parent_epoch": "E32",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
