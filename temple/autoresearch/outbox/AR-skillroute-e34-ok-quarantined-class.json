@@ -1,0 +1,39 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-skillroute-e34-ok-quarantined-class",
+  "target_surface": "skill_routing",
+  "epoch": "E34",
+  "parent_epoch": "E27",
+  "source_refs": [
+    "helen_os/autonomy/skill_discovery_v1.py:162-174",
+    "helen_os/autonomy/skill_discovery_v1.py:177",
+    "helen_os/autonomy/self_improve_loop_v1.py:636"
+  ],
+  "finding_type": "gap",
+  "summary": "E27 added 6 ERR_* codes to failure_to_class (skill_discovery_v1.py:162-174) but missed 'OK_QUARANTINED'. QUARANTINED ledger entries pass the detect_failure_clusters filter (only ADMITTED is skipped). When 2+ QUARANTINED outcomes cluster, analyze_capability_gap receives failure_type='OK_QUARANTINED', which is not in failure_to_class, and defaults to 'TRANSFORM'. Live probe confirms: analyze_capability_gap(FailureCluster(failure_type='OK_QUARANTINED'), state)['class'] == 'TRANSFORM'. Correct class is VALIDATE: quarantine is triggered by transfer_required=True with missing receipts — GATE_TRANSFER_REQUIRED per _blockers_from_reason (self_improve_loop_v1.py:636).",
+  "evidence": [
+    "skill_discovery_v1.py:162-174: failure_to_class has 11 entries, none for 'OK_QUARANTINED'",
+    "skill_discovery_v1.py:177: skill_class = failure_to_class.get(cluster.failure_type, 'TRANSFORM') — default fires",
+    "detect_failure_clusters filter: only skips ADMITTED (skill_discovery_v1.py:62); QUARANTINED passes through",
+    "autoresearch_batch_v1.py:85: QUARANTINED entries recorded in ledger with no state mutation but remain in entries list",
+    "self_improve_loop_v1.py:609: reason_code for QUARANTINED cycle = 'OK_QUARANTINED' (from ReasonCode.OK_QUARANTINED.value)",
+    "self_improve_loop_v1.py:636: _blockers_from_reason maps 'OK_QUARANTINED' -> ['GATE_TRANSFER_REQUIRED'] (receipt-level concern → VALIDATE class)",
+    "Live probe: python3 -c 'from helen_os.autonomy.skill_discovery_v1 import analyze_capability_gap, FailureCluster; gap=analyze_capability_gap(FailureCluster(failure_type=\"OK_QUARANTINED\",occurrence_count=2,affected_task_ids=[\"t1\"],common_context={}), {\"active_skills\":{}}); print(gap[\"class\"])' → TRANSFORM"
+  ],
+  "hypothesis": "If 'OK_QUARANTINED': 'VALIDATE' is added to failure_to_class, then clustered QUARANTINED failures will propose VALIDATE-class skills (receipt/transfer validators) instead of wrong TRANSFORM-class skills.",
+  "proposed_tweak": "helen_os/autonomy/skill_discovery_v1.py line 174: add '\"OK_QUARANTINED\": \"VALIDATE\",' after the ERR_THRESHOLD_NOT_MET entry. One-line change. Proposal only — operator must apply.",
+  "metric": "python3 -c 'from helen_os.autonomy.skill_discovery_v1 import analyze_capability_gap, FailureCluster; gap=analyze_capability_gap(FailureCluster(failure_type=\"OK_QUARANTINED\",occurrence_count=2,affected_task_ids=[\"t1\"],common_context={}), {\"active_skills\":{}}); assert gap[\"class\"]==\"VALIDATE\", gap[\"class\"]' exits 0. All existing skill_discovery tests remain green.",
+  "keep_rule": "KEEP if probe returns 'VALIDATE' AND make test green; REJECT if any test breaks or TRANSFORM class is needed for any real QUARANTINE scenario",
+  "next": "Add test_quarantine_routed_to_validate in test_skill_discovery_v1.py: FailureCluster(failure_type='OK_QUARANTINED') → analyze_capability_gap → class=='VALIDATE'. Operator applies 1-line fix.",
+  "risk_flags": [
+    "Minimal — adding one entry to a lookup dict; no control flow change",
+    "No existing test asserts OK_QUARANTINED → TRANSFORM so no test will break",
+    "TRANSFORM was wrong: quarantine needs receipt validation not schema transformation"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "final": "HOLD_FOR_OPERATOR"
+}
