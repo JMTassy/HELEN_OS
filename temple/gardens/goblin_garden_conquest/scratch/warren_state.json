@@ -3,8 +3,8 @@
   "sovereign": false,
   "authority": false,
   "simulation_only": true,
-  "turn": 0,
-  "goal": "test bloom",
+  "turn": 8,
+  "goal": "Make MARK and INTERVENE observably different while keeping Garden ADMIT non-sovereign.",
   "factions": [
     "ROSE",
     "SPIRAL",
@@ -18,16 +18,35 @@
   },
   "resources": {
     "mushrooms": 10,
-    "knowledge": 5,
+    "knowledge": 11,
     "prestige": 3
   },
-  "cohesion": 50,
-  "chaos": 20,
-  "buildings": [],
-  "goblin_habits": [
-    "compost_disaster"
+  "cohesion": 53,
+  "chaos": 30,
+  "buildings": [
+    "plotting_bench"
   ],
-  "recent_stamps": [],
-  "claim_log": [],
+  "goblin_habits": [
+    "compost_disaster",
+    "tax_moon",
+    "tax_moon"
+  ],
+  "recent_stamps": [
+    "COMPOST",
+    "ADMIT",
+    "DENY",
+    "COMPOST",
+    "ADMIT"
+  ],
+  "claim_log": [
+    "WRN-1-4679",
+    "WRN-1-4679",
+    "WRN-1-2296",
+    "WRN-3-1031",
+    "WRN-4-4679",
+    "WRN-4-4679",
+    "WRN-7-0307",
+    "WRN-7-0307"
+  ],
   "last_epoch": 0
 }

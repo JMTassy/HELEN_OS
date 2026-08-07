@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>GOBLIN WARREN — Intro</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #0a0714;
+      }
+      body {
+        font-family: Georgia, "Times New Roman", serif;
+      }
+
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+      }
+
+      /* --- Shared background stack (NOT clips) --- */
+
+      /* Ken Burns image layer. The <img> is oversized-covered; #bg-scale
+         is the transformed wrapper so we never scale a timed element. */
+      #bg {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        background: #0a0714;
+      }
+      #bg-scale {
+        position: absolute;
+        /* slightly larger than frame so the push + drift never reveals an edge */
+        left: -6%;
+        top: -6%;
+        width: 112%;
+        height: 112%;
+        transform-origin: 42% 40%;
+        will-change: transform;
+      }
+      #bg-img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 46%;
+      }
+
+      /* Soft warm ember glow near the campfire (lower-center-left of the plate). */
+      #ember-glow {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        mix-blend-mode: screen;
+        background: radial-gradient(
+          circle at 41% 66%,
+          rgba(232, 178, 90, 0.16) 0%,
+          rgba(232, 178, 90, 0.06) 18%,
+          rgba(232, 178, 90, 0) 40%
+        );
+        will-change: opacity;
+      }
+
+      /* Cinematic vignette — darkens the frame edges. */
+      #vignette {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(
+          ellipse 78% 74% at 50% 44%,
+          rgba(0, 0, 0, 0) 52%,
+          rgba(6, 4, 16, 0.42) 82%,
+          rgba(4, 2, 12, 0.72) 100%
+        );
+      }
+
+      /* Bottom-up dark gradient for title legibility. */
+      #legibility {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(
+          to top,
+          rgba(8, 5, 20, 0.86) 0%,
+          rgba(8, 5, 20, 0.55) 20%,
+          rgba(8, 5, 20, 0.12) 42%,
+          rgba(8, 5, 20, 0) 60%
+        );
+      }
+
+      /* --- Title content (transparent clip) --- */
+      .clip.transparent {
+        background: transparent;
+      }
+      #title-scene {
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+      }
+      #title-block {
+        width: 100%;
+        max-width: 1400px;
+        padding: 0 120px 176px 120px;
+        text-align: center;
+        color: #f4ece0;
+      }
+
+      #kicker {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 26px;
+        font-weight: 400;
+        letter-spacing: 0.42em;
+        text-transform: uppercase;
+        color: #e8b25a;
+        opacity: 0; /* animated in */
+        text-shadow: 0 1px 10px rgba(0, 0, 0, 0.72);
+        /* pad the right so trailing letter-spacing doesn't clip */
+        padding-right: 0.42em;
+      }
+
+      #rule {
+        width: 132px;
+        height: 1px;
+        margin: 26px auto 30px auto;
+        background: linear-gradient(
+          to right,
+          rgba(232, 178, 90, 0) 0%,
+          rgba(232, 178, 90, 0.9) 50%,
+          rgba(232, 178, 90, 0) 100%
+        );
+        transform-origin: center;
+        transform: scaleX(0); /* animated in */
+      }
+
+      #title {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 132px;
+        font-weight: 400;
+        line-height: 1.02;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #f4ece0;
+        opacity: 0; /* animated in */
+        text-shadow:
+          0 2px 24px rgba(0, 0, 0, 0.88),
+          0 0 44px rgba(232, 178, 90, 0.2);
+        /* pad the right so trailing letter-spacing doesn't clip */
+        padding-right: 0.12em;
+      }
+
+      #tagline {
+        margin-top: 34px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-style: italic;
+        font-weight: 400;
+        font-size: 34px;
+        letter-spacing: 0.02em;
+        color: rgba(244, 236, 224, 0.88);
+        opacity: 0; /* animated in */
+        text-shadow: 0 1px 14px rgba(0, 0, 0, 0.82);
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="10"
+      data-width="1920"
+      data-height="1080"
+    >
+      <!-- Shared background stack — NOT clips, present the whole composition. -->
+      <div id="bg">
+        <!-- Oversized + Ken-Burns-scaled inside overflow:hidden #bg; overflow is intentional. -->
+        <div id="bg-scale" data-layout-allow-overflow>
+          <img id="bg-img" src="assets/bg/warren_night.png" alt="Goblin Warren night village" />
+        </div>
+      </div>
+      <div id="ember-glow"></div>
+      <div id="vignette"></div>
+      <div id="legibility"></div>
+
+      <!-- Title content, transparent so the background shows through. -->
+      <section
+        id="title-scene"
+        class="clip transparent"
+        data-start="0"
+        data-duration="10"
+        data-track-index="1"
+      >
+        <div id="title-block">
+          <div id="kicker">A HELEN GARDEN</div>
+          <div id="rule"></div>
+          <h1 id="title">Goblin Warren</h1>
+          <div id="tagline">The heap may speak. The ledger must verify.</div>
+        </div>
+      </section>
+
+      <!-- Quiet ambient bed. Direct child of root; framework owns playback. -->
+      <audio
+        id="bgm"
+        src="assets/audio/warren_ambient_pad.m4a"
+        data-start="0"
+        data-duration="10"
+        data-track-index="10"
+        data-volume="0.5"
+      ></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // --- Ken Burns: slow cinematic push 1.0 -> 1.08 with gentle down-right drift ---
+      tl.fromTo(
+        "#bg-scale",
+        { scale: 1.0, xPercent: 0, yPercent: 0 },
+        { scale: 1.08, xPercent: -2.2, yPercent: -1.6, duration: 10, ease: "power1.inOut" },
+        0
+      );
+
+      // --- Barely-perceptible warm ember pulse near the campfire (±3% opacity, slow) ---
+      // One full slow breath across the 10s (finite, seek-safe).
+      tl.fromTo(
+        "#ember-glow",
+        { opacity: 0.97 },
+        { opacity: 1.03, duration: 5, ease: "sine.inOut" },
+        0
+      );
+      tl.to("#ember-glow", { opacity: 0.97, duration: 5, ease: "sine.inOut" }, 5);
+
+      // --- Kicker fades in first, with a whisper of rise ---
+      tl.fromTo(
+        "#kicker",
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 1.0, ease: "power2.out" },
+        0.5
+      );
+
+      // --- Hairline rule draws out from center ---
+      tl.fromTo(
+        "#rule",
+        { scaleX: 0, opacity: 0 },
+        { scaleX: 1, opacity: 1, duration: 1.1, ease: "power2.out" },
+        0.9
+      );
+
+      // --- Title: fade in with subtle upward rise, full by ~2.2s, holds to end ---
+      tl.fromTo(
+        "#title",
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 1.4, ease: "power2.out" },
+        0.8
+      );
+
+      // --- Tagline fades in later (~3.5s), holds ---
+      tl.fromTo(
+        "#tagline",
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 1.2, ease: "power2.out" },
+        3.5
+      );
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

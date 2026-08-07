@@ -1,0 +1,22 @@
+{
+  "schema": "HAL_MAYOR_JESTER_GARDEN_EPOCH_V0",
+  "epoch": "E01",
+  "insight_id": "epoch_001",
+  "insight_label": "AVALON_ASCII_PORTAL",
+  "hal": {
+    "status": "ERROR",
+    "output": "Command '['python3', 'tools/run_hal_epoch.py', '--epoch', 'E01', '--task', 'INSIGHT GARDEN under HAL supervision.\\nItem: AVALON_ASCII_PORTAL\\nThe Avalon portal opens. Dream island declared. CONQUESTLA",
+    "epoch": "E01"
+  },
+  "mayor": {
+    "decision": "DEFER",
+    "score": 4,
+    "hal": "ERROR",
+    "authority": false
+  },
+  "jester_comment": "JESTER: HAL is the auditor. MAYOR is the spreadsheet. I'm the one who spilled ink on purpose.",
+  "timestamp": "2026-07-20T13:45:18.744720+00:00",
+  "authority": false,
+  "garden_only": true,
+  "receipt_granted": false
+}

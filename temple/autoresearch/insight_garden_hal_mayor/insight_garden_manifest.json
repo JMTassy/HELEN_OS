@@ -1,0 +1,98 @@
+[
+  {
+    "id": "epoch_001",
+    "type": "AVALON_EPOCH_RECEIPT",
+    "label": "AVALON_ASCII_PORTAL",
+    "description": "The Avalon portal opens. Dream island declared. CONQUESTLAND CLI gateway established.",
+    "wulmoji": "(1) \ud83d\udfe3 \ud83c\udf39 \ud83d\udf03\ud83d\udf04 \ud83d\udcdc \ud83d\udd17#AVALON-E01 \ud83c\udf3f\ud83c\udf39",
+    "claim_type": "simulation"
+  },
+  {
+    "id": "epoch_002",
+    "type": "AVALON_EPOCH_RECEIPT",
+    "label": "CONQUEST_CLI_BOUNDARY",
+    "description": "Boundary law documented. AUTH=false, LEDGER=SLEEPING. No sovereign claims in this layer.",
+    "wulmoji": "(2) \ud83d\udd35 \ud83c\udf39 \ud83d\udf03\ud83d\udf04 \ud83d\udee1\ufe0f \ud83d\udd17#AVALON-E02 \ud83c\udf3f\ud83c\udf39",
+    "claim_type": "simulation"
+  },
+  {
+    "id": "epoch_003",
+    "type": "AVALON_EPOCH_RECEIPT",
+    "label": "WULMOJI_ASCII_GRAMMAR_BASE",
+    "description": "CWL v0.2.1 EMOGLYPH frozen. Grammar base established. 32 canonical faces registered.",
+    "wulmoji": "(3) \ud83d\udd35 \ud83c\udf39 \ud83d\udf04\ud83d\udf01 \ud83d\udcdc \ud83d\udd17#AVALON-E03 \ud83c\udf39\ud83c\udf00",
+    "claim_type": "simulation"
+  },
+  {
+    "id": "epoch_004",
+    "type": "AVALON_EPOCH_RECEIPT",
+    "label": "HERALDIC_5_LAYER_FORMAT",
+    "description": "Heraldic format locked: [BANNER][SIGIL][ALCHEMIC][ACTE][PREUVE][RIBBON]. Deterministic compression.",
+    "wulmoji": "(4) \ud83d\udd34 \ud83c\udf39 \ud83d\udf01\ud83d\udf02 \ud83d\udcdc \ud83d\udd17#AVALON-E04 \ud83c\udf39\ud83c\udf00",
+    "claim_type": "simulation"
+  },
+  {
+    "id": "epoch_005",
+    "type": "AVALON_EPOCH_RECEIPT",
+    "label": "CLI_STATUS_BAR",
+    "description": "Status bar design: AUTH=false | SOV=false | LEDGER=SLEEPING. Always visible. Non-negotiable.",
+    "wulmoji": "(5) \ud83d\udd35 \ud83c\udf39 \ud83d\udf01\ud83d\udf02 \ud83d\udee1\ufe0f \ud83d\udd17#AVALON-E05 \ud83c\udf39\ud83c\udf00",
+    "claim_type": "cli"
+  },
+  {
+    "id": "epoch_006",
+    "type": "AVALON_EPOCH_RECEIPT",
+    "label": "CLI_COMMAND_SET_BASE",
+    "description": "Base command set established: conquest status/enter/order/seal/leave/return/ledger.",
+    "wulmoji": "(6) \ud83d\udfe2 \ud83c\udf39 \ud83d\udf02\ud83d\udf0d \ud83d\udd12\ud83d\udcdc \ud83d\udd17#AVALON-E06 \ud83c\udf39\ud83c\udf00",
+    "claim_type": "cli"
+  },
+  {
+    "id": "epoch_007",
+    "type": "AVALON_EPOCH_RECEIPT",
+    "label": "COMMAND_ASK",
+    "description": "The ask command: goblin guides, non-authoritative. conquest enter = threshold crossing.",
+    "wulmoji": "(7) \ud83d\udfe3 \ud83c\udf00 \ud83d\udf03\ud83d\udf04 \ud83d\udcdc \ud83d\udd17#AVALON-E07 \ud83c\udf3f\ud83c\udf00",
+    "claim_type": "cli"
+  },
+  {
+    "id": "epoch_008",
+    "type": "AVALON_EPOCH_RECEIPT",
+    "label": "COMMAND_CLAIM",
+    "description": "The claim command: conquest order. Draft until sealed. No undo after seal.",
+    "wulmoji": "(8) \ud83d\udd35 \ud83c\udf00 \ud83d\udf03\ud83d\udf04 \ud83d\udee1\ufe0f \ud83d\udd17#AVALON-E08 \ud83c\udf3f\ud83c\udf00",
+    "claim_type": "cli"
+  },
+  {
+    "id": "epoch_009",
+    "type": "AVALON_EPOCH_RECEIPT",
+    "label": "COMMAND_RECEIPT",
+    "description": "The receipt command: conquest seal. Irreversible local inscription. layer=TEMPLE, auth=false.",
+    "wulmoji": "(9) \ud83d\udfe2 \ud83c\udf00 \ud83d\udf04\ud83d\udf01 \ud83d\udcdc \ud83d\udd17#AVALON-E09 \ud83c\udf39\ud83c\udf00",
+    "claim_type": "cli"
+  },
+  {
+    "id": "epoch_010",
+    "type": "AVALON_EPOCH_RECEIPT",
+    "label": "COMMAND_QUEST",
+    "description": "The quest command: conquest ledger \u2014 read-only append-only view. The ledger does not move here.",
+    "wulmoji": "(10) \ud83d\udd35 \ud83c\udf00 \ud83d\udf04\ud83d\udf01 \ud83d\udee1\ufe0f \ud83d\udd17#AVALON-E10 \ud83c\udf39\ud83c\udf00",
+    "claim_type": "cli"
+  },
+  {
+    "id": "BOUNDED_RECEIPT_DOCTRINE",
+    "type": "GARDEN_DOCTRINE",
+    "label": "Bounded Receipt \u2014 Doctrine of Local Permanence",
+    "description": "Bounded receipts are permanent within their field but invisible outside. SEAL \u2260 PROMOTION. PERMANENT \u2260 GLOBAL. RECEIPTED \u2260 ADMITTED. The garden has always known this.",
+    "wulmoji": "\ud83c\udf39 BOUNDED",
+    "claim_type": "doctrine"
+  },
+  {
+    "id": "GARDEN_NO_CLAIM_RULE",
+    "type": "GARDEN_DOCTRINE",
+    "label": "Garden No-Claim Rule",
+    "description": "Garden artifacts carry no constitutional weight. The receipt decides \u2014 the symbol only shines. DREAMT \u2260 CLAIMED. Not a claim. Not a failure to claim. A different kind of knowing.",
+    "wulmoji": "\ud83d\udfe3 NO_CLAIM",
+    "claim_type": "doctrine"
+  }
+]

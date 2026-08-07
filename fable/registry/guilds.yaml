@@ -1,0 +1,100 @@
+# FABLE_50 registry — P0 data only
+# authority: false · claim: NO_CLAIM · implementation: BLOCKED
+# 50 logical goblins ≠ 50 resident models
+# Generated for FABLE_50_GOBLIN_ARCHITECTURE_V0 phase P0
+
+schema: FableGuildsV1
+authority: false
+claim: NO_CLAIM
+core_invariant: "50 logical goblins != 50 resident models"
+max_concurrent_default: 1
+max_active_per_epoch: 6
+guilds:
+  - guild_id: observers
+    n: 8
+    function: detect facts, traces, divergences
+    default_projection:
+      - traces
+      - logs
+      - freshness
+      - runtime_probes
+    default_cost: 0.45
+  - guild_id: challengers
+    n: 8
+    function: attack hypotheses and semantic promotions
+    default_projection:
+      - claims
+      - epistemic_status
+      - forbidden_promotions
+    default_cost: 0.55
+  - guild_id: causal_analysts
+    n: 6
+    function: reconstruct why a state changed
+    default_projection:
+      - needs
+      - traces
+      - materials
+      - events
+      - history
+    default_cost: 0.63
+  - guild_id: builders
+    n: 6
+    function: propose code / structure / mechanism
+    default_projection:
+      - goal
+      - acceptance
+      - allowed_paths
+      - constraints
+    default_cost: 0.7
+  - guild_id: verifier_planners
+    n: 5
+    function: design tests and witnesses
+    default_projection:
+      - claims
+      - acceptance
+      - failure_classes
+      - fixtures
+    default_cost: 0.6
+  - guild_id: provenance_keepers
+    n: 5
+    function: check source, history, dependencies
+    default_projection:
+      - evidence_refs
+      - history
+      - digests
+      - origins
+    default_cost: 0.5
+  - guild_id: compressors
+    n: 4
+    function: deduplicate and reduce
+    default_projection:
+      - proposals
+      - digests
+      - budget
+    default_cost: 0.4
+  - guild_id: risk_goblins
+    n: 4
+    function: permissions, sovereignty, irreversible effects
+    default_projection:
+      - forbidden_effects
+      - paths
+      - authority_class
+      - mutation_rights
+    default_cost: 0.58
+  - guild_id: chiddush_goblins
+    n: 3
+    function: seek a genuinely new distinction
+    default_projection:
+      - claims
+      - distinctions
+      - goal
+    default_cost: 0.75
+  - guild_id: reducer_candidates
+    n: 1
+    function: non-sovereign synthesis (never authority)
+    default_projection:
+      - survivors
+      - compost_counts
+      - unresolved
+      - metrics
+    default_cost: 0.8

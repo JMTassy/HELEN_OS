@@ -1,0 +1,19 @@
+{
+  "schema": "WARREN_RECEIPT_V0",
+  "receipt_id": "WRN-4-4679",
+  "turn": 4,
+  "event": {
+    "proposer": "Grub",
+    "desc": "Hold a tax moon ritual",
+    "effect": {
+      "resources.knowledge": 3,
+      "chaos": 5,
+      "goblin_habits": "tax_moon"
+    },
+    "turn": 4
+  },
+  "authority": false,
+  "claim": "NO_CLAIM",
+  "timestamp": "2026-07-18T12:45:57.056892+00:00",
+  "note": "Garden-only claimable action. Kernel untouched."
+}

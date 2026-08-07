@@ -1,0 +1,55 @@
+{
+  "schema": "EGREGOR_WITNESS_V0",
+  "authority_status": "NON_SOVEREIGN_EGREGOR",
+  "generated_at": "2026-07-20T12:43:38.878975Z",
+  "intent": "Test egregor: does this HELEN OS concept make sense?",
+  "intent_sha": "acf846060ac51c23",
+  "witnesses": [
+    {
+      "role": "grok",
+      "success": true,
+      "latency_ms": 30714,
+      "has_json": true,
+      "error": null,
+      "hal": "PASS",
+      "preview": "{\"concept\":\"egregor\",\"verdict\":\"YES_COHERENT\",\"sense\":true,\"definition_helen\":\"persistent coordination cluster: multi-agent interaction+memory+roles stabilize into a named collective pattern with measurable cohesion, not a sovereign mind\",\"maps_to\":[\"emergence_cluster\",\"house_superstructure\",\"consen"
+    },
+    {
+      "role": "claude",
+      "success": false,
+      "latency_ms": 35036,
+      "has_json": false,
+      "error": "timeout after 35s",
+      "hal": "ERROR",
+      "preview": "timeout after 35s"
+    },
+    {
+      "role": "codex",
+      "success": false,
+      "latency_ms": 35011,
+      "has_json": false,
+      "error": "timeout after 35s",
+      "hal": "ERROR",
+      "preview": "timeout after 35s"
+    }
+  ],
+  "aggregation": {
+    "num_witnesses": 3,
+    "num_success": 1,
+    "num_blocked": 0,
+    "num_errored": 2,
+    "roles_responded": [
+      "grok"
+    ],
+    "consensus_hint": "SINGLE_WITNESS"
+  },
+  "hal_summary": {
+    "overall": "PASS",
+    "blocked_roles": [],
+    "errored_roles": [
+      "claude",
+      "codex"
+    ]
+  },
+  "notes": "NON_SOVEREIGN_EGREGOR. Output is witness only. Never ledgered."
+}

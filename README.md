@@ -125,6 +125,18 @@ HELEN's development process follows the same governance model as the system:
 - **Governance index**: 47/47 (100%)
 - **AUTORESEARCH**: Contract sealed — governance enforcement validated empirically
 
+## HELEN_OS_ROSE
+
+[HELEN_OS_ROSE/](HELEN_OS_ROSE/README.md) — model-agnostic operating system for ROSE and CIELO IMPACT (strategy, decisions, execution packets, evidence register, claim linter). Rose is the sovereign operator; its ledger is separate from the town ledger. Status: IMPLEMENTED_NOT_APPROVED (see `HELEN_OS_ROSE/receipts/bootstrap_receipt.json`).
+
+```bash
+# validate the ROSE workspace
+python3 HELEN_OS_ROSE/scripts/validate_workspace.py
+
+# run its tests
+python3 -m unittest discover -s HELEN_OS_ROSE/tests
+```
+
 ## License
 
 MIT

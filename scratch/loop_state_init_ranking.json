@@ -1,0 +1,193 @@
+{
+ "schema": "LOOP_STATE_INIT_RANKING_V1",
+ "authority": false,
+ "ledger_effect": "none",
+ "loop": "INIT_RANKING_2H under HAL/HER duo",
+ "started_at": "2026-07-06T18:55:44+0200",
+ "deadline": "2026-07-06T20:55:44+0200",
+ "gate0": {
+  "outbox_guard": "green 0/5",
+  "operator_marks": 31
+ },
+ "phase_done": [
+  "P0_ground: scratchpad/init_goldset_v1.json (20 cases, 5 pos / 26 neg)",
+  "P1_freeze: scratch/autoresearch_init_evaluator_v1.py (0.7/0.2/0.1, frozen)"
+ ],
+ "baseline": {
+  "Top3Match": 0.0,
+  "OrderScore": 0.25,
+  "Stability": 1.0,
+  "score": 0.15
+ },
+ "baseline_note": "type-priority-only ranking fails operator truth: rejected lexical-noise packets are mostly finding_type=risk (top type score). Real headroom exists.",
+ "iterations": [
+  {
+   "iter": 0,
+   "tweak": "BASELINE",
+   "result": {
+    "Top3Match": 0.0,
+    "OrderScore": 0.25,
+    "Stability": 1.0,
+    "score": 0.15
+   },
+   "kept": true
+  },
+  {
+   "iter": 1,
+   "TARGET": "/init ranking weights",
+   "HYPOTHESIS": "operator rejects lexical-noise packets; penalize noise marker",
+   "TWEAK": "w_noise 0.0 -> 1.0",
+   "METRIC": "score 0.9267 (top3 1.0, stab 1.0)",
+   "RULE": "keep iff score and stability improve",
+   "kept": true
+  },
+  {
+   "iter": 2,
+   "TARGET": "/init ranking weights",
+   "HYPOTHESIS": "severity keywords (ci/kernel/regression/gate) track operator attention",
+   "TWEAK": "w_severity 0.0 -> 0.5",
+   "METRIC": "score 0.8667 (top3 1.0, stab 1.0)",
+   "RULE": "keep iff score and stability improve",
+   "kept": false
+  },
+  {
+   "iter": 3,
+   "TARGET": "/init ranking weights",
+   "HYPOTHESIS": "risk-flag count correlates with acted marks",
+   "TWEAK": "w_flags 0.0 -> 0.3",
+   "METRIC": "score 0.8667 (top3 1.0, stab 1.0)",
+   "RULE": "keep iff score and stability improve",
+   "kept": false
+  },
+  {
+   "iter": 4,
+   "TARGET": "/init ranking weights",
+   "HYPOTHESIS": "type score misleads: noise packets are typed 'risk'; reduce",
+   "TWEAK": "w_type 1.0 -> 0.5",
+   "METRIC": "score 0.9267 (top3 1.0, stab 1.0)",
+   "RULE": "keep iff score and stability improve",
+   "kept": false
+  },
+  {
+   "iter": 5,
+   "TARGET": "/init ranking weights",
+   "HYPOTHESIS": "noise penalty still under-weighted",
+   "TWEAK": "w_noise 1.0 -> 2.0",
+   "METRIC": "score 0.9267 (top3 1.0, stab 1.0)",
+   "RULE": "keep iff score and stability improve",
+   "kept": false
+  },
+  {
+   "iter": 6,
+   "TARGET": "/init ranking weights",
+   "HYPOTHESIS": "severity signal dominates truth; raise",
+   "TWEAK": "w_severity 0.0 -> 1.0",
+   "METRIC": "score 0.8533 (top3 1.0, stab 1.0)",
+   "RULE": "keep iff score and stability improve",
+   "kept": false
+  },
+  {
+   "iter": 7,
+   "TARGET": "/init ranking weights",
+   "HYPOTHESIS": "type almost uninformative vs operator truth",
+   "TWEAK": "w_type 1.0 -> 0.2",
+   "METRIC": "score 0.9267 (top3 1.0, stab 1.0)",
+   "RULE": "keep iff score and stability improve",
+   "kept": false
+  },
+  {
+   "iter": 8,
+   "TARGET": "/init ranking weights",
+   "HYPOTHESIS": "multi-ref packets are more substantive",
+   "TWEAK": "w_refs 0.0 -> 0.1",
+   "METRIC": "score 0.8867 (top3 1.0, stab 1.0)",
+   "RULE": "keep iff score and stability improve",
+   "kept": false
+  },
+  {
+   "iter": 9,
+   "TARGET": "/init ranking weights",
+   "HYPOTHESIS": "long scanner summaries are noise",
+   "TWEAK": "w_len 0.0 -> 0.1",
+   "METRIC": "score 0.96 (top3 1.0, stab 1.0)",
+   "RULE": "keep iff score and stability improve",
+   "kept": true
+  },
+  {
+   "iter": 10,
+   "TARGET": "/init ranking weights",
+   "HYPOTHESIS": "flag count second-order boost",
+   "TWEAK": "w_flags 0.0 -> 0.6",
+   "METRIC": "score 0.8667 (top3 1.0, stab 1.0)",
+   "RULE": "keep iff score and stability improve",
+   "kept": false
+  },
+  {
+   "iter": 11,
+   "TARGET": "/init ranking weights",
+   "HYPOTHESIS": "severity headroom probe",
+   "TWEAK": "w_severity 0.0 -> 1.5",
+   "METRIC": "score 0.8533 (top3 1.0, stab 1.0)",
+   "RULE": "keep iff score and stability improve",
+   "kept": false
+  },
+  {
+   "iter": 12,
+   "TARGET": "/init ranking weights",
+   "HYPOTHESIS": "noise penalty saturation probe",
+   "TWEAK": "w_noise 1.0 -> 3.0",
+   "METRIC": "score 0.96 (top3 1.0, stab 1.0)",
+   "RULE": "keep iff score and stability improve",
+   "kept": false
+  },
+  {
+   "iter": 13,
+   "TARGET": "/init ranking weights",
+   "HYPOTHESIS": "len penalty half-step (10 may overshoot)",
+   "TWEAK": "w_len 0.1 -> 0.05",
+   "METRIC": "score 0.96 (top3 1.0, stab 1.0)",
+   "RULE": "keep iff score and stability improve",
+   "kept": false
+  },
+  {
+   "iter": 14,
+   "TARGET": "/init ranking weights",
+   "HYPOTHESIS": "refs weight headroom probe",
+   "TWEAK": "w_refs 0.0 -> 0.3",
+   "METRIC": "score 0.6317 (top3 0.65, stab 1.0)",
+   "RULE": "keep iff score and stability improve",
+   "kept": false
+  }
+ ],
+ "best": {
+  "weights": {
+   "w_type": 1.0,
+   "w_flags": 0.0,
+   "w_severity": 0.0,
+   "w_refs": 0.0,
+   "w_noise": 1.0,
+   "w_len": 0.1
+  },
+  "Top3Match": 1.0,
+  "OrderScore": 0.8,
+  "Stability": 1.0,
+  "score": 0.96
+ },
+ "next_phase": "P3_attack: fresh-context adversarial audit of winner",
+ "roles": {
+  "HER": "proposes one weight mutation + hypothesis per iteration",
+  "HAL": "gates: keep iff score AND stability improve, else rollback"
+ },
+ "forbidden": [
+  "prompts",
+  "schemas",
+  "routing",
+  "memory",
+  "kernel",
+  "ledger",
+  "replay",
+  "reducer",
+  "gates",
+  "canon"
+ ]
+}

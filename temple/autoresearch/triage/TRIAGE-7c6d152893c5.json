@@ -1,0 +1,33 @@
+{
+  "schema": "TRIAGE_RECEIPT_V0",
+  "triage_id": "TRIAGE-7c6d152893c5",
+  "timestamp": "2026-07-20T13:20:25.765007+00:00",
+  "packet_count": 38,
+  "themes": [
+    "risk",
+    "ci_seam",
+    "test_gap_cluster",
+    "unconsumed_queue",
+    "proposal",
+    "gap"
+  ],
+  "summary": "Outbox triage: 38 packets, 6 themes.",
+  "evidence": [
+    "risk: 13 packets e.g. AR-137a79dbae09",
+    "ci_seam: 1 packets e.g. AR-1c394e006626",
+    "test_gap_cluster: 5 packets e.g. AR-1f936d1bda4b",
+    "unconsumed_queue: 2 packets e.g. AR-332110575215",
+    "proposal: 12 packets e.g. AR-39307ac76191",
+    "gap: 5 packets e.g. AR-575d4b83a114"
+  ],
+  "recommended_actions": [
+    "Review the decision queue and --mark each packet",
+    "Route BUILD_TASK survivors to bounded tranches"
+  ],
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "source": "temple/autoresearch/outbox_triage.py"
+}

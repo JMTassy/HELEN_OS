@@ -1,0 +1,13 @@
+{
+  "schema": "CompostRecordV1",
+  "proposal_id": "p-992",
+  "status": "composted",
+  "reason": "duplicate",
+  "dominated_by": "p-417",
+  "epoch": "epoch-p0-demo",
+  "digest": "sha256:deadbeefcafef00d",
+  "goblin_id": "comp-01",
+  "rule_id": "SAD_SELECT_K",
+  "notes": "Near-duplicate claim; keep higher-coverage survivor.",
+  "authority": false
+}

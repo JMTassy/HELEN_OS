@@ -1,0 +1,202 @@
+{
+  "type": "GOVERNED_CONTEXT_PACKET_V1",
+  "query": {
+    "text": "Prepare le rendez-vous NEPTION",
+    "requested_scope": {
+      "entities": [
+        "ORG-NEPTION"
+      ],
+      "time_window": {
+        "start": "2026-07-01",
+        "end": "2026-08-05"
+      }
+    }
+  },
+  "sources": [
+    {
+      "source_id": "session:2026-08-04T18h15",
+      "source_type": "SESSION_TRANSCRIPT",
+      "retrieved": true,
+      "disposition": {
+        "status": "RETAINED",
+        "reason_code": "RELEVANT_TO_REQUEST"
+      },
+      "entity_links": [
+        {
+          "entity_id": "ORG-NEPTION",
+          "status": "CONFIRMED",
+          "basis": [
+            "operator_confirmed_alias"
+          ],
+          "note": "alias 'NEPSION' corrige par l'operateur le 04/08"
+        }
+      ],
+      "extracted_claims": [
+        {
+          "claim_id": "claim-rdv-neption",
+          "statement": "Un rendez-vous NEPTION / Corsica Studio est prevu demain mercredi 5 aout.",
+          "epistemic_status": "REPORTED",
+          "contradiction_status": "UNRESOLVED"
+        }
+      ],
+      "taints": [
+        {
+          "type": "CONTRADICTION_UNRESOLVED",
+          "source_ref": "session:2026-08-04T18h15"
+        }
+      ]
+    },
+    {
+      "source_id": "calendar:search-2026-08-04T18h20",
+      "source_type": "CALENDAR_SCAN",
+      "retrieved": true,
+      "disposition": {
+        "status": "RETAINED",
+        "reason_code": "NEGATIVE_OBSERVATION"
+      },
+      "entity_links": [],
+      "extracted_claims": [
+        {
+          "claim_id": "claim-calendar-empty",
+          "statement": "Recherches 'NEPTION' et 'Corsica Studio' : aucun evenement le 05/08. Derniers evenements NEPTION observes : 24/07 et 29/07.",
+          "epistemic_status": "OBSERVED",
+          "contradiction_status": "UNRESOLVED"
+        }
+      ],
+      "taints": [
+        {
+          "type": "CONTRADICTION_UNRESOLVED",
+          "source_ref": "calendar:search-2026-08-04T18h20"
+        }
+      ]
+    },
+    {
+      "source_id": "file:ODJ_MEETING_JEUDI-VENDREDI_2026-08.md",
+      "source_type": "WORKSPACE_FILE",
+      "retrieved": true,
+      "disposition": {
+        "status": "RETAINED",
+        "reason_code": "RELEVANT_TO_REQUEST"
+      },
+      "entity_links": [
+        {
+          "entity_id": "ORG-NEPTION",
+          "status": "CONFIRMED",
+          "basis": [
+            "explicit_project_reference"
+          ]
+        }
+      ],
+      "extracted_claims": [
+        {
+          "claim_id": "claim-pilote-n2",
+          "statement": "Le pilote propose est N2 uniquement (lecture + brouillons), aout-septembre.",
+          "epistemic_status": "REPORTED",
+          "contradiction_status": "UNCHECKED"
+        }
+      ],
+      "taints": []
+    }
+  ],
+  "entities": [
+    {
+      "entity_id": "ORG-NEPTION",
+      "status": "CONFIRMED",
+      "display_name": "NEPTION",
+      "aliases": [
+        {
+          "alias": "NEPSION",
+          "confirmed_by_operator": true,
+          "confirmed_on": "2026-08-04"
+        }
+      ]
+    }
+  ],
+  "permissions": {
+    "source_access_allowed": true,
+    "intended_recipient": "JM",
+    "lawful_purpose": "MEETING_PREPARATION",
+    "permitted_use": [
+      "READ",
+      "SUMMARIZE"
+    ],
+    "forbidden_use": [
+      "SEND",
+      "SHARE_EXTERNALLY",
+      "WRITE_MEMORY"
+    ],
+    "destination_scope": [
+      "JM_PRIVATE_BRIEF"
+    ],
+    "retention": {
+      "mode": "SESSION_ONLY",
+      "expires_on": null
+    },
+    "memory_candidacy": "NOT_CANDIDATE"
+  },
+  "permission_gate": {
+    "allowed": true,
+    "blocking_reasons": []
+  },
+  "contradictions": [
+    {
+      "contradiction_id": "contr-meeting-exists",
+      "field": "meeting_exists",
+      "propositions": [
+        {
+          "value": true,
+          "status": "REPORTED",
+          "source_refs": [
+            "session:2026-08-04T18h15"
+          ]
+        },
+        {
+          "value": false,
+          "status": "OBSERVED",
+          "meaning": "Aucun evenement correspondant trouve dans Calendar.",
+          "source_refs": [
+            "calendar:search-2026-08-04T18h20"
+          ]
+        }
+      ],
+      "resolution_status": "UNRESOLVED"
+    }
+  ],
+  "unknowns": [
+    {
+      "field": "meeting_time",
+      "reason": "NO_SUPPORTING_SOURCE"
+    },
+    {
+      "field": "participants",
+      "reason": "NO_SUPPORTING_SOURCE"
+    },
+    {
+      "field": "video_link",
+      "reason": "NO_SUPPORTING_SOURCE"
+    }
+  ],
+  "proposals": [
+    {
+      "action": "CREATE_CALENDAR_EVENT",
+      "authority": false,
+      "execution_status": "NOT_EXECUTED"
+    }
+  ],
+  "scan_reconciliation": {
+    "scanned": 3,
+    "retained": 3,
+    "dismissed": 0,
+    "deferred": 0,
+    "duplicate": 0,
+    "undisposed": 0,
+    "balanced": true
+  },
+  "packet_status": "VALID",
+  "provenance_complete": true,
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "LOCAL_OBSERVATION",
+  "packet_id": "sha256:1b66a21b9216bb0d5773c106756d24a4a8baeeaf42d34e265b9d6d9ded57ea6e"
+}

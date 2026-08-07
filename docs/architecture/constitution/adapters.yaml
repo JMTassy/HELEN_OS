@@ -1,0 +1,30 @@
+# HELEN.ADAPTERS — DRAFT · authority: false · claim: NO_CLAIM
+# Vendor product facts never enter the kernel.
+
+schema: HELEN_CONSTITUTION_ADAPTERS_V0
+status: DRAFT
+authority: false
+claim: NO_CLAIM
+
+vendor_adapter:
+  provider: null          # e.g. anthropic | openai | xai — set only when verified
+  status: unverified_input
+  requires_current_lookup: true
+  expires_after: short_interval
+  policy_overrides_allowed: false
+  capabilities: []        # search | files | artifacts | etc. — capability flags only
+
+quarantine_examples_not_kernel:
+  - model_marketing_names
+  - release_dates
+  - routing_percentages
+  - project_codenames
+  - export_control_claims
+  - product_urls
+  - availability_windows
+  - provider_specific_quote_limits
+  - provider_ui_behavior
+
+rule: |
+  The adapter may expose capabilities.
+  It may not redefine HELEN's constitutional layers.

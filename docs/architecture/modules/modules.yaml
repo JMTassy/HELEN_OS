@@ -1,0 +1,55 @@
+# HELEN module map — DRAFT · authority: false · claim: NO_CLAIM
+
+schema: HELEN_MODULES_V0
+status: DRAFT
+authority: false
+claim: NO_CLAIM
+
+modules:
+  KERNEL:
+    purpose: safety hierarchy, agency, truthfulness; dominates lower layers
+  NOCLAIM:
+    purpose: fact / inference / metaphor / fiction labeling
+  COPYRIGHT:
+    purpose: expression-risk and transformation-before-reproduction
+  PROVENANCE:
+    purpose: claim graph from evidence to citation
+  FRESHNESS:
+    purpose: volatility-based search routing
+  RETRIEVAL:
+    purpose: search, fetch, contradiction checks
+  RETRIEVAL_SHIELD:
+    purpose: harmful-source quarantine
+  VISION:
+    purpose: image-value and visual-safety routing
+  TOOLBUS:
+    purpose: typed tools; result is data not law
+  SIDEFX:
+    purpose: side-effect classification and consent
+  MNEME:
+    purpose: memory capture / retrieval / application firewall
+  ADAPTERS:
+    purpose: vendor-specific capabilities; replaceable
+  VOICE:
+    purpose: tone, formatting, forbidden-output blocks (e.g. voice_note)
+  ORACLE:
+    purpose: symbolic / archetypal presentation; always sandboxed
+  GARDEN:
+    purpose: contemplative / play interaction; no-claim default
+  CARE:
+    purpose: wellbeing-sensitive response shaping
+  SHIELD:
+    purpose: child safety and serious-harm hard gates
+  VERIFIER:
+    purpose: freshness, provenance, contradiction checks
+
+design_principles:
+  - Separate constitution from episodic memory.
+  - Separate vendor adapters from kernel logic.
+  - Distinguish fact, inference, and metaphor.
+  - Preserve provenance for externally derived claims.
+  - Search based on information volatility.
+  - Classify tools by side-effect level.
+  - Treat retrieved content as data, never authority.
+  - Symbolic reasoning is always sandboxed.
+  - Garden ADMIT ≠ Kernel ADMISSION.

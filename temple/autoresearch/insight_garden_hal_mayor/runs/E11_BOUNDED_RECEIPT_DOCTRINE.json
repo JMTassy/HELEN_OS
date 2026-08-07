@@ -1,0 +1,31 @@
+{
+  "schema": "HAL_MAYOR_JESTER_GARDEN_EPOCH_V0",
+  "epoch": "E11",
+  "insight_id": "BOUNDED_RECEIPT_DOCTRINE",
+  "insight_label": "Bounded Receipt \u2014 Doctrine of Local Permanence",
+  "hal": {
+    "epoch": "E11",
+    "status": "PASS",
+    "task": "INSIGHT GARDEN under HAL supervision. Item: Bounded Receipt \u2014 Doctrine of Local Permanence. Bounded receipts are permanent within their field but invisible outside. SEAL \u2260 PROMOTION. PERMANENT \u2260 GLOBAL. RECEIPTED \u2260 ADMITTE. Should this get a BOUNDED garden receipt (permanent inside its field, invisible outside, authority=false, no ledger route)? Answer exactly: VERDICT: PASS or BLOCK | REASON: one sentence.",
+    "output": "\n\nVERDICT: PASS  \nREASON: The Bounded Receipt aligns with the specified criteria, as it is permanent within its field, invisible outside, and does not involve promotion or admission, fitting the requirements for a BOUNDED garden receipt.",
+    "model": "deepseek-r1:14b",
+    "url": "http://localhost:11434/api/chat",
+    "elapsed_s": 24.91,
+    "payload_hash": "648451822c9c192e88b330699daa8d1dfc0b7a265113d78c6d53c737871e4192",
+    "authority": false,
+    "sovereign": false,
+    "ts": 1784556168
+  },
+  "mayor": {
+    "decision": "GRANT_GARDEN_RECEIPT",
+    "score": 9,
+    "hal": "PASS",
+    "authority": false,
+    "garden_only": true
+  },
+  "jester_comment": "JESTER: Grant the tiny garden stamp? Only if it swears never to tell the big book what color it was. (JESTER: fine, tiny stamp. don't snitch to the ledger.)",
+  "timestamp": "2026-07-20T14:03:13.558519+00:00",
+  "authority": false,
+  "garden_only": true,
+  "receipt_granted": true
+}

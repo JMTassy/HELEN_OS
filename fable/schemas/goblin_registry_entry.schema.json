@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "fable/schemas/goblin_registry_entry.schema.json",
+  "title": "GoblinRegistryEntryV1",
+  "description": "One logical goblin role packet. Not a loaded model process.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "goblin_id",
+    "guild",
+    "role",
+    "observation_projection",
+    "capabilities",
+    "forbidden",
+    "covers_distinctions",
+    "output_schema",
+    "est_cost",
+    "state",
+    "authority"
+  ],
+  "properties": {
+    "goblin_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)+$"
+    },
+    "guild": {
+      "type": "string",
+      "enum": [
+        "observers",
+        "challengers",
+        "causal_analysts",
+        "builders",
+        "verifier_planners",
+        "provenance_keepers",
+        "compressors",
+        "risk_goblins",
+        "chiddush_goblins",
+        "reducer_candidates"
+      ]
+    },
+    "role": {
+      "type": "string",
+      "minLength": 1
+    },
+    "observation_projection": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" }
+    },
+    "forbidden": {
+      "type": "array",
+      "minItems": 4,
+      "items": { "type": "string" },
+      "description": "Must include admit, write_ledger, and verify_own_claim at minimum in practice."
+    },
+    "covers_distinctions": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" },
+      "description": "Distinction ids this role can help separate (set-cover atoms)."
+    },
+    "output_schema": {
+      "const": "GoblinProposalV1"
+    },
+    "est_cost": {
+      "type": "number",
+      "minimum": 0.05,
+      "maximum": 2.0
+    },
+    "state": {
+      "type": "string",
+      "enum": ["idle", "selected", "running", "done", "disabled"]
+    },
+    "authority": {
+      "const": false
+    }
+  }
+}

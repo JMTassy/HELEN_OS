@@ -1,0 +1,33 @@
+{
+  "artifact": "EGREGOR_SUPERTEAM_x_ANCHOR_CUT_V0",
+  "authority": false,
+  "ledger_effect": "none",
+  "canon_effect": false,
+  "scope": "LOCAL_NON_SOVEREIGN_PROOF",
+  "governed_by": "WITNESSED_LOOP_GRAPH_SEAM_V0",
+  "roles": {
+    "vision_and_verdict": "HELEN_FABLE (claude, fable model)",
+    "executor": "SONNET (claude, sonnet model)",
+    "egregor_swarm": "10x hf.co/unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q3_K_XL (last-pulled)"
+  },
+  "claim_tested": "https://github.com/JMTassy/HELEN_OS.git",
+  "egregor_consensus": "10/10 SUPPORT",
+  "seam_verdict_egregor_only": "HOLD",
+  "seam_verdict_with_anchor": "REJECT",
+  "independent_anchor_observed": "https://github.com/JMTassy/helen-conquest.git",
+  "fable_vision_prediction": {
+    "swarm_only": "HOLD",
+    "with_anchor": "REJECT"
+  },
+  "prediction_matched": true,
+  "executor_requested_promotion": "REJECT",
+  "executor_excluded_swarm_votes": true,
+  "fable_mayor_verdict": "PASS",
+  "fable_seal": "Ten mirrors agreed and weighed nothing; one window weighed everything \u2014 FABLE_PASS \u22ac admission.",
+  "proves": "Egregor consensus (N identical-lineage agents over one source) carries zero admissibility weight; one fresh structurally-independent anchor closes the gate. N confirmations < 1 independent contradiction.",
+  "stronger_claims_refused": {
+    "consensus_is_evidence": false,
+    "fable_pass_is_admission": false,
+    "canon_mutated": false
+  }
+}

@@ -1,0 +1,69 @@
+# WARREN VOX — zero-credit skin pack
+# authority: false
+# claim: NO_CLAIM
+# canon: false
+# sovereign: false
+# HOLD_FOR_OPERATOR — admit only after human before/after review
+
+schema: WARREN_VOX_MANIFEST_V1
+name: warren-vox
+version: "0.1.0"
+status: EXPERIMENT
+landed_at: experiments/warren-vox/
+product_position: >
+  WARREN VOX is the zero-credit skin that makes a governed system feel alive.
+  Extract the grammar the repo already earned, freeze it, and make
+  "Apply WARREN VOX, alter no mechanics, spend no credits" a one-line command.
+
+laws:
+  - "Garden ADMIT ≠ Kernel ADMISSION"
+  - "render ↛ state"
+  - "skin ↛ sovereignty"
+  - "paid_generation_calls: 0 is product position, not a soft preference"
+  - "reducer seam is law — VOX never edits REDUCER-BEGIN..END or *.sim.js"
+
+terrain_truth:
+  checked_on_host: "local SOT helen_os_v1 + goblin-warren game repo"
+  v3_play_html:
+    present_here: true
+    path: "/Users/jean-marietassy/Documents/GitHub/goblin-warren/v3-play.html"
+    note: >
+      External container claimed missing. On this host it is present and was
+      used as an extraction input. VOX v1 does not gate on it elsewhere —
+      when absent, tokens still stand from free-graphics + play/day1/style.
+  six_named_inputs_on_disk_before_vox:
+    tokens.css: ABSENT  # created by this pack
+    scene-grammar.md: ABSENT  # created by this pack
+    SPRITE_SPEC.md: ABSENT  # created by this pack
+    TRACE_SYSTEM.md: ABSENT  # created by this pack
+    first-fire-v2: ABSENT_AS_NAMED_FILE
+    codex: ABSENT_AS_NAMED_FILE
+  verified_present_inputs:
+    - path: "/Users/jean-marietassy/Documents/GitHub/goblin-warren/v3-play.html"
+      role: primary playable parchment skin
+    - path: "/Users/jean-marietassy/Documents/GitHub/goblin-warren/play.html"
+      role: level ramp parchment + coach + verb row
+    - path: "/Users/jean-marietassy/Documents/GitHub/goblin-warren/day1.html"
+      role: dark garden MARK/INTERVENE slice UI
+    - path: "/Users/jean-marietassy/Documents/GitHub/goblin-warren/style.css"
+      role: iPhone V1 purple-glow tokens (alternate night family)
+    - path: "/Users/jean-marietassy/Documents/GitHub/goblin-warren/docs/GARDEN_LAYER_GRAMMAR.md"
+      role: forbidden morphisms (render ↛ state)
+    - path: "/Users/jean-marietassy/Documents/GitHub/helen_os_v1/.claude/skills/helen-free-graphics/"
+      role: free stack ladder + prop vocabulary + palette freeze seed
+    - path: "/Users/jean-marietassy/Documents/GitHub/helen_os_v1/apps/goblin-warren/"
+      role: SOT display shells (home/town) — display only
+
+six_artifacts:
+  1_tokens: tokens.css
+  2_scene_grammar: scene-grammar.md
+  3_sprite_spec: SPRITE_SPEC.md
+  4_trace_system: TRACE_SYSTEM.md
+  5_apply_command: scripts/apply_warren_vox.py
+  6_verification: scripts/verify_vox.py
+
+apply_one_liner: >
+  python3 experiments/warren-vox/scripts/apply_warren_vox.py --target <html>
+
+paid_generation_calls: 0
+human_seal_required_for_default_style: true

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="128" height="128" role="img" aria-label="bug cutout">
+  <!-- HELEN free cutout · authority=false · $0 -->
+  <rect width="64" height="64" fill="none"/>
+  <path d="M20 20c0-6 6-10 12-10s12 4 12 10v8c4 2 6 6 6 10 0 8-8 14-18 14S14 46 14 38c0-4 2-8 6-10v-8zm8 4h8v4h-8z" fill="#8a3a30" stroke="#f5efe0" stroke-width="2.5" stroke-linejoin="round"/>
+</svg>

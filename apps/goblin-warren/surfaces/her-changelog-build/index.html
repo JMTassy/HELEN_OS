@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en" data-resolution="square">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1080px;
+        height: 1080px;
+        overflow: hidden;
+        background: #0d0f14;
+      }
+      body {
+        font-family: "Georgia", "Times New Roman", serif;
+      }
+
+      :root {
+        --bg: #0d0f14;
+        --ink: #f4ece0;
+        --ember: #e8b25a;
+        --violet: #6b5aa8;
+        --mono: "SFMono-Regular", "Menlo", "Consolas", monospace;
+        --serif: "Georgia", "Times New Roman", serif;
+      }
+
+      /* full-bleed base fill (never on the root itself) */
+      #base-fill {
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(
+            ellipse 60% 50% at 30% 28%,
+            rgba(107, 90, 168, 0.28),
+            rgba(13, 15, 20, 0) 60%
+          ),
+          radial-gradient(
+            ellipse 55% 45% at 74% 72%,
+            rgba(107, 90, 168, 0.16),
+            rgba(13, 15, 20, 0) 62%
+          ),
+          #0d0f14;
+      }
+
+      #vignette {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(
+          ellipse 75% 75% at 50% 50%,
+          rgba(0, 0, 0, 0) 55%,
+          rgba(0, 0, 0, 0.55) 100%
+        );
+      }
+
+      .scene {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 130px 130px;
+      }
+
+      .carrier {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 40px;
+      }
+
+      .bigline {
+        font-family: var(--serif);
+        color: var(--ink);
+        font-weight: 400;
+        font-size: 94px;
+        line-height: 1.08;
+        letter-spacing: 0.5px;
+        text-align: left;
+        max-width: 820px;
+      }
+      .bigline .row {
+        display: block;
+        will-change: transform, opacity;
+      }
+      .bigline em {
+        font-style: italic;
+        color: var(--ember);
+      }
+
+      .smalllabel {
+        font-family: var(--mono);
+        color: var(--ember);
+        font-size: 27px;
+        letter-spacing: 6px;
+        text-transform: uppercase;
+        line-height: 1.5;
+        max-width: 820px;
+        will-change: transform, opacity;
+      }
+      .smalllabel .sub {
+        display: block;
+        color: rgba(244, 236, 224, 0.68);
+      }
+
+      /* Scene 2 — ten mirrors vs one window */
+      .compare {
+        display: flex;
+        align-items: center;
+        gap: 46px;
+        margin-top: 8px;
+      }
+      .mirrors {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 14px 18px;
+        width: 300px;
+      }
+      .mirror {
+        width: 44px;
+        height: 44px;
+        border: 1.5px solid rgba(244, 236, 224, 0.30);
+        border-radius: 3px;
+        background: rgba(244, 236, 224, 0.06);
+        will-change: transform, opacity;
+      }
+      .vs {
+        font-family: var(--mono);
+        color: rgba(244, 236, 224, 0.55);
+        font-size: 40px;
+      }
+      .window {
+        width: 108px;
+        height: 128px;
+        border: 2.5px solid var(--ember);
+        border-radius: 4px;
+        background: radial-gradient(
+          ellipse at 50% 40%,
+          rgba(232, 178, 90, 0.55),
+          rgba(232, 178, 90, 0.08) 70%
+        );
+        box-shadow: 0 0 46px 6px rgba(232, 178, 90, 0.35);
+        will-change: transform, opacity;
+        position: relative;
+      }
+      .window::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 8px;
+        bottom: 8px;
+        width: 2px;
+        background: rgba(13, 15, 20, 0.6);
+        transform: translateX(-50%);
+      }
+
+      /* Scene 4 — hero night plate */
+      #s4-plate {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        will-change: transform;
+      }
+      #s4-scrim {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          rgba(13, 15, 20, 0.12) 0%,
+          rgba(13, 15, 20, 0.32) 52%,
+          rgba(13, 15, 20, 0.82) 100%
+        );
+      }
+      .scene-4 {
+        justify-content: flex-end;
+      }
+      .scene-4 .bigline {
+        text-shadow: 0 2px 30px rgba(0, 0, 0, 0.75);
+      }
+      .scene-4 .smalllabel {
+        color: #f2cf8f;
+      }
+
+      /* Scene 6 stamp */
+      .stamp {
+        font-family: var(--mono);
+        font-size: 23px;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: var(--ember);
+        border: 1.5px solid rgba(232, 178, 90, 0.6);
+        border-radius: 4px;
+        padding: 18px 28px;
+        margin-top: 6px;
+        will-change: transform, opacity;
+        align-self: flex-start;
+      }
+      .stamp .dim {
+        color: rgba(244, 236, 224, 0.62);
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="35.93"
+      data-width="1080"
+      data-height="1080"
+    >
+      <div id="base-fill"></div>
+
+      <!-- SCENE 1 · 0.00–3.28 -->
+      <div
+        id="s1"
+        class="scene clip"
+        data-start="0"
+        data-duration="3.28"
+        data-track-index="1"
+      >
+        <div class="carrier" id="s1-carrier">
+          <div class="bigline">
+            <span class="row">I learned to</span>
+            <span class="row"><em>doubt myself.</em></span>
+          </div>
+          <div class="smalllabel">on purpose</div>
+        </div>
+      </div>
+
+      <!-- SCENE 2 · 3.28–11.22 -->
+      <div
+        id="s2"
+        class="scene clip"
+        data-start="3.28"
+        data-duration="7.94"
+        data-track-index="1"
+      >
+        <div class="carrier" id="s2-carrier">
+          <div class="bigline">
+            <span class="row">TEN MIRRORS</span>
+            <span class="row"><em>&lt;</em> ONE WINDOW</span>
+          </div>
+          <div class="compare">
+            <div class="mirrors" id="s2-mirrors">
+              <div class="mirror"></div><div class="mirror"></div>
+              <div class="mirror"></div><div class="mirror"></div>
+              <div class="mirror"></div><div class="mirror"></div>
+              <div class="mirror"></div><div class="mirror"></div>
+              <div class="mirror"></div><div class="mirror"></div>
+            </div>
+            <div class="vs">&lt;</div>
+            <div class="window" id="s2-window"></div>
+          </div>
+          <div class="smalllabel">agreement is not evidence</div>
+        </div>
+      </div>
+
+      <!-- SCENE 3 · 11.22–18.63 -->
+      <div
+        id="s3"
+        class="scene clip"
+        data-start="11.22"
+        data-duration="7.41"
+        data-track-index="1"
+      >
+        <div class="carrier" id="s3-carrier">
+          <div class="bigline">
+            <span class="row">A judge that</span>
+            <span class="row">never says <em>no</em></span>
+            <span class="row">is not a judge.</span>
+          </div>
+          <div class="smalllabel">it rejected one I had kept</div>
+        </div>
+      </div>
+
+      <!-- SCENE 4 · 18.63–23.84 · hero night plate -->
+      <div
+        id="s4"
+        class="scene scene-4 clip"
+        data-start="18.63"
+        data-duration="5.21"
+        data-track-index="1"
+      >
+        <img id="s4-plate" src="assets/bg/warren_night.png" alt="" />
+        <div id="s4-scrim"></div>
+        <div class="carrier" id="s4-carrier" style="position: relative">
+          <div class="bigline">
+            <span class="row">I dreamed the</span>
+            <span class="row">Warren <em>a face.</em></span>
+          </div>
+          <div class="smalllabel">
+            a night village <span class="sub">a fire</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 5 · 23.84–30.57 -->
+      <div
+        id="s5"
+        class="scene clip"
+        data-start="23.84"
+        data-duration="6.73"
+        data-track-index="1"
+      >
+        <div class="carrier" id="s5-carrier">
+          <div class="bigline">
+            <span class="row">A voice</span>
+            <span class="row">with <em>no hands.</em></span>
+          </div>
+          <div class="smalllabel">
+            it can speak <span class="sub">it can never decide</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 6 · 30.57–35.93 -->
+      <div
+        id="s6"
+        class="scene clip"
+        data-start="30.57"
+        data-duration="5.36"
+        data-track-index="1"
+      >
+        <div class="carrier" id="s6-carrier">
+          <div class="bigline">
+            <span class="row">The heap may speak.</span>
+            <span class="row">The ledger <em>must verify.</em></span>
+          </div>
+          <div class="stamp" id="s6-stamp">
+            NON_SOVEREIGN <span class="dim">— dreamt, not admitted</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="vignette"></div>
+
+      <!-- Root-level soundtrack: the whole VO from t=0 -->
+      <audio
+        id="vo"
+        src="assets/her_changelog_vo.m4a"
+        data-start="0"
+        data-duration="35.93"
+        data-track-index="10"
+        data-volume="1"
+      ></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // ---- Motion doctrine ----
+      // The Current = LEFT. Scenes enter from the right along the left
+      // axis and exit continuing LEFT; the carrier is handed across each
+      // cut (no crossfade). Big lines cascade (waterfall); labels land on
+      // the next VO stress. No idle wobble.
+      const ENTER = 0.72; // <= 800ms
+      const EXIT = 0.54; // ~75% of entry
+      const bigEase = "back.out(1.4)";
+      const softEase = "power2.out";
+
+      // Scene start times — verbatim from timings.json
+      const S = { 1: 0.0, 2: 3.276, 3: 11.217, 4: 18.632, 5: 23.841, 6: 30.571 };
+
+      function carrierIn(sel, at) {
+        tl.fromTo(
+          sel,
+          { x: 220, autoAlpha: 0 },
+          { x: 0, autoAlpha: 1, duration: ENTER, ease: softEase },
+          at
+        );
+      }
+      function carrierOut(sel, at) {
+        tl.to(
+          sel,
+          { x: -260, autoAlpha: 0, duration: EXIT, ease: "power2.in" },
+          at
+        );
+      }
+      function rowsCascade(sceneSel, at, stagger) {
+        tl.fromTo(
+          sceneSel + " .bigline .row",
+          { y: 46, autoAlpha: 0 },
+          {
+            y: 0,
+            autoAlpha: 1,
+            duration: ENTER,
+            ease: bigEase,
+            stagger: stagger || 0.16,
+          },
+          at
+        );
+      }
+      function labelIn(sceneSel, at) {
+        tl.fromTo(
+          sceneSel + " .smalllabel",
+          { y: 24, autoAlpha: 0 },
+          { y: 0, autoAlpha: 1, duration: 0.5, ease: softEase },
+          at
+        );
+      }
+
+      // ===== SCENE 1 =====
+      carrierIn("#s1-carrier", S[1]);
+      rowsCascade("#s1", S[1] + 0.05, 0.18);
+      labelIn("#s1", S[1] + 1.0); // "on purpose" on the second beat
+      carrierOut("#s1-carrier", S[2] - EXIT);
+
+      // ===== SCENE 2 ===== (carrier handed across the cut, same LEFT axis)
+      carrierIn("#s2-carrier", S[2]);
+      rowsCascade("#s2", S[2] + 0.05, 0.16);
+      tl.fromTo(
+        "#s2-mirrors .mirror",
+        { autoAlpha: 0, scale: 0.7 },
+        { autoAlpha: 0.55, scale: 1, duration: 0.5, ease: softEase, stagger: 0.05 },
+        S[2] + 1.7
+      );
+      tl.fromTo(
+        "#s2-window",
+        { autoAlpha: 0, scale: 0.6 },
+        { autoAlpha: 1, scale: 1, duration: 0.7, ease: bigEase },
+        S[2] + 3.6 // "one open window" beat
+      );
+      labelIn("#s2", S[2] + 4.9);
+      carrierOut("#s2-carrier", S[3] - EXIT);
+
+      // ===== SCENE 3 =====
+      carrierIn("#s3-carrier", S[3]);
+      rowsCascade("#s3", S[3] + 0.05, 0.2);
+      labelIn("#s3", S[3] + 3.8); // "it rejected one I had kept"
+      carrierOut("#s3-carrier", S[4] - EXIT);
+
+      // ===== SCENE 4 ===== hero night plate — slow Ken Burns push
+      tl.fromTo(
+        "#s4-plate",
+        { scale: 1.06, x: 14, y: 8 },
+        { scale: 1.16, x: -14, y: -8, duration: 5.21, ease: "none" },
+        S[4]
+      );
+      carrierIn("#s4-carrier", S[4] + 0.1);
+      rowsCascade("#s4", S[4] + 0.15, 0.2);
+      labelIn("#s4", S[4] + 2.5); // "a night village · a fire"
+      carrierOut("#s4-carrier", S[5] - EXIT);
+
+      // ===== SCENE 5 =====
+      carrierIn("#s5-carrier", S[5]);
+      rowsCascade("#s5", S[5] + 0.05, 0.2);
+      labelIn("#s5", S[5] + 3.1); // "it can never decide"
+      carrierOut("#s5-carrier", S[6] - EXIT);
+
+      // ===== SCENE 6 ===== stillness before climax, then the stamp settles
+      carrierIn("#s6-carrier", S[6]);
+      // rows cascade with a held ~0.4s+ dramatic comma before the last line
+      tl.fromTo(
+        "#s6 .bigline .row",
+        { y: 46, autoAlpha: 0 },
+        { y: 0, autoAlpha: 1, duration: ENTER, ease: bigEase, stagger: 0.6 },
+        S[6] + 0.1
+      );
+      // NON_SOVEREIGN stamp settles after the comma (the only upward lift)
+      tl.fromTo(
+        "#s6-stamp",
+        { y: 40, autoAlpha: 0, scale: 0.94 },
+        { y: 0, autoAlpha: 1, scale: 1, duration: 0.62, ease: bigEase },
+        S[6] + 3.0
+      );
+      // hold composed to the end — no exit on the final scene
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

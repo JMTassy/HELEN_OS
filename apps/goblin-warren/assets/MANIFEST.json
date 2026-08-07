@@ -1,0 +1,32 @@
+{
+  "schema": "WARREN_GRAPHISM_PACK_V0",
+  "authority": false,
+  "claim": "NO_CLAIM",
+  "sovereign": false,
+  "source": {
+    "playable_game": "/Users/jean-marietassy/Documents/GitHub/goblin-warren",
+    "concept_session": "artifacts/goblin_warren_graphism/refs",
+    "pdf": "/Users/jean-marietassy/Desktop/#pluginHELEN GOBLIN WARREN july26.pdf"
+  },
+  "style_keys": [
+    "painterly_isometric_district_UI",
+    "purple_mushroom_bioluminescence",
+    "warm_lantern_gold_vs_signal_violet",
+    "dark_parchment_HUD_panels",
+    "goblin_goggles_companions",
+    "garden_ADMIT_neq_kernel_ADMISSION"
+  ],
+  "districts": [
+    "sparkfall_depot",
+    "rootglow_grove",
+    "mossbound_archive",
+    "glowcap_market",
+    "truth_foundry",
+    "obsidian_observatory",
+    "council_hall",
+    "compost_garden",
+    "beyond_the_bramble"
+  ],
+  "hf_status": "SESSION_EXPIRED — need higgsfield auth login before generate batch",
+  "note": "Real HF art already present under art/ and bg/ from goblin-warren. District plates are operator concept refs pending HF cleanup/remix."
+}

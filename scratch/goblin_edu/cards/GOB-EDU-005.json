@@ -1,0 +1,11 @@
+{
+  "goblin_id": "GOB-EDU-005",
+  "role": "PLUGIN_GOBLIN",
+  "raw_output": "`kotlin` help",
+  "parse_error": true,
+  "model": "aura-gemma4:latest",
+  "timestamp": "2026-07-20T15:07:34.974959+00:00",
+  "authority": false,
+  "sovereign": false,
+  "ledger_effect": "none"
+}

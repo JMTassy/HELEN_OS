@@ -1,0 +1,86 @@
+# WAIT_RECEIPT_GATEWAY_SWARM_V0 — instance of WAIT_RECEIPT_V0 (§1 of
+# docs/proposals/WAIT_RECEIPT_V0.md) on its own origin case: the
+# gateway-goblin-swarm halt of 2026-08-04.
+# Facts witnessed in: scratch/gateway-goblin-swarm/SWARM_HALT_NOTE.md
+
+WAIT_RECEIPT_V0:
+  receipt_type: WAIT
+  lifecycle_state: WAITING_ARTIFACT
+
+  mission:
+    issued_by: operator
+    # The VERBATIM mission text (the operator's 5-goblin swarm order) was
+    # never pinned to disk. Only a summary survives, in the "## Mission"
+    # section of SWARM_HALT_NOTE.md. These are different objects and this
+    # receipt does not conflate them.
+    mission_verbatim_hash: UNPINNED   # verbatim order text never persisted; no hash can honestly be claimed
+    mission_summary_hash: "2ae009d75ddfef9bd07fdb63e1c033f2f4e67e6be9846e1bf59c3089eb42b546"
+    # sha256 of the "## Mission" section of SWARM_HALT_NOTE.md, extracted as:
+    #   awk '/^## Mission$/{f=1} f && /^## / && !/^## Mission$/{exit} f{print}' SWARM_HALT_NOTE.md | shasum -a 256
+    # (heading line + 4 content lines + trailing blank line, LF endings)
+    mission_summary_path: scratch/gateway-goblin-swarm/SWARM_HALT_NOTE.md
+
+  suspended_at:
+    repository_head: 931ef3bfed114318ec4f520e0ef7ff3d80045c20   # SOT HEAD at halt
+    branch: claude/doctrine-proposals
+    tree_state: DIRTY(83)                                       # witnessed at halt, 2026-08-04
+    # Note: the halt note also witnessed a second seat (worktree
+    # practical-mirzakhani, HEAD 69338df, 4 dirty). §1 provides a single
+    # repository_head slot; the SOT head is recorded here, the worktree
+    # head remains only in the halt note.
+
+  blocking_dependency:
+    kind: ARTIFACT
+    identifier: docs/proposals/HELEN_GATEWAY_PROCESS_V0.md
+    expected_hash: UNKNOWN
+    # UNKNOWN is load-bearing: HELEN_GATEWAY_PROCESS_V0 has never been seen
+    # locally (full-tree grep, worktree grep, home-wide mdfind/find — no
+    # hit). The document and its upstream SAFE_AS_PROPOSAL verdict exist
+    # only in the operator's upstream AI conversation. Whatever text later
+    # materializes is not provably the document judged upstream.
+
+  resume_condition: >
+    Operator materializes HELEN_GATEWAY_PROCESS_V0 on disk (paste or path,
+    e.g. docs/proposals/HELEN_GATEWAY_PROCESS_V0.md) and re-issues the
+    5-goblin swarm order.
+
+  # resume_semantics reasoning (§4): deterministic_if requires every
+  # wait_basis element to match a PINNED hash. Here artifact_hash is
+  # UNKNOWN (nothing to match) and the mission is summary-pinned only
+  # (verbatim unpinned). deterministic_if is therefore NOT satisfiable
+  # as-is — claiming it would promise same-inputs re-entry that no hash
+  # can verify. The mission also targets "the current proposal" whenever
+  # it materializes, i.e. it is defined against resume-time state, not the
+  # suspended_at state. The honest semantics is therefore:
+  resume_semantics: recompute_under_current_state
+
+  wait_basis:
+    - mission            # summary-pinned only (mission_summary_hash above); verbatim UNPINNED
+    - repository_head    # 931ef3b (SOT) — context witness, not a resume precondition
+    - artifact_hash      # UNKNOWN — presence can be checked at resume; identity cannot
+  # reducer_version deliberately EXCLUDED per §3: the suspended computation
+  # is a goblin swarm plus model-driven reduction — no deterministic kernel
+  # reducer participates in its continuation. Including reducer_version
+  # would imply an admission path that does not exist for this mission.
+
+  invalid_when:            # any one suffices (§4bis)
+    - mission_replaced     # operator issues a superseding swarm order
+    - operator_revokes     # explicit revocation verb
+    - wait_basis_drift     # a PINNED basis element changes — here that means
+                           # the "## Mission" section of SWARM_HALT_NOTE.md
+                           # is edited (mission_summary_hash no longer matches).
+                           # artifact_hash cannot drift: it is UNKNOWN, unpinned.
+  # Explicitly NOT an invalidator: unrelated repository HEAD movement.
+  # The repo moves constantly; commits that do not touch a pinned basis
+  # element neither kill nor revive this receipt (§4bis).
+
+  created_at: "2026-08-04"   # halt date; time-of-day was not witnessed at halt
+  claim_status: NO_CLAIM
+  authority: false
+  ledger_effect: none
+
+# ---------------------------------------------------------------------------
+# This instance is itself NON-SOVEREIGN scratch: a dogfood test of the
+# WAIT_RECEIPT_V0 schema against its own origin case. It is not a
+# governance act, admits nothing, promotes nothing, and must not be cited
+# as HELEN doctrine. authority=false · NO_CLAIM · ledger_effect: none.

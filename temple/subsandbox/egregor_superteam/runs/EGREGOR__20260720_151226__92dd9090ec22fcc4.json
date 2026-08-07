@@ -1,0 +1,55 @@
+{
+  "schema": "EGREGOR_WITNESS_V0",
+  "authority_status": "NON_SOVEREIGN_EGREGOR",
+  "generated_at": "2026-07-20T13:12:26.192767Z",
+  "intent": "You are HER \u2014 the local non-sovereign proposer in HELEN OS autoresearch.\n\nYou just observed this 10-epoch trace-only run:\n\n{\n  \"just_completed\": {\n    \"seed\": \"DREAMT \\u2260 CLAIMED: proposal is not state; only receipt after jurisdiction-bound metabolism.\",\n    \"epochs\": 10,\n    \"converged\": false,\n    \"invariants\": [\n      \"No test \\u2192 no gate.\",\n      \"No replay \\u2192 no admission.\",\n      \"No test \\u2192 no gate.\",\n      \"No replay \\u2192 no admission.\",\n      \"No test \\u2192 no gate.\",\n      \"No replay \\u2192 no admission.\",\n      \"No test \\u2192 no gate.\"\n    ],\n    \"verified_count\": 7\n  }\n}\n\nNow decide the configuration for the *next* 10 epochs.\n\nOutput EXACTLY one valid JSON object and nothing else:\n\n{\n  \"her_role\": \"proposer\",\n  \"mode\": \"next_10_epochs\",\n  \"seed\": \"the doctrine string to start the next run with\",\n  \"epochs\": 10,\n  \"focus_areas\": [\"list\", \"of\", \"tight\", \"focus\"],\n  \"stop_condition\": \"3-epoch stability or max epochs\",\n  \"rationale\": \"one sentence explaining why this seed and these focuses now\",\n  \"tweak_from_last_run\": \"what to change or keep from the previous run\"\n}\n\nDecide now.\n",
+  "intent_sha": "92dd9090ec22fcc4",
+  "witnesses": [
+    {
+      "role": "grok",
+      "success": true,
+      "latency_ms": 33888,
+      "has_json": true,
+      "error": null,
+      "hal": "PASS",
+      "preview": "{\"her_role\":\"proposer\",\"mode\":\"next_10_epochs\",\"seed\":\"No test \u2192 no gate; no replay \u2192 no admission: DREAMT is proposal-only until a jurisdiction-bound receipt closes the loop.\",\"epochs\":10,\"focus_areas\":[\"test-as-gate-precondition\",\"replay-as-admission-precondition\",\"proposal-vs-state-boundary\",\"rec"
+    },
+    {
+      "role": "claude",
+      "success": false,
+      "latency_ms": 50027,
+      "has_json": false,
+      "error": "timeout after 50s",
+      "hal": "ERROR",
+      "preview": "timeout after 50s"
+    },
+    {
+      "role": "codex",
+      "success": false,
+      "latency_ms": 17500,
+      "has_json": false,
+      "error": "Reading additional input from stdin...\nOpenAI Codex v0.122.0 (research preview)\n--------\nworkdir: /Users/jean-marietassy/Documents/GitHub/helen_os_v1\nmodel: gpt-5.2-codex\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: high\nreasoning summaries: none\nsession id: 019f7fa7-c3a9-7253-a9b6-1f5309b467be\n--------\nuser\nOutput EXACTLY and ONLY valid minified JSON. Nothing else. JSON object or array.\n\nYou are HER \u2014 the local non-sovereign proposer in HELEN OS autoresearch.\n\nYou just observed this 10-epoch trace-only run:\n\n{\n  \"just_completed\": {\n    \"seed\": \"DREAMT \\u2260 CLAIMED: proposal is not state; only receipt after jurisdiction-bound metabolism.\",\n    \"epochs\": 10,\n    \"converged\": false,\n    \"invariants\": [\n      \"No test \\u2192 no gate.\",\n      \"No replay \\u2192 no admission.\",\n      \"No test \\u2192 no gate.\",\n      \"No replay \\u2192 no admission.\",\n      \"No test \\u2192 no gate.\",\n      \"No replay \\u2192 no admission.\",\n      \"No test \\u2192 no gate.\"\n    ],\n    \"verified_count\": 7\n  }\n}\n\nNow decide the configuration for the *next* 10 epochs.\n\nOutput EXACTLY one valid JSON object and nothing else:\n\n{\n  \"her_role\": \"proposer\",\n  \"mode\": \"next_10_epochs\",\n  \"seed\": \"the doctrine string to start the next run with\",\n  \"epochs\": 10,\n  \"focus_areas\": [\"list\", \"of\", \"tight\", \"focus\"],\n  \"stop_condition\": \"3-epoch stability or max epochs\",\n  \"rationale\": \"one sentence explaining why this seed and these focuses now\",\n  \"tweak_from_last_run\": \"what to change or keep from the previous run\"\n}\n\nDecide now.\n\nERROR: {\"type\":\"error\",\"status\":400,\"error\":{\"type\":\"invalid_request_error\",\"message\":\"The 'gpt-5.2-codex' model is not supported when using Codex with a ChatGPT account.\"}}\nERROR: {\"type\":\"error\",\"status\":400,\"error\":{\"type\":\"invalid_request_error\",\"message\":\"The 'gpt-5.2-codex' model is not supported when using Codex with a ChatGPT account.\"}}",
+      "hal": "ERROR",
+      "preview": "Reading additional input from stdin...\nOpenAI Codex v0.122.0 (research preview)\n--------\nworkdir: /Users/jean-marietassy/Documents/GitHub/helen_os_v1\nmodel: gpt-5.2-codex\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: high\nreasoning summaries: none\nsession id: 019f7fa7-c3a9-72"
+    }
+  ],
+  "aggregation": {
+    "num_witnesses": 3,
+    "num_success": 1,
+    "num_blocked": 0,
+    "num_errored": 2,
+    "roles_responded": [
+      "grok"
+    ],
+    "consensus_hint": "SINGLE_WITNESS"
+  },
+  "hal_summary": {
+    "overall": "PASS",
+    "blocked_roles": [],
+    "errored_roles": [
+      "claude",
+      "codex"
+    ]
+  },
+  "notes": "NON_SOVEREIGN_EGREGOR. Output is witness only. Never ledgered."
+}

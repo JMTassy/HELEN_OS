@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="128" height="128" role="img" aria-label="lantern cutout">
+  <!-- HELEN free cutout · authority=false · $0 -->
+  <rect width="64" height="64" fill="none"/>
+  <path d="M28 8h8v6h-8zm-6 6h20l4 8v24c0 4-4 8-10 10h-8c-6-2-10-6-10-10V22l4-8zm10 10c-4 0-6 3-6 8s2 8 6 8 6-3 6-8-2-8-6-8z" fill="#c25e28" stroke="#f5efe0" stroke-width="2.5" stroke-linejoin="round"/>
+</svg>

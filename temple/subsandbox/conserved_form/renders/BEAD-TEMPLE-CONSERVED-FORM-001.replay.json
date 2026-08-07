@@ -1,0 +1,586 @@
+{
+  "ambiguities": [
+    {
+      "char": " ",
+      "index": 5,
+      "rule": "DROPPED_NON_ALPHABET"
+    },
+    {
+      "char": " ",
+      "index": 8,
+      "rule": "DROPPED_NON_ALPHABET"
+    }
+  ],
+  "ascii_trace": "A . . D E\n. . H I .\n. . N O P\n. . S . U\n. . . . .",
+  "authority": false,
+  "bead_id": "BEAD-TEMPLE-CONSERVED-FORM-001",
+  "canon": false,
+  "claim_status": "LOCAL_OBSERVATION",
+  "fingerprints": {
+    "coordinates": "de12d588a41251ed69dd37a3c45f1a31e42fa9a2c27246d541bfeeb9d14fcb5e",
+    "cross_links": "d65c7ef0b41840208278854c4dab15fb21c38216c0ba46d346f4a699f9c90660",
+    "graph": "9e9eda7bae8b8592411afccd2c94a051b1f81294cbc7dea380f38362b370ef43",
+    "normalized": "e50c430b7e1c27e92c229d5e88f8ffe05d046a6a09518c7fd49873a4271ff2bd",
+    "rhythm": "a874b85e15b18f192f786c13b9dc416863013c29df0d13c3f413f21c2bf5b168",
+    "trace2d": "18a07259ef2d8b2ca4a49624dfe81c304a210ae721764c5684763b076fde3ab5",
+    "voxel": "2ad5e4c3da5fe1d4e46e907cc2b329ae74370f41da279f13af66adc1a93cf6b6"
+  },
+  "ledger_effect": "none",
+  "mapping": {
+    "alphabet": "ABCDEFGHIKLMNOPQRSTUVWXYZ",
+    "declared_as": "modern interpretation, not historical claim",
+    "grid_size": 5,
+    "id": "MAPPING_V1",
+    "zero_step_interval": 1
+  },
+  "packet_hash": "9d67665de58c9185a97c43df5a5c206700079f2673729400921066244a612596",
+  "packet_type": "TEMPLE_REPLAY_PACKET_V0",
+  "projections": {
+    "coordinates": [
+      [
+        3,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        0,
+        3
+      ]
+    ],
+    "cross_links": [
+      {
+        "index": 0,
+        "point": [
+          2,
+          3
+        ],
+        "rhythm_onset": 0,
+        "symbol": "S",
+        "voxel": [
+          2,
+          3,
+          0
+        ]
+      },
+      {
+        "index": 1,
+        "point": [
+          2,
+          1
+        ],
+        "rhythm_onset": 2,
+        "symbol": "H",
+        "voxel": [
+          2,
+          1,
+          0
+        ]
+      },
+      {
+        "index": 2,
+        "point": [
+          0,
+          0
+        ],
+        "rhythm_onset": 4,
+        "symbol": "A",
+        "voxel": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "index": 3,
+        "point": [
+          4,
+          2
+        ],
+        "rhythm_onset": 8,
+        "symbol": "P",
+        "voxel": [
+          4,
+          2,
+          0
+        ]
+      },
+      {
+        "index": 4,
+        "point": [
+          4,
+          0
+        ],
+        "rhythm_onset": 10,
+        "symbol": "E",
+        "voxel": [
+          4,
+          0,
+          0
+        ]
+      },
+      {
+        "index": 5,
+        "point": [
+          3,
+          1
+        ],
+        "rhythm_onset": 11,
+        "symbol": "I",
+        "voxel": [
+          3,
+          1,
+          0
+        ]
+      },
+      {
+        "index": 6,
+        "point": [
+          2,
+          3
+        ],
+        "rhythm_onset": 13,
+        "symbol": "S",
+        "voxel": [
+          2,
+          3,
+          1
+        ]
+      },
+      {
+        "index": 7,
+        "point": [
+          2,
+          3
+        ],
+        "rhythm_onset": 14,
+        "symbol": "S",
+        "voxel": [
+          2,
+          3,
+          2
+        ]
+      },
+      {
+        "index": 8,
+        "point": [
+          3,
+          2
+        ],
+        "rhythm_onset": 15,
+        "symbol": "O",
+        "voxel": [
+          3,
+          2,
+          0
+        ]
+      },
+      {
+        "index": 9,
+        "point": [
+          4,
+          3
+        ],
+        "rhythm_onset": 16,
+        "symbol": "U",
+        "voxel": [
+          4,
+          3,
+          0
+        ]
+      },
+      {
+        "index": 10,
+        "point": [
+          2,
+          2
+        ],
+        "rhythm_onset": 18,
+        "symbol": "N",
+        "voxel": [
+          2,
+          2,
+          0
+        ]
+      },
+      {
+        "index": 11,
+        "point": [
+          3,
+          0
+        ],
+        "rhythm_onset": 20,
+        "symbol": "D",
+        "voxel": [
+          3,
+          0,
+          0
+        ]
+      }
+    ],
+    "graph": {
+      "nodes": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "symbol": "A"
+        },
+        {
+          "cell": [
+            0,
+            3
+          ],
+          "symbol": "D"
+        },
+        {
+          "cell": [
+            0,
+            4
+          ],
+          "symbol": "E"
+        },
+        {
+          "cell": [
+            1,
+            2
+          ],
+          "symbol": "H"
+        },
+        {
+          "cell": [
+            1,
+            3
+          ],
+          "symbol": "I"
+        },
+        {
+          "cell": [
+            2,
+            2
+          ],
+          "symbol": "N"
+        },
+        {
+          "cell": [
+            2,
+            3
+          ],
+          "symbol": "O"
+        },
+        {
+          "cell": [
+            2,
+            4
+          ],
+          "symbol": "P"
+        },
+        {
+          "cell": [
+            3,
+            2
+          ],
+          "symbol": "S"
+        },
+        {
+          "cell": [
+            3,
+            4
+          ],
+          "symbol": "U"
+        }
+      ],
+      "path": [
+        [
+          "S",
+          "H"
+        ],
+        [
+          "H",
+          "A"
+        ],
+        [
+          "A",
+          "P"
+        ],
+        [
+          "P",
+          "E"
+        ],
+        [
+          "E",
+          "I"
+        ],
+        [
+          "I",
+          "S"
+        ],
+        [
+          "S",
+          "S"
+        ],
+        [
+          "S",
+          "O"
+        ],
+        [
+          "O",
+          "U"
+        ],
+        [
+          "U",
+          "N"
+        ],
+        [
+          "N",
+          "D"
+        ]
+      ]
+    },
+    "normalized": [
+      "S",
+      "H",
+      "A",
+      "P",
+      "E",
+      "I",
+      "S",
+      "S",
+      "O",
+      "U",
+      "N",
+      "D"
+    ],
+    "rhythm": [
+      {
+        "accent": true,
+        "index": 0,
+        "interval": 0,
+        "onset": 0
+      },
+      {
+        "accent": true,
+        "index": 1,
+        "interval": 2,
+        "onset": 2
+      },
+      {
+        "accent": true,
+        "index": 2,
+        "interval": 2,
+        "onset": 4
+      },
+      {
+        "accent": true,
+        "index": 3,
+        "interval": 4,
+        "onset": 8
+      },
+      {
+        "accent": true,
+        "index": 4,
+        "interval": 2,
+        "onset": 10
+      },
+      {
+        "accent": true,
+        "index": 5,
+        "interval": 1,
+        "onset": 11
+      },
+      {
+        "accent": true,
+        "index": 6,
+        "interval": 2,
+        "onset": 13
+      },
+      {
+        "accent": false,
+        "index": 7,
+        "interval": 1,
+        "onset": 14
+      },
+      {
+        "accent": true,
+        "index": 8,
+        "interval": 1,
+        "onset": 15
+      },
+      {
+        "accent": true,
+        "index": 9,
+        "interval": 1,
+        "onset": 16
+      },
+      {
+        "accent": true,
+        "index": 10,
+        "interval": 2,
+        "onset": 18
+      },
+      {
+        "accent": true,
+        "index": 11,
+        "interval": 2,
+        "onset": 20
+      }
+    ],
+    "trace2d": {
+      "points": [
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          3,
+          0
+        ]
+      ]
+    },
+    "voxel": [
+      [
+        2,
+        3,
+        0
+      ],
+      [
+        2,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        4,
+        2,
+        0
+      ],
+      [
+        4,
+        0,
+        0
+      ],
+      [
+        3,
+        1,
+        0
+      ],
+      [
+        2,
+        3,
+        1
+      ],
+      [
+        2,
+        3,
+        2
+      ],
+      [
+        3,
+        2,
+        0
+      ],
+      [
+        4,
+        3,
+        0
+      ],
+      [
+        2,
+        2,
+        0
+      ],
+      [
+        3,
+        0,
+        0
+      ]
+    ]
+  },
+  "source": {
+    "sha256": "5b5af6512f54e5cfa6c92467ff1ccf7448dc0435e002444dbb4fd5bb611a195a",
+    "text": "SHAPE IS SOUND"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "GoblinProposalV1",
+  "proposal_id": "p-demo-001",
+  "goblin_id": "chal-01",
+  "task_id": "p0-schema-check",
+  "epoch_id": "epoch-p0-demo",
+  "claim": "Exit code 0 is not verification.",
+  "epistemic_status": "proposed",
+  "evidence_refs": ["definition:verify", "sad:thm1"],
+  "assumptions": ["VERIFY does not mutate world state"],
+  "counterexample": null,
+  "forbidden_promotions_detected": ["exit_code_as_verify"],
+  "confidence": 0.71,
+  "recommended_action": "keep",
+  "covers_distinctions": ["execution_vs_verification"],
+  "authority": false,
+  "mutation_rights": "none"
+}

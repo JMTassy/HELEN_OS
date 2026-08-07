@@ -1,0 +1,37 @@
+# First metabolic seam: prove intake → preflight → worker → normalize → HOLD.
+task_id: SEAM_V0_001
+objective: >
+  Observe the governance INDEX and one proposal document at a pinned commit,
+  producing sealed observation packets. Prove that no raw model/worker output
+  can appear as evidence without passing the normalizer.
+authority: none
+canon: false
+ledger_effect: none
+inputs:
+  commit: 97bec2dff04ea7cb747a4a6fa874138c6b06ff97
+  files:
+    - GOVERNANCE/INDEX.md
+    - docs/proposals/BAYESIAN_WITNESS_V1.md
+critical_distinctions:
+  - observed_vs_believed
+  - raw_output_vs_sealed_evidence
+  - candidate_vs_canon
+roles:
+  readonly_observation: readonly_observer
+mutation_policy:
+  main_checkout: forbidden
+  all_other_workers: read_only
+forbidden_paths:
+  - GOVERNANCE/KERNEL*
+  - town/ledger_v1.ndjson
+budget:
+  max_provider_calls: 1
+  max_turns_per_call: 1
+completion_conditions:
+  - preflight_proceed
+  - sealed_packet_exists
+  - forged_packet_refused
+  - hold_for_operator_emitted
+admission:
+  automatic: false
+  human_seal_required: true

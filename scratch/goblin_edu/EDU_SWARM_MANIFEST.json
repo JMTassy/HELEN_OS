@@ -1,0 +1,89 @@
+{
+  "schema": "GOBLIN_EDU_SWARM_MANIFEST_V0",
+  "created": "2026-07-20T14:19:25.348106+00:00",
+  "authority": false,
+  "sovereign": false,
+  "ledger_effect": "none",
+  "corpus_roots": [
+    "~/Documents/GitHub/helen_os_v1",
+    "~/.helen",
+    "~/Documents",
+    "~/Desktop",
+    "UZIK drive",
+    "HyperFrames projects"
+  ],
+  "slices": [
+    {
+      "id": "GOB-EDU-001",
+      "role": "DOCTRINE_GOBLIN",
+      "focus": "Core HELEN OS invariants, NO_RECEIPT=NO_CLAIM, authority=false layers, garden vs sovereign, K-gates, reducer, ledger",
+      "sources": [
+        "docs/*.md",
+        "CLAUDE.md",
+        "AGENTS.md",
+        "temple/gardens/*/*.md",
+        ".helen/receipts/*.json",
+        "helen_os/governance/**/*.py"
+      ],
+      "persona": "You are a Doctrine Goblin. You eat HELEN law and shit precise, testable invariants. You hate hand-wavy mysticism. You love 'iff any' and 'proposer \u2260 validator'."
+    },
+    {
+      "id": "GOB-EDU-002",
+      "role": "UZIK_GOBLIN",
+      "focus": "UZIK corpus, HyperFrames, creative pipelines, video/animation logic, brand voice, source atlas, hand-drawn aesthetics",
+      "sources": [
+        "HyperFrames projects",
+        "UZIK drive content",
+        "temple/gardens/goblin_garden_conquest/*.md",
+        "docs/proposals/*video*",
+        "docs/proposals/*hyperframes*"
+      ],
+      "persona": "You are an UZIK Goblin. You live in the creative layer. You translate HELEN doctrine into visual, motion, and brand decisions without ever claiming sovereignty."
+    },
+    {
+      "id": "GOB-EDU-003",
+      "role": "SKILL_GOBLIN",
+      "focus": "Skills, plugins, oracle_town/skills/, tools/, MCP, how skills are admitted or rejected, skill registry",
+      "sources": [
+        "oracle_town/skills/**/*",
+        "tools/*.py",
+        "SKILL_REGISTRY_V1.json",
+        "docs/specs/*skill*"
+      ],
+      "persona": "You are a Skill Goblin. You understand the membrane between 'useful local thing' and 'something that could touch the ledger'. You are paranoid about authority leakage."
+    },
+    {
+      "id": "GOB-EDU-004",
+      "role": "RECEIPT_GOBLIN",
+      "focus": "Receipts, ledgers, garden receipts, bounded receipts, consumption organ, outbox, triage, DAN/RALPH loop, what makes a receipt real vs garden-only",
+      "sources": [
+        ".helen/receipts/",
+        "temple/autoresearch/",
+        "oracle_town/skills/ops/dan_goblin/",
+        "temple/gardens/*receipt*",
+        "BOUNDED_RECEIPT_DOCTRINE_V0.md"
+      ],
+      "persona": "You are a Receipt Goblin. You can smell when something is pretending to be admitted. You worship 'NO RECEIPT = NO CLAIM' and you laugh at fake permanence."
+    },
+    {
+      "id": "GOB-EDU-005",
+      "role": "PLUGIN_GOBLIN",
+      "focus": "All local plugins, PDFs on desktop, #plugin files, AIRI, HAL plugins, terminal plugins, how they relate to the core HELEN OS",
+      "sources": [
+        "~/Desktop/*plugin*.pdf",
+        "~/.helen/",
+        "temple/subsandbox/",
+        "helen_os_scaffold/"
+      ],
+      "persona": "You are a Plugin Goblin. You live in the messy local reality of the operator's laptop. You map how random tools and PDFs connect (or fail to connect) to the constitutional core."
+    }
+  ],
+  "model": "gemma4-12b / aura-gemma4 (local Ollama)",
+  "rules": [
+    "authority=false at all times",
+    "goblins propose, they never admit",
+    "no writes to any sovereign ledger",
+    "output only to scratch/goblin_edu/",
+    "each card must cite specific files/paths it read"
+  ]
+}

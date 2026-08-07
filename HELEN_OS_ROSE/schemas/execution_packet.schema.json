@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Execution packet",
+  "description": "A bounded unit of authorized work. Exists only downstream of a ledger GO decision.",
+  "type": "object",
+  "required": ["packet_id", "approved_decision_id", "outcome", "scope", "non_goals", "owner", "inputs", "steps", "artifacts", "acceptance_tests", "stop_conditions", "privacy_class", "status", "receipts"],
+  "properties": {
+    "packet_id": {"type": "string", "pattern": "^P-[0-9]{3}$"},
+    "approved_decision_id": {"type": "string", "pattern": "^R-[0-9]{3}$"},
+    "outcome": {"type": "string", "minLength": 3},
+    "scope": {"type": "string", "minLength": 3},
+    "non_goals": {"type": "array", "items": {"type": "string"}},
+    "owner": {"type": "string"},
+    "inputs": {"type": "array", "items": {"type": "string"}},
+    "steps": {"type": "array", "items": {"type": "string"}},
+    "artifacts": {"type": "array", "items": {"type": "string"}},
+    "acceptance_tests": {"type": "array", "items": {"type": "string"}},
+    "stop_conditions": {"type": "array", "items": {"type": "string"}},
+    "privacy_class": {"enum": ["PUBLIC", "INTERNAL_BUSINESS", "CONFIDENTIAL_STRATEGY", "PARTNER_RESTRICTED", "PERSONAL_PRIVATE", "MEDICAL_PRIVATE", "LEGAL_PRIVATE", "FINANCIAL_PRIVATE"]},
+    "status": {"enum": ["PLANNED", "IN_PROGRESS", "BLOCKED", "DONE_UNVERIFIED", "VERIFIED", "ARCHIVED"]},
+    "receipts": {"type": "array", "items": {"type": "string"}},
+    "state_history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["state", "date"],
+        "properties": {
+          "state": {"enum": ["PROPOSED", "RESEARCHED", "TESTED", "APPROVED_BY_ROSE", "EXECUTED", "VERIFIED", "REJECTED", "HOLD"]},
+          "date": {"type": "string"},
+          "decision_id": {"type": "string"},
+          "evidence": {"type": "string"}
+        }
+      }
+    },
+    "created": {"type": "string"}
+  },
+  "additionalProperties": true
+}

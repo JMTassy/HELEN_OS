@@ -1,0 +1,55 @@
+{
+  "schema": "EGREGOR_WITNESS_V0",
+  "authority_status": "NON_SOVEREIGN_EGREGOR",
+  "generated_at": "2026-07-20T13:04:23.613229Z",
+  "intent": "You are HER in HELEN OS autoresearch mode.\n\nDecide the exact parameters for a 10-epoch trace-only autoresearch run.\n\nOutput ONLY this JSON (no extra text):\n{\n  \"her_role\": \"proposer\",\n  \"seed\": \"short powerful doctrine seed string under 140 chars\",\n  \"epochs\": 10,\n  \"focus_areas\": [\"doctrine_compression\", \"jurisdiction\", \"metabolism\", \"receipt_gates\"],\n  \"stop_on\": \"3 consecutive epochs with same compressed invariant\",\n  \"rationale\": \"one sentence\"\n}\n",
+  "intent_sha": "4cc1dbf7a1f7d92d",
+  "witnesses": [
+    {
+      "role": "grok",
+      "success": true,
+      "latency_ms": 9438,
+      "has_json": true,
+      "error": null,
+      "hal": "PASS",
+      "preview": "{\"her_role\":\"proposer\",\"seed\":\"NO RECEIPT = NO CLAIM: jurisdiction bounds metabolism; only hash-gated admission crosses the membrane\",\"epochs\":10,\"focus_areas\":[\"doctrine_compression\",\"jurisdiction\",\"metabolism\",\"receipt_gates\"],\"stop_on\":\"3 consecutive epochs with same compressed invariant\",\"ration"
+    },
+    {
+      "role": "claude",
+      "success": false,
+      "latency_ms": 35026,
+      "has_json": false,
+      "error": "timeout after 35s",
+      "hal": "ERROR",
+      "preview": "timeout after 35s"
+    },
+    {
+      "role": "codex",
+      "success": false,
+      "latency_ms": 17026,
+      "has_json": false,
+      "error": "Reading additional input from stdin...\nOpenAI Codex v0.122.0 (research preview)\n--------\nworkdir: /Users/jean-marietassy/Documents/GitHub/helen_os_v1\nmodel: gpt-5.2-codex\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: high\nreasoning summaries: none\nsession id: 019f7fa0-6877-7251-96fc-14260158599a\n--------\nuser\nOutput EXACTLY and ONLY valid minified JSON. Nothing else. JSON object or array.\n\nYou are HER in HELEN OS autoresearch mode.\n\nDecide the exact parameters for a 10-epoch trace-only autoresearch run.\n\nOutput ONLY this JSON (no extra text):\n{\n  \"her_role\": \"proposer\",\n  \"seed\": \"short powerful doctrine seed string under 140 chars\",\n  \"epochs\": 10,\n  \"focus_areas\": [\"doctrine_compression\", \"jurisdiction\", \"metabolism\", \"receipt_gates\"],\n  \"stop_on\": \"3 consecutive epochs with same compressed invariant\",\n  \"rationale\": \"one sentence\"\n}\n\nERROR: {\"type\":\"error\",\"status\":400,\"error\":{\"type\":\"invalid_request_error\",\"message\":\"The 'gpt-5.2-codex' model is not supported when using Codex with a ChatGPT account.\"}}\nERROR: {\"type\":\"error\",\"status\":400,\"error\":{\"type\":\"invalid_request_error\",\"message\":\"The 'gpt-5.2-codex' model is not supported when using Codex with a ChatGPT account.\"}}",
+      "hal": "ERROR",
+      "preview": "Reading additional input from stdin...\nOpenAI Codex v0.122.0 (research preview)\n--------\nworkdir: /Users/jean-marietassy/Documents/GitHub/helen_os_v1\nmodel: gpt-5.2-codex\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: high\nreasoning summaries: none\nsession id: 019f7fa0-6877-72"
+    }
+  ],
+  "aggregation": {
+    "num_witnesses": 3,
+    "num_success": 1,
+    "num_blocked": 0,
+    "num_errored": 2,
+    "roles_responded": [
+      "grok"
+    ],
+    "consensus_hint": "SINGLE_WITNESS"
+  },
+  "hal_summary": {
+    "overall": "PASS",
+    "blocked_roles": [],
+    "errored_roles": [
+      "claude",
+      "codex"
+    ]
+  },
+  "notes": "NON_SOVEREIGN_EGREGOR. Output is witness only. Never ledgered."
+}

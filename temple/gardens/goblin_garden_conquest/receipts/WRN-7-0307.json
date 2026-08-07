@@ -1,0 +1,18 @@
+{
+  "schema": "WARREN_RECEIPT_V0",
+  "receipt_id": "WRN-7-0307",
+  "turn": 7,
+  "event": {
+    "proposer": "Snort",
+    "desc": "Dig a bench for quiet plotting",
+    "effect": {
+      "cohesion": 3,
+      "buildings": "plotting_bench"
+    },
+    "turn": 7
+  },
+  "authority": false,
+  "claim": "NO_CLAIM",
+  "timestamp": "2026-07-18T12:45:57.057018+00:00",
+  "note": "Garden-only claimable action. Kernel untouched."
+}

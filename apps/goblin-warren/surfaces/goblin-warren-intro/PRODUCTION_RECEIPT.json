@@ -1,0 +1,30 @@
+{
+  "schema": "HELEN_PRODUCTION_RECEIPT_V0",
+  "artifact": "goblin-warren-intro",
+  "produced_at": "2026-07-22T14:00:18.136329+00:00",
+  "projection_packet_ref": "session-2026-07-22 (operator-directed)",
+  "composition_sha256": "sha256:6af4ac5f4a85cece24651adb92a6c2e1db32efe96f7e70dc63fa68700e33d6ce",
+  "asset_manifest": [
+    {
+      "path": "assets/bg/warren_night.png",
+      "sha256": "sha256:a6bbf107fde04a8158faa906ca25bfc3be586d0a020449e6d426bdde10ca43ec"
+    },
+    {
+      "path": "assets/audio/warren_ambient_pad.m4a",
+      "sha256": "sha256:1ba6961f45a53f784cbdd75da4d6e9967bf03f95b3e1cc3f272b3ae0f4df9fac"
+    }
+  ],
+  "render_params": {
+    "quality": "high",
+    "resolution": "h264\n1920\n1080",
+    "duration_s": 10.0
+  },
+  "check_verdict": "PASS contrast 12/12 errors 0",
+  "output_mp4_sha256": "sha256:5e7f05073062448305d4fe143762c68d89be2d3d3caf1ea9cde1a1e1da5988e5",
+  "published": true,
+  "caption_or_transcript": "on-screen kinetic text (WCAG-checked)",
+  "note": "render receipt \u22ac claim admitted \u2014 a witness that a film was produced deterministically from declared inputs, not an admission of its content",
+  "authority": false,
+  "canon_effect": false,
+  "ledger_effect": "none"
+}

@@ -1,0 +1,263 @@
+{
+  "schema": "HELEN_OS_SKILLS_SURFACE_CATALOG_V0",
+  "source": "SOT at HEAD (deterministic file walk)",
+  "epochs": 100,
+  "authority": false,
+  "admission": "FORBIDDEN",
+  "note": "J-space is Anthropic terminology (not adopted). This is the enumerated HELEN jurisdictional skills surface.",
+  "total": 42,
+  "skills": [
+    {
+      "layer": "oracle_town/skills",
+      "name": "conquest/goblin_warren",
+      "path": "oracle_town/skills/conquest/goblin_warren/SKILL.md",
+      "description": "|"
+    },
+    {
+      "layer": "oracle_town/skills",
+      "name": "feynman/intent_action_audit",
+      "path": "oracle_town/skills/feynman/intent_action_audit/SKILL.md",
+      "description": "Compare a stated intention (paper, manifesto, plan) against actual action (codebase, ledger entries, run artifacts). Records the gap, never resolves it. This sk"
+    },
+    {
+      "layer": "oracle_town/skills",
+      "name": "feynman/peer_review",
+      "path": "oracle_town/skills/feynman/peer_review/SKILL.md",
+      "description": "Tough-but-constructive peer review of any HELEN artifact (manifesto, claim, draft, code change). Wraps the Feynman /review workflow under HELEN's K2 / Rule 3 (\""
+    },
+    {
+      "layer": "oracle_town/skills",
+      "name": "feynman/session_notes",
+      "path": "oracle_town/skills/feynman/session_notes/SKILL.md",
+      "description": "Narrative session notes — a human-readable diary of what happened in a HELEN session. Explicitly NON-LEDGER. Markdown only. Every claim it makes must cite a rea"
+    },
+    {
+      "layer": "oracle_town/skills",
+      "name": "memory/voice_transcript_ingestion",
+      "path": "oracle_town/skills/memory/voice_transcript_ingestion/SKILL.md",
+      "description": "Non-sovereign intake protocol for voice / speech-to-text transcripts. Structures, classifies, and compresses raw transcripts into classified candidates (claims,"
+    },
+    {
+      "layer": "oracle_town/skills",
+      "name": "meta/find_skills",
+      "path": "oracle_town/skills/meta/find_skills/SKILL.md",
+      "description": "Discovery layer over oracle_town/skills/**. Indexes every SKILL.md frontmatter (name, description, faculty, status, prerequisite) and supports keyword search + "
+    },
+    {
+      "layer": "oracle_town/skills",
+      "name": "ops/airi_helen_avatar",
+      "path": "oracle_town/skills/ops/airi_helen_avatar/SKILL.md",
+      "description": "load when the user asks to add, move, resize, redesign, or interpret the HELEN/AIRI avatar in any HELEN OS surface — dashboard, constellation, detail panel, spl"
+    },
+    {
+      "layer": "oracle_town/skills",
+      "name": "ops/calendar_ops",
+      "path": "oracle_town/skills/ops/calendar_ops/SKILL.md",
+      "description": ""
+    },
+    {
+      "layer": "oracle_town/skills",
+      "name": "ops/client_crm",
+      "path": "oracle_town/skills/ops/client_crm/SKILL.md",
+      "description": ""
+    },
+    {
+      "layer": "oracle_town/skills",
+      "name": "ops/content_engine",
+      "path": "oracle_town/skills/ops/content_engine/SKILL.md",
+      "description": ""
+    },
+    {
+      "layer": "oracle_town/skills",
+      "name": "ops/helen_dashboard",
+      "path": "oracle_town/skills/ops/helen_dashboard/SKILL.md",
+      "description": "load when the user asks to run, inspect, debug, redesign, or evolve the HELEN OS dashboard, including the semantic object field, constellation graph, sovereign "
+    },
+    {
+      "layer": "oracle_town/skills",
+      "name": "ops/jmt_admin",
+      "path": "oracle_town/skills/ops/jmt_admin/SKILL.md",
+      "description": ""
+    },
+    {
+      "layer": "oracle_town/skills",
+      "name": "ops/mayor_verdict",
+      "path": "oracle_town/skills/ops/mayor_verdict/SKILL.md",
+      "description": "load when the user asks about MAYOR verdict state, NO_SHIP governance, sovereign verdict ladder, admission decisions, reducer_decision fields in GOBLIN/terminal"
+    },
+    {
+      "layer": "oracle_town/skills",
+      "name": "ops/offer_builder",
+      "path": "oracle_town/skills/ops/offer_builder/SKILL.md",
+      "description": ""
+    },
+    {
+      "layer": "oracle_town/skills",
+      "name": "ops/research_brief",
+      "path": "oracle_town/skills/ops/research_brief/SKILL.md",
+      "description": ""
+    },
+    {
+      "layer": "oracle_town/skills",
+      "name": "ops/run_coordination",
+      "path": "oracle_town/skills/ops/run_coordination/SKILL.md",
+      "description": "Non-sovereign coordination protocol for multi-agent / multi-machine runs. Shared mission at run root, separate worker lanes per agent-machine pair, single synth"
+    },
+    {
+      "layer": "oracle_town/skills",
+      "name": "ops/semantic_field",
+      "path": "oracle_town/skills/ops/semantic_field/SKILL.md",
+      "description": "load when the user asks to inspect, debug, modify, or extend the HELEN OS semantic object field, /api/semantic endpoint, object types (EVENT/EPOCH/ACTION/RECEIP"
+    },
+    {
+      "layer": "oracle_town/skills",
+      "name": "ops/sovereign_ledger",
+      "path": "oracle_town/skills/ops/sovereign_ledger/SKILL.md",
+      "description": ""
+    },
+    {
+      "layer": "oracle_town/skills",
+      "name": "ops/video_studio",
+      "path": "oracle_town/skills/ops/video_studio/SKILL.md",
+      "description": ""
+    },
+    {
+      "layer": "oracle_town/skills",
+      "name": "ops/wulmoji_enhancer",
+      "path": "oracle_town/skills/ops/wulmoji_enhancer/SKILL.md",
+      "description": "Non-sovereign style/readability enhancer. WULmoji adds a color-graded semantic overlay to text — identity, emotion, cost, validation, structure, emergent, next-"
+    },
+    {
+      "layer": "oracle_town/skills",
+      "name": "reference_drift_witness",
+      "path": "oracle_town/skills/reference_drift_witness/SKILL.md",
+      "description": "Scans a declared set of non-sovereign artifacts and reports SHA drift, missing files, and stale receipts. Makes autoresearch epoch health observable and replaya"
+    },
+    {
+      "layer": "oracle_town/skills",
+      "name": "skill_admission_checker",
+      "path": "oracle_town/skills/skill_admission_checker/SKILL.md",
+      "description": "Given a skill_id, determines institutional admission status across 7 levels from MISSING to OPERATIONALLY_WITNESSED. Prevents claim laundering by refusing to re"
+    },
+    {
+      "layer": "oracle_town/skills",
+      "name": "video/helen-director",
+      "path": "oracle_town/skills/video/helen-director/SKILL.md",
+      "description": "Deterministic pipeline for producing HELEN-signature cinematic video — photoreal image-to-video with invisible anomaly discipline, seed continuity across shots,"
+    },
+    {
+      "layer": "oracle_town/skills",
+      "name": "video/hyperframes",
+      "path": "oracle_town/skills/video/hyperframes/SKILL.md",
+      "description": "Render HELEN's narrative artifacts (manifestos, epoch summaries, ledger replays, district outcomes) as MP4 video using HeyGen's HyperFrames framework. HTML/CSS/"
+    },
+    {
+      "layer": "oracle_town/skills",
+      "name": "video/library",
+      "path": "oracle_town/skills/video/library/SKILL.md",
+      "description": "HELEN asset library — stills, audio, and effects — harvested from already-paid output. Three-layer system (keyframe harvester, effects registry, audio catalog) "
+    },
+    {
+      "layer": "oracle_town/skills",
+      "name": "video/math_to_face",
+      "path": "oracle_town/skills/video/math_to_face/SKILL.md",
+      "description": "Sovereign white-box rendering pipeline — bidirectional compiler between Math, Latent, and Image spaces. φ-resonant SDE refinement with HELEN identity anchoring."
+    },
+    {
+      "layer": "oracle_town/skills",
+      "name": "voice/gemini_tts",
+      "path": "oracle_town/skills/voice/gemini_tts/SKILL.md",
+      "description": "Speak HELEN's verdicts using Google Gemini 2.5 TTS. Voice is TRANSPORT, never editor — the audio carries the HAL JSON output verbatim, never softened or rephras"
+    },
+    {
+      "layer": ".claude/skills",
+      "name": "handdraw-good-deed-story",
+      "path": ".claude/skills/handdraw-good-deed-story/SKILL.md",
+      "description": "harness extension skill"
+    },
+    {
+      "layer": ".claude/skills",
+      "name": "helen-free-graphics",
+      "path": ".claude/skills/helen-free-graphics/SKILL.md",
+      "description": "harness extension skill"
+    },
+    {
+      "layer": "helen_os/kernel",
+      "name": "helen_os/ledger",
+      "path": "helen_os/ledger",
+      "description": "append-only, receipts, replay, canonical_json"
+    },
+    {
+      "layer": "helen_os/kernel",
+      "name": "helen_os/state",
+      "path": "helen_os/state",
+      "description": "ledger_replay_v1, state derivation, determinism"
+    },
+    {
+      "layer": "helen_os/kernel",
+      "name": "helen_os/render",
+      "path": "helen_os/render",
+      "description": "HTMLCompositionV1 → hyperframes MP4, RenderReceiptV1"
+    },
+    {
+      "layer": "helen_os/kernel",
+      "name": "helen_os/autonomy",
+      "path": "helen_os/autonomy",
+      "description": "autoresearch_batch_v1, self_improve_loop_v1"
+    },
+    {
+      "layer": "helen_os/kernel",
+      "name": "helen_os/governance",
+      "path": "helen_os/governance",
+      "description": "validators, LIFECYCLE_INVARIANTS, constitutional"
+    },
+    {
+      "layer": "helen_os/kernel",
+      "name": "helen_os/validators",
+      "path": "helen_os/validators",
+      "description": "K0-K8 gates, K-tau, provenance"
+    },
+    {
+      "layer": "temple/autoresearch",
+      "name": "scanner+loops",
+      "path": "temple/autoresearch/",
+      "description": "outbox, consumption, trace-only 100E+ loops, HER fusion"
+    },
+    {
+      "layer": "temple/gardens",
+      "name": "goblin_garden_conquest",
+      "path": "temple/gardens/goblin_garden_conquest/",
+      "description": "warren_loop, WRN-* receipts, 31 epochs, Garden/Kernel membrane"
+    },
+    {
+      "layer": "temple",
+      "name": "validate_conquest_garden",
+      "path": "temple/gardens/goblin_garden_conquest/validate_conquest_garden.py",
+      "description": "fail-closed authority boundary validator"
+    },
+    {
+      "layer": "production",
+      "name": "hyperframes",
+      "path": "oracle_town/skills/video/hyperframes",
+      "description": "HTML→MP4 deterministic render, 0 credit, proven"
+    },
+    {
+      "layer": "production",
+      "name": "handdraw-good-deed-story",
+      "path": ".claude/skills/handdraw-good-deed-story",
+      "description": "8-beat vertical story videos, zero credit"
+    },
+    {
+      "layer": "apps",
+      "name": "goblin-warren",
+      "path": "apps/goblin-warren/",
+      "description": "warren_home, warren_town, builders (SURFACE CANNOT MARK)"
+    },
+    {
+      "layer": "governance",
+      "name": "GOVERNANCE/",
+      "path": "GOVERNANCE/",
+      "description": "CONSTITUTION, REGISTRIES, STEP_4_CONFORMANCE"
+    }
+  ]
+}

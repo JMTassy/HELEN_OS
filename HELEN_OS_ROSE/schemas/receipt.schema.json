@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Receipt",
+  "description": "Record that makes a claim checkable by a different operator.",
+  "type": "object",
+  "required": ["what_was_requested", "what_was_done", "artifacts", "tests_run", "test_results", "date", "status"],
+  "properties": {
+    "what_was_requested": {"type": "string"},
+    "what_was_done": {"type": "string"},
+    "artifacts": {"type": "array", "items": {"type": "string"}},
+    "tests_run": {"type": "array", "items": {"type": "string"}},
+    "test_results": {"type": "array", "items": {"type": "string"}},
+    "date": {"type": "string"},
+    "status": {"type": "string"},
+    "known_limitations": {"type": "array", "items": {"type": "string"}},
+    "operator": {"type": "string", "description": "neutral role name, never a model identity"}
+  },
+  "additionalProperties": true
+}

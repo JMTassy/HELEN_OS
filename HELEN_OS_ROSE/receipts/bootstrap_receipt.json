@@ -1,0 +1,90 @@
+{
+  "receipt_type": "bootstrap",
+  "date": "2026-07-16",
+  "operator": "bootstrap session acting as STRATEGY + EXECUTION functions; identity intentionally not recorded (model-agnostic invariant)",
+  "what_was_requested": "One-time bootstrap of HELEN_OS_ROSE: a durable, model-agnostic operating system for ROSE and CIELO IMPACT inside the existing helen_os_v1 repository, with sovereignty invariant, privacy partitions, evidence model, claim linter, decision-transition validation, deterministic scripts, tests, and an initial conservative strategy marked as requiring Rose's decision.",
+  "what_was_inspected": [
+    "repository top-level structure (listing capped at 2000 entries by tooling; .git/.venv/worktrees included in that cap)",
+    "host operator-guidance file (governance conventions, sovereign firewall paths, NO RECEIPT = NO CLAIM invariant, two-tree layout)",
+    "GOVERNANCE/ tree, decisions/ samples, receipts/ samples, registries/, SKILL_REGISTRY_V1.json status vocabulary",
+    "Makefile and pyproject.toml test wiring (pytest via macOS .venv)",
+    "grep sweep for existing Rose / Cielo / Lemuria / amuseinparis organizational files: none found beyond incidental word matches"
+  ],
+  "files_created": [
+    "HELEN_OS_ROSE/README.md",
+    "HELEN_OS_ROSE/OPERATING_CONTRACT.md",
+    "HELEN_OS_ROSE/CURRENT_STATE.md",
+    "HELEN_OS_ROSE/strategy/current_thesis.md",
+    "HELEN_OS_ROSE/strategy/priority_stack.md",
+    "HELEN_OS_ROSE/strategy/ninety_day_plan.md",
+    "HELEN_OS_ROSE/strategy/assumptions.md",
+    "HELEN_OS_ROSE/strategy/kill_criteria.md",
+    "HELEN_OS_ROSE/strategy/opportunity_register.md",
+    "HELEN_OS_ROSE/execution/EXECUTION_PACKET_TEMPLATE.md",
+    "HELEN_OS_ROSE/execution/active/.gitkeep",
+    "HELEN_OS_ROSE/execution/archive/.gitkeep",
+    "HELEN_OS_ROSE/decisions/ROSE_DECISION_TEMPLATE.md",
+    "HELEN_OS_ROSE/decisions/decision_ledger.jsonl",
+    "HELEN_OS_ROSE/research/open_questions.md",
+    "HELEN_OS_ROSE/research/evidence_register.jsonl",
+    "HELEN_OS_ROSE/research/RESEARCH_PACKET_TEMPLATE.md",
+    "HELEN_OS_ROSE/receipts/README.md",
+    "HELEN_OS_ROSE/receipts/bootstrap_receipt.json",
+    "HELEN_OS_ROSE/domains/cielo_impact/README.md",
+    "HELEN_OS_ROSE/domains/public_brand/README.md",
+    "HELEN_OS_ROSE/domains/hospitality/README.md",
+    "HELEN_OS_ROSE/domains/partnerships_funding/README.md",
+    "HELEN_OS_ROSE/domains/corporate/README.md",
+    "HELEN_OS_ROSE/domains/private/README.md",
+    "HELEN_OS_ROSE/schemas/decision.schema.json",
+    "HELEN_OS_ROSE/schemas/execution_packet.schema.json",
+    "HELEN_OS_ROSE/schemas/evidence.schema.json",
+    "HELEN_OS_ROSE/schemas/receipt.schema.json",
+    "HELEN_OS_ROSE/prompts/strategy.md",
+    "HELEN_OS_ROSE/prompts/execution.md",
+    "HELEN_OS_ROSE/prompts/sovereign_review.md",
+    "HELEN_OS_ROSE/prompts/weekly_review.md",
+    "HELEN_OS_ROSE/scripts/validate_workspace.py",
+    "HELEN_OS_ROSE/scripts/create_execution_packet.py",
+    "HELEN_OS_ROSE/scripts/append_decision.py",
+    "HELEN_OS_ROSE/scripts/claim_linter.py",
+    "HELEN_OS_ROSE/tests/test_validate_workspace.py",
+    "HELEN_OS_ROSE/tests/test_decision_transitions.py",
+    "HELEN_OS_ROSE/tests/test_claim_linter.py"
+  ],
+  "files_modified": [
+    "README.md (root): one short section added referencing HELEN_OS_ROSE and its validation/test commands; no other host file touched; no sovereign path touched"
+  ],
+  "tests_run": [
+    "python3 -m unittest discover -s tests  (cwd HELEN_OS_ROSE; clean Python 3.11 environment)",
+    "python3 scripts/validate_workspace.py",
+    "python3 scripts/claim_linter.py",
+    "adversarial check: appended an unsupported authority claim to CURRENT_STATE.md, re-ran validator (expected failure), removed it, re-ran (expected pass)"
+  ],
+  "test_results": [
+    "unittest: Ran 29 tests, OK (0 failures, 0 errors)",
+    "validate_workspace: 0 error(s), 0 warning(s), exit 0",
+    "claim_linter: 0 flagged, 0 unclassified, 6 allowed across 27 file(s), exit 0",
+    "adversarial check: validator exit 1 with 2 FLAGGED findings while the false claim was present; exit 0 after removal"
+  ],
+  "known_limitations": [
+    "The host repository's existing pytest suite was not executed: its .venv is built for the host OS and the bootstrap execution environments had no pytest and no network install path. Rose can run 'make test' locally to confirm no regression; this bootstrap wrote nothing inside helen_os/, oracle_town/, town/, or GOVERNANCE/, so regression risk is limited to the root README edit.",
+    "Claim linter is line-scoped and lexical: it cannot judge truth, only whether authority-bearing language carries a nearby hedge, evidence marker, or ledger-checkable reference; schemas/, scripts/, tests/ are excluded from its default sweep (vocabulary definitions live there).",
+    "Schema conformance checking is minimal (required keys + enum membership), by design, to stay standard-library only.",
+    "Strategy content rests mostly on E1/E2 evidence; every market-facing assumption is E0 and listed in strategy/assumptions.md.",
+    "CI integration deliberately not added: existing workflows guard sovereign systems and modifying them was judged riskier than the benefit; a wiring suggestion is recorded for Rose."
+  ],
+  "unverified_external_claims": [
+    "All funding routes named in strategy/ninety_day_plan.md phase F (Bpifrance, France 2030, ADEME, Horizon Europe / EIC, regional programs): existence-level knowledge only; eligibility and current availability unknown and marked for external verification",
+    "Market assumption A1 (hospitality decision pain) and A5 (willingness to pay): untested hypotheses",
+    "No pilot property relationship of any kind exists yet"
+  ],
+  "decisions_reserved_for_rose": [
+    "R-001 candidate: adopt or revise the twelve-month objective",
+    "R-002 candidate: adopt Option A (hospitality decision twin) as initial wedge hypothesis, or choose Option B / Option C / RESEARCH",
+    "R-003 candidate: timing of the amuseinparis -> Cielo Impact -> Lemuria Globals brand sequence relative to wedge evidence",
+    "R-004 candidate: adopt or revise the public narrative wording",
+    "whether to add the HELEN_OS_ROSE validator to CI"
+  ],
+  "status": "IMPLEMENTED_NOT_APPROVED"
+}

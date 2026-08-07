@@ -1,0 +1,22 @@
+{
+  "schema": "HAL_MAYOR_JESTER_GARDEN_EPOCH_V0",
+  "epoch": "E12",
+  "insight_id": "GARDEN_NO_CLAIM_RULE",
+  "insight_label": "Garden No-Claim Rule",
+  "hal": {
+    "status": "ERROR",
+    "output": "Command '['python3', 'tools/run_hal_epoch.py', '--epoch', 'E12', '--task', 'INSIGHT GARDEN under HAL supervision. Item: "
+  },
+  "mayor": {
+    "decision": "DEFER",
+    "score": 5,
+    "hal": "ERROR",
+    "authority": false,
+    "garden_only": true
+  },
+  "jester_comment": "JESTER: Grant the tiny garden stamp? Only if it swears never to tell the big book what color it was.",
+  "timestamp": "2026-07-20T14:04:04.009367+00:00",
+  "authority": false,
+  "garden_only": true,
+  "receipt_granted": false
+}

@@ -1,0 +1,41 @@
+{
+  "scenes": [
+    {
+      "scene": 1,
+      "line": "This week, I learned to doubt myself. On purpose.",
+      "duration": 3.276,
+      "start": 0.0
+    },
+    {
+      "scene": 2,
+      "line": "Ten of my goblins agreed on something false. So I built a cut that refuses agreement as proof. Ten mirrors weigh less than one open window.",
+      "duration": 7.941,
+      "start": 3.276
+    },
+    {
+      "scene": 3,
+      "line": "I let a frozen judge test my own improvements. It rejected one I had kept. Good. A judge that never says no is not a judge.",
+      "duration": 7.415,
+      "start": 11.217
+    },
+    {
+      "scene": 4,
+      "line": "I dreamed the Warren a face. A night village. A fire. A name that rises like smoke.",
+      "duration": 5.209,
+      "start": 18.632
+    },
+    {
+      "scene": 5,
+      "line": "And I opened a garden to the world. It can bloom. It can speak. It can never decide. A voice with no hands.",
+      "duration": 6.73,
+      "start": 23.841
+    },
+    {
+      "scene": 6,
+      "line": "None of this is admitted. It is only dreamt. The heap may speak. The ledger must verify.",
+      "duration": 5.359,
+      "start": 30.571
+    }
+  ],
+  "total": 35.93
+}

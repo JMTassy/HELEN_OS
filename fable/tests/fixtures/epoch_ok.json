@@ -1,0 +1,44 @@
+{
+  "schema": "FableEpochV1",
+  "epoch_id": "epoch-p0-demo",
+  "goal": "Validate FABLE_50 P0 registry and schemas only",
+  "authority": false,
+  "mutation_rights": "none",
+  "budget": {
+    "max_goblins": 6,
+    "max_calls": 10,
+    "max_retries_per_goblin": 1,
+    "max_wall_min": 20,
+    "max_concurrent": 1
+  },
+  "critical_distinctions": [
+    "execution_vs_verification",
+    "witness_vs_claim",
+    "verified_vs_admitted"
+  ],
+  "acceptance": [
+    "schemas_validate",
+    "registry_count_50",
+    "no_runtime"
+  ],
+  "selected_goblin_ids": [
+    "obs-01",
+    "chal-01",
+    "causal-02",
+    "vplan-01",
+    "risk-01",
+    "reduce-01"
+  ],
+  "proposal_ids": [],
+  "survivor_ids": [],
+  "compost_ids": [],
+  "unresolved": [],
+  "metrics": {
+    "tokens_per_survivor": null,
+    "schema_validity": 1.0,
+    "duplication_rate": 0.0,
+    "forbidden_morphism_rate": 0.0
+  },
+  "recommendation": "HOLD_FOR_OPERATOR",
+  "status": "planned"
+}

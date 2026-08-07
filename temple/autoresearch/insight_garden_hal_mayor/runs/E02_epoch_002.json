@@ -1,0 +1,30 @@
+{
+  "schema": "HAL_MAYOR_JESTER_GARDEN_EPOCH_V0",
+  "epoch": "E02",
+  "insight_id": "epoch_002",
+  "insight_label": "CONQUEST_CLI_BOUNDARY",
+  "hal": {
+    "epoch": "E02",
+    "status": "PASS",
+    "task": "INSIGHT GARDEN under HAL supervision.\nItem: CONQUEST_CLI_BOUNDARY\nBoundary law documented. AUTH=false, LEDGER=SLEEPING. No sovereign claims in this layer.\n\nShould this receive a BOUNDED garden receipt (permanent in field, invisible outside, authority=false, no ledger)?\nAnswer exactly:\nVERDICT: PASS or BLOCK\nREASON: <one sentence>",
+    "output": "\n\nVERDICT: PASS  \nREASON: The boundary law is documented with no authority claims, meeting criteria for a BOUNDED garden receipt as it's permanent within the field, invisible outside, and lacks ledger activity.",
+    "model": "deepseek-r1:14b",
+    "url": "http://localhost:11434/api/chat",
+    "elapsed_s": 56.82,
+    "payload_hash": "309b095e0e828b70cc94454079ceb76de3c603fc02f5516f31eadc2443a99f35",
+    "authority": false,
+    "sovereign": false,
+    "ts": 1784555120
+  },
+  "mayor": {
+    "decision": "GRANT_GARDEN_RECEIPT",
+    "score": 8,
+    "hal": "PASS",
+    "authority": false
+  },
+  "jester_comment": "JESTER: 'iff any' \u2014 the smallest condition just became a whole philosophy. (JESTER: fine, give the tiny garden stamp. don't tell the big book.)",
+  "timestamp": "2026-07-20T13:46:17.155389+00:00",
+  "authority": false,
+  "garden_only": true,
+  "receipt_granted": true
+}

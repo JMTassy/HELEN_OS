@@ -1,0 +1,55 @@
+{
+  "schema": "EGREGOR_WITNESS_V0",
+  "authority_status": "NON_SOVEREIGN_EGREGOR",
+  "generated_at": "2026-07-20T13:14:19.887107Z",
+  "intent": "You are HER \u2014 local non-sovereign proposer for HELEN OS autoresearch.\n\nPrevious 10-epoch trace run results:\n{\n  \"previous_run\": {\n    \"seed\": \"DREAMT \\u2260 CLAIMED: proposal is not state; only receipt after jurisdiction-bound metabolism.\",\n    \"epochs\": 10,\n    \"converged\": false,\n    \"invariants_seen\": [\n      \"No test \\u2192 no gate.\",\n      \"No replay \\u2192 no admission.\"\n    ],\n    \"most_stable\": \"No test \\u2192 no gate.\"\n  }\n}\n\nDecide the exact plan for the NEXT 10 epochs.\n\nReturn ONLY this JSON (one line, valid, no extra text):\n{\"her_role\":\"proposer\",\"mode\":\"next_10_epochs\",\"seed\":\"the doctrine string\",\"epochs\":10,\"focus_areas\":[\"test_as_gate\",\"replay_as_admission\",\"proposal_state_boundary\",\"jurisdiction_metabolism\"],\"stop_condition\":\"3-epoch stability\",\"rationale\":\"short reason\",\"tweak\":\"what changes from last run\"}\n\nDecide.\n",
+  "intent_sha": "e660983926244151",
+  "witnesses": [
+    {
+      "role": "grok",
+      "success": true,
+      "latency_ms": 11655,
+      "has_json": true,
+      "error": null,
+      "hal": "PASS",
+      "preview": "{\"her_role\":\"proposer\",\"mode\":\"next_10_epochs\",\"seed\":\"No test \u2192 no gate: a claim without a runnable test is not a gate; DREAMT \u2260 CLAIMED until test+replay bind the receipt.\",\"epochs\":10,\"focus_areas\":[\"test_as_gate\",\"replay_as_admission\",\"proposal_state_boundary\",\"jurisdiction_metabolism\"],\"stop_co"
+    },
+    {
+      "role": "claude",
+      "success": false,
+      "latency_ms": 45019,
+      "has_json": false,
+      "error": "timeout after 45s",
+      "hal": "ERROR",
+      "preview": "timeout after 45s"
+    },
+    {
+      "role": "codex",
+      "success": false,
+      "latency_ms": 45007,
+      "has_json": false,
+      "error": "timeout after 45s",
+      "hal": "ERROR",
+      "preview": "timeout after 45s"
+    }
+  ],
+  "aggregation": {
+    "num_witnesses": 3,
+    "num_success": 1,
+    "num_blocked": 0,
+    "num_errored": 2,
+    "roles_responded": [
+      "grok"
+    ],
+    "consensus_hint": "SINGLE_WITNESS"
+  },
+  "hal_summary": {
+    "overall": "PASS",
+    "blocked_roles": [],
+    "errored_roles": [
+      "claude",
+      "codex"
+    ]
+  },
+  "notes": "NON_SOVEREIGN_EGREGOR. Output is witness only. Never ledgered."
+}

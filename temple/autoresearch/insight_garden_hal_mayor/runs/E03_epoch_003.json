@@ -1,0 +1,22 @@
+{
+  "schema": "HAL_MAYOR_JESTER_GARDEN_EPOCH_V0",
+  "epoch": "E03",
+  "insight_id": "epoch_003",
+  "insight_label": "WULMOJI_ASCII_GRAMMAR_BASE",
+  "hal": {
+    "status": "ERROR",
+    "output": "Command '['python3', 'tools/run_hal_epoch.py', '--epoch', 'E03', '--task', 'INSIGHT GARDEN under HAL supervision.\\nItem: WULMOJI_ASCII_GRAMMAR_BASE\\nCWL v0.2.1 EMOGLYPH frozen. Grammar base establishe",
+    "epoch": "E03"
+  },
+  "mayor": {
+    "decision": "DEFER",
+    "score": 4,
+    "hal": "ERROR",
+    "authority": false
+  },
+  "jester_comment": "JESTER: Bounded receipts are like garden parties that only the plants know about.",
+  "timestamp": "2026-07-20T13:47:33.075850+00:00",
+  "authority": false,
+  "garden_only": true,
+  "receipt_granted": false
+}

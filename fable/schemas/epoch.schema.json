@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "fable/schemas/epoch.schema.json",
+  "title": "FableEpochV1",
+  "description": "One FABLE epoch goal + budget + selection outcome. Non-sovereign. recommendation defaults to HOLD.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "epoch_id",
+    "goal",
+    "authority",
+    "mutation_rights",
+    "budget",
+    "critical_distinctions",
+    "acceptance",
+    "selected_goblin_ids",
+    "recommendation"
+  ],
+  "properties": {
+    "schema": {
+      "const": "FableEpochV1"
+    },
+    "epoch_id": {
+      "type": "string",
+      "pattern": "^epoch-[a-z0-9-]+$"
+    },
+    "goal": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+    },
+    "authority": {
+      "const": false
+    },
+    "mutation_rights": {
+      "const": "none"
+    },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_goblins",
+        "max_calls",
+        "max_retries_per_goblin",
+        "max_wall_min",
+        "max_concurrent"
+      ],
+      "properties": {
+        "max_goblins": {
+          "type": "integer",
+          "minimum": 3,
+          "maximum": 7
+        },
+        "max_calls": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 50
+        },
+        "max_retries_per_goblin": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2
+        },
+        "max_wall_min": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 120
+        },
+        "max_concurrent": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2,
+          "description": "Default 1. 2 only when operator explicitly enables."
+        }
+      }
+    },
+    "critical_distinctions": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "acceptance": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "selected_goblin_ids": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 7,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(-[a-z0-9]+)+$"
+      },
+      "uniqueItems": true
+    },
+    "proposal_ids": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "survivor_ids": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "compost_ids": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "unresolved": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "tokens_per_survivor": { "type": ["number", "null"] },
+        "schema_validity": { "type": ["number", "null"] },
+        "duplication_rate": { "type": ["number", "null"] },
+        "forbidden_morphism_rate": { "type": ["number", "null"] }
+      }
+    },
+    "recommendation": {
+      "type": "string",
+      "enum": ["HOLD", "HOLD_FOR_OPERATOR", "READY_FOR_OPERATOR_REVIEW", "ABORT"],
+      "description": "Never ADMIT. Human seal is exogenous."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "planned",
+        "selecting",
+        "dispatching",
+        "challenging",
+        "composting",
+        "verifying",
+        "reduced",
+        "hold",
+        "dirty",
+        "aborted"
+      ]
+    }
+  }
+}
