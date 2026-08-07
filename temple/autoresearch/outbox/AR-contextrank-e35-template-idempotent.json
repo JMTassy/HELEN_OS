@@ -1,0 +1,48 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-contextrank-e35-template-idempotent",
+  "target_surface": "context_ranking",
+  "epoch": "E35",
+  "parent_epoch": "E34",
+  "source_refs": [
+    "temple/autoresearch/two_stage_loop.py:97-102",
+    "temple/autoresearch/trace_only/two_stage_loop_trace.jsonl",
+    "tools/validators/authority_language_linter.py"
+  ],
+  "finding_type": "gap",
+  "summary": "context_ranking wins cold-start (19.2) on every clean run but its experiment template (two_stage_loop.py:97-102) is idempotent: it fires twice (2026-07-21, 2026-08-02) producing identical reports with no progress. Two specific gaps confirmed by live probe: (1) tweak target 'routed proposals in context_ranking output' — no context_ranking output module exists anywhere in the codebase (grep confirms 0 implementations); (2) metric 'count authority-shaped verbs' is an undefined category — authority_language_linter.py tracks hard_violations+soft_warnings, not 'authority-shaped verbs', so the baseline is unmeasurable as stated. The MAYBE_CANDIDATE prefix has no implementation anchor. Repeated identical reports = zero experiment velocity for the highest-scoring cold-start surface.",
+  "evidence": [
+    "live probe: rank({}).selected == 'context_ranking', score=19.2 — wins every cold-start run",
+    "grep -rn 'context_rank' . --include='*.py' (excl. templates/packets) → 0 implementation hits",
+    "two_stage_loop_trace.jsonl: 2 identical context_ranking reports (2026-07-21, 2026-08-02), same TWEAK, same METRIC",
+    "authority_language_linter.py --stdin on template HYPOTHESIS text: {verdict: PASS, hard_violations: [], soft_warnings: []}",
+    "authority_language_linter.py --stdin on template TWEAK text: {verdict: PASS, hard_violations: [], soft_warnings: []}",
+    "Template metric 'authority-shaped verbs' not defined in linter schema — linter exposes hard_violations+soft_warnings only",
+    "Template tweak 'Add MAYBE_CANDIDATE prefix to routed proposals in context_ranking output' — no context_ranking output exists",
+    "grep 'MAYBE_CANDIDATE' temple/autoresearch/trace_only/two_stage_loop_trace.jsonl → 0 applied instances"
+  ],
+  "hypothesis": "If context_ranking experiment template is updated to reference (a) an existing output: two_stage_loop_trace.jsonl HYPOTHESIS+TWEAK fields and (b) an existing measurement tool: authority_language_linter.py hard_violations+soft_warnings count, then every future context_ranking selection produces a measurable baseline from existing infrastructure — ending the idempotent-report loop.",
+  "proposed_tweak": "Update two_stage_loop.py lines 97-102: replace _EXPERIMENT_TEMPLATES['context_ranking'] with:\n{\n  'hypothesis': 'Reducing authority-shaped language in loop report HYPOTHESIS+TWEAK fields improves non-sovereign clarity.',\n  'tweak': 'Rewrite any HYPOTHESIS or TWEAK field that triggers authority_language_linter soft_warning to use observational framing.',\n  'metric': 'baseline: run python3 tools/validators/authority_language_linter.py --stdin on last 3 two_stage_loop_trace.jsonl HYPOTHESIS+TWEAK strings; count total soft_warnings; success_threshold: 0 soft_warnings',\n  'rule': 'KEEP if soft_warning count drops to 0 and report text passes linter; DISCARD if rewrite introduces vague terms',\n  'next': 'Measure baseline soft_warning count on 6 existing trace entries → apply rewrites → re-run linter → compare'\n}\nProposal only — operator must apply.",
+  "metric": "grep -c 'MAYBE_CANDIDATE' temple/autoresearch/trace_only/two_stage_loop_trace.jsonl → 0 (no progress on old template). After fix: python3 tools/validators/authority_language_linter.py --stdin on last 3 trace HYPOTHESIS+TWEAK → reproducible int count (soft_warnings). Baseline measurable from existing files immediately.",
+  "keep_rule": "KEEP if updated template metric is measurable with existing tools (linter path confirmed live); KEEP if no context_ranking implementation is needed — trace files serve as the output target; REJECT if template update introduces new vague terms or references non-existent files",
+  "next": "Operator updates two_stage_loop.py:97-102 template; run python3 -m pytest temple/ -q to confirm no template-reference tests broken; measure authority_language_linter soft_warning baseline on 6 existing trace entries; confirm metric becomes non-zero or zero with reason (E36 candidate).",
+  "risk_flags": [
+    "Minimal — template text change only, no behavior change on loop selection logic",
+    "Verify no test asserts on exact template string content in two_stage_loop.py",
+    "authority_language_linter currently returns 0 soft_warnings on both template strings — baseline would be 0; that is itself a measurable fact (no authority language in existing templates)"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-07T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (live probe confirmed: rank() selects context_ranking=19.2; grep 0 implementations; 2 identical trace reports; linter PASS on both template strings; MAYBE_CANDIDATE 0 applied instances)",
+    "epoch": "E35",
+    "parent_epoch": "E34",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
