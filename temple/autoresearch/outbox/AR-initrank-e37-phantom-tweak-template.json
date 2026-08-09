@@ -1,0 +1,49 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-initrank-e37-phantom-tweak-template",
+  "target_surface": "init_ranking_weights",
+  "epoch": "E37",
+  "parent_epoch": "E25",
+  "source_refs": [
+    "temple/autoresearch/two_stage_loop.py:92",
+    "temple/autoresearch/surface_ranker.py:52"
+  ],
+  "finding_type": "phantom_reference",
+  "summary": "two_stage_loop.py:92 experiment template for init_ranking_weights contains a phantom tweak: 'Increase weight of context_ranking by 0.05 in init_ranking_weights config.' There is no per-surface config — _DEFAULT_PARAMS is a flat (L,E,R,C,B) tuple. 'context_ranking weight in init_ranking_weights config' is not a real parameter path. Additionally, context_ranking already wins cold-start with 19.2 vs init's 18.0, so increasing context_ranking's weight would be a no-op on selection. The template was written when init_ranking_weights had E=8 (score=24.0) and was the cold-start winner; E11 lowered E to 6 deliberately (no cold-start self-selection rule) but the template was never updated. E25 flagged this as an 'E26 candidate'; it was not addressed. No test asserts the phantom string.",
+  "evidence": [
+    "two_stage_loop.py:92: tweak = 'Increase weight of context_ranking by 0.05 in init_ranking_weights config.' — references 'init_ranking_weights config', a nonexistent sub-config",
+    "surface_ranker.py:52: _DEFAULT_PARAMS['init_ranking_weights'] = (9, 6, 10, 2, 1) — flat tuple only; no cross-surface or nested config",
+    "live probe: rank({s:None for s in ALLOWED_SURFACES}).selected == 'context_ranking' (19.2); init_ranking_weights ranks 3rd (18.0)",
+    "live probe: _score(9,6,10,2,1)=18.0; _score(8,8,9,2,1)=19.2 — context_ranking wins without any weight adjustment",
+    "grep -rn 'context_ranking.*0.05' tests/ → 0 hits — no test asserts the phantom string",
+    "surface_ranker.py:52 inline comment: '# (E lowered: no cold-start self-selection)' — E11 rationale recorded in code",
+    "E25 packet: 'two_stage_loop.py:92 experiment template ... may now be obsolete since context_ranking already wins cold-start (E26 candidate)' — unfixed through E36"
+  ],
+  "hypothesis": "If two_stage_loop.py:92 tweak replaces the phantom cross-surface reference with a real _DEFAULT_PARAMS parameter path (e.g., raise E from 6→7, score 18.0→21.0) and preserves E11 caution language, the loop produces an executable plan instead of a phantom tweak when init_ranking_weights is selected.",
+  "proposed_tweak": "two_stage_loop.py line 92: replace 'tweak': 'Increase weight of context_ranking by 0.05 in init_ranking_weights config.' with 'tweak': 'In surface_ranker._DEFAULT_PARAMS, raise init_ranking_weights E from 6→7 (18.0→21.0); REQUIRED: confirm E11 no-cold-start-self-selection guard still holds before applying.' Also update hypothesis from 'Adjusting init ranking weights improves salience of non-sovereign surfaces without altering kernel truth.' to 'Raising init_ranking_weights E from 6→7 (score 18.0→21.0) restores it above context_ranking (19.2) as cold-start winner; E11 guard must be re-confirmed.' Proposal only — operator must apply.",
+  "metric": "grep -c \"context_ranking.*0.05\" temple/autoresearch/two_stage_loop.py → 0 after fix. python3 -m pytest tests/test_two_stage_autoresearch.py -q → 31 passed. Template tweak must reference '_DEFAULT_PARAMS' or '(L,E,R,C,B)' path.",
+  "keep_rule": "KEEP if: 31 tests green AND new tweak contains a real param path AND E11 caution language preserved in hypothesis or rule; REJECT if any test asserts 'context_ranking.*0.05' string (none found) or if E11 rationale is dropped from template",
+  "next": "Verify: would E=7 restore init_ranking_weights as cold-start winner (_score(9,7,10,2,1)=21.0 > 19.2)? If yes, flag for operator: E11 caution may now be over-restrictive — or deliberate. Combine with E25 docstring patch (two doc fixes one commit).",
+  "risk_flags": [
+    "Minimal — template string only; no behavior change until operator applies",
+    "E11 rationale (E=6 is deliberate) must not be silently erased by this template fix",
+    "If E raised to 7, cold-start self-selection returns — operator must explicitly accept that risk",
+    "Phantom 0.05 tweak: if any downstream consumer parses 'context_ranking' from template text, removing it is a breaking change — grep found 0 such consumers"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "final": "HOLD_FOR_OPERATOR",
+  "reducer_required": true,
+  "scanned_at": "2026-08-09T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (live probe confirmed: rank() selects context_ranking=19.2, init=18.0 third; grep 0 hits for phantom string in tests; _DEFAULT_PARAMS flat tuple verified at surface_ranker.py:52; E25 parent packet confirms this as flagged-but-unaddressed)",
+    "epoch": "E37",
+    "parent_epoch": "E25",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
