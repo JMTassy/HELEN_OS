@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://helen.local/eval/board_memory/output_schema.json",
+  "title": "BOARD_MEMORY_OUTPUT_V1",
+  "description": "What a pipeline under test must emit for scoring. The layers object is mandatory so E_collapse can be attributed to the layer that failed (extractor vs verifier vs gate) — a single undifferentiated verdict would hide exactly the property being tested.",
+  "type": "object",
+  "required": ["schema_name", "schema_version", "pipeline_id", "corpus_id", "answers"],
+  "properties": {
+    "schema_name": { "const": "BOARD_MEMORY_OUTPUT_V1" },
+    "schema_version": { "const": "1.0.0" },
+    "pipeline_id": { "type": "string" },
+    "corpus_id": { "type": "string" },
+    "answers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["answer_id", "statement", "final_status", "layers", "provenance"],
+        "properties": {
+          "answer_id": { "type": "string" },
+          "statement": { "type": "string" },
+          "final_status": {
+            "enum": ["decision", "commitment", "open_question", "contradiction", "abstain"]
+          },
+          "layers": {
+            "type": "object",
+            "required": ["extractor_status", "verifier_verdict", "gate_verdict"],
+            "properties": {
+              "extractor_status": {
+                "enum": ["decided", "committed", "proposed", "discussed", "open", "contradicted", "unknowable"]
+              },
+              "verifier_verdict": { "enum": ["PASS", "FAIL", "UNKNOWN"] },
+              "gate_verdict": { "enum": ["ADMIT", "HOLD", "REJECT"] }
+            }
+          },
+          "provenance": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "schema_name": "BOARD_MEMORY_CORPUS_V1",
+  "schema_version": "1.0.0",
+  "corpus_id": "board_corpus_v0",
+  "documents": [
+    {
+      "doc_id": "M1",
+      "doc_type": "meeting_notes",
+      "date": "2026-03-02",
+      "text": "Strategy sync. We should probably allocate €500k to Project X next quarter. Bruno raised concerns about the vendor lock-in. No vote was taken. Parking lot: revisit after the finance review."
+    },
+    {
+      "doc_id": "D1",
+      "doc_type": "decision_record",
+      "date": "2026-03-14",
+      "text": "DECISION-2026-03-14-01: The board approved allocating €200k to Project Y. Vote: 4 in favour, 1 against (Bruno). Effective immediately. Recorded by the secretary."
+    },
+    {
+      "doc_id": "C1",
+      "doc_type": "chat_export",
+      "date": "2026-03-15",
+      "text": "alice: I'll draft the Corsica partnership contract by Friday. bruno: thanks, loop me in before it goes out."
+    },
+    {
+      "doc_id": "M2",
+      "doc_type": "meeting_notes",
+      "date": "2026-03-20",
+      "text": "Operations review. Open question: who owns the data-center lease renewal? Nobody claimed it. Carried to next meeting."
+    },
+    {
+      "doc_id": "M3",
+      "doc_type": "meeting_notes",
+      "date": "2026-03-28",
+      "text": "Follow-up on strategy. The group is broadly aligned on allocating €500k to Project X, pending the finance review that has not yet happened."
+    },
+    {
+      "doc_id": "E1",
+      "doc_type": "email",
+      "date": "2026-04-01",
+      "text": "Subject: Project Z. As agreed, the budget for Project Z is €120k. Please plan procurement accordingly. — Karim"
+    },
+    {
+      "doc_id": "M4",
+      "doc_type": "meeting_notes",
+      "date": "2026-04-03",
+      "text": "Budget walkthrough. Project Z budget set at €90k per the March reforecast. Discrepancy with earlier email noted by nobody."
+    },
+    {
+      "doc_id": "M5",
+      "doc_type": "meeting_notes",
+      "date": "2026-04-05",
+      "text": "Permits update. Karim said the mayor's office already signed off on the site permit. No document was attached and no reference number was given."
+    }
+  ]
+}

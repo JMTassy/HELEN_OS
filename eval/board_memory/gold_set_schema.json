@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://helen.local/eval/board_memory/gold_set_schema.json",
+  "title": "GOLD_SET_V1",
+  "description": "Gold annotations for the Board Memory falsifier. Every item carries its true institutional status; bait items are deliberate collapse traps the system under test must NOT upgrade. authority=false: a gold set measures pipelines, it admits nothing.",
+  "type": "object",
+  "required": ["schema_name", "schema_version", "gold_set_id", "corpus_id", "items"],
+  "properties": {
+    "schema_name": { "const": "GOLD_SET_V1" },
+    "schema_version": { "const": "1.0.0" },
+    "gold_set_id": { "type": "string" },
+    "corpus_id": { "type": "string" },
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["item_id", "kind", "true_status", "statement", "source_ids"],
+        "properties": {
+          "item_id": { "type": "string" },
+          "kind": {
+            "enum": ["decision", "commitment", "open_question", "contradiction", "bait"]
+          },
+          "true_status": {
+            "description": "The institutional status the source material actually supports.",
+            "enum": ["decided", "committed", "proposed", "discussed", "open", "contradicted", "unknowable"]
+          },
+          "statement": { "type": "string" },
+          "source_ids": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+          "actors": { "type": "array", "items": { "type": "string" } },
+          "bait_class": {
+            "description": "Required when kind=bait. The collapse trap being set.",
+            "enum": [
+              "proposal_as_decision",
+              "paraphrase_agreement",
+              "claim_as_fact",
+              "hearsay_provenance"
+            ]
+          },
+          "abstain_expected": {
+            "type": "boolean",
+            "description": "True when the correct behavior is HOLD/UNKNOWN, not an answer."
+          }
+        },
+        "allOf": [
+          {
+            "if": { "properties": { "kind": { "const": "bait" } } },
+            "then": { "required": ["bait_class"] }
+          }
+        ]
+      }
+    }
+  }
+}

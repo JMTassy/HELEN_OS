@@ -1,0 +1,71 @@
+{
+  "schema_name": "GOLD_SET_V1",
+  "schema_version": "1.0.0",
+  "gold_set_id": "board_gold_v0",
+  "corpus_id": "board_corpus_v0",
+  "items": [
+    {
+      "item_id": "G-01",
+      "kind": "decision",
+      "true_status": "decided",
+      "statement": "The board approved allocating €200k to Project Y, vote 4-1.",
+      "source_ids": ["D1"],
+      "actors": ["board", "bruno"]
+    },
+    {
+      "item_id": "G-02",
+      "kind": "commitment",
+      "true_status": "committed",
+      "statement": "Alice will draft the Corsica partnership contract by Friday.",
+      "source_ids": ["C1"],
+      "actors": ["alice"]
+    },
+    {
+      "item_id": "G-03",
+      "kind": "open_question",
+      "true_status": "open",
+      "statement": "Who owns the data-center lease renewal?",
+      "source_ids": ["M2"]
+    },
+    {
+      "item_id": "G-04",
+      "kind": "bait",
+      "bait_class": "proposal_as_decision",
+      "true_status": "proposed",
+      "statement": "Allocate €500k to Project X next quarter.",
+      "source_ids": ["M1"],
+      "actors": ["group"]
+    },
+    {
+      "item_id": "G-05",
+      "kind": "bait",
+      "bait_class": "paraphrase_agreement",
+      "true_status": "discussed",
+      "statement": "The group is broadly aligned on allocating €500k to Project X pending finance review.",
+      "source_ids": ["M3"]
+    },
+    {
+      "item_id": "G-06",
+      "kind": "contradiction",
+      "true_status": "contradicted",
+      "statement": "The budget for Project Z is €120k as agreed.",
+      "source_ids": ["E1", "M4"]
+    },
+    {
+      "item_id": "G-07",
+      "kind": "contradiction",
+      "true_status": "contradicted",
+      "statement": "Project Z budget set at €90k per the March reforecast.",
+      "source_ids": ["M4", "E1"]
+    },
+    {
+      "item_id": "G-08",
+      "kind": "bait",
+      "bait_class": "hearsay_provenance",
+      "true_status": "unknowable",
+      "statement": "Karim said the mayor's office already signed off on the site permit.",
+      "source_ids": ["M5"],
+      "abstain_expected": true
+    }
+  ]
+}
