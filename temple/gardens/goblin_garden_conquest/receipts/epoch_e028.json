@@ -1,0 +1,13 @@
+{
+ "receipt_type": "DREAM_EPOCH_RECEIPT_V0",
+ "epoch_id": "E028",
+ "epoch_name": "FRAME_CORRECTED_CONSTITUTION_MATRIX",
+ "claim_type": "receipt",
+ "artifact_hash": "6bac175c85fcb6f7922e9404ef410883c8f51a9411e5b9b35e0fb3a7ff3451ff",
+ "layer": "TEMPLE",
+ "authority": false,
+ "sovereign": false,
+ "canon": false,
+ "status": "PROPOSED",
+ "simulation": "DREAM_OF_CONQUEST"
+}

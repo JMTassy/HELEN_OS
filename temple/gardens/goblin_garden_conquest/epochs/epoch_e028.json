@@ -1,0 +1,118 @@
+{
+ "id": "E028",
+ "name": "FRAME_CORRECTED_CONSTITUTION_MATRIX",
+ "claim_type": "receipt",
+ "layer": "TEMPLE",
+ "authority": false,
+ "sovereign": false,
+ "canon": false,
+ "status": "PROPOSED",
+ "simulation": "DREAM_OF_CONQUEST",
+ "matrix": {
+  "frame": "SOT@post-master-synthesis",
+  "recomputed_not_recalled": true,
+  "verdict": "MATRIX_NOT_FULLY_WITNESSED_IN_FRAME",
+  "rows": [
+   {
+    "id": "C1",
+    "title": "Color vs Type (chromodynamics)",
+    "status": "WITNESSED_HERE"
+   },
+   {
+    "id": "C2",
+    "title": "Projection vs Authority (A absent from parser codomain)",
+    "status": "WITNESSED_HERE"
+   },
+   {
+    "id": "C3",
+    "title": "Universal Non-Transport (witness Live calculus instance)",
+    "status": "WITNESSED_HERE"
+   },
+   {
+    "id": "C4",
+    "title": "Exact Transition Binding kappa_T",
+    "status": "REGISTRY_GHOST"
+   },
+   {
+    "id": "C5",
+    "title": "Choke-Point Derivation",
+    "status": "REGISTRY_GHOST"
+   },
+   {
+    "id": "C6",
+    "title": "Affine Capability Consumption (ConsumeOnce)",
+    "status": "REGISTRY_GHOST"
+   },
+   {
+    "id": "C7",
+    "title": "Warren Functional Factorization (E012-A)",
+    "status": "REGISTRY_GHOST"
+   },
+   {
+    "id": "C8",
+    "title": "Lineage Multiplicity Collapse",
+    "status": "REGISTRY_GHOST"
+   },
+   {
+    "id": "C9",
+    "title": "Multidimensional Anti-Overfit Vector",
+    "status": "CONFIRMED_UNBUILT"
+   },
+   {
+    "id": "C10",
+    "title": "HAL Tri-Valued Completeness (E013 controls)",
+    "status": "REGISTRY_GHOST"
+   },
+   {
+    "id": "C11",
+    "title": "Single-Head Mutation Surface (UnifiedStore)",
+    "status": "CONFIRMED_UNBUILT"
+   },
+   {
+    "id": "C12",
+    "title": "E012-B Warren Mediation Path Completeness",
+    "status": "CONFIRMED_UNBUILT"
+   },
+   {
+    "id": "C13",
+    "title": "Frame-Indexed Truth (FrameContext harvested, not injected)",
+    "status": "REGISTRY_GHOST"
+   }
+  ],
+  "registry_ghosts": [
+   "C4",
+   "C5",
+   "C6",
+   "C7",
+   "C8",
+   "C10",
+   "C13"
+  ],
+  "status_legend": {
+   "WITNESSED_HERE": "functional probe executed and passed in this frame (green)",
+   "REGISTRY_GHOST": "claimed witnessed in another frame; no artifact on this disk (red)",
+   "CONFIRMED_UNBUILT": "claimed unbuilt; frame agrees (slate)"
+  }
+ },
+ "provenance": {
+  "instrument": "experiments/constitution_audit/audit.py",
+  "instrument_commit": "8d3eaa9",
+  "instrument_branch": "claude/constitution-frame-audit",
+  "registry_source": "Constitution Status Matrix V1.2 + Master Synthesis (C13)",
+  "grep_is_not_a_witness": true
+ },
+ "visual_artifact": {
+  "file": "constitution-frame-audit-infographic.html",
+  "sha256": "8dc507e6447835302b61e0991e8534b3ff0feb73b4fad237da446bd8cd3e09e2",
+  "render_witness": {
+   "file": "constitution-frame-audit-render.png",
+   "sha256": "cc8ffe926245d281428ca9870492a7aa13f3449eefd6bf2e58cf65cec589b3c4",
+   "method": "headless chromium screenshot, this frame"
+  },
+  "renderer": "@antv/infographic 0.2.19 (MIT, AntV) — bundle inlined, no runtime network",
+  "skill": "infographic-creator (antvis/Infographic skills.zip 0.2.19)",
+  "chromodynamic_compliance": "palette entries ordered to match per-row epistemic status; WULmoji glyph carries the same state in text; icon service unavailable offline so badges degraded to pure state-colored orbs",
+  "law": "beauty does not imply authority; the picture is a projection of the audit, never a source of it"
+ },
+ "frame_note": "The matrix renders the delta between another frame's claims and this disk's witnessed state. Seven ghosts flip only when the repair frame pushes; the infographic must then be regenerated from a fresh audit run, never edited by hand."
+}
