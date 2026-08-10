@@ -15,6 +15,13 @@ import secrets
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
+from helen_os.ledger.hash_chain import canonical_json, sha256_hex
+
+
+def h_v(x) -> str:
+    """Canonical hash — same canonicalizer as the ledger/HAL. No second one."""
+    return sha256_hex(canonical_json(x))
+
 
 class LogicalClock:
     """Deterministic tick counter. No wall time anywhere in this layer."""
@@ -50,6 +57,14 @@ class Capability:
     # back-compatible). Residual after binding: credential/key theft still lets the
     # true-holder-secret bearer invoke — reduction, not elimination.
     holder: str = ""
+    # effect_hash — E004: binds κ to ONE exact effect, so a κ minted for effect e1 cannot
+    # be redirected to a different e2 sharing the same scope (scope authorizes a CLASS).
+    # Empty "" = unbound (legacy). CRITICAL (E004 finding): the executor DERIVES the
+    # effect hash from the presented request at the choke point — it is NOT a caller-
+    # supplied assertion. Residual: binds_hash (candidate) and pre_state_hash remain
+    # caller-asserted in this MVP; deriving them needs a governed-state object +
+    # canonical candidate — the "derive all facts at choke point" upgrade (next epoch).
+    effect_hash: str = ""
 
 
 class CapabilityFactory:
@@ -67,6 +82,7 @@ class CapabilityFactory:
         admission_decision: str,
         ttl_ticks: int = 100,
         holder: str = "",
+        effect_hash: str = "",
     ) -> Capability:
         if admission_decision != "ADMIT":
             raise PermissionError(
@@ -80,12 +96,13 @@ class CapabilityFactory:
             expiry_tick=self._clock.now() + ttl_ticks,
             nonce=secrets.token_hex(8),
             holder=holder,
+            effect_hash=effect_hash,
         )
 
 
 @dataclass(frozen=True)
 class InvokeResult:
-    status: str  # EXECUTED | ALREADY_CONSUMED | EXPIRED | BIND_MISMATCH | PRE_STATE_MISMATCH | SCOPE_MISMATCH | HOLDER_MISMATCH
+    status: str  # EXECUTED | ALREADY_CONSUMED | EXPIRED | BIND_MISMATCH | PRE_STATE_MISMATCH | SCOPE_MISMATCH | HOLDER_MISMATCH | EFFECT_MISMATCH | CAP_TYPE_MISMATCH
     effect_ran: bool
 
 
@@ -106,7 +123,14 @@ class Executor:
         scope: str,
         effect: Optional[Callable[[], None]] = None,
         presented_holder: str = "",
+        effect_request: object = None,
     ) -> InvokeResult:
+        # #10 forged-type guard: a duck-typed dict must be REFUSED cleanly, not crash
+        # with AttributeError. CorrectType(κ) ⊬ ValidCapability(κ) — this only blocks
+        # non-Capability objects; a forged real Capability instance is a separate,
+        # documented residual (needs a mint registry, not isinstance).
+        if not isinstance(cap, Capability):
+            return InvokeResult("CAP_TYPE_MISMATCH", False)
         key = (cap.cap_id, cap.nonce)
         if key in self._consumed:
             return InvokeResult("ALREADY_CONSUMED", False)
@@ -124,6 +148,13 @@ class Executor:
             return InvokeResult("PRE_STATE_MISMATCH", False)
         if cap.scope != scope:
             return InvokeResult("SCOPE_MISMATCH", False)
+        # E004 exact-effect binding: the executor DERIVES the effect hash from the
+        # presented request (h_v = sha256(canonical_json)) — never trusts a caller-
+        # supplied effect_hash string. A κ bound to effect e1 refuses a different e2.
+        if cap.effect_hash != "":
+            derived = h_v(effect_request)
+            if derived != cap.effect_hash:
+                return InvokeResult("EFFECT_MISMATCH", False)
         self._consumed.add(key)  # consume BEFORE effect: no retry window
         self._active = key       # sink guards accept ONLY during this window
         try:
