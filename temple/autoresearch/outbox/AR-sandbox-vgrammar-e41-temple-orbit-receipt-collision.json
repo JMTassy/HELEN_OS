@@ -1,0 +1,39 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sandbox-vgrammar-e41-temple-orbit-receipt-collision",
+  "target": "sandbox_visual_grammar",
+  "epoch": "E41",
+  "parent_epoch": "E40",
+  "finding_type": "semantic_collision",
+  "hypothesis": "If temple.html orbit decoration reuses the receipt-state hexes (#00ff88 skills ring vs receipted halos, #ffaa00 connectors ring vs PENDING amber), an unreceipted skills node sitting on a green ring reads as receipted — the E40 collision class reproduced on the Semantic Cockpit.",
+  "summary": "temple.html (authority: false badge, L81) assigns #00ff88 at least five meanings: (1) SKILLS orbit decoration — L240 col:'#00ff88', permanently lit; (2) receipt-backed state — RECEIPTED halos L573/L617 drawn around dwelled-confirmed nodes; (3) governance action — '[ENTER] CONFIRM' button L707-709; (4) receipt ticker rows L730 (non-REJECTED = green); (5) UI selection/health — .qa-btn.active L36, .pulse-v.ok L44, ALLOWED ✓ listings L696-697. In parallel #ffaa00: CONNECTORS orbit decoration L249 vs .pulse-v.warn L44 and RECEIPT_STATUS PENDING L701. Worst case mirrors E40: receipted halos (session-local synthetic receipts — RECEIPTED Set populated at runtime, L310, no ledger write) render in the same hex as the skills ring's idle decoration, so receipt-state is indistinguishable from decoration on that orbit. Secondary (temple_akashic_v1.html, authority=false · NO_CLAIM · NO_SHIP, L755): '● LIVE · GROQ ACTIVE' badge L1085 in rgba(0,255,136,.5) — liveness in green, direct E31-class recurrence (E31 ruled liveness maps to OBSERVED). Tertiary observation, no edit proposed: akashic particle palette L847 uses green decoratively labeled 'ledger'.",
+  "evidence": [
+    "apps/helen-surface/temple.html:81 — <span class=\"t-badge auth\">authority: false</span>",
+    "apps/helen-surface/temple.html:240 — SKILLS orbit col:'#00ff88' (decoration)",
+    "apps/helen-surface/temple.html:573,617 — RECEIPTED halos in rgba(0,255,136,…) (receipt state)",
+    "apps/helen-surface/temple.html:310 — RECEIPTED=new Set() populated at runtime, no ledger write",
+    "apps/helen-surface/temple.html:707-709 — '[ENTER] CONFIRM' button in #00ff88 (governance action)",
+    "apps/helen-surface/temple.html:249 vs 44,701 — #ffaa00 CONNECTORS decoration vs warn/PENDING amber",
+    "apps/helen-surface/temple_akashic_v1.html:755 — authority=false · NO_CLAIM · NO_SHIP",
+    "apps/helen-surface/temple_akashic_v1.html:1085 — '● LIVE · GROQ ACTIVE' in rgba(0,255,136,.5) (E31-class liveness-green)",
+    "apps/helen-surface/temple_akashic_v1.html:847 — particle color [0,255,136] labeled 'ledger' (decorative, observation only)"
+  ],
+  "proposed_tweak": "temple.html: SKILLS orbit L240 #00ff88 → #00b894 and CONNECTORS orbit L249 #ffaa00 → #cc8800 — the exact E40-keep hexes, giving decoration a consistent off-governance palette across home_v1 and temple. temple_akashic_v1.html: LIVE badge L1085 rgba(0,255,136,0.5) → rgba(0,212,255,0.5) (cyan/OBSERVED per E31 ruling; cyan already in the file's particle palette). Three edits, reversible; receipted halos, CONFIRM, ticker, and PENDING amber keep their hexes and become unique.",
+  "metric": "grep \"col:'#00ff88'\\|col:'#ffaa00'\" apps/helen-surface/temple.html returns 0 hits; grep -c '0,255,136' apps/helen-surface/temple_akashic_v1.html drops 2→1",
+  "rule": "keep if orbit decoration hexes are disjoint from receipt/PENDING hexes and liveness renders in cyan; reject if operator rules orbit colors are receipt-bearing (then each orbit needs a receipt-backed state model, not a static col field)",
+  "next": "Audit focus.html, dream_of_conquest.html, goblin/gravure.html — the last unswept surfaces — closing the full helen-surface visual-grammar audit",
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-10T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (live probe: temple.html L240/L249 confirm orbit hexes identical to receipt-halo L573/617 and PENDING L701 hexes; L310 confirms RECEIPTED is runtime-local; akashic L1085 confirms liveness-green; L847 confirms decorative 'ledger' green particle)",
+    "epoch": "E41",
+    "parent_epoch": "E40",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
