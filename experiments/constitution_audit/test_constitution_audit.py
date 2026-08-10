@@ -24,7 +24,7 @@ def _rows(report):
 
 def test_all_constitution_rows_covered():
     report = audit("test-frame")
-    assert set(_rows(report)) == {f"C{i}" for i in range(1, 13)}
+    assert set(_rows(report)) == {f"C{i}" for i in range(1, 14)}
 
 
 def test_functional_rows_witnessed_in_this_frame():

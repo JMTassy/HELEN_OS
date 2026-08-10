@@ -135,6 +135,8 @@ ROWS = [
      "claimed": "UNBUILT", "patterns": r"UnifiedStore|unified_store"},
     {"id": "C12", "title": "E012-B Warren Mediation Path Completeness",
      "claimed": "UNBUILT", "patterns": r"mediation_path|path_completeness"},
+    {"id": "C13", "title": "Frame-Indexed Truth (FrameContext harvested, not injected)",
+     "claimed": "WITNESSED", "patterns": r"FrameContext|frame_context|TransportVerifier"},
 ]
 
 
