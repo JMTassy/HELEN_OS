@@ -48,14 +48,30 @@ class TransitionIntent:
 @dataclass
 class TransactionRuntime:
     """Minimal PREPARED→EXECUTED→EVIDENCED→COMMITTED machine with crash injection.
-    `current_state_hash` is the authoritative governed-state hash source."""
+    `current_state_hash` is the authoritative governed-state hash source — unless a
+    GovernedStore is bound (E009), in which case the SINGLE store head is authoritative
+    and current_state_hash is kept in sync so the capability layer and the transaction
+    layer read one root, not two."""
     current_state_hash: str
+    store: object = None                          # E009: optional GovernedStore (single head)
     _txs: dict = field(default_factory=dict)      # tx_id -> TransitionIntent
     _committed_log: list = field(default_factory=list)  # ordered committed tx_ids (history)
 
+    def __post_init__(self):
+        if self.store is not None:                # store head wins on construction
+            self.current_state_hash = self.store.head()
+
+    def _head(self) -> str:
+        return self.store.head() if self.store is not None else self.current_state_hash
+
+    def _advance(self, new_head: str) -> None:
+        self.current_state_hash = new_head
+        if self.store is not None:                # advance the single head on execute
+            self.store.advance(new_head)
+
     # ---- forward path (each step is a separate durable proposition) ----
     def prepare(self, tx_id: str, effect_hash: str) -> TransitionIntent:
-        tx = TransitionIntent(tx_id, pre_state_hash=self.current_state_hash,
+        tx = TransitionIntent(tx_id, pre_state_hash=self._head(),
                               effect_hash=effect_hash)
         self._txs[tx_id] = tx
         return tx
@@ -63,11 +79,11 @@ class TransactionRuntime:
     def execute(self, tx_id: str, mutation: Callable[[], str]) -> None:
         """Run the deterministic internal mutation; mutation() returns the new state hash."""
         tx = self._txs[tx_id]
-        if tx.pre_state_hash != self.current_state_hash:
+        if tx.pre_state_hash != self._head():
             tx.status = ABORTED
             return
         new_hash = mutation()
-        self.current_state_hash = new_hash
+        self._advance(new_hash)                   # E009: advance the single head
         tx.post_state_hash = new_hash
         tx.status = EXECUTED
 
@@ -119,7 +135,7 @@ class TransactionRuntime:
         if self.is_committed(tx_id):
             return "COMMITTED_ONCE"
         # stale pre-state: another transition moved the world — never resume
-        if tx.pre_state_hash != self.current_state_hash and tx.status in (PREPARED, ABORTED):
+        if tx.pre_state_hash != self._head() and tx.status in (PREPARED, ABORTED):
             tx.status = ABORTED
             return "STALE_PRE_STATE"
         # effect happened but no committed marker: do NOT auto-commit / fabricate a receipt
