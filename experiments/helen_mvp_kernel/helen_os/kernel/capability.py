@@ -34,7 +34,13 @@ class LogicalClock:
 class Capability:
     cap_id: str
     binds_hash: str        # h_c — candidate hash this κ authorizes
-    pre_state_hash: str    # h_pre — state the mutation must start from
+    # h_pre — CALLER CONTRACT (E002): pre_state_hash MUST be a TOTAL commitment over
+    # all admission-relevant state (e.g. h_v(full_canonical_state)), not a partial
+    # digest. The layer checks equality only; it cannot see fields the caller omitted.
+    # Under-hashing lets a mutation to an unhashed field slip a stale-context write
+    # through — a caller violation, not a kernel defect. Total-hashing catches it via
+    # PRE_STATE_MISMATCH (see test_hal_e002_total_state_commitment).
+    pre_state_hash: str
     scope: str             # e.g. "ledger.append"
     expiry_tick: int
     nonce: str
