@@ -34,6 +34,10 @@ class CoverageReceipt:
     checked_item_ids: tuple
     evidence_refs: tuple          # each ref must be derivable from x
     witness_code_hash: str = ""
+    # Per-item attribution: {item_id: evidence_ref}. When provided, HAL binds each
+    # item's evidence to THAT item (defeats identity-displacement, E001). Legacy
+    # witnesses omit it and are checked by set-subset only (weaker, back-compatible).
+    attribution: tuple = ()       # tuple of (item_id, evidence_ref) pairs
 
 
 @dataclass(frozen=True)
@@ -66,8 +70,15 @@ def recompute_live(
     x,
     surface_ids: Callable,
     derivable_refs: Callable,
+    item_derivable: Optional[Callable] = None,
 ) -> tuple[bool, Optional[str]]:
-    """Live = RecomputeCoverage(receipt) — HAL derives every condition itself."""
+    """Live = RecomputeCoverage(receipt) — HAL derives every condition itself.
+
+    item_derivable(x, item_id) -> set of refs legal for THAT item. When the receipt
+    carries per-item `attribution` and item_derivable is supplied, B_consistency is
+    enforced per item — evidence for item i must derive from item i, defeating the
+    identity-displacement attack (E001). Absent both, falls back to global set-subset.
+    """
     if receipt is None:
         return False, "NO_EVIDENCE"
     if receipt.input_hash != h_v(x):
@@ -80,7 +91,14 @@ def recompute_live(
     if len(receipt.evidence_refs) == 0 and len(required) > 0:
         return False, "WITNESS_NOT_LIVE"                        # B_activity
     if not set(receipt.evidence_refs) <= set(derivable_refs(x)):
-        return False, "FABRICATED_EVIDENCE"                     # B_consistency
+        return False, "FABRICATED_EVIDENCE"                     # B_consistency (global)
+    if item_derivable is not None:                              # B_consistency (per-item)
+        attributed = {i: r for i, r in receipt.attribution}
+        if set(attributed) != set(required):
+            return False, "INCOMPLETE_ATTRIBUTION"
+        for item_id, ref in attributed.items():
+            if ref not in set(item_derivable(x, item_id)):
+                return False, "DISPLACED_EVIDENCE"             # E001 caught
     return True, None
 
 
@@ -94,6 +112,7 @@ def check(
     witness_id: str,
     witness_version: str = "1.0.0",
     canary: Optional[Callable] = None,   # x -> poisoned twin the witness MUST fail
+    item_derivable: Optional[Callable] = None,  # x, item_id -> refs legal for that item
 ) -> HALCheckResult:
     def result(verdict, live, reason, receipt=None):
         required = len(set(surface_ids(x)))
@@ -121,7 +140,7 @@ def check(
     except Exception:
         return result(UNKNOWN, False, "WITNESS_ERROR")
 
-    live, reason = recompute_live(receipt, x, surface_ids, derivable_refs)
+    live, reason = recompute_live(receipt, x, surface_ids, derivable_refs, item_derivable)
     if not live:
         return result(UNKNOWN, False, reason, receipt)
     return result(PASS if predicate_holds else FAIL, True, None, receipt)
