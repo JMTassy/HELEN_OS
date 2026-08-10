@@ -1,0 +1,37 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sandbox-vgrammar-e39-shipped-chainok-collision",
+  "target": "sandbox_visual_grammar",
+  "epoch": "E39",
+  "parent_epoch": "E33",
+  "finding_type": "semantic_collision",
+  "hypothesis": "If the starship.html ledger panel renders both SHIPPED governance verdicts and cum_hash 'chain OK' integrity signals via the same class (.lv.g → --g:#00ff41), a viewer cannot distinguish a MAYOR-signed governance outcome from a structural hash-validity check — violating the one-meaning-per-color rule.",
+  "summary": "starship.html ledger source panel (L557–L593) renders eight values in .lv.g (CSS L55: .lv.g{color:var(--g)}; L11: --g:#00ff41). Three are governance verdicts — status SHIPPED (L563, L570) and 'SHIP · 29/29 tests GREEN' (L584). Five are hash-chain integrity signals — 'chain OK · +1' on cum_hash rows (L565, L572, L579, L586, L593). Source Atlas Doctrine reserves green exclusively for governance-ADMITTED; chain validity is a structural/observational property (hash verified ≈ 🔵 OBSERVED / MONO receipt voice), not a verdict. The collision is highest-stakes on L579: a NO_SHIP entry (L578, .lv.r) still shows its cum_hash in ADMITTED-green, so a rejected entry carries green in the same row block. --c (#00e5ff, cyan) is already used in the panel for entry ids (.lv.c) as the structural/receipt voice and is the natural slot for chain-validity. File declares authority=false (L171: 'NO RECEIPT · authority=false · action required').",
+  "evidence": [
+    "apps/helen-surface/starship.html:11 — --g:#00ff41 palette definition",
+    "apps/helen-surface/starship.html:55 — .lv.g{color:var(--g)} shared class",
+    "apps/helen-surface/starship.html:563,570,584 — status SHIPPED / SHIP in .lv.g (governance verdict)",
+    "apps/helen-surface/starship.html:565,572,579,586,593 — cum_hash 'chain OK · +1' in .lv.g (structural integrity)",
+    "apps/helen-surface/starship.html:578–579 — NO_SHIP entry whose cum_hash still renders ADMITTED-green",
+    "apps/helen-surface/starship.html:171 — 'NO RECEIPT · authority=false · action required'",
+    "CLAUDE.md §Source Atlas Doctrine — one meaning per color; MONO=receipt/proof voice; 🟢=ADMITTED only"
+  ],
+  "proposed_tweak": "Reclassify the five cum_hash 'chain OK · +1' spans (L565, L572, L579, L586, L593) from class=\"lv g\" to class=\"lv c\" (cyan, structural/receipt voice already used for entry ids). Green remains exclusively on SHIP/SHIPPED verdict rows. Five one-character class edits; no logic change; fully reversible.",
+  "metric": "grep '\"lv g\">chain OK' apps/helen-surface/starship.html returns 0 hits; grep -c '\"lv g\">SHIP' stays 3",
+  "rule": "keep if chain-validity renders in cyan (structural) and green appears only on governance verdict rows; reject if operator rules chain OK is itself a verdict-class signal — in which case it needs its own SA palette token, not shared green",
+  "next": "Audit home_v1.html and helen2027.html branding greens (#00ff88) for governance-vs-branding annotation gaps, completing the surface sweep started in f2a9/E31–E33",
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-10T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (live probe: starship.html L11 confirms --g:#00ff41; L55 confirms shared .lv.g class; grep confirms 3 SHIP + 5 chain-OK usages, no other .lv.g values; L578–579 confirms NO_SHIP row with green cum_hash; L171 confirms authority=false)",
+    "epoch": "E39",
+    "parent_epoch": "E33",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
