@@ -237,7 +237,7 @@ const AGENT_META={
 };
 
 const OUTER_RINGS=[
-  {key:'skills',     label:'SKILLS',      oR:.76, col:'#00ff88',shape:'diamond',oS:.00038,nodes:[
+  {key:'skills',     label:'SKILLS',      oR:.76, col:'#00b894',shape:'diamond',oS:.00038,nodes:[ // teal, off-governance (E41)
     {k:'sk_shell', lbl:'SHELL·RO',  type:'SKILL',      intent:'Read filesystem state safely',        reasoning:'SHELL·RO — read-only filesystem access',allowed:['list_files','read_file','inspect_output'],forbidden:['write','delete','mutate'],reversible:true},
     {k:'sk_pytest',lbl:'PYTEST',    type:'SKILL',      intent:'Run test suite read-only',            reasoning:'PYTEST — read-only test runner',allowed:['run_tests','read_results','count_pass_fail'],forbidden:['modify_tests','clear_results'],reversible:true},
     {k:'sk_git',   lbl:'GIT·STATUS',type:'SKILL',      intent:'Inspect repository state',            reasoning:'GIT·STATUS — repo inspection',allowed:['git_status','git_log','git_diff'],forbidden:['push','commit','force_reset'],reversible:true},
@@ -246,7 +246,7 @@ const OUTER_RINGS=[
     {k:'sk_rcval', lbl:'RCPT·VAL',  type:'SKILL',      intent:'Validate receipt schema and hash',    reasoning:'RCPT·VAL — verify receipt integrity',allowed:['check_schema','verify_hash','compare'],forbidden:['generate','sign','overwrite'],reversible:true},
     {k:'sk_schema',lbl:'SCHEMA·CHK',type:'SKILL',      intent:'Check artifact schema conformance',   reasoning:'SCHEMA·CHK — validate conformance',allowed:['validate','report_violations','diff'],forbidden:['modify_schemas','suppress_errors'],reversible:true},
   ]},
-  {key:'connectors', label:'CONNECTORS',  oR:.98, col:'#ffaa00',shape:'square',  oS:.00028,nodes:[
+  {key:'connectors', label:'CONNECTORS',  oR:.98, col:'#cc8800',shape:'square',  oS:.00028,nodes:[ // dark amber, distinct from PENDING (E41)
     {k:'cn_github', lbl:'GITHUB',    type:'CONNECTOR',  intent:'Read repository and PR state',        reasoning:'GITHUB — read-only remote inspection',allowed:['read_PR','read_issues','read_CI'],forbidden:['push','merge','close_PR'],reversible:true},
     {k:'cn_local',  lbl:'LOCAL·REPO',type:'CONNECTOR',  intent:'Read local SOT working tree',         reasoning:'LOCAL·REPO — inspect local git tree',allowed:['read_files','list_tree','inspect_git'],forbidden:['write','delete_sovereign_paths'],reversible:true},
     {k:'cn_browser',lbl:'BROWSER',   type:'CONNECTOR',  intent:'Read visible browser content',        reasoning:'BROWSER — read-only page access',allowed:['read_page','extract_text','screenshot'],forbidden:['submit_forms','write_cookies'],reversible:true},
