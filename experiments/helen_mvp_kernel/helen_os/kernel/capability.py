@@ -44,6 +44,12 @@ class Capability:
     scope: str             # e.g. "ledger.append"
     expiry_tick: int
     nonce: str
+    # holder — E003: binds κ to its intended holder so cross-actor HANDOFF is refused
+    # (affine consumption only stops REUSE). Opaque id in this MVP; the production form
+    # is holder_pubkey + a signature check at invoke. Empty "" = unbound (legacy,
+    # back-compatible). Residual after binding: credential/key theft still lets the
+    # true-holder-secret bearer invoke — reduction, not elimination.
+    holder: str = ""
 
 
 class CapabilityFactory:
@@ -60,6 +66,7 @@ class CapabilityFactory:
         scope: str,
         admission_decision: str,
         ttl_ticks: int = 100,
+        holder: str = "",
     ) -> Capability:
         if admission_decision != "ADMIT":
             raise PermissionError(
@@ -72,12 +79,13 @@ class CapabilityFactory:
             scope=scope,
             expiry_tick=self._clock.now() + ttl_ticks,
             nonce=secrets.token_hex(8),
+            holder=holder,
         )
 
 
 @dataclass(frozen=True)
 class InvokeResult:
-    status: str  # EXECUTED | ALREADY_CONSUMED | EXPIRED | BIND_MISMATCH | PRE_STATE_MISMATCH | SCOPE_MISMATCH
+    status: str  # EXECUTED | ALREADY_CONSUMED | EXPIRED | BIND_MISMATCH | PRE_STATE_MISMATCH | SCOPE_MISMATCH | HOLDER_MISMATCH
     effect_ran: bool
 
 
@@ -97,10 +105,17 @@ class Executor:
         pre_state_hash: str,
         scope: str,
         effect: Optional[Callable[[], None]] = None,
+        presented_holder: str = "",
     ) -> InvokeResult:
         key = (cap.cap_id, cap.nonce)
         if key in self._consumed:
             return InvokeResult("ALREADY_CONSUMED", False)
+        # E003 holder binding: a bound κ (holder != "") refuses any invoker who does
+        # not present the matching holder credential — cross-actor handoff blocked.
+        # Unbound κ (holder == "") keeps legacy behavior. Checked BEFORE consumption
+        # so a wrong-holder attempt neither fires nor spends the capability.
+        if cap.holder != "" and cap.holder != presented_holder:
+            return InvokeResult("HOLDER_MISMATCH", False)
         if self._clock.now() > cap.expiry_tick:
             return InvokeResult("EXPIRED", False)
         if cap.binds_hash != expected_hash:
