@@ -1,0 +1,81 @@
+{
+ "id": "E027",
+ "name": "HER_HAL_DUAL_HEAD_RULING",
+ "claim_type": "draft_doctrine",
+ "layer": "TEMPLE",
+ "authority": false,
+ "sovereign": false,
+ "canon": false,
+ "status": "PROPOSED",
+ "simulation": "DREAM_OF_CONQUEST",
+ "ruling": {
+  "title": "THE DUAL-HEAD RISK IS NOW THE HIGHEST-VALUE LOCAL QUESTION",
+  "correction": "REPLAY was not missing. The unresolved question is whether HELEN has one authoritative committed-state root or two competing heads.",
+  "heads": {
+   "G_SM": "StateManager.get_current_state_hash()",
+   "G_TX": "TransactionRuntime.governed_state_hash()",
+   "note": "Not automatically a defect — possibly intentional layered views. Until the relationship is established, the strongest capability invariant is under-specified."
+  },
+  "target_invariant": "kappa.h_pre = H(G_latest_committed), where 'latest committed' has exactly one machine-defined meaning — NOT kappa.h_pre = G_SM."
+ },
+ "her_view": {
+  "finding": "Semantic ambiguity: 'current state' has two implementations. Both names sound authoritative while possibly representing different lifecycle moments.",
+  "hypothesis": "G_SM = working/current application state; G_TX = durably committed governed state. If intentional, the distinction must be explicit in types and names; if not, semantic aliasing: same phrase != same state semantics.",
+  "instruction": "Do not merge the heads until DH-01 tells us what relationship they actually have."
+ },
+ "hal_view": {
+  "single_question": "Can a capability minted against one head successfully execute after the other head has advanced?",
+  "law_candidate": "InvokeSuccess(kappa) => kappa.h_pre = H(G_committed) at acceptance time.",
+  "naming_law": "Name(x) = StateManager does not imply x = authoritative committed root. This is C3 (non-transport) applied to subsystem naming."
+ },
+ "dh01_falsifier": {
+  "name": "DH-01 DUAL-HEAD DIVERGENCE TEST",
+  "protocol": [
+   "1. synchronize both heads at G0",
+   "2. commit G0 -> G1 through TransactionRuntime",
+   "3. intentionally leave StateManager at G0",
+   "4. invoke kappa bound to H(G0)",
+   "5. observe exact state source used by Executor"
+  ],
+  "record": [
+   "tx_head_before",
+   "tx_head_after",
+   "sm_head_before",
+   "sm_head_after",
+   "cap_pre_hash",
+   "executor_derived_pre_hash",
+   "invoke_status",
+   "reason_code",
+   "delta_g"
+  ],
+  "discriminator": "Invoke(kappa) =? FAIL(E_STALE_STATE) — the committed world has already advanced.",
+  "classification": {
+   "SAFE_DIVERGENCE": "Executor uses latest committed root and rejects stale kappa.",
+   "INTENTIONAL_LAYERING": "Heads differ but contracts explicitly prevent misuse.",
+   "DUAL_HEAD_FRACTURE": "Executor accepts against stale non-committed head."
+  }
+ },
+ "state_root_taxonomy": {
+  "roots": [
+   "G_working",
+   "G_prepared",
+   "G_committed",
+   "G_replayed"
+  ],
+  "question": "Which root does each module actually represent? Which head does Executor trust? Which head SHOULD Executor trust?",
+  "possible_resolution": "StateManager = G_working, TransactionRuntime = G_committed. Then the bug is not 'two heads' — it is using the wrong head for capability validation. Smaller, cleaner repair than merging all state machinery."
+ },
+ "boundary_patterns": {
+  "non_mutating": "TYPE -> DERIVE -> BIND -> TYPED OUTCOME",
+  "state_changing": "TYPE -> DERIVE -> BIND -> EXECUTE -> COMMIT -> REPLAY",
+  "note": "WUL, HAL, and transactions instantiate different fibers of the same meta-pattern. WUL loss != HAL verification != TX closure."
+ },
+ "repair_discipline": {
+  "rule": "Do not jump to UnifiedStore automatically. If DH-01 exposes a single wrong dependency, fix Executor -> committed_state_provider instead of building new storage abstraction.",
+  "principle": "Repair the violated boundary != redesign the world.",
+  "unifiedstore_condition": "Introduce only if evidence shows multiple duplicated authoritative roots requiring actual consolidation."
+ },
+ "chiddush": "HELEN's security depends less on how many witnesses it produces than on whether all privileged witnesses are anchored to the same committed world.",
+ "next_machine_question": "G_SM != G_TX => which one does kappa actually trust? DH-01 answers this next.",
+ "frame_note": "StateManager, TransactionRuntime and Executor are artifacts of another frame; on this filesystem E027 records the ruling and DH-01 as a PROPOSED falsifier design. Observed-there does not imply observed-here; the test earns its verdict only where those modules exist."
+}

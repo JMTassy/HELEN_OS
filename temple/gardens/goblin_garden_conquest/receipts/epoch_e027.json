@@ -1,0 +1,13 @@
+{
+ "receipt_type": "DREAM_EPOCH_RECEIPT_V0",
+ "epoch_id": "E027",
+ "epoch_name": "HER_HAL_DUAL_HEAD_RULING",
+ "claim_type": "draft_doctrine",
+ "artifact_hash": "19e4e504bd2dddeb6fe4e9dfac6d1583b87b953ab4d681f6809a800c84728206",
+ "layer": "TEMPLE",
+ "authority": false,
+ "sovereign": false,
+ "canon": false,
+ "status": "PROPOSED",
+ "simulation": "DREAM_OF_CONQUEST"
+}
