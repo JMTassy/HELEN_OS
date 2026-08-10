@@ -54,13 +54,20 @@ def test_e009_store_head_authoritative_on_construction():
     assert rt.current_state_hash == G1
 
 
-def test_e009_head_advances_only_via_execute():
+def test_e009_head_advances_at_commit_not_execute():
+    # E010 correction: the earlier E009 form asserted execute() advances the head — that
+    # WAS the bug (head moved to a computed-but-uncommitted post-state). Corrected law:
+    # execute computes the pending post-state; the head advances only at COMMIT.
     store = GovernedStore(G0)
     rt = TransactionRuntime(current_state_hash=G0, store=store)
     rt.prepare("t", h_v({"e": 1}))
     assert store.head() == G0                               # prepare does not move the head
     rt.execute("t", lambda: G1)
-    assert store.head() == G1                               # execute advances the single head
+    assert store.head() == G0                               # execute does NOT move the head
+    rt.evidence("t")
+    assert store.head() == G0                               # evidence does NOT move the head
+    rt.commit("t")
+    assert store.head() == G1                               # commit is the sole advance point
 
 
 def test_e009_e008_semantics_preserved_over_store():

@@ -82,9 +82,12 @@ class TransactionRuntime:
         if tx.pre_state_hash != self._head():
             tx.status = ABORTED
             return
+        # E010: execute computes the PENDING post-state only. It does NOT advance the
+        # authoritative head — EXECUTED ⊬ COMMITTED. A crash here must leave the head at
+        # pre (G0), never at a computed-but-uncommitted post (G1). The head is the LATEST
+        # COMMITTED head at all times; the commit path is the sole serialization point.
         new_hash = mutation()
-        self._advance(new_hash)                   # E009: advance the single head
-        tx.post_state_hash = new_hash
+        tx.post_state_hash = new_hash             # pending, not authoritative
         tx.status = EXECUTED
 
     def evidence(self, tx_id: str) -> None:
@@ -98,13 +101,20 @@ class TransactionRuntime:
 
     def commit(self, tx_id: str) -> str:
         tx = self._txs[tx_id]
-        if not self._commit_derivable(tx):
-            return "COMMIT_REFUSED"
         if tx.commit_marker is not None:        # idempotent: already committed
             return "ALREADY_COMMITTED"
+        if not self._commit_derivable(tx):
+            return "COMMIT_REFUSED"
+        # E010 compare-and-swap: the head must STILL equal this tx's pre-state. If a
+        # concurrent/interleaved tx already committed and moved the head, this one is
+        # stale and must NOT apply — the commit path is the single serialization point.
+        if self._head() != tx.pre_state_hash:
+            tx.status = ABORTED
+            return "STALE_PRE_STATE"
         tx.commit_marker = tx.execution_receipt_hash
         tx.status = COMMITTED
         self._committed_log.append(tx_id)
+        self._advance(tx.post_state_hash)       # E010: head advances ONLY here, exactly once
         return COMMITTED
 
     # ---- DERIVED committed predicate — never trusts tx.status ----
