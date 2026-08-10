@@ -109,10 +109,15 @@ class InvokeResult:
 class Executor:
     """Affine invoker: one successful use consumes κ forever."""
 
-    def __init__(self, clock: LogicalClock) -> None:
+    def __init__(self, clock: LogicalClock, state_provider: Optional[Callable[[], str]] = None) -> None:
         self._clock = clock
         self._consumed: set[tuple[str, str]] = set()
         self._active: Optional[tuple[str, str]] = None
+        # E006: derive-at-choke-point for pre-state. When set, the executor obtains the
+        # CURRENT governed-state hash from this authoritative source and IGNORES the
+        # caller-supplied pre_state_hash — closing the stale-state caller-assertion gap.
+        # None = legacy (trusts the caller-supplied pre_state_hash).
+        self._state_provider = state_provider
 
     def invoke(
         self,
@@ -144,7 +149,12 @@ class Executor:
             return InvokeResult("EXPIRED", False)
         if cap.binds_hash != expected_hash:
             return InvokeResult("BIND_MISMATCH", False)
-        if cap.pre_state_hash != pre_state_hash:
+        # E006: if an authoritative state source is present, DERIVE the current state
+        # hash and compare to the capability — the caller-supplied pre_state_hash is
+        # IGNORED. A stale-state attack fails even if the caller echoes cap.pre_state_hash,
+        # because the derived current hash reflects the ACTUAL (moved) governed state.
+        effective_pre_state = self._state_provider() if self._state_provider else pre_state_hash
+        if cap.pre_state_hash != effective_pre_state:
             return InvokeResult("PRE_STATE_MISMATCH", False)
         if cap.scope != scope:
             return InvokeResult("SCOPE_MISMATCH", False)
