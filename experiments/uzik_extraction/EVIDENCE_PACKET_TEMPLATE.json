@@ -1,0 +1,26 @@
+{
+  "_contract": "EVIDENCE_PACKET_V1 — the only door raw evidence enters through (M01). Operator-supplied: HELEN never selects its own evidence. Every artifact without a rights_basis is refused; re-submitting a changed source surfaces E_SOURCE_STATE_DRIFT instead of silently updating the frozen record.",
+  "packet_id": "PKT-UZIK-001",
+  "provided_by": "OPERATOR (fill in)",
+  "artifacts": [
+    {
+      "source_id": "UNIQUE-ID (e.g. CALVI-PRESS-2019-01)",
+      "family": "press | registry | social | archive | imagery | corporate_filing",
+      "locator": "URL or archival reference",
+      "retrieved_at": "YYYY-MM-DD",
+      "content": "full text, or transcription; for imagery: base64 or a path plus ETA receipt chain",
+      "rights_basis": "REQUIRED — e.g. operator_owns, public_record, licensed, quotation_scope",
+      "derived_from": "source_id of the original if this is a repost/syndication, else omit"
+    }
+  ],
+  "_seed_registry_slots": [
+    "UZIK / Calvi on the Rocks organizational history (2003-2026)",
+    "Bruit de Fond",
+    "creative credits (documentary only — visual material routes through GLYPH_TRAP)",
+    "brand activations",
+    "Manucurist partnership",
+    "corporate-role overlap",
+    "cancellation states 2025-2026"
+  ],
+  "_census_reminder": "Declare PUBLIC_CORPUS_CENSUS v1 cells (entity x year x family x relation) alongside the first packet, or every absence question will honestly return bare UNKNOWN."
+}

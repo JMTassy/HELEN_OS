@@ -55,8 +55,23 @@ class Source:
     family: str                      # press | registry | social | synthetic_fixture ...
     locator: str
     retrieval_receipt: str           # hash of retrieval evidence
-    content_hash: str
+    content_hash: str                # M01: state hash binds CONTENT, not the URL
     derived_from: str = ""           # lineage pointer for repost clustering
+    rights_basis: str = ""           # M01: frozen retrieval scope + rights
+
+
+# M02 CLAIM_ATOMIZER: compound statements must be scissioned before entry.
+_COMPOUND_MARKERS = (" and ", " & ", ";", " as well as ", " + ")
+
+
+def atomize(text: str) -> tuple:
+    """Deterministic scission of a compound statement into candidate
+    atomic propositions (status: candidates only — atomization does not
+    verify). Conservative: over-splitting is safe, silent bundling is not."""
+    parts = [text]
+    for m in (". ", "; ") + _COMPOUND_MARKERS:
+        parts = [q for p in parts for q in p.split(m)]
+    return tuple(s.strip().rstrip(".") for s in parts if s.strip())
 
 
 @dataclass(frozen=True)
@@ -87,6 +102,9 @@ class EvidenceGraph:
             raise ValueError(f"E_UNTYPED_RELATION:{relation}")
         if evidence_class == "visual" and relation != "VISUAL_SIMILARITY_CANDIDATE":
             raise ValueError(f"E_GLYPH_TRAP:{relation}")   # resemblance ≠ authorship
+        for part in (subject, obj):
+            if any(m in part for m in _COMPOUND_MARKERS):
+                raise ValueError(f"E_COMPOUND_CLAIM:{part}")  # M02: scission first
         missing = [s for s in source_ids if s not in self.sources]
         if missing:
             raise ValueError(f"E_UNREGISTERED_SOURCE:{missing[0]}")
@@ -142,6 +160,45 @@ class EvidenceGraph:
         if c.evidence_class == "documentary" and c.relation == "CREATIVE_CREDIT":
             return "CREDITED"
         return "VISUAL_SIMILARITY_CANDIDATE"   # never silently SAME_DESIGNER
+
+
+# --- M01 ingestion door: EVIDENCE_PACKET_V1 ------------------------------
+
+def ingest_packet(graph: EvidenceGraph, packet: dict) -> dict:
+    """The only door raw evidence may enter through. Operator-supplied:
+    HELEN never selects its own evidence (self-selected evidence is
+    laundering by construction). Refuses artifacts without a declared
+    rights basis; detects SOURCE_STATE_DRIFT instead of silently
+    updating a frozen record."""
+    report = {"packet_id": packet.get("packet_id", "UNIDENTIFIED"),
+              "provided_by": packet.get("provided_by", "UNDECLARED"),
+              "registered": [], "refused": [], "drift": []}
+    for art in packet.get("artifacts", []):
+        sid = art.get("source_id", "")
+        if not art.get("rights_basis"):
+            report["refused"].append({"source_id": sid,
+                                      "reason": "E_RIGHTS_UNDECLARED"})
+            continue
+        content = art.get("content", "")
+        chash = hashlib.sha256(content.encode("utf-8")).hexdigest()
+        prior = graph.sources.get(sid)
+        if prior is not None and prior.content_hash != chash:
+            report["drift"].append({"source_id": sid,
+                                    "reason": "E_SOURCE_STATE_DRIFT",
+                                    "frozen": prior.content_hash,
+                                    "observed": chash})
+            continue  # the frozen record stands; drift is surfaced, not absorbed
+        graph.register_source(
+            source_id=sid, family=art.get("family", "undeclared"),
+            locator=art.get("locator", ""),
+            retrieval_receipt=h({"locator": art.get("locator", ""),
+                                 "retrieved_at": art.get("retrieved_at", ""),
+                                 "content_hash": chash}),
+            content_hash=chash,
+            derived_from=art.get("derived_from", ""),
+            rights_basis=art["rights_basis"])
+        report["registered"].append(sid)
+    return report
 
 
 # --- coverage-aware UNKNOWN (upgrade 3) ----------------------------------
@@ -232,6 +289,10 @@ class Nutrient:
     def __post_init__(self):
         if self.authority or self.admission:
             raise ValueError("E_GARDEN_IS_NOT_KERNEL")
+
+    @property
+    def self_refuted(self) -> bool:
+        return self.status == "COMPOSTED"
 
     def self_refusal(self, graph: EvidenceGraph) -> "Nutrient":
         """A generated insight cannot become canonical because HELEN
