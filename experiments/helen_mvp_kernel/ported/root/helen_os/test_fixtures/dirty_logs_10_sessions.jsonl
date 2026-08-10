@@ -1,0 +1,38 @@
+{"session": 1, "timestamp": "2026-03-19T08:00:00Z", "event": "boot", "boot_context": {"last_boot": null}, "action": "init", "result": "identity=HELEN governance, threads=3, tensions=2"}
+{"session": 1, "timestamp": "2026-03-19T08:15:00Z", "event": "interrupt", "reason": "user_navigated_away", "unsaved_state": {"current_thread": "TEMPLE_DESIGN"}}
+{"session": 2, "timestamp": "2026-03-19T08:45:00Z", "event": "boot", "boot_context": {"last_boot": "2026-03-19T08:00:00Z"}, "action": "init", "result": "identity=HELEN governance, threads=3, tensions=2"}
+{"session": 2, "timestamp": "2026-03-19T08:50:00Z", "event": "user_input", "message": "continue TEMPLE design", "action": "skill_suggest_next_action", "output": "next_action=Address avatar consistency tension"}
+{"session": 2, "timestamp": "2026-03-19T09:00:00Z", "event": "thread_status_change", "thread_id": "TEMPLE_DESIGN", "old_status": "unresolved", "new_status": "resolved"}
+{"session": 2, "timestamp": "2026-03-19T09:05:00Z", "event": "interrupt", "reason": "browser_refresh", "unsaved_state": {"active_thread": "TEMPLE_DESIGN", "status": "resolved"}}
+{"session": 3, "timestamp": "2026-03-19T09:30:00Z", "event": "boot", "boot_context": {"last_boot": "2026-03-19T08:45:00Z"}, "action": "init", "result": "identity=HELEN governance, threads=2 (TEMPLE_DESIGN excluded), tensions=1 (avatar resolved)"}
+{"session": 3, "timestamp": "2026-03-19T09:35:00Z", "event": "skill_activate", "skill": "retrieve_project_profile", "project": "CONQUEST_CORSICA"}
+{"session": 3, "timestamp": "2026-03-19T09:40:00Z", "event": "new_thread_created", "thread_id": "CONQUEST_UI_MVP", "salience": 8, "status": "unresolved"}
+{"session": 3, "timestamp": "2026-03-19T09:45:00Z", "event": "interrupt", "reason": "laptop_sleep", "unsaved_state": {"threads": ["LEDGER_ROLLBACK", "CONQUEST_UI_MVP"]}}
+{"session": 4, "timestamp": "2026-03-19T10:15:00Z", "event": "boot", "boot_context": {"last_boot": "2026-03-19T09:30:00Z"}, "action": "init", "result": "identity=HELEN governance, threads=2, tensions=2"}
+{"session": 4, "timestamp": "2026-03-19T10:20:00Z", "event": "thread_reactivated", "thread_id": "LEDGER_ROLLBACK", "old_status": "resolved", "new_status": "unresolved"}
+{"session": 4, "timestamp": "2026-03-19T10:25:00Z", "event": "tension_resolved", "tension": "simulation_vs_myth", "decision": "build_simulation_not_egregor"}
+{"session": 4, "timestamp": "2026-03-19T10:30:00Z", "event": "interrupt", "reason": "user_closed_tab", "unsaved_state": {"threads": ["LEDGER_ROLLBACK", "CONQUEST_UI_MVP"], "tensions": ["COMPLEXITY_BUDGET"]}}
+{"session": 5, "timestamp": "2026-03-19T11:00:00Z", "event": "boot", "boot_context": {"last_boot": "2026-03-19T10:15:00Z"}, "action": "init", "result": "identity=HELEN governance, threads=2, tensions=1"}
+{"session": 5, "timestamp": "2026-03-19T11:05:00Z", "event": "user_input", "message": "what changed since I left?", "action": "summarize_active_thread"}
+{"session": 5, "timestamp": "2026-03-19T11:10:00Z", "event": "skill_output", "skill": "summarize_active_thread", "summary": "LEDGER_ROLLBACK reactivated with high weight"}
+{"session": 5, "timestamp": "2026-03-19T11:15:00Z", "event": "interrupt", "reason": "network_timeout", "unsaved_state": {"acknowledged": false}}
+{"session": 6, "timestamp": "2026-03-19T11:45:00Z", "event": "boot", "boot_context": {"last_boot": "2026-03-19T11:00:00Z"}, "action": "init", "result": "identity=HELEN governance, threads=2, tensions=1"}
+{"session": 6, "timestamp": "2026-03-19T11:50:00Z", "event": "thread_weight_increase", "thread_id": "CONQUEST_UI_MVP", "old_weight": 8, "new_weight": 10}
+{"session": 6, "timestamp": "2026-03-19T11:55:00Z", "event": "interrupt", "reason": "user_navigated_away"}
+{"session": 7, "timestamp": "2026-03-19T12:30:00Z", "event": "boot", "boot_context": {"last_boot": "2026-03-19T11:45:00Z"}, "action": "init", "result": "identity=HELEN governance, threads=2, tensions=1"}
+{"session": 7, "timestamp": "2026-03-19T12:35:00Z", "event": "user_input", "message": "what is my top priority?", "action": "skill_suggest_next_action"}
+{"session": 7, "timestamp": "2026-03-19T12:40:00Z", "event": "skill_output", "next_action": "Address COMPLEXITY_BUDGET tension (weight=7)"}
+{"session": 7, "timestamp": "2026-03-19T12:45:00Z", "event": "interrupt", "reason": "browser_crash"}
+{"session": 8, "timestamp": "2026-03-19T13:15:00Z", "event": "boot", "boot_context": {"last_boot": "2026-03-19T12:30:00Z"}, "action": "init", "result": "identity=HELEN governance, threads=2, tensions=1"}
+{"session": 8, "timestamp": "2026-03-19T13:20:00Z", "event": "tension_partially_resolved", "tension": "COMPLEXITY_BUDGET", "resolution": "focus_on_wedge_only"}
+{"session": 8, "timestamp": "2026-03-19T13:25:00Z", "event": "skill_reweight", "skill": "retrieve_project_profile", "weight": 5}
+{"session": 8, "timestamp": "2026-03-19T13:30:00Z", "event": "interrupt", "reason": "user_closed_tab"}
+{"session": 9, "timestamp": "2026-03-19T14:00:00Z", "event": "boot", "boot_context": {"last_boot": "2026-03-19T13:15:00Z"}, "action": "init", "result": "identity=HELEN governance, threads=1 (CONQUEST_UI_MVP high weight), tensions=0"}
+{"session": 9, "timestamp": "2026-03-19T14:05:00Z", "event": "user_input", "message": "status check", "action": "init"}
+{"session": 9, "timestamp": "2026-03-19T14:10:00Z", "event": "corpus_update", "change": "new_project_added", "project": "HELEN_LOCAL_APP"}
+{"session": 9, "timestamp": "2026-03-19T14:15:00Z", "event": "new_thread_created", "thread_id": "TEMPLE_CONSENSUS_LOOP", "salience": 9, "status": "unresolved"}
+{"session": 9, "timestamp": "2026-03-19T14:20:00Z", "event": "interrupt", "reason": "laptop_sleep"}
+{"session": 10, "timestamp": "2026-03-19T15:00:00Z", "event": "boot", "boot_context": {"last_boot": "2026-03-19T14:00:00Z"}, "action": "init", "result": "identity=HELEN governance, threads=2, tensions=0"}
+{"session": 10, "timestamp": "2026-03-19T15:05:00Z", "event": "user_input", "message": "build temple consensus", "action": "suggest_next_action"}
+{"session": 10, "timestamp": "2026-03-19T15:10:00Z", "event": "skill_output", "next_action": "Design Temple consensus loop (HER/HAL/CHRONOS/HELEN)"}
+{"session": 10, "timestamp": "2026-03-19T15:15:00Z", "event": "session_end", "reason": "user_saving", "final_state": "ready"}
