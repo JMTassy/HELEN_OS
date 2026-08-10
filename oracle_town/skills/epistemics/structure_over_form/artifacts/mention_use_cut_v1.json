@@ -1,0 +1,262 @@
+{
+  "payload": {
+    "artifact": "MENTION_USE_CUT_V1",
+    "authority": false,
+    "claim_status": "NO_CLAIM",
+    "measured_commit": "befd858c9302f3f1c38cc13fbc6bb01ac6e6a1a8",
+    "preregistered": {
+      "legend_rule": "table-row OR >=4 distinct cats",
+      "distance": "total variation on pair dists",
+      "perm_null": {
+        "N": 1000,
+        "seed": 42
+      },
+      "matched_nulls": {
+        "n": 20,
+        "seeds": "1000.."
+      }
+    },
+    "line_census": {
+      "legend_lines": 277,
+      "use_lines": 746
+    },
+    "use_only": {
+      "pair_mass": 359,
+      "all_lines_pair_mass": 1271,
+      "mass_drop_pct": 71.8,
+      "top10": [
+        [
+          "cost|validation",
+          27
+        ],
+        [
+          "structure|validation",
+          26
+        ],
+        [
+          "identity|validation",
+          18
+        ],
+        [
+          "identity|structure",
+          17
+        ],
+        [
+          "emergent|structure",
+          16
+        ],
+        [
+          "emergent|validation",
+          16
+        ],
+        [
+          "next_step|validation",
+          16
+        ],
+        [
+          "cost|identity",
+          15
+        ],
+        [
+          "cost|emergent",
+          14
+        ],
+        [
+          "cost|next_step",
+          14
+        ]
+      ],
+      "significant_pairs_vs_null": {
+        "cost|next_step": {
+          "obs": 14,
+          "null_q95": 5
+        },
+        "cost|validation": {
+          "obs": 27,
+          "null_q95": 10
+        },
+        "next_step|validation": {
+          "obs": 16,
+          "null_q95": 9
+        },
+        "emergent|emotion": {
+          "obs": 11,
+          "null_q95": 5
+        },
+        "emergent|structure": {
+          "obs": 16,
+          "null_q95": 15
+        },
+        "emotion|structure": {
+          "obs": 10,
+          "null_q95": 5
+        },
+        "cost|emergent": {
+          "obs": 14,
+          "null_q95": 10
+        },
+        "cost|identity": {
+          "obs": 15,
+          "null_q95": 8
+        },
+        "cost|structure": {
+          "obs": 11,
+          "null_q95": 9
+        },
+        "identity|structure": {
+          "obs": 17,
+          "null_q95": 12
+        },
+        "identity|validation": {
+          "obs": 18,
+          "null_q95": 14
+        },
+        "structure|validation": {
+          "obs": 26,
+          "null_q95": 15
+        },
+        "cost|emotion": {
+          "obs": 11,
+          "null_q95": 4
+        },
+        "emotion|identity": {
+          "obs": 9,
+          "null_q95": 5
+        },
+        "emotion|next_step": {
+          "obs": 7,
+          "null_q95": 3
+        },
+        "emotion|validation": {
+          "obs": 11,
+          "null_q95": 5
+        },
+        "identity|next_step": {
+          "obs": 9,
+          "null_q95": 7
+        },
+        "next_step|structure": {
+          "obs": 8,
+          "null_q95": 7
+        },
+        "artifact|operator": {
+          "obs": 7,
+          "null_q95": 2
+        },
+        "direction|emotion": {
+          "obs": 2,
+          "null_q95": 1
+        },
+        "direction|identity": {
+          "obs": 3,
+          "null_q95": 2
+        },
+        "direction|metrics": {
+          "obs": 2,
+          "null_q95": 1
+        }
+      },
+      "warning_pair_mass_obs": 27,
+      "warning_pair_mass_null_mean": 139.7
+    },
+    "matched_null_contamination": {
+      "D_A_B": 0.803611,
+      "D_A_C_distribution": [
+        0.796485,
+        0.804573,
+        0.804573,
+        0.804891,
+        0.806051,
+        0.80626,
+        0.806677,
+        0.8073,
+        0.808431,
+        0.808635,
+        0.809043,
+        0.809245,
+        0.809448,
+        0.809852,
+        0.809852,
+        0.810354,
+        0.810854,
+        0.812533,
+        0.816462,
+        0.821304
+      ],
+      "B_atypical_vs_nulls_q95": false
+    },
+    "joint_ranking": {
+      "top10": [
+        [
+          "wm_closure|wm_receipt",
+          89
+        ],
+        [
+          "wm_ledger|wm_receipt",
+          79
+        ],
+        [
+          "wm_closure|wm_ledger",
+          67
+        ],
+        [
+          "wm_ledger|wm_mutation",
+          49
+        ],
+        [
+          "loop|wm_ledger",
+          39
+        ],
+        [
+          "loop|wm_receipt",
+          39
+        ],
+        [
+          "wm_falsifier|wm_ledger",
+          34
+        ],
+        [
+          "loop|wm_closure",
+          30
+        ],
+        [
+          "wm_incidence|wm_ledger",
+          29
+        ],
+        [
+          "wm_falsifier|wm_receipt",
+          28
+        ]
+      ],
+      "v1_pairs_in_joint_top10": 0
+    },
+    "bare_warning_lineage": {
+      "total": 47,
+      "files": 13,
+      "distinct_normalized_clusters": 41,
+      "largest_clusters": [
+        [
+          2,
+          "⚠ ### — Third territory claimed (west quadrant). Wind friction accepted. Stabili"
+        ],
+        [
+          2,
+          "⚠ ### — Second border post established (east quadrant). Rain delayed but morale "
+        ],
+        [
+          2,
+          "⚠ ### — Fourth territory claimed (south quadrant). Entropy critical (#.###). Cas"
+        ],
+        [
+          2,
+          "⚠ ### — Border post planted (north quadrant). Rain delayed completion. Stability"
+        ],
+        [
+          2,
+          "castle_state: STRAINED ⚠"
+        ]
+      ]
+    }
+  },
+  "payload_sha256": "9e78fb9c889cea7cb2d8e6924805e5f7110a89705aefb891eb04024fbb7b9d8a"
+}

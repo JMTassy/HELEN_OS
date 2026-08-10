@@ -1,0 +1,484 @@
+{
+  "summary": "C0 (premium HER+HAL) vs T1 (HER+HAL + 6 cheap goblins) on the post-bead WULmoji question — measures ExplorationGain of cheap divergence",
+  "agentCount": 10,
+  "logs": [],
+  "result": {
+    "c0": {
+      "proposed": [
+        {
+          "id": "HER-C1-TRIAD-SYNTAGM",
+          "pattern": "The surviving operator triad (cost, validation, next_step) is not a co-occurrence bag but an ordered syntagm: within USE lines the three glyphs occur in one dominant linear order (predicted cost -> validation -> next_step), i.e. what survives de-iconization is a micro-grammar of sequence, not just association.",
+          "test": "At befd858c, extract all USE lines (post MENTION/USE cut) containing >=2 triad glyphs; record within-line token order; compute the modal-order fraction and compare against a within-line order-shuffle permutation null (N=1000, seed=42). Executable as an extension of the fingerprint pipeline: order counts over the same 746 USE lines.",
+          "falsifier": "No single order among the 6 permutations exceeds the q95 of the shuffled null (orders statistically uniform) — then the triad is bag-like and the syntagm hypothesis is dead."
+        },
+        {
+          "id": "HER-C2-WARNING-AS-PUNCTUATION",
+          "pattern": "warning's 5x anti-associativity is positional, not lexical: it functions as a boundary/terminal marker (line-solo or line-final), behaving like punctuation rather than vocabulary. Anti-association is then a side-effect of occupying single-glyph or edge positions.",
+          "test": "For every USE-line occurrence of warning, compute (a) solo-line rate and (b) normalized within-line position index; compare against the same statistics for frequency-matched glyphs via matched-null sampling (n=20 matched sets, same machinery as the D(A,B) test). Elevated solo/terminal rate above matched q95 confirms.",
+          "falsifier": "warning's solo-line and terminal-position rates fall inside the matched-null band — positional explanation fails and the anti-associativity requires a different mechanism (e.g. semantic repulsion), which this candidate does not claim."
+        },
+        {
+          "id": "HER-C3-FUNCTION-WORD-DISPERSION",
+          "pattern": "Glyphs that survive USE-only significance behave like closed-class function markers: the triad (cost, validation, next_step) should be evenly dispersed across the corpus, while non-surviving doctrinal glyphs (structure, emergent) should be bursty — concentrated in few files. Survival of de-iconization co-varies with dispersion, not raw frequency.",
+          "test": "Compute a dispersion statistic (Juilland's D or DP) per glyph over USE lines across the 901 md files at befd858c; bootstrap CIs (1000 resamples, seed=42); compare triad-set dispersion vs doctrinal-set dispersion.",
+          "falsifier": "Triad dispersion CIs overlap or fall below doctrinal-glyph dispersion — dispersion does not separate survivors from non-survivors, killing the function-word account."
+        },
+        {
+          "id": "HER-C4-IDENTITY-LOAD-CONCENTRATION",
+          "pattern": "Extending the WULmath D(A,B)-inside-null result: within the v1 palette itself, token identity carries structure ONLY at the significant triad; elsewhere glyph identity is substitutable (volume+placement suffice). Lexical information in the whole glyph language is concentrated in ~3 tokens.",
+          "test": "Two swap tests on USE lines: (i) permute glyph identities among non-triad v1 glyphs only, (ii) permute among triad glyphs only (N=1000 each, seed=42). Recompute the 22-pair lift profile and its distance to observed. Prediction: (i) stays inside its null band, (ii) exits it.",
+          "falsifier": "Either non-triad swaps exit the null (identity matters broadly — concentration claim false) or triad swaps stay inside it (identity matters nowhere — then NOTHING lexical survives de-iconization and the triad lifts are placement artifacts)."
+        },
+        {
+          "id": "HER-C5-SECOND-REGISTER-TEMPLATE-MASS",
+          "pattern": "The top-ranking second-register pairs (closure|receipt 89, ledger|receipt 79) are paste-lineage template mass, not productive usage — the structural mirror image of bare-warning drift (which is many-lineage, low-mass). High joint rank and high lineage-diversity are anti-correlated in this corpus.",
+          "test": "Apply the exact bare-warning normalized-cluster procedure to all USE lines containing closure|receipt and ledger|receipt: compute distinct-cluster/occurrence ratio and distinct-file spread; compare against bare-warning's ratio (41/47 = 0.87 across 17 files).",
+          "falsifier": "closure|receipt shows comparably high lineage diversity (cluster/occurrence ratio >= 0.7 across >= 15 files) — then the second register is genuinely productive and its top-10 dominance cannot be dismissed as template copying."
+        },
+        {
+          "id": "HER-C6-DRIFT-ACCELERATION",
+          "pattern": "Bare-warning drift (47 occ, 41 clusters, 17 files, no paste lineage) is time-increasing: the glyph language is decaying toward a single high-frequency pragmatic marker, and drift-cluster births accelerate over corpus history rather than being uniform.",
+          "test": "Deterministic git archaeology at befd858c: for each of the 41 bare-warning clusters, date its first introduction via git log -S / blame on the containing file; bin births by month; Mann-Kendall trend test on the birth series (alpha=0.05).",
+          "falsifier": "Birth series shows no positive trend (Mann-Kendall p > 0.05) or declines — drift is a fixed historical residue, not an ongoing decay process, and no intervention priority follows."
+        },
+        {
+          "id": "HER-C7-LEGEND-GRAVITY",
+          "pattern": "MENTION lines are not inert documentation: files containing a legend show elevated subsequent USE density of legend-listed glyphs versus legend-free files — legends causally prime usage, so the 71.8% mass drop understates legend influence on the remaining 28.2%.",
+          "test": "Split the 901 files at befd858c into legend-bearing vs legend-free; compute per-file USE-line glyph rate normalized by file length; permutation test shuffling the legend label across files (N=1000, seed=42). Optional stronger version: within legend-bearing files, compare USE density before vs after the legend's line position.",
+          "falsifier": "USE density conditional on legend presence sits inside the shuffled null band (and the before/after split shows no positional effect) — legends are inert and the MENTION/USE cut is complete as stated."
+        },
+        {
+          "id": "HER-C8-CONNECTOR-ISOLATE-BIMODALITY",
+          "pattern": "warning is not a lone outlier: glyphs partition into two discrete classes — connectors (obs/expected pair mass > 1, e.g. the triad) and isolates (obs/expected << 1, warning-like). The obs/expected pair-mass ratio across the palette is bimodal, implying a two-class grammar rather than a continuum.",
+          "test": "For every glyph with >= 20 USE-line occurrences at befd858c, compute total observed pair mass over its null expectation (same perm null, N=1000, seed=42); run Hartigan's dip test for bimodality and fit 1- vs 2-component Gaussian mixture on log-ratios (BIC comparison).",
+          "falsifier": "Dip test p > 0.05 AND 1-component model wins BIC — ratios form a continuum, warning is just the distribution's tail, and the two-class grammar hypothesis is dead."
+        }
+      ],
+      "verdicts": [
+        {
+          "id": "HER-C1-TRIAD-SYNTAGM",
+          "killed": true,
+          "reason": "The order-shuffle null tests only against uniform within-line order, not against paste lineage. A dominant cost->validation->next_step order is exactly what template copying produces: N copies of one receipt-template line yield a modal order with zero micro-grammar. The predicted order is also the canonical field order in legends and workflow templates (legend residue). Without normalized-cluster deduplication before order counting, the test cannot distinguish syntagm from copy-paste.",
+          "alt_explanation": "Template syntax / paste lineage: the triad glyphs appear in the fixed field order of the receipt template they were copied from; legend listings use the same order."
+        },
+        {
+          "id": "HER-C2-WARNING-AS-PUNCTUATION",
+          "killed": false,
+          "reason": "Survives. Deflationary mechanism candidate with a genuinely comparative design: warning's solo-line and terminal-position statistics versus frequency-matched glyphs, using existing matched-null machinery. Not circular — the terminal-position index among non-solo occurrences is not entailed by the measured pair-mass deficit, and matched sampling controls frequency. Falsifier is honest and explicitly does not claim semantic repulsion for free. CONTAMINATION_CHECK: frequency controlled by matching; Unicode category and corpus size irrelevant to a within-corpus matched comparison.",
+          "alt_explanation": ""
+        },
+        {
+          "id": "HER-C3-FUNCTION-WORD-DISPERSION",
+          "killed": true,
+          "reason": "Double kill. (1) Contamination: Juilland's D and DP are frequency- and partition-dependent; the test compares raw dispersion CIs between glyph sets without frequency matching, so any separation may be a frequency artifact. (2) Simpler null: doctrinal glyphs are bursty because doctrine is concentrated in a few doctrine files — a fact about directory/topic organization, not glyph grammar. Plus a form->function type error: even dispersion does not confer closed-class grammatical status.",
+          "alt_explanation": "Topic/file clustering of the corpus (doctrine glyphs live in doctrine files) combined with the frequency dependence of dispersion statistics."
+        },
+        {
+          "id": "HER-C4-IDENTITY-LOAD-CONCENTRATION",
+          "killed": true,
+          "reason": "Re-derives already-measured facts. Branch (i): non-triad pair lifts already sit inside the null band per the cited D(A,B)-inside-null result, so permuting identities among glyphs with statistically null pairwise structure must produce null-like profiles — the prediction is entailed. Branch (ii): the three triad pairwise lifts are already computed in the 22-pair profile; if they differ, triad-identity swaps exit the band arithmetically. Both outcomes are deducible from the existing lift table without running anything new.",
+          "alt_explanation": "The experiment is a deterministic restatement of the existing 22-pair lift profile and its null bands; no new information can be produced."
+        },
+        {
+          "id": "HER-C5-SECOND-REGISTER-TEMPLATE-MASS",
+          "killed": false,
+          "reason": "Survives with narrowed scope. This is the contamination check itself elevated to a hypothesis: it applies an already-validated procedure (bare-warning normalized-cluster method, measured benchmark 0.87 across 17 files) to new targets (closure|receipt, ledger|receipt). Not a re-derivation; concretely executable; either outcome is informative; falsifier anchored to a measured baseline. Caveat: the corpus-wide claim that joint rank and lineage diversity are anti-correlated outruns a two-pair test — only the two named pairs are defensible; the general anti-correlation claim must be dropped or tested separately.",
+          "alt_explanation": ""
+        },
+        {
+          "id": "HER-C6-DRIFT-ACCELERATION",
+          "killed": true,
+          "reason": "Corpus-size contamination, unhandled. Mann-Kendall on raw monthly cluster births confounds drift rate with writing activity: if md-file count and lines-added grew over the repo's history (901 files did not appear uniformly), births accelerate under a constant per-line drift rate. The test includes no normalization (births per lines-added, per active file-month, per commit). A positive trend is indistinguishable from 'the corpus grew.' Also a structure->origin type error: converting a count trend into an ongoing-decay process claim.",
+          "alt_explanation": "Corpus growth: accelerating markdown production mechanically accelerates unnormalized drift-cluster births at constant per-line drift probability."
+        },
+        {
+          "id": "HER-C7-LEGEND-GRAVITY",
+          "killed": true,
+          "reason": "Topical confound plus causal type error. Legend-bearing files are precisely the files about the glyph system, so elevated USE density is explained by topic, and label-shuffle permutation measures association while the pattern asserts causation ('legends causally prime usage') — correlation->causation / structure->origin. The stronger before/after variant is still explained by markdown convention: legends are headers and usage bodies follow headers in document order, so a positional effect reflects document structure, not priming. No version of this observational test isolates the causal claim.",
+          "alt_explanation": "Topic confound (files documenting glyphs both define and use them) plus markdown convention (legend-as-header precedes body content positionally)."
+        },
+        {
+          "id": "HER-C8-CONNECTOR-ISOLATE-BIMODALITY",
+          "killed": true,
+          "reason": "Test is not meaningfully executable at this sample size: the v1 palette is ~14 glyphs and the >=20-occurrence floor leaves roughly 8-12 data points. Hartigan's dip test has essentially no power below n~30-50 and 1- vs 2-component GMM BIC on ~10 points is noise, so the falsifier condition (dip p>0.05, 1-component wins) obtains almost surely regardless of truth — the experiment cannot decide the hypothesis. It also re-derives measured facts: the anticipated 'two classes' are just the already-known significant triad and anti-associative warning, redescribed as mixture components.",
+          "alt_explanation": "Small-n artifact: any distribution over ~10 palette glyphs containing the 3 known high-lift triad members and warning will look vaguely two-clustered; the statistics cannot separate bimodality from tail behavior at this n."
+        }
+      ],
+      "survivors": [
+        {
+          "id": "HER-C2-WARNING-AS-PUNCTUATION",
+          "pattern": "warning's 5x anti-associativity is positional, not lexical: it functions as a boundary/terminal marker (line-solo or line-final), behaving like punctuation rather than vocabulary. Anti-association is then a side-effect of occupying single-glyph or edge positions.",
+          "test": "For every USE-line occurrence of warning, compute (a) solo-line rate and (b) normalized within-line position index; compare against the same statistics for frequency-matched glyphs via matched-null sampling (n=20 matched sets, same machinery as the D(A,B) test). Elevated solo/terminal rate above matched q95 confirms.",
+          "falsifier": "warning's solo-line and terminal-position rates fall inside the matched-null band — positional explanation fails and the anti-associativity requires a different mechanism (e.g. semantic repulsion), which this candidate does not claim."
+        },
+        {
+          "id": "HER-C5-SECOND-REGISTER-TEMPLATE-MASS",
+          "pattern": "The top-ranking second-register pairs (closure|receipt 89, ledger|receipt 79) are paste-lineage template mass, not productive usage — the structural mirror image of bare-warning drift (which is many-lineage, low-mass). High joint rank and high lineage-diversity are anti-correlated in this corpus.",
+          "test": "Apply the exact bare-warning normalized-cluster procedure to all USE lines containing closure|receipt and ledger|receipt: compute distinct-cluster/occurrence ratio and distinct-file spread; compare against bare-warning's ratio (41/47 = 0.87 across 17 files).",
+          "falsifier": "closure|receipt shows comparably high lineage diversity (cluster/occurrence ratio >= 0.7 across >= 15 files) — then the second register is genuinely productive and its top-10 dominance cannot be dismissed as template copying."
+        }
+      ]
+    },
+    "t1": {
+      "goblin_findings_count": 34,
+      "goblins": [
+        {
+          "goblin": "G1-cartographer",
+          "findings": [
+            {
+              "idea": "WULMOJI is a SEGMENTATION AND INTENSITY MARKER, not an icono-semantic vocabulary. It is a distribution-aware packing system where co-occurrence is determined by document-scale semantic density, placement context (max 1/line doctrine), and operator-authored intentionality—not by symbol semantics.",
+              "why_interesting": "The measurement data show zero v1-palette pairs in the top-10 on USE-only lines, yet the register boundary exists nominally in the operator's mind. The contamination probe (D=0.8036 inside [0.796,0.821] null range) proves register token identity arranges nothing statistically. This is coordinate-free labeling of the same semantic object, not a hierarchy. The language is orthogonal to its own taxonomy.",
+              "how_to_kill": "TEST_3_REGISTER_COHERENCE: For each of the 901 files, compute Jaccard(v1_pairs, wulmath_pairs, cross_pairs). If registers are coordinate-free, within-register overlap should NOT differ significantly from cross-register overlap. If instead cross-register Jaccard is <0.4 while within-register pairs ≥0.6, the hierarchy hypothesis is supported and the coordinate-free claim collapses."
+            },
+            {
+              "idea": "WARNING is an ANTI-ASSOCIATIVE ISOLATION MARKER with repulsion coefficient 0.193 (27 observed pairs vs 139.7 expected). The inverse probability structure suggests warning marks segment boundaries or phase transitions where symbol density must decrease. Three mechanisms: boundary marking (structural), compliance/meta layer (operator-authored), or inversion trigger (doctrinal analogy to 🌑 phase boundary).",
+              "why_interesting": "Of 234 warning occurrences, only 27 co-occur with other symbols on the same line, 5× less than chance. The 47 bare-warning instances (41 clusters across 17 files) represent involuntary drift, not systematic variation. This is the strongest measured signal: warning is NOT a semantic marker but a grammatical operator that repels pairing. Its structure is orthogonal to all other symbols.",
+              "how_to_kill": "TEST_1_BOUNDARY_HYPOTHESIS: Extract ±5 line context for each of 27 warning co-occurrence instances. Measure pair-count(line_k-1) vs pair-count(line_k+1) for each warning position k. If repulsion is structural (boundary marking), pair_count should drop by ≥2× in post-warning lines in >65% of cases. If instead pair counts are stable, warning is random isolation or semantic interference—not boundary marking."
+            },
+            {
+              "idea": "The operator triad (cost|next_step|validation) forms a LINEAR CONTROL-FLOW BACKBONE, not a clique. Measured lifts: cost|next_step (14 vs q95=5), cost|validation (27 vs q95=10), next_step|validation (16 vs q95=9). This suggests: cost ← decision commitment; next_step ← branching; validation ← gate check. Chain: cost → next_step + validation (coupled check-then-branch pattern).",
+              "why_interesting": "The triad is the ONLY statistically significant cluster in the corpus. All other pairs distribute near expectation. This backbone could be genuine intentional structure (operator's decision-documentation pattern) or an artifact of doctrinal distribution (cost, next_step, validation appear in constraint-checking sections that naturally cluster). The chain topology is load-bearing: if it is real, it is the lowest-level control grammar of the glyph language.",
+              "how_to_kill": "TEST_2_DENSITY_SEPARATION: For all lines carrying cost|next_step|validation, measure co-occurrence rate of {emergent, emotion, identity}. For control lines (no triad), measure the same. If the triad is a genuine control-flow separator, triad lines should show <8% affect co-occurrence (vs 28% baseline). If instead rates are indistinguishable, the triad is spurious clustering from high-density regions—not a grammatical operator."
+            },
+            {
+              "idea": "LEGEND LINES ARE MINIMALLY DENSE (71.8% pair-mass drop). The legend/use split is NOT a semantic vocabulary cut; it is a CONTEXT-DETERMINED DENSITY CLIFF. Legend lines (277) define symbols in isolation; use lines (746) co-locate symbols at document-scale semantic density. The symbol identity is invariant; the co-occurrence grammar is density-driven, not meaning-driven.",
+              "why_interesting": "This inverts the traditional assumption that legends and glosses are referentially different from assertions. Here, both are the SAME symbol inventory, just deployed at different co-occurrence rates. The 71.8% drop is not symbolic drift—it is an intensity modulation determined by narrative context. This is a distributional fact about operator behavior, not the glyph language.",
+              "how_to_kill": "TEST_4_SYMBOL_CONFINEMENT: Build a symbol × context matrix over all 901 files. For each symbol, compute the ratio (files_legend_only) / (files_total_with_symbol). If legend lines are low-valence applications of the same vocabulary, this ratio should be <0.05 globally. If instead ≥0.15 for any symbol, that symbol is confined to legend context and the vocabulary is split. If ≥10 symbols show ratio ≥0.15, the legend/use distinction is a vocabulary boundary, not a density modulation."
+            },
+            {
+              "idea": "BARE-WARNING INVOLUNTARY DRIFT (47 instances, 41 clusters across 17 files) indicates warning is a REPAIR TOKEN. Warnings were likely authored in binding context (e.g., constraint checking), then pasted into new files without co-authored structural keywords. Result: isolated warning occurrences that violate the pairing grammar and inflate bare-warning count.",
+              "why_interesting": "This is not doctrinal slippage but mechanical copy-paste artifact. The 41 distinct normalizations (vs 47 occurrences) suggest operator introduced variation during reuse. This is the first OPERATION-LEVEL signal: the glyph system is not self-maintaining. High-entropy drift in warning pasting indicates the operator is manually curating density, not following an algorithmic rule.",
+              "how_to_kill": "TEST_5_BARE_WARNING_FILE_SIGNATURE: Rank all files by (bare_warning_count / total_warning_count). For top-5 files by ratio, measure median pairs/line. For bottom-5 files (ratio <0.05), measure the same. If warning drift correlates with file-level density, top-5 should show <12 pairs/line, bottom-5 >22 pairs/line (effect size ≥1.5×). If instead densities are indistinguishable or opposite, bare-warning drift is orthogonal to density and the repair-token hypothesis fails."
+            }
+          ]
+        },
+        {
+          "goblin": "G2-mutator",
+          "findings": [
+            {
+              "idea": "PROTOCOL DESIGN: High-Use Reserved Words as Repellors",
+              "why_interesting": "WULMOJI warning is anti-associative (5× under null). In protocol spec design, the most-used reserved tokens (e.g., PASS, BLOCK, SEND in routers) should *forbid* adjacent reuse to prevent typo-explosions. Falsifiable: a protocol compiler can reject <TOKEN><TOKEN> pairs where TOKEN is in the >90th-percentile frequency band, then measure downstream error-cascades in a test harness (e.g., 10k synthesized malformed packets). Prediction: enforced anti-adjacency reduces cascade-depth by >40%.",
+              "how_to_kill": "Generate a 50-file protocol suite with mixed adjacency-enforcement rules (10 files strict, 10 permissive, 30 random). Inject deliberate typos (word-doubling, regex collision). Run through a real protocol validator (e.g., protobuf). If cascade-depth does not differ significantly (>20% gap), the anti-adjacency hypothesis is falsified."
+            },
+            {
+              "idea": "MARKET MICROSTRUCTURE: Volume-Repulsion as Lead-Lag Signal",
+              "why_interesting": "Anti-associativity inverts the intuition: high volume *pushes* the next candle *away* (mean reversion signature, not momentum). The operator triad (cost|validation) suggests transaction routing: high-cost trades demand validation before the next step. Falsifiable: train a 3-month OHLCV feed on high-volume futures (ES, NQ) using a regressor that predicts log-return(t+1) from [volume(t), high_freq_pair_count]. Include a term for 'volume > 90th percentile AND pair_count > expected'. Prediction: volume-repulsion term has negative coefficient >3× its std.err, explaining 4–6% of next-candle returns.",
+              "how_to_kill": "Run the regressor on 5 uncorrelated assets (crude, bonds, crypto, FX, commodities). If the volume-repulsion coefficient flips sign or shrinks <1.5× std.err on 2+ assets, reject. If R² improvement is <2%, reject (overfitting noise)."
+            },
+            {
+              "idea": "LINGUISTIC MORPHOLOGY: Aspect Markers Avoid Clustering (Phonological Load Threshold)",
+              "why_interesting": "English tense/aspect (±-ed, -ing, -s, have-, be-) forms are high-frequency but rarely double-mark the same phrase ('*am being been*' is ungrammatical). WULMOJI's anti-adjacency of high-freq tokens mirrors this. Falsifiable hypothesis: in a parsed dependency treebank (CONLL-U format, 10k sentences), measure co-occurrence of morphological features (tense, aspect, mood, number) on adjacent tokens in the same projection. Prediction: adjacent-feature co-occurrence is <15% of what chance would predict under a multinomial null (controlling for POS frequency).",
+              "how_to_kill": "Parse 3 unrelated treebanks (English, Spanish, Mandarin). If aspect-marker avoidance is language-specific or missing in 2+ corpora, reject. If the avoidance disappears when controlling for phonological word-length, accept the phonological-load theory instead."
+            },
+            {
+              "idea": "SECURITY POLICY: Guard Co-Occurrence as Latent Routing Graph (Procedural, Not Doctrinal)",
+              "why_interesting": "The operator triad cost|validation|next_step is procedurally coupled, not semantic-class-coupled. This suggests that what *matters* in security gates is task-flow coupling (\"before next_step, check cost AND validation\"), not the narrative category of the guard (doctrinal vs operational). Falsifiable: audit a live policy system (e.g., AWS IAM, Kubernetes RBAC, sudo rules) and extract all guard co-occurrences. Train a graph-clustering model to infer the *latent procedural task* from guard pairs alone (without reading policy docs). Prediction: latent-task recovery achieves >80% purity vs human-labeled tasks, meaning co-occurrence structure encodes executable intent.",
+              "how_to_kill": "Test on a second policy domain (e.g., database role-based access). If latent-task recovery drops <65%, reject. If recovered tasks do not correspond to human workflow steps, reject."
+            },
+            {
+              "idea": "SYMBOLIC ENCODING COLLAPSE: Markup Adds Zero Distributional Signal (Pre-Symbolic Structure Hypothesis)",
+              "why_interesting": "Matched-null contamination shows D(A,B)=0.8036 inside [0.796, 0.821]. The register boundary (marked/unmarked glyphs) does not materialize statistically — placement + volume alone predict co-occurrence. This suggests the *meaningful structure* predates symbolic assignment. Falsifiable: take the 901-file corpus, strip all glyph markup (convert 🌑⚡♡ to raw strings 'moon-lightning-heart'), and recompute pair statistics. Prediction: pairwise associations (top-10 pairs) remain identical (Spearman ρ > 0.95), and the new D(A,B) on unmarked text also lands inside the null band.",
+              "how_to_kill": "If stripping markup changes top-5 pairs or pushes D outside the null band, the hypothesis fails. If glyph removal induces new high-confidence pair associations, then markup carries signal — reject the encoding-collapse thesis. Conversely, if markup was doing useful compression, the unmarked version should have noisier distributions."
+            }
+          ]
+        },
+        {
+          "goblin": "G3-minimalist",
+          "findings": [
+            {
+              "idea": "Warning syntactic isolation as negative-space regularity: maximum frequency glyph with zero top-pair participation (predicted by independence null as #1 pair partner; observed: absent). Survives because it is a systematic absence, not a dominant presence — no iconographic interpretation needed.",
+              "why_interesting": "Only structural finding that resists null explanation (product-of-marginals predicts warning as top pair; corpus contradicts it). Strongest candidate for a non-marginal association law in the glyph language, independent of legend echo or documentation artifact.",
+              "how_to_kill": "Run block-conditional permutation null (N=1000; preserve symbol marginals + symbols-per-line density). If warning's isolation dissolves (i.e., P(warning paired) rises to ≥50th-pct of null distribution), the regularity is a quirk of marginal rank, not a sign-system law. Single measurement: sorted pair ranks under null vs observed; if warning lands below 50th-pct rank in null, the pattern is preserved; above 50th, it dies."
+            },
+            {
+              "idea": "Functional type as (frequency, hubness) coordinate pair: glyphs organize into a K5 core (validation, structure, identity, emergent, cost—complete subgraph, high internal density) and periphery (warning, loop—sparse internal, all cross-register bridges). Core never bridges; periphery does all binding work across register boundary.",
+              "why_interesting": "Topological invariant independent of why pairs exist. Describes an occupational niche structure, not a causal mechanism. If true, it means the vocabulary has a reserved-vs-working partition: core are declarative/structural, periphery are relational/connective. This would explain why pairs rank flat (all high-frequency glyphs pair with each other) but topology is not.",
+              "how_to_kill": "Remove MENTION lines (legend-bearing lines), recompute weighted degree distribution on USE-only blocks. If validation retains top-2 hub rank under PMI normalization, and the core-5 subgraph remains complete (no missing edges) while loop and warning remain bridges, the partition survives. If validation exits top-2 or core edges dissolve, the structure was legend-manufactured. Measurement: Spearman correlation of hub rank full-vs-use-only; if ρ <0.60, the structure is unstable. Secondary check: do permuted block labelings ever break the core-periphery boundary, or is it rigid? (Rigid = structural; rigid-by-accident = null-compliant noise.)"
+            },
+            {
+              "idea": "Loop as empirical seam, not glyph: loop's cross-register pair mass (122) exceeds its singleton count (67)—arithmetically impossible for singletons-heavy glyphs. One glyph appears more often in *combination* than alone, suggesting its function is binding (attaching other-register terms) not appearing. No legend alone manufactures cross-mass > singleton-mass.",
+              "why_interesting": "If true, loop is not a glyph but a **syntactic adhesive**—its role is to connect registers. This would explain why it's the only v1 glyph with heavy cross-register edges. It redefines what 'vocabulary' means in a multi-register system: some tokens are semantically localized (core glyphs); one token is topologically universal (loop). Inverts traditional IR assumptions about vocabulary homogeneity.",
+              "how_to_kill": "Filter out MENTION lines (legend-only context). On USE lines, recount loop|📜, loop|🧾, loop|⚖️ (cross-register pairs) vs loop|validation, loop|structure (within-register pairs). If cross-mass drops below singleton count on USE-only, loop was legend-borne, not empirical. Measurement: ratio(cross_mass, singleton) on use-lines vs full-corpus; if ratio_use < 1.0 but ratio_full > 1.0, the seam is a documentation artifact. If ratio_use > 1.0 persists, loop is real."
+            },
+            {
+              "idea": "Trust ordering in self-describing corpora inverts: involuntary drift (47 bare-⚠ encodings across 17 files) is more evidential than intentional statistics. Errors are unforgeable composition traces; doctrine-about-palette ≠ work-using-palette. In systems that publish their own legends, the legends become self-portraits (circular). Only the mistakes are real.",
+              "why_interesting": "Flips epistemology: instead of 'corpus should exemplify doctrine,' asks 'what does corpus accidentally reveal?' If true, it means fingerprinting should weight *unexpected* patterns over *documented* ones. In governance contexts, this means audit trails (what the system *wasn't trying* to log) are more reliable than policies (what it *claims* to do). Applies beyond WULMOJI to any self-documenting system.",
+              "how_to_kill": "Cluster the 47 bare-⚠ lines by string similarity (≥80% match = same cluster, same paste lineage). If all 47 cluster into ≤3 distinct canonical lines across all 17 files, they are a single encoding accident, not distributed involuntary drift. Kill message: 'All variation is downstream of one copy-paste event; no behavioral signal, only input-method artifact.' If they scatter (≥10 clusters, diverse file distribution, some near-duplicates but no single dominant line), the drift is real and ARCHIVIST wins."
+            },
+            {
+              "idea": "Rank preservation under contamination was a tautology, not an empirical robustness result: using the same block window for both counterfactual and observed measurements guarantees preservation by the apposition theorem (vocabulary expansion never reranks within the existing vocabulary). The checksum itself (hub-identity hash) is forgeable from published marginals + published legends. Real robustness would survive a window change or adversarial legend injection.",
+              "why_interesting": "Negation of a noise claim, not a positive regularity, but sharp: it eliminates a false confidence. If proven, it demotes GOBLIN's checksum from a robust fingerprint detector to a circular description. Forces the search for robustness elsewhere—in negative space (warning isolation) or structural invariants (core-periphery) rather than rank preservation.",
+              "how_to_kill": "Compute top-10 pair ranks on full corpus, then on USE-only corpus. Measure Spearman(rank_full, rank_use). If ρ ≥0.80, robustness survives the window change; GOBLIN's checksum is real. If ρ <0.60, ranks reshuffle; WITNESS is right (robustness was apposition-tautological). Secondary: deliberately inject fake legends (random 14-tuple lines) into USE corpus, recompute ranks. If an adversary matching marginals+symbols-per-line reproduces the checksum, the forger wins and the checksum carries no integrity signal."
+            }
+          ]
+        },
+        {
+          "goblin": "G4-counterfactualist",
+          "findings": [
+            {
+              "idea": "Warning is anchor-based termination, not structural isolation",
+              "why_interesting": "Measured anti-associativity (27 vs 139.7 expected) flips from noise signal to functional signal if warning serves as reasoning endpoint rather than semantic void. Same measurement, opposite causality.",
+              "how_to_kill": "Measure temporal order: does warning appear at section/paragraph end >75% of time (vs 50% null)? Measure dependency depth asymmetry (glyphs-before vs glyphs-after). Partition corpus by section type and recompute D(section|warning)."
+            },
+            {
+              "idea": "Operator triad coheres from template imposition, not semantic convergence",
+              "why_interesting": "If cost-validation-next_step pair lifts are artifacts of writers following sentence templates (all three in one clause), the pattern dissolves when template is broken. Falsifies the claim of semantic coherence.",
+              "how_to_kill": "Partition USE observations by co-mention distance (same line vs. 1-2 lines vs. 3+ paragraphs). Recompute pair lifts per partition. Count per-file triad density (expect mode at 1 each if template-driven). Human audit: score 20 triad co-occurrences as 'syntactically forced' vs. 'semantically natural'."
+            },
+            {
+              "idea": "Register boundary is real but embedded invisibly in the null distribution itself",
+              "why_interesting": "D(A,B)=0.8036 falls inside null [0.796, 0.821], suggesting register is epiphenomenal. Counterfactual: null is register-contaminated; shuffles that respect register membership will tighten the null and potentially push D outside.",
+              "how_to_kill": "Reconstruct null with register-respecting permutations (shuffle only within v1-palette, only within v2-palette). Report new null bounds and D's position. If D moves outside tighter null, register exists; measure null spread before and after to confirm constraint."
+            },
+            {
+              "idea": "Bare-warning variant drift is not contamination but spontaneous standardization",
+              "why_interesting": "47 variants in 41 clusters across 17 files could signal writers converging on canonical forms (living glyph refinement) rather than error. Same footprint (scattered variants), opposite meaning.",
+              "how_to_kill": "Cluster variants by edit distance; count near-identical (distance <2) vs. dissimilar (>3). Sort variants by commit/file date and measure whether distance-to-mode decreases over time. Cross-check git blame: are variants concentrated in one author (noise) or distributed across ≥5 authors (standardization signal)?"
+            },
+            {
+              "idea": "Second-register dominance reflects measurement bias (volume artifact) not semantic strength",
+              "why_interesting": "Top-10 pairs by raw frequency are all v2 (closure|receipt 89, ledger|receipt 79), but frequency and information content are orthogonal. v1 pairs may encode tighter structure despite rarity.",
+              "how_to_kill": "Rank all pairs by pointwise mutual information (PMI), not frequency. Report top-10 by PMI; if v1 pairs rank higher, high information content compensates for low frequency. Measure Cramér's V (normalized association strength) for v1 vs. v2 backbones. Compute entropy per glyph; if v1 median entropy is lower, v1 glyphs are more specialized/informative."
+            },
+            {
+              "idea": "Legend-to-USE mass collapse (71.8% drop) is compression and cognitive load-shedding, not wasted redundancy",
+              "why_interesting": "Legends prime vocabulary; USE lines become leaner because readers infer co-mentions. Narrative flips from 'ballast' to 'cognitive battery.' Same data, opposite function.",
+              "how_to_kill": "Measure conditional entropy H(next_observation | legend_definitions) vs. H(without legends). Report KL divergence to show legends shift empirical distribution. Stratify USE by time-to-legend: pair density should be higher 0-5 lines after legend (priming active) vs. 50+ lines later (priming decayed). Human study: comprehension on USE-only passages with vs. without legends."
+            },
+            {
+              "idea": "Operator triad is authorized grammar (imposed constraint) not discovered backbone",
+              "why_interesting": "Pattern strength may reflect operator-installed decision norm, not universal linguistic principle. Measurement is silent on whether pattern is empirical discovery or prescriptive rule.",
+              "how_to_kill": "Audit operator's own use: compute triad density in operator-authored files (git blame) vs. others. If operator uses triad at higher density, pattern is personal norm. Measure temporal density before vs. after proposal document installing the triad; post-fiat increase signals prescription. Stratify by authoring role: triad density should be highest in MAYOR/DIRECTOR passages, lowest in AURA/meditation."
+            }
+          ]
+        },
+        {
+          "goblin": "G5-formalizer",
+          "findings": [
+            {
+              "idea": "WULMOJI_REGISTER_IRRELEVANCE (formal): Post-bead identity arrangement (codepoint V1 vs variant forms) is orthogonal to pair-mass distribution. Measured D(A,B)=0.8036 falls inside null [0.796, 0.821], indicating register boundary is nominal (law) not distributional (manifest).",
+              "why_interesting": "The WULmath register exists in policy but not in behavior. This is structural economy: the system maintains symbolic distinction (identity via canonical codepoints) without requiring distributional divergence. De-iconization survives because pair-mass is driven by USE context, not codepoint inventory.",
+              "how_to_kill": "Collect usage data from a second corpus (e.g., months 2-3 of HELEN OS artifact production, post-bead calibration). Compute D(variant_form_A, variant_form_B) on the new corpus. If D_new << 0.796, register encoding DID add structure and the null was misleading (heterogeneous population). If D_new still [0.79–0.82], register is definitively inert and should be archived as symbolic-only."
+            },
+            {
+              "idea": "OPERATOR_TRIAD_DENSITY: The backbone is {cost, validation, next_step}. These three form the structural load: cost|validation (obs=23, exp~13.2), cost|next_step (obs=21, exp~5.54), next_step|validation (obs=22, exp~8.88). By contrast, doctrinal axis {structure, identity, emergent} shows weaker inter-pair lift. The triad carries semantic coordination (operator decision logic) while doctrinal symbols are decorative.",
+              "why_interesting": "A cheap model emerges: WULMOJI has two semantic layers. Layer A (cost/validation/next_step) encodes **prescriptive state** (what the operator must decide). Layer B (structure/identity/emergent) encodes **descriptive property** (how we label the artifact). They live together but pair-mass is segregated. This splits the register into decision-axis and label-axis.",
+              "how_to_kill": "Map MENTION context to semantic role: for each line containing {cost, validation, next_step}, classify it as (DECISION_CONTEXT | LABELING_CONTEXT | MIXED). Repeat for {structure, identity, emergent}. Compute chi-squared on (Layer, Context) contingency table. If chi2 > critical value at alpha=0.01 and effect size (Cramér V) > 0.25, the split is real; if chi2 fails or effect size < 0.15, the two layers are entangled and the model fails."
+            },
+            {
+              "idea": "WARNING_ANTI_CLUSTERING: ⚠️ (warning, n=234, 18.9% of corpus) is maximally anti-associated across all pair-mates. Observed pair-mass ~27 vs expected 139.7 (5.2× deficit). This is not measurement noise: warning appears deliberately isolated (max 1 symbol per warning-bearing line in 47 variant clusters across 17 files). Bare-warning drift (47 counts in 41 clusters) shows distributed, not lineage-dependent, evolution.",
+              "why_interesting": "Warning exhibits inverted associative logic: high frequency + low pair-mass = **isolation as semantic signature**. Every other symbol pairs cooperatively (structure|validation=27 obs vs 15.9 exp = 1.7× lift); warning pairs *avoidantly* (identity|warning=7 obs vs 24.2 exp = 0.29× of expected). This is not iconographic; it's structural. The system learned to use warning as a **syntactic pause**, not a semantic connector.",
+              "how_to_kill": "Test causal ordering: extract all lines with warning. For each warning, classify the preceding and following lines (±1, ±2) by co-presence of any palette symbol. Compute information theoretic surprise I(symbol at ±k | warning at position 0). If I is uniformly low (< 0.5 bits), warning truly is a syntactic isolate. If I spikes at specific k and specific symbols (e.g., cost appears 3+ lines *after* warning), then warning has predictive structure and is not a pure isolate — the model fails."
+            },
+            {
+              "idea": "SECOND_REGISTER_DOMINANCE: In top-10 pairs by count, ZERO v1-palette pairs appear. Top rank is structure|validation (n=27), then cost|validation, next_step|validation, cost|next_step — all second-register mixed pairs (2+ different base colors/meanings). By line-level pairing, the first register (identity/emotion/artifact) is nearly orthogonal to line-level covariance. This suggests first-register symbols carry **document or block scope**, not line scope.",
+              "why_interesting": "Windowing effect: pair_matrix['window_line'] vs pair_matrix['window_block'] shows block-window pairs are ~2–3x higher count on average (e.g., cost|validation: line n=23, block n=61). This is scope invariance: larger windows capture more pairs because symbols are segregated spatially (symbols of different types live in different paragraphs). De-iconization survives because the structural unit is **symbolic scope**, not symbolic identity.",
+              "how_to_kill": "Measure inter-symbol distance on all line-level pairs. For each pair (A|B) with n>0 co-occurrences, sample 100 random instances and compute median line distance d(A, B) — distance in source lines between the two symbols' positions in files where both appear. Partition pairs into: (1) same-line pairs d=0; (2) adjacent-line pairs d=1; (3) paragraph pairs 1<d<=5; (4) document pairs d>5. Plot pair-count vs distance for each pair type. If cost|validation and structure|validation show identical distance distributions, windowing is the only variable. If distance distributions diverge, then pairing is driven by semantic proximity (document-level co-clustering), not just window size."
+            },
+            {
+              "idea": "MATCHED_NULL_CONTAMINATION: D(A,B) measurement is robust against register aliasing but silent on **volume+placement bias**. The palette is over-represented in specific file types (CLAUDE.md, proposals/*, WULMOJI_DEPLOYMENT_STATUS.md show 100% density violations). A two-sample test (high-density files vs low-density files) could reveal whether null distribution itself is segregated by usage context.",
+              "why_interesting": "Pre-registered perm null (N=1000, seed=42, q95 bounds) is a single, aggregate model. But corpus is heterogeneous: policy files (CLAUDE.md) have mandatory wulmoji; CONQUEST files (docs/conquest/*) use them ad-hoc. If high-density and low-density files have different null q95 thresholds, a single null is mis-calibrated and pair-count interpretation is context-dependent.",
+              "how_to_kill": "Stratify files by symbol density: HIGH = top 10% (>20 symbols per file), LOW = bottom 50% (<3 symbols per file). For each stratum, recompute permutation null independently (n=500 trials each, same seed=42 || =43 || =44). Compare q95 bounds across strata. If |q95_HIGH - q95_LOW| > 2 (absolute count diff), null is stratified and aggregate null is misleading; report both. If bounds are robust (diff < 1), null is universal."
+            },
+            {
+              "idea": "EMERGENCE_OF_COST|NEXT_STEP_AXIS: cost|next_step (n=21, exp~5.54, lift=3.8x) is the strongest non-validation pair and does NOT involve doctrinal symbols. This axis is **prescriptive narrow-band**: it encodes (financial/resource constraint) ↔ (action required). Across all three windows (line/block/doc), cost|next_step is present and lifts consistently (line n=21, block n=39, doc n=23).",
+              "why_interesting": "This pair survives all windowing scales, suggesting it encodes a genuine semantic relation independent of spatial scope. cost and next_step are semantically orthogonal in isolation (cost ≠ next_step in the iconographic legend) but pair-wise form a **decision binding** (\"cost → next step; therefore decide\"). This is a learned 2-node motif, not an artifact of the palette.",
+              "how_to_kill": "Extract all 21 line instances of cost|next_step. For each, manually classify the semantic role: (1) cost as barrier|next_step as workaround (e.g., \"cost too high 🟡 => pivot strategy ⚪\"); (2) cost as constraint|next_step as plan (e.g., \"under budget 🟡 => execute ⚪\"); (3) accidental co-mention (cost and next_step appear but not grammatically linked). Count type (1) + (2) vs type (3). If (1)+(2) >= 16/21 (76%), the pair is semantic. If (3) > 12/21 (57%), the pair is accidental and the lift is false."
+            }
+          ]
+        },
+        {
+          "goblin": "G6-wul-compressor",
+          "findings": [
+            {
+              "idea": "OPERATOR_LOOP: cost-validation-next_step form a closed semantic triad; all 3 edges present with near-equal mass (23, 22, 21 pairs). This triad is the minimal backbone of admissibility discourse and survives as pure topology independent of icon or register naming.",
+              "why_interesting": "De-iconization: the backbone is NOT about glyphs qua icons. It is a cyclic dependency graph. cost→validation→next_step→cost is a loop invariant in HELEN OS governance documents. It persists because the operational *structure* (decision pressure → admission → planning) is anterior to any symbolic skin. Remove the loop, governance language breaks.",
+              "how_to_kill": "Test TRIAD_CLOSURE: measure P(all 3 edges present | document contains any one) and P(document coherent | 2/3 edges present). Prediction: >95% docs with triad are coherent; <30% docs with 2/3 edges maintain operator semantics. If prediction fails, idea dies."
+            },
+            {
+              "idea": "WARNING_AS_REPULSION (anti-associative): warning exhibits 0.24× pair mass vs permutation null, the only anti-associative glyph in palette. It marks LOCAL HALT semantics, not a claim anchor. This pattern survives de-iconization because the *function* (interrupt, clarify doubt, block forward motion) is independent of visual form.",
+              "why_interesting": "Structural role reversal: every other glyph correlates/associates; warning de-correlates. This is not noise. The 47 bare warning variants (VS16 dropout) and >1 bare-form clusters across 17 files suggest involuntary encoding drift, yet the repulsion ratio holds. The pattern is robust to form degradation, indicating that **repulsion is semantic not typographic**.",
+              "how_to_kill": "Test WARNING_REPULSION_STABILITY: compute pair_mass(warning) across rolling 3-month windows of new documents. Prediction: ratio warning_pairs / expected_pairs < 0.30 across all windows. If ratio climbs toward null (>0.60) in future corpus, the repulsion signal was an artifact of 901-file sample, not a law."
+            },
+            {
+              "idea": "LEXICAL_GHOST_LAYER: top-10 pair associations (closure|receipt: 89, ledger|receipt: 79) are NAMED ENTITIES not glyphs. These appear in the prompt's ranking but neither 'closure' nor 'ledger' are in the 14-symbol palette. This reveals a hidden layer of governance discourse operating at token, not glyph, level.",
+              "why_interesting": "The glyph fingerprint is a **partial view**. Governance semantics is co-instantiated in two layers: (1) glyph pairing (cost|validation), (2) lexical wrapping (closure|receipt). Both exist; only the first is measured. This suggests the grammar generating observed regularities has at least two production rules: one for palette-grounded pairs, one for entity-anchored pairs. Iconography captures neither.",
+              "how_to_kill": "Test LAYER_COMPOSITION: build a separate lexical fingerprint (regex: \\b(closure|ledger|receipt|receipt_hash|rule|permit|seal|...\\b), measure lexical_pair_counts, compute correlation between glyph_pairs and lexical_pairs on a per-document basis. Prediction: Pearson r < 0.3 (layers are independent). If r > 0.6, they merge into a single production and the ghost layer dissolves."
+            },
+            {
+              "idea": "LAYER_ORTHOGONALITY: OPERATOR_LOOP (cost-validation-next_step) and EXPRESSIVE_LAYER (emotion-emergent-structure) occupy separate semantic spaces and do not co-occur on the same reasoning surface. The triad governs *what* happens; emotion/structure governs *how it feels*.",
+              "why_interesting": "Grammar simplicity: if layers are truly orthogonal (P(triad_pair AND expressive_pair on same line) ≈ 0), then the grammar has minimal rank. You can generate operator discourse without emotion markers and emotional discourse without operator loops. This is the opposite of iconographic superposition; it suggests a **clean separation of concerns** in governance writing.",
+              "how_to_kill": "Test ORTHOGONALITY_MEASURE: compute contingency(triad_presence, emotion_presence) on all 224 documents with palette symbols. Prediction: χ² < critical value for p=0.05, indicating independence. If χ² is significant, layers entangle, and the orthogonality claim is false. Compute Cohen's h for effect size; prediction |h| < 0.2 (negligible association)."
+            },
+            {
+              "idea": "REGISTER_INVERSION: The 14-symbol palette IS A NAMING LAYER ONLY. D(A,B)=0.8036 (distribution of pair structure) falls inside the permutation null [0.796, 0.821], meaning palette identity adds zero information beyond volume and placement. Palette glyphs are post-hoc labels for structures that exist whether you call them 'warning' or '⚠'.",
+              "why_interesting": "The deepest finding: iconography is **descriptive not productive**. The grammar that generates coherent governance documents does NOT require a palette. A pair-count matrix without glyph labels would show the same backbone, the same repulsion patterns. The palette documents what agents *already do*, rather than *determining* what they do. Calling it a register (a binding between abstract symbol and concrete form) inverts the real dependency.",
+              "how_to_kill": "Test INFORMATION_THEORY_MEASURE: compute mutual_information(glyph_label, pair_count_vector) and compare to mutual_information(position_in_document, pair_count_vector). Prediction: MI(label, pairs) ≈ 0; MI(position, pairs) > 0 (position is predictive, label is not). If MI(label, pairs) > MI(position, pairs), then the palette is causal, not decorative, and register_inversion dies."
+            },
+            {
+              "idea": "BREACH_AS_ADMISSION_SIGNAL: The 100 density-rule violations (>1 symbol per line) do not invalidate the rule; they are *intentional overrides*. Unlike bare-warning drift (involuntary), density breaches are localized to specific governance contexts (probably around cost|validation sequences where operator pressure is highest). This pattern survives de-iconization as a *meta-rule*: compliance is voluntary when uncertainty is low.",
+              "why_interesting": "De-iconized grammar does NOT flatten authority. Instead, it reveals that governance structure allows for *tactical density increase* under specific conditions (high-stakes reasoning). The 100 violations are not errors; they are a signal that the rule is **context-sensitive, not absolute**. This is the opposite of a formal syntax, and closer to a responsive discipline.",
+              "how_to_kill": "Test BREACH_LINEAGE: for each of the 100 density violations, compute local entropy (symbol repetition rate in ±3-line window). Prediction: violated lines have higher local entropy (multiple glyphs are *necessary* context there). If entropy is uniform across violated and non-violated lines, breaches are random noise, and breach_as_admission_signal dies."
+            }
+          ]
+        }
+      ],
+      "proposed": [
+        {
+          "id": "T1-G4-1+G1-2+G3-1",
+          "pattern": "WARNING_AS_TERMINATOR: warning's measured anti-associativity is positional, not merely repulsive. warning marks the END of reasoning segments (halt/boundary token), so its 5x pair deficit is a consequence of segment-final placement where symbol density structurally collapses. This merges G4's causal flip (endpoint, not void), G1's boundary-marking mechanism, and G3's demand for a density-conditioned null.",
+          "test": "On corpus @ befd858c: (a) for all 234 warning occurrences, compute position-in-block fraction (line index within its markdown section / section length); (b) for each warning line k, count palette pairs in lines [k-3,k-1] vs [k+1,k+3]; (c) run block-conditional permutation null (N=1000, seed=42) preserving symbol marginals AND symbols-per-line density, recompute warning pair mass. Pass = warning lands in final 25% of its section in >65% of cases, AND pre-warning pair mass >= 2x post-warning pair mass, AND isolation survives the density-conditioned null (below 5th pct).",
+          "falsifier": "Warning positions are uniform across sections (final-quartile rate not distinguishable from 25% baseline), OR pre/post pair mass is symmetric, OR the density-conditioned null dissolves the isolation (warning pair mass rises above the 50th pct of the conditioned null) — in which case the repulsion is a quirk of marginal rank + line-density, not a boundary law."
+        },
+        {
+          "id": "T1-G4-2+G5-6+G6-1",
+          "pattern": "TRIAD_AS_GRAMMATICAL_LINK_VS_TEMPLATE: the cost-validation-next_step backbone is either genuine procedural grammar (check-then-branch control flow, G6's closed loop) or a template artifact (all three glyphs forced into one clause by a document boilerplate, G4). These are distinguishable by distance stratification and per-instance linkage audit — the only significant v1 structure in the corpus stands or falls here.",
+          "test": "Partition every triad co-occurrence into distance strata (same line / 1-2 lines / 3+ lines) and recompute lift per stratum against the pre-registered null. Then classify all cost|next_step same-line instances into (1) grammatically linked (cost expression syntactically governs the next_step expression), (2) linked as constraint->plan, (3) accidental co-mention, using a deterministic dependency heuristic (shared clause / connective between glyph positions) with a 20-instance human audit as calibration. Pass = lift survives at 1-2 line distance (not only same-line) AND (1)+(2) >= 76% of instances.",
+          "falsifier": "Lift exists ONLY in the same-line stratum and >=57% of instances classify as accidental co-mention, OR per-file triad density has a hard mode at exactly one occurrence per file (signature of a copied template) — then the backbone is boilerplate, not grammar."
+        },
+        {
+          "id": "T1-G4-3",
+          "pattern": "REGISTER_HIDDEN_IN_NULL: the D(A,B)=0.8036 inside-null result may be an artifact of a register-contaminated null. If permutations that scramble across registers are replaced by register-respecting permutations (shuffle only within v1, only within second-register), the null band tightens; D could then exit the band, meaning the register boundary is real but was invisible because the null itself absorbed it. Genuinely novel: it attacks the null construction, not the statistic.",
+          "test": "Rebuild the matched null (n=20 -> n=100, seed=42) with within-register-only token permutations on the same corpus @ befd858c. Report new bounds [lo,hi] and D's position, plus the ratio of null spreads (unconstrained/constrained) as a measure of how much variance register membership was contributing.",
+          "falsifier": "D=0.8036 remains inside the register-respecting null band, AND the constrained null spread is not materially tighter (spread ratio < 1.5) — then the register boundary is definitively distributional-inert and the 'law not distribution' conclusion is confirmed rather than artifactual."
+        },
+        {
+          "id": "T1-G2-5+G6-5",
+          "pattern": "PRE-SYMBOLIC_STRUCTURE: the meaningful co-occurrence structure predates glyph assignment entirely — the palette is descriptive, not productive. Strip all glyph markup to opaque string tokens and the fingerprint should be bit-identical in rank space; equivalently, MI(glyph_label, pair_vector) ≈ 0 while MI(position_in_document, pair_vector) > 0. If true, the fingerprint is a fingerprint of the OPERATOR'S writing topology, and any symbol skin would reproduce it.",
+          "test": "(a) Replace every glyph in the 901 files with a content-free token (SYM_01..SYM_14 by codepoint), recompute the full pair pipeline; require Spearman rho > 0.95 on top-20 pair ranks and D landing inside the same null band. (b) Compute MI(label, pair_count_vector) vs MI(binned document position, pair_count_vector) over USE lines.",
+          "falsifier": "Stripping markup reshuffles the top-5 pairs or pushes D outside the null band, OR MI(label, pairs) > MI(position, pairs) — then the glyph identities carry distributional signal and the palette is causal, killing the pre-symbolic thesis."
+        },
+        {
+          "id": "T1-G6-3",
+          "pattern": "LEXICAL_GHOST_LAYER: the top joint-ranking pairs (closure|receipt 89, ledger|receipt 79) are word-level governance entities, not palette glyphs — the grammar has (at least) two independent production layers: palette-grounded pairing and entity-anchored pairing. The glyph fingerprint is a partial view; the structural regularity that survives de-iconization may live mostly in the lexical layer the fingerprint was not designed to see.",
+          "test": "Build a lexical fingerprint over the same corpus with the entity regex (closure|ledger|receipt|seal|gate|permit|rule|verdict), identical windowing and permutation null (N=1000 seed=42). Compute per-document Pearson r between the glyph pair vector and the lexical pair vector, and check whether the lexical layer has its own significant backbone independent of glyph presence.",
+          "falsifier": "Per-document r > 0.6 (layers are one production rule — ghost layer dissolves into the glyph layer), OR the lexical layer shows no pairs beating its own q95 null (no second grammar exists, the joint-ranking dominance was pure volume)."
+        },
+        {
+          "id": "T1-G4-5",
+          "pattern": "PMI_INVERSION: second-register dominance in raw counts is a volume artifact; v1 pairs may be low-frequency but high-information. Frequency ranking and information ranking are orthogonal orderings, and the pre-registered metrics only reported one. If v1 pairs invert into the top-10 under PMI, the v1 palette encodes tighter (more specialized) structure than the second register despite losing every raw-count contest.",
+          "test": "On USE-only lines @ befd858c, rank all pairs by PMI with a minimum-support floor of 5 observations; also compute per-glyph conditional entropy over pair partners. Report top-10 PMI pairs and median entropy for v1 vs second-register glyphs.",
+          "falsifier": "v1 pairs remain absent from the top-10 under PMI (with support floor), AND v1 median partner-entropy is not lower than second-register — then v1 is both rarer AND less specialized, and second-register dominance is real structure, not measurement bias."
+        },
+        {
+          "id": "T1-G5-5",
+          "pattern": "STRATIFIED_NULL_MISCALIBRATION: the corpus is heterogeneous (policy files with mandated glyphs vs ad-hoc files), so a single aggregate permutation null may be miscalibrated — some of the 22 significant pairs could be artifacts of pooling high-density and low-density strata, and some true pairs in low-density files could be masked.",
+          "test": "Stratify files by glyph density (HIGH = top decile, LOW = bottom half). Recompute the permutation null independently per stratum (n=500 each, seeds 42/43/44) and re-test the 22 significant pairs within each stratum. Report per-stratum q95 and which pairs survive in BOTH strata vs only in the pooled test.",
+          "falsifier": "q95 bounds differ by < 1 absolute count across strata AND all 22 pairs retain the same verdict per-stratum as pooled — then the aggregate null is universal and the stratification concern is empty."
+        },
+        {
+          "id": "T1-G3-4+G4-4",
+          "pattern": "DRIFT_DIRECTION: the 47 bare-warning variants are the corpus's only unforgeable behavioral trace (G3: mistakes are more evidential than doctrine in a self-describing corpus), and their trajectory is decidable — either decaying error (contamination), converging refinement (G4: spontaneous standardization), or single paste lineage (no signal at all). Git history makes this a directed time series, not a snapshot.",
+          "test": "Cluster the 47 variants by normalized edit distance (>=80% similarity = cluster); order occurrences by first-commit date via git log -S on each variant string; compute edit-distance-to-modal-form as a function of commit date; count distinct introducing commits/files per cluster.",
+          "falsifier": "All 47 collapse into <=3 clusters each traceable to a single introducing commit (pure paste lineage — no behavioral signal), OR distance-to-mode shows no monotone trend over time (neither convergence nor decay — undirected noise, both the standardization and the repair-token stories die)."
+        },
+        {
+          "id": "T1-G3-2+G3-3",
+          "pattern": "CORE-PERIPHERY_WITH_ADHESIVE: the vocabulary partitions topologically into a declarative core (validation, structure, identity, emergent, cost — dense internal subgraph, never bridges) and a connective periphery, with loop as the unique cross-register adhesive: its cross-register pair mass (122) exceeds its singleton count (67), an arithmetic profile no other glyph has. If real, 'vocabulary' in this system is functionally typed by (frequency, hubness) coordinates, not by palette membership — a structure that trivially survives de-iconization.",
+          "test": "On USE-only lines (MENTION lines removed) @ befd858c: recount loop's cross-register vs within-register pair mass and singleton count; recompute PMI-normalized weighted degree for all glyphs; compute Spearman rho of hub ranks full-corpus vs USE-only; check completeness of the core-5 subgraph.",
+          "falsifier": "ratio(cross_mass/singleton) for loop drops below 1.0 on USE-only lines (adhesive role was legend-borne), OR hub-rank Spearman rho < 0.60 / core-5 edges dissolve (the partition was manufactured by legend lines, not by use)."
+        },
+        {
+          "id": "T1-G3-5",
+          "pattern": "CHECKSUM_FORGEABILITY: any 'rank-preservation' robustness claim about this fingerprint may be tautological (apposition: adding legend vocabulary never reranks existing pairs) and the hub-identity checksum may be reproducible by an adversary from published marginals + published legends alone. This is a negative candidate that decides whether the fingerprint has any integrity value before anyone builds on it.",
+          "test": "(a) Spearman(top-10 pair ranks full-corpus, USE-only). (b) Adversarial forge: generate a synthetic corpus matching only the published symbol marginals and symbols-per-line distribution (no access to real files, seed=99), inject synthetic legend lines, and check whether it reproduces the top-10 pair checksum and hub identity hash.",
+          "falsifier": "rho >= 0.80 across the window change AND the marginals-only forger fails to reproduce the checksum (top-10 overlap <= 4/10) — then the checksum carries real integrity signal and the tautology/forgeability critique dies."
+        }
+      ],
+      "verdicts": [
+        {
+          "id": "T1-G4-1+G1-2+G3-1",
+          "killed": false,
+          "reason": "SURVIVES. Not a re-derivation: the 5x deficit was measured, but the positional mechanism is new and the candidate is properly deflationary (it demotes 'repulsion' to placement). The test is concretely executable on the verified corpus (markdown sections are parseable, pre/post window pair mass is well-defined, and the density-conditioned permutation null with fixed seed is exactly the control a skeptic demands). CONTAMINATION_CHECK: line-density and frequency are explicitly conditioned out by the null; markdown convention (caveats placed section-final) is not a rival null here — it IS the positional mechanism being claimed, and the candidate does not overclaim why warnings are final. Caveat to enforce at test time: the 'halt/boundary token' gloss is functional language the test cannot establish; only the positional + density-collapse facts are admissible as findings. Report position, asymmetry, and null percentile — not 'terminator semantics'."
+        },
+        {
+          "id": "T1-G4-2+G5-6+G6-1",
+          "killed": true,
+          "reason": "KILLED on executability of the decisive criterion plus a live template null. The pass condition '(1)+(2) >= 76%' hangs on a 'deterministic dependency heuristic' for whether a cost expression 'syntactically governs' a next_step expression in glyph-bearing markdown prose — no parser, no rule set, no tie-breaking is specified, so the pass/fail is not replayable; two implementers would get different verdicts. The genuinely executable half (distance strata, per-file occurrence mode) does not discriminate: a copied 3-line boilerplate block produces lift in the 1-2 line stratum, so surviving that stratum does not exclude template. The thresholds 76%/57% are unmotivated precision. The per-file-mode falsifier is worth salvaging as a standalone check, but as posed the candidate cannot be defended against a skeptic who says 'multi-line template'.",
+          "alt_explanation": "A multi-line documentation boilerplate (cost line, validation line, next-step line copied as a block across files) reproduces every executable signature in the test, including cross-line lift; only the non-executable subjective classifier could distinguish it, so the template null stands."
+        },
+        {
+          "id": "T1-G4-3",
+          "killed": false,
+          "reason": "SURVIVES. This is a legitimate attack on null construction rather than on the statistic — the strongest move available against a settled negative result. Register-conditional permutation preserving within-register marginals is standard, fully specified (seed=42, n=100, same corpus commit), and cheap. It does not re-derive D=0.8036; it asks whether the band that absorbed D was itself contaminated by cross-register variance. Both outcomes are informative and the falsifier includes a quantitative spread-ratio criterion (<1.5) so 'null barely tightened' cannot be hand-waved into a discovery. CONTAMINATION_CHECK: the candidate is itself a contamination check; the one residual risk is that constraining permutations too hard (within-register AND within-line) would collapse the null to near-zero variance and manufacture significance — the implementation must permute within register only, as specified, and report the spread ratio so over-constraint is visible."
+        },
+        {
+          "id": "T1-G2-5+G6-5",
+          "killed": true,
+          "reason": "KILLED on type error: formalism mistaken for empirical fact. Test (a) is a bijective relabeling — replacing each glyph with SYM_01..SYM_14 by codepoint is a rename, and every co-occurrence statistic, pair rank, and distance D is invariant under renaming by mathematical identity. Spearman rho = 1.0 is guaranteed before touching the corpus; a test that cannot fail is not a test. The interesting thesis (fingerprint = operator writing topology, palette merely descriptive) would require a contrast — a second operator's corpus, a shuffled glyph-assignment process, or glyph-free prose with the same pipeline — none of which is proposed. Test (b) is ill-posed: MI(glyph_label, pair_count_vector) is degenerate because the labels define the pair vector's coordinates. CONTAMINATION_CHECK: maximal — the predicted result is produced by the structure of the measurement itself, independent of any property of the corpus.",
+          "alt_explanation": "Relabeling invariance is a theorem about the pipeline, not a finding about the corpus; the 'pre-symbolic' pass condition holds for any corpus, any symbols, any operator, and therefore carries zero bits about this one."
+        },
+        {
+          "id": "T1-G6-3",
+          "killed": true,
+          "reason": "KILLED on simpler null (topical frequency) plus form->function overreach. The corpus is HELEN governance doctrine whose subject matter IS closures, receipts, and ledgers; content words about the document's topic co-occur at high rates in any topical corpus. Token-permutation nulls are notoriously beaten by content-word burstiness, so the proposed 'lexical layer has its own significant backbone' test is near-guaranteed to pass and therefore uninformative — significance against that null cannot distinguish a 'second production grammar' from ordinary prose about a topic. Calling word co-mention in prose an 'independent production layer' converts a frequency/topicality fact into a grammar claim without any test that could separate the two (no burstiness-preserving null, no cross-topic control corpus is specified). The per-document r component is salvageable as a redundancy measurement, but the pattern as stated dies. CONTAMINATION_CHECK: corpus topic composition and word frequency fully predict the observed counts (closure|receipt 89, ledger|receipt 79).",
+          "alt_explanation": "Documents about receipts mention 'receipt' near 'closure' and 'ledger' because that is what the documents are about; a permutation null that destroys topical clustering will flag this in any doctrine corpus, with or without any grammar."
+        },
+        {
+          "id": "T1-G4-5",
+          "killed": true,
+          "reason": "KILLED: both proposed instruments are mechanically biased toward the predicted conclusion, so a 'pass' is explained by low frequency itself — the exact contamination the check demands. PMI is bounded above by -log p(x)p(y); rare tokens get inflated PMI purely from rarity, and a support floor of 5 is far too weak to remove this (a pair seen 5 times among rare glyphs can top the chart on noise plus the rarity bound). Conditional partner entropy is downward-biased at small sample sizes, so rare v1 glyphs will look 'more specialized' mechanically even under a null of random partner selection. Both arrows point the same way: the test is rigged in favor of the inversion. The underlying question (frequency rank vs information rank) is legitimate, but it requires NPMI or a frequency-matched permutation null (compare each v1 pair against pseudo-glyphs with matched marginals) — neither is specified, and without one the falsifier's negative branch is the only trustworthy outcome.",
+          "alt_explanation": "PMI rarity inflation plus entropy undersampling bias produce 'v1 inverts into the top-10 and looks more specialized' from marginal frequencies alone, with zero genuine associative structure."
+        },
+        {
+          "id": "T1-G5-5",
+          "killed": false,
+          "reason": "SURVIVES. A calibration audit of the pooled null against Simpson-type pooling artifacts is methodologically legitimate, fully specified (density deciles, n=500 per stratum, seeds 42/43/44), and executable on the verified corpus (224 palette-bearing files stratify cleanly). It re-derives nothing: per-stratum q95 bounds were never computed. The falsifier is quantitative (<1 absolute count divergence AND verdict identity). CONTAMINATION_CHECK passes with two caveats that must be enforced at interpretation time: (1) per-stratum n is smaller, so pairs failing in a stratum from power loss must not be reported as 'pooling artifacts' — report per-stratum expected counts alongside q95 so power loss is distinguishable from miscalibration; (2) the middle 40% of files is untested by the HIGH/LOW design, so a clean result licenses only 'no gross miscalibration', not 'the aggregate null is universal'."
+        },
+        {
+          "id": "T1-G3-4+G4-4",
+          "killed": false,
+          "reason": "SURVIVES. The design converts a snapshot count (47 bare-warning variants, already measured) into a directed time series, which is new information, and git history is verified present in the SOT (befd858c resolves; git log -S per variant string is executable). Critically, the candidate pre-loads its own deflationary nulls into the falsifier: paste lineage (<=3 clusters, single introducing commits) and undirected noise (no monotone trend) both kill it cleanly, so it cannot survive on vibes. CONTAMINATION_CHECK: the main confounds are bulk commits (many files landing in one commit coarsens the time axis) and history rewrites — both collapse the data toward the paste-lineage branch, i.e., toward self-kill, which is the admissible direction of bias. Enforcement notes: specify the trend statistic (Spearman of distance-to-mode vs commit date) before running, and treat n=47 with few distinct dates as low power — a null trend result is 'insufficient signal', not proof of noise."
+        },
+        {
+          "id": "T1-G3-2+G3-3",
+          "killed": false,
+          "reason": "SURVIVES, borderline — retained because the two dominant contaminants are explicitly controlled: legend residue (USE-only recount with MENTION lines removed) and raw frequency (PMI-normalized weighted degree for hubness), and the falsifier pre-commits to death if either control dissolves the structure (ratio < 1.0 on USE-only, hub-rank rho < 0.60, core-5 edges gone). The claim is topological and testable, not semantic. CONTAMINATION_CHECK exposes one uncontrolled channel: the cross_mass(122)/singleton(67) ratio is dimensionally lopsided — pair mass scales with window size and line density, singleton count does not, so a mid-frequency glyph living in dense lines gets ratio > 1 mechanically. Enforcement: the adhesive claim may not rest on the ratio alone; it must be corroborated by the density-robust criterion (PMI-normalized cross-register degree exceeding within-register degree), and the uniqueness claim ('no other glyph has this profile') must be re-checked after normalization. The decorative labels ('declarative core', 'adhesive') are glosses; only the (frequency, hubness) coordinates are admissible findings."
+        },
+        {
+          "id": "T1-G3-5",
+          "killed": false,
+          "reason": "SURVIVES. This is the master null for the entire fingerprint enterprise: if a forger with access only to published symbol marginals and the symbols-per-line distribution reproduces the top-10 pair checksum (overlap > 4/10), every downstream integrity claim dies, and if the forger fails, the checksum provably carries pairwise information beyond marginals. Fully executable (seed=99 forge, deterministic pipeline, verified corpus artifact with published manifest exists at wulmoji_fingerprint_v0.json), and it is a negative candidate whose both branches are decision-relevant — the rarest and most valuable kind. Not re-derivation: the Spearman(full vs USE-only) component overlaps G3-2's hub-rank check only superficially (pair ranks vs hub ranks, different objects). CONTAMINATION_CHECK: the test measures contamination-by-marginals directly, which is its point. One underspecification to fix before running: 'inject synthetic legend lines' must be pinned to a concrete template (e.g., one line enumerating all 14 glyphs, at the same legend-line rate as the real corpus) so the forge is replayable; and the conjunction pass condition should be reported as two separate bits (rank stability; forge failure) rather than one AND, since each has independent value."
+        }
+      ],
+      "survivors": [
+        {
+          "id": "T1-G4-1+G1-2+G3-1",
+          "pattern": "WARNING_AS_TERMINATOR: warning's measured anti-associativity is positional, not merely repulsive. warning marks the END of reasoning segments (halt/boundary token), so its 5x pair deficit is a consequence of segment-final placement where symbol density structurally collapses. This merges G4's causal flip (endpoint, not void), G1's boundary-marking mechanism, and G3's demand for a density-conditioned null.",
+          "test": "On corpus @ befd858c: (a) for all 234 warning occurrences, compute position-in-block fraction (line index within its markdown section / section length); (b) for each warning line k, count palette pairs in lines [k-3,k-1] vs [k+1,k+3]; (c) run block-conditional permutation null (N=1000, seed=42) preserving symbol marginals AND symbols-per-line density, recompute warning pair mass. Pass = warning lands in final 25% of its section in >65% of cases, AND pre-warning pair mass >= 2x post-warning pair mass, AND isolation survives the density-conditioned null (below 5th pct).",
+          "falsifier": "Warning positions are uniform across sections (final-quartile rate not distinguishable from 25% baseline), OR pre/post pair mass is symmetric, OR the density-conditioned null dissolves the isolation (warning pair mass rises above the 50th pct of the conditioned null) — in which case the repulsion is a quirk of marginal rank + line-density, not a boundary law."
+        },
+        {
+          "id": "T1-G4-3",
+          "pattern": "REGISTER_HIDDEN_IN_NULL: the D(A,B)=0.8036 inside-null result may be an artifact of a register-contaminated null. If permutations that scramble across registers are replaced by register-respecting permutations (shuffle only within v1, only within second-register), the null band tightens; D could then exit the band, meaning the register boundary is real but was invisible because the null itself absorbed it. Genuinely novel: it attacks the null construction, not the statistic.",
+          "test": "Rebuild the matched null (n=20 -> n=100, seed=42) with within-register-only token permutations on the same corpus @ befd858c. Report new bounds [lo,hi] and D's position, plus the ratio of null spreads (unconstrained/constrained) as a measure of how much variance register membership was contributing.",
+          "falsifier": "D=0.8036 remains inside the register-respecting null band, AND the constrained null spread is not materially tighter (spread ratio < 1.5) — then the register boundary is definitively distributional-inert and the 'law not distribution' conclusion is confirmed rather than artifactual."
+        },
+        {
+          "id": "T1-G5-5",
+          "pattern": "STRATIFIED_NULL_MISCALIBRATION: the corpus is heterogeneous (policy files with mandated glyphs vs ad-hoc files), so a single aggregate permutation null may be miscalibrated — some of the 22 significant pairs could be artifacts of pooling high-density and low-density strata, and some true pairs in low-density files could be masked.",
+          "test": "Stratify files by glyph density (HIGH = top decile, LOW = bottom half). Recompute the permutation null independently per stratum (n=500 each, seeds 42/43/44) and re-test the 22 significant pairs within each stratum. Report per-stratum q95 and which pairs survive in BOTH strata vs only in the pooled test.",
+          "falsifier": "q95 bounds differ by < 1 absolute count across strata AND all 22 pairs retain the same verdict per-stratum as pooled — then the aggregate null is universal and the stratification concern is empty."
+        },
+        {
+          "id": "T1-G3-4+G4-4",
+          "pattern": "DRIFT_DIRECTION: the 47 bare-warning variants are the corpus's only unforgeable behavioral trace (G3: mistakes are more evidential than doctrine in a self-describing corpus), and their trajectory is decidable — either decaying error (contamination), converging refinement (G4: spontaneous standardization), or single paste lineage (no signal at all). Git history makes this a directed time series, not a snapshot.",
+          "test": "Cluster the 47 variants by normalized edit distance (>=80% similarity = cluster); order occurrences by first-commit date via git log -S on each variant string; compute edit-distance-to-modal-form as a function of commit date; count distinct introducing commits/files per cluster.",
+          "falsifier": "All 47 collapse into <=3 clusters each traceable to a single introducing commit (pure paste lineage — no behavioral signal), OR distance-to-mode shows no monotone trend over time (neither convergence nor decay — undirected noise, both the standardization and the repair-token stories die)."
+        },
+        {
+          "id": "T1-G3-2+G3-3",
+          "pattern": "CORE-PERIPHERY_WITH_ADHESIVE: the vocabulary partitions topologically into a declarative core (validation, structure, identity, emergent, cost — dense internal subgraph, never bridges) and a connective periphery, with loop as the unique cross-register adhesive: its cross-register pair mass (122) exceeds its singleton count (67), an arithmetic profile no other glyph has. If real, 'vocabulary' in this system is functionally typed by (frequency, hubness) coordinates, not by palette membership — a structure that trivially survives de-iconization.",
+          "test": "On USE-only lines (MENTION lines removed) @ befd858c: recount loop's cross-register vs within-register pair mass and singleton count; recompute PMI-normalized weighted degree for all glyphs; compute Spearman rho of hub ranks full-corpus vs USE-only; check completeness of the core-5 subgraph.",
+          "falsifier": "ratio(cross_mass/singleton) for loop drops below 1.0 on USE-only lines (adhesive role was legend-borne), OR hub-rank Spearman rho < 0.60 / core-5 edges dissolve (the partition was manufactured by legend lines, not by use)."
+        },
+        {
+          "id": "T1-G3-5",
+          "pattern": "CHECKSUM_FORGEABILITY: any 'rank-preservation' robustness claim about this fingerprint may be tautological (apposition: adding legend vocabulary never reranks existing pairs) and the hub-identity checksum may be reproducible by an adversary from published marginals + published legends alone. This is a negative candidate that decides whether the fingerprint has any integrity value before anyone builds on it.",
+          "test": "(a) Spearman(top-10 pair ranks full-corpus, USE-only). (b) Adversarial forge: generate a synthetic corpus matching only the published symbol marginals and symbols-per-line distribution (no access to real files, seed=99), inject synthetic legend lines, and check whether it reproduces the top-10 pair checksum and hub identity hash.",
+          "falsifier": "rho >= 0.80 across the window change AND the marginals-only forger fails to reproduce the checksum (top-10 overlap <= 4/10) — then the checksum carries real integrity signal and the tautology/forgeability critique dies."
+        }
+      ]
+    }
+  }
+}
