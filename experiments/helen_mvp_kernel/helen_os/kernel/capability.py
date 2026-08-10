@@ -102,7 +102,7 @@ class CapabilityFactory:
 
 @dataclass(frozen=True)
 class InvokeResult:
-    status: str  # EXECUTED | ALREADY_CONSUMED | EXPIRED | BIND_MISMATCH | PRE_STATE_MISMATCH | SCOPE_MISMATCH | HOLDER_MISMATCH | EFFECT_MISMATCH | CAP_TYPE_MISMATCH
+    status: str  # EXECUTED | ALREADY_CONSUMED | EXPIRED | BIND_MISMATCH | PRE_STATE_MISMATCH | SCOPE_MISMATCH | HOLDER_MISMATCH | EFFECT_MISMATCH | CAP_TYPE_MISMATCH | STATE_MIGRATED
     effect_ran: bool
 
 
@@ -170,6 +170,20 @@ class Executor:
         try:
             if effect is not None:
                 effect()
+                # E007: atomic recheck AFTER the effect DETECTS intra-transaction migration
+                # — this does NOT prevent the bad transition (the effect at line above has
+                # ALREADY run against the moved state; effect_ran=True below says so). It is a
+                # compensating detection signal (STATE_MIGRATED) enabling downstream
+                # reconciliation/rollback. If a re-entrant effect (or a nested invoke it
+                # triggered) moved the governed state, the post-effect derivation no longer
+                # matches cap.pre_state_hash. Detects the RE-ENTRANCY case. RESIDUAL: true
+                # multi-thread concurrency (another thread mutating mid-effect) is neither
+                # detected nor prevented — needs a lock/version-CAS (infrastructure; MVP is
+                # single-threaded). E007 makes the single-threaded assumption CHECKED (after
+                # the fact) for re-entrancy, not silent — but it is detection, not prevention.
+                if self._state_provider is not None:
+                    if self._state_provider() != cap.pre_state_hash:
+                        return InvokeResult("STATE_MIGRATED", True)
         finally:
             self._active = None
         return InvokeResult("EXECUTED", True)
