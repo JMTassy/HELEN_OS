@@ -1,0 +1,38 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sandbox-vgrammar-e40-ring-branding-governance-collision",
+  "target": "sandbox_visual_grammar",
+  "epoch": "E40",
+  "parent_epoch": "E39",
+  "finding_type": "semantic_collision",
+  "hypothesis": "If home_v1.html orbital ring decoration reuses the exact hexes of its own governance signals (#00ff88 confirm-green, #ffaa00 receipt-amber), the permanently-lit knowledge and schedule rings read as standing governance state, diluting the meaning of confirm flashes and receipt firings on the same canvas.",
+  "summary": "home_v1.html (authority: false · NO_RECEIPT = NO_CLAIM, L151) assigns #00ff88 three meanings: (1) operator-confirm governance action — .btn-c CONFIRM button L84-85, .q-item.confirmed L65, confirm flash pulse on canvas L510-512; (2) pure decoration — ring 3 'knowledge' base color L467, permanently glowing regardless of any admission; (3) governance-debt 'clear' state text L556. In parallel, #ffaa00 carries: schedule ring decoration L468, receipt-firing dot L103-105, and 'unreceipted' debt warning text L551-552. The confirm flash (L510) pulses green ON the ring geometry itself — when it fires on ring 3, a governance pulse is drawn in the same hex as that ring's idle decoration, making the decision event visually indistinguishable from the ring's resting state. Source Atlas Doctrine: no decorative color substitution. Secondary (helen2027.html): clean single-meaning palette; one mild E31-class recurrence — --ok:#16a34a green on the 'Online' presence badge (L45-46, L224), operational liveness in green where E31 ruled liveness maps to OBSERVED.",
+  "evidence": [
+    "apps/helen-surface/home_v1.html:151 — 'authority: false · NO_RECEIPT = NO_CLAIM'",
+    "apps/helen-surface/home_v1.html:65,84-85 — CONFIRM button and confirmed items in #00ff88 (governance action)",
+    "apps/helen-surface/home_v1.html:467 — ring 3 'knowledge' decoration col:'#00ff88' (same hex, no governance meaning)",
+    "apps/helen-surface/home_v1.html:510-512 — confirm flash pulse rgba(0,255,136)/#00ff88 drawn on ring geometry",
+    "apps/helen-surface/home_v1.html:556 — 'clear' debt state in rgba(0,255,136,.38)",
+    "apps/helen-surface/home_v1.html:468 vs 103-105,551-552 — #ffaa00 as schedule-ring decoration vs receipt-dot and debt warning",
+    "apps/helen-surface/helen2027.html:45-46,224 — --ok:#16a34a 'Online' presence badge (E31-class liveness-green, single-meaning within file)",
+    "CLAUDE.md §Source Atlas Doctrine — 'No decorative color substitution is allowed'"
+  ],
+  "proposed_tweak": "home_v1.html: recolor ring 3 'knowledge' L467 #00ff88 → #00b894 (teal, off-governance) and ring 4 'schedule' L468 #ffaa00 → #cc8800 (dark amber, distinct from receipt-dot amber). Two hex edits in the RINGS array; confirm flash, CONFIRM button, receipt dot, and debt texts keep their hexes — governance signals become unique again. helen2027.html: no edit proposed this epoch; 'Online' badge logged as E31-class recurrence for operator awareness.",
+  "metric": "grep -c '00ff88' apps/helen-surface/home_v1.html drops 7→6 and grep -c 'ffaa00' drops by 1; RINGS array shares no hex with .btn-c, .rcpt-dot, or debt-text colors",
+  "rule": "keep if orbital ring decoration hexes are disjoint from every governance-signal hex in the same file; reject if operator rules ring colors are themselves governance-bearing (in which case each ring needs a receipt-backed state model, not a static col field)",
+  "next": "Sweep temple.html and temple_akashic_v1.html connector/badge palettes for the same decoration-vs-governance hex reuse, closing the full helen-surface audit",
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-10T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (live probe: home_v1.html L467 confirms ring-3 #00ff88 identical to .btn-c L84; L510-512 confirms confirm flash drawn on ring geometry in same hex; L468 vs L103-105 confirms #ffaa00 shared by schedule ring and receipt dot; helen2027.html grep confirms #16a34a used only for presence badge)",
+    "epoch": "E40",
+    "parent_epoch": "E39",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
