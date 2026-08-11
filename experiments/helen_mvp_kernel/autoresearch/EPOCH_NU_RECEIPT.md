@@ -47,14 +47,32 @@ Loop: HELEN°FABLE supervision · operator directive "build ν" @ 8ffe0ff
   commitment in-process is production work (same derive-at-source residual class). Then ν feeds C17
   and C17 feeds C16. NON_SOVEREIGN, no sovereign path touched.
 
-## KNOWN GAP (disclosed pre-commit — do NOT read this receipt as SHIP)
-Adversarial re-review found **Negative-by-Silence** in `verify_coverage` (nu.py): a class is counted
-covered if a `NegativeDep` of that class exists, but the function does NOT require the NegativeDep to
-carry a witness (event refs / enumeration). So `¬Observed(d) → Excluded(d)` is currently expressible —
-the "D⁻ is a witnessed discovery obligation" claim above is the INTENT, not yet enforced by code.
-Fix pending (`harden ν`): require `NegativeDep.witness` non-empty + an EXHIBIT-02 (Negative-by-Silence)
-falsifier + a wire-level `validate_exhibit_payload`. Committed as GREEN-WITH-KNOWN-GAP WIP, not SHIP.
-ν was NOT independently peer-reviewed (proposer≠validator) before this commit.
+## KNOWN GAP — RESOLVED by `harden ν` (2026-08-11)
+The Negative-by-Silence hole is now CLOSED. `verify_coverage` enforces the pointwise invariant
+`∀d∈D⁻ ∃ valid witness` (step 3b): every declared exclusion must carry its own valid, executed, bound
+witness, so `¬Observed(d) → Excluded(d)` is no longer expressible. `valid_negative_witness =
+ValidStructure ∧ ValidBinding ∧ Executed` — a described-but-unexecuted obligation is NOT a witness.
+Because each `NegativeDep` IS its own single-subject witness (cls=subject), one witness cannot launder
+another subject's exclusion. Added wire-boundary `validate_exhibit_payload` (semantic gate, not
+JSON-shape: rejects forbidden verdict fields AND unwitnessed/unexecuted D⁻ on raw input) — typed-
+constructor safety ≠ wire-format safety. New falsifiers: EXHIBIT-02A (constructor), 02B (wire),
+02C (witness-laundering) + unexecuted-obligation + positive control. **14/14 ν green, 272 suite green
+(2 pre-existing surface failures unrelated). Independent peer-review: see verdict appended below.**
+
+## Independent peer-review (proposer≠validator, K2/Rule 3) — SHIP 7/7
+Fresh-context validator re-ran tests and re-derived every claim. Verdict: **SHIP peer_review_pass**.
+- 14/14 ν falsifiers pass; full suite 272 passed (the 2 failures are pre-existing `test_surface_grammar`,
+  unrelated to ν — no regression).
+- Verified: step-3b enforces the pointwise D⁻ witness before partition; `valid_negative_witness` =
+  Structure ∧ Binding ∧ Executed; wire gate is semantic (rejects forbidden verdict keys + unwitnessed /
+  unexecuted D⁻); witness-laundering (02C) is genuinely pointwise (no `any()` shortcut — a naive
+  `assert any(valid…)` would wrongly pass 02C; the code uses a per-d FAIL loop). No laundering bypass found.
+- Reviewer KNOWN_GAPS (non-blocking, outside literal criteria — carried honestly, not a SHIP claim):
+  (a) truthy-non-bool `executed='yes'` passes `bool(...)` — type-laundering surface, not witness-laundering
+  (needs the subject's own sender to set it; cannot cover another subject). Future: strict `is True`.
+  (b) `validate_exhibit_payload` scans only top-level keys — a forbidden verdict key nested inside a
+  `d_plus` entry is not caught at the wire (the typed `NuExhibit` cannot carry it; only the wire top level
+  is gated). Future: recursive forbidden-key scan.
 
 ## Fable supervision note
 "build ν": built the locked EXHIBIT spec — event ≠ dependency ≠ exhibit ≠ coverage verdict ≠

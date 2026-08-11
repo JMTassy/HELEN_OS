@@ -87,12 +87,24 @@ class PositiveDep:               # d ∈ D⁺ ⟺ ∃ events ⊢ d (with concret
 
 
 @dataclass(frozen=True)
-class NegativeDep:               # d ∈ D⁻ ⟺ an executed discovery obligation excludes d
-    cls: ObsClass
-    scope: str
-    discovery_rule: str
+class NegativeDep:
+    """d ∈ D⁻ — a PROOF-CARRYING exclusion. Absence-of-event is NOT enough (Negative-by-Silence).
+    Each exclusion IS its own single-subject witness (cls = subject), so one witness can never launder
+    another subject's exclusion. ValidNegativeWitness = ValidStructure ∧ ValidBinding ∧ Executed."""
+    cls: ObsClass               # subject: the class proven absent (binding)
+    scope: str                  # search domain that was enumerated
+    discovery_rule: str         # the discovery obligation
     enumerated_count: int
-    manifest_hash: str
+    manifest_hash: str          # hash of the enumeration RESULT
+    executed: bool = False      # was the obligation actually RUN? (a described obligation is not a witness)
+
+
+def valid_negative_witness(d: NegativeDep) -> bool:
+    """ValidNegativeWitness = ValidStructure ∧ ValidBinding ∧ Executed. A declared obligation_id is not
+    a witness until it is executed and bound to its subject — else negative-by-unexecuted-description."""
+    valid_structure = bool(d.scope) and bool(d.discovery_rule) and bool(d.manifest_hash)
+    valid_binding = isinstance(d.cls, ObsClass)        # subject present and typed
+    return valid_structure and valid_binding and bool(d.executed)
 
 
 @dataclass(frozen=True)
@@ -177,6 +189,12 @@ def verify_coverage(E: NuExhibit):
     for c in E.dispositions:
         if c.disposition == Disposition.NOT_APPLICABLE and not c.justification:
             return Coverage.FAIL, f"NA_WITHOUT_JUSTIFICATION:{c.cls.value}"
+    # 3b. D⁻ must be PROOF-CARRYING — silence cannot enter D⁻ (Negative-by-Silence). Pointwise: EVERY
+    #     declared exclusion needs its own valid, executed, bound witness; one witness cannot launder
+    #     another subject's exclusion (d∉D⁺ ⊬ d∈D⁻).
+    for d in E.d_minus:
+        if not valid_negative_witness(d):
+            return Coverage.FAIL, f"UNWITNESSED_EXCLUSION:{d.cls.value}"
     # partition sets
     covered = {d.cls for d in E.d_plus} | {d.cls for d in E.d_minus}   # witnessed positively or by discovery
     opaque = {o.cls for o in E.opaque}
@@ -194,3 +212,29 @@ def verify_coverage(E: NuExhibit):
         return Coverage.UNKNOWN, "RELEVANT_OPACITY"
     # 6. every relevant class defensibly covered or validly NA
     return Coverage.PASS, "ALL_RELEVANT_COVERED_OR_NA"
+
+
+class NuIntegrityError(ValueError):
+    """Raised at the wire boundary when an externally-supplied payload violates a ν-integrity invariant
+    (not merely a JSON-shape error). typed-constructor safety ≠ wire-format safety."""
+
+
+def validate_exhibit_payload(raw: dict) -> bool:
+    """Wire-boundary SEMANTIC gate. A well-formed, schema-shaped JSON payload can still violate ν
+    integrity — this enforces the SAME invariants as the constructor on raw external input:
+        JSON well-formed ⊬ schema valid ⊬ ν-integrity valid.
+    Rejects forbidden verdict coordinates AND the Negative-by-Silence path on the wire."""
+    if not isinstance(raw, dict):
+        raise NuIntegrityError("PAYLOAD_NOT_OBJECT")
+    leaked = _FORBIDDEN & set(raw.keys())
+    if leaked:
+        raise NuIntegrityError(f"FORBIDDEN_VERDICT_FIELD:{sorted(leaked)}")   # closed verdict surface
+    for d in raw.get("d_minus", []) or []:
+        subj = d.get("cls") or d.get("subject")
+        if not subj:
+            raise NuIntegrityError("NEGATIVE_WITHOUT_SUBJECT")
+        if not (d.get("scope") and d.get("discovery_rule") and d.get("manifest_hash")):
+            raise NuIntegrityError(f"UNWITNESSED_EXCLUSION_WIRE:{subj}")       # structure/binding
+        if not d.get("executed"):
+            raise NuIntegrityError(f"UNEXECUTED_EXCLUSION_WIRE:{subj}")        # described ≠ executed
+    return True

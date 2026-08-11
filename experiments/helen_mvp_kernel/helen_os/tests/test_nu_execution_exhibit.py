@@ -5,9 +5,12 @@ coverage; opacity ⇒ UNKNOWN, never PASS. EXHIBIT-00 (False Closure) is the con
 """
 from dataclasses import replace
 
+import pytest
+
 from helen_os.audit.nu import (
     ClassDisposition, Coverage, Disposition, ExecutionEvent, NegativeDep, NuExhibit,
-    ObsClass, ObservationContract, OpaqueClass, PositiveDep, mint, verify_coverage,
+    NuIntegrityError, ObsClass, ObservationContract, OpaqueClass, PositiveDep,
+    mint, valid_negative_witness, validate_exhibit_payload, verify_coverage,
 )
 
 FILE, ENV, NATIVE = ObsClass.FILE_READ, ObsClass.ENV_READ, ObsClass.NATIVE_BOUNDARY
@@ -95,7 +98,8 @@ def test_nu_all_covered_passes():
         omega,
         events=[_ev(1, FILE), _ev(2, ENV)],
         d_plus=[_dplus(FILE, [1]), _dplus(ENV, [2])],
-        d_minus=[NegativeDep(ObsClass.NAMESPACE_DISCOVERY, "ns/**", "recursive-v2", 0, "sha:m")],
+        # D⁻ now must be a valid, EXECUTED, bound witness — not a bare placeholder
+        d_minus=[NegativeDep(ObsClass.NAMESPACE_DISCOVERY, "ns/**", "recursive-v2", 37, "sha:m", executed=True)],
         opaque=[],
     )
     v, reason = verify_coverage(E)
@@ -110,3 +114,62 @@ def test_nu_exhibit_id_excludes_views():
     assert a.exhibit_id() == b.exhibit_id()        # new view ⊬ new evidence identity
     c = replace(a, opaque=(OpaqueClass(NATIVE, "x"),))  # a real content change
     assert a.exhibit_id() != c.exhibit_id()
+
+
+# ============================================================================================
+# EXHIBIT-02 · NEGATIVE-BY-SILENCE — silence cannot enter D⁻; only an executed, valid, bound
+# exclusion witness can. "A test suite witnesses a surface; a constitution closes the boundaries."
+# ============================================================================================
+NET = ObsClass.EXTERNAL_SERVICE      # stands in for "NETWORK"
+
+def _wit(cls, executed=True):
+    return NegativeDep(cls, f"{cls.value}/**", "discovery-v2", 12, f"sha:{cls.value}", executed=executed)
+
+
+# ---- EXHIBIT-02A · CONSTRUCTOR: a D⁻ exclusion with no witness (executed=False) → FAIL, never covered
+def test_exhibit02a_constructor_negative_by_silence():
+    omega = ObservationContract("o", (FILE, NET), "p", ())
+    E = mint(omega, [_ev(1, FILE)], [_dplus(FILE, [1])],
+             d_minus=[NegativeDep(NET, "net/**", "discovery-v2", 0, "sha:n", executed=False)],  # declared, not run
+             opaque=[])
+    v, reason = verify_coverage(E)
+    assert v == Coverage.FAIL and reason == "UNWITNESSED_EXCLUSION:EXTERNAL_SERVICE"
+    # the predicate agrees: an unexecuted obligation is not a witness
+    assert not valid_negative_witness(NegativeDep(NET, "net/**", "discovery-v2", 0, "sha:n", executed=False))
+
+
+# ---- EXHIBIT-02B · WIRE: a schema-shaped JSON payload with an unwitnessed D⁻ is REJECTED semantically
+def test_exhibit02b_wire_payload_negative_by_silence():
+    payload = {"schema_version": "NU_EXECUTION_EXHIBIT_V1",
+               "d_plus": [{"cls": "FILE_READ"}],
+               "d_minus": [{"cls": "EXTERNAL_SERVICE"}]}   # JSON well-formed + shaped, but no witness
+    with pytest.raises(NuIntegrityError, match="UNWITNESSED_EXCLUSION_WIRE"):
+        validate_exhibit_payload(payload)
+    # a wire payload smuggling a verdict coordinate is also rejected (closed surface on the wire)
+    for bad in ("authority", "complete", "admit", "pi_d_pass"):
+        with pytest.raises(NuIntegrityError, match="FORBIDDEN_VERDICT_FIELD"):
+            validate_exhibit_payload({bad: True, "d_minus": []})
+    # a fully-witnessed, executed D⁻ passes the wire gate (non-vacuity)
+    ok = {"d_minus": [{"cls": "EXTERNAL_SERVICE", "scope": "net/**",
+                       "discovery_rule": "v2", "manifest_hash": "sha:n", "executed": True}]}
+    assert validate_exhibit_payload(ok) is True
+
+
+# ---- EXHIBIT-02C · WITNESS-LAUNDERING: one valid witness may NOT cover a second unwitnessed subject
+def test_exhibit02c_witness_laundering():
+    omega = ObservationContract("o", (FILE, NET, ENV), "p", ())
+    E = mint(omega, [_ev(1, FILE)], [_dplus(FILE, [1])],
+             # NET is validly witnessed+executed; ENV is declared but NOT executed → must still FAIL on ENV
+             d_minus=[_wit(NET, executed=True), NegativeDep(ENV, "env/**", "v2", 3, "sha:e", executed=False)],
+             opaque=[])
+    v, reason = verify_coverage(E)
+    assert v == Coverage.FAIL and reason == "UNWITNESSED_EXCLUSION:ENV_READ"   # NET's witness cannot launder ENV
+
+
+# ---- positive control: two validly-witnessed executed exclusions cover their subjects → PASS
+def test_exhibit02_valid_witnesses_pass():
+    omega = ObservationContract("o", (FILE, NET, ENV), "p", ())
+    E = mint(omega, [_ev(1, FILE)], [_dplus(FILE, [1])],
+             d_minus=[_wit(NET, executed=True), _wit(ENV, executed=True)], opaque=[])
+    v, reason = verify_coverage(E)
+    assert v == Coverage.PASS and reason == "ALL_RELEVANT_COVERED_OR_NA"
