@@ -1,0 +1,50 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-promptcomp-e44-admitted-lesson-missing-append",
+  "target_surface": "prompt_compression",
+  "epoch": "E44",
+  "parent_epoch": "E36",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "final": "HOLD_FOR_OPERATOR",
+  "reducer_required": true,
+  "finding_type": "missing_append",
+  "source_refs": [
+    "helen_os/autonomy/self_improve_loop_v1.py:411-426",
+    "helen_os/autonomy/self_improve_loop_v1.py:283"
+  ],
+  "summary": "E36 found that admitted_skill lessons are not appended to feedback_lines. E44 live-confirms via direct read: self_improve_loop_v1.py:418 computes lesson = 'Admitted skill X: description' but no feedback_lines.append follows. All 5 failure paths (INFERENCE_FAILED:304, PARSE_FAILED:322, DUPLICATE:340, GATE_BLOCK:423, REDUCER_REJECT:426) append. ADMITTED does not. Result: next-cycle {feedback} slot carries zero admission signal. grep -c 'feedback_lines.append' self_improve_loop_v1.py = 5. No test covers this path (grep confirmed 0 tests import run_self_improve_loop or exercise feedback_lines in admitted branch).",
+  "evidence": [
+    "self_improve_loop_v1.py:418: lesson = f\"Admitted skill {skill_id!r}: ...\"; next line is 'else:' — no append",
+    "self_improve_loop_v1.py:304: feedback_lines.append(cycle.lesson) — INFERENCE_FAILED path appends",
+    "self_improve_loop_v1.py:322-324: PARSE_FAILED appends",
+    "self_improve_loop_v1.py:340-341: DUPLICATE appends",
+    "self_improve_loop_v1.py:423, 426: GATE_BLOCK and REDUCER_REJECT append",
+    "grep -c 'feedback_lines.append' self_improve_loop_v1.py → 5 (all failure paths; 0 in ADMITTED branch)",
+    "grep -rn 'run_self_improve\\|feedback_lines' helen_os/tests/*.py → 0 tests cover admitted feedback path",
+    "self_improve_loop_v1.py:283: {feedback} slot fed by feedback_lines — next cycle prompt blind to admitted skills' descriptions"
+  ],
+  "mechanism": "ADMITTED branch at line 411-418 correctly calls _admit_skill_to_library and builds lesson string but exits without feedback_lines.append. The else-branch (lines 419-426) has symmetrical append calls. This asymmetry means: if 3 skills are admitted in one batch, the next cycle's {feedback} carries 0 of those lessons, preventing semantic dedup (the cycle can re-propose similar skills and only discovers the collision via admitted_skills JSON id list, not description).",
+  "hypothesis": "If feedback_lines.append(lesson) is added at self_improve_loop_v1.py:419 (after the ADMITTED lesson is built, before the else branch), then the next cycle's {feedback} slot includes admitted skill descriptions, enabling semantic dedup without requiring admitted_skills dict lookup.",
+  "proposed_tweak": "self_improve_loop_v1.py:418-419 — insert one line: after 'lesson = f\"Admitted skill {skill_id!r}: ...\"', add 'feedback_lines.append(lesson)'. This mirrors the INFERENCE_FAILED pattern at line 304. Proposal only — operator must apply. No other files touched.",
+  "metric": "grep -c 'feedback_lines.append' helen_os/autonomy/self_improve_loop_v1.py → 5 (baseline, now). After fix: 6 (one new line in ADMITTED branch). Test: assert 'Admitted skill' in feedback_lines after mock ADMITTED CycleResult.",
+  "keep_rule": "KEEP if: grep count goes 5→6 AND make test green AND no existing test asserts on absence of admitted lesson in feedback_lines (0 such tests confirmed). REJECT if: test suite reveals a downstream consumer that expects feedback_lines to contain only failures.",
+  "next": "Add test_admitted_lesson_in_feedback_lines: mock CycleResult with reducer_decision=ADMITTED; call run_self_improve_loop with 1 cycle; assert any(\"Admitted skill\" in l for l in feedback_lines). Wire with E22 admitted_skills dict fix for full dedup coverage.",
+  "risk_flags": [
+    "Minimal — 1-line insert in ADMITTED branch; 0 tests assert on feedback_lines content for admitted path",
+    "Verify _admit_skill_to_library does not already append lesson (it does not — confirmed by read)",
+    "If feedback_lines grows large over many admitted cycles, prompt token count increases — acceptable; feedback_lines is capped by cycle_count"
+  ],
+  "e36_relation": "E36 found the gap at scan time. E44 re-confirms with direct line-by-line read and exact grep count baseline (5). E44 adds: no test exists for this path (grep 0); fix is 1 line; metric is grep-countable pre/post.",
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "scanned_at": "2026-08-11T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (live read confirmed: line 418 builds lesson, line 419 is else-branch, 0 feedback_lines.append in ADMITTED path; grep count 5; 0 tests cover admitted feedback path)",
+    "epoch": "E44",
+    "parent_epoch": "E36",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
