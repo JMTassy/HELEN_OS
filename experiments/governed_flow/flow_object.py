@@ -103,6 +103,114 @@ def canon_hash(obj) -> str:
     return hashlib.sha256(canon(obj).encode("utf-8")).hexdigest()
 
 
+# ── four record types that must never collapse into one "receipt" ──────
+# A proposal receipt says SOMETHING WAS STAGED. An authorization record
+# says PERMISSION EXISTED AT t0. An execution receipt says THE EFFECT
+# RAN AT t1. A replay verdict says THE HISTORY RECONSTRUCTS. Each is a
+# distinct type; require_kind makes substitution a refusal, which is
+# the authority-acyclicity law enforced at the type level: an execution
+# receipt handed back as an authorization is exactly the
+# receipt-minted-permission cycle.
+
+@dataclass(frozen=True)
+class ProposalReceipt:
+    kind: str = field(default="PROPOSAL_RECEIPT", init=False)
+    effect_id: str = ""
+    effect_class: str = ""
+    t: int = 0
+    content_hash: str = ""
+
+
+@dataclass(frozen=True)
+class AuthorizationRecord:
+    kind: str = field(default="AUTHORIZATION_RECORD", init=False)
+    action_id: str = ""
+    lease_id: str = ""
+    t0: int = 0
+    policy_version: str = ""
+
+
+@dataclass(frozen=True)
+class ExecutionReceipt:
+    kind: str = field(default="EXECUTION_RECEIPT", init=False)
+    action_id: str = ""
+    lease_id: str = ""
+    t1: int = 0
+    receipt_hash: str = ""
+
+
+@dataclass(frozen=True)
+class ReplayVerdict:
+    kind: str = field(default="REPLAY_VERDICT", init=False)
+    grade: str = ""
+    detail: str = ""
+
+
+def require_kind(record, expected: str) -> dict | None:
+    """None when the record is what it claims to be; a refusal dict
+    otherwise. A record of the wrong kind is not a weaker version of
+    the right one — it is a category error."""
+    got = getattr(record, "kind", None)
+    if got != expected:
+        return {"verdict": "REFUSED", "reason": "E_RECEIPT_KIND_MISMATCH",
+                "expected": expected, "got": got}
+    return None
+
+
+def propose(proposal: EffectProposal, t: int) -> ProposalReceipt:
+    """Staging mints a proposal receipt — a record that something
+    reached the gate, and nothing more."""
+    return ProposalReceipt(
+        effect_id=proposal.effect_id, effect_class=proposal.effect_class,
+        t=t, content_hash=canon_hash([proposal.effect_id, proposal.kind,
+                                      proposal.text]))
+
+
+# ── durable identity vs mutable runtime instance ────────────────────────
+
+LIFECYCLE = ("CREATED", "SENSE", "EXTRACT", "JUDGE", "PROJECT", "ACT",
+             "RECEIPT", "MEMORY", "REPLAY", "LEARN", "QUIESCENT")
+
+
+@dataclass(frozen=True)
+class FlowInstance:
+    """The MUTABLE runtime object: a cursor and an executor binding.
+    The durable flow is (flow_id, trace, flow_identity); the instance
+    is where it currently sits and who is currently turning the crank.
+    Killing and restarting an instance loses nothing durable."""
+    instance_id: str
+    flow_id: str
+    executor: str
+    stage: str = "CREATED"
+
+    def __post_init__(self):
+        if self.stage not in LIFECYCLE:
+            raise ValueError("E_UNKNOWN_STAGE")
+
+
+def advance(inst: FlowInstance) -> FlowInstance:
+    i = LIFECYCLE.index(inst.stage)
+    if i == len(LIFECYCLE) - 1:
+        raise ValueError("E_FLOW_QUIESCENT")
+    return replace(inst, stage=LIFECYCLE[i + 1])
+
+
+def jump(inst: FlowInstance, target: str) -> FlowInstance:
+    """One stage at a time. SENSE cannot leap to ACT — the skipped
+    stages are exactly where governance lives."""
+    if target not in LIFECYCLE:
+        raise ValueError("E_UNKNOWN_STAGE")
+    if LIFECYCLE.index(target) != LIFECYCLE.index(inst.stage) + 1:
+        raise ValueError("E_STAGE_SKIP")
+    return replace(inst, stage=target)
+
+
+def rebind(inst: FlowInstance, executor: str) -> FlowInstance:
+    """Swap the enzyme mid-flow. The instance keeps its cursor; the
+    flow keeps its identity; only the binding changes."""
+    return replace(inst, executor=executor)
+
+
 # ── the trace: causal provenance DAG, receipts on edges ─────────────────
 
 @dataclass(frozen=True)
@@ -299,26 +407,31 @@ def lease_valid(lease: Lease, action: FlowAction, t: int) -> dict:
 # ── authorize / revalidate / execute: the three-step ────────────────────
 
 def authorize(action: FlowAction, lease: Lease, t0: int,
-              policy_version: str) -> dict:
+              policy_version: str):
+    """Success mints an AuthorizationRecord — the ONLY type revalidate
+    will accept. Refusals stay dicts; refusals are not records."""
     v = lease_valid(lease, action, t0)
     if not v["valid"]:
         return {"verdict": "REFUSED", "reason": "E_NO_VALID_LEASE",
                 "checks": v["checks"]}
-    return {"verdict": "AUTHORIZED", "action_id": action.action_id,
-            "lease_id": lease.lease_id, "t0": t0,
-            "policy_version": policy_version}
+    return AuthorizationRecord(action_id=action.action_id,
+                               lease_id=lease.lease_id, t0=t0,
+                               policy_version=policy_version)
 
 
-def revalidate(auth: dict, action: FlowAction, lease: Lease, t1: int,
+def revalidate(auth, action: FlowAction, lease: Lease, t1: int,
                policy_version_now: str, revoked: bool = False) -> dict:
-    """Valid(a, t0) never implies Valid(a, t1)."""
-    if auth.get("verdict") != "AUTHORIZED":
-        return {"verdict": "REFUSED", "reason": "E_NEVER_AUTHORIZED"}
+    """Valid(a, t0) never implies Valid(a, t1). And only an
+    AuthorizationRecord enters: an ExecutionReceipt presented here IS
+    the receipt-minted-permission cycle, refused at the type."""
+    bad = require_kind(auth, "AUTHORIZATION_RECORD")
+    if bad:
+        return bad
     if revoked:
         return {"verdict": "REFUSED", "reason": "E_CONSENT_REVOKED"}
-    if policy_version_now != auth["policy_version"]:
+    if policy_version_now != auth.policy_version:
         return {"verdict": "REFUSED", "reason": "E_POLICY_DRIFT",
-                "was": auth["policy_version"], "now": policy_version_now}
+                "was": auth.policy_version, "now": policy_version_now}
     v = lease_valid(lease, action, t1)
     if not v["valid"]:
         return {"verdict": "REFUSED", "reason": "E_STALE_AUTHORITY",
@@ -326,9 +439,14 @@ def revalidate(auth: dict, action: FlowAction, lease: Lease, t1: int,
     return {"verdict": "REVALIDATED", "t1": t1}
 
 
-def execute(action: FlowAction, auth: dict, reval: dict,
-            proposal: EffectProposal, admission: Admission | None) -> dict:
-    """The full gate stack: lease three-step AND A_E. Neither alone."""
+def execute(action: FlowAction, auth, reval: dict,
+            proposal: EffectProposal, admission: Admission | None):
+    """The full gate stack: lease three-step AND A_E. Neither alone.
+    Success mints an ExecutionReceipt — a record that the effect RAN,
+    which no upstream gate will ever accept as permission."""
+    bad = require_kind(auth, "AUTHORIZATION_RECORD")
+    if bad:
+        return {**bad, "executed": False}
     if reval.get("verdict") != "REVALIDATED":
         return {"verdict": "REFUSED", "reason": reval.get(
             "reason", "E_NOT_REVALIDATED"), "executed": False}
@@ -337,10 +455,10 @@ def execute(action: FlowAction, auth: dict, reval: dict,
         return {"verdict": "REFUSED", "reason": f"A_E:{ae['reason']}"
                 if "reason" in ae else "A_E:HOLD",
                 "a_e": ae, "executed": False}
-    return {"verdict": "EXECUTED", "executed": True,
-            "action_id": action.action_id,
-            "receipt": canon_hash([action.action_id, auth["lease_id"],
-                                   reval["t1"]])}
+    return ExecutionReceipt(
+        action_id=action.action_id, lease_id=auth.lease_id, t1=reval["t1"],
+        receipt_hash=canon_hash([action.action_id, auth.lease_id,
+                                 reval["t1"]]))
 
 
 # ── JUDGE = J_E ⊕ J_O ───────────────────────────────────────────────────
@@ -396,21 +514,24 @@ def replay(s0: dict, edges: tuple, registry: dict) -> dict:
 
 
 def state_grade(stored_sn: dict, s0: dict | None, edges: tuple,
-                registry: dict) -> dict:
+                registry: dict) -> ReplayVerdict:
     """The three-rung ladder: STORED_STATE_ONLY (no path) <
     TRANSFORMATION_CLAIM (path, unreplayed/diverged) <
-    WITNESSED_TRANSFORMATION (path replays to the stored state)."""
+    WITNESSED_TRANSFORMATION (path replays to the stored state).
+    Returns a ReplayVerdict — which authorizes nothing and executes
+    nothing; it only grades history."""
     if s0 is None or not edges:
-        return {"grade": "STORED_STATE_ONLY",
-                "note": "a state without a reconstructible path is "
-                        "epistemically weakest"}
+        return ReplayVerdict(grade="STORED_STATE_ONLY",
+                             detail="a state without a reconstructible "
+                                    "path is epistemically weakest")
     got = replay(s0, edges, registry)
     if canon(got) == canon(stored_sn):
-        return {"grade": "WITNESSED_TRANSFORMATION",
-                "replay_hash": canon_hash(got)}
-    return {"grade": "TRANSFORMATION_CLAIM",
-            "reason": "E_REPLAY_DIVERGENCE",
-            "stored": canon_hash(stored_sn), "replayed": canon_hash(got)}
+        return ReplayVerdict(grade="WITNESSED_TRANSFORMATION",
+                             detail=f"replay_hash={canon_hash(got)}")
+    return ReplayVerdict(grade="TRANSFORMATION_CLAIM",
+                         detail=f"E_REPLAY_DIVERGENCE stored="
+                                f"{canon_hash(stored_sn)} replayed="
+                                f"{canon_hash(got)}")
 
 
 # ── LEARN = L0 ⊕ L1 ⊕ L2 ⊕ L3 ──────────────────────────────────────────

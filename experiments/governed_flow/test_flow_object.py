@@ -167,7 +167,7 @@ def test_lease_validity_is_narrow():
 
 def test_authorize_then_expire_then_refuse():
     auth = authorize(ACTION, LEASE, t0=12, policy_version="v1")
-    assert auth["verdict"] == "AUTHORIZED"
+    assert isinstance(auth, fo.AuthorizationRecord)
     r = revalidate(auth, ACTION, LEASE, t1=21, policy_version_now="v1")
     assert r["verdict"] == "REFUSED" and r["reason"] == "E_STALE_AUTHORITY"
 
@@ -187,13 +187,91 @@ def test_execute_needs_revalidation_and_the_a_e_gate():
     # revalidated but unadmitted -> A_E holds it
     held = execute(ACTION, auth, reval, prop, admission=None)
     assert held["executed"] is False and held["reason"].startswith("A_E:")
-    # both gates -> executed, receipt minted
+    # both gates -> executed, a typed ExecutionReceipt minted
     done = execute(ACTION, auth, reval, prop, Admission("jm", "a1"))
-    assert done["verdict"] == "EXECUTED" and done["receipt"]
+    assert isinstance(done, fo.ExecutionReceipt) and done.receipt_hash
     # stale reval -> the admission alone is not enough
     stale = revalidate(auth, ACTION, LEASE, t1=99, policy_version_now="v1")
     assert execute(ACTION, auth, stale, prop,
                    Admission("jm", "a1"))["executed"] is False
+
+
+# ── four records, no collapse ───────────────────────────────────────────
+
+def _executed_receipt():
+    auth = authorize(ACTION, LEASE, 12, "v1")
+    reval = revalidate(auth, ACTION, LEASE, 15, "v1")
+    return execute(ACTION, auth, reval,
+                   EffectProposal("a1", "send", "EMITTED", loss=SEND_LOSS),
+                   Admission("jm", "a1"))
+
+
+def test_the_four_record_kinds_are_distinct():
+    kinds = {fo.ProposalReceipt().kind, fo.AuthorizationRecord().kind,
+             fo.ExecutionReceipt().kind, fo.ReplayVerdict().kind}
+    assert len(kinds) == 4
+
+
+def test_an_execution_receipt_cannot_reenter_as_authorization():
+    """The receipt-minted-permission cycle, killed at the TYPE level:
+    yesterday's execution receipt is not today's permission."""
+    receipt = _executed_receipt()
+    r = revalidate(receipt, ACTION, LEASE, 15, "v1")
+    assert r["verdict"] == "REFUSED"
+    assert r["reason"] == "E_RECEIPT_KIND_MISMATCH"
+    assert r["got"] == "EXECUTION_RECEIPT"
+    e = execute(ACTION, receipt, {"verdict": "REVALIDATED", "t1": 15},
+                EffectProposal("a1", "send", "EMITTED", loss=SEND_LOSS),
+                Admission("jm", "a1"))
+    assert e["executed"] is False
+    assert e["reason"] == "E_RECEIPT_KIND_MISMATCH"
+
+
+def test_a_proposal_receipt_authorizes_nothing():
+    pr = fo.propose(EffectProposal("a1", "send", "EMITTED",
+                                   loss=SEND_LOSS), t=11)
+    assert isinstance(pr, fo.ProposalReceipt) and pr.content_hash
+    r = revalidate(pr, ACTION, LEASE, 15, "v1")
+    assert r["reason"] == "E_RECEIPT_KIND_MISMATCH"
+
+
+def test_a_replay_verdict_neither_authorizes_nor_executes():
+    rv = state_grade({"x": 1}, None, (), REGISTRY)
+    assert revalidate(rv, ACTION, LEASE, 15, "v1")["reason"] == \
+        "E_RECEIPT_KIND_MISMATCH"
+
+
+# ── durable flow vs mutable instance ────────────────────────────────────
+
+def test_identity_lives_in_the_flow_never_in_the_instance():
+    """Kill the instance, restart with another executor: the durable
+    (flow_id, trace, identity) triple is untouched."""
+    trace = _call_trace()
+    i1 = fo.FlowInstance("run-1", "FLOW_17", executor="goblin_gemma")
+    i2 = fo.FlowInstance("run-2", "FLOW_17", executor="claude")
+    assert i1.instance_id != i2.instance_id
+    assert flow_identity(trace) == flow_identity(trace)   # instance-blind
+    rebound = fo.rebind(i1, "human:jm")
+    assert rebound.executor == "human:jm"
+    assert rebound.flow_id == i1.flow_id and rebound.stage == i1.stage
+
+
+def test_lifecycle_advances_one_stage_and_refuses_skips():
+    inst = fo.FlowInstance("run-1", "FLOW_17", "goblin_gemma")
+    inst = fo.advance(inst)
+    assert inst.stage == "SENSE"
+    inst = fo.jump(inst, "EXTRACT")
+    assert inst.stage == "EXTRACT"
+    with pytest.raises(ValueError, match="E_STAGE_SKIP"):
+        fo.jump(inst, "ACT")          # the skipped stages ARE the gates
+
+
+def test_quiescent_flows_do_not_advance():
+    inst = fo.FlowInstance("run-1", "FLOW_17", "x", stage="QUIESCENT")
+    with pytest.raises(ValueError, match="E_FLOW_QUIESCENT"):
+        fo.advance(inst)
+    with pytest.raises(ValueError, match="E_UNKNOWN_STAGE"):
+        fo.FlowInstance("run-2", "FLOW_17", "x", stage="LIMBO")
 
 
 # ── JUDGE = J_E ⊕ J_O ───────────────────────────────────────────────────
@@ -239,7 +317,7 @@ REGISTRY = {
 
 def test_state_without_path_is_weakest():
     g = state_grade({"x": 1}, None, (), REGISTRY)
-    assert g["grade"] == "STORED_STATE_ONLY"
+    assert g.grade == "STORED_STATE_ONLY"
 
 
 def test_replay_convergence_witnesses_the_transformation():
@@ -248,15 +326,15 @@ def test_replay_convergence_witnesses_the_transformation():
     sn = {"event": "call", "transcript": "words",
           "commitments": ["send SSO doc"]}
     g = state_grade(sn, s0, edges, REGISTRY)
-    assert g["grade"] == "WITNESSED_TRANSFORMATION"
+    assert g.grade == "WITNESSED_TRANSFORMATION"
 
 
 def test_replay_divergence_demotes_to_claim():
     edges = _call_trace().edges
     g = state_grade({"event": "call", "transcript": "OTHER"},
                     {"event": "call"}, edges, REGISTRY)
-    assert g["grade"] == "TRANSFORMATION_CLAIM"
-    assert g["reason"] == "E_REPLAY_DIVERGENCE"
+    assert g.grade == "TRANSFORMATION_CLAIM"
+    assert "E_REPLAY_DIVERGENCE" in g.detail
 
 
 def test_unregistered_operator_cannot_replay():
@@ -330,19 +408,23 @@ def test_one_full_governed_cycle():
         "SUPPORTED"
     assert j_o(ACTION, (LEASE,), t=15)["verdict"] == "PERMITTED"
 
-    # three-step + A_E
+    # stage a proposal, then the three-step + A_E
+    prop = EffectProposal("a1", "send", "EMITTED", loss=SEND_LOSS)
+    pr = fo.propose(prop, t=11)
     auth = authorize(ACTION, LEASE, 12, "v1")
     reval = revalidate(auth, ACTION, LEASE, 15, "v1")
-    done = execute(ACTION, auth, reval,
-                   EffectProposal("a1", "send", "EMITTED", loss=SEND_LOSS),
-                   Admission("jm", "a1"))
-    assert done["executed"] is True
+    done = execute(ACTION, auth, reval, prop, Admission("jm", "a1"))
+    assert isinstance(done, fo.ExecutionReceipt)
+    # four distinct records now exist for this one action
+    assert {pr.kind, auth.kind, done.kind} == {
+        "PROPOSAL_RECEIPT", "AUTHORIZATION_RECORD", "EXECUTION_RECEIPT"}
 
     # the receipt lands on an EDGE of the trace, not a node
     trace = trace.add(TraceEdge("commitments", "followup_sent",
                                 "send_followup", "goblin_gemma", t=15,
-                                lease_ref="L1", receipt=done["receipt"]))
-    assert trace.edges[-1].receipt == done["receipt"]
+                                lease_ref="L1",
+                                receipt=done.receipt_hash))
+    assert trace.edges[-1].receipt == done.receipt_hash
 
     # authority stayed acyclic and conserved
     assert check_authority_acyclic(
@@ -355,11 +437,14 @@ def test_one_full_governed_cycle():
     g = state_grade({"event": "call", "transcript": "words",
                      "commitments": ["send SSO doc"]},
                     {"event": "call"}, trace.edges[:2], REGISTRY)
-    assert g["grade"] == "WITNESSED_TRANSFORMATION"
+    assert g.grade == "WITNESSED_TRANSFORMATION"
 
-    # and the flow learns at L1 with the receipt in hand
+    # replay's verdict grades history and enters no gate
+    assert g.kind == "REPLAY_VERDICT"
+
+    # and the flow learns at L1 with the EXECUTION receipt in hand
     assert learn("L1_HEURISTIC", "follow up within a day",
-                 receipt=done["receipt"])["verdict"] == "ADOPTED"
+                 receipt=done.receipt_hash)["verdict"] == "ADOPTED"
 
 
 def test_everything_is_deterministic():
