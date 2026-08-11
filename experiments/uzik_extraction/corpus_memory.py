@@ -343,3 +343,69 @@ class Nutrient:
         if self.replay_receipt and graph.replay(self.support)["verdict"] != "REPLAYED":
             return replace(self, status="COMPOSTED")
         return replace(self, status="STANDING")
+
+
+# ═══ Crystal-Palace chiddush · Compost as a three-part preservation ═════
+# Operator meditation, this frame, on the 1851 Great Exhibition catalog.
+# Interpretive, source-flagged; the mathematical definition is what got
+# code. The claim NOT encoded: that any archive "confirms" HELEN.
+#
+#   Compost(x) = (E_x, F_x, N_x)
+#     E_x  evidence retained    — preserved byte-for-byte, never mutated
+#     F_x  failed inference     — frozen and named; the interpretation that failed
+#     N_x  nutrient extracted   — reusable constraint the failure surfaces
+#
+#   Law:  Compost the inference, never erase the evidence.
+#   Corollary:  Compost(x) != Delete(x).
+
+# The four preservation classes, distinct by what each promises to keep.
+PRESERVATION_CLASSES = {
+    "ARCHIVE": "preserves what was seen",
+    "COMPOST": "preserves what failed (evidence + named failure + nutrient)",
+    "GARDEN":  "explores what remains possible",
+    "KERNEL":  "preserves what has actually been earned",
+}
+
+
+@dataclass(frozen=True)
+class Compost:
+    """Three-part preservation. The failure has a name and a boundary; the
+    evidence survives the inference that misinterpreted it.
+
+    Structural: there is NO `delete()`, no field that erases E_x. Freezing
+    the failure and freezing the evidence sit on the same object so they
+    cannot drift apart across a mutation."""
+    compost_id: str
+    evidence: tuple                # E_x — preserved as tuples of hashables
+    failed_inference: str          # F_x — MUST be named; empty is refused
+    nutrient: str = ""             # N_x — extractable constraint (may be empty)
+    boundary: str = ""             # what D- the failure exposed (optional)
+    provenance: str = ""
+
+    def __post_init__(self):
+        if not self.compost_id:
+            raise ValueError("E_COMPOST_UNIDENTIFIED")
+        if not self.failed_inference:
+            raise ValueError("E_COMPOST_REQUIRES_NAMED_FAILURE")
+        # Evidence may be empty ONLY when the failed inference itself
+        # names its absence — a fetch that returned 0 bytes is a valid
+        # E_x = (attempt manifest,), not E_x = ().
+        if not self.evidence:
+            raise ValueError("E_COMPOST_REQUIRES_EVIDENCE_OR_MANIFEST")
+
+
+def compost_from_nutrient(n: "Nutrient", failure: str, nutrient: str = "",
+                          boundary: str = "") -> Compost:
+    """A composted nutrient preserves its SUPPORT claims as evidence,
+    NAMES the failed inference, and optionally extracts a reusable
+    constraint. It never destroys the original — replace() the Nutrient
+    to COMPOSTED separately if you want the status flag; the Compost
+    object is a distinct record that carries the E/F/N triple."""
+    return Compost(
+        compost_id=f"compost:{n.nutrient_id}",
+        evidence=n.support,               # E_x: what was actually cited
+        failed_inference=failure,          # F_x: named, not silent
+        nutrient=nutrient,
+        boundary=boundary,
+        provenance=n.nutrient_id,
+    )
