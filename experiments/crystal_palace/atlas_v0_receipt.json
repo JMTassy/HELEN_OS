@@ -1,0 +1,28 @@
+{
+  "atlas": "crystal_palace_motif_atlas_batch1_v0",
+  "authority": "A=0 \u00b7 NON_SOVEREIGN \u00b7 ledger_effect=none",
+  "blind_lane_contaminated_in_this_seat": true,
+  "candidate_count": 6,
+  "corpus_boundary": "great_exhibition_1851_vol1_wellcome772 \u00b7 later patents CLOSED",
+  "descriptive_lane_contamination": [],
+  "excluded_pending_direct_witness": [
+    "sensor_to_record"
+  ],
+  "frames": [
+    "CP-28",
+    "CP-527",
+    "CP-546",
+    "CP-699A",
+    "CP-699B"
+  ],
+  "freeze_hash": "3b7c7db134e3c5fda4e7a52a6f9d1fca89a48e1b4626b38a7bf4b532787988f5",
+  "grade_cap": "REPORTED",
+  "motifs": [
+    "conditional_automation",
+    "parallel_execution",
+    "structural_error_cancellation",
+    "mechanized_decision_support",
+    "source_channel_code",
+    "authority_gravity"
+  ]
+}

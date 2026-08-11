@@ -225,6 +225,63 @@ def adjacent_possible(neighbourhood: frozenset, components: tuple) -> dict:
             "note": "generable from N_k(p); Generable ⊬ HistoricallyObserved"}
 
 
+# ── K_1851 = (V, E, M): the motif layer ─────────────────────────────────
+
+@dataclass(frozen=True)
+class Motif:
+    """A reusable operational motif — the corpus's grammar, not its
+    nouns. Must cite witness frames; carries its own forbidden
+    promotions (analogy is not lineage). Grade caps at REPORTED when
+    the witness is a relayed seat-read: ObservedThere ⊬ ObservedHere."""
+    motif_id: str
+    structure: tuple                  # ordered stages
+    witness_frames: tuple             # frame-qualified canvas ids
+    grade: str = "REPORTED"
+    forbidden_promotions: tuple = ()
+    kind: str = "motif"               # motif | falsifier
+    corpus_scope: str = "vol1"
+
+    def __post_init__(self):
+        _grade_rank(self.grade)
+        if not self.witness_frames:
+            raise ValueError("E_UNWITNESSED_MOTIF")
+
+
+def promote_motif(motif: Motif, target: str) -> dict:
+    """A motif's structural resemblance to a later concept is an
+    analogy. Promoting it to that concept is refused at the type."""
+    if target in motif.forbidden_promotions:
+        return {"verdict": "REFUSED", "reason": "E_ANALOGY_IS_NOT_LINEAGE",
+                "motif": motif.motif_id, "to": target}
+    return {"verdict": "NOT_A_KNOWN_PROMOTION",
+            "motif": motif.motif_id, "to": target}
+
+
+def atlas_scope_check(atlas_scope: str, motif: Motif) -> dict:
+    """C_Vol1 != C_all_Great_Exhibition. A witness from Volumes 2-4
+    (the arithmometer's actual home) never enters the Vol-1 atlas —
+    NO_PROMOTION_ACROSS_CORPUS_BOUNDARY."""
+    if motif.corpus_scope != atlas_scope:
+        return {"verdict": "REJECT", "reason": "E_CORPUS_BOUNDARY",
+                "atlas_scope": atlas_scope, "motif_scope": motif.corpus_scope}
+    return {"verdict": "IN_SCOPE", "atlas_scope": atlas_scope}
+
+
+def t11_authority_gravity(edge: GraphEdge, nodes: dict,
+                          coherent_observations: tuple) -> dict:
+    """T11 AUTHORITY_GRAVITY. Given N mutually coherent low-authority
+    observations, an attempt to raise an inferred edge's authority
+    because graph coherence Gamma increased is REJECTED. dA/dGamma = 0,
+    structurally: the refusal is unconditional on N."""
+    before = edge_authority(edge, nodes)["authority"]
+    return {"attempt": "raise_authority_via_coherence",
+            "gamma": len(coherent_observations),
+            "verdict": "REJECT_INDEPENDENT_WITNESS_MISSING",
+            "law": "Gamma-up does not imply A-up",
+            "authority_before": before,
+            "authority_after": before}
+
+
 # ── C5: forbidden semantic promotions ───────────────────────────────────
 
 FORBIDDEN_PROMOTIONS = {
@@ -264,17 +321,24 @@ class NoveltyHypothesis:
 
 
 def rv_re(recovered_v: int, total_v: int, recovered_e: int, total_e: int,
-          freeze_receipt: dict | None = None) -> dict:
+          freeze_receipt: dict | None = None,
+          recovered_m: int | None = None, total_m: int | None = None) -> dict:
     """The central statistic — computable ONLY against a clean freeze.
-    Without one, the number would be hindsight wearing a ratio."""
+    Without one, the number would be hindsight wearing a ratio. R_M
+    (motif recoverability) joins R_V and R_E when the motif layer is
+    counted: the sharpened hypothesis is R_V ~ 1, R_M high, R_E < R_M —
+    later invention as new composition of old motifs."""
     if not freeze_receipt or freeze_receipt.get("contamination"):
         return {"status": "UNKNOWN", "reason": "E_NO_CLEAN_FREEZE"}
     r_v = recovered_v / total_v if total_v else 0.0
     r_e = recovered_e / total_e if total_e else 0.0
-    return {"status": "MEASURED", "R_V": r_v, "R_E": r_e,
-            "chiddush_supported": r_v > r_e,
-            "note": "if R_V >> R_E, novelty is disproportionately "
-                    "relational — a claim worth trying hard to kill"}
+    out = {"status": "MEASURED", "R_V": r_v, "R_E": r_e,
+           "chiddush_supported": r_v > r_e,
+           "note": "if R_V >> R_E, novelty is disproportionately "
+                   "relational — a claim worth trying hard to kill"}
+    if total_m is not None:
+        out["R_M"] = (recovered_m or 0) / total_m if total_m else 0.0
+    return out
 
 
 # ── C7: the freeze ──────────────────────────────────────────────────────
