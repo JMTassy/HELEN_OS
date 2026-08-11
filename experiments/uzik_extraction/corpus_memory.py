@@ -69,7 +69,7 @@ def atomize(text: str) -> tuple:
     atomic propositions (status: candidates only — atomization does not
     verify). Conservative: over-splitting is safe, silent bundling is not."""
     parts = [text]
-    for m in (". ", "; ") + _COMPOUND_MARKERS:
+    for m in (". ", "; ", ", ") + _COMPOUND_MARKERS:
         parts = [q for p in parts for q in p.split(m)]
     return tuple(s.strip().rstrip(".") for s in parts if s.strip())
 
@@ -293,6 +293,44 @@ class Nutrient:
     @property
     def self_refuted(self) -> bool:
         return self.status == "COMPOSTED"
+
+    def revalidate(self, graph: EvidenceGraph, census: Census) -> tuple:
+        """Epistemic half-life, mechanically defined. A standing nutrient
+        has no wall-clock decay — determinism law forbids it. It decays by
+        FRAME EVENTS: each mutation of the evidence frame (ingestion,
+        census supersession, receipt loss) is one decay tick, and this
+        function is the tick's pure re-derivation.
+
+        vitality v = surviving dependency witnesses / total witnesses:
+          - each support claim must still REPLAY against current sources
+          - each ABSENT_AFTER_SEARCH cell must still be covered by the
+            CURRENT census version (coverage expansion revokes old absences)
+
+          v = 1        -> STANDING   (plus the usual self-refusal check)
+          0.5 <= v < 1 -> DECAYING   (re-derivation ordered, gate-ineligible)
+          v < 0.5      -> COMPOSTED  (the literal half-life: when more than
+                                      half its witnesses fail transport, it
+                                      is forcefully decomposed)
+        """
+        checks = []
+        for cid in self.support:
+            ok = graph.replay((cid,))["verdict"] == "REPLAYED"
+            checks.append(("support", cid, ok))
+        for cell in self.absent_after_search:
+            ok = cell[0] == census.version and census.covers(*cell[1:])
+            checks.append(("absence", canon(cell), ok))
+        total = len(checks)
+        if total == 0:
+            return replace(self, status="COMPOSTED"), {"vitality": 0.0, "checks": []}
+        v = sum(1 for *_x, ok in checks if ok) / total
+        if v < 0.5:
+            status = "COMPOSTED"
+        elif v < 1:
+            status = "DECAYING"
+        else:
+            status = self.self_refusal(graph).status
+        return replace(self, status=status), {"vitality": round(v, 4),
+                                              "checks": checks}
 
     def self_refusal(self, graph: EvidenceGraph) -> "Nutrient":
         """A generated insight cannot become canonical because HELEN
