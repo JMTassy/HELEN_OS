@@ -104,7 +104,8 @@ def valid_negative_witness(d: NegativeDep) -> bool:
     a witness until it is executed and bound to its subject — else negative-by-unexecuted-description."""
     valid_structure = bool(d.scope) and bool(d.discovery_rule) and bool(d.manifest_hash)
     valid_binding = isinstance(d.cls, ObsClass)        # subject present and typed
-    return valid_structure and valid_binding and bool(d.executed)
+    executed = d.executed is True                      # STRICT bool True — truthy (1, "true", []) is REJECTED
+    return valid_structure and valid_binding and executed
 
 
 @dataclass(frozen=True)
@@ -219,14 +220,26 @@ class NuIntegrityError(ValueError):
     (not merely a JSON-shape error). typed-constructor safety ≠ wire-format safety."""
 
 
+def _descendant_keys(obj):
+    """Every dict key anywhere in a nested payload (dicts + lists). A forbidden verdict coordinate must
+    not hide inside a d_plus entry / metadata blob — the closed surface is recursive, not top-level."""
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            yield k
+            yield from _descendant_keys(v)
+    elif isinstance(obj, (list, tuple)):
+        for v in obj:
+            yield from _descendant_keys(v)
+
+
 def validate_exhibit_payload(raw: dict) -> bool:
     """Wire-boundary SEMANTIC gate. A well-formed, schema-shaped JSON payload can still violate ν
     integrity — this enforces the SAME invariants as the constructor on raw external input:
         JSON well-formed ⊬ schema valid ⊬ ν-integrity valid.
-    Rejects forbidden verdict coordinates AND the Negative-by-Silence path on the wire."""
+    Rejects forbidden verdict coordinates (ANYWHERE nested) AND the Negative-by-Silence path."""
     if not isinstance(raw, dict):
         raise NuIntegrityError("PAYLOAD_NOT_OBJECT")
-    leaked = _FORBIDDEN & set(raw.keys())
+    leaked = _FORBIDDEN & set(_descendant_keys(raw))   # RECURSIVE — a nested {"x":{"authority":…}} cannot hide
     if leaked:
         raise NuIntegrityError(f"FORBIDDEN_VERDICT_FIELD:{sorted(leaked)}")   # closed verdict surface
     for d in raw.get("d_minus", []) or []:
@@ -235,6 +248,6 @@ def validate_exhibit_payload(raw: dict) -> bool:
             raise NuIntegrityError("NEGATIVE_WITHOUT_SUBJECT")
         if not (d.get("scope") and d.get("discovery_rule") and d.get("manifest_hash")):
             raise NuIntegrityError(f"UNWITNESSED_EXCLUSION_WIRE:{subj}")       # structure/binding
-        if not d.get("executed"):
+        if d.get("executed") is not True:                                     # STRICT bool True — truthy REJECTED
             raise NuIntegrityError(f"UNEXECUTED_EXCLUSION_WIRE:{subj}")        # described ≠ executed
     return True

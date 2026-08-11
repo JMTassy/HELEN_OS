@@ -74,6 +74,17 @@ Fresh-context validator re-ran tests and re-derived every claim. Verdict: **SHIP
   `d_plus` entry is not caught at the wire (the typed `NuExhibit` cannot carry it; only the wire top level
   is gated). Future: recursive forbidden-key scan.
 
+## NU-INTEGRITY HARDENING V2 (2026-08-11) — both peer-review residuals CLOSED
+- (a) **strict-bool `executed`**: `valid_negative_witness` now requires `d.executed is True` (not truthy);
+  the wire gate requires `executed is True` too. `executed=1`, `"true"`, `[]` all REJECT. Closes the
+  type-laundering surface — an execution witness must be a genuine bool True, not a coincidence of truthiness.
+- (b) **recursive wire scan**: `validate_exhibit_payload` walks ALL descendant keys (`_descendant_keys`),
+  so a forbidden verdict coordinate nested inside a `d_plus` entry / metadata / list cannot hide. Closed
+  surface is recursive, not top-level-only.
+- Falsifiers NU-03A (executed=1) / 03B (executed="true", + wire) / 03C (nested authority + deep list) /
+  03D (clean nested metadata → PASS). **ν 18/18 green, full suite 276 passed (2 pre-existing surface
+  failures unrelated).** Committed locally; PUSH held pending operator diff review.
+
 ## Fable supervision note
 "build ν": built the locked EXHIBIT spec — event ≠ dependency ≠ exhibit ≠ coverage verdict ≠
 transport. EXHIBIT-00 proves false closure returns UNKNOWN, not PASS; the verdict surface is closed

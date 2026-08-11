@@ -173,3 +173,48 @@ def test_exhibit02_valid_witnesses_pass():
              d_minus=[_wit(NET, executed=True), _wit(ENV, executed=True)], opaque=[])
     v, reason = verify_coverage(E)
     assert v == Coverage.PASS and reason == "ALL_RELEVANT_COVERED_OR_NA"
+
+
+# ============================================================================================
+# NU-03 · HARDENING V2 — strict-bool executed (truthy ≠ True) + recursive wire forbidden-key scan
+# ============================================================================================
+
+# ---- NU-03A · executed = 1 (truthy int, not bool True) → REJECT
+def test_nu03a_executed_int_rejected():
+    assert valid_negative_witness(NegativeDep(NET, "net/**", "v2", 1, "sha:n", executed=1)) is False
+    omega = ObservationContract("o", (FILE, NET), "p", ())
+    E = mint(omega, [_ev(1, FILE)], [_dplus(FILE, [1])],
+             d_minus=[NegativeDep(NET, "net/**", "v2", 1, "sha:n", executed=1)], opaque=[])
+    assert verify_coverage(E) == (Coverage.FAIL, "UNWITNESSED_EXCLUSION:EXTERNAL_SERVICE")
+
+
+# ---- NU-03B · executed = "true" (truthy str) → REJECT
+def test_nu03b_executed_str_rejected():
+    assert valid_negative_witness(NegativeDep(NET, "net/**", "v2", 1, "sha:n", executed="true")) is False
+    omega = ObservationContract("o", (FILE, NET), "p", ())
+    E = mint(omega, [_ev(1, FILE)], [_dplus(FILE, [1])],
+             d_minus=[NegativeDep(NET, "net/**", "v2", 1, "sha:n", executed="true")], opaque=[])
+    assert verify_coverage(E) == (Coverage.FAIL, "UNWITNESSED_EXCLUSION:EXTERNAL_SERVICE")
+    # and the wire gate agrees (strict there too)
+    with pytest.raises(NuIntegrityError, match="UNEXECUTED_EXCLUSION_WIRE"):
+        validate_exhibit_payload({"d_minus": [{"cls": "EXTERNAL_SERVICE", "scope": "n", "discovery_rule": "v",
+                                               "manifest_hash": "h", "executed": "true"}]})
+
+
+# ---- NU-03C · a forbidden verdict key NESTED inside a d_plus entry → REJECT (recursive scan)
+def test_nu03c_nested_forbidden_key_rejected():
+    with pytest.raises(NuIntegrityError, match="FORBIDDEN_VERDICT_FIELD"):
+        validate_exhibit_payload({"d_plus": [{"cls": "FILE_READ", "meta": {"authority": True}}], "d_minus": []})
+    # also deep inside a list-of-dicts
+    with pytest.raises(NuIntegrityError, match="FORBIDDEN_VERDICT_FIELD"):
+        validate_exhibit_payload({"views": [{"x": [{"complete": True}]}], "d_minus": []})
+
+
+# ---- NU-03D · clean nested metadata (no forbidden keys anywhere) → PASS
+def test_nu03d_clean_nested_metadata_passes():
+    payload = {"schema_version": "NU_EXECUTION_EXHIBIT_V1",
+               "meta": {"note": "clean", "nested": {"ok": True, "tags": ["a", "b"]}},
+               "d_plus": [{"cls": "FILE_READ", "evidence_events": [1]}],
+               "d_minus": [{"cls": "EXTERNAL_SERVICE", "scope": "net/**", "discovery_rule": "v2",
+                            "manifest_hash": "sha:n", "executed": True}]}
+    assert validate_exhibit_payload(payload) is True
