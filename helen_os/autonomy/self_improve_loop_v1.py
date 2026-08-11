@@ -272,7 +272,7 @@ def run_self_improve_loop(
     ledger = make_empty_ledger(initial_ledger_id)
 
     cycles: List[CycleResult] = []
-    feedback_lines: List[str] = []   # Gate failures from prior rejected cycles
+    feedback_lines: List[str] = []   # Cycle lessons (admissions + gate failures)
 
     for cycle_idx in range(max_cycles):
         seed = seed_base + cycle_idx
@@ -416,6 +416,7 @@ def run_self_improve_loop(
                 packet_id=packet["packet_id"],
             )
             lesson = f"Admitted skill {skill_id!r}: {skill_proposal.get('description', '')}"
+            feedback_lines.append(lesson)
         else:
             if hal_blockers:
                 lesson = f"Rejected {skill_id!r} — gates failed: {', '.join(hal_blockers)}"
