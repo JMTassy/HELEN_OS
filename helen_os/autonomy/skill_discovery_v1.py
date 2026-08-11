@@ -172,6 +172,8 @@ def analyze_capability_gap(
         "ERR_CAPABILITY_DRIFT": "RECONCILE",
         "ERR_DOCTRINE_CONFLICT": "VALIDATE",
         "ERR_THRESHOLD_NOT_MET": "OPTIMIZE",
+        # quarantine = transfer_required with missing receipts → gate class
+        "OK_QUARANTINED": "VALIDATE",
     }
 
     skill_class = failure_to_class.get(cluster.failure_type, "TRANSFORM")
