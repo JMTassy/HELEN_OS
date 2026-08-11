@@ -78,25 +78,20 @@ def run_goblin(i, epoch, lines):
     text = "\n".join(window)[:24000]
     prompt = (f"LENS: {LENSES[i]}\nOCR window (slice {i+1}, lines {start}-{start+len(window)}):\n{text}\n\n"
               "Return the typed JSON now.")
-    for attempt in range(2):
-        try:
-            resp, ev = ollama(GOBLIN_MODEL, GOBLIN_SYS, prompt)
-            p = parse_json(resp)
-            if p:
-                return {"i": i, "lens": LENSES[i],
-                        "S": {"slice": i + 1, "window": [start, start + len(window)], "hash": sha16(text)},
-                        "O": p.get("O", []) or [], "H": p.get("H", []) or [],
-                        "F": p.get("F", []) or [], "U": p.get("U", []) or [], "N": p.get("N", []) or [],
-                        "eval": ev}
-        except Exception as e:
-            if attempt == 1:
-                return {"i": i, "lens": LENSES[i], "S": {"slice": i + 1, "window": [start, start + len(window)],
-                        "hash": sha16(text)}, "O": [], "H": [], "F": [], "U": [f"goblin_error:{type(e).__name__}"],
-                        "N": [], "error": True}
-    # both attempts parsed to None (e.g. gemma 'thought' garbage) — degrade to empty-typed result, never None
-    return {"i": i, "lens": LENSES[i], "S": {"slice": i + 1, "window": [start, start + len(window)],
-            "hash": sha16(text)}, "O": [], "H": [], "F": [], "U": ["goblin_unparseable_output"],
-            "N": [], "error": True}
+    S = {"slice": i + 1, "window": [start, start + len(window)], "hash": sha16(text)}
+    # single BOUNDED attempt: a goblin that can't produce a typed result in time degrades to TypedUnknown,
+    # never blocks the epoch (totalization law applied to TIME: bounded compute -> U, not infinite wait).
+    try:
+        resp, ev = ollama(GOBLIN_MODEL, GOBLIN_SYS, prompt, timeout=75)
+        p = parse_json(resp)
+        if p:
+            return {"i": i, "lens": LENSES[i], "S": S,
+                    "O": p.get("O", []) or [], "H": p.get("H", []) or [],
+                    "F": p.get("F", []) or [], "U": p.get("U", []) or [], "N": p.get("N", []) or [], "eval": ev}
+        u = "goblin_unparseable_output"
+    except Exception as e:
+        u = f"goblin_timeout_or_error:{type(e).__name__}"
+    return {"i": i, "lens": LENSES[i], "S": S, "O": [], "H": [], "F": [], "U": [u], "N": [], "error": True}
 
 FABLE_SYS = (
     "You are HELEN FABLE: the non-sovereign synthesis membrane. authority=FALSE, canon=FALSE. "

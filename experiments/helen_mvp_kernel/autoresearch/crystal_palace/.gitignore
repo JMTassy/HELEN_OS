@@ -4,3 +4,4 @@ PROGRESS.log
 RESEARCH_TRACE.ndjson
 loop_stdout.log
 first_swarm_result.json
+LOOP_SIDECAR.ndjson
