@@ -66,6 +66,10 @@ AUDIT_CLASS = {
     "ctypes.dlsym": "c_extension_internal",
     "ctypes.call_function": "c_extension_internal",
     "ctypes.cdata": "c_extension_internal",
+    # Independent-adversary DEP finding: os.listdir/os.scandir ARE
+    # directory-content reads and DO fire (previously-unmapped) events.
+    "os.listdir": "dir_listing",
+    "os.scandir": "dir_listing",
 }
 
 # What THIS tracer version structurally cannot observe. Never empty:
@@ -76,9 +80,36 @@ STRUCTURALLY_UNOBSERVABLE = (
     "reflective_attribute",  # getattr/__getattribute__ dispatch is untyped
     "cached_module_state",   # __import__ of an already-loaded module fires
                              # no event; static D+ must cover cached imports
+    "file_metadata",         # ADVERSARY finding: os.stat fires NO audit
+                             # event; size/mtime deps are unobservable, so
+                             # filesystem purity cannot be PASSED by trace
 )
+# sub_line_branch is NOT always-structural: it is flagged into u_observed
+# only when a ternary / boolean short-circuit is actually detected in an
+# entered function (see _build), so clean multi-line code can still PASS.
 
 UNEXECUTED = "unexecuted_path"
+
+# Caring about one member of a family means caring about the whole family:
+# you cannot declare file_read sensitivity and pretend os.stat is irrelevant.
+FAMILIES = (
+    frozenset({"file_read", "dir_listing", "file_metadata"}),   # filesystem
+    frozenset({UNEXECUTED, "sub_line_branch"}),                  # coverage
+)
+
+
+def expand_relevant(relevant) -> set:
+    r = set(relevant)
+    for fam in FAMILIES:
+        if r & fam:
+            r |= fam
+    return r
+
+
+# Only Python MODULE artifacts under interpreter paths are machinery noise.
+# A DATA file read under site-packages (a bundled .dat threshold, say) is a
+# genuine content dependency and must NOT be silently exempted (crack 3).
+_MODULE_ARTIFACT_SUFFIXES = (".py", ".pyc", ".pyo", ".so", ".pyd")
 
 _ACTIVE: list = []          # stack of live recorders
 _HOOK_INSTALLED = False
@@ -92,9 +123,15 @@ def _sha(path: Path) -> str:
 
 
 def _runtime_infra(p: str) -> bool:
-    """Interpreter machinery, not a dependency of the traced property."""
-    return (p.startswith(sys.prefix) or p.startswith(sys.base_prefix)
-            or "site-packages" in p or "lib/python" in p)
+    """Interpreter machinery, not a dependency of the traced property.
+
+    Crack-3 fix: only Python MODULE artifacts (.py/.pyc/.so) under
+    interpreter paths are machinery. A NON-module content read under
+    those paths (a bundled data file) is a real dependency and is NOT
+    exempted here — it falls through to external_touch."""
+    under_infra = (p.startswith(sys.prefix) or p.startswith(sys.base_prefix)
+                   or "site-packages" in p or "lib/python" in p)
+    return under_infra and p.endswith(_MODULE_ARTIFACT_SUFFIXES)
 
 
 class _Recorder:
@@ -182,7 +219,11 @@ class TraceManifest:
         """PASS only if NO class relevant to the property remains open.
         The tracer cannot argue a property is safe; it can only report
         that nothing it left unresolved is something the property needs."""
-        open_relevant = sorted(self.unresolved_classes() & set(relevant_classes))
+        # Family closure: declaring file_read sensitivity necessarily
+        # declares os.stat/os.listdir sensitivity — you cannot care about a
+        # file's bytes and disclaim its size or its directory's contents.
+        open_relevant = sorted(self.unresolved_classes()
+                               & expand_relevant(relevant_classes))
         if self.external_touches:
             return {"verdict": "UNKNOWN", "reason": "E_TOUCHED_OUTSIDE_OMEGA",
                     "detail": list(self.external_touches[:3])}
@@ -221,7 +262,9 @@ def _build(rec: _Recorder, roots: tuple, label: str, runs: int) -> TraceManifest
 
     # Functions defined in participating files but never entered at all.
     entered = {(f, q) for f, q in rec.codes}
+    entered_names = {(f, q.split(".")[-1]) for f, q in rec.codes}
     unentered = []
+    sub_line = []            # (file, funcname) with intra-line branches
     for fname in sorted(participating):
         try:
             tree = ast.parse(Path(fname).read_text(encoding="utf-8"))
@@ -232,6 +275,15 @@ def _build(rec: _Recorder, roots: tuple, label: str, runs: int) -> TraceManifest
                 if not any(q.split(".")[-1] == node.name for f, q in entered
                            if f == fname):
                     unentered.append((fname, node.name))
+                elif (fname, node.name) in entered_names:
+                    # Crack-4 detection: an ENTERED function whose body
+                    # contains a ternary or boolean short-circuit hides an
+                    # untaken behaviour branch that LINE coverage cannot see.
+                    if any(isinstance(n, (ast.IfExp, ast.BoolOp))
+                           for n in ast.walk(node)):
+                        sub_line.append((fname, node.name))
+    if sub_line:
+        u_obs.append(("sub_line_branch", ";".join(sorted(f"{f}:{n}" for f, n in sub_line))))
 
     frame_id = hashlib.sha256(canon({
         "python": list(sys.version_info[:3]),
