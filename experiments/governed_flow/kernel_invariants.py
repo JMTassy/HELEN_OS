@@ -189,15 +189,19 @@ def independent_roots(witnesses: tuple) -> dict:
 
 @dataclass(frozen=True)
 class NoveltyDecomposition:
-    """N = (N_P, N_M, N_C, N_G). The axes never self-aggregate."""
+    """N = (N_P, N_M, N_C, N_G, N_I). The fifth axis — novel
+    structural constraint/invariant — was forced by the failure-corpus
+    reading: some generations are new because of what they make
+    impossible. The axes never self-aggregate."""
     n_primitive: float
     n_motif: float
     n_composition: float
     n_governance: float
+    n_invariant: float = 0.0
 
     def aggregate(self, weights: dict) -> float:
         required = {"n_primitive", "n_motif", "n_composition",
-                    "n_governance"}
+                    "n_governance", "n_invariant"}
         if set(weights) != required:
             raise ValueError("E_WEIGHTS_UNDECLARED")
         return sum(getattr(self, k) * weights[k] for k in required)

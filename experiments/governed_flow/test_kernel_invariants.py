@@ -150,12 +150,23 @@ def test_thirty_passages_one_catalogue_one_root():
 # ── NOVELTY IS FOUR-AXIS ───────────────────────────────────────────────
 
 def test_novelty_axes_never_self_aggregate():
-    n = NoveltyDecomposition(0.0, 0.2, 0.9, 0.4)
+    n = NoveltyDecomposition(0.0, 0.2, 0.9, 0.4, 0.3)
     with pytest.raises(ValueError, match="E_WEIGHTS_UNDECLARED"):
         n.aggregate({"n_composition": 1.0})
-    full = {"n_primitive": 1.0, "n_motif": 1.0, "n_composition": 1.0,
-            "n_governance": 1.0}
-    assert n.aggregate(full) == pytest.approx(1.5)
+    four_axis_legacy = {"n_primitive": 1.0, "n_motif": 1.0,
+                        "n_composition": 1.0, "n_governance": 1.0}
+    with pytest.raises(ValueError, match="E_WEIGHTS_UNDECLARED"):
+        n.aggregate(four_axis_legacy)      # the fifth axis is not optional
+    full = {**four_axis_legacy, "n_invariant": 1.0}
+    assert n.aggregate(full) == pytest.approx(1.8)
+
+
+def test_invariant_novelty_is_a_real_axis():
+    """A generation can be novel purely by what it makes impossible."""
+    n = NoveltyDecomposition(0.0, 0.0, 0.0, 0.0, 0.9)
+    w = {"n_primitive": 1.0, "n_motif": 1.0, "n_composition": 1.0,
+         "n_governance": 1.0, "n_invariant": 1.0}
+    assert n.aggregate(w) == pytest.approx(0.9)
 
 
 # ── MODEL-OPTIMAL != WORLD-ADMISSIBLE ──────────────────────────────────
