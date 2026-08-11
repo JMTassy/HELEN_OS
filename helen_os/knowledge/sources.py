@@ -23,6 +23,7 @@ class KnowledgeSource:
     path: str
     description: str
     tag_prefix: str = ""  # auto-added to all units from this source
+    weight: float = 0.5   # retrieval ranking weight; explicit per source, never top-tier by default
 
     def to_dict(self) -> dict:
         return {
@@ -31,6 +32,7 @@ class KnowledgeSource:
             "path": self.path,
             "description": self.description,
             "tag_prefix": self.tag_prefix,
+            "weight": self.weight,
         }
 
 
@@ -43,6 +45,7 @@ SOURCES: Dict[str, KnowledgeSource] = {
         path="/Users/jean-marietassy/Desktop/PLUGINS_JMT",
         description="3 years of #plugin notes — AGI, Riemann, LEGORACLE, swarm, consciousness, metaphysics",
         tag_prefix="src_plugins",
+        weight=1.0,
     ),
     "apple_notes": KnowledgeSource(
         id="apple_notes",
@@ -50,6 +53,7 @@ SOURCES: Dict[str, KnowledgeSource] = {
         path="/tmp/helen_notes_export",
         description="1,882 Apple Notes exported via AppleScript — #pluginHELEN, research, daily notes",
         tag_prefix="src_apple_notes",
+        weight=0.8,
     ),
     "helen_os": KnowledgeSource(
         id="helen_os",
@@ -57,6 +61,7 @@ SOURCES: Dict[str, KnowledgeSource] = {
         path="/Users/jean-marietassy/Documents/GitHub/helen_os_v1",
         description="HELEN OS source — governance, schemas, skills, tools, architecture docs",
         tag_prefix="src_helen_os",
+        weight=0.9,
     ),
 }
 
