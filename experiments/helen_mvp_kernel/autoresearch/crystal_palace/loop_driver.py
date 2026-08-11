@@ -93,6 +93,14 @@ def run_goblin(i, epoch, lines):
         u = f"goblin_timeout_or_error:{type(e).__name__}"
     return {"i": i, "lens": LENSES[i], "S": S, "O": [], "H": [], "F": [], "U": [u], "N": [], "error": True}
 
+def synthesis_is_witnessed(goblins):
+    """FABLE gate. Synthesis requires witnessed input: at least one non-error, non-exhausted goblin with
+    a NON-EMPTY hypothesis list. If no goblin produced a hypothesis (C_valid→0), synthesis must be
+    UNKNOWN — never fabricated mechanisms. opacity ⊬ synthesis · cluster ⊬ corroboration · Σ ≠ Π_D.
+    This is the totalization law applied to the SYNTHESIS boundary (the one ν/coverage already gate)."""
+    return any(g["H"] for g in goblins if not g.get("error") and not g["S"].get("exhausted"))
+
+
 FABLE_SYS = (
     "You are HELEN FABLE: the non-sovereign synthesis membrane. authority=FALSE, canon=FALSE. "
     "You receive 10 typed goblin results over the 1851 catalogue and CLUSTER their chiddushim (H) into "
@@ -145,8 +153,14 @@ def main():
         total = sum(slice_lens)
         # C_valid: fraction of goblins returning structurally-valid, non-empty output (processed ≠ interpreted)
         valid = sum(1 for g in goblins if (g["O"] or g["H"]) and not g.get("error") and not g["S"].get("exhausted"))
-        plog(f"  e{e+1:02d} -> FABLE (valid_goblins={valid}/10)")
-        fable = run_fable(e, goblins, mechanisms)
+        # FABLE GATE: C_valid→0 (no witnessed hypotheses) ⇒ n_eff_H=UNKNOWN, never fabricated mechanisms.
+        if synthesis_is_witnessed(goblins):
+            plog(f"  e{e+1:02d} -> FABLE (valid_goblins={valid}/10)")
+            fable = run_fable(e, goblins, mechanisms)
+        else:
+            plog(f"  e{e+1:02d} -> FABLE GATED: no witnessed hypotheses (C_valid=0) → n_eff_H=UNKNOWN")
+            fable = {"mechanisms": mechanisms, "n_eff": None, "new_this_epoch": [],
+                     "one_line_vision": "SYNTHESIS_UNKNOWN:NO_WITNESSED_INPUT"}
         mechanisms = fable.get("mechanisms", mechanisms)
         for g in goblins:
             all_unknown.extend(g.get("U", []))
