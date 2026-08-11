@@ -202,7 +202,7 @@ def chiddush(corpus: Corpus, composition: Composition) -> dict:
     art = GeneratedArtifact(
         composition=composition, corpus_id=corpus.corpus_id,
         lineage_closed=True, novelty_source="recombination")
-    return {"verdict": "ADMIT_CANDIDATE", "artifact": art,
+    return {"verdict": "CANDIDATE_PROPOSED", "artifact": art,
             "lineage": composition.lineage(),
             "note": "candidate for the trellis; A=0, provenance preserved"}
 

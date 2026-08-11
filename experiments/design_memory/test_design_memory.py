@@ -100,7 +100,7 @@ def _original_border():
 
 def test_chiddush_admits_a_lineage_closed_original():
     r = chiddush(ATF_CORPUS, _original_border())
-    assert r["verdict"] == "ADMIT_CANDIDATE"
+    assert r["verdict"] == "CANDIDATE_PROPOSED"
     assert r["artifact"].lineage_closed is True
     assert r["artifact"].novelty_source == "recombination"
     assert r["lineage"]                      # non-empty, every part traced
