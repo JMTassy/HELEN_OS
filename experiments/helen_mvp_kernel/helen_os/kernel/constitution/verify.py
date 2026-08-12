@@ -513,6 +513,13 @@ def _probes():
                  (cp.CandidateDelta("v", True, True, True, True, False),))
              ["completeness"] == "UNKNOWN"))
 
+    A(_probe("vendor_corpus_maps_completely",
+             "a 1918 vendor sales document produces zero prohibitions "
+             "needing a fifth ceiling — completeness evidence, never "
+             "proof",
+             lambda: __import__("welding_1918").corpus_completeness()
+             ["completeness_verdict"] == "MAPS_COMPLETELY"))
+
     return P
 
 
