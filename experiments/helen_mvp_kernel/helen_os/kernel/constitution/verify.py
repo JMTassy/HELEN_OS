@@ -739,6 +739,29 @@ def _probes():
              "never by head-count",
              _stack))
 
+    # ── the negative control: the gate must be able to REFUSE ───────
+    import mesmer_control as msc
+
+    def _mesmer():
+        nc = msc.negative_control()
+        lp = msc.la_place_witnesses()
+        cand = msc.design_grade_candidate(1000)
+        chiddush = [f for f in msc.findings_table()
+                    if f["is_constitutional_chiddush"]]
+        return (nc["frozen_gate_rejects_central_claim"] is True and
+                nc["attribution_1784"] == "EXPECTATION" and
+                lp["mechanism_classes"] == 1 and
+                lp["u_effective"] == 1.0 and
+                cand["status"] == "CANDIDATE_NOT_LAW" and
+                len(chiddush) == 1)
+    A(_probe("sincere_witnesses_do_not_sum_to_proof",
+             "the 1844 negative control: eminent, sincere, numerous "
+             "witnesses and a false central claim — refused on the "
+             "PROOF ceiling and on undischarged defeaters; one "
+             "mechanism class earns no sqrt-N; the corpus's one "
+             "chiddush stays a candidate",
+             _mesmer))
+
     return P
 
 

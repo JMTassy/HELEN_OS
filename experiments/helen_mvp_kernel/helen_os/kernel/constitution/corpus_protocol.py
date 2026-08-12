@@ -58,6 +58,10 @@ CORPUS_ORDER = ("HAMILTON", "QUALITY_CONTROL", "BOILER", "RAIL",
                 "NAVIGATION", "TELEGRAPH", "AVIATION", "PHARMACOPEIA",
                 "PATENT")
 
+# corpora handed over by the operator out of sequence — the paste is
+# the grant; they still pass the same preregistration discipline
+OPERATOR_SUPPLIED = ("MESMERISM_1844",)
+
 FINDING_CLASSES = ("ALREADY_REPRESENTABLE", "NEW_PARAMETERIZATION",
                    "CANDIDATE_NEW_INVARIANT", "NOT_RELEVANT")
 
@@ -94,7 +98,7 @@ def freeze() -> dict:
 
 def preregister(corpus: str, expected_lessons: tuple) -> dict:
     """D -> L_hat_D, before extraction, against the frozen version."""
-    if corpus not in CORPUS_ORDER:
+    if corpus not in CORPUS_ORDER and corpus not in OPERATOR_SUPPLIED:
         return {"registered": False, "reason": "E_UNKNOWN_CORPUS",
                 "corpus": corpus}
     if not expected_lessons:
