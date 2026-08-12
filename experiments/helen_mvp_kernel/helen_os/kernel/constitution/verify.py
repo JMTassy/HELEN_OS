@@ -548,6 +548,21 @@ def _probes():
                  ({"passes_transactional": False, "still_invalid": True},))
              ["fifth_ceiling_earned"] is False))
 
+    # ── minimality: each ceiling is individually load-bearing ────────
+    import minimality as mnl
+
+    def _irreducible():
+        v = mnl.basis_verdict()
+        return (v["irreducible_over_tested_domain"] is True and
+                v["compositionally_adequate_over_tested_domain"] is True
+                and v["grade"] == "EVIDENCE_NOT_PROOF" and
+                v["completeness"] == "UNKNOWN")
+    A(_probe("no_ceiling_is_removable",
+             "for every ceiling there is an invalid delta that only it "
+             "catches — dropping any one admits that delta; evidence "
+             "over the tested domain, never proof",
+             _irreducible))
+
     return P
 
 
