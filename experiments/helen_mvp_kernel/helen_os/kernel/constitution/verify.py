@@ -663,6 +663,37 @@ def _probes():
              "unwitnessed failure teaches nothing",
              _craft))
 
+    # ── metrology: the locked stack, and its guardrail ──────────────
+    import metrology as mtl
+
+    def _metrology():
+        r = _ca2.Receipt("r_m", frozenset({"root_r"}),
+                         frozenset({"obj_a"}), "ADJUDICATED")
+        boundary = _ca2.Transition("d_c", frozenset({"ROOT_R"}),
+                                   frozenset({"obj_a"}), "OBSERVED",
+                                   True)
+        far = _ca2.Transition("d_f",
+                              frozenset({"root_r", "root_x", "root_y"}),
+                              frozenset({"obj_a"}), "OBSERVED", True)
+        a = mtl.alpha_minus(mtl.sloppy_verifier, (boundary, far), r)
+        w = mtl.make_witness(mtl.sloppy_verifier, boundary, r)
+        pi_catches_v = mtl.replay_witness(w)["reproduces"] is False
+        mint = mtl.mint_law_from_unresolved("cannot resolve")
+        return (mtl.signed_margin(boundary, r)["mu"] == -1 and
+                a[1]["alpha_minus"] == 1.0 and
+                a[2]["alpha_minus"] == 0.0 and
+                pi_catches_v and
+                mint["reason"] == "E_UNKNOWN_RESOLUTION_IS_NOT_NEW_LAW"
+                and mtl.escalate("M_CANNOT_RESOLVE")
+                ["authorizes_new_law"] is False)
+    A(_probe("unknown_resolution_is_not_new_law",
+             "the margin is signed; the defective verifier is found "
+             "only at the boundary (alpha_- calibration); independent "
+             "replay contradicts the false PASS; and a metrology "
+             "failure routes to instrument upgrade, never to a new "
+             "ceiling",
+             _metrology))
+
     return P
 
 
