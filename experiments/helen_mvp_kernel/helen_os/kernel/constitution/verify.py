@@ -430,6 +430,37 @@ def _probes():
              "enforcer and rejects",
              lambda: osg.run_gold_suite()["all_held"] is True))
 
+    # ── T000 + the ceiling algebra ──────────────────────────────────
+    import ceiling_algebra as ca
+
+    A(_probe("cardinality_is_not_assumed",
+             "T000: evidence does not entail |Vessel|=1; do not collapse",
+             lambda: ca.vessel_cardinality(
+                 ({"hull_ref": "a"},))["assumed_one"] is False))
+
+    A(_probe("merge_is_a_governed_transition",
+             "entity resolution is graph rewriting, not preprocessing",
+             lambda: ca.propose_merge("a", "b", "same_name")["reason"]
+             == "E_UNWITNESSED_MERGE"))
+
+    A(_probe("relay_is_not_direct_observation",
+             "RELAY(s) does not entail DIRECTLY_OBSERVED(s)",
+             lambda: ca.directly_observed(
+                 ca.HistoricalSource("s", "p", "RELAYED"))
+             ["directly_observed"] is False))
+
+    def _ceiling():
+        r = ca.Receipt("r", frozenset({"root_X"}), frozenset({"hull_B"}),
+                       "ADJUDICATED")
+        d = ca.Transition("d", frozenset({"root_X", "root_Y"}),
+                          frozenset({"all_cargo"}), "ADMITTED", False)
+        v = ca.admit(d, r)
+        return v["verdict"] == "REJECT" and \
+            len({b["reason"] for b in v["breaches"]}) == 4
+    A(_probe("three_ceilings_bound_admission",
+             "Admit iff Proof<=ProofCeiling and Effect<=Scope and "
+             "Authority<=AuthorityCeiling and replay-valid", _ceiling))
+
     return P
 
 
