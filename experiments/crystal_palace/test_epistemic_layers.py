@@ -56,6 +56,41 @@ def test_skipping_judgment_strands_the_survival_witness():
     assert r["stranded_witness"] == "F"
 
 
+# ── sigma as promotion signature: product space, not maximum ──────────
+
+def test_signature_is_a_vector_of_independent_typed_credentials():
+    ws = ({"layer": "P", "ref": "patent:1849/123"},
+          {"layer": "D", "ref": "wellcome:527"},
+          {"layer": "J", "ref": "jury:cl6", "value": "MEDIUM"})
+    s = el.sigma_signature(ws)["signature"]
+    assert s["claimed"] == "WITNESSED"
+    assert s["demonstrated"] == "WITNESSED"
+    assert s["judged"] == "MEDIUM"                 # graded credential
+    assert s["operationally_survived"] == "UNKNOWN"
+    assert s["institutionally_required"] == "UNKNOWN"
+
+
+def test_harakeke_signature_is_legal_no_axis_entails_another():
+    """demonstrated=WITNESSED with claimed=UNKNOWN — the signature
+    representation has no ladder to fall off."""
+    s = el.sigma_signature(({"layer": "D", "ref": "cat:335"},))["signature"]
+    assert s["demonstrated"] == "WITNESSED" and s["claimed"] == "UNKNOWN"
+
+
+def test_signature_carries_no_scalar_aggregate():
+    out = el.sigma_signature(({"layer": "D", "ref": "x"},))
+    assert "score" not in out and "max" not in out
+    assert "UNKNOWN is not NO" in out["law"]
+
+
+def test_packet_items_now_carry_their_signature():
+    item = _item(1, "C", "judged", ("D", "J"))
+    r = validate_packet_item(item)
+    assert r["verdict"] == "VALID"
+    assert r["signature"]["judged"] == "WITNESSED"
+    assert r["signature"]["claimed"] == "UNKNOWN"
+
+
 # ── roles are not roots ─────────────────────────────────────────────────
 
 def test_catalogue_and_jury_are_two_roles_one_root():

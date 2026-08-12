@@ -81,6 +81,37 @@ CORPUS_VOLUMES = {
 _UPPER = ("demonstrated", "judged", "operationally_survived",
           "institutionally_required")            # strict chain: D<J<F<C
 
+# sigma as a PROMOTION SIGNATURE — the product space, not the maximum.
+# A technology does not move along one ladder; it accumulates typed
+# credentials. Absence of a witness on an axis is UNKNOWN, never NO,
+# and no axis entails another (harakeke: demonstrated=WITNESSED while
+# claimed=UNKNOWN is a legal signature, not a defect).
+SIGNATURE_AXES = ("claimed", "demonstrated", "judged",
+                  "operationally_survived", "institutionally_required")
+
+
+def sigma_signature(witnesses: tuple) -> dict:
+    """sigma(q) = (sigma_P, sigma_D, sigma_J, sigma_F, sigma_C) as
+    independent typed credentials. Each witness may carry a graded
+    'value' (e.g. jury_novelty=MEDIUM); a bare witness credential is
+    WITNESSED; an absent axis is UNKNOWN. There is deliberately NO
+    scalar aggregate — collapsing the vector is the semantic-collapse
+    failure this object exists to prevent."""
+    by_layer: dict = {}
+    for w in witnesses:
+        by_layer.setdefault(w["layer"], []).append(w)
+    sig = {}
+    for axis in SIGNATURE_AXES:
+        layer = SIGMA_LAYER[axis]
+        if layer not in by_layer:
+            sig[axis] = "UNKNOWN"
+        else:
+            graded = [w["value"] for w in by_layer[layer] if w.get("value")]
+            sig[axis] = graded[0] if graded else "WITNESSED"
+    return {"signature": sig,
+            "law": "typed credentials accumulate independently; "
+                   "no axis entails another, and UNKNOWN is not NO"}
+
 
 def compute_sigma(witness_layers: frozenset) -> dict:
     """'claimed' is an ENTRY rung, not a prerequisite: demonstration
@@ -226,7 +257,8 @@ def validate_packet_item(item: dict) -> dict:
         return {"verdict": "REFUSED", "reason": "E_SIGMA_MISMATCH",
                 "declared": item["sigma"], "computed": computed["sigma"]}
     return {"verdict": "VALID", "sigma": computed["sigma"],
-            "gap": computed.get("gap", False)}
+            "gap": computed.get("gap", False),
+            "signature": sigma_signature(item["witnesses"])["signature"]}
 
 
 def validate_packet(items: tuple) -> dict:
