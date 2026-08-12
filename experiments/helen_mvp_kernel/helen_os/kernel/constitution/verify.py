@@ -486,6 +486,33 @@ def _probes():
                  ps.Generated("g", ("fill",), "HYPOTHESIS"))["reason"]
              == "E_GENERABLE_IS_NOT_OBSERVED"))
 
+    # ── ceiling completeness: the algebra tests itself ──────────────
+    import completeness as cp
+
+    A(_probe("safety_census_is_total",
+             "every safety prohibition compiles to one of the four "
+             "ceilings; failure to map is diagnostic",
+             lambda: cp.census_is_total()["total"] is True))
+
+    A(_probe("liveness_is_a_distinct_axis",
+             "HOLD != DEADLOCK is the dual axis, not an unmapped "
+             "safety rule",
+             lambda: cp.compile_to_ceiling("HOLD != DEADLOCK")["axis"]
+             == "LIVENESS"))
+
+    A(_probe("ontology_change_is_an_effect",
+             "normalization that changes ontology is an effect and "
+             "requires admission",
+             lambda: cp.ontology_effect("merge", 2, 1)
+             ["requires_admission"] is True))
+
+    A(_probe("completeness_is_unknown_not_proven",
+             "absence of a witnessed counterexample does not prove "
+             "the algebra complete",
+             lambda: cp.completeness_probe(
+                 (cp.CandidateDelta("v", True, True, True, True, False),))
+             ["completeness"] == "UNKNOWN"))
+
     return P
 
 
