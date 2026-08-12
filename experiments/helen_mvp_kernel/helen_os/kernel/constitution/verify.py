@@ -321,6 +321,64 @@ def _probes():
                    "source_ref": "log"},))["alarm"] ==
              "E_EXECUTED_WITHOUT_DECISION"))
 
+    # ── liveness: the dual theorem ──────────────────────────────────
+    import liveness as lv
+
+    A(_probe("hold_is_not_deadlock",
+             "a HOLD must generate a next evidentiary obligation",
+             lambda: lv.hold_is_lawful(lv.Hold("o", 5))["verdict"] ==
+             "E_ETERNAL_HOLD"))
+
+    def _stale():
+        o = lv.LiveObligation("crit", True, True, 1.0, 1.0, 1.0, 1.0,
+                              1.0, opened_at=0)
+        return lv.liveness_check(o, now=9, stale_after=3)["verdict"] == \
+            "E_LIVENESS_VIOLATION"
+    A(_probe("critical_obligation_stays_live",
+             "nothing critical may disappear because nothing happened",
+             _stale))
+
+    A(_probe("scheduler_ranks_deadline_over_theorem",
+             "obligations, not intellectual attractiveness",
+             lambda: lv.schedule((
+                 lv.LiveObligation("theorem", False, True, 0.3, 0.1, 0.1,
+                                   1.0, 1.0, 0),
+                 lv.LiveObligation("deadline", True, False, 1.0, 1.0, 1.0,
+                                   0.8, 0.2, 0)))["selected"] ==
+             "deadline"))
+
+    A(_probe("impossibility_must_be_witnessed",
+             "you may not drop an obligation by asserting it cannot be "
+             "done; you must show it",
+             lambda: lv.resolve(
+                 lv.LiveObligation("t", True, False, 1.0, 1.0, 1.0, 1.0,
+                                   1.0, 0),
+                 lv.Resolution("t", "WITNESSED_IMPOSSIBILITY",
+                               "search#run"))["leaves_omega"] is True))
+
+    def _self_approve():
+        r = lv.admissibility_distance(
+            {"phi_safety": "FAIL"}, {}, frozenset({"phi_safety"}), 0.0)
+        return r["distance"] == float("inf")
+    A(_probe("min_distance_does_not_admit",
+             "distance guides research; a critical fail is infinite; "
+             "min d does not imply ADMIT", _self_approve))
+
+    def _one_shot():
+        book = lv.NonceBook()
+        k = lv.TransitionCapability("hc", "hw", "hg", "op", 10, "n")
+        book.invoke(k, "hc", "hw", "hg", 1)
+        return book.invoke(k, "hc", "hw", "hg", 2)["reason"] == \
+            "E_NONCE_REPLAY"
+    A(_probe("capability_is_one_shot",
+             "authority non-bootstrap as reachability: a minted "
+             "capability executes once", _one_shot))
+
+    A(_probe("replay_wins_over_narrative",
+             "a state memory asserts but replay denies is not the state",
+             lambda: lv.replay_extensional_check("mem", "replay")
+             ["verdict"] == "HOLD"))
+
     return P
 
 
@@ -344,6 +402,9 @@ def verify_constitution() -> dict:
         "law": "computation may transform representation; only "
                "witnessed admission may increase institutional reality "
                "or authority",
+        "frontier": "safety [](no illegal mutation) AND liveness "
+                    "[](critical reachable obligation => eventual "
+                    "resolution)",
     }
 
 
