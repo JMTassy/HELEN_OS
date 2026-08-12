@@ -30,7 +30,12 @@ the composed transition, not merely once per local operation."
 
 So: no fifth ceiling is earned here. To earn one you would need a
 trace that passes the four predicates BOTH locally AND transactionally
-and is STILL constitutionally invalid. That has not been found.
+and is STILL constitutionally invalid. None had been found when this
+module was written; semantic_persistence.py has since CONSTRUCTED one
+(the Hamilton drift trace — semantic drift through lawful history)
+and its candidacy is recorded there, bounded to the current state
+model. The prediction machinery below fired exactly as designed;
+NotObserved never was Impossible.
 Compositional completeness stays UNKNOWN, never PROVEN.
 
 Precedent, cited not invented: in-toto's audit found downstream

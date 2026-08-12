@@ -563,6 +563,27 @@ def _probes():
              "over the tested domain, never proof",
              _irreducible))
 
+    # ── semantic persistence: the Hamilton test ──────────────────────
+    import semantic_persistence as spr
+
+    def _hamilton():
+        h = spr.hamilton_test(spr.initial_state(), spr.drift_trace(),
+                              spr.STANDARD_INVARIANTS)
+        v = spr.persistence_gate(spr.initial_state(), spr.drift_trace(),
+                                 spr.STANDARD_INVARIANTS)
+        c = spr.fifth_ceiling_candidacy()
+        return (h["witness_found"] is True and
+                h["replay_is_exact"] is True and
+                v["reason"] == "E_SEMANTIC_DRIFT" and
+                c["fifth_ceiling_earned"] is True and
+                c["completeness"] == "UNKNOWN")
+    A(_probe("replayability_is_not_semantic_persistence",
+             "a trace can pass all four ceilings and replay exactly "
+             "while the kernel meaning drifts; unauthorized drift is "
+             "refused by name — a constitution's reference must "
+             "survive its history",
+             _hamilton))
+
     return P
 
 
