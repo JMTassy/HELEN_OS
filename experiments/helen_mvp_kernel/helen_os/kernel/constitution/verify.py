@@ -520,6 +520,34 @@ def _probes():
              lambda: __import__("welding_1918").corpus_completeness()
              ["completeness_verdict"] == "MAPS_COMPLETELY"))
 
+    # ── compositional closure: the four ceilings are NOT closed under
+    #    composition unless evaluated transactionally ─────────────────
+    import compositional_closure as ccl
+
+    def _flow_gap():
+        trace = (ccl.Delta("a", {"PROOF": True, "SCOPE": True,
+                                 "AUTHORITY": True, "REPLAY": True},
+                           flow_from="X", writes=frozenset({"b"})),
+                 ccl.Delta("c", {"PROOF": True, "SCOPE": True,
+                                 "AUTHORITY": True, "REPLAY": True},
+                           flow_from="b", flow_to="Z",
+                           writes=frozenset({"Z"})))
+        g = ccl.compositional_gap(trace, {"forbidden_flows": {("X", "Z")}})
+        return g["compositional_gap"] is True and \
+            g["needs_fifth_ceiling"] is False
+    A(_probe("ceilings_not_closed_under_composition",
+             "individually lawful moves compose into an unlawful one; "
+             "the fix is transactional evaluation, not a fifth ceiling",
+             _flow_gap))
+
+    A(_probe("fifth_ceiling_not_earned",
+             "every compositional counterexample is caught by "
+             "transactional evaluation of the existing four; "
+             "completeness stays UNKNOWN",
+             lambda: ccl.fifth_ceiling_status(
+                 ({"passes_transactional": False, "still_invalid": True},))
+             ["fifth_ceiling_earned"] is False))
+
     return P
 
 
