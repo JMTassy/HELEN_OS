@@ -1,0 +1,54 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sandbox-vgrammar-e43-focus-helen2027-presence-green",
+  "target_surface": "sandbox_visual_grammar",
+  "epoch": "E43",
+  "parent_epoch": "E42",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "final": "HOLD_FOR_OPERATOR",
+  "reducer_required": true,
+  "finding_type": "liveness_governance_collision",
+  "source_refs": [
+    "apps/helen-surface/focus.html:L18-19,L41-42,L132",
+    "apps/helen-surface/helen2027.html:L21-22,L45-46,L224"
+  ],
+  "summary": "Two surface files share an identical E31-class liveness-green collision that E40/E42 logged but did not fix. focus.html L41-42 and helen2027.html L45-46 both render the 'Online' presence badge (tb-badge.presence + presence-dot) using var(--ok):#16a34a — the governance ADMITTED color. The border-color rgba(22,163,74,.22) is the same hex at 22% alpha. In each file, --ok is used ONLY in these two presence badge rules (grep -c 'var(--ok)' = 2 per file, confirmed by live read). Both files already define --helen:#0ea5e9 (sky blue = governance OBSERVED slot) — the natural, palette-correct substitute for a liveness signal. After the tweak, --ok would have 0 callers in both files, eliminating the ADMITTED/liveness ambiguity entirely. This closes the one open finding from E42's audit-closure sweep.",
+  "evidence": [
+    "focus.html:L19 --ok:#16a34a defined; L18 --helen:#0ea5e9 defined",
+    "focus.html:L41 .tb-badge.presence{color:var(--ok);border-color:rgba(22,163,74,.22)...}",
+    "focus.html:L42 .presence-dot{...background:var(--ok);animation:pulse...}",
+    "focus.html:L132 <span class=\"tb-badge presence\"><span class=\"presence-dot\"></span>Online</span>",
+    "grep -c 'var(--ok)' apps/helen-surface/focus.html → 2 (both in presence classes, no other callers)",
+    "helen2027.html:L22 --ok:#16a34a; L21 --helen:#0ea5e9 (same palette, same issue)",
+    "helen2027.html:L45-46 identical CSS pattern to focus.html:L41-42",
+    "rgba(22,163,74) = hex #16a34a — border-color is the same governance green at 22% alpha",
+    "E40 summary: helen2027 'Online' badge logged as E31-class recurrence, no edit proposed",
+    "E42 summary: focus.html liveness-green logged, audit-closure declared — fix not yet committed"
+  ],
+  "mechanism": "Both files copy the same presence badge CSS block (origin: shared template). The block uses --ok for liveness rather than the typographically adjacent --helen. Because --ok means ADMITTED in the governance palette and liveness (Online) is an OBSERVED-tier signal, the badge emits a governance-false-positive: it looks admitted when it is only alive. E31 through E42 swept and fixed this in cockpit_v4, starship, home_v1, temple, temple_akashic_v1, and helen2027/focus (logged only). The fix is symmetric: --helen already carries the OBSERVED semantic and is defined in both files.",
+  "hypothesis": "If var(--ok) is replaced with var(--helen) in the .tb-badge.presence and .presence-dot rules (and border-color rgba(22,163,74,.22) updated to rgba(14,165,233,.22) to match --helen) in both focus.html and helen2027.html, then --ok has 0 callers in each file, the Online badge renders sky-blue (OBSERVED) instead of governance-green (ADMITTED), and the E31-class collision series is fully resolved across all 11 surface files.",
+  "proposed_tweak": "focus.html L41: .tb-badge.presence — change color:var(--ok) → color:var(--helen); border-color:rgba(22,163,74,.22) → rgba(14,165,233,.22). L42: .presence-dot — change background:var(--ok) → background:var(--helen). helen2027.html L45-46: same two substitutions. Optionally remove --ok definition (L19 / L22) from each file's :root block since it would have 0 callers — prevents future misuse. Proposal only — operator must apply. No other files touched.",
+  "metric": "Before: grep -c 'var(--ok)' apps/helen-surface/focus.html = 2; grep -c 'var(--ok)' apps/helen-surface/helen2027.html = 2. After fix: both counts = 0. No new token introduced — --helen already defined in both files. Governance palette mapping: --helen:#0ea5e9 = OBSERVED (🔵), --ok:#16a34a = ADMITTED (🟢). Online is OBSERVED, not ADMITTED — fix is semantically exact.",
+  "keep_reject_rule": "KEEP if: --helen is confirmed as the correct OBSERVED slot for liveness indicators (consistent with palette doc and E31 fix rationale in cockpit_v4); grep count goes 2→0 in each file; no existing test asserts on --ok usage in presence classes (none confirmed). REJECT if: operator decides liveness requires its own dedicated token (e.g. --live) distinct from --helen; in that case, define --live and use it rather than reusing --helen.",
+  "next_iteration": "E44 (sandbox_visual_grammar): if KEEP — apply fix, verify grep counts, run make test for any CSS-dependent tests; confirm full E31-series resolution receipt for all 11 files. If REJECT — define --live token in palette and propose 1-token addition to all 11 surface files as a unified follow-up.",
+  "e42_relation": "E42 declared audit-closure for all 11 surface files after sweeping focus.html, dream_of_conquest.html, and gravure.html. E42 found focus.html's Online badge as the only unresolved finding. E43 confirms the finding by live read, extends it to helen2027.html (E40 log, unfixed), and proposes the symmetric 2-file fix. With E43 applied, the E31-series would be fully closed.",
+  "risk_flags": [
+    "Low — 2 CSS property changes per file, no logic touched",
+    "Low — --helen already defined in both :root blocks; no new token needed",
+    "Medium — border-color rgba must also update (rgba(22,163,74,.22) → rgba(14,165,233,.22)); if missed, border stays green while text/dot turn blue",
+    "Low — 0 tests assert on --ok in presence context (confirmed by grep)"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "scanned_at": "2026-08-12T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (live read confirmed: var(--ok) in presence classes only; --helen defined; no other --ok callers; E40/E42 cross-reference verified)",
+    "epoch": "E43",
+    "ledger_mutation": false,
+    "authority": false,
+    "session": "scheduled-autoresearch-2026-08-12"
+  }
+}
