@@ -461,7 +461,43 @@ def _probes():
              "Admit iff Proof<=ProofCeiling and Effect<=Scope and "
              "Authority<=AuthorityCeiling and replay-valid", _ceiling))
 
+    # ── possibility-space triple (design memory) ────────────────────
+    import possibility_space as ps
+
+    A(_probe("observed_is_a_proper_subset_of_possible",
+             "O_t subsetneq P_t; a catalogue does not exhaust its "
+             "grammar",
+             lambda: assert_probe_raises(
+                 lambda: ps.PossibilitySpace(frozenset({"a"}),
+                                             frozenset({"a"})),
+                 "E_UNWITNESSED_CLOSURE")))
+
+    A(_probe("absence_is_unknown_not_forbidden",
+             "not-catalogued is not not-allowed; negative evidence is "
+             "witnessed",
+             lambda: ps.absence_verdict("gradient_mesh",
+                                        frozenset({"fill"}))["verdict"]
+             == "UNKNOWN"))
+
+    A(_probe("generable_is_not_historically_observed",
+             "generation over a grammar yields a candidate, not a "
+             "historical fact",
+             lambda: ps.claim_historically_observed(
+                 ps.Generated("g", ("fill",), "HYPOTHESIS"))["reason"]
+             == "E_GENERABLE_IS_NOT_OBSERVED"))
+
     return P
+
+
+def assert_probe_raises(thunk, expected_msg) -> bool:
+    """True iff thunk raises a ValueError whose message contains
+    expected_msg — a raise is the refusal, and swallowing it is a
+    failed probe."""
+    try:
+        thunk()
+        return False
+    except ValueError as exc:
+        return expected_msg in str(exc)
 
 
 def verify_constitution() -> dict:
