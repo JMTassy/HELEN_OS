@@ -1,0 +1,31 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-initrank-e48-refs-tiebreaker",
+  "target_surface": "init_ranking_weights",
+  "epoch": "E48",
+  "parent_epoch": "E47",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "source_refs": [
+    "scratch/autoresearch_init_evaluator_v1.py:BASELINE",
+    "scratchpad/init_goldset_v1.json:20 cases / 31 packets"
+  ],
+  "finding_type": "gap",
+  "summary": "E47 (w_noise=1.0 + w_len=0.1) left 6/20 cases with incorrect ordering: eee30b (test_gap, refs=4, sev=2, len=224) ranked after 1f936 (test_gap, refs=2, sev=1, len=124) because the len penalty promotes the shorter packet. E48 finds that adding w_refs=0.028 resolves all 6 cases: refs(eee30)=4 > refs(1f936)=2 provides a 0.006 margin that reverses the 1f936-first ordering. Goldset preference eee30>1f936 is CONSISTENT across all 6 co-appearance cases (6:0). Score lifts from 0.9600 to 1.0000 (Top3Match=1.0, OrderScore=1.0, Stability=1.0). Safe window: w_refs in [0.026, 0.030]. CRITICAL: window width is only 0.004 (±0.002 to cliffs at 0.025 and 0.031). Attack surfaces: (1) margin 332>cecf=0.0085 is thin; (2) margin eee30>1f936=0.006 is thin; (3) any new rejected packet with refs>=5 could shift the cecf side of the cliff. CONDITIONAL KEEP — goldset expansion to 40+ cases required before operator admission.",
+  "evidence": [
+    "E47 baseline: w_noise=1.0, w_len=0.1 — score=0.9600, OrderScore=0.8000, 6 cases misordered",
+    "All 6 failures: eee30b (len=224,refs=4) ranked below 1f936 (len=124,refs=2) by len penalty",
+    "Goldset consistency: eee30>1f936 in all 6 co-appearance cases (6:0 ratio)",
+    "E48 probe: w_refs=0.028 — score=1.0000, Top3Match=1.0, OrderScore=1.0, Stability=1.0",
+    "Safe window: w_refs in [0.026, 0.030], 5 integer-step values, width=0.004",
+    "Margin analysis: 332>cecf=0.0085, eee30>1f936=0.006 — both sub-0.01 (fragile)",
+    "E47 warning 'w_refs harms at 0.1+' confirmed: cliff at w_refs=0.031 breaks 332>cecf"
+  ],
+  "hypothesis": "If w_refs=0.028 is added to the E47 weights (w_noise=1.0, w_len=0.1), n_refs as a secondary tiebreaker within same-type ties resolves the eee30>1f936 ordering, lifting OrderScore from 0.8000 to 1.0000 and overall score from 0.9600 to 1.0000 on the 20-case goldset.",
+  "proposed_tweak": "scratch/autoresearch_init_evaluator_v1.py BASELINE dict: add w_refs=0.028 (was 0.0), keeping w_noise=1.0, w_len=0.1, w_type=1.0, all others 0.0. Note: any value in [0.026, 0.030] yields identical score=1.0. Proposal only — operator must apply. Conditional on goldset expansion to 40+ cases to verify cliff stability.",
+  "metric": "Top3Match=1.0, OrderScore=1.0, Stability=1.0, score=1.0000 on 20-case goldset; cliff margin >=0.005 on expanded goldset",
+  "keep_reject_rule": "CONDITIONAL KEEP: accept proposal IF expanded goldset (40+ cases) preserves score=1.0 and cliff margins remain >0.005; REJECT if new packets with refs>=5 (rejected type) appear and close the 332>cecf margin below 0.003",
+  "next_iteration": "E49: expand goldset to 40 cases with fresh operator marks; stress-test w_refs=0.028 cliff stability; verify no rejected packet with refs>=5 exists in production corpus"
+}
