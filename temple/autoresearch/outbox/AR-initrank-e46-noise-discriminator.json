@@ -1,0 +1,31 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-initrank-e46-noise-discriminator",
+  "target_surface": "init_ranking_weights",
+  "epoch": "E46",
+  "parent_epoch": "E45",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "source_refs": [
+    "scratch/autoresearch_init_evaluator_v1.py:BASELINE",
+    "scratchpad/init_goldset_v1.json:31 packets"
+  ],
+  "finding_type": "gap",
+  "summary": "E45 proposed w_flags=0.5, w_severity=0.5 and achieved Top3Match=1.0 but OrderScore=0.3333 (score=0.8667). E46 discovers that lexical_noise_kw is a perfect binary classifier on all 31 goldset packets (noise=0 → all 5 approved; noise=1 → all 26 rejected). Setting w_noise=1.0 alone (no flags/sev change) achieves Top3Match=1.0 and OrderScore=0.6333 (score=0.9267). Adding flags/sev on top of noise drops OrderScore back to 0.4333 because it over-boosts high-flag packets above the goldset's TYPE-priority ordering. Simpler probe, higher score.",
+  "evidence": [
+    "lexical_noise_kw=0: ALL 5 approved packets (acted/deferred)",
+    "lexical_noise_kw=1: ALL 26 rejected packets — perfect separation",
+    "BASELINE (noise=0): Top3Match=0.0, OrderScore=0.25, score=0.15",
+    "E45 (w_flags=0.5, w_sev=0.5): Top3Match=1.0, OrderScore=0.3333, score=0.8667",
+    "E46 (w_noise=1.0 only): Top3Match=1.0, OrderScore=0.6333, Stability=1.0, score=0.9267",
+    "E46 (noise + small flags=0.1, sev=0.1): score drops to 0.8867",
+    "Grid search 54 combos confirms w_noise=1.0 alone as optimum"
+  ],
+  "hypothesis": "If w_noise=1.0 replaces w_flags/w_severity as the primary BASELINE change, score lifts from 0.15 to 0.9267 on the 20-case goldset, outperforming E45's 0.8667.",
+  "proposed_tweak": "scratch/autoresearch_init_evaluator_v1.py BASELINE dict: change w_noise from 0.0 to 1.0. Leave w_flags=0.0 and w_severity=0.0 unchanged. Update comment from 'mirrors current triage TYPE_PRIORITY intuition' to 'lexical_noise_kw is binary perfect classifier; TYPE ordering preserved as primary signal'. Proposal only — operator must apply.",
+  "metric": "Top3Match=1.0, OrderScore>=0.60, score>=0.90 on 20-case goldset; Stability=1.0",
+  "keep_reject_rule": "KEEP if score>=0.90 and Top3Match=1.0 and Stability=1.0; REJECT if OrderScore<0.50 or Top3Match<0.9",
+  "next_iteration": "E47: expand goldset to 40 cases with fresh operator labels; verify noise=0/noise=1 binary separation holds on new packets"
+}
