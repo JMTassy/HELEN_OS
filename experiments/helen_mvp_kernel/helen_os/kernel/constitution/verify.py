@@ -609,6 +609,60 @@ def _probes():
              "Authority_{t+1}(a) nor skips the gate",
              _earned))
 
+    # ── constitutional tolerances: the gate is measured, not binary ──
+    import ceiling_algebra as _ca2
+    import constitutional_tolerances as ctl
+
+    def _tolerances():
+        r = _ca2.Receipt("r_p", frozenset({"root_R", "root_S"}),
+                         frozenset({"obj_A", "obj_B"}), "ADJUDICATED")
+        robust = _ca2.Transition("d_r", frozenset({"root_R"}),
+                                 frozenset({"obj_A"}), "OBSERVED", True)
+        barely = _ca2.Transition("d_b", frozenset({"root_R", "root_S"}),
+                                 frozenset({"obj_A"}), "ADJUDICATED",
+                                 True)
+        mr, mb = ctl.margins(robust, r), ctl.margins(barely, r)
+        osc_ok = ctl.oscillator_check(_ca2.admit)["verdict"] \
+            == "REFERENCE_HELD"
+        osc_drift = ctl.oscillator_check(ctl.lenient_gate)
+        chi = ctl.chi_susceptibility(robust, r)
+        return (mr["robustly_admitted"] is True and
+                mb["barely_admitted"] is True and
+                osc_ok and osc_drift["verdict"] == "HOLD" and
+                osc_drift["reason"] == "E_INTERPRETIVE_DRIFT" and
+                chi["elinvar"] is True)
+    A(_probe("gate_tolerances_are_measured",
+             "admitted != robustly admitted (margin law); a lenient "
+             "reinterpretation is HELD by the sealed reference corpus "
+             "(hairspring); the verdict is invariant to naming and "
+             "order, sensitive only to evidence (Elinvar)",
+             _tolerances))
+
+    # ── craft: knowledge inherits, authority never ──────────────────
+    import craft as crf
+
+    def _craft():
+        heir = crf.inherit_craft(("procedures", "counterexamples",
+                                  "authority_grant"), "heir")
+        bound = crf.capability_bound(
+            {"M0_institutional_knowledge": 0.9, "M1_builders": 0.7,
+             "M2_tooling_and_eval": 0.8}, 0.85)
+        old = crf.survival_assessment("x", True, True, True, False)
+        silent = crf.learn_from_failure("f", False, 1)
+        return (heir["stripped"] == ["authority_grant"] and
+                heir["stripped_reason"] == "E_AUTHORITY_IS_NOT_HERITABLE"
+                and bound["reason"] == "E_EXCEEDS_BUILDER_CAPABILITY"
+                and old["status"]
+                == "HISTORICALLY_ADMITTED_NOT_CURRENTLY_ADMISSIBLE"
+                and old["present_authority_minted"] is False
+                and silent["reason"] == "E_UNWITNESSED_FAILURE")
+    A(_probe("memory_transfers_craft_never_authority",
+             "the heir receives procedures and counterexamples, never "
+             "grants; the artifact is bounded by its factory; "
+             "historically admitted is not currently admissible; an "
+             "unwitnessed failure teaches nothing",
+             _craft))
+
     return P
 
 
