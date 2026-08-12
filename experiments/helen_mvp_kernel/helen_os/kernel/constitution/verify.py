@@ -402,6 +402,34 @@ def _probes():
                                         "aboard implies owned").admit()
              ["reason"] == "E_UNWITNESSED_CROSS_LAYER_JOIN"))
 
+    # ── ONE_SHIP gold falsifiers ────────────────────────────────────
+    import one_ship_gold as osg
+
+    A(_probe("name_is_not_identity",
+             "same name and a carried pass do not make one hull",
+             lambda: osg.same_entity({"id": "a"}, {"id": "b"},
+                                     "same_name+carried_pass")["reason"]
+             == "E_NAME_IS_NOT_IDENTITY"))
+
+    A(_probe("verdict_scope_does_not_propagate",
+             "condemned(ship) does not imply condemned(all cargo)",
+             lambda: osg.propagate_verdict({"hull": "CONDEMNED"}, "hull",
+                                           "all_cargo")["reason"] ==
+             "E_PARTIAL_VERDICT_SCOPE"))
+
+    A(_probe("derived_doc_is_not_new_witness",
+             "a translation shares the original's evidence root; a "
+             "differing hash never proves independence",
+             lambda: osg.independent_roots_claim(
+                 osg.Artifact("o", "h1", evidence_root_id="r"),
+                 osg.Artifact("t", "h2", derived_from="o",
+                              evidence_root_id="r"))["n_root"] == 1))
+
+    A(_probe("eight_gold_oracles_hold",
+             "the ONE_SHIP gold suite: every oracle routes to a real "
+             "enforcer and rejects",
+             lambda: osg.run_gold_suite()["all_held"] is True))
+
     return P
 
 
