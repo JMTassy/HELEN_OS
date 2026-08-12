@@ -584,6 +584,31 @@ def _probes():
              "survive its history",
              _hamilton))
 
+    # ── earned reliability: trust accumulates, never mints ──────────
+    import earned_reliability as erl
+
+    def _earned():
+        q0 = erl.trust_at("newcomer", (), 0)
+        veteran = tuple(erl.Exposure("v", i, "GATE_PASS", True)
+                        for i in range(200))
+        qv = erl.trust_at("v", veteran, 300)
+        return (q0["grade"] == "UNKNOWN" and
+                erl.declare_reputable("a")["reason"]
+                == "E_SELF_DECLARED_REPUTATION" and
+                erl.trust_from_test_pass(390, 60)
+                ["entails_longitudinal_trust"] is False and
+                erl.authority_from_trust(qv)["reason"]
+                == "E_REPUTATION_IS_NOT_AUTHORITY" and
+                erl.gate_skip_for_trusted(qv)["reason"]
+                == "E_TRUST_DOES_NOT_SKIP_THE_GATE" and
+                qv["infallible"] is False)
+    A(_probe("trust_is_earned_never_declared",
+             "Q_0 = UNKNOWN; a green suite is Q_instant, not trust; "
+             "repeated witnessed survival raises evidence and never "
+             "reaches infallibility; Trust_t(a) never mints "
+             "Authority_{t+1}(a) nor skips the gate",
+             _earned))
+
     return P
 
 
