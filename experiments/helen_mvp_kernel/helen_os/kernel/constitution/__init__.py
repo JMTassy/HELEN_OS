@@ -38,12 +38,13 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-_REPO = Path(__file__).resolve().parents[2]
-_EXPERIMENTS = _REPO / "experiments"
+_HERE = Path(__file__).resolve().parent          # helen_os/kernel/constitution
+_MVP = _HERE.parents[2]                          # experiments/helen_mvp_kernel
 
-# the ONE bootstrap. Deployment blocker retired here, not per-module.
-for _sub in ("governed_flow", "crystal_palace", "effect_gate"):
-    _p = str(_EXPERIMENTS / _sub)
+# the ONE bootstrap, now inside the CLAUDE.md-authorized surface.
+for _p in (str(_HERE),
+           str(_HERE.parents[1] / "gates" / "effect_gate"),
+           str(_MVP / "research" / "crystal_palace")):
     if _p not in sys.path:
         sys.path.insert(0, _p)
 

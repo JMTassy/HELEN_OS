@@ -12,7 +12,7 @@ import pytest
 
 _HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(_HERE))
-sys.path.insert(0, str(_HERE.parent / "effect_gate"))
+sys.path.insert(0, str(_HERE.parents[1] / "gates" / "effect_gate"))
 
 import flow_object as fo
 from effect_gate import Admission, EffectProposal, NamedLoss

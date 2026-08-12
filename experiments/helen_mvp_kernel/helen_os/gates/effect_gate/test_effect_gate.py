@@ -11,7 +11,7 @@ import pytest
 
 _HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(_HERE))
-sys.path.insert(0, str(_HERE.parent / "crystal_palace"))
+sys.path.insert(0, str(_HERE.parents[2] / "research" / "crystal_palace"))
 
 import effect_gate as eg
 from effect_gate import (

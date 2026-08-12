@@ -15,12 +15,15 @@ from pathlib import Path
 
 import pytest
 
-_REPO = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(_REPO))
-sys.path.insert(0, str(_REPO / "experiments" / "governed_flow"))
-sys.path.insert(0, str(_REPO / "experiments" / "effect_gate"))
+_HERE = Path(__file__).resolve().parent
+_MVP = _HERE.parents[2]
+for _p in (str(_MVP), str(_HERE),
+           str(_HERE.parents[1] / "gates" / "effect_gate"),
+           str(_MVP / "research" / "crystal_palace")):
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
 
-from helen_kernel.constitution import verify_constitution  # noqa: E402
+from helen_os.kernel.constitution import verify_constitution  # noqa: E402
 
 
 def test_the_constitution_holds_when_untouched():

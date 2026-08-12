@@ -13,8 +13,8 @@ import pytest
 
 _HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(_HERE))
-sys.path.insert(0, str(_HERE.parent / "effect_gate"))
-sys.path.insert(0, str(_HERE.parent / "crystal_palace"))
+sys.path.insert(0, str(_HERE.parents[1] / "gates" / "effect_gate"))
+sys.path.insert(0, str(_HERE.parents[2] / "research" / "crystal_palace"))
 
 import kernel_invariants as ki
 from kernel_invariants import (

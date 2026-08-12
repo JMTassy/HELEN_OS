@@ -71,7 +71,7 @@ import sys
 from dataclasses import dataclass, field, replace
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "effect_gate"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "gates" / "effect_gate"))
 
 from effect_gate import (  # noqa: E402  — A_E, not a copy of it
     Admission,

@@ -61,8 +61,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent /
-                       "effect_gate"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "gates" / "effect_gate"))
 
 from effect_gate import Admission  # noqa: E402
 
