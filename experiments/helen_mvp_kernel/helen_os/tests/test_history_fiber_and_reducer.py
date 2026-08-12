@@ -3,11 +3,9 @@ from pathlib import Path
 
 import pytest
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "tools"))
 
-from epistemic_reducer import Finding, reduce_findings
-from history_fiber import HistoryFiberError, Movement, replay_history, state_hash
+from helen_os.kernel.epistemic_reducer import Finding, reduce_findings
+from helen_os.kernel.history_fiber import HistoryFiberError, Movement, replay_history, state_hash
 
 
 def test_equal_visible_state_different_history_is_not_constitutionally_equivalent():
