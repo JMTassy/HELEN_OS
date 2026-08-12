@@ -14,42 +14,43 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import ingestion_laws as il
 from ingestion_laws import (
     capacity_gate,
+    decision_signature,
     effective_delta,
+    establish_axis,
     improvement_scope,
     preservation_class,
-    promote_decision,
     reconcile_modalities,
     semantic_projection,
 )
 
 
-# ── CH-01: the decision lattice ─────────────────────────────────────────
+# ── CH-01 (CORRECTED): the decision signature is partially ordered ─────
 
-def test_a_generated_summary_is_never_a_promotion_witness():
-    r = promote_decision("PROPOSED", "DISCUSSED",
-                         {"kind": "generated_summary",
-                          "source_ref": "meeting_summary_doc"})
+def test_a_generated_summary_establishes_no_axis():
+    r = establish_axis("approval", {"kind": "generated_summary",
+                                    "source_ref": "meeting_summary_doc"})
     assert r["verdict"] == "REFUSED"
     assert r["reason"] == "E_SUMMARY_IS_NOT_A_VERDICT"
 
 
-def test_promotion_is_one_rung_with_a_source_bound_witness():
-    skip = promote_decision("PROPOSED", "OPERATOR_DECIDED",
-                            {"kind": "operator_admission",
-                             "source_ref": "x"})
-    assert skip["reason"] == "E_LATTICE_SKIP"
-    unwitnessed = promote_decision("EXECUTED", "RECEIPTED",
-                                   {"kind": "vibes", "source_ref": "x"})
-    assert unwitnessed["reason"] == "E_UNWITNESSED_PROMOTION"
-    ok = promote_decision("EXECUTED", "RECEIPTED",
-                          {"kind": "payment_receipt",
-                           "source_ref": "bank:stmt:2026-08"})
-    assert ok["verdict"] == "PROMOTED"
+def test_each_axis_needs_its_own_witness_kind():
+    unwitnessed = establish_axis("receipt", {"kind": "vibes",
+                                             "source_ref": "x"})
+    assert unwitnessed["reason"] == "E_UNWITNESSED_AXIS"
+    ok = establish_axis("receipt", {"kind": "payment_receipt",
+                                    "source_ref": "bank:stmt:2026-08"})
+    assert ok["verdict"] == "ESTABLISHED"
 
 
-def test_unknown_states_are_refused_at_the_type():
-    with pytest.raises(ValueError, match="E_UNKNOWN_DECISION_STATE"):
-        promote_decision("MOOTED", "DISCUSSED", {})
+def test_unknown_axes_are_refused_at_the_type():
+    with pytest.raises(ValueError, match="E_UNKNOWN_DECISION_AXIS"):
+        establish_axis("vibes_axis", {})
+
+
+def test_the_signature_has_six_independent_axes():
+    sig = decision_signature(())["signature"]
+    assert len(sig) == 6
+    assert all(v == "UNKNOWN" for v in sig.values())
 
 
 # ── CH-03: conservative modality wins ───────────────────────────────────
