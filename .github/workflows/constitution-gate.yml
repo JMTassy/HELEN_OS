@@ -1,0 +1,67 @@
+name: CI - Constitution Gate
+
+on:
+  push:
+    paths:
+      - 'helen_kernel/constitution/**'
+      - 'experiments/governed_flow/**'
+      - 'experiments/crystal_palace/**'
+      - 'experiments/effect_gate/**'
+      - '.github/workflows/constitution-gate.yml'
+  pull_request:
+    paths:
+      - 'helen_kernel/constitution/**'
+      - 'experiments/governed_flow/**'
+      - 'experiments/crystal_palace/**'
+      - 'experiments/effect_gate/**'
+  workflow_dispatch:
+
+jobs:
+  constitution:
+    name: Constitutional algebra — falsifiers and live gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install pytest
+        run: pip install --quiet pytest
+
+      # The falsifier suites. Each directory is self-contained; run
+      # from inside it so the modules resolve as they were written.
+      - name: Falsifiers — governed_flow
+        run: cd experiments/governed_flow && python -m pytest -q
+
+      - name: Falsifiers — crystal_palace
+        run: cd experiments/crystal_palace && python -m pytest -q
+
+      - name: Falsifiers — effect_gate
+        run: cd experiments/effect_gate && python -m pytest -q
+
+      # The deployed gate: every probe must EXECUTE its refusal.
+      - name: Constitution gate (live probes)
+        run: python -m helen_kernel.constitution
+
+      # A gate that cannot fail is a rubber stamp. Break a law on
+      # purpose and require the gate to notice.
+      - name: Mutation check — the gate must detect a breach
+        run: cd helen_kernel/constitution && python -m pytest -q test_gate_is_not_a_rubber_stamp.py
+
+      - name: Emit receipt
+        if: always()
+        run: |
+          python -m helen_kernel.constitution > constitution-receipt.json || true
+          cat constitution-receipt.json
+
+      - name: Upload receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: constitution-receipt
+          path: constitution-receipt.json
+          if-no-files-found: warn
