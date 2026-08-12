@@ -379,6 +379,29 @@ def _probes():
              lambda: lv.replay_extensional_check("mem", "replay")
              ["verdict"] == "HOLD"))
 
+    # ── prize papers: contested legality after physical action ──────
+    import prize_papers as pp
+
+    A(_probe("captured_is_not_lawfully_captured",
+             "EFFECT != AUTHORIZED EFFECT — the ship is seized; the "
+             "court still decides admissibility",
+             lambda: pp.capture_legality(True)["legal_status"] ==
+             "UNADJUDICATED"))
+
+    A(_probe("judgment_does_not_rewrite_history",
+             "later judgment mutates institutional state, not the fact "
+             "of the physical capture",
+             lambda: pp.apply_judgment({"occurred": True},
+                                       {"verdict": "UNLAWFUL_CAPTURE"})
+             ["physical_capture_unchanged"] is True))
+
+    A(_probe("unwitnessed_cross_layer_join_refused",
+             "a fact in one layer never crosses into another without a "
+             "provenance witness",
+             lambda: pp.CrossLayerClaim("c", "S_phys", "S_authority",
+                                        "aboard implies owned").admit()
+             ["reason"] == "E_UNWITNESSED_CROSS_LAYER_JOIN"))
+
     return P
 
 
