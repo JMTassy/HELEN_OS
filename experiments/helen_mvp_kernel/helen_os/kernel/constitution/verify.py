@@ -694,6 +694,51 @@ def _probes():
              "ceiling",
              _metrology))
 
+    # ── the guard band: authority contracts below resolution ────────
+    import guard_band as gbd
+
+    def _guard():
+        r = _ca2.Receipt("r_g", frozenset({"root_r", "root_s"}),
+                         frozenset({"obj_a", "obj_b"}), "ADJUDICATED")
+        d = _ca2.Transition("d_g", frozenset({"root_r"}),
+                            frozenset({"obj_a"}), "OBSERVED", True)
+        sharp = gbd.calibrated_admit(d, r, u=0.2, k=2.0)
+        coarse = gbd.calibrated_admit(d, r, u=1.0, k=2.0)
+        contract = gbd.authority_contraction(0.5, 0.5, k=2.0)
+        bare = gbd.is_calibrated_result({"y": "ADMIT"})
+        return (sharp["verdict"] == "ADMIT" and
+                coarse["verdict"] == "HOLD_UNKNOWN" and
+                contract["authority_contracts"] is True and
+                contract["is_fifth_ceiling"] is False and
+                bare["reason"] == "E_UNCALIBRATED_PASS")
+    A(_probe("authority_contracts_below_resolution",
+             "identical constitutional facts, coarser instrument -> "
+             "HOLD not ADMIT; a bare PASS is an indication, not a "
+             "calibrated result; the contraction is a guard band, "
+             "never a fifth ceiling",
+             _guard))
+
+    # ── stack-up and ancestry: composition and consensus attacks ────
+    import stack_up as stk
+
+    def _stack():
+        gap = stk.canonical_stack_up()
+        attack = stk.garden_consensus_attack()
+        shared = tuple({"id": f"W{i}", "ancestors": frozenset({"S0"})}
+                       for i in range(5))
+        u = stk.propagate_uncertainty(1.0, shared)
+        return (gap["locally_certified"] is True and
+                gap["stack_up_gap"] is True and
+                attack["apparent_consensus"] == 5 and
+                attack["ancestry_classes"] == 1 and
+                u["u_tau"] == 1.0 and u["sqrt_n_earned"] is False)
+    A(_probe("consensus_is_not_independence",
+             "six locally certified stages compose past the trace "
+             "budget; five witnesses with one ancestor are one "
+             "observation; sqrt-N is earned by ancestry classes, "
+             "never by head-count",
+             _stack))
+
     return P
 
 
