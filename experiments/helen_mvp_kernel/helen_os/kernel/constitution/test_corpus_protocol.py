@@ -137,3 +137,21 @@ def test_the_crosswalk_and_the_decision_estimation_split():
 def test_deterministic():
     assert cp.canon(freeze()) == cp.canon(freeze())
     assert cp.canon(qc_thread()) == cp.canon(qc_thread())
+
+
+def test_the_1711_corpus_registers_through_the_operator_channel():
+    r = preregister("MILITARY_SEA_DICTIONARY_1711",
+                    ("operational vocabulary may encode typed "
+                     "transitions",
+                     "semantic transmission is not authority "
+                     "transmission"))
+    assert r["registered"] is True
+    assert cp.open_corpus("MILITARY_SEA_DICTIONARY_1711", r)["opened"] \
+        is True
+
+
+def test_the_operator_channel_does_not_open_the_floodgates():
+    """Operator-supplied is a named list, not a bypass."""
+    assert len(cp.OPERATOR_SUPPLIED) == 2
+    assert preregister("ANY_OLD_PDF", ("x",))["reason"] == \
+        "E_UNKNOWN_CORPUS"

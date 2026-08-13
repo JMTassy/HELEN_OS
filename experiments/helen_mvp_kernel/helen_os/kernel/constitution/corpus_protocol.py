@@ -60,7 +60,7 @@ CORPUS_ORDER = ("HAMILTON", "QUALITY_CONTROL", "BOILER", "RAIL",
 
 # corpora handed over by the operator out of sequence — the paste is
 # the grant; they still pass the same preregistration discipline
-OPERATOR_SUPPLIED = ("MESMERISM_1844",)
+OPERATOR_SUPPLIED = ("MESMERISM_1844", "MILITARY_SEA_DICTIONARY_1711")
 
 FINDING_CLASSES = ("ALREADY_REPRESENTABLE", "NEW_PARAMETERIZATION",
                    "CANDIDATE_NEW_INVARIANT", "NOT_RELEVANT")
