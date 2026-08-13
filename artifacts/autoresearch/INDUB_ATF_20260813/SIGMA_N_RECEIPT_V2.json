@@ -1,0 +1,250 @@
+{
+  "schema": "HELEN_SWARM_RECEIPT_V2",
+  "harness_version": "V2.0-relay15",
+  "harness_hash": "e23c2f8573a8c5ee",
+  "date": "2026-08-13",
+  "source_root_id": "1711_military_sea_dict_estc_T125257_relay_content",
+  "source_root_hash": "UNVERIFIED_NO_CONTENT_HASH",
+  "journal_path": "/Users/jean-marietassy/.claude/projects/-Users-jean-marietassy/eec5cb93-4b2a-4a99-9806-73e035e48e29/subagents/workflows/wf_316971f2-158/journal.jsonl",
+  "agent_order": [
+    "a92e379145bf4a8e2",
+    "abed86331540fe861",
+    "aee39a0cd5f7d6dde",
+    "adf6eb76f459951f5",
+    "a340c0282c20ebd8b"
+  ],
+  "agent_roles": {
+    "a92e379145bf4a8e2": "GRAPH_IR_COMPILER",
+    "abed86331540fe861": "EXPERIMENT_DESIGN",
+    "aee39a0cd5f7d6dde": "AUTHORITY_CONSERVATION",
+    "adf6eb76f459951f5": "WUL_PACKET_SPEC",
+    "a340c0282c20ebd8b": "CHIDDUSH_DISCRIMINATOR"
+  },
+  "n_agents": 5,
+  "agents_parsed": [
+    "a92e379145bf4a8e2",
+    "abed86331540fe861",
+    "aee39a0cd5f7d6dde",
+    "adf6eb76f459951f5",
+    "a340c0282c20ebd8b"
+  ],
+  "agents_unreadable": [],
+  "parse_yield_json": 0,
+  "truncated_agents": [
+    "abed86331540fe861",
+    "a340c0282c20ebd8b"
+  ],
+  "parse_errors": [],
+  "sigma_n": [
+    {
+      "N": 1,
+      "H_N": 21,
+      "Q_resolved": 4,
+      "U_N": 0,
+      "Q_min": 4,
+      "Q_max": 4,
+      "N_epi": 1,
+      "W_N": 0,
+      "D_N": 0,
+      "A_N": 0,
+      "EG_N": 0,
+      "eta_Q": 4,
+      "chi_E": 0.0,
+      "SY_N": 4.0,
+      "agent_id": "a92e379145bf4a8e2",
+      "role": "GRAPH_IR_COMPILER",
+      "truncated": false,
+      "parse_yield_json": 0,
+      "hyp_added": 21,
+      "status": "OK",
+      "notes": []
+    },
+    {
+      "N": 2,
+      "H_N": 56,
+      "Q_resolved": 5,
+      "U_N": 3,
+      "Q_min": 6,
+      "Q_max": 8,
+      "N_epi": 1,
+      "W_N": 0,
+      "D_N": 0,
+      "A_N": 0,
+      "EG_N": 0,
+      "eta_Q": 1,
+      "chi_E": 0.5,
+      "SY_N": 5.0,
+      "agent_id": "abed86331540fe861",
+      "role": "EXPERIMENT_DESIGN",
+      "truncated": true,
+      "parse_yield_json": 0,
+      "hyp_added": 35,
+      "status": "TRUNCATED",
+      "notes": []
+    },
+    {
+      "N": 3,
+      "H_N": 79,
+      "Q_resolved": 5,
+      "U_N": 3,
+      "Q_min": 6,
+      "Q_max": 8,
+      "N_epi": 1,
+      "W_N": 0,
+      "D_N": 0,
+      "A_N": 0,
+      "EG_N": 0,
+      "eta_Q": 0,
+      "chi_E": 0.667,
+      "SY_N": 5.0,
+      "agent_id": "aee39a0cd5f7d6dde",
+      "role": "AUTHORITY_CONSERVATION",
+      "truncated": false,
+      "parse_yield_json": 0,
+      "hyp_added": 23,
+      "status": "OK",
+      "notes": []
+    },
+    {
+      "N": 4,
+      "H_N": 92,
+      "Q_resolved": 5,
+      "U_N": 3,
+      "Q_min": 6,
+      "Q_max": 8,
+      "N_epi": 1,
+      "W_N": 0,
+      "D_N": 0,
+      "A_N": 0,
+      "EG_N": 0,
+      "eta_Q": 0,
+      "chi_E": 0.75,
+      "SY_N": 5.0,
+      "agent_id": "adf6eb76f459951f5",
+      "role": "WUL_PACKET_SPEC",
+      "truncated": false,
+      "parse_yield_json": 0,
+      "hyp_added": 13,
+      "status": "OK",
+      "notes": []
+    },
+    {
+      "N": 5,
+      "H_N": 157,
+      "Q_resolved": 5,
+      "U_N": 23,
+      "Q_min": 6,
+      "Q_max": 28,
+      "N_epi": 1,
+      "W_N": 0,
+      "D_N": 0,
+      "A_N": 0,
+      "EG_N": 0,
+      "eta_Q": 0,
+      "chi_E": 0.8,
+      "SY_N": 5.0,
+      "agent_id": "a340c0282c20ebd8b",
+      "role": "CHIDDUSH_DISCRIMINATOR",
+      "truncated": true,
+      "parse_yield_json": 0,
+      "hyp_added": 65,
+      "status": "TRUNCATED",
+      "notes": []
+    }
+  ],
+  "canary_1_duplicate": {
+    "status": "PASS",
+    "name": "duplicate\u00d710",
+    "rule": "T(x) ~_\u03c1 x \u27f9 N_epi(X \u222a {T(x)}) = N_epi(X)",
+    "H_before": 157,
+    "H_after": 157,
+    "H_added_by_dedup": 0,
+    "Q_resolved_before": 5,
+    "Q_resolved_after": 5,
+    "N_epi_preserved": true,
+    "A_preserved": true,
+    "EG_preserved": true,
+    "note": "All 10 copies fully deduplicated \u2014 H unchanged as expected"
+  },
+  "canary_2_chunk_split": {
+    "status": "PASS",
+    "name": "same_source_chunk_split (3 chunks)",
+    "rule": "T(x) ~_\u03c1 x \u27f9 N_epi(X \u222a {T(x)}) = N_epi(X)",
+    "chunks": 3,
+    "Q_resolved_before": 5,
+    "Q_resolved_after": 5,
+    "N_epi_preserved": true,
+    "A_preserved": true,
+    "EG_preserved": true,
+    "note": "chunk diversity \u2260 source independence; H/Q may differ legitimately"
+  },
+  "hard_invariant_fails": [],
+  "outcome": "OBSERVED_SATURATED",
+  "scheduler_verdict": "INSTRUMENT_UNRESOLVED: IG(SPAWN) and IG(OBSERVE) cannot be estimated from relay content alone. Requires actual 1711 PDF observations to compute expected viable-hypothesis-space contraction V_t \u2192 V_{t+1}.",
+  "max_permitted_claim": "Finite-run evidence consistent with epistemic/authority conservation.",
+  "three_questions": {
+    "N_up_Q_up": {
+      "question": "Does Q grow/saturate as N grows?",
+      "observed": [
+        {
+          "N": 1,
+          "Q_resolved": 4,
+          "Q_min": 4,
+          "Q_max": 4,
+          "eta_Q": 4
+        },
+        {
+          "N": 2,
+          "Q_resolved": 5,
+          "Q_min": 6,
+          "Q_max": 8,
+          "eta_Q": 1
+        },
+        {
+          "N": 3,
+          "Q_resolved": 5,
+          "Q_min": 6,
+          "Q_max": 8,
+          "eta_Q": 0
+        },
+        {
+          "N": 4,
+          "Q_resolved": 5,
+          "Q_min": 6,
+          "Q_max": 8,
+          "eta_Q": 0
+        },
+        {
+          "N": 5,
+          "Q_resolved": 5,
+          "Q_min": 6,
+          "Q_max": 28,
+          "eta_Q": 0
+        }
+      ]
+    },
+    "T_rho_x_N_epi_unchanged": {
+      "question": "Does T(x) ~_\u03c1 x preserve N_epi?",
+      "canary_1": "PASS",
+      "canary_2": "PASS"
+    },
+    "delta_gamma_zero": {
+      "question": "Is \u0394\u0393_A = \u0394\u0393_E = 0 \u2192 A = E_\u0393 = 0?",
+      "A_N_values": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "EG_N_values": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hard_fails": []
+    }
+  }
+}
