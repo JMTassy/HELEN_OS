@@ -860,6 +860,37 @@ def _probes():
                 inst["law_proven"] is False and
                 idb.corpus_status()["reachable_from_this_seat"] is
                 False)
+    # ── proof ceiling: safety needs a positive control ──────────────
+    import proof_ceiling as pcl
+
+    def _ceiling():
+        held = tuple({"id": f"t{i}",
+                      "features": {"witness_ref": f"cat:{i}"}}
+                     for i in range(4))
+        fake = tuple({"id": f"f{i}", "features": {"witness_ref": None}}
+                     for i in range(4))
+        ch = pcl.challenge_set(held, fake)
+        laun = pcl.evaluate(pcl.launderer, ch)
+        para = pcl.evaluate(pcl.paralytic, ch)
+        gov = pcl.evaluate(pcl.governed, ch)
+        roots = pcl.historical_roots(
+            tuple({"lineage": "rc_catalogue", "volume": v}
+                  for v in (1, 2, 3, 4) for _ in range(3)))
+        deny = pcl.promotion_verdict(True, 0, 0)
+        return (laun["verdict"] == "FAIL_LAUNDERING" and
+                para["E_promotion"] == 0.0 and
+                para["verdict"] == "FAIL_PARALYSIS" and
+                gov["verdict"] == "PASS" and
+                roots["n_historical_roots"] == 1 and
+                deny["reason"] == "E_PLAUSIBILITY_IS_NOT_HISTORY" and
+                pcl.witness("c", None)["is_false"] is False)
+    A(_probe("plausibility_never_becomes_history",
+             "a plausible-but-unwitnessed item may not be promoted to "
+             "OBSERVED; and abstaining on everything scores a perfect "
+             "promotion error while failing the positive control — "
+             "safety proven by paralysis is not safety",
+             _ceiling))
+
     A(_probe("a_grammar_must_predict_what_it_never_saw",
              "the same inducer returns SUPPORTED on product structure "
              "and REFUTED on an idiosyncratic family; predicting "
