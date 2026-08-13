@@ -848,9 +848,20 @@ def _probes():
         bad = idb.heldout_test(idio[:-3], idio[-3:])
         inst = idb.instance_is_not_theorem("string verification", True,
                                            "conservation law")
+        held2 = ({"pattern": 6, "size": 12, "state": "TINT"},)
+        tr2 = tuple(x for x in struct if x != held2[0])
+        ctrl = idb.against_controls(tr2, held2)
+        swarm = idb.swarm_scaling(32, 400, 0, 0)
+        selnp = idb.selection_is_not_promotion("K_best", 0.99)
+        adeq = idb.reconstructs_corpus_is_not_historically_used("K", True)
         space = idb.grammar_space(struct)
         sel = idb.select_unique(space, discriminating_evidence=False)
         return (good["verdict"] == "SUPPORTED" and
+                ctrl["beats_both_controls"] is True and
+                swarm["promotion_licensed"] is False and
+                swarm["authority_from_headcount"] == 0 and
+                selnp["promoted"] is False and
+                adeq["historically_used"] is None and
                 space["unique"] is False and
                 sel["reason"] == "E_NON_UNIQUE_RECONSTRUCTION" and
                 idb.completion_is_not_validation("swarm", 0)

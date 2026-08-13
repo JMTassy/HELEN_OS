@@ -105,21 +105,31 @@ def test_idiosyncratic_family_is_refuted_and_demoted():
     assert len(r["missed_heldout"]) == 3
 
 
-def test_predicting_without_compressing_returns_hold_not_grammar():
-    """A family that covers held-out by sheer enumeration plus one
-    thin rule: coverage 1.0, compression below floor -> HOLD.
-    Memorization must not be laundered into a grammar claim."""
-    rule_part = [_spec(6, s, st) for s in (6, 12) for st in
-                 ("OPEN", "TINT")]
-    noise = [_spec(200 + i, 6, "OPEN") for i in range(3)]
-    train = tuple(rule_part + noise)
+def test_predicting_without_beating_the_baseline_returns_hold():
+    """A rule that predicts the held-out item but OVER-GENERATES so
+    heavily it costs more than listing the observations. Coverage 1.0,
+    MDL lost -> HOLD. Memorization must not be laundered into a
+    grammar claim, and neither must speculation."""
+    train = (_spec(6, 6, "OPEN"), _spec(6, 6, "TINT"),
+             _spec(6, 12, "OPEN"), _spec(6, 18, "OPEN"),
+             _spec(6, 24, "OPEN"))
     heldout = (_spec(6, 12, "TINT"),)
-    r = heldout_test(tuple(x for x in train if x != heldout[0]),
-                     heldout)
+    r = heldout_test(train, heldout)
     assert r["heldout_coverage"] == 1.0
-    assert r["compresses"] is False
+    assert r["mdl"]["beats_memorization"] is False
+    assert r["mdl"]["over_generated"] == 3
     assert r["verdict"] == "HOLD"
-    assert "memorization" in r["law"]
+
+
+def test_memorization_can_never_beat_the_baseline():
+    """The complexity penalty, doing its job: a pure literal grammar
+    ties the baseline and a tie is not a win."""
+    fit = indub(_idiosyncratic())
+    mdl = ib.description_length(fit["K_hat"],
+                                {(s["pattern"], s["size"], s["state"])
+                                 for s in _idiosyncratic()})
+    assert mdl["total"] == mdl["baseline_memorization"]
+    assert mdl["beats_memorization"] is False
 
 
 def test_empty_heldout_is_refused():
@@ -219,3 +229,92 @@ def test_exit_code_zero_validates_nothing():
 def test_no_specimens_refused_in_the_space_too():
     with pytest.raises(ValueError, match="E_NO_SPECIMENS"):
         ib.grammar_space(())
+
+
+# ── observational equivalence, controls, discrimination, swarm laws ────
+
+def test_the_learned_object_is_an_equivalence_class():
+    obs = {(s["pattern"], s["size"], s["state"])
+           for s in _structured()}
+    per_pattern = indub(_structured())["K_hat"]
+    literal = {"rules": [], "literals": sorted(obs)}
+    v = ib.observationally_equivalent(per_pattern, literal, obs)
+    assert v["equivalent_on_O"] is True
+    assert "equivalence class" in v["learned_object"]
+
+
+def test_grammars_differing_outside_the_corpus_are_indistinguishable():
+    obs = {(6, 6, "OPEN")}
+    k1 = {"rules": [], "literals": [(6, 6, "OPEN")]}
+    k2 = {"rules": [], "literals": [(6, 6, "OPEN"), (99, 99, "TINT")]}
+    v = ib.observationally_equivalent(k1, k2, obs)
+    assert v["equivalent_on_O"] is True
+    assert v["differences_outside_O"] == 1
+
+
+def test_reconstructing_the_corpus_is_not_historical_identity():
+    v = ib.reconstructs_corpus_is_not_historically_used("K_hat", True)
+    assert v["reconstructs_corpus"] is True
+    assert v["historically_used"] is None
+    assert v["licensed"] == "observational adequacy"
+    assert v["reason"] == "E_ADEQUACY_IS_NOT_IDENTITY"
+
+
+def test_the_induced_grammar_must_beat_both_negative_controls():
+    full = _structured()
+    heldout = (_spec(6, 12, "TINT"),)
+    train = tuple(x for x in full if x != heldout[0])
+    v = ib.against_controls(train, heldout)
+    assert v["P_memorizer"] == 0.0        # memorizer predicts nothing
+    assert v["P_induced"] == 1.0
+    assert v["beats_both_controls"] is True
+    assert v["verdict"] == "GRAMMAR_HAS_UTILITY"
+
+
+def test_no_utility_when_the_controls_are_not_beaten():
+    """Idiosyncratic family: the inducer predicts nothing the
+    memorizer doesn't, so no utility is demonstrated."""
+    full = _idiosyncratic()
+    v = ib.against_controls(full[:-3], full[-3:])
+    assert v["P_induced"] == 0.0
+    assert v["beats_both_controls"] is False
+    assert v["verdict"] == "NO_UTILITY_DEMONSTRATED"
+
+
+def test_discriminate_designs_the_deciding_experiment():
+    k1 = {"rules": [{"rule_id": "a", "pattern": 6,
+                     "sizes": [6, 12], "states": ["OPEN", "TINT"],
+                     "form": "PRODUCT"}], "literals": []}
+    k2 = {"rules": [], "literals": [(6, 6, "OPEN"), (6, 6, "TINT"),
+                                    (6, 12, "OPEN")]}
+    v = ib.discriminate(k1, k2)
+    assert v["verdict"] == "EXPERIMENT_DESIGNED"
+    assert v["discriminating_observation"] == (6, 12, "TINT")
+    assert v["predicted_by"] == "K1"
+
+
+def test_identical_grammars_admit_no_experiment():
+    k = {"rules": [], "literals": [(6, 6, "OPEN")]}
+    v = ib.discriminate(k, dict(k))
+    assert v["verdict"] == "OBSERVATIONALLY_IDENTICAL"
+    assert v["discriminating_observation"] is None
+
+
+def test_agent_count_licenses_no_promotion():
+    many = ib.swarm_scaling(32, hypotheses=400,
+                            new_independent_witnesses=0,
+                            new_valid_derivations=0)
+    one = ib.swarm_scaling(1, hypotheses=3,
+                           new_independent_witnesses=1,
+                           new_valid_derivations=0)
+    assert many["proposal_capacity"] > one["proposal_capacity"]
+    assert many["promotion_licensed"] is False      # 32 agents, nothing
+    assert one["promotion_licensed"] is True        # 1 agent, a witness
+    assert many["authority_from_headcount"] == 0
+
+
+def test_winning_the_benchmark_leaves_the_claim_a_claim():
+    v = ib.selection_is_not_promotion("K_best", 0.99)
+    assert v["epistemic_phase"] == "claim"
+    assert v["promoted"] is False
+    assert v["reason"] == "E_SELECTION_IS_NOT_PROMOTION"
