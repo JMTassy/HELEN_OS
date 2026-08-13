@@ -155,3 +155,37 @@ def test_the_operator_channel_does_not_open_the_floodgates():
     assert len(cp.OPERATOR_SUPPLIED) == 2
     assert preregister("ANY_OLD_PDF", ("x",))["reason"] == \
         "E_UNKNOWN_CORPUS"
+
+
+# ── the scan pipeline: discrimination, not accumulation ────────────────
+
+def test_a_corpus_that_separates_nothing_earns_no_swarm():
+    v = cp.information_gain_gate("BAILEY_1730", expected_ig=0.01,
+                                 epsilon=0.1, sampled=True)
+    assert v["deep_extraction"] is False
+    assert v["verdict"] == "STOP"
+
+
+def test_deep_extraction_before_the_structural_sample_is_refused():
+    v = cp.information_gain_gate("X", 9.9, 0.1, sampled=False)
+    assert v["reason"] == "E_SAMPLE_BEFORE_EXTRACTION"
+
+
+def test_a_discriminating_corpus_earns_extraction():
+    v = cp.information_gain_gate("NAVAL_SIGNAL_BOOKS", 0.8, 0.1, True)
+    assert v["verdict"] == "EXTRACT"
+
+
+def test_fifteen_corpora_through_one_coder_is_one_measurement():
+    """The Mesmerism mechanism-common-mode finding, applied to the
+    5x3 matrix."""
+    single = cp.coder_common_mode(15, n_coders=1, blind=False)
+    assert single["N_effective_on_measurement"] == 1
+    assert single["cross_cell_comparison_licensed"] is False
+    assert single["reason"] == "E_CODER_COMMON_MODE"
+
+
+def test_two_blind_coders_license_cross_cell_comparison():
+    v = cp.coder_common_mode(15, n_coders=2, blind=True)
+    assert v["cross_cell_comparison_licensed"] is True
+    assert v["reason"] is None

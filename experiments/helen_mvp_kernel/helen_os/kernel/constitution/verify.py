@@ -906,6 +906,33 @@ def _probes():
                 roots["n_historical_roots"] == 1 and
                 deny["reason"] == "E_PLAUSIBILITY_IS_NOT_HISTORY" and
                 pcl.witness("c", None)["is_false"] is False)
+    # ── Sigma_N: the table refuses projections ──────────────────────
+    import scaling_harness as shs
+
+    def _harness():
+        proj = tuple(shs.row(N=n, H=h, Q=q, N_epi=1, W=1,
+                             D_proposed=1, D_valid=0, A=0, E_gamma=0,
+                             grade=shs.PROJECTED)
+                     for n, h, q in ((1, 3, 3), (2, 8, 5)))
+        meas = tuple(shs.row(N=n, H=h, Q=q, N_epi=1, W=1,
+                             D_proposed=1, D_valid=0, A=a, E_gamma=0,
+                             grade=shs.MEASURED)
+                     for n, h, q, a in ((1, 3, 3, 0), (2, 8, 5, 1)))
+        yld = shs.parse_yield_gate(0, 1)
+        chunk = shs.canary_chunking("sha:x", "sha:x")
+        return (shs.ingest(proj)["reason"] == "E_PROJECTED_ROW" and
+                shs.check_invariant(meas)["verdict"] ==
+                "FAIL_AUTHORITY_INFLATION" and
+                yld["readable"] is False and
+                chunk["new_root_minted"] is False and
+                shs.root_redundancy(5, 1)["is_waste"] is None)
+    A(_probe("a_projection_is_not_a_measurement",
+             "a table of projected values may not enter Sigma_N; "
+             "authority rising without a witness or a VALID "
+             "derivation is inflation; an unparsed worker is a defect "
+             "not a zero",
+             _harness))
+
     A(_probe("plausibility_never_becomes_history",
              "a plausible-but-unwitnessed item may not be promoted to "
              "OBSERVED; and abstaining on everything scores a perfect "

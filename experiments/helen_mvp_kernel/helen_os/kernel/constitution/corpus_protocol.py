@@ -156,6 +156,48 @@ def value_of(finding: str, **flags) -> dict:
                    "not the architecture"}
 
 
+def information_gain_gate(corpus: str, expected_ig: float,
+                         epsilon: float, sampled: bool) -> dict:
+    """The scan pipeline's gate: SOURCE FREEZE -> STRUCTURAL SAMPLE ->
+    DISCRIMINATE -> {deep extraction if IG > eps, STOP otherwise}.
+
+    Scanning old data to maximize DISCRIMINATION, not accumulation. A
+    corpus does not earn a swarm by existing; it earns one by being
+    expected to separate surviving hypotheses. Deep extraction before
+    the structural sample is refused — that is accumulation wearing a
+    protocol."""
+    if not sampled:
+        return {"corpus": corpus, "deep_extraction": False,
+                "reason": "E_SAMPLE_BEFORE_EXTRACTION",
+                "law": "structural sample precedes deep extraction"}
+    if expected_ig <= epsilon:
+        return {"corpus": corpus, "deep_extraction": False,
+                "verdict": "STOP", "expected_IG": expected_ig,
+                "epsilon": epsilon,
+                "law": "a corpus that separates nothing earns no "
+                       "swarm"}
+    return {"corpus": corpus, "deep_extraction": True,
+            "verdict": "EXTRACT", "expected_IG": expected_ig}
+
+
+def coder_common_mode(n_corpora: int, n_coders: int,
+                      blind: bool) -> dict:
+    """The Mesmerism finding applied to the corpus matrix: N corpora
+    coded by ONE instrument share a common mode. Distinct sources do
+    not buy independence when the measuring apparatus is single —
+    N_effective on the measurement is the number of independent
+    CODERS, not the number of corpora."""
+    effective = n_coders if blind else 1
+    return {"n_corpora": n_corpora, "n_coders": n_coders,
+            "blind": blind,
+            "N_effective_on_measurement": effective,
+            "cross_cell_comparison_licensed": blind and n_coders >= 2,
+            "reason": None if (blind and n_coders >= 2)
+                      else "E_CODER_COMMON_MODE",
+            "law": "fifteen corpora through one unblinded coder is "
+                   "one measurement repeated fifteen times"}
+
+
 def qc_thread() -> dict:
     """Hamilton -> quality control, one continuous thread; and the
     NIST-framed distinction the gate already lives by."""
