@@ -813,7 +813,15 @@ def _probes():
         conf = wax.token("restricted")
         dis = wax.axes_are_disjoint()
         res = wax.resolves_the_four_collisions()
-        return (froz["reason"] == "E_COLOR_AXIS_FROZEN" and
+        a = wax.sigma(E="observed", A="open", D="active", U="granted",
+                      R="replayable")
+        b = wax.sigma(E="observed", A="restricted", D="active",
+                      U="denied", R="replayable")
+        lossy = wax.same_colour_same_state(a, b)
+        return (lossy["same_colour"] is True and
+                lossy["same_state"] is False and
+                wax.chi(a)["reads_projection"] == "E" and
+                froz["reason"] == "E_COLOR_AXIS_FROZEN" and
                 conf["reason"] == "E_AXIS_CONFUSION" and
                 dis["future_collision_possible"] is False and
                 res["atlas_entries_changed"] == 0 and
@@ -840,7 +848,13 @@ def _probes():
         bad = idb.heldout_test(idio[:-3], idio[-3:])
         inst = idb.instance_is_not_theorem("string verification", True,
                                            "conservation law")
+        space = idb.grammar_space(struct)
+        sel = idb.select_unique(space, discriminating_evidence=False)
         return (good["verdict"] == "SUPPORTED" and
+                space["unique"] is False and
+                sel["reason"] == "E_NON_UNIQUE_RECONSTRUCTION" and
+                idb.completion_is_not_validation("swarm", 0)
+                ["grammar_validated"] is False and
                 bad["verdict"] == "REFUTED" and
                 bad["demoted_to"] == "DESCRIPTIVE_TAXONOMY" and
                 inst["law_proven"] is False and

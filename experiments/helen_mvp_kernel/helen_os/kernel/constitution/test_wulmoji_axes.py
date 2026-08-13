@@ -110,3 +110,56 @@ def test_every_rehomed_meaning_exists_on_the_marker_axis():
 
 def test_deterministic():
     assert wa.canon(axes_are_disjoint()) == wa.canon(axes_are_disjoint())
+
+
+# ── sigma as a product type; chi projects E alone ──────────────────────
+
+def _sig(**o):
+    d = dict(E="observed", A="open", D="active", U="granted",
+             R="replayable")
+    d.update(o)
+    return wa.sigma(**d)
+
+
+def test_sigma_needs_all_five_projections():
+    v = wa.sigma(E="observed", A="open")
+    assert v["ok"] is False and v["reason"] == "E_INCOMPLETE_SIGMA"
+    assert set(v["missing"]) == {"D", "U", "R"}
+
+
+def test_a_projection_may_not_borrow_another_domain():
+    v = _sig(A="hold")            # hold is a disposition, not access
+    assert v["reason"] == "E_PROJECTION_DOMAIN_VIOLATION"
+
+
+def test_chi_reads_only_the_epistemic_projection():
+    c = wa.chi(_sig(E="admitted"))
+    assert c["colour"] == "green"
+    assert c["reads_projection"] == "E"
+    assert set(c["ignores"]) == {"A", "D", "U", "R"}
+
+
+def test_same_colour_never_entails_same_state():
+    """The falsifier the collision was hiding."""
+    a = _sig(E="observed", A="open", U="granted")
+    b = _sig(E="observed", A="restricted", U="denied")
+    v = wa.same_colour_same_state(a, b)
+    assert v["same_colour"] is True
+    assert v["same_state"] is False
+    assert v["differing_projections"] == ["A", "U"]
+    assert v["colour_entails_state"] is False
+
+
+def test_each_marker_declares_its_projection():
+    assert wa.marker_projection("restricted")["projection"] == "A"
+    assert wa.marker_projection("hold")["projection"] == "D"
+    assert wa.marker_projection("authority_denied")["projection"] == "U"
+    assert wa.marker_projection("nope")["reason"] == "E_UNKNOWN_MARKER"
+
+
+def test_conformance_restoration_is_not_a_constitutional_change():
+    v = wa.conformance_restoration_is_not_amendment(
+        "one colour => one epistemic meaning", was_violated=True)
+    assert v["action"] == "CONFORMANCE_RESTORATION"
+    assert v["is_constitutional_change"] is False
+    assert v["requires_amendment_door"] is False

@@ -74,6 +74,36 @@ STATE_MARKERS = {
     "admission_boundary": "the gate itself",
 }
 
+# ── the type signature: sigma is a PRODUCT, not a flat bag ─────────────
+#
+#     sigma(x) = (E_x, A_x, D_x, U_x, R_x)
+#     chi(x)   = pi_E(sigma(x))          <- colour projects E ALONE
+#
+# The colour collision was a type-system bug: several independent
+# dimensions were being squeezed into one scalar. Naming the
+# projections is what makes 'restricted', 'hold' and 'denied'
+# attributes rather than rival colour meanings.
+
+SIGMA_PROJECTIONS = ("E", "A", "D", "U", "R")
+
+PROJECTION_DOMAINS = {
+    "E": tuple(sorted(set(EPISTEMIC_PHASE.values()))),   # epistemic
+    "A": ("open", "restricted"),                          # access/scope
+    "D": ("active", "hold", "void"),                      # disposition
+    "U": ("granted", "denied"),                           # authority
+    "R": ("replayable", "not_replayable", "unknown"),     # replay
+}
+
+# which projection each axis-2 marker actually lives on
+MARKER_PROJECTION = {
+    "void": "D",
+    "restricted": "A",
+    "hold": "D",
+    "candidate": "E",              # a phase-adjacent qualifier
+    "authority_denied": "U",
+    "admission_boundary": "U",
+}
+
 
 def canon(obj) -> str:
     return json.dumps(obj, sort_keys=True, separators=(",", ":"), default=str)
@@ -137,6 +167,81 @@ def axes_are_disjoint() -> dict:
             "law": "a new concept can only enter the marker axis; two "
                    "axes with disjoint symbols and values cannot "
                    "collide"}
+
+
+def sigma(**projections) -> dict:
+    """Build sigma(x) = (E, A, D, U, R). Every projection must carry a
+    value from its own domain; borrowing across projections is the
+    original type error and refuses."""
+    missing = [p for p in SIGMA_PROJECTIONS if p not in projections]
+    if missing:
+        return {"ok": False, "reason": "E_INCOMPLETE_SIGMA",
+                "missing": missing}
+    bad = {p: v for p, v in projections.items()
+           if p in PROJECTION_DOMAINS and
+           v not in PROJECTION_DOMAINS[p]}
+    if bad:
+        return {"ok": False, "reason": "E_PROJECTION_DOMAIN_VIOLATION",
+                "detail": bad}
+    return {"ok": True,
+            "sigma": {p: projections[p] for p in SIGMA_PROJECTIONS}}
+
+
+def chi(sig: dict) -> dict:
+    """chi(x) = pi_E(sigma(x)). Colour reads the epistemic projection
+    and NOTHING else — that is the whole content of the ruling."""
+    if not sig.get("ok"):
+        return {"ok": False, "reason": "E_NO_SIGMA"}
+    e = sig["sigma"]["E"]
+    colour = next((c for c, phase in EPISTEMIC_PHASE.items()
+                   if phase == e), None)
+    return {"ok": True, "colour": colour, "reads_projection": "E",
+            "ignores": tuple(p for p in SIGMA_PROJECTIONS if p != "E"),
+            "law": "colour is a projection, not the state; same "
+                   "colour never entails same state"}
+
+
+def same_colour_same_state(sig_a: dict, sig_b: dict) -> dict:
+    """The falsifier the collision was hiding: two objects may share a
+    colour and differ on access, disposition, authority or replay."""
+    ca, cb = chi(sig_a), chi(sig_b)
+    same_colour = ca.get("colour") == cb.get("colour")
+    differing = sorted(p for p in SIGMA_PROJECTIONS
+                       if sig_a["sigma"][p] != sig_b["sigma"][p])
+    return {"same_colour": same_colour,
+            "differing_projections": differing,
+            "same_state": not differing,
+            "colour_entails_state": False,
+            "law": "chi is lossy by design; RESTRICTED, HOLD and "
+                   "DENY are attributes on other projections, never "
+                   "rival colour meanings"}
+
+
+def marker_projection(marker: str) -> dict:
+    """Where an axis-2 marker actually lives in sigma."""
+    if marker not in MARKER_PROJECTION:
+        return {"ok": False, "reason": "E_UNKNOWN_MARKER"}
+    return {"ok": True, "marker": marker,
+            "projection": MARKER_PROJECTION[marker],
+            "is_epistemic": MARKER_PROJECTION[marker] == "E"}
+
+
+def conformance_restoration_is_not_amendment(rule: str,
+                                             was_violated: bool) -> dict:
+    """A governance distinction the run surfaced: the shell had
+    VIOLATED a standing rule and restored conformity. Restoring
+    conformity to an existing rule is not a constitutional change and
+    needs no amendment door — while an amendment to the rule itself
+    always does. Collapsing the two either freezes ordinary repair or
+    smuggles amendments through as 'fixes'."""
+    return {"rule": rule,
+            "was_violated": was_violated,
+            "action": "CONFORMANCE_RESTORATION" if was_violated
+                      else "NO_ACTION_NEEDED",
+            "is_constitutional_change": False,
+            "requires_amendment_door": False,
+            "law": "conformance restoration is not constitutional "
+                   "change; amending the rule itself always is"}
 
 
 def resolves_the_four_collisions() -> dict:

@@ -163,3 +163,59 @@ def test_1851_is_validation_not_expansion():
 def test_deterministic():
     assert ib.canon(indub(_structured())) == \
         ib.canon(indub(_structured()))
+
+
+# ── the uniqueness defect, fixed: G(p) is a SPACE ──────────────────────
+
+def test_inverse_reconstruction_is_non_unique():
+    """The defect this module shipped with: one K_hat presented as
+    the historical process. Several grammars generate the same
+    specimens."""
+    sp = ib.grammar_space(_structured())
+    assert sp["n_consistent"] > 1
+    assert sp["unique"] is False
+    assert set(sp["consistent_with_observation"]) >= {
+        "LITERAL", "PER_PATTERN"}
+
+
+def test_over_generation_is_reported_never_hidden():
+    """How much history each grammar would invent."""
+    g = {c["grammar_id"]: c for c in
+         ib.grammar_space(_structured())["G_of_p"]}
+    assert g["LITERAL"]["over_generation"] == 0
+    assert g["LITERAL"]["compression"] == 0.0
+    assert g["GLOBAL_PRODUCT"]["compression"] > g["PER_PATTERN"][
+        "compression"]
+
+
+def test_collapsing_the_space_without_evidence_is_refused():
+    sp = ib.grammar_space(_structured())
+    v = ib.select_unique(sp, discriminating_evidence=False)
+    assert v["verdict"] == "UNDERDETERMINED"
+    assert v["reason"] == "E_NON_UNIQUE_RECONSTRUCTION"
+    assert v["selected"] is None
+    assert len(v["survivors"]) > 1
+
+
+def test_discriminating_evidence_licenses_a_selection():
+    sp = ib.grammar_space(_structured())
+    assert ib.select_unique(sp, True)["verdict"] == "DETERMINED"
+
+
+def test_reconstructible_is_not_historically_used():
+    v = ib.reconstructible_is_not_used("border_6_12_TINT", True)
+    assert v["reconstructible"] is True
+    assert v["historically_used"] is None      # not False — unknown
+    assert v["reason"] == "E_RECONSTRUCTION_IS_NOT_HISTORY"
+
+
+def test_exit_code_zero_validates_nothing():
+    v = ib.completion_is_not_validation("20-epoch swarm", 0)
+    assert v["completed"] is True
+    assert v["grammar_validated"] is False
+    assert v["reason"] == "E_COMPLETION_IS_NOT_VALIDATION"
+
+
+def test_no_specimens_refused_in_the_space_too():
+    with pytest.raises(ValueError, match="E_NO_SPECIMENS"):
+        ib.grammar_space(())
