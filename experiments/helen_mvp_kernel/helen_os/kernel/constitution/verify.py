@@ -763,7 +763,7 @@ def _probes():
             for p, c in elt.ILLEGAL_INFERENCES)
         sig = elt.absence_signal("x", "OBSERVED")
         sim = elt.similarity_claim(True)
-        return (refusals and len(elt.ILLEGAL_INFERENCES) == 5 and
+        return (refusals and len(elt.ILLEGAL_INFERENCES) == 6 and
                 sig["verdict"] == "RESEARCH_SIGNAL" and
                 sig["is_evidence_of_rejection"] is False and
                 sim["reason"] == "E_GLYPH_TRAP")
@@ -773,6 +773,26 @@ def _probes():
              "inferences refuse by name; absence is a research "
              "signal, never a rejection verdict",
              _lattice))
+
+    # ── the production membrane: three executable checks ───────────
+    import membrane as mbr
+
+    def _membrane():
+        v = mbr.membrane_holds()
+        launder = mbr.promotion_gate("briefing", "REPORTED", "PROVEN",
+                                     False, False)
+        bypass = mbr.congruence_judgment("indirect_chain_delete", None)
+        leak = mbr.cognition_attempt("draft", None, "s", "s", True)
+        return (v["membrane_holds"] is True and
+                v["canon"] is False and
+                launder["reason"] == "E_UNLICENSED_PROMOTION" and
+                bypass["reason"] == "E_UNCAPABLE_DESTRUCTION" and
+                leak["reason"] == "E_READ_LEAK_TO_SINK")
+    A(_probe("cognition_never_crosses_the_membrane",
+             "A_K reads/proposes only (and within data scope); every "
+             "spelling of destruction meets one judgment; a grade "
+             "rise unpaid by witness or derivation is laundering",
+             _membrane))
 
     A(_probe("sincere_witnesses_do_not_sum_to_proof",
              "the 1844 negative control: eminent, sincere, numerous "

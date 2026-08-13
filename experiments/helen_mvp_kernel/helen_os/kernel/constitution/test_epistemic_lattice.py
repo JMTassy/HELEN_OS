@@ -40,12 +40,17 @@ def test_an_estimate_violation_is_named_not_absorbed():
     assert v["violations"] == ["PRODUCED not within GENERABLE"]
 
 
-def test_all_five_illegal_inferences_refuse_by_name():
+def test_all_illegal_inferences_refuse_by_name():
+    """Five original forms + the ATF form (catalogued primitive ->
+    historically used, the American Type Founders reading of
+    generable -> produced)."""
     for premise, conclusion in el.ILLEGAL_INFERENCES:
         v = infer(premise, conclusion)
         assert v["licensed"] is False
         assert v["reason"] == "E_ILLEGAL_ABSENCE_INFERENCE"
-    assert len(el.ILLEGAL_INFERENCES) == 5
+    assert len(el.ILLEGAL_INFERENCES) == 6
+    assert ("catalogued_primitive", "historically_used") in \
+        el.ILLEGAL_INFERENCES
 
 
 def test_an_unnamed_inference_is_left_to_its_own_evidence():

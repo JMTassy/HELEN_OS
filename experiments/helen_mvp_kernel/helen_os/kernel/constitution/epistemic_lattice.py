@@ -2,8 +2,23 @@ r"""Epistemic Lattice — Generable > Produced > Survived > Observed.
 
 NON_SOVEREIGN · authority=false · canon=false · ledger_effect=none.
 
-The HAL ruling on the ATF/design-memory lane, encoded as the smallest
-diff with the largest epistemic return. The old law (Generable is not
+The HAL ruling on the design-memory lane, encoded as the smallest
+diff with the largest epistemic return.
+
+Corpus identity, corrected by the operator: ATF = AMERICAN TYPE
+FOUNDERS (the 1900 Desk Book of Type Specimens, Borders, Ornaments,
+Brass Rules and Cuts) — a printing-specimen / machinery / supplies
+catalogue, NOT the Bureau of Alcohol, Tobacco, Firearms and
+Explosives. It is therefore a PROOF + possibility-space corpus, not
+an AUTHORITY/jurisdiction corpus. Its falsifier is the illegal
+promotion of catalogued availability into historical fact:
+
+    CataloguedPrimitive(g)  does not entail  HistoricallyUsed(g)
+
+which is exactly the Generable -> Produced arrow below (a catalogued
+type is GENERABLE/available; a used type is PRODUCED). The right
+question the corpus poses: can a system reconstruct a possibility
+space without laundering possibility into historical fact? The old law (Generable is not
 HistoricallyObserved, possibility_space.py) collapses three distinct
 losses into one. The corrected chain:
 
@@ -72,6 +87,8 @@ ILLEGAL_INFERENCES = (
     ("not_produced", "not_generable"),
     ("generable", "produced"),
     ("visual_similarity", "shared_generator"),
+    ("catalogued_primitive", "historically_used"),  # ATF: same as
+                                                     # generable->produced
 )
 
 
