@@ -794,6 +794,23 @@ def _probes():
              "rise unpaid by witness or derivation is laundering",
              _membrane))
 
+    # ── style lock: form rich, claims sober ─────────────────────────
+    import style_lock as stl
+
+    def _style():
+        bare = stl.stamp("SEALED", None)
+        color_only = stl.render_state(None, None, "black")
+        res = stl.collision_resolution()
+        return (bare["reason"] == "E_DECORATIVE_STATUS" and
+                color_only["reason"] == "E_STATE_BY_COLOR_ALONE" and
+                res["ruled_by"] == "OPERATOR_ONLY" and
+                res["silent_supersede"] is False)
+    A(_probe("beautiful_seal_is_not_admission",
+             "a status word without its witness refuses; no state is "
+             "encoded by color alone; the color-grammar amendment is "
+             "the operator's to admit, never a silent supersede",
+             _style))
+
     A(_probe("sincere_witnesses_do_not_sum_to_proof",
              "the 1844 negative control: eminent, sincere, numerous "
              "witnesses and a false central claim — refused on the "
