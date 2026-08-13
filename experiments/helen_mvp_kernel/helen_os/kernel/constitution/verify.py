@@ -926,6 +926,33 @@ def _probes():
                 yld["readable"] is False and
                 chunk["new_root_minted"] is False and
                 shs.root_redundancy(5, 1)["is_waste"] is None)
+    # ── HELEN_GRAPH_IR_V0: three static checks + the fourth ─────────
+    import graph_ir as gir
+
+    def _ir():
+        statics = all(
+            gir.static_check(p, c)["licensed"] is False
+            for p, c in gir.STATIC_CHECKS)
+        no_auth = gir.edge("a", "b", "DATA", dA=1, witness="w")
+        unwit = gir.edge("a", "b", "DERIVATION", dP=1)
+        same = tuple(gir.edge(f"w{i}", "m", "DATA", root="ONE")
+                     for i in range(4))
+        gap = gir.globally_admissible(same, merge_root_count=4)
+        honest = gir.globally_admissible(same, merge_root_count=1)
+        return (statics and len(gir.STATIC_CHECKS) == 3 and
+                no_auth["reason"] == "E_DATA_EDGE_CARRIES_AUTHORITY"
+                and unwit["reason"] == "E_UNWITNESSED_PROMOTION" and
+                gap["all_locally_admissible"] is True and
+                gap["globally_admissible"] is False and
+                gap["gap_detected"] is True and
+                honest["globally_admissible"] is True)
+    A(_probe("locally_admissible_is_not_globally_admissible",
+             "the edge is non-promotional by default and DATA never "
+             "carries authority; and four lawful edges over ONE root "
+             "with a merge reporting four is caught — the dynamic "
+             "check that makes a typed institutional runtime",
+             _ir))
+
     A(_probe("a_projection_is_not_a_measurement",
              "a table of projected values may not enter Sigma_N; "
              "authority rising without a witness or a VALID "
