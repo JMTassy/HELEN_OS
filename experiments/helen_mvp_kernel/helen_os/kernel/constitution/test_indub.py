@@ -260,14 +260,42 @@ def test_reconstructing_the_corpus_is_not_historical_identity():
     assert v["reason"] == "E_ADEQUACY_IS_NOT_IDENTITY"
 
 
-def test_the_induced_grammar_must_beat_both_negative_controls():
+def _asymmetric():
+    """Patterns with DIFFERENT size ranges — so permuting the relations
+    across patterns actually destroys prediction."""
+    return (tuple(_spec(6, s, st) for s in (6, 12)
+                  for st in ("OPEN", "TINT")) +
+            tuple(_spec(9, s, st) for s in (18, 24)
+                  for st in ("OPEN", "TINT")))
+
+
+def test_a_symmetric_family_demonstrates_no_utility():
+    """The finding K_matched produced on its very first run: on a
+    fully symmetric product family, permuting the relations changes
+    NOTHING, so K_matched ties the induced grammar at 1.0. The earlier
+    'utility' result was an artifact of weak nulls — K_mem and
+    K_random were simply too stupid to be informative."""
     full = _structured()
     heldout = (_spec(6, 12, "TINT"),)
     train = tuple(x for x in full if x != heldout[0])
     v = ib.against_controls(train, heldout)
-    assert v["P_memorizer"] == 0.0        # memorizer predicts nothing
     assert v["P_induced"] == 1.0
-    assert v["beats_both_controls"] is True
+    assert v["P_memorizer"] == 0.0 and v["P_random"] == 0.0
+    assert v["P_matched"] == 1.0            # the null that can hurt
+    assert v["verdict"] == "NO_UTILITY_DEMONSTRATED"
+
+
+def test_real_utility_requires_beating_the_matched_control():
+    """Asymmetric structure: here the per-pattern relations carry
+    information, permuting them breaks prediction, and the induced
+    grammar earns its verdict."""
+    full = _asymmetric()
+    heldout = (_spec(6, 12, "TINT"),)
+    train = tuple(x for x in full if x != heldout[0])
+    v = ib.against_controls(train, heldout)
+    assert v["P_induced"] == 1.0
+    assert v["P_matched"] == 0.0
+    assert v["beats_all_three"] is True
     assert v["verdict"] == "GRAMMAR_HAS_UTILITY"
 
 
@@ -386,3 +414,98 @@ def test_the_heldout_regime_distinguishes_two_experiments():
     assert extrap["heldout_regime"] == "EXTRAPOLATION"
     assert extrap["verdict"] == "REFUTED"
     assert "different experiment" in extrap["regime_note"]
+
+
+# ── the scaling law is conditional; the research state is the object ───
+
+def test_the_scaling_law_is_conditional_not_absolute():
+    """Correction of an overclaim: dA/dN = 0 holds only at fixed
+    provenance and evidence. Independent experiments DO raise E."""
+    idle = ib.swarm_scaling(32, 400, 0, 0)
+    productive = ib.swarm_scaling(32, 400, new_independent_witnesses=5,
+                                  new_valid_derivations=0)
+    assert idle["promotion_licensed"] is False
+    assert productive["promotion_licensed"] is True     # N helped
+    assert productive["authority_from_headcount"] == 0  # but not directly
+
+
+def test_repeated_roots_do_not_count_however_many_agents():
+    v = ib.swarm_scaling(32, 400, new_independent_witnesses=32,
+                         new_valid_derivations=0,
+                         roots_genuinely_independent=False)
+    assert v["claimed_evidence_delta"] == 32
+    assert v["counted_evidence_delta"] == 0
+    assert v["promotion_licensed"] is False
+
+
+def test_the_collapse_hierarchy_on_the_reported_swarm_figures():
+    """Operator-reported terminal signal, grade REPORTED: 32 agents,
+    43 hypotheses, 1 independent root. Two findings at once.
+
+    (a) The proposed chain began N_agents >> N_hypotheses. These
+        figures FALSIFY that link — 43 > 32 — and rightly so: agents
+        are generators, so amplification at that step is health.
+    (b) The load-bearing collapse still holds and is severe:
+        43 hypotheses -> 5 classes -> 1 root. N_eff = 1 on evidence
+        even with K = 43 on the hypothesis space."""
+    v = ib.research_state(n_agents=32,
+                          hypotheses=tuple(range(43)),
+                          equivalence_classes=5,
+                          independent_roots=1)
+    assert v["amplification_agents_to_hypotheses"] > 1.0   # (a)
+    assert v["collapse_hierarchy_holds"] is True           # (b)
+    assert v["effective_witnesses"] == 1
+    assert v["diversity_collapse"] > 0.85
+    assert v["evidential_collapse"] > 0.97
+
+
+def test_a_broken_collapse_is_named():
+    """More equivalence classes than hypotheses is incoherent."""
+    v = ib.research_state(2, tuple(range(3)), 9, 1)
+    assert v["collapse_hierarchy_holds"] is False
+
+
+def test_discriminate_prefers_the_cheapest_separating_observation():
+    k1 = {"rules": [], "literals": [(6, 6, "OPEN"), (9, 9, "OPEN")]}
+    k2 = {"rules": [], "literals": []}
+    v = ib.discriminate(k1, k2, cost=lambda t: 100 if t[0] == 6 else 1)
+    assert v["discriminating_observation"] == (9, 9, "OPEN")
+    assert v["selection_rule"].startswith("cheapest")
+
+
+# ── MDL under a pinned encoder ─────────────────────────────────────────
+
+def test_mdl_carries_its_encoder_version():
+    fit = indub(_structured())
+    obs = {(s["pattern"], s["size"], s["state"]) for s in _structured()}
+    assert ib.description_length(fit["K_hat"], obs)["nu"] == \
+        ib.ENCODER_VERSION
+
+
+def test_comparing_across_encoders_is_refused():
+    a = {"nu": "mdl-v1", "total": 10}
+    b = {"nu": "mdl-v2", "total": 99}
+    v = ib.compare_mdl(a, b)
+    assert v["comparable"] is False
+    assert v["reason"] == "E_ENCODER_MISMATCH"
+
+
+def test_a_same_encoder_comparison_must_be_strict():
+    same = ib.compare_mdl({"nu": "mdl-v1", "total": 10},
+                          {"nu": "mdl-v1", "total": 10})
+    assert same["comparable"] is True
+    assert same["a_wins"] is False and same["strict"] is False
+
+
+# ── equivalence is relative to the corpus ──────────────────────────────
+
+def test_equivalence_is_corpus_relative_never_global():
+    obs = {(6, 6, "OPEN")}
+    k1 = {"rules": [], "literals": [(6, 6, "OPEN")]}
+    k2 = {"rules": [], "literals": [(6, 6, "OPEN"), (99, 99, "TINT")]}
+    v = ib.observationally_equivalent(k1, k2, obs)
+    assert v["equivalent_on_O"] is True
+    assert v["equivalent_on_X"] is None          # unknown, not True
+    assert "RELATIVE TO O" in v["learned_object"]
+    assert v["reason_if_claimed_globally"] == \
+        "E_LOCAL_EQUIVALENCE_GENERALIZED"

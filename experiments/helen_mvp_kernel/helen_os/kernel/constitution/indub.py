@@ -62,6 +62,9 @@ COMPRESSION_FLOOR = 0.5      # legacy ratio, reported not decisive
 # grammar must STRICTLY beat the cost of listing the observations, and
 # it pays for what it over-generates: a rule that predicts far more
 # than was seen must encode the exclusions.
+ENCODER_VERSION = "mdl-v1"   # nu: the coding convention is PINNED.
+# A MDL law is reproducible only under a stable code. Without a pinned
+# nu, a grammar can "win" by silently changing how symbols are counted.
 SYM_LITERAL = 3        # (pattern, size, state)
 SYM_RULE_OVERHEAD = 3  # rule structure
 SYM_SPURIOUS = 3       # each over-generated item must be excluded
@@ -80,7 +83,8 @@ def description_length(k_hat: dict, observed: set) -> dict:
                     SYM_SPURIOUS * len(spurious))
     total = l_rules + l_literals + l_exceptions
     baseline = SYM_LITERAL * len(observed)
-    return {"L_K": l_rules + l_literals,
+    return {"nu": ENCODER_VERSION,
+            "L_K": l_rules + l_literals,
             "L_exceptions": l_exceptions,
             "over_generated": len(spurious),
             "total": total, "baseline_memorization": baseline,
@@ -211,6 +215,21 @@ def heldout_test(train: tuple, heldout: tuple) -> dict:
                    "itself licenses no grammar claim"}
 
 
+def compare_mdl(a: dict, b: dict) -> dict:
+    """J_nu(h) < J_nu(K_mem), strictly and under the SAME nu. Comparing
+    description lengths computed by different encoders is meaningless
+    and is refused rather than silently ranked."""
+    if a.get("nu") != b.get("nu"):
+        return {"comparable": False, "reason": "E_ENCODER_MISMATCH",
+                "nu": (a.get("nu"), b.get("nu")),
+                "law": "a MDL victory is only reproducible under a "
+                       "pinned coding convention"}
+    return {"comparable": True, "nu": a["nu"],
+            "a_wins": a["total"] < b["total"],
+            "strict": a["total"] != b["total"],
+            "margin": b["total"] - a["total"]}
+
+
 # ── observational equivalence: what is learned is a CLASS ──────────────
 
 def observationally_equivalent(k1: dict, k2: dict,
@@ -223,12 +242,17 @@ def observationally_equivalent(k1: dict, k2: dict,
     disagree = sorted((g1 ^ g2) & observations)
     outside = len(g1 ^ g2) - len(disagree)
     return {"equivalent_on_O": not disagree,
+            "relative_to": "the finite corpus O",
+            "equivalent_on_X": None,
             "disagreements_inside_O": disagree,
             "differences_outside_O": outside,
-            "learned_object": "[K_hat]_O — an equivalence class",
-            "law": "even perfect reconstruction of every surviving "
-                   "specimen establishes observational adequacy, not "
-                   "historical identity"}
+            "learned_object": "[K_hat]_O — an equivalence class "
+                              "RELATIVE TO O, not simpliciter",
+            "reason_if_claimed_globally": "E_LOCAL_EQUIVALENCE_"
+                                          "GENERALIZED",
+            "law": "K1 ~_O K2 does not entail K1 ~_X K2; agreement on "
+                   "a finite corpus says nothing outside it — which "
+                   "is exactly what DISCRIMINATE exists to exploit"}
 
 
 def reconstructs_corpus_is_not_historically_used(k_id: str,
@@ -272,6 +296,24 @@ def k_random(train: tuple, seed_index: int = 0) -> dict:
             "literals": []}
 
 
+def k_matched(train: tuple) -> dict:
+    """K_matched — same rule count and roughly the same description
+    length as K_hat, but with the size/state relations PERMUTED across
+    patterns. Without it a good score may only mean the null models
+    were too stupid to be informative."""
+    fit = indub(train)
+    rules = fit["K_hat"]["rules"]
+    if len(rules) < 2:
+        return {"rules": list(rules), "literals":
+                list(fit["K_hat"]["literals"]), "degenerate": True}
+    rot = rules[1:] + rules[:1]          # deterministic permutation
+    return {"rules": [{"rule_id": f"R::m{i}", "pattern": r["pattern"],
+                       "sizes": rot[i]["sizes"],
+                       "states": rot[i]["states"], "form": "PRODUCT"}
+                      for i, r in enumerate(rules)],
+            "literals": list(fit["K_hat"]["literals"])}
+
+
 def against_controls(train: tuple, heldout: tuple) -> dict:
     """The result is meaningful only if the induced grammar beats BOTH
     controls on genuinely unseen structure. Beating neither means the
@@ -286,9 +328,12 @@ def against_controls(train: tuple, heldout: tuple) -> dict:
     p_induced = cover(indub(train)["K_hat"])
     p_mem = cover(k_memorizer(train))
     p_rand = cover(k_random(train))
-    beats_both = p_induced > p_mem and p_induced > p_rand
+    p_match = cover(k_matched(train))
+    beats_both = (p_induced > p_mem and p_induced > p_rand and
+                  p_induced > p_match)
     outperformed = [n for n, p in (("K_memorizer", p_mem),
-                                   ("K_random", p_rand))
+                                   ("K_random", p_rand),
+                                   ("K_matched", p_match))
                     if p > p_induced]
     if beats_both:
         verdict = "GRAMMAR_HAS_UTILITY"
@@ -297,17 +342,19 @@ def against_controls(train: tuple, heldout: tuple) -> dict:
     else:
         verdict = "NO_UTILITY_DEMONSTRATED"
     return {"P_induced": p_induced, "P_memorizer": p_mem,
-            "P_random": p_rand,
+            "P_random": p_rand, "P_matched": p_match,
             "beats_both_controls": beats_both,
             "outperformed_by": outperformed,
             "verdict": verdict,
+            "beats_all_three": beats_both,
             "law": "testing grammar utility, not grammar existence; "
-                   "without a stupid opponent a win means nothing"}
+                   "a win over stupid nulls only means the nulls were "
+                   "stupid — K_matched is the one that can hurt"}
 
 
 # ── DISCRIMINATE: disagreement becomes experimental design ─────────────
 
-def discriminate(k1: dict, k2: dict) -> dict:
+def discriminate(k1: dict, k2: dict, cost=None) -> dict:
     """x* = the observation that would most strongly separate two
     surviving grammars. Turns disagreement into information
     acquisition instead of averaging it away. This is the research
@@ -321,8 +368,11 @@ def discriminate(k1: dict, k2: dict) -> dict:
                 "verdict": "OBSERVATIONALLY_IDENTICAL",
                 "note": "no experiment separates them; the corpus "
                         "cannot decide between these grammars"}
-    x_star = candidates[0]
+    x_star = min(candidates, key=cost) if cost else candidates[0]
     return {"discriminating_observation": x_star,
+            "selection_rule": "cheapest separating observation"
+                              if cost else "first separating "
+                              "observation (no cost model given)",
             "predicted_by": "K1" if x_star in only1 else "K2",
             "refutes_if_absent": "K1" if x_star in only1 else "K2",
             "n_discriminating_candidates": len(candidates),
@@ -335,21 +385,221 @@ def discriminate(k1: dict, k2: dict) -> dict:
 
 def swarm_scaling(n_agents: int, hypotheses: int,
                   new_independent_witnesses: int,
-                  new_valid_derivations: int) -> dict:
-    """d|P|/dN > 0 and dA/dN = 0. Agent count expands PROPOSAL
-    capacity and has zero direct derivative on epistemic authority.
-    If licensed promotions rise merely because more agents agreed,
-    the architecture has failed."""
+                  new_valid_derivations: int,
+                  roots_genuinely_independent: bool = True) -> dict:
+    """CORRECTION to an overclaim this module shipped: dA/dN = 0 was
+    written as an absolute law. It is CONDITIONAL —
+
+        (dA/dN) | rho, Gamma, E, D  =  0
+
+    i.e. holding provenance, admission rules, evidence roots and
+    derivations FIXED, adding agents adds no authority. But if 32
+    agents run 32 genuinely independent experiments, N raises E
+    indirectly and A may become promotable. Headcount never creates
+    authority; the new evidence they produced does.
+
+        N up  does not entail  A up
+        N up  =>  E_independent up  =>  A may become promotable
+                  (iff the roots are genuinely independent)
+    """
     delta_licensed = (new_independent_witnesses +
                       new_valid_derivations)
+    counted = delta_licensed if roots_genuinely_independent else 0
     return {"n_agents": n_agents,
             "proposal_capacity": hypotheses,
-            "licensed_promotions": delta_licensed,
+            "claimed_evidence_delta": delta_licensed,
+            "counted_evidence_delta": counted,
+            "roots_genuinely_independent": roots_genuinely_independent,
             "authority_from_headcount": 0,
-            "promotion_licensed": delta_licensed > 0,
-            "law": "N_agents up does not entail A up; twenty epochs "
-                   "and a thousand agreeing agents license nothing "
-                   "without an external epistemic delta"}
+            "promotion_licensed": counted > 0,
+            "law": "swarm scale buys hypothesis diversity, not "
+                   "epistemic credit; N may raise A only THROUGH new "
+                   "independent evidence, never directly"}
+
+
+def research_state(n_agents: int, hypotheses: tuple,
+                   equivalence_classes: int,
+                   independent_roots: int) -> dict:
+    """R_t = (K_t, E_t, D_t, U_t, X*_t). The fundamental object is no
+    longer the grammar but the research state.
+
+    CORRECTION to the proposed hierarchy, forced by the operator's own
+    reported figures (32 agents, 43 hypotheses): the chain was stated
+    as
+
+        N_agents >> N_hypotheses >> N_equiv >> N_roots
+
+    but the first link does NOT hold and should not — agents are
+    GENERATORS, each producing many hypotheses across epochs, so
+    N_hypotheses exceeding N_agents is health, not pathology. The
+    load-bearing claim is the COLLAPSE chain, which starts one link
+    later:
+
+        N_hypotheses >= N_equivalence_classes >= N_independent_roots
+
+    Agent -> hypothesis is amplification (expected). Hypothesis -> class
+    -> root is collapse (the diagnostic). Distributed intelligence is
+    counted in falsifiable distinctions and independent roots, never
+    in agents or ideas."""
+    n_h = len(hypotheses)
+    chain = (n_h, equivalence_classes, independent_roots)
+    collapse_holds = all(chain[i] >= chain[i + 1] for i in range(2))
+    return {"N_agents": n_agents, "N_hypotheses": n_h,
+            "N_equivalence_classes": equivalence_classes,
+            "N_independent_roots": independent_roots,
+            "amplification_agents_to_hypotheses": round(
+                n_h / n_agents, 6) if n_agents else None,
+            "collapse_hierarchy_holds": collapse_holds,
+            "diversity_collapse": round(
+                1 - equivalence_classes / n_h, 6) if n_h else None,
+            "evidential_collapse": round(
+                1 - independent_roots / n_h, 6) if n_h else None,
+            "effective_witnesses": independent_roots,
+            "law": "agent -> hypothesis is amplification and expected; "
+                   "hypothesis -> class -> root is collapse and is the "
+                   "diagnostic"}
+
+
+def grammar_space(specimens: tuple) -> dict:
+    """G(p) = {g : g ~> p}. Inverse reconstruction is NON-UNIQUE, and
+    the first version of this module got it wrong: it returned a
+    single K_hat, which hallucinates a unique historical production
+    process. Several grammars generate the same specimens and differ
+    only in what they predict BEYOND them.
+
+        g1 ~> p  and  g2 ~> p  does not entail  g1 = g2
+
+    Three canonical candidates are enumerated per family:
+      LITERAL        exact, zero generalization, zero compression
+      PER_PATTERN    generalize within a pattern (the indub default)
+      GLOBAL_PRODUCT generalize across all patterns — maximal
+                     compression, maximal over-generation
+    Over-generation is reported, never hidden: it is the measure of
+    how much history a grammar would invent."""
+    if not specimens:
+        raise ValueError("E_NO_SPECIMENS")
+    obs = _triples(specimens)
+    patterns = sorted({p for p, _, _ in obs})
+    sizes = sorted({s for _, s, _ in obs})
+    states = sorted({st for _, _, st in obs})
+
+    literal = {"rules": [], "literals": sorted(obs)}
+    per_pattern = indub(specimens)["K_hat"]
+    global_product = {"rules": [{"rule_id": "R::*", "pattern": "*",
+                                 "patterns": patterns,
+                                 "sizes": sizes, "states": states,
+                                 "form": "PRODUCT"}], "literals": []}
+
+    cands = []
+    for name, k in (("LITERAL", literal),
+                    ("PER_PATTERN", per_pattern),
+                    ("GLOBAL_PRODUCT", global_product)):
+        gen = generate(k)
+        k_size = len(k["rules"]) + len(k["literals"])
+        cands.append({
+            "grammar_id": name,
+            "k_size": k_size,
+            "covers_observed": obs <= gen,
+            "over_generation": len(gen - obs),
+            "compression": round(1 - k_size / len(obs), 6)})
+
+    consistent = [c for c in cands if c["covers_observed"]]
+    return {"G_of_p": cands,
+            "consistent_with_observation": [c["grammar_id"]
+                                            for c in consistent],
+            "n_consistent": len(consistent),
+            "unique": len(consistent) == 1,
+            "law": "recover a SPACE of candidate explanations; a "
+                   "single reconstruction presented as the historical "
+                   "process is laundering"}
+
+
+def select_unique(space: dict, discriminating_evidence: bool) -> dict:
+    """Collapsing G(p) to one grammar requires evidence that
+    ELIMINATES the rivals. Without it the honest output is
+    UNDERDETERMINED — naming a winner would convert a modelling
+    choice into a historical claim."""
+    if space["n_consistent"] > 1 and not discriminating_evidence:
+        return {"selected": None, "verdict": "UNDERDETERMINED",
+                "reason": "E_NON_UNIQUE_RECONSTRUCTION",
+                "survivors": space["consistent_with_observation"],
+                "law": "g1 ~> p and g2 ~> p does not entail g1 = g2; "
+                       "picking one without discriminating evidence "
+                       "is historical laundering"}
+    return {"selected": space["consistent_with_observation"][0]
+                        if space["consistent_with_observation"] else None,
+            "verdict": "DETERMINED" if discriminating_evidence
+                       else "SINGLETON"}
+
+
+def reconstructible_is_not_used(p: str, reconstructible: bool) -> dict:
+    """The invariant that keeps reconstruction out of history:
+
+        Reconstructible(p)  does not entail  HistoricallyUsed(p)
+
+    distinct from Generable -> HistoricallyObserved: that one is
+    about what the catalogue afforded, this one about what our own
+    inference machinery can rebuild. Our ability to rebuild a
+    specimen is a fact about US, not about the past."""
+    return {"specimen": p,
+            "reconstructible": reconstructible,
+            "historically_used": None,
+            "reason": "E_RECONSTRUCTION_IS_NOT_HISTORY",
+            "law": "reconstructibility is a property of the inference "
+                   "machinery, not evidence about production"}
+
+
+def completion_is_not_validation(run: str, exit_code: int) -> dict:
+    """The swarm reported exit code 0. That licenses 'the run
+    completed' and nothing else — not convergence, not a validated
+    grammar, not an admitted result."""
+    return {"run": run, "exit_code": exit_code,
+            "completed": exit_code == 0,
+            "grammar_validated": False,
+            "licensed": "the run completed",
+            "reason": "E_COMPLETION_IS_NOT_VALIDATION",
+            "next": ("inspect outputs for convergence, competing "
+                     "grammars, reconstruction accuracy, and "
+                     "epistemic over-promotion")}
+
+
+def instance_is_not_theorem(mechanism: str, instance_verified: bool,
+                            claimed_law: str) -> dict:
+    """One mechanism firing successfully licenses a claim about THAT
+    instance, never a theorem about the architecture. The ATF string
+    verification is the live example: it grounds the border claim, not
+    the epistemic conservation law."""
+    return {"mechanism": mechanism,
+            "instance_verified": instance_verified,
+            "claimed_law": claimed_law,
+            "law_proven": False,
+            "licensed": (f"the specific claim, under the reported "
+                         f"corpus/hash workflow"),
+            "reason": "E_INSTANCE_IS_NOT_THEOREM",
+            "note": "a successful instance of the mechanism is not a "
+                    "theorem about the architecture"}
+
+
+def corpus_status() -> dict:
+    """Honest access state for this seat."""
+    return {"corpus": "ATF_DESK_BOOK_1900",
+            "reachable_from_this_seat": False,
+            "held_by": "local corpus/runtime lane",
+            "machinery_ready": True,
+            "claims_made_about_corpus_content": None,
+            "law": "the run against real specimens must execute where "
+                   "the corpus is; nothing here claims to have read "
+                   "it"}
+
+
+def next_corpus_role() -> dict:
+    """Per ruling: 1851 becomes validation, not expansion."""
+    return {"corpus": "1851",
+            "role": "OUT_OF_DISTRIBUTION_VALIDATION",
+            "not": "collection_expansion",
+            "sequence": "ATF 1900 --indub--> K_hat --test--> 1851",
+            "precondition": "T-INDUB-01 returns SUPPORTED or HOLD; a "
+                            "REFUTED grammar has nothing to validate"}
 
 
 def selection_is_not_promotion(winner: str, benchmark_score: float

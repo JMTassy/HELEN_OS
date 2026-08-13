@@ -850,14 +850,25 @@ def _probes():
                                            "conservation law")
         held2 = ({"pattern": 6, "size": 12, "state": "TINT"},)
         tr2 = tuple(x for x in struct if x != held2[0])
-        ctrl = idb.against_controls(tr2, held2)
+        ctrl_sym = idb.against_controls(tr2, held2)
+        asym = (tuple({"pattern": 6, "size": s, "state": st}
+                      for s in (6, 12) for st in ("OPEN", "TINT")) +
+                tuple({"pattern": 9, "size": s, "state": st}
+                      for s in (18, 24) for st in ("OPEN", "TINT")))
+        ah = ({"pattern": 6, "size": 12, "state": "TINT"},)
+        ctrl = idb.against_controls(
+            tuple(x for x in asym if x != ah[0]), ah)
+        rs = idb.research_state(32, tuple(range(43)), 5, 1)
         swarm = idb.swarm_scaling(32, 400, 0, 0)
         selnp = idb.selection_is_not_promotion("K_best", 0.99)
         adeq = idb.reconstructs_corpus_is_not_historically_used("K", True)
         space = idb.grammar_space(struct)
         sel = idb.select_unique(space, discriminating_evidence=False)
         return (good["verdict"] == "SUPPORTED" and
-                ctrl["beats_both_controls"] is True and
+                ctrl["beats_all_three"] is True and
+                ctrl_sym["verdict"] == "NO_UTILITY_DEMONSTRATED" and
+                rs["collapse_hierarchy_holds"] is True and
+                rs["effective_witnesses"] == 1 and
                 swarm["promotion_licensed"] is False and
                 swarm["authority_from_headcount"] == 0 and
                 selnp["promoted"] is False and
