@@ -318,3 +318,71 @@ def test_winning_the_benchmark_leaves_the_claim_a_claim():
     assert v["epistemic_phase"] == "claim"
     assert v["promoted"] is False
     assert v["reason"] == "E_SELECTION_IS_NOT_PROMOTION"
+
+
+# ── defects found by COMPOSING the stages, not by testing each ─────────
+
+def test_a_wildcard_rule_without_expansion_is_refused():
+    """The composed-trace bug: generate() emitted ('*', size, state)
+    literally, silently poisoning every downstream set comparison.
+    Each stage passed alone; the composition was broken."""
+    bad = {"rules": [{"rule_id": "w", "pattern": "*",
+                      "sizes": [6], "states": ["OPEN"],
+                      "form": "PRODUCT"}], "literals": []}
+    with pytest.raises(ValueError, match="E_UNEXPANDED_WILDCARD"):
+        ib.generate(bad)
+
+
+def test_the_global_product_expands_over_every_pattern():
+    sp = ib.grammar_space(_structured())
+    g = {c["grammar_id"]: c for c in sp["G_of_p"]}
+    assert g["GLOBAL_PRODUCT"]["covers_observed"] is True
+    assert g["GLOBAL_PRODUCT"]["over_generation"] == 0
+
+
+def test_discriminate_now_finds_the_real_two_item_disagreement():
+    """Before the fix this returned 30 phantom candidates built from
+    ('*', ...) tuples."""
+    train = tuple(x for x in _structured()
+                  if not (x["pattern"] == 6 and x["size"] == 12))
+    k1 = indub(train)["K_hat"]
+    k2 = {"rules": [{"rule_id": "g", "pattern": "*",
+                     "patterns": [6, 9, 10],
+                     "sizes": [6, 12, 18, 24],
+                     "states": ["OPEN", "TINT"], "form": "PRODUCT"}],
+          "literals": []}
+    d = ib.discriminate(k1, k2)
+    assert d["n_discriminating_candidates"] == 2
+    assert d["discriminating_observation"] == (6, 12, "OPEN")
+    assert d["predicted_by"] == "K2"
+
+
+def test_a_control_beating_the_induction_gets_its_own_alarm():
+    """NO_UTILITY_DEMONSTRATED understates the case where a random
+    grammar actually outperforms the induced one."""
+    train = tuple(x for x in _structured()
+                  if not (x["pattern"] == 6 and x["size"] == 12))
+    heldout = tuple(x for x in _structured()
+                    if x["pattern"] == 6 and x["size"] == 12)
+    v = ib.against_controls(train, heldout)
+    assert v["P_induced"] == 0.0
+    assert v["verdict"] == "CONTROL_OUTPERFORMED_INDUCTION"
+    assert "K_random" in v["outperformed_by"]
+
+
+def test_the_heldout_regime_distinguishes_two_experiments():
+    """Holding out a whole dimension value asks for EXTRAPOLATION;
+    holding out one cell asks for INTERPOLATION. A REFUTED verdict
+    means different things in each."""
+    full = _structured()
+    cell = (_spec(6, 12, "TINT"),)
+    interp = heldout_test(tuple(x for x in full if x != cell[0]), cell)
+    assert interp["heldout_regime"] == "INTERPOLATION"
+    assert interp["verdict"] == "SUPPORTED"
+
+    col = tuple(x for x in full if x["size"] == 12)
+    extrap = heldout_test(tuple(x for x in full if x["size"] != 12),
+                          col)
+    assert extrap["heldout_regime"] == "EXTRAPOLATION"
+    assert extrap["verdict"] == "REFUTED"
+    assert "different experiment" in extrap["regime_note"]

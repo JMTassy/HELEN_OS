@@ -137,12 +137,25 @@ def indub(specimens: tuple) -> dict:
 
 
 def generate(k_hat: dict) -> set:
-    """Expand K_hat into the specimen set it predicts."""
+    """Expand K_hat into the specimen set it predicts.
+
+    A rule may name one pattern or carry an explicit `patterns` list.
+    A wildcard pattern with no expansion list is REFUSED rather than
+    emitted literally: the first version emitted ('*', size, state)
+    tuples, which silently poisoned every downstream consumer that
+    compared generated sets. Found by composing the stages, not by
+    testing them one at a time."""
     out = set(tuple(t) for t in k_hat.get("literals", ()))
     for r in k_hat.get("rules", ()):
-        for s in r["sizes"]:
-            for st in r["states"]:
-                out.add((r["pattern"], s, st))
+        pats = r.get("patterns")
+        if pats is None:
+            if r.get("pattern") == "*":
+                raise ValueError("E_UNEXPANDED_WILDCARD")
+            pats = [r["pattern"]]
+        for p in pats:
+            for s in r["sizes"]:
+                for st in r["states"]:
+                    out.add((p, s, st))
     return out
 
 
@@ -162,6 +175,13 @@ def heldout_test(train: tuple, heldout: tuple) -> dict:
     coverage = round(len(hit) / len(target), 6)
     mdl = description_length(fit["K_hat"], _triples(train))
 
+    tr = _triples(train)
+    in_support = all(any(p == tp for tp, _, _ in tr) and
+                     any(s == ts for _, ts, _ in tr) and
+                     any(st == tst for _, _, tst in tr)
+                     for p, s, st in target)
+    regime = "INTERPOLATION" if in_support else "EXTRAPOLATION"
+
     if coverage < 1.0:
         verdict, demoted = "REFUTED", "DESCRIPTIVE_TAXONOMY"
     elif not mdl["beats_memorization"]:
@@ -172,6 +192,12 @@ def heldout_test(train: tuple, heldout: tuple) -> dict:
     return {"verdict": verdict,
             "demoted_to": demoted,
             "heldout_coverage": coverage,
+            "heldout_regime": regime,
+            "regime_note": ("a REFUTED verdict under EXTRAPOLATION "
+                            "means the split asked for a dimension "
+                            "value never witnessed — a different "
+                            "experiment from interpolation, and not "
+                            "the same failure"),
             "predicted_heldout": hit,
             "missed_heldout": miss,
             "mdl": mdl,
@@ -261,11 +287,20 @@ def against_controls(train: tuple, heldout: tuple) -> dict:
     p_mem = cover(k_memorizer(train))
     p_rand = cover(k_random(train))
     beats_both = p_induced > p_mem and p_induced > p_rand
+    outperformed = [n for n, p in (("K_memorizer", p_mem),
+                                   ("K_random", p_rand))
+                    if p > p_induced]
+    if beats_both:
+        verdict = "GRAMMAR_HAS_UTILITY"
+    elif outperformed:
+        verdict = "CONTROL_OUTPERFORMED_INDUCTION"
+    else:
+        verdict = "NO_UTILITY_DEMONSTRATED"
     return {"P_induced": p_induced, "P_memorizer": p_mem,
             "P_random": p_rand,
             "beats_both_controls": beats_both,
-            "verdict": "GRAMMAR_HAS_UTILITY" if beats_both
-                       else "NO_UTILITY_DEMONSTRATED",
+            "outperformed_by": outperformed,
+            "verdict": verdict,
             "law": "testing grammar utility, not grammar existence; "
                    "without a stupid opponent a win means nothing"}
 
@@ -358,6 +393,7 @@ def grammar_space(specimens: tuple) -> dict:
     literal = {"rules": [], "literals": sorted(obs)}
     per_pattern = indub(specimens)["K_hat"]
     global_product = {"rules": [{"rule_id": "R::*", "pattern": "*",
+                                 "patterns": patterns,
                                  "sizes": sizes, "states": states,
                                  "form": "PRODUCT"}], "literals": []}
 
@@ -365,11 +401,7 @@ def grammar_space(specimens: tuple) -> dict:
     for name, k in (("LITERAL", literal),
                     ("PER_PATTERN", per_pattern),
                     ("GLOBAL_PRODUCT", global_product)):
-        if name == "GLOBAL_PRODUCT":
-            gen = {(p, s, st) for p in patterns for s in sizes
-                   for st in states}
-        else:
-            gen = generate(k)
+        gen = generate(k)
         k_size = len(k["rules"]) + len(k["literals"])
         cands.append({
             "grammar_id": name,
