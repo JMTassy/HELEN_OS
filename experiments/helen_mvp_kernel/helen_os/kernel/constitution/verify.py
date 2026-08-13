@@ -920,12 +920,24 @@ def _probes():
                      for n, h, q, a in ((1, 3, 3, 0), (2, 8, 5, 1)))
         yld = shs.parse_yield_gate(0, 1)
         chunk = shs.canary_chunking("sha:x", "sha:x")
+        # the rerun constraints
+        halluc = shs.extraction("c", "Battalion", source_legible=False)
+        blind = shs.ignorance_baseline(0, 0, 200)
+        swarm = shs.swarm_common_mode(5, 1, 0.0, False)
         return (shs.ingest(proj)["reason"] == "E_PROJECTED_ROW" and
                 shs.check_invariant(meas)["verdict"] ==
                 "FAIL_AUTHORITY_INFLATION" and
                 yld["readable"] is False and
                 chunk["new_root_minted"] is False and
-                shs.root_redundancy(5, 1)["is_waste"] is None)
+                shs.root_redundancy(5, 1)["is_waste"] is None and
+                halluc["reason"] == "E_HALLUCINATED_LEGIBILITY" and
+                blind["interpretable"] is False and
+                swarm["N_effective_on_hypotheses"] == 1 and
+                swarm["reason"] == "E_SWARM_COMMON_MODE" and
+                shs.claim_status("A_N_flat")["status"] ==
+                "TRUE_BY_CONSTRUCTION" and
+                shs.claim_status("Q_N_rises")["status"] ==
+                "FALSIFIABLE_THIS_RUN")
     # ── HELEN_GRAPH_IR_V0: three static checks + the fourth ─────────
     import graph_ir as gir
 
@@ -998,7 +1010,12 @@ def _probes():
              "a table of projected values may not enter Sigma_N; "
              "authority rising without a witness or a VALID "
              "derivation is inflation; an unparsed worker is a defect "
-             "not a zero",
+             "not a zero; a clean string forced out of noise is "
+             "hallucinated legibility; UNREADABLE = 0 with nothing "
+             "illegible planted is an untested class; five instances "
+             "of one model at T=0 are N_effective = 1; and a flat "
+             "authority curve the membrane already forbids is a "
+             "conformance check, not evidence",
              _harness))
 
     A(_probe("plausibility_never_becomes_history",

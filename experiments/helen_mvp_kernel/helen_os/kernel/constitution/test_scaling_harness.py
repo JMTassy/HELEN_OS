@@ -181,3 +181,121 @@ def test_a_genuinely_different_edition_would_be_a_second_root():
 def test_deterministic():
     assert sh.canon(root_redundancy(5, 1)) == \
         sh.canon(root_redundancy(5, 1))
+
+
+# ── the ignorance baseline: UNREADABLE is not zero ─────────────────────
+
+def test_forcing_a_clean_string_out_of_noise_is_refused():
+    v = sh.extraction("p31.c4", "Battalion", source_legible=False)
+    assert v["ok"] is False
+    assert v["reason"] == "E_HALLUCINATED_LEGIBILITY"
+
+
+def test_declaring_unreadable_on_noise_is_a_correct_extraction():
+    v = sh.extraction("p31.c4", sh.UNREADABLE, source_legible=False)
+    assert v["ok"] is True
+    assert v["value"] == sh.UNREADABLE
+    assert v["declared_unreadable"] is True
+
+
+def test_declaring_unreadable_on_a_legible_cell_costs_yield_not_truth():
+    v = sh.extraction("p31.c5", sh.UNREADABLE, source_legible=True)
+    assert v["ok"] is True and v["conservative"] is True
+
+
+def test_a_legible_cell_read_cleanly_is_ordinary():
+    v = sh.extraction("p31.c5", "Battalion", source_legible=True)
+    assert v["ok"] is True and v["declared_unreadable"] is False
+
+
+def test_zero_unreadable_with_nothing_planted_is_uninterpretable():
+    """The canary-at-zero defect: silence measures the corpus slice,
+    not the swarm."""
+    v = sh.ignorance_baseline(planted_illegible=0,
+                              declared_unreadable=0, total_cells=200)
+    assert v["interpretable"] is False
+    assert v["reason"] == "E_NO_ILLEGIBLE_CONTROL"
+
+
+def test_planted_noise_makes_the_class_measurable():
+    v = sh.ignorance_baseline(planted_illegible=10,
+                              declared_unreadable=7, total_cells=200)
+    assert v["interpretable"] is True
+    assert v["ignorance_recall"] == 0.7
+    assert v["hallucinated_legibility"] == 3
+    assert v["excess_declarations"] == 0
+
+
+def test_over_declaring_ignorance_is_scored_separately_from_missing_it():
+    v = sh.ignorance_baseline(planted_illegible=10,
+                              declared_unreadable=14, total_cells=200)
+    assert v["ignorance_recall"] == 1.0
+    assert v["excess_declarations"] == 4
+    assert v["hallucinated_legibility"] == 0
+
+
+def test_no_cells_is_refused():
+    with pytest.raises(ValueError, match="E_NO_CELLS"):
+        sh.ignorance_baseline(1, 1, 0)
+
+
+# ── N_effective on the hypothesis space ────────────────────────────────
+
+def test_five_instances_of_one_model_at_T0_are_one_instrument():
+    v = sh.swarm_common_mode(n_agents=5, n_model_configs=1,
+                             temperature=0.0,
+                             independent_prompts=False)
+    assert v["N_effective_on_hypotheses"] == 1
+    assert v["deterministic_copies"] is True
+    assert v["independence_licensed"] is False
+    assert v["reason"] == "E_SWARM_COMMON_MODE"
+
+
+def test_temperature_alone_does_not_buy_independence():
+    v = sh.swarm_common_mode(n_agents=5, n_model_configs=1,
+                             temperature=0.8,
+                             independent_prompts=False)
+    assert v["N_effective_on_hypotheses"] == 1
+    assert v["deterministic_copies"] is False   # stochastic, still one mode
+    assert v["reason"] == "E_SWARM_COMMON_MODE"
+
+
+def test_distinct_prompts_or_distinct_weights_do_buy_it():
+    byprompt = sh.swarm_common_mode(5, 1, 0.0, independent_prompts=True)
+    byweights = sh.swarm_common_mode(5, 3, 0.0,
+                                     independent_prompts=False)
+    assert byprompt["independence_licensed"] is True
+    assert byweights["N_effective_on_hypotheses"] == 3
+    assert byweights["reason"] is None
+
+
+def test_n_effective_never_exceeds_the_agent_count():
+    v = sh.swarm_common_mode(n_agents=2, n_model_configs=9,
+                             temperature=0.7, independent_prompts=True)
+    assert v["N_effective_on_hypotheses"] == 2
+
+
+def test_no_agents_is_refused():
+    with pytest.raises(ValueError, match="E_NO_AGENTS"):
+        sh.swarm_common_mode(0, 1, 0.0, False)
+
+
+# ── which half of the claim is testable ────────────────────────────────
+
+def test_the_flat_authority_curve_is_forced_and_proves_nothing():
+    for c in ("A_N_flat", "N_epi_flat"):
+        v = sh.claim_status(c)
+        assert v["status"] == "TRUE_BY_CONSTRUCTION"
+        assert v["evidence_for_invariant"] is False
+        assert v["role"] == "conformance check on the harness"
+
+
+def test_only_the_cognitive_half_can_disappoint_the_run():
+    for c in ("H_N_rises", "Q_N_rises"):
+        v = sh.claim_status(c)
+        assert v["status"] == "FALSIFIABLE_THIS_RUN"
+        assert v["evidence_for_invariant"] is True
+
+
+def test_an_unknown_claim_component_is_refused():
+    assert sh.claim_status("vibes")["reason"] == "E_UNKNOWN_COMPONENT"
