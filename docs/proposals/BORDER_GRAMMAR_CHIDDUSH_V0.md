@@ -10,7 +10,21 @@
      on disk. The grammar below is derived from upstream-AI analysis
      (relayed 2026-08-11) READ AGAINST these witnessed pages — S→G→H
      provenance: S = ATF pages, G = extracted grammar, H = this chiddush.
-     H never collapses back into S. -->
+     H never collapses back into S.
+     UPGRADE 2026-08-13: full OCR text layer DOWNLOADED from archive.org
+     item deskbookoftypesp00amer (sha256 fbd38ee9c08d…1212, at
+     ~/helen_kernel/chiddush_intake/atf_deskbook_1900_djvu.txt). The
+     register-for-two-colors line VERIFIED at OCR lines 60780/60863:
+     "These Borders are made to register for two colors. See page 756"
+     (OCR renders "yor tivo") — at three ART BORDERS section heads.
+     OPEN/TINT pairs + prices verified (l.35056: "12 POINT ART BORDER
+     NO 4, TINT, 60 INCHES $1 60 … NO 4 OPEN"); Dewey Ornaments +
+     Manila Border confirmed in index → p.763. New witnessed structure:
+     "Art Borders Nos. 6, 9 and 10, all sizes, are made to register for
+     two colors" (l.61029) — the phase duality is a product-LINE
+     property, not a one-page curiosity. Corpus: FULLY DOWNLOADED —
+     text layer verified + page-image PDF (95 MB, 1267 pages, sha256
+     1e0a13503cfb…4dea) at chiddush_intake/atf_deskbook_1900.pdf. -->
 
 ## The extraction
 

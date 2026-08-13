@@ -128,3 +128,22 @@ the experiment is part of the claim; "complete" is never concluded.
 episode where a legitimate epistemic promotion occurred with no new
 admitted evidence. Falsify T1 / T2 / GA / EDI; everything else must
 reduce or produce a genuine ⊥.
+
+## ATF experiment, corrected and locked (2026-08-13)
+
+Identity note for the record: ATF in this programme = **American Type
+Founders** (the 1267-page Desk Book, DOWNLOADED+HASHED at this seat) —
+an upstream lane briefly misread it as the Bureau of Alcohol, Tobacco,
+Firearms and Explosives and proposed a jurisdiction/authority stress
+test on that basis. Wrong corpus, wrong ceiling. The correct ATF
+falsifier is a PROOF/possibility-space experiment:
+
+    CataloguedPrimitive(g) ⇏ HistoricallyUsed(g)
+    Generable(x)           ⇏ HistoricallyObserved(x)
+    Observed(A) ∧ Observed(B) ⇏ Observed(A∘B)
+
+Target question: **can a system reconstruct a possibility space
+without laundering possibility into historical fact?** This composes
+directly with the capability-complex inverse problem (𝒜ₜ → 𝕂̂ₜ) and
+the six-level possibility nesting — the catalogue witnesses what was
+SOLD, never what was SET.
