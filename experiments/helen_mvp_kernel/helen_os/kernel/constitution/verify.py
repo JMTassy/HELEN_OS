@@ -754,6 +754,26 @@ def _probes():
                 lp["u_effective"] == 1.0 and
                 cand["status"] == "CANDIDATE_NOT_LAW" and
                 len(chiddush) == 1)
+    # ── the epistemic lattice: four losses, never collapsed ─────────
+    import epistemic_lattice as elt
+
+    def _lattice():
+        refusals = all(
+            elt.infer(p, c)["reason"] == "E_ILLEGAL_ABSENCE_INFERENCE"
+            for p, c in elt.ILLEGAL_INFERENCES)
+        sig = elt.absence_signal("x", "OBSERVED")
+        sim = elt.similarity_claim(True)
+        return (refusals and len(elt.ILLEGAL_INFERENCES) == 5 and
+                sig["verdict"] == "RESEARCH_SIGNAL" and
+                sig["is_evidence_of_rejection"] is False and
+                sim["reason"] == "E_GLYPH_TRAP")
+    A(_probe("observed_is_not_survived_is_not_produced",
+             "Generable > Produced > Survived > Observed: each arrow "
+             "is a selection mechanism; the five illegal absence "
+             "inferences refuse by name; absence is a research "
+             "signal, never a rejection verdict",
+             _lattice))
+
     A(_probe("sincere_witnesses_do_not_sum_to_proof",
              "the 1844 negative control: eminent, sincere, numerous "
              "witnesses and a false central claim — refused on the "
