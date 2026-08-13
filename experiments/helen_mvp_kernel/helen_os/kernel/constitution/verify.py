@@ -965,6 +965,51 @@ def _probes():
              "check that makes a typed institutional runtime",
              _ir))
 
+    # ── EPIS-CYCLE-ONT-01: the debtor may not be the creditor ───────
+    import ontological_frontier as onf
+
+    def _frontier():
+        ob = onf.crossing_obligation(
+            claim="CSH-X was built to the published plan",
+            referent="CSH-X", required_witness="construction photo",
+            created_by="HER")
+        selfd = onf.discharge(ob, by="HER", witness="photo:x")
+        fused = {"ok": True, "state": onf.OPEN,
+                 "side": onf.REPRESENTATION, "claim": "c",
+                 "referent": "r", "required_witness": "w",
+                 "created_by": "HAL_X"}
+        lawful = onf.discharge(ob, by="HAL_X", witness="photo:x",
+                               witness_supplied_by="HAL_W")
+        return (selfd["reason"] == "E_SELF_DISCHARGE" and
+                onf.discharge(fused, by="HAL_X", witness="w")[
+                    "reason"] == "E_SELF_DISCHARGE" and
+                onf.discharge(ob, by="HAL_X", witness=None)[
+                    "reason"] == "E_UNDISCHARGED_CROSSING" and
+                onf.cross(ob, selfd, by="HAL_X")["verdict"] ==
+                onf.HOLD and
+                onf.cross(ob, lawful, by="HAL_X")["verdict"] ==
+                onf.PROMOTE and
+                onf.cross(ob, lawful, by="HAL_W")["reason"] ==
+                "E_ROLE_LACKS_POWER" and
+                onf.compression_is_not_evidence("QWEN", 40000, 2000)[
+                    "witnesses_added"] == 0 and
+                onf.inherits_status("drawing", "EXISTED", False)[
+                    "inherited_status"] is None and
+                onf.gamma_growth(40, 480, 0)["gamma_growth_licensed"]
+                == 0 and
+                onf.epoch(7, 12, 12, 0)[
+                    "canon_promoted_by_this_epoch"] == 0 and
+                onf.generator_independence(12, 1)[
+                    "N_effective_on_hypotheses"] == 1)
+    A(_probe("a_representation_never_inherits_its_referents_status",
+             "a crossing is a debt and the debtor may not be the "
+             "creditor: a proposer discharging its own obligation is "
+             "refused even when the witness is real and the role "
+             "table is bypassed; compression mints no witness; forty "
+             "epochs and 480 proposals grow Gamma by zero; and twelve "
+             "proposals from one model are one generator",
+             _frontier))
+
     # ── HELEN VISION V2: I -> G_R -> G_E -> G_W, never I -> G_W ─────
     import vision_ir as vir
 
