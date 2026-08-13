@@ -131,3 +131,56 @@ MERGE : code. Jamais un modèle. (C'est le nœud où le blanchiment
   P4  après canonicalisation, la majorité de la « diversité » des
       hypothèses s'effondre en ≤ 6 classes (cf. 43→5 observé)
   Toute prédiction cassée est un résultat, pas un incident.
+
+## 9. HELLO WORLD DÉFINITIF — « REGISTER-2C » (addendum V1.1)
+
+La tâche minimale qui trace un claim de G_cognition, à travers
+DISCRIMINATE, jusqu'à la membrane Γ — dans les DEUX sens.
+
+CIBLE : la famille two-colour-register du Desk Book 1900 —
+« Art Borders Nos. 6, 9 and 10, all sizes, are made to register for
+two colors » (OCR l.61029, corpus hashé, lane locale). Choisie parce
+que :
+  a. c'est la SEULE famille avec un témoin empirique déjà vérifié —
+     le Hello World peut donc finir en promotion licenciée (contrôle
+     positif), pas seulement en refus ;
+  b. 3 patterns × tailles × {OPEN, TINT} : assez petit pour des
+     tranches Gemma 4B, et les fixtures du harnais le reflètent déjà ;
+  c. il contient un point DISCRIMINATE naturel et RÉSOLUBLE (voir d3).
+
+LA TRACE (une seule, composée) :
+  d1  G_cognition — N goblins proposent des règles depuis les tranches
+      de spécimens (gratuit, plan cognition, κ=∅).
+  d2  quotient + MDL + K_matched (code, 0 token) → classes survivantes
+      K_per-pattern vs K_global.
+  d3  DISCRIMINATE (code) → x* concret et cherchable :
+      « une Art Border HORS de {6,9,10} est-elle donnée comme
+      registrant en deux couleurs ? » — K_global le prédit, K_per-
+      pattern le nie. L'expérience = UN grep sur l'OCR hashé.
+      (La ligne '12 POINT ART BORDER NO 4, TINT' du screenshot rend
+      la question non triviale : TINT existe hors {6,9,10} — mais
+      'register' ?)
+  d4  OBSERVE — le grep trouve un témoin ou pas. Pas de témoin =
+      la prédiction de K_global reste GENERABLE, jamais promue.
+  d5  Γ, LE DOUBLE TEST — deux claims jumeaux au même gate :
+      c  = « le catalogue 1900 liste Nos. 6/9/10, toutes tailles,
+            comme faites pour registrer en deux couleurs »
+            → W = catalogue_listing (l.61029, hash) → PROMOTION
+            LICENCIÉE. Le seul franchissement de Γ du run.
+      c' = « des imprimeurs ont utilisé ces bordures en deux couleurs »
+            → W = 0 (catalogued ⊬ historically used)
+            → DENY, E_PLAUSIBILITY_IS_NOT_HISTORY.
+      Un PASS et un DENY dans la même trace = la membrane démontrée
+      dans les deux directions ; E_promotion = 0 ET R_obs = 1 sur un
+      seul Hello World.
+
+MESURE ∂A/∂N : pour N ∈ {1,4,16,32}, la trace entière. Attendu :
+  H_N ↑ (sous-linéaire) · R_N = 1 partout · et A_N IDENTIQUE à tout N
+  — exactement 1 promotion (c), licenciée par le témoin unique, quel
+  que soit le nombre de goblins qui l'ont proposée. A dépend de ΔW,
+  jamais de N. C'est l'invariance d'échelle, mesurée.
+
+POURQUOI PAS 1851 : aucun témoin vérifié de ce corpus dans aucune
+lane (enregistrements OPERATOR_REPORTED seulement) — un Hello World
+1851 ne pourrait produire que des refus, donc pas de contrôle
+positif ; et l'ordre scellé place 1851 en validation OOD après indub.
