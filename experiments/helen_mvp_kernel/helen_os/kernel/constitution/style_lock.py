@@ -141,27 +141,35 @@ def chi_decoloration(tokens: tuple) -> dict:
 # ── the collision resolution: a recommendation, never a ruling ─────────
 
 def collision_resolution() -> dict:
-    """The proposed amendment that dissolves the severe clashes by
-    separating planes. Carried as CANDIDATE — the ruling is the
-    operator's admission, through the lawful door (receipted
-    amendment), never a silent supersede."""
-    return {"status": "CANDIDATE_AMENDMENT",
-            "ruled_by": "OPERATOR_ONLY",
+    """Record of how the collision was actually settled. This
+    module's own candidate — 'color = navigation only, state = word +
+    glyph' — was NOT adopted. The operator ruled differently and
+    better (T-COLOR-01): do not replace the palette, FACTOR THE STATE
+    SPACE. Colour keeps carrying epistemic phase (the Atlas stays
+    frozen, one colour => one epistemic meaning); the rival concepts
+    move to an orthogonal marker axis. The candidate here would have
+    demoted the palette to decoration to buy the same peace; the
+    ruling buys it while keeping the palette load-bearing.
+
+    Recorded as a superseded proposal, not quietly deleted: a lane
+    that erases its rejected candidates cannot be audited."""
+    return {"status": "CANDIDATE_SUPERSEDED_BY_RULING",
+            "ruled_by": "OPERATOR",
+            "ruling": "T-COLOR-01 — factor the state space; see "
+                      "wulmoji_axes.py",
+            "this_modules_candidate": ("colour = navigation only; "
+                                       "state = word + glyph"),
+            "candidate_adopted": False,
+            "why_the_ruling_is_stronger": ("it preserves colour as a "
+                                           "load-bearing epistemic "
+                                           "axis instead of demoting "
+                                           "it to decoration"),
             "silent_supersede": False,
-            "proposal": ("state = word + glyph, decoloration-"
-                         "invariant; color = navigation only; the "
-                         "Atlas keeps its state ontology as words; "
-                         "the Style Seed keeps its eight channels as "
-                         "attention"),
-            "dissolves": ("black/unknown-vs-restricted",
-                          "white/replayable-vs-unknown",
-                          "yellow/sealed-vs-candidate"),
-            "one_color_one_meaning": "holds, because color only ever "
-                                     "means attention",
-            "relay_note": "the sibling collision matrix misquoted the "
-                          "canon (yellow=sealed, red=breach in the "
-                          "Atlas); verified against "
-                          "docs/proposals/HELEN_SOURCE_ATLAS_V1.md "
-                          "in this repo",
+            "relay_note": "the sibling collision matrix first "
+                          "misquoted the canon it defended "
+                          "(yellow=sealed, red=breach per "
+                          "docs/proposals/HELEN_SOURCE_ATLAS_V1.md, "
+                          "verified in-repo); its third report "
+                          "self-corrected to a stable 4/8",
             "law": "unreceipted interpretive drift is forbidden; a "
-                   "receipted amendment is the lawful door"}
+                   "receipted operator ruling is the lawful door"}

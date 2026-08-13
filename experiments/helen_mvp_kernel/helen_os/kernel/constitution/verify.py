@@ -803,8 +803,56 @@ def _probes():
         res = stl.collision_resolution()
         return (bare["reason"] == "E_DECORATIVE_STATUS" and
                 color_only["reason"] == "E_STATE_BY_COLOR_ALONE" and
-                res["ruled_by"] == "OPERATOR_ONLY" and
+                res["candidate_adopted"] is False and
                 res["silent_supersede"] is False)
+    # ── T-COLOR-01: factor the state space, do not replace it ───────
+    import wulmoji_axes as wax
+
+    def _axes():
+        froz = wax.redefine_color("white", "void")
+        conf = wax.token("restricted")
+        dis = wax.axes_are_disjoint()
+        res = wax.resolves_the_four_collisions()
+        return (froz["reason"] == "E_COLOR_AXIS_FROZEN" and
+                conf["reason"] == "E_AXIS_CONFUSION" and
+                dis["future_collision_possible"] is False and
+                res["atlas_entries_changed"] == 0 and
+                res["one_color_one_meaning"] is True)
+    A(_probe("palette_is_factored_never_replaced",
+             "the epistemic palette is frozen and refuses "
+             "redefinition; rival concepts live on an orthogonal "
+             "marker axis; disjoint axes make future collisions "
+             "structurally impossible",
+             _axes))
+
+    # ── T-INDUB-01: a grammar must predict AND compress ─────────────
+    import indub as idb
+
+    def _indub():
+        struct = tuple({"pattern": p, "size": s, "state": st}
+                       for p in (6, 9, 10) for s in (6, 12, 18, 24)
+                       for st in ("OPEN", "TINT"))
+        held = ({"pattern": 6, "size": 12, "state": "TINT"},)
+        train = tuple(x for x in struct if x != held[0])
+        good = idb.heldout_test(train, held)
+        idio = tuple({"pattern": 100 + i, "size": 6 + i,
+                      "state": "OPEN"} for i in range(24))
+        bad = idb.heldout_test(idio[:-3], idio[-3:])
+        inst = idb.instance_is_not_theorem("string verification", True,
+                                           "conservation law")
+        return (good["verdict"] == "SUPPORTED" and
+                bad["verdict"] == "REFUTED" and
+                bad["demoted_to"] == "DESCRIPTIVE_TAXONOMY" and
+                inst["law_proven"] is False and
+                idb.corpus_status()["reachable_from_this_seat"] is
+                False)
+    A(_probe("a_grammar_must_predict_what_it_never_saw",
+             "the same inducer returns SUPPORTED on product structure "
+             "and REFUTED on an idiosyncratic family; predicting "
+             "without compressing is HOLD; a verified instance is "
+             "never an architecture theorem",
+             _indub))
+
     A(_probe("beautiful_seal_is_not_admission",
              "a status word without its witness refuses; no state is "
              "encoded by color alone; the color-grammar amendment is "

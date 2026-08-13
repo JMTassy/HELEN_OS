@@ -89,12 +89,16 @@ def test_no_tokens_is_refused():
 
 # ── the collision resolution stays the operator's to admit ─────────────
 
-def test_the_resolution_is_a_candidate_never_a_silent_supersede():
+def test_this_modules_candidate_was_not_adopted_and_says_so():
+    """The operator ruled differently (T-COLOR-01). A lane that
+    erases its rejected candidates cannot be audited, so the
+    supersede is recorded, not deleted."""
     v = collision_resolution()
-    assert v["status"] == "CANDIDATE_AMENDMENT"
-    assert v["ruled_by"] == "OPERATOR_ONLY"
+    assert v["status"] == "CANDIDATE_SUPERSEDED_BY_RULING"
+    assert v["candidate_adopted"] is False
+    assert v["ruled_by"] == "OPERATOR"
     assert v["silent_supersede"] is False
-    assert len(v["dissolves"]) == 3
+    assert "wulmoji_axes" in v["ruling"]
 
 
 def test_the_relay_error_in_the_collision_report_is_on_record():
