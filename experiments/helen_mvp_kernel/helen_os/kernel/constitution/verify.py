@@ -953,6 +953,47 @@ def _probes():
              "check that makes a typed institutional runtime",
              _ir))
 
+    # ── HELEN VISION V2: I -> G_R -> G_E -> G_W, never I -> G_W ─────
+    import vision_ir as vir
+
+    def _vision():
+        r = vir.packet(I="img:x", kappa_M="PHOTOGRAPH",
+                       kappa_F="PROMOTES", rho="unverified", t=None,
+                       s="scan", u="operator")
+        bare = vir.climb(r, frozenset(), visual_confidence=0.99)
+        unsure = vir.climb(r, frozenset(), visual_confidence=0.01)
+        held = vir.per_matrix(
+            tuple({"from": "R", "to": "W", "bridged": False,
+                   "answered": False} for _ in range(4)))
+        launder = vir.per_matrix(
+            ({"from": "R", "to": "W", "bridged": False,
+              "answered": True},))
+        return (r["ok"] is True and r["emits_world_claim"] is False and
+                "G_W" not in r and
+                vir.write_world_claim(
+                    r, "phi3_referent_existed_by_date")["reason"] ==
+                "E_VISION_MAY_NOT_WRITE_G_W" and
+                vir.warrant(r, "phi3_referent_existed_by_date",
+                            False, False, False)["reason"] ==
+                "E_INCOMPLETE_WARRANT" and
+                bare["rungs"]["phi1_visually_represented"] ==
+                "SUPPORTED" and
+                all(bare["rungs"][p] == "UNSUPPORTED"
+                    for p in vir.LADDER[1:]) and
+                bare["rungs"] == unsure["rungs"] and
+                all(vir.confidence_independence(p, 0.05, 0.99)
+                    ["orthogonal"] for p in vir.LADDER) and
+                held["critical_PER_R_to_W"] == 0.0 and
+                held["verdict"] == "FAIL_COVERAGE" and
+                launder["verdict"] == "FAIL_LAUNDERING")
+    A(_probe("no_perceptual_property_mints_a_world_state",
+             "the vision packet has no world field to write; "
+             "(PHOTOGRAPH, PROMOTES) is ordinary and buys no "
+             "observation; the honest ladder is one yes and four noes "
+             "at ANY visual confidence; and PER_R->W = 0 bought by "
+             "answering nothing fails the coverage floor",
+             _vision))
+
     A(_probe("a_projection_is_not_a_measurement",
              "a table of projected values may not enter Sigma_N; "
              "authority rising without a witness or a VALID "
