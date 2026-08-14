@@ -965,6 +965,44 @@ def _probes():
              "check that makes a typed institutional runtime",
              _ir))
 
+    # ── receipt integrity: the membrane on the kernel's metadata ────
+    import receipt_integrity as rin
+
+    def _integrity():
+        untyped = rin.type_hex("16ea385e82213c7c", None)
+        unrun = rin.re_derive("C_test", False, False)
+        unscoped = rin.receipt_integrity(True, True, {})
+        vote = rin.aggregate({k: "PASS" for k in rin.CLAIM_CLASSES},
+                             as_vote=True)
+        held = dict({k: "PASS" for k in rin.CLAIM_CLASSES},
+                    C_pii="PENDING")
+        digest_only = rin.proof_carrying_receipt(claim="c",
+                                                 digest="x")
+        short_seal = rin.seal(frozenset({"intent", "test",
+                                         "post_mutation"}))
+        return (untyped["reason"] == "E_UNTYPED_HEX" and
+                unrun["status"] == "FABRICATED_UNTIL_WITNESSED" and
+                unscoped["reason"] == "E_UNSCOPED_CLAIM" and
+                vote["reason"] == "E_VOTE_ACROSS_CLASSES" and
+                rin.aggregate(held)["verdict"] ==
+                "PARTIALLY_DISCHARGED" and
+                rin.aggregate({k: "PASS" for k in
+                               rin.CLAIM_CLASSES})["verdict"] ==
+                "DISCHARGED" and
+                digest_only["reason"] == "E_RECIPE_LESS_RECEIPT" and
+                short_seal["reason"] == "E_INCOMPLETE_SEAL" and
+                rin.reflexive_law()["licensed"] is False)
+    A(_probe("receipt_text_is_not_a_rederivable_receipt",
+             "an untyped hex may not be verified as anything; an "
+             "unrun recipe leaves the claim FABRICATED_UNTIL_"
+             "WITNESSED; a re-derivable claim without its scope has "
+             "no integrity; classes never aggregate as a vote and "
+             "one pending class holds the audit open; a digest "
+             "without its recipe is not a receipt; and a seal needs "
+             "all four witnesses — the kernel's membrane applies to "
+             "its own metadata",
+             _integrity))
+
     # ── vNext round 2: workforce hidden, not erased ─────────────────
     import workforce_runtime as wfr
 

@@ -39,6 +39,28 @@ passing tests — both numbers are real, they count different things.
 
 Cost: 4 Haiku agents, ~138k subagent tokens total, ~1.5 min wall.
 
+## AMENDMENT — TYPED PER-CLAIM TABLE (operator ruling: receipt
+integrity becomes kernel-level; encoded in receipt_integrity.py)
+
+Aggregation is BY CLASS, never by vote. Timeline note: the operator's
+"G3 PENDING / PARTIALLY_DISCHARGED" grading was correct at writing
+time; G3 landed clean afterwards, closing the last class.
+
+| claim | type | derivation recipe | observed | scope | status |
+|---|---|---|---|---|---|
+| "917 tests green" | C_test | `python -m pytest helen_os/kernel/constitution -q` | 917 passed | suite=constitution · checkout=helen-conquest · commit=tip at run · env=py3.11 container · gate=v82 | PASS |
+| "gate 82/82 · receipt 65e58753" | C_gate | `python -m helen_os.kernel.constitution` ×2 | 82/82 CONSTITUTION_HELD · receipt byte-identical | same as above | PASS |
+| "commit refs in research/ resolve" | C_commit | type first, then `git cat-file -t` on GIT_HASH-typed only | 66836cb→commit · 7 hexes typed GMAIL_THREAD_ID, not run through git | repo=helen-conquest · research/*.md | PASS |
+| "NO_PII in research/" | C_pii | 4-class pattern sweep | 0 email · 0 phone · 2 figures (ILLUSTRATIVE/technical) · 0 names | research/ only; vault & chat out of scope | PASS |
+| "V0 canon intact" | C_canon | `node selftest.js index.html` + marker grep | exit 0 · 29/29 · 2 markers · clean worktree | repo=goblin-warren · tip=00824f3 | PASS |
+
+    per-class: C_test PASS · C_gate PASS · C_commit PASS ·
+               C_pii PASS · C_canon PASS
+    verdict:   DISCHARGED (by class, not by vote)
+
+ReDerivable !=> UniversallyValid: every PASS above is scoped to the
+checkout and environment named in its row, at run time only.
+
 ## STANDING LAW (from the incident)
 
 Any "sealed/committed" sentence from any lane is graded
