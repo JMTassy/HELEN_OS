@@ -965,6 +965,45 @@ def _probes():
              "check that makes a typed institutional runtime",
              _ir))
 
+    # ── editor doctrine: rename lawful iff witnessed ────────────────
+    import editor_membrane as edm
+
+    def _editor():
+        unsealed = edm.rename("agent IA", frozenset())
+        sealed = edm.rename("agent IA",
+                            frozenset({"versioned_release"}))
+        repo = edm.continuity_package(frozenset({"source_code"}))
+        full = edm.continuity_package(
+            frozenset(edm.CONTINUITY_PACKAGE))
+        untested = edm.takeover_test(full, False, False, None)
+        passed = edm.takeover_test(full, True, True, 36)
+        rel = edm.escrow_release("liquidation", True)
+        cert = edm.certification_claim("p", "IN_PROGRESS", True)
+        hard = edm.gateway_substitution("any", gateway_present=False)
+        return (unsealed["reason"] == "E_SEAL_WITHOUT_ADMISSION" and
+                sealed["ok"] is True and
+                repo["reason"] == "E_SOURCE_IS_NOT_RECOVERABILITY" and
+                untested["reason"] == "E_UNTESTED_CONTINUITY" and
+                passed["key_person_risk_reduced"] is True and
+                rel["ip_transferred"] is False and
+                cert["reason"] == "E_NARRATIVE_SKIP" and
+                edm.certification_claim("p", "QUALIFIED", False)[
+                    "reason"] == "E_CERT_SCOPE_OVERREACH" and
+                hard["reason"] == "E_HARDCODED_VENDOR" and
+                edm.compliance_non_entailment()["reason"] ==
+                "E_INFRA_SECURITY_IS_NOT_APP_COMPLIANCE" and
+                edm.key_person_status(True, True, False)[
+                    "eliminated_claimable"] is False)
+    A(_probe("a_rename_without_its_witness_is_a_seal_without_admission",
+             "calling an agent an application is lawful only against "
+             "a versioned release; a repo alone is not "
+             "recoverability; untested continuity is an untested "
+             "class; escrow release transfers no IP; IN_PROGRESS "
+             "sold as QUALIFIED is a narrative skip; a "
+             "qualification never covers the catalogue; and without "
+             "a gateway the application IS the model vendor",
+             _editor))
+
     # ── J3 harvest: decision boundaries, all CANDIDATE ──────────────
     import decision_boundaries as dbd
 
