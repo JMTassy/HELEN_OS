@@ -1107,6 +1107,82 @@ def _probes():
              "the honestly-paired warrants still pass",
              _rebind))
 
+    # ── Phase A item 2: the grantor may not be the grantee ──────────
+    import identity_runtime as idr
+
+    def _identity():
+        s = idr.boot()
+        s, _ = idr.register_identity(s, "admin")
+        s, _ = idr.register_identity(s, "user")
+        s, _ = idr.define_role(s, "iam_admin", ("iam.role.bind",))
+        s, _ = idr.define_role(s, "reader", ("store.read",))
+        s, _ = idr.bootstrap_bind(s, "admin", "iam_admin", "A")
+        s, ra = idr.open_session(s, "admin")
+        s, ru = idr.open_session(s, "user")
+        _, selfg = idr.bind_role(s, ra["session"], "admin", "reader",
+                                 "A")
+        s, _ = idr.bind_role(s, ra["session"], "user", "reader", "A")
+        s, okA = idr.authorize(s, ru["session"], "store.read", "A")
+        _, inB = idr.authorize(s, ru["session"], "store.read", "B")
+        _, wcap = idr.authorize(s, ru["session"], "store.write", "A")
+        _, forged = idr.authorize(s, "f" * 16, "store.read", "A")
+        s, _ = idr.revoke_role(s, ru["session"], "user", "reader",
+                               "A")
+        _, after = idr.authorize(s, ru["session"], "store.read", "A")
+        _, god = idr.define_role(idr.boot(), "god", ("ALL",))
+        return (selfg["reason"] == "E_SELF_GRANT" and
+                okA["ok"] is True and
+                inB["reason"] == wcap["reason"] ==
+                "E_NOT_AUTHORIZED" and
+                forged["reason"] == "E_UNKNOWN_SESSION" and
+                after["ok"] is False and
+                god["reason"] == "E_AMBIENT_AUTHORITY" and
+                idr.rbac_invariant(s)["holds"] is True)
+    A(_probe("the_grantor_may_not_be_the_grantee",
+             "self-elevation is refused even holding iam.role.bind; "
+             "a binding in tenant A licenses nothing in tenant B and "
+             "cross-tenant and missing-capability are one "
+             "indistinguishable answer; a forged session is unknown; "
+             "revocation is immediate and self-revocation needs no "
+             "permission; no role carries ambient authority; and the "
+             "RBAC invariant is re-derivable on the real state",
+             _identity))
+
+    # ── layered frontier: conservation of minting rights ────────────
+    import layered_frontier as lfr
+
+    def _frontier():
+        nd = {f: "0" for f in lfr.FRONTIERS if f != "F_S"}
+        good = lfr.transition("substrate", "STALLED", "COMPLETE",
+                              {"F_S": 1}, {"F_S": "byte_growth"},
+                              nd, "stat at t1/t2")
+        unlic = lfr.transition("substrate", "a", "b", {"F_S": 1}, {},
+                               nd, "r")
+        nodelta = lfr.transition("substrate", "a", "b", {"F_S": 1},
+                                 {"F_S": "l"}, {}, "r")
+        press = lfr.pressure_conservation(99.0, 0, 0)
+        cross = lfr.cross_advance("F_S", "F_I", licensed=False)
+        m = lfr.mint("representation", "empirical_warrant")
+        flat = lfr.elasticity(10, 10, 1.0, 3.0)
+        return (good["four_questions_answered"] is True and
+                unlic["reason"] == "E_UNLICENSED_TRANSITION" and
+                nodelta["reason"] == "E_MISSING_NON_DELTAS" and
+                press["delta_F_E"] == 0 and
+                press["reason"] == "E_PRESSURE_IS_NOT_EVIDENCE" and
+                cross["reason"] == "E_UNLICENSED_COUPLING" and
+                m["reason"] == "E_MINTING_RIGHTS_VIOLATION" and
+                lfr.epistemic_pressure(100, 1)["Pi_C"] == 100.0 and
+                flat["economically_useless"] is True)
+    A(_probe("progress_at_one_layer_cannot_mint_the_next",
+             "every nonzero frontier delta needs its license and "
+             "every unmoved frontier its NON_DELTA entry; a hundred "
+             "representations of one root are pressure, not "
+             "evidence, and move the epistemic frontier by zero; "
+             "representation may not mint a warrant; downloaded does "
+             "not entail loadable; and flat yield at tripled cost is "
+             "measured as economically useless",
+             _frontier))
+
     # ── receipt integrity: the membrane on the kernel's metadata ────
     import receipt_integrity as rin
 
