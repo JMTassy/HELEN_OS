@@ -198,6 +198,100 @@ def first_witness(results: dict) -> dict:
                    "instrument first, hypothesize second"}
 
 
+# ── the three handoff corrections, encoded ─────────────────────────────
+
+def observational_classes(transitivity_witnessed: bool) -> dict:
+    """Correction 1: an epsilon-tolerance relation (d_o <= eps_o) is
+    reflexive and symmetric but NOT transitive in general — chains of
+    near-misses connect distant hypotheses. Until transitivity is
+    demonstrated for the actual (d, eps), the object is
+    OBSERVATIONAL CLUSTERING, and the word 'quotient' in its strict
+    algebraic sense is refused."""
+    if not transitivity_witnessed:
+        return {"may_call_quotient": False,
+                "correct_name": "observational_clustering",
+                "reason": "E_QUOTIENT_WITHOUT_TRANSITIVITY",
+                "law": "a proximity relation does not earn algebraic "
+                       "status by notation; classes without "
+                       "transitivity are clusters"}
+    return {"may_call_quotient": True,
+            "note": "transitivity witnessed for this (d, eps)"}
+
+
+PERSISTENCE_MODES = ("seed_change", "prompt_reformulation",
+                     "independent_hal_reclassification")
+
+
+def persistence(survived: frozenset, tau: int = 1) -> dict:
+    """Correction 2: a class is STABLE only if it survives at least
+    tau independent perturbations. A model must not win on one
+    idiosyncratic hypothesis produced once."""
+    unknown = sorted(set(survived) - set(PERSISTENCE_MODES))
+    if unknown:
+        return {"stable": None, "reason": "E_UNKNOWN_PERTURBATION",
+                "unknown": tuple(unknown)}
+    n = len(survived)
+    return {"stable": n >= tau, "survived": tuple(sorted(survived)),
+            "persistence": n, "tau": tau,
+            "reason": None if n >= tau else "E_ONE_SHOT_CLASS"}
+
+
+def eta_q(delta_q_stable: int, ig_x_star: float, cost: float,
+          latency: float, alpha: float = 1.0,
+          lam: float = 1.0) -> dict:
+    """eta_Q = (Delta Q_stable + alpha*IG(x*)) / (Cost + lambda*Lat)."""
+    denom = cost + lam * latency
+    if denom <= 0:
+        raise ValueError("E_FREE_LUNCH")
+    return {"eta_Q": round((delta_q_stable + alpha * ig_x_star) /
+                           denom, 6)}
+
+
+def seat_criterion(delta_q_stable: int, eta_value: float,
+                   eta_min: float) -> dict:
+    """The sharpened acceptance: stable marginal coverage AND
+    efficiency above floor — and still zero authority."""
+    earned = delta_q_stable > 0 and eta_value > eta_min
+    return {"seat_earned": earned, "authority_delta": 0,
+            "reason": None if earned else (
+                "E_NO_STABLE_COVERAGE" if delta_q_stable <= 0
+                else "E_EFFICIENCY_BELOW_FLOOR")}
+
+
+# ── the two frontiers (handoff: F*_I != F*_S) ──────────────────────────
+
+INSTRUMENT_CLAIMS = ("parse_yield", "execution_yield", "schema_valid",
+                     "model_loaded", "latency", "memory")
+SCIENTIFIC_CLAIMS = ("reconstruction", "generalization",
+                     "identifiability", "causality", "mechanism")
+
+
+def frontier_assignment(claim_kind: str) -> dict:
+    """parse_yield = 1 advances the INSTRUMENT frontier and nothing
+    else. Crediting an instrument pass to the scientific frontier is
+    the promotion this split exists to refuse."""
+    if claim_kind in INSTRUMENT_CLAIMS:
+        return {"frontier": "F_star_instrument", "claim": claim_kind}
+    if claim_kind in SCIENTIFIC_CLAIMS:
+        return {"frontier": "F_star_scientific", "claim": claim_kind}
+    return {"frontier": None, "reason": "E_UNKNOWN_CLAIM_KIND"}
+
+
+def credit(claim_kind: str, credited_to: str) -> dict:
+    a = frontier_assignment(claim_kind)
+    if a["frontier"] is None:
+        return a
+    if credited_to != a["frontier"]:
+        return {"credited": False,
+                "reason": "E_INSTRUMENT_IS_NOT_SCIENCE"
+                          if a["frontier"] == "F_star_instrument"
+                          else "E_WRONG_FRONTIER",
+                "law": "ParseableOutput does not entail "
+                       "ScientificValidity; the two frontiers move "
+                       "on different witnesses"}
+    return {"credited": True, "frontier": credited_to}
+
+
 # ── vendor claims and the promotion gate ───────────────────────────────
 
 def vendor_claim(claim: str) -> dict:

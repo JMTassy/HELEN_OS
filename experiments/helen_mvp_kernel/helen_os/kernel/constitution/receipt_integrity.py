@@ -133,22 +133,27 @@ def re_derive(claim_class: str, recipe_ran: bool,
             "recipe": CLAIM_CLASSES[claim_class]}
 
 
-def receipt_integrity(typed: bool, rederivable: bool,
-                      scope: dict) -> dict:
-    """RI(c) = T(c) and D(c) and S(c). ReDerivable !=>
-    UniversallyValid — the scope names where the claim is true."""
+def receipt_integrity(typed: bool, rederivable: bool, scope: dict,
+                      dependencies_declared: bool) -> dict:
+    """RI(c) = T(c) and D(c) and S(c) and C(c) — the fourth conjunct
+    (handoff ruling): a re-derivation that silently depends on
+    undeclared state (an env var, a cache, a sibling process) is not
+    a recipe, it is a coincidence that repeats."""
     missing = sorted(set(SCOPE_FIELDS) - set(scope))
     scoped = not missing
-    ok = typed and rederivable and scoped
+    ok = typed and rederivable and scoped and dependencies_declared
     return {"RI": ok,
             "T": typed, "D": rederivable, "S": scoped,
+            "C": dependencies_declared,
             "missing_scope": tuple(missing),
             "reason": None if ok else (
                 "E_UNTYPED_CLAIM" if not typed else
                 "E_NOT_REDERIVABLE" if not rederivable else
-                "E_UNSCOPED_CLAIM"),
+                "E_UNSCOPED_CLAIM" if not scoped else
+                "E_UNDECLARED_DEPENDENCIES"),
             "law": "a claim can be perfectly re-derivable and valid "
-                   "only under a precise scope"}
+                   "only under a precise scope, with its "
+                   "dependencies declared"}
 
 
 # ── aggregation by class, never by vote ────────────────────────────────

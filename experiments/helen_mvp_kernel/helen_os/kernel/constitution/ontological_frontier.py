@@ -91,6 +91,11 @@ ROLES = {
               "cross": True, "compress": False, "promotional": True},
     "QWEN":  {"propose": False, "attack": False, "witness": False,
               "cross": False, "compress": True, "promotional": False},
+    # experiment-only: audits that model comparisons share prompt,
+    # QID, packet, schema, thinking mode, context — an attack surface
+    # on the INSTRUMENT, never a witness and never a gate
+    "HAL_I": {"propose": False, "attack": True, "witness": False,
+              "cross": False, "compress": False, "promotional": False},
 }
 
 POWERS = ("propose", "attack", "witness", "cross", "compress")

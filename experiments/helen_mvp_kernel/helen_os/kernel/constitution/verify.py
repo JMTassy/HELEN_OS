@@ -1113,7 +1113,9 @@ def _probes():
     def _integrity():
         untyped = rin.type_hex("16ea385e82213c7c", None)
         unrun = rin.re_derive("C_test", False, False)
-        unscoped = rin.receipt_integrity(True, True, {})
+        unscoped = rin.receipt_integrity(True, True, {}, True)
+        undeps = rin.receipt_integrity(
+            True, True, {k: "x" for k in rin.SCOPE_FIELDS}, False)
         vote = rin.aggregate({k: "PASS" for k in rin.CLAIM_CLASSES},
                              as_vote=True)
         held = dict({k: "PASS" for k in rin.CLAIM_CLASSES},
@@ -1125,6 +1127,7 @@ def _probes():
         return (untyped["reason"] == "E_UNTYPED_HEX" and
                 unrun["status"] == "FABRICATED_UNTIL_WITNESSED" and
                 unscoped["reason"] == "E_UNSCOPED_CLAIM" and
+                undeps["reason"] == "E_UNDECLARED_DEPENDENCIES" and
                 vote["reason"] == "E_VOTE_ACROSS_CLASSES" and
                 rin.aggregate(held)["verdict"] ==
                 "PARTIALLY_DISCHARGED" and

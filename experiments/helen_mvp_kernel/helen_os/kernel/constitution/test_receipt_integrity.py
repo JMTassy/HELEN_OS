@@ -80,18 +80,29 @@ def _scope():
 
 
 def test_rederivable_does_not_entail_universally_valid():
-    v = receipt_integrity(typed=True, rederivable=True, scope={})
+    v = receipt_integrity(typed=True, rederivable=True, scope={},
+                          dependencies_declared=True)
     assert v["RI"] is False
     assert v["reason"] == "E_UNSCOPED_CLAIM"
     assert "gate_version" in v["missing_scope"]
 
 
-def test_all_three_parts_or_no_integrity():
-    assert receipt_integrity(True, True, _scope())["RI"] is True
-    assert receipt_integrity(False, True, _scope())["reason"] == \
-        "E_UNTYPED_CLAIM"
-    assert receipt_integrity(True, False, _scope())["reason"] == \
-        "E_NOT_REDERIVABLE"
+def test_all_four_parts_or_no_integrity():
+    assert receipt_integrity(True, True, _scope(), True)["RI"] is True
+    assert receipt_integrity(False, True, _scope(), True)["reason"] \
+        == "E_UNTYPED_CLAIM"
+    assert receipt_integrity(True, False, _scope(), True)["reason"] \
+        == "E_NOT_REDERIVABLE"
+
+
+def test_undeclared_dependencies_break_integrity():
+    """The fourth conjunct: a re-derivation silently depending on
+    undeclared state is a coincidence that repeats, not a recipe."""
+    v = receipt_integrity(True, True, _scope(),
+                          dependencies_declared=False)
+    assert v["RI"] is False
+    assert v["C"] is False
+    assert v["reason"] == "E_UNDECLARED_DEPENDENCIES"
 
 
 # ── aggregation by class, never by vote ────────────────────────────────

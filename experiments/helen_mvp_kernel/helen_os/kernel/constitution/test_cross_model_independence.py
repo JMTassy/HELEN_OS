@@ -173,3 +173,59 @@ def test_deterministic():
     assert cmi.canon(delta_q_useful(frozenset({"a"}),
                                     frozenset({"b"}))) == \
         cmi.canon(delta_q_useful(frozenset({"a"}), frozenset({"b"})))
+
+
+# ── the three handoff corrections ──────────────────────────────────────
+
+def test_a_proximity_relation_is_not_a_quotient():
+    from cross_model_independence import observational_classes
+    v = observational_classes(transitivity_witnessed=False)
+    assert v["may_call_quotient"] is False
+    assert v["reason"] == "E_QUOTIENT_WITHOUT_TRANSITIVITY"
+    assert v["correct_name"] == "observational_clustering"
+    assert observational_classes(True)["may_call_quotient"] is True
+
+
+def test_a_one_shot_class_is_not_stable():
+    from cross_model_independence import persistence
+    v = persistence(frozenset(), tau=1)
+    assert v["stable"] is False
+    assert v["reason"] == "E_ONE_SHOT_CLASS"
+    ok = persistence(frozenset({"seed_change"}), tau=1)
+    assert ok["stable"] is True
+    assert persistence(frozenset({"vibes"}))["reason"] == \
+        "E_UNKNOWN_PERTURBATION"
+
+
+def test_the_seat_needs_stability_and_efficiency():
+    from cross_model_independence import eta_q, seat_criterion
+    e = eta_q(delta_q_stable=2, ig_x_star=1.0, cost=2.0, latency=1.0)
+    assert e["eta_Q"] == 1.0
+    assert seat_criterion(2, 1.0, eta_min=0.5)["seat_earned"] is True
+    assert seat_criterion(0, 9.9, 0.5)["reason"] == \
+        "E_NO_STABLE_COVERAGE"
+    assert seat_criterion(2, 0.1, 0.5)["reason"] == \
+        "E_EFFICIENCY_BELOW_FLOOR"
+    assert seat_criterion(2, 1.0, 0.5)["authority_delta"] == 0
+    import pytest as _pt
+    with _pt.raises(ValueError, match="E_FREE_LUNCH"):
+        eta_q(1, 1.0, 0.0, 0.0)
+
+
+def test_parse_yield_never_advances_the_scientific_frontier():
+    from cross_model_independence import credit, frontier_assignment
+    assert frontier_assignment("parse_yield")["frontier"] == \
+        "F_star_instrument"
+    v = credit("parse_yield", "F_star_scientific")
+    assert v["credited"] is False
+    assert v["reason"] == "E_INSTRUMENT_IS_NOT_SCIENCE"
+    assert credit("identifiability", "F_star_scientific")[
+        "credited"] is True
+
+
+def test_hal_i_audits_the_instrument_and_holds_no_other_power():
+    import ontological_frontier as onf
+    assert onf.role_may("HAL_I", "attack")["licensed"] is True
+    for p in ("propose", "witness", "cross", "compress"):
+        assert onf.role_may("HAL_I", p)["licensed"] is False
+    assert onf.ROLES["HAL_I"]["promotional"] is False
