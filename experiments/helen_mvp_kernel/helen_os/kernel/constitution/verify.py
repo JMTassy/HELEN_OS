@@ -1041,6 +1041,43 @@ def _probes():
              "and cross-slice supersession still pass",
              _readrace))
 
+    # ── CROSS_MODEL_INDEPENDENCE_V0: frozen before observation ──────
+    import cross_model_independence as cmi
+
+    def _crossmodel():
+        axes = cmi.independence_axes(2, 2, 1)
+        prose = cmi.delta_q_useful(frozenset({"a"}),
+                                   frozenset({"a", "b"}))
+        mixed = cmi.decoding_regime({"t": 0.7}, {"t": 1.0},
+                                    "E1_controlled")
+        base = cmi.baseline_config(True, True, False)
+        gate0 = cmi.promotion_gate(0, True, True)
+        gate2 = cmi.promotion_gate(2, True, True)
+        return (axes["independent_proposers"] is True and
+                axes["independent_witnesses"] is False and
+                cmi.collapse_to_neff(axes)["reason"] ==
+                "E_COLLAPSED_AXES" and
+                cmi.useful(True, True, True, None)["reason"] ==
+                "E_NO_DISCRIMINATOR" and
+                prose["verdict"] == "NO_COVERAGE_BOUGHT" and
+                mixed["reason"] == "E_MIXED_DECODING_REGIMES" and
+                len(base["refusals"]) == 3 and
+                cmi.first_witness({"model_loaded": True})["reason"]
+                == "E_UNPROBED_MODEL" and
+                cmi.vendor_claim("x")["grade"] == "REPORTED_EXTERNAL"
+                and gate0["reason"] == "E_NO_MARGINAL_COVERAGE" and
+                gate2["seat_earned"] is True and
+                gate2["authority_delta"] == 0)
+    A(_probe("a_different_lineage_does_not_make_n_eff_two",
+             "two proposers over one corpus are one witness and the "
+             "three axes never collapse; a surviving class without "
+             "its discriminator is admiration; controlled and native "
+             "decoding never mix silently; thinking, hidden memory "
+             "and context width are refused at baseline; an unprobed "
+             "model never enters the research graph; and no branch "
+             "of the promotion gate grants authority",
+             _crossmodel))
+
     # ── I_7: candidate #10, witnessed then closed ───────────────────
     def _fold():
         import global_admissibility as gad7
