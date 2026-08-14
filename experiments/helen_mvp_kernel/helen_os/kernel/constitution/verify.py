@@ -1148,6 +1148,53 @@ def _probes():
              "RBAC invariant is re-derivable on the real state",
              _identity))
 
+    # ── Phase A item 5: the ground does not move under a client ─────
+    import api_runtime as apr
+
+    def _api():
+        eps = {"get_doc": {"capability": "docs.read",
+                           "request": {"id": "string",
+                                       "verbose": "bool"},
+                           "required": ("id",),
+                           "response": {"id": "string",
+                                        "title": "string"}}}
+        s = apr.boot()
+        s, defined = apr.define_contract(s, "1.0", eps)
+        thin = {"get_doc": {**eps["get_doc"],
+                            "response": {"id": "string"}}}
+        _, brk = apr.evolve(s, "1.0", "1.1", thin)
+        _, gone = apr.evolve(s, "1.0", "2.0", {})
+        s2, _ = apr.deprecate(s, "1.0", "get_doc", "2.0")
+        _, lawful = apr.evolve(s2, "1.0", "2.0", {})
+        ghost = apr.request(s, "1.0", "nope", {}, True)
+        denied = apr.request(s, "1.0", "get_doc", {"id": "x"}, False)
+        leak = apr.respond(s, "1.0", "get_doc",
+                           {"id": "x", "title": "t",
+                            "goblin_trace": "HER"})
+        thin_resp = apr.respond(s, "1.0", "get_doc", {"id": "x"})
+        d1 = apr.contract_digest(s, "1.0")["digest"]
+        s3 = apr.boot()
+        s3, _ = apr.define_contract(s3, "1.0", eps)
+        return (defined["ok"] is True and
+                brk["reason"] == "E_BREAKING_CHANGE_IN_MINOR" and
+                gone["reason"] == "E_REMOVAL_WITHOUT_DEPRECATION"
+                and lawful["ok"] is True and
+                ghost["reason"] == denied["reason"] == "E_NOT_FOUND"
+                and leak["reason"] ==
+                "E_UNDECLARED_RESPONSE_FIELD" and
+                thin_resp["reason"] == "E_INCOMPLETE_RESPONSE" and
+                apr.contract_digest(s3, "1.0")["digest"] == d1)
+    A(_probe("the_ground_does_not_move_under_a_client",
+             "the contract is content-addressed and its digest "
+             "reproduces; dropping a response field in a minor is a "
+             "breaking change; removal without deprecation dies even "
+             "across a major; unknown endpoint and unauthorized are "
+             "one indistinguishable answer; and the boundary is "
+             "bidirectional — an internal goblin_trace field "
+             "physically cannot cross the wire, and a declared field "
+             "cannot be silently absent",
+             _api))
+
     # ── Phase A item 4: tampering is arithmetic, not policy ─────────
     import audit_runtime as aur
 
