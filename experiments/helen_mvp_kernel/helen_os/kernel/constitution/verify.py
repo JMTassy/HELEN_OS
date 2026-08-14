@@ -965,6 +965,44 @@ def _probes():
              "check that makes a typed institutional runtime",
              _ir))
 
+    # ── J3 harvest: decision boundaries, all CANDIDATE ──────────────
+    import decision_boundaries as dbd
+
+    def _boundaries():
+        skip = dbd.state_transition("REQUESTED", "CONTRACTED", "w")
+        rej = dbd.qualify(0.9, 0.8, 0.5, evsi=100.0, probe_cost=1.0)
+        unpinned = dbd.governance_debt(((0.9, 0.1, 1.0),),
+                                       {"frozen": False})
+        hind = dbd.surface_point("HOLD", {"eventual_outcome": 1},
+                                 "thread:x")
+        conf = dbd.reinforcement(True, True)
+        neg = dbd.reinforcement(True, False, survived=True)
+        return (skip["reason"] == "E_NARRATIVE_SKIP" and
+                dbd.typed_amount("REQUESTED", True, None)["reason"] ==
+                "E_UNTYPED_AMOUNT" and
+                rej["act"] == "REJECT" and
+                rej["checked_first"] == "U_d" and
+                unpinned["reason"] == "E_UNPINNED_CODER" and
+                "D_gov" not in unpinned and
+                dbd.delta_v(10.0, 9.0, 2.0)["keep_external"] is False
+                and hind["reason"] == "E_HINDSIGHT_VARIABLE" and
+                dbd.engine_task("recommend what to do")["reason"] ==
+                "E_OUT_OF_SCOPE" and
+                conf["reinforced"] is False and conf["accumulates"]
+                and neg["reinforced"] is True and
+                dbd.promote_to_canon("anything")["reason"] ==
+                "E_CANDIDATE_IS_NOT_CANON")
+    A(_probe("confirmations_accumulate_and_never_reinforce",
+             "no commercial amount without state, date and "
+             "provenance, and no arrow skipped by narration; "
+             "disqualifying uncertainty is checked before any probe "
+             "budget; governance debt yields no number without a "
+             "pinned coder; a surface learned on hindsight variables "
+             "is refused; the engine may not recommend; and a "
+             "candidate method is reinforced only by surviving "
+             "predictors-present-effect-absent",
+             _boundaries))
+
     # ── TEST 1: PASS/PASS locally, FAIL globally ────────────────────
     import global_admissibility as gad
 
