@@ -291,6 +291,52 @@ def I5_warrant_binding(edges: tuple) -> dict:
                    "never the bearer"}
 
 
+# ── I_6: read-time consistency (swarm candidate #7, witnessed gap) ─────
+
+def I6_read_consistency(edges: tuple) -> dict:
+    """Read-time contradiction, refused. Two locally-lawful edges
+    asserting OPPOSITE bits for the same slot in the same time slice
+    passed I_1..I_5 and global_validate at commit f75b427 — and the
+    observed state depended on read order (1->2 gave mu=1, 2->1 gave
+    mu=0). A graph whose truth is a function of traversal order is
+    not a state; it is a race wearing one.
+
+    Scope, deliberately narrow: contradiction = same slot, SAME time
+    slice, different bits. Opposite bits in different slices are
+    lawful supersession here — the two-slices-at-once failure is
+    candidate #10 (temporal folding), a separate fixture. Redundant
+    identical assertions are not contradiction."""
+    by_slot_t: dict = {}
+    for e in edges:
+        if not e.get("ok"):
+            continue
+        a = e.get("asserts")
+        if a is None:
+            continue
+        slot, bit, t = a
+        by_slot_t.setdefault((slot, t), set()).add(bit)
+    bad = sorted(f"{slot}@t{t}" for (slot, t), bits
+                 in by_slot_t.items() if len(bits) > 1)
+    # the commutativity witness, computed not asserted
+    def fold(es):
+        m = {}
+        for e in es:
+            a = e.get("asserts")
+            if a:
+                m[a[0]] = a[1]
+        return m
+    ordered = tuple(e for e in edges if e.get("ok"))
+    commutes = fold(ordered) == fold(ordered[::-1])
+    return {"invariant": "I_6",
+            "verdict": FAIL if bad else PASS,
+            "contradicted_slots": tuple(bad),
+            "reads_commute": commutes,
+            "reason": "E_READ_TIME_CONTRADICTION" if bad else None,
+            "law": "a graph whose observed state depends on read "
+                   "order is a race wearing a state; write conflicts "
+                   "are one door, read contradiction is another"}
+
+
 # ── GlobalValidate: consumes the assembled graph ───────────────────────
 
 def global_validate(edges: tuple, roots: frozenset = frozenset(),
@@ -304,7 +350,8 @@ def global_validate(edges: tuple, roots: frozenset = frozenset(),
                   I2_foundationally_acyclic(edges),
                   I3_no_self_supporting_root(edges, roots),
                   I4_temporal_persistence(edges),
-                  I5_warrant_binding(edges))
+                  I5_warrant_binding(edges),
+                  I6_read_consistency(edges))
     failed = [i for i in invariants if i["verdict"] == FAIL]
     undef = [i for i in invariants if i["verdict"] == UNDEFINED]
     verdict = FAIL if failed else (UNDEFINED if undef else PASS)
@@ -378,6 +425,29 @@ def fixture_honest_warrant() -> tuple:
     e2["value"], e2["warrant"] = y, mint_warrant("kappa2->E_2", y)
     return (gedge("A", "kappa", MINT, token="kappa"), e1,
             gedge("A2", "kappa2", MINT, token="kappa2"), e2)
+
+
+def fixture_read_contradiction() -> tuple:
+    """Candidate #7. Two lawful derivations asserting opposite bits
+    for slot mu in the same time slice. asserts = (slot, bit, t)."""
+    e1 = gedge("src1", "reader1", DERIVE)
+    e1["asserts"] = ("mu", 0, 1)
+    e2 = gedge("src2", "reader2", DERIVE)
+    e2["asserts"] = ("mu", 1, 1)
+    return (e1, e2)
+
+
+def fixture_consistent_reads() -> tuple:
+    """Positive control: redundant identical assertions, and an
+    opposite bit in a LATER slice (lawful supersession, #10's
+    territory)."""
+    e1 = gedge("src1", "reader1", DERIVE)
+    e1["asserts"] = ("mu", 0, 1)
+    e2 = gedge("src2", "reader2", DERIVE)
+    e2["asserts"] = ("mu", 0, 1)          # same bit: redundancy, not contradiction
+    e3 = gedge("src1", "reader3", DERIVE)
+    e3["asserts"] = ("mu", 1, 2)          # later slice: supersession
+    return (e1, e2, e3)
 
 
 def fixture_temporal_gap() -> tuple:

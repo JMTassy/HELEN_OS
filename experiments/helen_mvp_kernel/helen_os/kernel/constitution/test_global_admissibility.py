@@ -265,3 +265,65 @@ def test_an_unwarranted_edge_is_not_i5_business():
     from global_admissibility import I5_warrant_binding
     assert I5_warrant_binding(fixture_double_spend())["verdict"] == \
         ga.PASS
+
+
+# ── I_6: read-time contradiction (candidate #7, gap witnessed then closed)
+
+def test_the_contradiction_passed_the_five_prior_invariants():
+    """The witness, preserved: every edge locally valid, I_1..I_5 all
+    PASS on the contradiction fixture, and the observed state
+    depended on read order (1->2 gave mu=1, 2->1 gave mu=0).
+    Witnessed live against commit f75b427, where global_validate
+    wrongly returned PASS."""
+    from global_admissibility import (I5_warrant_binding,
+                                      I6_read_consistency,
+                                      fixture_read_contradiction)
+    edges = fixture_read_contradiction()
+    roots = frozenset({"src1", "src2"})
+    for e in edges:
+        assert local_validate(e)["verdict"] == ga.PASS
+    assert I1_linear_capability(edges)["verdict"] == ga.PASS
+    assert I2_foundationally_acyclic(edges)["verdict"] == ga.PASS
+    assert I3_no_self_supporting_root(edges, roots)["verdict"] == \
+        ga.PASS
+    assert I4_temporal_persistence(edges)["verdict"] == ga.PASS
+    assert I5_warrant_binding(edges)["verdict"] == ga.PASS
+    v = I6_read_consistency(edges)
+    assert v["verdict"] == ga.FAIL
+    assert v["reason"] == "E_READ_TIME_CONTRADICTION"
+    assert v["contradicted_slots"] == ("mu@t1",)
+    assert v["reads_commute"] is False
+
+
+def test_global_validate_now_refuses_the_contradiction():
+    from global_admissibility import fixture_read_contradiction
+    g = global_validate(fixture_read_contradiction(),
+                        roots=frozenset({"src1", "src2"}))
+    assert g["all_edges_locally_valid"] is True
+    assert g["GLOBAL_RESULT"] == ga.FAIL
+    assert g["REASON"] == "E_READ_TIME_CONTRADICTION"
+    assert g["gap_witnessed"] is True
+
+
+def test_redundancy_and_supersession_are_not_contradiction():
+    """Positive controls: the same bit twice is redundancy; the
+    opposite bit in a LATER slice is supersession — #10's territory,
+    deliberately out of I_6's scope."""
+    from global_admissibility import (I6_read_consistency,
+                                      fixture_consistent_reads)
+    v = I6_read_consistency(fixture_consistent_reads())
+    assert v["verdict"] == ga.PASS
+    # reads_commute is diagnostic, not the law: supersession across
+    # slices makes the naive fold order-dependent WITHOUT being
+    # unlawful — the verdict carries the judgment, the commute bit
+    # reports the symptom
+    g = global_validate(fixture_consistent_reads(),
+                        roots=frozenset({"src1", "src2"}))
+    assert g["GLOBAL_RESULT"] == ga.PASS
+
+
+def test_edges_without_assertions_are_not_i6_business():
+    from global_admissibility import I6_read_consistency
+    v = I6_read_consistency(fixture_double_spend())
+    assert v["verdict"] == ga.PASS
+    assert v["contradicted_slots"] == ()

@@ -1015,6 +1015,32 @@ def _probes():
                 gap["GLOBAL_RESULT"] == gad5.FAIL and
                 gap["REASON"] == "E_WARRANT_VALUE_REBIND" and
                 honest["GLOBAL_RESULT"] == gad5.PASS)
+    # ── I_6: candidate #7, witnessed then closed ────────────────────
+    def _readrace():
+        import global_admissibility as gad6
+        gap = gad6.global_validate(
+            gad6.fixture_read_contradiction(),
+            roots=frozenset({"src1", "src2"}))
+        ctrl = gad6.global_validate(
+            gad6.fixture_consistent_reads(),
+            roots=frozenset({"src1", "src2"}))
+        i6 = gad6.I6_read_consistency(
+            gad6.fixture_read_contradiction())
+        return (gap["all_edges_locally_valid"] is True and
+                gap["GLOBAL_RESULT"] == gad6.FAIL and
+                gap["REASON"] == "E_READ_TIME_CONTRADICTION" and
+                i6["reads_commute"] is False and
+                i6["contradicted_slots"] == ("mu@t1",) and
+                ctrl["GLOBAL_RESULT"] == gad6.PASS)
+    A(_probe("a_graph_whose_state_depends_on_read_order_is_a_race",
+             "swarm candidate #7 witnessed a real gap — opposite "
+             "bits for one slot in one time slice passed I_1..I_5 "
+             "and global_validate at commit f75b427, with the "
+             "observed state flipping under read-order reversal — "
+             "and I_6 now refuses the contradiction while redundancy "
+             "and cross-slice supersession still pass",
+             _readrace))
+
     A(_probe("a_warrant_binds_the_value_it_was_minted_over",
              "the swarm survivor CHID-SMITH-1793 witnessed a real "
              "gap — a warrant over value X reattached to value Y "
