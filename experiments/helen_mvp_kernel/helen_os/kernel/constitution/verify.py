@@ -965,6 +965,48 @@ def _probes():
              "check that makes a typed institutional runtime",
              _ir))
 
+    # ── TEST 1: PASS/PASS locally, FAIL globally ────────────────────
+    import global_admissibility as gad
+
+    def _global():
+        ds = gad.fixture_double_spend()
+        g = gad.global_validate(ds)
+        honest = gad.global_validate(gad.fixture_honest_spend())
+        selfsup = gad.I3_no_self_supporting_root(
+            gad.fixture_self_support(), roots=frozenset())
+        grounded = gad.I3_no_self_supporting_root(
+            gad.fixture_grounded_chain(), roots=frozenset({"r"}))
+        deep = gad.I2_foundationally_acyclic(
+            tuple(gad.gedge(f"n{i}", f"n{i+1}", gad.DERIVE)
+                  for i in range(200)))
+        gap = gad.I4_temporal_persistence(gad.fixture_temporal_gap())
+        return (all(v == gad.PASS for v in g["LOCAL_EDGE_RESULTS"]) and
+                g["GLOBAL_RESULT"] == gad.FAIL and
+                g["REASON"] == "CAPABILITY_DOUBLE_SPEND" and
+                g["MUTATIONS_COMMITTED"] == 0 and
+                g["gap_witnessed"] is True and
+                honest["GLOBAL_RESULT"] == gad.PASS and
+                selfsup["reason"] == "FAIL_PROVENANCE_SELF_SUPPORT" and
+                grounded["verdict"] == gad.PASS and
+                deep["verdict"] == gad.PASS and
+                gap["verdict"] == gad.UNDEFINED and
+                gad.registration(20, 0)["status"] ==
+                "REGISTERED_PRECLAIM_AGENDA" and
+                gad.attack_coverage((("s1",), ("s1",), ("s1",)))[
+                    "coverage_attack"] == 1 and
+                gad.undeclared_influence(("policy_set",))["reason"] ==
+                "E_UNDECLARED_INFLUENCE")
+    A(_probe("a_lawful_institution_is_not_a_collection_of_lawful_edges",
+             "three edges each PASS a local validator and the "
+             "assembled graph FAILS on UseCount(kappa) = 2 > 1, with "
+             "zero mutations committed; one mint and one invoke still "
+             "PASS, so the checker refuses the double and not the "
+             "spend; self-support is judged by unreachable roots, not "
+             "by the presence of a cycle; a 200-deep DAG is exactly "
+             "acyclic; and transport without a connection is "
+             "UNDEFINED rather than false",
+             _global))
+
     # ── EPIS-CYCLE-ONT-01: the debtor may not be the creditor ───────
     import ontological_frontier as onf
 
