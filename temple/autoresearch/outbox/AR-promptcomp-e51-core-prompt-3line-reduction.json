@@ -1,0 +1,46 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-promptcomp-e51-core-prompt-3line-reduction",
+  "target_surface": "prompt_compression",
+  "epoch": "E51",
+  "parent_epoch": "E44",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "final": "HOLD_FOR_OPERATOR",
+  "reducer_required": true,
+  "finding_type": "redundant_instruction_3x",
+  "source_refs": [
+    "temple/autoresearch/two_stage_loop.py:50-70"
+  ],
+  "summary": "E44 identified the admitted-skill lesson not appended to feedback_lines. E51 targets the two_stage_loop.py CORE_PROMPT directly. Three lines are provably redundant: (1) 'Read the supplied observation packet first.' — tautological, loop always prepends packet JSON; (2) 'Measure baseline against result.' — captured by METRIC output field format; (3) 'Do not repeat a target twice without new evidence.' — enforced at code level via ANTI_LOOP_THRESHOLD=2 and _has_new_evidence() guard. Removing all three: 736→608 chars (17.4% reduction). All 11 invariants confirmed present in compressed form via grep. No test references CORE_PROMPT or asserts its line count.",
+  "evidence": [
+    "two_stage_loop.py:51: 'Read the supplied observation packet first.' — loop prepends packet at runtime; model always has it",
+    "two_stage_loop.py:68: 'Measure baseline against result.' — METRIC output field already captures 'baseline: X; success_threshold: Y' pattern",
+    "two_stage_loop.py:69: 'Do not repeat a target twice without new evidence.' — ANTI_LOOP_THRESHOLD=2 guard at line 162 + _has_new_evidence() enforce this in code",
+    "Live compression: 736 chars → 608 chars = 17.4% reduction (>10% threshold in E44 template)",
+    "Invariant grep: DIRTY_DOMINATES, NO_RECEIPT, HOLD_FOR_OPERATOR, leverage, blast_radius, TARGET, HYPOTHESIS, TWEAK, METRIC, RULE, NEXT — all present in compressed form",
+    "grep -rn 'CORE_PROMPT' tests/ => 0 hits (no test asserts line count or content)"
+  ],
+  "mechanism": "CORE_PROMPT is used verbatim as the model instruction prefix in two_stage_loop.py. Three instructions are: (1) tautological given loop architecture, (2) duplicated by output format spec, (3) duplicated by orchestrator guard logic. Each removed line saves ~40-65 chars. Total saving: 128 chars. No invariant is deleted — the key protocol markers (DIRTY_DOMINATES, NO_RECEIPT, formula, output format) all survive.",
+  "hypothesis": "If lines 1, 18, 19 of CORE_PROMPT are removed (tautological preamble, METRIC-redundant baseline clause, code-enforced anti-loop instruction), token overhead drops 17.4% with zero invariant loss and no change to loop behavior.",
+  "proposed_tweak": "two_stage_loop.py:51 — remove 'Read the supplied observation packet first.\\n'; two_stage_loop.py:68 — remove 'Measure baseline against result.\\n'; two_stage_loop.py:69 — remove 'Do not repeat a target twice without new evidence.\\n'. Operator applies. 3 lines removed, no other files touched. Fully reversible.",
+  "metric": "python3 -c \"from temple.autoresearch.two_stage_loop import CORE_PROMPT; assert len(CORE_PROMPT) <= 610, f'chars={len(CORE_PROMPT)}'; invariants=['DIRTY_DOMINATES','NO_RECEIPT','HOLD_FOR_OPERATOR','leverage','blast_radius','TARGET','HYPOTHESIS','TWEAK','METRIC','RULE','NEXT']; missing=[i for i in invariants if i not in CORE_PROMPT]; assert not missing, f'missing={missing}'; print('PASS')\" exits 0. make test green.",
+  "keep_rule": "KEEP if: compressed CORE_PROMPT passes invariant grep AND make test green. REJECT if: any invariant token missing from compressed form OR any test references removed line text.",
+  "next": "Operator removes 3 lines; run make test; probe two_stage_loop.run() with empty loop_state; confirm output format (TARGET/HYPOTHESIS/TWEAK/METRIC/RULE/NEXT) unchanged; measure new baseline 608 chars.",
+  "risk_flags": [
+    "Minimal — 3 instructional lines removed from a 20-line prompt; no logic changed",
+    "Anti-loop instruction removal: safe because _has_new_evidence() + ANTI_LOOP_THRESHOLD enforce it in code",
+    "No test asserts CORE_PROMPT content (confirmed: grep 0 hits in tests/)"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "scanned_at": "2026-08-14T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (live compression probe: 736→608 chars; 11/11 invariants confirmed; 3 removal justifications each evidence-backed; 0 tests reference CORE_PROMPT)",
+    "epoch": "E51",
+    "parent_epoch": "E44",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
