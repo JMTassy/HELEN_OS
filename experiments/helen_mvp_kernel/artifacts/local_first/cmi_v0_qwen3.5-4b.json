@@ -1,0 +1,50 @@
+{
+  "qid": "d083917b6ae0b0e6",
+  "arm": "qwen3.5-4b",
+  "model": "qwen3.5:4b",
+  "seeds": [
+    42,
+    43,
+    44,
+    45,
+    46
+  ],
+  "per_seed": [
+    {
+      "seed": 42,
+      "state": "PARSED_EMPTY",
+      "candidate_count": 0,
+      "classes": []
+    },
+    {
+      "seed": 43,
+      "state": "PARSED_EMPTY",
+      "candidate_count": 0,
+      "classes": []
+    },
+    {
+      "seed": 44,
+      "state": "PARSED_EMPTY",
+      "candidate_count": 0,
+      "classes": []
+    },
+    {
+      "seed": 45,
+      "state": "PARSED_EMPTY",
+      "candidate_count": 0,
+      "classes": []
+    },
+    {
+      "seed": 46,
+      "state": "PARSED_EMPTY",
+      "candidate_count": 0,
+      "classes": []
+    }
+  ],
+  "execution_yield": 1.0,
+  "parse_yield": 1.0,
+  "Q_union": [],
+  "Q_useful": [],
+  "unclassified_present": false,
+  "note": "N_generators=1 \u00b7 N_comp_roots=1 \u00b7 N_evidence_roots=1 (single corpus) \u2014 NEVER collapse"
+}
