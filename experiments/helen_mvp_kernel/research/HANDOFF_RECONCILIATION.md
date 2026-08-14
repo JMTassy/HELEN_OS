@@ -91,3 +91,13 @@ verbatim as the handoff of record for this seat's future sessions —
 status: working architecture, not canon. Next useful work is
 EXPERIMENTAL, not doctrinal: finish Arm A cleanly (local), acquire
 the exact Qwen artifact, measure ΔQ_stable,Q|G.
+
+## ERRATUM — self-caught E_REDERIVATION_MISMATCH
+
+The commit message of d38acc4 claims "992 tests green"; the actual
+run at that tip yields 991 passed. The claim was written before the
+output was read — precisely the failure mode receipt_integrity
+exists to catch, in this seat's own banner. Correct figure: 991.
+The C_test re-derivation recipe over this checkout is the authority;
+the commit message is REPRESENTATION. Recorded rather than rewritten:
+pushed history is not amended, it is corrected in the open.
