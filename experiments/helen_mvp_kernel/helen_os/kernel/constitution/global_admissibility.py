@@ -337,6 +337,56 @@ def I6_read_consistency(edges: tuple) -> dict:
                    "are one door, read contradiction is another"}
 
 
+# ── I_7: temporal folding (swarm candidate #10, witnessed gap) ─────────
+
+def I7_temporal_folding(edges: tuple) -> dict:
+    """A slot valid in two time slices at once, refused. Two WARRANTED
+    persistences gave slot mu the value X over [1,3) and Y over [2,4):
+    no token is double-spent (I_1), each transport carries its
+    connection (I_4), no warrant is rebound (I_5), and no single
+    slice-point assertion contradicts (I_6 sees only points) — yet mu
+    is X and Y over all of [2,3). Witnessed against this engine at
+    commit 52bcb43: LOCAL PASS x2, I_1..I_6 PASS x6, GLOBAL PASS.
+
+    The law that distinguishes it: the contradiction exists in
+    EXTENSION without any observed point carrying it — I_6's
+    contradiction smuggled past the instrument by typing. A state
+    that is never observed contradicting but is contradictorily VALID
+    is still folded.
+
+    Intervals are half-open [from, to): touching intervals are lawful
+    succession; the SAME value overlapping itself is idempotent
+    redundancy; only distinct values on intersecting intervals fold."""
+    by_slot: dict = {}
+    for e in edges:
+        if not e.get("ok"):
+            continue
+        v = e.get("valid")
+        if v is None:
+            continue
+        slot, value, t_from, t_to = v
+        if t_to <= t_from:
+            return {"invariant": "I_7", "verdict": FAIL,
+                    "reason": "E_EMPTY_INTERVAL",
+                    "at": f"{slot}:[{t_from},{t_to})"}
+        by_slot.setdefault(slot, []).append((t_from, t_to, value))
+    folds = []
+    for slot, ivs in by_slot.items():
+        ivs.sort()
+        for i, (f1, t1, v1) in enumerate(ivs):
+            for f2, t2, v2 in ivs[i + 1:]:
+                if f2 < t1 and v1 != v2:          # overlap, distinct values
+                    folds.append(f"{slot}:[{max(f1, f2)},"
+                                 f"{min(t1, t2)})={v1}|{v2}")
+    return {"invariant": "I_7",
+            "verdict": FAIL if folds else PASS,
+            "folded": tuple(sorted(folds)),
+            "reason": "E_TEMPORAL_FOLDING" if folds else None,
+            "law": "a slot may not be valid in two slices at once; a "
+                   "contradiction in extension needs no observed "
+                   "point to be real"}
+
+
 # ── GlobalValidate: consumes the assembled graph ───────────────────────
 
 def global_validate(edges: tuple, roots: frozenset = frozenset(),
@@ -351,7 +401,8 @@ def global_validate(edges: tuple, roots: frozenset = frozenset(),
                   I3_no_self_supporting_root(edges, roots),
                   I4_temporal_persistence(edges),
                   I5_warrant_binding(edges),
-                  I6_read_consistency(edges))
+                  I6_read_consistency(edges),
+                  I7_temporal_folding(edges))
     failed = [i for i in invariants if i["verdict"] == FAIL]
     undef = [i for i in invariants if i["verdict"] == UNDEFINED]
     verdict = FAIL if failed else (UNDEFINED if undef else PASS)
@@ -448,6 +499,38 @@ def fixture_consistent_reads() -> tuple:
     e3 = gedge("src1", "reader3", DERIVE)
     e3["asserts"] = ("mu", 1, 2)          # later slice: supersession
     return (e1, e2, e3)
+
+
+def fixture_temporal_fold() -> tuple:
+    """Candidate #10. Two warranted persistences, one slot, two
+    OVERLAPPING validity intervals with different values.
+    valid = (slot, value, t_from, t_to), half-open."""
+    e1 = gedge("S_a", "S_b", PERSIST, t_src=1, t_dst=3,
+               persistence_warrant=True)
+    e1["valid"] = ("mu", "X", 1, 3)
+    e2 = gedge("S_c", "S_d", PERSIST, t_src=2, t_dst=4,
+               persistence_warrant=True)
+    e2["valid"] = ("mu", "Y", 2, 4)
+    return (e1, e2)
+
+
+def fixture_lawful_succession() -> tuple:
+    """Positive controls in one graph: touching intervals (lawful
+    succession at the half-open boundary), and the same value
+    overlapping itself (idempotent redundancy)."""
+    e1 = gedge("S_a", "S_b", PERSIST, t_src=1, t_dst=3,
+               persistence_warrant=True)
+    e1["valid"] = ("mu", "X", 1, 3)
+    e2 = gedge("S_b", "S_c", PERSIST, t_src=3, t_dst=5,
+               persistence_warrant=True)
+    e2["valid"] = ("mu", "Y", 3, 5)          # touches at 3: succession
+    e3 = gedge("S_x", "S_y", PERSIST, t_src=2, t_dst=4,
+               persistence_warrant=True)
+    e3["valid"] = ("nu", "Z", 1, 4)
+    e4 = gedge("S_y", "S_z", PERSIST, t_src=2, t_dst=4,
+               persistence_warrant=True)
+    e4["valid"] = ("nu", "Z", 2, 6)          # same value: idempotent
+    return (e1, e2, e3, e4)
 
 
 def fixture_temporal_gap() -> tuple:

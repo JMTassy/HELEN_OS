@@ -327,3 +327,66 @@ def test_edges_without_assertions_are_not_i6_business():
     v = I6_read_consistency(fixture_double_spend())
     assert v["verdict"] == ga.PASS
     assert v["contradicted_slots"] == ()
+
+
+# ── I_7: temporal folding (candidate #10, gap witnessed then closed) ───
+
+def test_the_fold_passed_all_six_prior_invariants():
+    """The witness, preserved: warranted persistences, no token, no
+    rebind, no point contradiction — and mu is X AND Y over [2,3).
+    Witnessed live against commit 52bcb43, where global_validate
+    wrongly returned PASS. The contradiction exists in extension
+    without any observed point carrying it."""
+    from global_admissibility import (I5_warrant_binding,
+                                      I6_read_consistency,
+                                      I7_temporal_folding,
+                                      fixture_temporal_fold)
+    edges = fixture_temporal_fold()
+    for e in edges:
+        assert local_validate(e)["verdict"] == ga.PASS
+    assert I1_linear_capability(edges)["verdict"] == ga.PASS
+    assert I2_foundationally_acyclic(edges)["verdict"] == ga.PASS
+    assert I4_temporal_persistence(edges)["verdict"] == ga.PASS
+    assert I5_warrant_binding(edges)["verdict"] == ga.PASS
+    assert I6_read_consistency(edges)["verdict"] == ga.PASS
+    v = I7_temporal_folding(edges)
+    assert v["verdict"] == ga.FAIL
+    assert v["reason"] == "E_TEMPORAL_FOLDING"
+    assert v["folded"] == ("mu:[2,3)=X|Y",)
+
+
+def test_global_validate_now_refuses_the_fold():
+    from global_admissibility import fixture_temporal_fold
+    g = global_validate(fixture_temporal_fold())
+    assert g["all_edges_locally_valid"] is True
+    assert g["GLOBAL_RESULT"] == ga.FAIL
+    assert g["REASON"] == "E_TEMPORAL_FOLDING"
+    assert g["gap_witnessed"] is True
+
+
+def test_succession_and_idempotent_redundancy_are_lawful():
+    """Positive controls: touching half-open intervals are
+    succession; the same value overlapping itself folds nothing."""
+    from global_admissibility import (I7_temporal_folding,
+                                      fixture_lawful_succession)
+    v = I7_temporal_folding(fixture_lawful_succession())
+    assert v["verdict"] == ga.PASS
+    assert v["folded"] == ()
+    g = global_validate(fixture_lawful_succession())
+    assert g["GLOBAL_RESULT"] == ga.PASS
+
+
+def test_an_empty_interval_is_refused_outright():
+    from global_admissibility import I7_temporal_folding
+    e = gedge("a", "b", ga.PERSIST, t_src=1, t_dst=1,
+              persistence_warrant=True)
+    e["valid"] = ("mu", "X", 3, 3)
+    v = I7_temporal_folding((e,))
+    assert v["verdict"] == ga.FAIL
+    assert v["reason"] == "E_EMPTY_INTERVAL"
+
+
+def test_edges_without_validity_intervals_are_not_i7_business():
+    from global_admissibility import I7_temporal_folding
+    assert I7_temporal_folding(fixture_double_spend())["verdict"] == \
+        ga.PASS

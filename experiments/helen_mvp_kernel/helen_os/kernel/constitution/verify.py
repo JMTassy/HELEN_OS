@@ -1041,6 +1041,27 @@ def _probes():
              "and cross-slice supersession still pass",
              _readrace))
 
+    # ── I_7: candidate #10, witnessed then closed ───────────────────
+    def _fold():
+        import global_admissibility as gad7
+        gap = gad7.global_validate(gad7.fixture_temporal_fold())
+        ctrl = gad7.global_validate(gad7.fixture_lawful_succession())
+        i7 = gad7.I7_temporal_folding(gad7.fixture_temporal_fold())
+        return (gap["all_edges_locally_valid"] is True and
+                gap["GLOBAL_RESULT"] == gad7.FAIL and
+                gap["REASON"] == "E_TEMPORAL_FOLDING" and
+                i7["folded"] == ("mu:[2,3)=X|Y",) and
+                ctrl["GLOBAL_RESULT"] == gad7.PASS)
+    A(_probe("a_slot_may_not_be_valid_in_two_slices_at_once",
+             "swarm candidate #10 witnessed a real gap — two "
+             "warranted persistences gave one slot overlapping "
+             "validity intervals with different values, passing "
+             "I_1..I_6 and global_validate at commit 52bcb43, a "
+             "contradiction in extension that no observed point "
+             "carries — and I_7 now refuses the fold while touching "
+             "intervals and idempotent redundancy stay lawful",
+             _fold))
+
     A(_probe("a_warrant_binds_the_value_it_was_minted_over",
              "the swarm survivor CHID-SMITH-1793 witnessed a real "
              "gap — a warrant over value X reattached to value Y "
