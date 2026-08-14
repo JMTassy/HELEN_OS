@@ -965,6 +965,47 @@ def _probes():
              "check that makes a typed institutional runtime",
              _ir))
 
+    # ── vNext: applications outside, HELEN inside ───────────────────
+    import vnext_architecture as vna
+
+    def _vnext():
+        leak = vna.external_surface(("HAL", "SOPHIA"))
+        cp = vna.control_plane_contents(("software_versions",
+                                         "client_secrets"))
+        vendor = vna.inference_call({"capability": "r"},
+                                    vendor_named="Claude")
+        ok_call = vna.inference_call(
+            {"capability": "reasoning",
+             "classification": "confidential",
+             "latency": "interactive", "jurisdiction": "EU"}, None)
+        ambient = vna.capability_grant("app", ("ALL",))
+        llm = vna.advance_workflow("A", "B", by="llm")
+        vec = vna.authoritative_read("vector_index")
+        only_ai = vna.governance_scope(frozenset({"ai_call"}))
+        gate = vna.roadmap_gate(frozenset(),
+                                "autonomous_worker_expansion")
+        return (leak["reason"] == "E_MYTHOLOGY_ON_EXTERNAL_SURFACE"
+                and cp["reason"] == "E_CUSTOMER_DATA_IN_CONTROL_PLANE"
+                and vendor["reason"] == "E_VENDOR_IN_BUSINESS_LOGIC"
+                and ok_call["ok"] is True and
+                ambient["reason"] == "E_AMBIENT_AUTHORITY" and
+                llm["reason"] == "E_LLM_IS_NOT_STATE_AUTHORITY" and
+                vec["reason"] == "E_DERIVED_IS_NOT_AUTHORITATIVE" and
+                only_ai["reason"] == "E_ONLY_AI_GOVERNED" and
+                gate["reason"] == "E_FOUNDATION_INCOMPLETE" and
+                vna.tenant_isolation(frozenset({"db"}),
+                                     frozenset({"db"}), frozenset())[
+                    "reason"] == "E_TENANT_OVERLAP")
+    A(_probe("the_enterprise_boundary_is_deterministic_software",
+             "mythology never crosses the boundary; the control "
+             "plane holds no customer data; business logic may not "
+             "name a model vendor; no ambient authority; the LLM "
+             "cannot advance a workflow; a vector index is never "
+             "institutional truth; tenants share only control-plane "
+             "artifacts; governing only AI actions is refused by "
+             "name; and worker expansion waits for the foundation",
+             _vnext))
+
     # ── editor doctrine: rename lawful iff witnessed ────────────────
     import editor_membrane as edm
 
