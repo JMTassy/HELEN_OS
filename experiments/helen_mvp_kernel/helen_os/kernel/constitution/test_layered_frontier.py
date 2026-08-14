@@ -146,3 +146,38 @@ def test_a_zero_baseline_is_refused():
 
 def test_deterministic():
     assert lf.canon(_qwen_download()) == lf.canon(_qwen_download())
+
+
+# ── proxy laundering (the 1969 biography fixture) ──────────────────────
+
+def test_a_biographer_is_not_a_second_root():
+    """Subject -> dictation -> biographer -> text: the published
+    third-party artifact leaves N_epi at exactly 1."""
+    from layered_frontier import proxy_root
+    v = proxy_root(author_is_distinct_person=True,
+                   derivation_support=frozenset({"SUBJECT"}),
+                   subject="SUBJECT")
+    assert v["N_epi"] == 1
+    assert v["reason"] == "E_PROXY_IS_NOT_A_ROOT"
+
+
+def test_independent_support_raises_the_count_lawfully():
+    from layered_frontier import proxy_root
+    v = proxy_root(True, frozenset({"SUBJECT", "civil_registry"}),
+                   "SUBJECT")
+    assert v["N_epi"] == 2
+    assert "reason" not in v
+
+
+def test_an_unobservable_past_event_mints_no_token():
+    from layered_frontier import capability_mint
+    v = capability_mint("kappa_lineage", frozenset())
+    assert v["minted"] is False
+    assert v["reason"] == "E_UNLICENSED_CAPABILITY_MINT"
+    assert v["sociological_effect_recordable"] is True
+
+
+def test_a_witnessed_mint_passes_through_the_ordinary_door():
+    from layered_frontier import capability_mint
+    assert capability_mint("kappa", frozenset({"induction_record"}))[
+        "minted"] is True

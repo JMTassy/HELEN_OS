@@ -177,6 +177,50 @@ def mint(layer: str, resource: str) -> dict:
     return {"minted": True, "layer": layer, "resource": resource}
 
 
+# ── proxy laundering (King of the Witches, 1969) ───────────────────────
+
+def proxy_root(author_is_distinct_person: bool,
+               derivation_support: frozenset,
+               subject: str) -> dict:
+    """Author(x) != Root(x). A biographer is a REPRESENTATION
+    amplifier, not a second evidentiary root: when every foundational
+    claim derives from the subject alone (Subject -> dictation ->
+    biographer -> text), the published third-party artifact leaves
+    N_epi at exactly 1 — a standard pipeline mints N_epi = 2 from the
+    byline, and that is the laundering. The typographical author is
+    metadata; the causal origin is the root."""
+    only_subject = derivation_support <= frozenset({subject})
+    if only_subject:
+        return {"N_epi": 1,
+                "author_distinct": author_is_distinct_person,
+                "reason": "E_PROXY_IS_NOT_A_ROOT",
+                "law": "trace the causal origin, not the byline; a "
+                       "proxy adds representational mass and mints "
+                       "zero truth"}
+    return {"N_epi": 1 + len(derivation_support -
+                             frozenset({subject})),
+            "note": "independent support beyond the subject raises "
+                    "the count through the ordinary door"}
+
+
+def capability_mint(kappa: str, witnesses: frozenset) -> dict:
+    """The reverse double-spend: an UNWARRANTED MINTING EVENT.
+    emptyset -> kappa_lineage via subjective claim is refused — a
+    hidden, unobservable past event mints no institutional token.
+    Documented procedure does not entail verified efficacy, and a
+    successfully believed kappa is a sociological fact in F_C, never
+    an admission in F_X."""
+    if not witnesses:
+        return {"minted": False, "kappa": kappa,
+                "reason": "E_UNLICENSED_CAPABILITY_MINT",
+                "sociological_effect_recordable": True,
+                "law": "an unobservable past event mints no token; "
+                       "belief in kappa is F_C data, not F_X "
+                       "admission"}
+    return {"minted": True, "kappa": kappa,
+            "witnesses": tuple(sorted(witnesses))}
+
+
 # ── cognitive elasticity ───────────────────────────────────────────────
 
 def elasticity(q1: float, q2: float, c1: float, c2: float) -> dict:

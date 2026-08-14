@@ -1148,6 +1148,50 @@ def _probes():
              "RBAC invariant is re-derivable on the real state",
              _identity))
 
+    # ── Phase A item 3: the engine owns every arrow ─────────────────
+    import workflow_runtime as wfr
+
+    def _workflow():
+        st = ("NEW_DOCUMENT", "CLASSIFY", "REVIEW", "DONE")
+        ed = (("NEW_DOCUMENT", "CLASSIFY"), ("CLASSIFY", "REVIEW"),
+              ("REVIEW", "DONE"))
+        s = wfr.boot()
+        s, _ = wfr.define_workflow(s, "w", st, ed,
+                                   (("REVIEW", "DONE"),))
+        s, _ = wfr.start_instance(s, "w", "i1", "user")
+        s, rec = wfr.record_step(s, "i1", "CLASSIFY", "invoice",
+                                 "llm")
+        _, llm = wfr.advance(s, "i1", "CLASSIFY", by="llm")
+        _, jump = wfr.advance(s, "i1", "DONE", by="workflow_engine")
+        s, _ = wfr.advance(s, "i1", "CLASSIFY", by="workflow_engine")
+        s, _ = wfr.advance(s, "i1", "REVIEW", by="workflow_engine")
+        _, gate = wfr.advance(s, "i1", "DONE", by="workflow_engine")
+        _, selfap = wfr.approve(s, "i1", ("REVIEW", "DONE"), "user")
+        s, _ = wfr.approve(s, "i1", ("REVIEW", "DONE"), "reviewer")
+        s, done = wfr.advance(s, "i1", "DONE", by="workflow_engine")
+        rep = wfr.replay(s, "i1")
+        inst = dict(s["instances"]["i1"])
+        inst["state"] = "CLASSIFY"
+        tampered = dict(s)
+        tampered["instances"] = {**s["instances"], "i1": inst}
+        bad = wfr.replay(tampered, "i1")
+        return (rec["state_moved"] is False and
+                llm["reason"] == "E_LLM_IS_NOT_STATE_AUTHORITY" and
+                jump["reason"] == "E_UNDECLARED_TRANSITION" and
+                gate["reason"] == "E_UNAPPROVED_GATE" and
+                selfap["reason"] == "E_SELF_APPROVAL" and
+                done["ok"] is True and
+                rep["ok"] is True and
+                bad["reason"] == "E_HISTORY_MISMATCH")
+    A(_probe("the_engine_owns_every_arrow",
+             "the model records results and never advances state; "
+             "undeclared jumps and unapproved gates die at runtime; "
+             "the requester may not approve its own instance; and "
+             "replay refolds the append-only history or declares the "
+             "instance corrupt — the stored field is a cache, the "
+             "history is the truth",
+             _workflow))
+
     # ── layered frontier: conservation of minting rights ────────────
     import layered_frontier as lfr
 
@@ -1164,7 +1208,12 @@ def _probes():
         cross = lfr.cross_advance("F_S", "F_I", licensed=False)
         m = lfr.mint("representation", "empirical_warrant")
         flat = lfr.elasticity(10, 10, 1.0, 3.0)
-        return (good["four_questions_answered"] is True and
+        proxy = lfr.proxy_root(True, frozenset({"S"}), "S")
+        ghost = lfr.capability_mint("kappa_lineage", frozenset())
+        return (proxy["N_epi"] == 1 and
+                proxy["reason"] == "E_PROXY_IS_NOT_A_ROOT" and
+                ghost["reason"] == "E_UNLICENSED_CAPABILITY_MINT" and
+                good["four_questions_answered"] is True and
                 unlic["reason"] == "E_UNLICENSED_TRANSITION" and
                 nodelta["reason"] == "E_MISSING_NON_DELTAS" and
                 press["delta_F_E"] == 0 and
