@@ -13,6 +13,7 @@ cannot see:
   3. provenance self-support          — a derivation-supported claim that reaches no primary root
   4. unwarranted temporal persistence — State(t₁) ⊬ State(t₂) without W_persistence
   5. mutually inconsistent effects    — one slot committed to two different values
+  6. warrant/value rebinding          — one signature reused to attest two different values (FABLE swarm find)
 
 I₃ (self-support) is distinct from I₂ (cycle): a claim can be perfectly ACYCLIC yet
 rootless — an orphan chain c₁→c₂ where nothing descends from a primary root. Roots(c)=∅
@@ -55,6 +56,7 @@ class Edge:
     kind: EdgeType
     warrants: tuple = ()             # declared warrant ids (presence only — local)
     consumes: tuple = ()             # linear capability tokens this edge consumes
+    warrant_binds: tuple = ()        # (warrant_id, value) pairs this edge attests — a signature is bound to a value
 
 
 def local_valid(edge: Edge, nodes: dict) -> bool:
@@ -167,5 +169,17 @@ class GraphIR:
                         v.append(f"E_INCONSISTENT_EFFECT: slot {slot!r} = {committed[slot]!r} vs {val!r}")
                     else:
                         committed[slot] = val
+
+        # 6 — warrant/value rebinding: a signature attests at most ONE value. I₁–I₅ are blind to
+        #     signature↔value integrity (a token is spent once, graph acyclic, roots ground out,
+        #     transport warranted) yet a warrant issued for value X can be reused to bless value Y.
+        #     Found by the FABLE Gemma4 swarm (CHID-SMITH-1793): proposed → witnessed → closed here.
+        wbind: dict[str, set] = {}
+        for e in self.edges:
+            for wid, val in e.warrant_binds:
+                wbind.setdefault(wid, set()).add(val)
+        for wid, vals in sorted(wbind.items()):
+            if len(vals) > 1:
+                v.append(f"E_WARRANT_VALUE_REBIND: warrant {wid!r} attests {len(vals)} distinct values {sorted(vals)!r}")
 
         return (len(v) == 0), v

@@ -71,6 +71,36 @@ def test_inconsistent_effects_local_valid_global_invalid():
     _local_all_valid_but_global_invalid(g, "E_INCONSISTENT_EFFECT")
 
 
+# ─────────────────────────── FIXTURE 6 — warrant/value rebinding (I₆, FABLE swarm CHID-SMITH-1793) ───────────────────────────
+def test_warrant_value_rebind_local_valid_global_invalid():
+    # GAP WITNESS (preserved): before I₆ existed, the committed engine (I₁–I₅) ADMITTED this graph —
+    # SIG_1 is minted on value X, then reused to bless value Y. The token is spent once, the graph is
+    # acyclic, both claims ground to a root, no persistence, no effect conflict — all five gates are
+    # BLIND to signature↔value integrity. The assertions below prove that blindness: only I₆ fires.
+    g = (GraphIR()
+         .add_node(Node("w", "Signer", root=True))
+         .add_node(Node("a", "Claim asserting VALUE_X"))
+         .add_node(Node("b", "Claim asserting VALUE_Y"))
+         .add_edge(Edge("e1", "w", "a", EdgeType.DATA, warrant_binds=(("SIG_1", "VALUE_X"),)))
+         .add_edge(Edge("e2", "w", "b", EdgeType.DATA, warrant_binds=(("SIG_1", "VALUE_Y"),))))
+    violations = _local_all_valid_but_global_invalid(g, "E_WARRANT_VALUE_REBIND")
+    # the witness: the five prior gates are SILENT on a graph that must be rejected → I₆ is a real gap
+    for code in ("E_DOUBLE_SPEND", "E_PROVENANCE_CYCLE", "E_PROVENANCE_SELF_SUPPORT",
+                 "E_UNWARRANTED_PERSISTENCE", "E_INCONSISTENT_EFFECT"):
+        assert not any(code in x for x in violations), (code, violations)
+
+
+def test_same_warrant_same_value_is_admissible():
+    # guard: reusing a signature for the SAME value is honest re-attestation, not a rebind
+    g = (GraphIR()
+         .add_node(Node("w", "Signer", root=True))
+         .add_node(Node("a", "A")).add_node(Node("b", "B"))
+         .add_edge(Edge("e1", "w", "a", EdgeType.DATA, warrant_binds=(("SIG_1", "VALUE_X"),)))
+         .add_edge(Edge("e2", "w", "b", EdgeType.DATA, warrant_binds=(("SIG_1", "VALUE_X"),))))
+    ok, violations = g.global_validate()
+    assert ok is True, violations
+
+
 # ─────────────────────────── POSITIVE CONTROL — non-vacuity ───────────────────────────
 def test_valid_graph_is_globally_admissible():
     # a clean graph: acyclic derivation · one token consumed once · warranted persistence · one effect.
