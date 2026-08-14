@@ -1148,6 +1148,51 @@ def _probes():
              "RBAC invariant is re-derivable on the real state",
              _identity))
 
+    # ── Phase A item 4: tampering is arithmetic, not policy ─────────
+    import audit_runtime as aur
+
+    def _audit_store():
+        s = aur.boot()
+        for i in range(3):
+            s, _ = aur.append(s, "A", {"kind": "WRITE", "actor": "u",
+                                       "value_digest": f"d{i}"})
+        _, unattr = aur.append(s, "A", {"kind": "K"})
+        _, raw = aur.append(s, "A", {"kind": "K", "actor": "u",
+                                     "value": "secret"})
+        intact = aur.verify_chain(s, "A")
+        a = aur.anchor(s, "A")
+        chain = list(s["chains"]["A"])
+        ev = dict(chain[0])
+        ev["actor"] = "evil"
+        chain[0] = ev
+        tam = dict(s)
+        tam["chains"] = {**s["chains"], "A": tuple(chain)}
+        broken = aur.verify_chain(tam, "A")
+        cut = dict(s)
+        cut["chains"] = {**s["chains"], "A": s["chains"]["A"][:1]}
+        cut_ok = aur.verify_chain(cut, "A")
+        trunc = aur.verify_against_anchor(cut, "A", a)
+        unanch = aur.verify_against_anchor(s, "A",
+                                           {"anchored": False})
+        verbs = [n for n in dir(aur) if not n.startswith("_")]
+        return (unattr["reason"] == "E_UNATTRIBUTED_EVENT" and
+                raw["reason"] == "E_RAW_VALUE_IN_AUDIT" and
+                intact["intact"] is True and
+                broken["reason"] == "E_CHAIN_BROKEN" and
+                cut_ok["intact"] is True and
+                trunc["reason"] == "E_CHAIN_TRUNCATED" and
+                unanch["reason"] == "E_UNANCHORED" and
+                not any("delete" in v or "update" in v
+                        for v in verbs))
+    A(_probe("tampering_is_arithmetic_not_policy",
+             "an edited audit event breaks every hash after it; a "
+             "truncated tail survives chain verification and dies at "
+             "the external anchor; an unanchored chain is unanchored "
+             "not safe; raw values never enter the log; and "
+             "append-only is an API fact — the module exports no "
+             "update and no delete",
+             _audit_store))
+
     # ── Phase A item 3: the engine owns every arrow ─────────────────
     import workflow_runtime as wfr
 
