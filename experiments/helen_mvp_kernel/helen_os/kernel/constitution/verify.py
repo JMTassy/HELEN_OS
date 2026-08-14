@@ -1148,6 +1148,51 @@ def _probes():
              "RBAC invariant is re-derivable on the real state",
              _identity))
 
+    # ── Phase A item 6: the gateway decides, the app never names ────
+    import gateway_runtime as gwr
+
+    def _gateway():
+        s = gwr.boot()
+        s, _ = gwr.register_provider(s, "eu_a", ("EU",),
+                                     "confidential", ("reasoning",),
+                                     False, "flat_effort")
+        s, _ = gwr.register_provider(s, "eu_b", ("EU",), "internal",
+                                     ("reasoning",), False, "nested")
+        s, _ = gwr.register_provider(s, "loc", ("EU",), "restricted",
+                                     ("reasoning",), True, "enable")
+        s, _ = gwr.set_policy(s, "T", ("eu_a", "eu_b", "loc"), True,
+                              1000)
+        req = {"capability": "reasoning",
+               "classification": "confidential",
+               "latency": "interactive", "jurisdiction": "EU"}
+        _, named = gwr.execute(s, "T", req, "med", 10, "sha:p",
+                               vendor_named="Claude")
+        s, ok = gwr.execute(s, "T", req, "med", 100, "sha:p")
+        _, mars = gwr.execute(s, "T", {**req, "jurisdiction": "MARS"},
+                              "med", 10, "sha:p")
+        s2, _ = gwr.set_policy(s, "T", ("eu_a", "loc"), False, 1000)
+        s2, localonly = gwr.execute(s2, "T", req, "med", 10, "sha:p")
+        s3, big = gwr.execute(s, "T", req, "med", 950, "sha:p")
+        return (named["reason"] == "E_VENDOR_IN_BUSINESS_LOGIC" and
+                ok["ok"] is True and ok["routed_to"] != "eu_b" and
+                ok["emits_world_claim"] is False and
+                (ok["dP"], ok["dA"], ok["dE"]) == (0, 0, 0) and
+                "emitted_wire_shape" in ok["wire_receipt"] and
+                mars["reason"] == "E_NO_LAWFUL_ROUTE" and
+                localonly["routed_to"] == "loc" and
+                big["reason"] == "E_BUDGET_EXHAUSTED" and
+                gwr.gateway_invariant(s)["holds"] is True)
+    A(_probe("the_gateway_decides_and_the_app_never_names",
+             "naming a vendor dies at the gateway; routing is policy "
+             "intersection and an empty intersection refuses rather "
+             "than widening; confidential data never reaches an "
+             "uncleared provider; no-external routes to the local "
+             "model; the meter is the gateway's; the wire receipt "
+             "records what was sent, not what was meant; and every "
+             "response is a non-promotional representation with "
+             "dP = dA = dE = 0",
+             _gateway))
+
     # ── Phase A item 5: the ground does not move under a client ─────
     import api_runtime as apr
 
