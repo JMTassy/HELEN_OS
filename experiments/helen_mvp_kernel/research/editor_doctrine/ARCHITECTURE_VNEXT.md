@@ -107,6 +107,50 @@ L'expansion des workers autonomes est l'item 14 et
 goulot d'un déploiement 100 k€ n'est jamais « un sub-agent de
 plus », c'est « procurement peut-il approuver ce logiciel ».
 
+## ROUND 2 — WORKFORCE RUNTIME (2026-08-14, même jour)
+
+Lois exécutables : `workforce_runtime.py`. Les deux lois du lock
+initial sont REMPLACÉES par quatre (le texte à cinq verbes reste
+ci-dessus comme histoire) :
+
+    1. AI proposes. Software admits. Infrastructure isolates.
+       Humans govern.
+    2. Cognitive width may expand without expanding effect authority.
+    3. Probabilistic cognition; deterministic state-transition
+       governance.
+    4. Never automate the task twice when you can productize the
+       factory once.
+
+- Frontière externe = logiciel ; cognition interne = agentique. La
+  couche manquante : WORKFORCE RUNTIME (directors, specialists,
+  watchdogs, critics, scouts, escalation, télémétrie) entre le Core
+  cognitif et la membrane policy/capability.
+- Loi 2 = l'invariant Allie = dA/dN = 0 de Sigma_N observé en
+  production commerciale (`E_WIDTH_BOUGHT_AUTHORITY`).
+- Loi 3 = correction opérateur de « deterministic software » :
+  l'inférence reste probabiliste ; c'est la gouvernance des effets
+  qui est déterministe. Les deux surpromesses sont refusées par nom
+  (`E_OVERPROMISED_DETERMINISM`, `E_PROBABILISTIC_AUTHORITY`).
+- « Do smart things » = index dans un substrat, sortie = candidats
+  d'opportunité : SCAN→PROPOSE→RANK→ADMIT→EXECUTE→RECEIPT→LEARN,
+  `E_UNADMITTED_EXECUTION` si EXECUTE précède ADMIT.
+- Observer (Toby) : O(E)→{friction, duplication, capability gaps,
+  automation candidates}, autorité 0 (`E_OBSERVER_HAS_NO_AUTHORITY`).
+  Critic (Phoebe) : contrefactuel borné, propositions uniquement.
+- Économie d'agents : E[V_a] > C_a sur SIX coûts tous chiffrés
+  (`E_UNPRICED_COST`, `E_AGENT_COUNT_IS_NOT_A_KPI`).
+- Dictée = capture tacite, entre en REPORTED, jamais promue à la
+  capture.
+- Humain : PROMPT (premier domino, licite, pas la cible) →
+  SET_GOAL/SET_POLICY/APPROVE/REJECT/CORRECT/ESCALATE/INSPECT.
+- Collision inter-lane « control plane » résolue par factorisation
+  (T-COLOR-01) : POLICY_AUTHORITY ≠ RELEASE_DISTRIBUTION ; le terme
+  nu est `E_AMBIGUOUS_PLANE`.
+- Équation : H = C+W+P+F+D+O ; A_i = H + WorkflowPack_i +
+  PolicyPack_i + ConnectorPack_i + UIConfig_i. Roadmap re-phasée
+  A (substrat) → B (workforce) → C (factory) → D (distribution),
+  l'autonomie s'échelonne après.
+
 ## RÉSERVES
 
 - 🟠 TOUT est cible : zéro ligne de la plateforme vNext n'existe.

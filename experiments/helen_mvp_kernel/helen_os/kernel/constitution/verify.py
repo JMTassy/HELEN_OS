@@ -965,6 +965,51 @@ def _probes():
              "check that makes a typed institutional runtime",
              _ir))
 
+    # ── vNext round 2: workforce hidden, not erased ─────────────────
+    import workforce_runtime as wfr
+
+    def _workforce():
+        bought = wfr.width_expansion(10.0, 1.0, False)
+        detc = wfr.boundary_promise("deterministic_cognition")
+        proba = wfr.boundary_promise("probabilistic_authority")
+        exe = wfr.pipeline_step("EXECUTE", admitted=False)
+        obs = wfr.observer_report(("friction",
+                                   "reorganization_order"))
+        costs = {k: 1.0 for k in wfr.AGENT_COSTS}
+        short = dict(costs)
+        del short["coordination"]
+        dictation = wfr.tacit_capture("OPERATOR", "claim")
+        bare = wfr.plane("control_plane")
+        return (bought["reason"] == "E_WIDTH_BOUGHT_AUTHORITY" and
+                wfr.width_expansion(10.0, 0, False)["lawful"] and
+                detc["reason"] == "E_OVERPROMISED_DETERMINISM" and
+                proba["reason"] == "E_PROBABILISTIC_AUTHORITY" and
+                exe["reason"] == "E_UNADMITTED_EXECUTION" and
+                obs["reason"] == "E_OBSERVER_HAS_NO_AUTHORITY" and
+                wfr.critic_emission("directive")["reason"] ==
+                "E_CRITIC_MAY_ONLY_PROPOSE" and
+                wfr.hire_agent(100.0, short)["reason"] ==
+                "E_UNPRICED_COST" and
+                wfr.hire_agent(5.0, costs)["reason"] ==
+                "E_AGENT_COUNT_IS_NOT_A_KPI" and
+                dictation["epistemic_state"] == "REPORTED" and
+                dictation["promoted"] is False and
+                wfr.factory_gate(2)["verdict"] ==
+                "PRODUCTIZE_THE_FACTORY" and
+                bare["reason"] == "E_AMBIGUOUS_PLANE" and
+                len(wfr.LAWS) == 4)
+    A(_probe("cognitive_width_may_not_buy_effect_authority",
+             "width expands with authority flat and authority moves "
+             "only through the admitted policy door; deterministic "
+             "cognition and probabilistic authority are both "
+             "overpromises; EXECUTE never precedes ADMIT; the "
+             "observer commands nothing and the critic only "
+             "proposes; an unpriced coordination cost blocks the "
+             "hire; dictation enters as REPORTED; the second "
+             "automation productizes the factory; and the bare term "
+             "control plane is ambiguous by law",
+             _workforce))
+
     # ── vNext: applications outside, HELEN inside ───────────────────
     import vnext_architecture as vna
 
