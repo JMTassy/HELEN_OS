@@ -222,3 +222,46 @@ def test_the_proposer_may_not_touch_the_policy_set_or_the_evaluator():
 def test_deterministic():
     assert ga.canon(global_validate(fixture_double_spend())) == \
         ga.canon(global_validate(fixture_double_spend()))
+
+
+# ── I_5: warrant-value rebind (CHID-SMITH-1793, gap witnessed then closed)
+
+def test_the_rebind_passed_the_four_prior_invariants():
+    """The witness of the gap, preserved as a test: every edge is
+    locally valid and I_1..I_4 all PASS on the rebind fixture. Only
+    I_5 sees it. (Witnessed live against commit 92f01d5, where
+    global_validate wrongly returned PASS.)"""
+    from global_admissibility import (I5_warrant_binding,
+                                      fixture_warrant_rebind)
+    edges = fixture_warrant_rebind()
+    for e in edges:
+        assert local_validate(e)["verdict"] == ga.PASS
+    assert I1_linear_capability(edges)["verdict"] == ga.PASS
+    assert I2_foundationally_acyclic(edges)["verdict"] == ga.PASS
+    assert I4_temporal_persistence(edges)["verdict"] == ga.PASS
+    v = I5_warrant_binding(edges)
+    assert v["verdict"] == ga.FAIL
+    assert v["reason"] == "E_WARRANT_VALUE_REBIND"
+    assert v["rebound_edges"] == ("kappa2->E_2",)
+
+
+def test_global_validate_now_refuses_the_rebind():
+    from global_admissibility import fixture_warrant_rebind
+    g = global_validate(fixture_warrant_rebind())
+    assert g["all_edges_locally_valid"] is True
+    assert g["GLOBAL_RESULT"] == ga.FAIL
+    assert g["REASON"] == "E_WARRANT_VALUE_REBIND"
+    assert g["gap_witnessed"] is True
+
+
+def test_the_honest_warrant_pair_still_passes():
+    """Positive control: I_5 refuses the REBIND, not the warrant."""
+    from global_admissibility import fixture_honest_warrant
+    g = global_validate(fixture_honest_warrant())
+    assert g["GLOBAL_RESULT"] == ga.PASS
+
+
+def test_an_unwarranted_edge_is_not_i5_business():
+    from global_admissibility import I5_warrant_binding
+    assert I5_warrant_binding(fixture_double_spend())["verdict"] == \
+        ga.PASS

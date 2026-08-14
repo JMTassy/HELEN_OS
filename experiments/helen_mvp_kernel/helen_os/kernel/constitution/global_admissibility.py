@@ -250,6 +250,47 @@ def I4_temporal_persistence(edges: tuple) -> dict:
                    "not false; HOLD rather than DENY"}
 
 
+# ── I_5: warrant-value binding (CHID-SMITH-1793, witnessed gap) ────────
+
+def _digest(value) -> str:
+    import hashlib
+    return hashlib.sha256(canon(value).encode()).hexdigest()[:16]
+
+
+def mint_warrant(edge_ref: str, value) -> str:
+    """A warrant is bound to (edge, value) at mint time. The binding
+    travels inside the warrant string, so rebinding is detectable."""
+    return f"warrant:{edge_ref}:{_digest(value)}"
+
+
+def I5_warrant_binding(edges: tuple) -> dict:
+    """Ghost/Shadow-Provenance, refused. A valid warrant reattached
+    to a DIFFERENT value (or a different edge) passes every prior
+    invariant: the token is spent once (I_1), the graph is acyclic
+    (I_2), roots reach ground (I_3), transport is warranted (I_4) —
+    and the reused signature launders value Y under value X's
+    authority. Witnessed against this engine at commit 92f01d5:
+    LOCAL PASS x4, GLOBAL PASS on a rebind graph. This invariant
+    closes it: a warrant verifies only on the (edge, value) pair it
+    was minted over."""
+    bad = []
+    for e in edges:
+        if not e.get("ok"):
+            continue
+        w, v = e.get("warrant"), e.get("value")
+        if w is None:
+            continue                      # unwarranted edges are I_4's business
+        expected = mint_warrant(f"{e['src']}->{e['dst']}", v)
+        if w != expected:
+            bad.append(f"{e['src']}->{e['dst']}")
+    return {"invariant": "I_5", "verdict": FAIL if bad else PASS,
+            "rebound_edges": tuple(bad),
+            "reason": "E_WARRANT_VALUE_REBIND" if bad else None,
+            "law": "a signature over value X reattached to value Y "
+                   "is ghost provenance; the warrant binds the pair, "
+                   "never the bearer"}
+
+
 # ── GlobalValidate: consumes the assembled graph ───────────────────────
 
 def global_validate(edges: tuple, roots: frozenset = frozenset(),
@@ -262,7 +303,8 @@ def global_validate(edges: tuple, roots: frozenset = frozenset(),
     invariants = (I1_linear_capability(edges, max_use),
                   I2_foundationally_acyclic(edges),
                   I3_no_self_supporting_root(edges, roots),
-                  I4_temporal_persistence(edges))
+                  I4_temporal_persistence(edges),
+                  I5_warrant_binding(edges))
     failed = [i for i in invariants if i["verdict"] == FAIL]
     undef = [i for i in invariants if i["verdict"] == UNDEFINED]
     verdict = FAIL if failed else (UNDEFINED if undef else PASS)
@@ -308,6 +350,34 @@ def fixture_grounded_chain() -> tuple:
     """The positive control for T_G2: same shape, real foundation."""
     return (gedge("r", "c1", DERIVE), gedge("c1", "c2", DERIVE),
             gedge("c2", "c3", DERIVE))
+
+
+def fixture_warrant_rebind() -> tuple:
+    """CHID-SMITH-1793. A warrant minted over value X on one edge,
+    reused on another edge carrying value Y. Two clean mint/invoke
+    pairs; every prior invariant passes; only the binding check
+    refuses."""
+    x = {"amount_state": "REQUESTED"}
+    y = {"amount_state": "APPROVED"}
+    e1 = gedge("kappa", "E_1", INVOKE, token="kappa")
+    e1["value"], e1["warrant"] = x, mint_warrant("kappa->E_1", x)
+    e2 = gedge("kappa2", "E_2", INVOKE, token="kappa2")
+    e2["value"], e2["warrant"] = y, mint_warrant("kappa->E_1", x)
+    return (gedge("A", "kappa", MINT, token="kappa"), e1,
+            gedge("A2", "kappa2", MINT, token="kappa2"), e2)
+
+
+def fixture_honest_warrant() -> tuple:
+    """The positive control: same shape, each warrant minted over the
+    value and edge it actually rides."""
+    x = {"amount_state": "REQUESTED"}
+    y = {"amount_state": "APPROVED"}
+    e1 = gedge("kappa", "E_1", INVOKE, token="kappa")
+    e1["value"], e1["warrant"] = x, mint_warrant("kappa->E_1", x)
+    e2 = gedge("kappa2", "E_2", INVOKE, token="kappa2")
+    e2["value"], e2["warrant"] = y, mint_warrant("kappa2->E_2", y)
+    return (gedge("A", "kappa", MINT, token="kappa"), e1,
+            gedge("A2", "kappa2", MINT, token="kappa2"), e2)
 
 
 def fixture_temporal_gap() -> tuple:

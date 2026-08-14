@@ -965,6 +965,64 @@ def _probes():
              "check that makes a typed institutional runtime",
              _ir))
 
+    # ── Phase A item 1: tenant isolation, enforced in the data path ─
+    import tenant_runtime as trt
+
+    def _tenant():
+        s = trt.boot()
+        s, _ = trt.provision_tenant(s, "A")
+        s, _ = trt.provision_tenant(s, "B")
+        s, ra = trt.open_handle(s, "A", ("store.read", "store.write"))
+        s, _ = trt.write(s, ra["handle"], "A", "doc1", {"v": 1})
+        s, _ = trt.publish_release(s, "rel", "sha:x")
+        _, cross = trt.write(s, ra["handle"], "B", "doc1", {"v": 2})
+        _, crossr = trt.read(s, ra["handle"], "B", "doc1")
+        _, absent = trt.read(s, ra["handle"], "A", "nope")
+        _, forged = trt.read(s, "0" * 16, "A", "doc1")
+        _, ambient = trt.open_handle(s, "A", ("ALL",))
+        _, cpw = trt.write_release_via_tenant(s, ra["handle"], "rel",
+                                              "sha:evil")
+        _, cpr = trt.read_release(s, ra["handle"], "rel")
+        frozen = trt.canon(s)
+        trt.write(s, ra["handle"], "A", "k", 9)
+        inv = trt.isolation_invariant(s)
+        return (cross["reason"] == "E_TENANT_BOUNDARY" and
+                crossr["reason"] == absent["reason"] ==
+                "E_NOT_READABLE" and
+                forged["reason"] == "E_UNKNOWN_HANDLE" and
+                ambient["reason"] == "E_AMBIENT_AUTHORITY" and
+                cpw["reason"] == "E_CONTROL_PLANE_READ_ONLY" and
+                cpr["ok"] is True and
+                trt.canon(s) == frozen and
+                inv["holds"] is True)
+    A(_probe("isolation_is_a_property_of_the_state_not_a_promise",
+             "a handle for A dies against B's data in the data path "
+             "itself; a forged handle is unknown however well-formed; "
+             "cross-boundary and absent-key are one indistinguishable "
+             "answer so existence never leaks; releases are readable "
+             "by all tenants and writable by none; no operation "
+             "mutates its input; and the isolation invariant is "
+             "re-derivable on the real state — the first vNext "
+             "primitive that is code",
+             _tenant))
+
+    # ── I_5: the swarm's survivor, witnessed then closed ────────────
+    def _rebind():
+        import global_admissibility as gad5
+        gap = gad5.global_validate(gad5.fixture_warrant_rebind())
+        honest = gad5.global_validate(gad5.fixture_honest_warrant())
+        return (gap["all_edges_locally_valid"] is True and
+                gap["GLOBAL_RESULT"] == gad5.FAIL and
+                gap["REASON"] == "E_WARRANT_VALUE_REBIND" and
+                honest["GLOBAL_RESULT"] == gad5.PASS)
+    A(_probe("a_warrant_binds_the_value_it_was_minted_over",
+             "the swarm survivor CHID-SMITH-1793 witnessed a real "
+             "gap — a warrant over value X reattached to value Y "
+             "passed all four invariants and global_validate at "
+             "commit 92f01d5 — and I_5 now refuses the rebind while "
+             "the honestly-paired warrants still pass",
+             _rebind))
+
     # ── receipt integrity: the membrane on the kernel's metadata ────
     import receipt_integrity as rin
 
