@@ -214,6 +214,29 @@ def test_an_unexplained_success_bounds_and_never_supports():
     assert v["boundary_information"] is True
 
 
+def test_a_confounded_confirmation_supports_nothing():
+    from decision_boundaries import outcome_attribution
+    v = outcome_attribution(outcome_consistent=True,
+                            causal_path_through_predictors=False)
+    assert v["case"] == "CONFOUNDED_CONFIRMATION"
+    assert v["supports_method"] is False
+    assert v["accumulates"] is False
+    assert v["stratum_flag"] == "EXOGENOUS_SHOCK"
+
+
+def test_a_clean_confirmation_still_only_accumulates():
+    from decision_boundaries import outcome_attribution
+    v = outcome_attribution(True, causal_path_through_predictors=True)
+    assert v["case"] == "CONFIRMATION"
+    assert v["supports_method"] is False and v["accumulates"] is True
+
+
+def test_an_inconsistent_outcome_is_routed_to_reinforcement():
+    from decision_boundaries import outcome_attribution
+    assert outcome_attribution(False, True)["case"] == \
+        "DISCONFIRMING_OUTCOME"
+
+
 # ── status discipline ──────────────────────────────────────────────────
 
 def test_nothing_here_can_become_canon():

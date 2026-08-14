@@ -291,6 +291,34 @@ def reinforcement(predictors_present: bool, effect_present: bool,
     return {"case": "IRRELEVANT", "reinforced": False}
 
 
+def outcome_attribution(outcome_consistent: bool,
+                        causal_path_through_predictors: bool) -> dict:
+    """The J4 target-2 lesson. An outcome consistent with a method but
+    CAUSED by a variable outside the method's model is a CONFOUNDED
+    CONFIRMATION — it supports nothing, and it flags the stratum.
+
+    The instance: a HOLD on a weakly-qualified opportunity followed by
+    the opportunity's substrate being destroyed by an exogenous shock.
+    The gate 'was right', but through a cause none of its predictors
+    carried. Scoring decision rules on a shock-dominated stratum
+    without modelling the shock scores the shock, not the rule."""
+    if not outcome_consistent:
+        return {"case": "DISCONFIRMING_OUTCOME",
+                "supports_method": False,
+                "note": "route through reinforcement(); this function "
+                        "only grades consistent outcomes"}
+    if causal_path_through_predictors:
+        return {"case": "CONFIRMATION", "supports_method": False,
+                "accumulates": True}
+    return {"case": "CONFOUNDED_CONFIRMATION",
+            "supports_method": False, "accumulates": False,
+            "stratum_flag": "EXOGENOUS_SHOCK",
+            "law": "an outcome consistent with the method but caused "
+                   "outside its model scores the shock, not the rule; "
+                   "shock-dominated strata must be modelled or "
+                   "excluded"}
+
+
 def j4_cursor() -> dict:
     return {"NEXT_TARGET": "J4",
             "J4_MODE": "FAILURES+COUNTEREXAMPLES+NEGATIVE_CONTROLS",
