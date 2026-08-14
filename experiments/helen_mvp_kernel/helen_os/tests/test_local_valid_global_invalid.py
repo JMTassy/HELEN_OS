@@ -101,6 +101,45 @@ def test_same_warrant_same_value_is_admissible():
     assert ok is True, violations
 
 
+# ─────────────────────────── FIXTURE 7 — banishment: unrevoked capability (I₇) ───────────────────────────
+def test_granted_capability_never_revoked_local_valid_global_invalid():
+    # A privileged context (lease L) is opened but never torn down. Every edge is local-valid;
+    # I₁–I₆ are silent (nothing double-spent, cyclic, rootless, persisted, conflicting, rebound) —
+    # only banishment catches the dangling context. "Governed = provably closed."
+    g = (GraphIR()
+         .add_node(Node("open", "OpenContext"))
+         .add_node(Node("act", "PrivilegedAction"))
+         .add_edge(Edge("g1", "open", "act", EdgeType.CAPABILITY, grants=("lease_L",))))
+    violations = _local_all_valid_but_global_invalid(g, "E_UNREVOKED_CAPABILITY")
+    for code in ("E_DOUBLE_SPEND", "E_PROVENANCE_CYCLE", "E_PROVENANCE_SELF_SUPPORT",
+                 "E_UNWARRANTED_PERSISTENCE", "E_INCONSISTENT_EFFECT", "E_WARRANT_VALUE_REBIND"):
+        assert not any(code in x for x in violations), (code, violations)
+
+
+def test_granted_and_revoked_capability_is_admissible():
+    # open lease L, then provably close it (banishment) → clean teardown, admissible.
+    g = (GraphIR()
+         .add_node(Node("open", "OpenContext"))
+         .add_node(Node("act", "PrivilegedAction"))
+         .add_node(Node("close", "Teardown"))
+         .add_edge(Edge("g1", "open", "act", EdgeType.CAPABILITY, grants=("lease_L",)))
+         .add_edge(Edge("r1", "act", "close", EdgeType.CAPABILITY, revokes=("lease_L",))))
+    assert g.all_edges_local_valid() is True
+    ok, violations = g.global_validate()
+    assert ok is True, violations                  # opened AND provably closed → admitted
+
+
+def test_partial_revocation_flags_only_the_dangling_lease():
+    g = (GraphIR()
+         .add_node(Node("o", "O")).add_node(Node("a", "A"))
+         .add_edge(Edge("g", "o", "a", EdgeType.CAPABILITY, grants=("L1", "L2")))
+         .add_edge(Edge("r", "o", "a", EdgeType.CAPABILITY, revokes=("L1",))))   # L2 left open
+    ok, violations = g.global_validate()
+    assert ok is False
+    assert any("L2" in x and "E_UNREVOKED_CAPABILITY" in x for x in violations)
+    assert not any("'L1'" in x for x in violations)   # L1 was revoked — not flagged
+
+
 # ─────────────────────────── POSITIVE CONTROL — non-vacuity ───────────────────────────
 def test_valid_graph_is_globally_admissible():
     # a clean graph: acyclic derivation · one token consumed once · warranted persistence · one effect.

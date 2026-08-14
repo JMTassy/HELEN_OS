@@ -14,6 +14,12 @@ cannot see:
   4. unwarranted temporal persistence — State(t₁) ⊬ State(t₂) without W_persistence
   5. mutually inconsistent effects    — one slot committed to two different values
   6. warrant/value rebinding          — one signature reused to attest two different values (FABLE swarm find)
+  7. unrevoked capability (banishment) — a privileged context opened but never provably torn down
+
+I₇ is the dual of the others: they block UP-inflation (opening/accumulating without a
+witnessed root); banishment blocks FAIL-TO-CLOSE. A system is governed not merely when it
+can open a privileged context, but when it can prove the context ended cleanly — "banishment
+> invocation." Grant(lease) with no matching Revoke(lease) ⇒ E_UNREVOKED_CAPABILITY.
 
 I₃ (self-support) is distinct from I₂ (cycle): a claim can be perfectly ACYCLIC yet
 rootless — an orphan chain c₁→c₂ where nothing descends from a primary root. Roots(c)=∅
@@ -57,6 +63,8 @@ class Edge:
     warrants: tuple = ()             # declared warrant ids (presence only — local)
     consumes: tuple = ()             # linear capability tokens this edge consumes
     warrant_binds: tuple = ()        # (warrant_id, value) pairs this edge attests — a signature is bound to a value
+    grants: tuple = ()               # capability-lease ids this edge OPENS (a privileged context)
+    revokes: tuple = ()              # capability-lease ids this edge CLOSES (teardown / banishment)
 
 
 def local_valid(edge: Edge, nodes: dict) -> bool:
@@ -181,5 +189,16 @@ class GraphIR:
         for wid, vals in sorted(wbind.items()):
             if len(vals) > 1:
                 v.append(f"E_WARRANT_VALUE_REBIND: warrant {wid!r} attests {len(vals)} distinct values {sorted(vals)!r}")
+
+        # 7 — banishment: every opened capability lease must be provably revoked before context-end.
+        #     Governed = provably closed, not just opened. A grant with no matching teardown is a
+        #     dangling privileged context (E_UNREVOKED_CAPABILITY). Dual of I₁–I₆: they block
+        #     up-inflation; this blocks fail-to-close.
+        opened, closed = set(), set()
+        for e in self.edges:
+            opened.update(e.grants)
+            closed.update(e.revokes)
+        for lease in sorted(opened - closed):
+            v.append(f"E_UNREVOKED_CAPABILITY: lease {lease!r} granted but never revoked (dangling privileged context)")
 
         return (len(v) == 0), v
