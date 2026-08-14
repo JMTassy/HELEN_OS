@@ -131,6 +131,50 @@ def verify_against_anchor(state: dict, tenant: str,
                                        anchored["length"]}
 
 
+# ── the bulla: the first physical RDK (Babylon, ~2000 BCE) ─────────────
+
+def seal_bulla(inner_digest: str, outer_text_digest: str,
+               seal: str, claimant: str) -> dict:
+    """The case tablet: the protected inner matrix, the readable
+    outer copy, the cylinder seal. The material ancestor of the
+    proof-carrying receipt — the outer text is REPRESENTATION, the
+    inner tablet is SUBSTRATE, and the claim is worth nothing until
+    the tribunal breaks the envelope and compares."""
+    if not seal:
+        return {"ok": False, "reason": "E_UNSEALED_BULLA"}
+    return {"ok": True, "inner": inner_digest,
+            "outer": outer_text_digest, "seal": seal,
+            "claimant": claimant, "opened": False}
+
+
+def open_bulla(bulla: dict) -> dict:
+    """Destructive, public, one-shot. Three laws the hash chain did
+    not have:
+    - opening CONSUMES the envelope (affine verification: a bulla
+      verifies once; E_ALREADY_OPENED on the second attempt)
+    - a match discharges the claim
+    - a MISMATCH does not merely void the claim — it DESTROYS the
+      claimant's authority (E_ENVELOPE_MISMATCH): the cuneiform law
+      of discharge makes fabrication expensive to the fabricator,
+      not merely unsuccessful. Asymmetric stakes are what kept the
+      envelopes honest for two thousand years."""
+    if not bulla.get("ok"):
+        return {"verdict": None, "reason": "E_BAD_BULLA"}
+    if bulla["opened"]:
+        return {"verdict": None, "reason": "E_ALREADY_OPENED",
+                "law": "verification is affine; an opened envelope "
+                       "cannot be resealed"}
+    match = bulla["inner"] == bulla["outer"]
+    return {"verdict": "DISCHARGED" if match else "VOID",
+            "opened": True, "public": True,
+            "claim_stands": match,
+            "claimant_authority": "INTACT" if match else "DESTROYED",
+            "reason": None if match else "E_ENVELOPE_MISMATCH",
+            "law": "any divergence between the outer envelope and "
+                   "the inner matrix instantly destroys the "
+                   "claimant's authority"}
+
+
 def chain_receipt(state: dict, tenant: str) -> dict:
     """The RDK recipe for this store: the chain re-derives itself."""
     v = verify_chain(state, tenant)

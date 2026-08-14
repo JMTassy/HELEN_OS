@@ -158,3 +158,43 @@ def test_no_operation_mutates_its_input_state():
 
 def test_deterministic_replay():
     assert ar.canon(_chain()) == ar.canon(_chain())
+
+
+# ── the bulla: affine verification, asymmetric stakes ──────────────────
+
+def test_a_matching_bulla_discharges_the_claim():
+    from audit_runtime import open_bulla, seal_bulla
+    b = seal_bulla("sha:debt", "sha:debt", seal="cylinder:X",
+                   claimant="CREDITOR_1")
+    v = open_bulla(b)
+    assert v["verdict"] == "DISCHARGED"
+    assert v["claimant_authority"] == "INTACT"
+    assert v["public"] is True
+
+
+def test_a_mismatch_destroys_the_claimants_authority():
+    """The cuneiform law: fabrication is expensive to the fabricator,
+    not merely unsuccessful."""
+    from audit_runtime import open_bulla, seal_bulla
+    b = seal_bulla("sha:debt_10", "sha:debt_50", seal="cylinder:X",
+                   claimant="CREDITOR_1")
+    v = open_bulla(b)
+    assert v["verdict"] == "VOID"
+    assert v["claim_stands"] is False
+    assert v["claimant_authority"] == "DESTROYED"
+    assert v["reason"] == "E_ENVELOPE_MISMATCH"
+
+
+def test_verification_is_affine_the_envelope_opens_once():
+    from audit_runtime import open_bulla, seal_bulla
+    b = seal_bulla("sha:d", "sha:d", "cyl", "C")
+    first = open_bulla(b)
+    assert first["opened"] is True
+    reopened = open_bulla({**b, "opened": True})
+    assert reopened["reason"] == "E_ALREADY_OPENED"
+
+
+def test_an_unsealed_bulla_is_refused_at_creation():
+    from audit_runtime import seal_bulla
+    assert seal_bulla("a", "a", seal="", claimant="C")["reason"] == \
+        "E_UNSEALED_BULLA"
