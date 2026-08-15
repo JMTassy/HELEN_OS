@@ -1890,6 +1890,80 @@ def _probes():
              "invariant re-derives on the erased state",
              _context))
 
+    # ── graph dependency truth: topology, cognition, authority ──────
+    import execution_graph as egr
+
+    def _graph():
+        nodes = ("filings", "papers", "pricing", "synthesis")
+        chain = (("filings", "papers", False),
+                 ("papers", "pricing", False),
+                 ("filings", "synthesis", True),
+                 ("papers", "synthesis", True),
+                 ("pricing", "synthesis", True))
+        audit = egr.dependency_audit(nodes, chain)
+        false_edge = egr.edge("search", "draft", consumes=False)
+        hidden = egr.hidden_state_falsifier(False, True)
+        a = egr.output_object({"n": 3}, "s", "w", ("i",),
+                              {"temp": 0}, 1)
+        b = egr.output_object({"n": 3}, "s", "w", ("i",),
+                              {"temp": 1}, 2)
+        collision = egr.same_artifact(a, b)
+        collapse = egr.collapse_failures("NOT_FOUND", "NO_ACCESS")
+        table = {"LOW_RISK": "short", "HIGH_RISK": "audit",
+                 "UNKNOWN": "HOLD"}
+        minted = egr.route("LOW_RISK", "clf", table,
+                           classifier_selected_path="short")
+        unknown = egr.route("WEIRD", "clf", table)
+        defaulted = egr.route("UNKNOWN", "clf",
+                              {**table, "UNKNOWN": "short"})
+        selfappr = egr.verification_edge("w", "w", "VERIFICATION")
+        truth = egr.promotion_step("PERSISTENCE", "TRUTH")
+        barrier = egr.join_policy(10, 0, 1.0, 0.9,
+                                  next_needs_complete_set=False)
+        partial = egr.join_policy(96, 4, 0.96, 0.9)
+        illusion = egr.evidence_roots(100, 1,
+                                      same_model_same_source=True)
+        transcript = egr.pass_payload("transcript")
+        store, _ = egr.idempotent_write({}, "art:1", {"v": 1})
+        _, retry = egr.idempotent_write(store, "art:1", {"v": 1})
+        count_first = egr.pipeline_order(("TASK", "AGENT_COUNT"))
+        return (audit["real_dependencies"] == 3 and
+                len(audit["false_edges"]) == 2 and
+                audit["parallel_width_at_start"] == 3 and
+                false_edge["reason"] == "E_FALSE_EDGE" and
+                hidden["reason"] == "E_HIDDEN_STATE" and
+                collision["reason"] == "E_CONFIG_COLLISION" and
+                collapse["reason"] == "E_FAILURE_STATE_COLLAPSE" and
+                minted["reason"] ==
+                "E_CLASSIFIER_MINTED_AUTHORITY" and
+                unknown["selected_path"] == "HOLD" and
+                defaulted["reason"] ==
+                "E_UNKNOWN_ROUTED_TO_DEFAULT" and
+                selfappr["reason"] == "E_SELF_APPROVAL" and
+                truth["reason"] == "E_PERSISTENCE_IS_NOT_TRUTH" and
+                barrier["reason"] == "E_IMPLICIT_BARRIER" and
+                partial["decision"] == "CONTINUE" and
+                illusion["n_effective_witnesses"] == 1 and
+                illusion["reason"] == "E_CONSENSUS_ILLUSION" and
+                transcript["reason"] == "E_TRANSCRIPT_PASSED" and
+                retry["written"] is False and
+                count_first["reason"] == "E_COUNT_BEFORE_SHAPE")
+    A(_probe("layout_is_not_dependency_and_a_classifier_is_not_a_gate",
+             "an edge is licensed only where the downstream node "
+             "consumes the upstream artifact — and a node that "
+             "changes without consuming exposes hidden state, not a "
+             "refuted law; identical JSON from incompatible configs "
+             "is a collision, not one artifact; NOT_FOUND collapsed "
+             "into NO_ACCESS routes blindness as absence; a "
+             "classifier that returns a path minted authority, and "
+             "UNKNOWN never falls through to a happy path; a "
+             "producer cannot approve itself and persistence is "
+             "never truth; a join the next node does not need is an "
+             "implicit barrier while 96 of 100 continue; a hundred "
+             "agents over one source are ONE witness; and the agent "
+             "count comes last, after shape and gates",
+             _graph))
+
     return P
 
 
