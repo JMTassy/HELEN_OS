@@ -1810,6 +1810,63 @@ def _probes():
              "is over-broad; and one good run is not stability",
              _obliteratus))
 
+    # ── Phase A item 7: the governed context service ────────────────
+    import context_runtime as cxr
+
+    def _context():
+        s = cxr.boot()
+        s, _ = cxr.provision_tenant(s, "A")
+        s, _ = cxr.provision_tenant(s, "B")
+        _, model_obs = cxr.register_evidence(s, "A", "m", "sha:m",
+                                             "llm:r", "OBSERVED",
+                                             "model")
+        s, _ = cxr.register_evidence(s, "A", "e1", "sha:1", "msg:p",
+                                     "OBSERVED", "human")
+        s, _ = cxr.register_evidence(s, "A", "e2", "sha:2", "fwd:p",
+                                     "REPORTED", "system")
+        s, _ = cxr.register_evidence(s, "A", "e3", "sha:3", "llm:r",
+                                     "MODEL_DERIVED", "model")
+        s, _ = cxr.link(s, "A", "e2", "e1", "derives_from")
+        s, _ = cxr.rebuild_index(s, "A")
+        _, promo = cxr.promote_evidence(s, "A", "e3", "OBSERVED",
+                                        "human:w")
+        cross = cxr.authoritative_read(s, "B", "e1")
+        absent = cxr.authoritative_read(s, "B", "nope")
+        r = cxr.retrieve(s, "A", ("e1", "e2"))
+        frozen = cxr.canon(s)
+        asm = cxr.assemble_context(s, "A", ("e1", "e2"), 10)
+        sup = cxr.assemble_context(s, "A", ("e1",), 10,
+                                   suppress_contradictions=True)
+        _, persist = cxr.persist_assembly(s, "A", asm)
+        s2, _ = cxr.erase_evidence(s, "A", "e1")
+        gone = cxr.authoritative_read(s2, "A", "e1")
+        never = cxr.authoritative_read(s2, "A", "never")
+        return (model_obs["reason"] == "E_MODEL_OUTPUT_AS_OBSERVED"
+                and promo["reason"] == "E_MODEL_SELF_PROMOTION"
+                and cross == absent
+                and r["authoritative"] is False
+                and r["n_items"] == 2 and r["n_roots"] == 1
+                and asm["ephemeral"] is True
+                and cxr.canon(s) == frozen
+                and sup["reason"] == "E_CONTRADICTION_SUPPRESSED"
+                and persist["reason"] ==
+                "E_CONTEXT_PERSISTED_AS_TRUTH"
+                and gone == never
+                and "e1" not in s2["tenants"]["A"]["index"]
+                and cxr.context_invariant(s2)["holds"] is True)
+    A(_probe("the_index_is_a_view_and_a_view_never_becomes_truth",
+             "model output cannot wear OBSERVED at admission and "
+             "MODEL_DERIVED can never be promoted to it — a model is "
+             "an author, never a root; cross-tenant and absent are "
+             "one answer in store, edges and index alike; retrieval "
+             "is never authoritative and counts roots, not items; an "
+             "assembly is structurally ephemeral, cannot suppress "
+             "contradiction flags, and its persistence is refused "
+             "always; erasure removes the derived entry with the "
+             "row, leaves a content-free tombstone, and the "
+             "invariant re-derives on the erased state",
+             _context))
+
     return P
 
 
