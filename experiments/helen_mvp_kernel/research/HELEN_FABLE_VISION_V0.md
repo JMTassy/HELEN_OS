@@ -124,9 +124,33 @@ that proves a backup was real) is itself a clean instance of
 corpus, archaeologist connectors, local-lane push) stay HOLD until the
 operator supplies their inputs — named, not fabricated.
 
+## Twin-lane convergence (recorded, not celebrated)
+
+A second lane authored its own FABLE vision
+(`HELEN_FABLE_VISION_V1.md`, `REGISTERED_PRECLAIM_AGENDA`) at the same
+kernel tip, concurrently and independently of this one. The two agree
+almost completely: identical audit numbers (18 → 14 real, 4 false,
+width 9), the same four deleted edges, the same three sequential
+spines, the same "a CISO can approve" destination, the same
+recommended first move toward A8.
+
+That agreement is **common-mode, not corroboration** — the exact case
+the graph law names. Both visions share one source thread, one kernel
+tip, one seat (HELEN_FABLE), and one model lineage; they are two
+statements of one root, and `evidence_roots(2, roots=1) →
+n_effective_witnesses = 1, E_CONSENSUS_ILLUSION`. Two FABLE documents
+are not two independent witnesses that the roadmap is right. They are
+one witness, written twice. Recording the convergence honestly — and
+refusing to bank it as double-strength evidence — is the law working
+on its own authors. Neither file overwrites the other; both stand, and
+the operator adjudicates which is canonical (V1's status label,
+`REGISTERED_PRECLAIM_AGENDA`, is the more precise of the two).
+
 ## Non-deltas
 
 This vision admits nothing, spawns nothing, and grants no authority.
 It is a Temple artifact proposing a shape; the shape was checked
 against the committed graph law; the operator's GO is the only thing
-that moves any lane from candidate to work.
+that moves any lane from candidate to work. The twin V1 gains no
+authority from agreeing with it, and this V0 gains none from the
+agreement either.
