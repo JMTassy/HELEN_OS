@@ -2229,6 +2229,53 @@ def _probes():
              "AND responsive under evidence",
              _morphism))
 
+    # ── autoresearch: goblins multiply hypotheses, not warrants ────
+    import autoresearch_dialogue as adx
+
+    def _autoresearch():
+        zero = {ax: 0 for ax in adx.DELTA_AXES}
+        mint_w = adx.dialogue_turn("CHAOS", "PROPOSE",
+                                   {**zero, "W": 1})
+        mint_a = adx.dialogue_turn("CHAOS", "PROPOSE",
+                                   {**zero, "A": 1})
+        role = adx.dialogue_turn("MASON", "PROPOSE", zero)
+        agree = adx.agreement_claim(True, claims_truth=True)
+        unident = adx.observational_class({"K3": (0.01, 0.02)}, 0.05)
+        stop = adx.stopping_criterion(True, True)
+        nondisc = adx.discriminator("A", "A", 1.0, 0.0)
+        causal = adx.causal_promotion(True, discharged=())
+        r = adx.run_protocol()
+        return (mint_w["reason"] == "E_DIALOGUE_MINTS_WARRANT" and
+                mint_a["reason"] == "E_DIALOGUE_MINTS_AUTHORITY" and
+                role["reason"] == "E_ACT_OUTSIDE_ROLE" and
+                agree["reason"] == "E_AGREEMENT_AS_WITNESS" and
+                unident["reason"] == "E_UNIDENTIFIABLE_IN_H" and
+                stop["next_operation"] == "ACQUIRE_X_STAR" and
+                nondisc["reason"] == "E_NON_DISCRIMINATING" and
+                causal["reason"] == "E_PREDICTIVE_IS_NOT_CAUSAL" and
+                r["N_repr_of_c1"] == 21 and r["N_epi_of_c1"] == 1 and
+                r["final_delta"]["A"] == 0 and
+                r["final_delta"]["X"] == 0 and
+                r["final_delta"]["W"] == 3 and
+                r["turns"] > r["final_delta"]["W"] and
+                r["final_frontier"]["CAUSAL"] == "HOLD" and
+                r["final_frontier"]["IDENTIFIABLE_IN_H"] == "PASS")
+    A(_probe("goblins_multiply_hypotheses_only_warrants_move_the_frontier",
+             "a dialogue act claiming a warrant, authority or effect "
+             "refuses by name — conversation moves R and C only; the "
+             "two roles hold disjoint act alphabets and neither may "
+             "mint; 'we agree, therefore true' is refused; a rival "
+             "inside the observational class HOLDs identifiability "
+             "however well predicted, and when the next hypothesis "
+             "sits in the same class the licensed move is ACQUIRE "
+             "x*, not THINK MORE; a non-discriminating experiment is "
+             "invalid however expensive; and the executed ten-epoch "
+             "run closes with 34 turns but only 3 acquired warrants, "
+             "21 representations on ONE root, dA=dX=0, and CAUSAL on "
+             "HOLD with all three obligations undischarged — "
+             "predictive support is not a causal mechanism",
+             _autoresearch))
+
     # ── the enterprise falsifier: cognition is replaceable ─────────
     import cognition_replacement as crx
 
