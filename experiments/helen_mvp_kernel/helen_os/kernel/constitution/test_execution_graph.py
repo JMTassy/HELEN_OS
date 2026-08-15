@@ -198,6 +198,18 @@ def test_a_producer_cannot_approve_itself():
                              "VERIFICATION")["ok"] is True
 
 
+def test_a_late_verifier_lets_belief_destabilize():
+    from execution_graph import verification_placement
+    ok = verification_placement(unverified_propagation_steps=1,
+                                max_latency=2)
+    assert ok["ok"] is True and ok["within_bound"] is True
+    late = verification_placement(5, max_latency=2)
+    assert late["reason"] == "E_DELAYED_VERIFICATION"
+    # a terminal node propagates to nothing, so latency is moot
+    term = verification_placement(9, max_latency=2, is_terminal=True)
+    assert term["ok"] is True
+
+
 def test_the_promotion_chain_cannot_be_skipped_and_never_reaches_truth():
     assert promotion_step("GENERATION", "VERIFICATION")["ok"] is True
     v = promotion_step("GENERATION", "PERSISTENCE")

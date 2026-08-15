@@ -320,6 +320,33 @@ def route_decision(classifier_output, classifier_version,
 
 # ── 6. verification is an edge gate ────────────────────────────────────
 
+def verification_placement(unverified_propagation_steps,
+                           max_latency, is_terminal=False) -> dict:
+    """CHIDDUSH from the arXiv-2026 agentic corpus (candidate; the
+    corpus finding is REPORTED_EXTERNAL, so this encodes the STRUCTURAL
+    principle, not a measured threshold): a verification edge is not
+    only a matter of WHO (producer != approver) but of WHEN. If a
+    claim propagates through k unverified hops before its corrector,
+    belief can destabilize before correction arrives ('delayed
+    verification destabilizes multi-agent belief'). Placement within
+    max_latency is required unless the node is terminal (nothing reads
+    it downstream)."""
+    if unverified_propagation_steps < 0 or max_latency < 0:
+        return {"ok": False, "reason": "E_NEGATIVE_LATENCY"}
+    if is_terminal:
+        return {"ok": True, "note": "terminal node: nothing propagates"}
+    if unverified_propagation_steps > max_latency:
+        return {"ok": False, "reason": "E_DELAYED_VERIFICATION",
+                "steps": unverified_propagation_steps,
+                "max_latency": max_latency,
+                "law": "belief may destabilize before a late corrector "
+                       "arrives; place the verifier within the latency "
+                       "bound, or the propagated claim is unverified "
+                       "state masquerading as reviewed"}
+    return {"ok": True, "steps": unverified_propagation_steps,
+            "within_bound": True}
+
+
 def verification_edge(producer, approver, stage) -> dict:
     """Generation and admission are separated. A self-review is drawn
     from the distribution that produced the work, which is why it

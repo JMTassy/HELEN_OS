@@ -1927,7 +1927,9 @@ def _probes():
         store, _ = egr.idempotent_write({}, "art:1", {"v": 1})
         _, retry = egr.idempotent_write(store, "art:1", {"v": 1})
         count_first = egr.pipeline_order(("TASK", "AGENT_COUNT"))
+        late_verify = egr.verification_placement(5, max_latency=2)
         return (audit["real_dependencies"] == 3 and
+                late_verify["reason"] == "E_DELAYED_VERIFICATION" and
                 len(audit["false_edges"]) == 2 and
                 audit["parallel_width_at_start"] == 3 and
                 false_edge["reason"] == "E_FALSE_EDGE" and
