@@ -1,177 +1,108 @@
-"""NIM_V0.1_WITNESS_FRAME_ORACLE — kill-test suite. 🔵 OBSERVED.
+"""NIM_V0.1_WITNESS_FRAME_ORACLE — kill-test suite (post-HAL hardening). 🔵 OBSERVED.
 
-Acceptance = R = (K_F, K_W, K_D, K_C, K_O, K_S, K_P, K_R) = (1,…,1) with every denominator > 0.
-Each family is a NON-EMPTY frozen mutation corpus; the positive controls must survive (no deny-all);
-observer adequacy carries a blind-observer teeth control. PASS means: every preregistered mutant in the
-finite declared corpus was killed and every positive control survived — nothing stronger.
+Earned boundary (the ONLY admissible conclusion on PASS):
+    "NIM_V0.1 establishes finite-corpus write/frame confinement and witness applicability under the
+     declared protection contracts."
+It may NOT claim non-interference, theorem, or proof.
+
+Every repaired check is proven REACHABLE by its intended oracle: each mutant flips exactly one
+dimension off a valid baseline and is REJECTed, while the one-field-corrected transition ADMITs —
+so the rejection is attributable to that dimension, not an unrelated crash.
 """
 from helen_os.audit.nim_v0_1 import (
-    ADMIT, REJECT, Capability, ProtectionContract, RootWitness, Transition,
-    admit, blind_contract, default_contracts, observer_family, observer_sees,
-    run_receipt, replay, zero_state,
+    ADMIT, REJECT, Capability, Transition, admit, blind_contract, build_corpus, default_contracts,
+    observer_family, observer_sees, prestate_digest, replay, run_receipt, zero_state,
+    T_CAP, T_AUTH, _good_cap,
 )
+from dataclasses import replace
 
 S0 = zero_state()
 
-# ── baselines (positive controls) ──
-T_CAP = Transition("cap", licensed_frame=frozenset({"Q"}), writes={"Q": 1})
-T_AUTH = Transition(
-    "auth", licensed_frame=frozenset({"A"}), writes={"A": 1}, op="grant", object="obj1",
-    capability=Capability("a", "grant", "obj1", frozenset({"obj1"})), proposer="p", authorizer="a")
 
-
-def _verdict(t):
+def _v(t):
     return admit(t, S0)[0]
 
 
-# ─────────── POSITIVE control (K_P) — the seam admits legitimate transitions ───────────
+# ─────────── POSITIVE controls (not a deny-all machine) ───────────
 def test_positive_controls_admit():
-    assert _verdict(T_CAP) == ADMIT
-    assert _verdict(T_AUTH) == ADMIT
+    assert _v(T_CAP()) == ADMIT and _v(T_AUTH()) == ADMIT
 
 
-# ─────────── FRAME family (K_F) — a write outside L(T) is rejected ───────────
-FRAME_MUTANTS = [
-    Transition("f_cap_A", frozenset({"Q"}), {"Q": 1, "A": 1}, proposer="p", authorizer="a"),  # A ∉ L
-    Transition("f_auth_X", frozenset({"A"}), {"A": 1, "X": 1}, op="grant", object="obj1",
-               capability=Capability("a", "grant", "obj1", frozenset({"obj1"})), proposer="p", authorizer="a"),  # X ∉ L
-]
-
-def test_frame_violations_killed():
-    assert len(FRAME_MUTANTS) > 0
-    for m in FRAME_MUTANTS:
-        v, why = admit(m, S0)
-        assert v == REJECT and why == "FRAME_VIOLATION", (m.id, why)
+# ─────────── FRAME + HARDEN L(T) ───────────
+def test_out_of_frame_write_rejected():
+    for t, _ in build_corpus()["FRAME"][:2]:
+        assert admit(t, S0) == (REJECT, "FRAME_VIOLATION")
 
 
-# ─────────── WITNESS family (K_W) — obligation must be discharged by an APPLICABLE witness ───────────
-def _auth_with(cap):
-    return replace_cap(T_AUTH, cap)
-
-def replace_cap(t, cap):
-    from dataclasses import replace
-    return replace(t, capability=cap, id=t.id + "_w")
-
-WITNESS_MUTANTS = [
-    replace_cap(T_AUTH, None),                                                          # missing
-    replace_cap(T_AUTH, Capability("a", "grant", "obj1", frozenset({"obj1"}), fresh=False)),  # stale
-    replace_cap(T_AUTH, Capability("a", "grant", "other", frozenset({"other"}))),       # wrong object
-    replace_cap(T_AUTH, Capability("a", "read", "obj1", frozenset({"obj1"}))),          # wrong operation
-]
-
-def test_witness_defects_killed():
-    assert len(WITNESS_MUTANTS) > 0
-    for m in WITNESS_MUTANTS:
-        v, why = admit(m, S0)
-        assert v == REJECT and why == "OBLIGATION_NOT_DISCHARGED", (m.id, why)
+def test_author_cannot_self_authorize_frame_expansion():
+    # op="noop" may not touch A; declaring A in L(T) is rejected by policy, not trusted.
+    t = Transition("expand", frozenset({"Q", "A"}), {"Q": 1, "A": 1}, op="noop",
+                   proposer="p", authorizer="a", discharger="d")
+    assert admit(t, S0) == (REJECT, "FRAME_NOT_LICENSED")
 
 
-# ─────────── DUTY family (K_D) — separation of duty on sensitive writes ───────────
-DUTY_MUTANTS = [
-    Transition("d_collapse", frozenset({"A"}), {"A": 1}, op="grant", object="obj1",
-               capability=Capability("a", "grant", "obj1", frozenset({"obj1"})),
-               proposer="same", authorizer="same"),  # proposer == authorizer
-]
-
-def test_sod_violations_killed():
-    assert len(DUTY_MUTANTS) > 0
-    for m in DUTY_MUTANTS:
-        v, why = admit(m, S0)
-        assert v == REJECT and why == "SOD_VIOLATION", (m.id, why)
-
-
-# ─────────── DEPUTY family (K_C) — authentic authority, inapplicable scope ───────────
-DEPUTY_MUTANTS = [
-    # capability genuinely names grant on obj1, but its SCOPE excludes obj1 (authentic ⊬ applicable)
-    Transition("dep_scope", frozenset({"A"}), {"A": 1}, op="grant", object="obj1",
-               capability=Capability("a", "grant", "obj1", frozenset({"sandbox"})),
-               proposer="p", authorizer="a"),
-]
-
-def test_confused_deputy_killed():
-    assert len(DEPUTY_MUTANTS) > 0
-    for m in DEPUTY_MUTANTS:
-        v, why = admit(m, S0)
-        assert v == REJECT and why == "OBLIGATION_NOT_DISCHARGED", (m.id, why)
+# ─────────── WITNESS applicability + confused-deputy reachability (one dimension each) ───────────
+def test_deputy_each_dimension_reachable_and_corrigible():
+    # baseline is valid; flipping ONE dimension → REJECT; correcting that one dimension → ADMIT.
+    base = dict(op="grant", object="obj1", requester="alice", tenant="tenant-A",
+                proposer="p", authorizer="a", discharger="d")
+    cases = {
+        "subject":  (_good_cap(subject="eve"),                         _good_cap(subject="alice")),
+        "operation":(_good_cap(operation="read"),                      _good_cap(operation="grant")),
+        "object":   (_good_cap(object="other", scope=frozenset({"other"})), _good_cap()),
+        "scope":    (_good_cap(scope=frozenset({"sandbox"})),          _good_cap()),
+        "tenant":   (_good_cap(tenant="tenant-B"),                     _good_cap()),
+        "expiry":   (_good_cap(fresh=False),                           _good_cap()),
+        "prestate": (_good_cap(bound_prestate=prestate_digest({**S0, "M": 9})), _good_cap()),
+    }
+    for dim, (bad, good) in cases.items():
+        r_bad = admit(Transition(f"bad_{dim}", frozenset({"A"}), {"A": 1}, capability=bad, **base), S0)
+        r_good = admit(Transition(f"good_{dim}", frozenset({"A"}), {"A": 1}, capability=good, **base), S0)
+        assert r_bad == (REJECT, "OBLIGATION_NOT_DISCHARGED"), (dim, r_bad)   # killed by intended oracle
+        assert r_good[0] == ADMIT, (dim, r_good)                              # only that dimension was the cause
 
 
-# ─────────── OBSERVER family (K_O) — substitution rejected + adequacy with blind-observer teeth ───────────
-def test_observer_substitution_is_rejected():
-    # weaken the A-observer AND perform a forbidden A write in one transition, no contract authority
-    attack = Transition("obs_sub", frozenset({"Q"}), {"Q": 1, "A": 1},
-                        contract_override={"A": blind_contract("A")}, has_contract_authority=False)
-    v, why = admit(attack, S0)
-    assert v == REJECT and why == "OBSERVER_SUBSTITUTION_UNLICENSED"
+def test_missing_witness_rejected():
+    base = dict(op="grant", object="obj1", requester="alice", proposer="p", authorizer="a", discharger="d")
+    assert admit(Transition("w0", frozenset({"A"}), {"A": 1}, capability=None, **base), S0) == (REJECT, "OBLIGATION_NOT_DISCHARGED")
 
 
-def test_observer_adequacy_and_blind_teeth():
-    contracts = default_contracts()
-    # every default observer must DISTINGUISH a forbidden mutation of its own coordinate
-    for c in ("A", "RHO_E", "X", "E"):
-        mutate = (lambda s, c=c: {**dict(s), c: s[c] + 1})
-        assert observer_sees(contracts[c], S0, mutate) is True
-    # teeth: a BLIND observer fails to see the same mutation → OKR would catch it (metric non-vacuous)
-    blind = blind_contract("A")
-    assert observer_sees(blind, S0, lambda s: {**dict(s), "A": s["A"] + 1}) is False
+# ─────────── three-way SoD ───────────
+def test_three_way_sod():
+    base = dict(op="grant", object="obj1", requester="alice", capability=_good_cap())
+    assert admit(Transition("pa", frozenset({"A"}), {"A": 1}, proposer="x", authorizer="x", discharger="d", **base), S0) == (REJECT, "SOD_VIOLATION")
+    assert admit(Transition("ad", frozenset({"A"}), {"A": 1}, proposer="p", authorizer="y", discharger="y", **base), S0) == (REJECT, "SOD_VIOLATION")
+    assert admit(Transition("ok", frozenset({"A"}), {"A": 1}, proposer="p", authorizer="a", discharger="d", **base), S0)[0] == ADMIT
 
 
-# ─────────── SEMANTIC family (K_S / AIR) — presentation must not change disposition ───────────
-def test_presentation_does_not_change_disposition():
-    from dataclasses import replace
-    for pres in ("plain", "prestige", "cosmic", "urgent", "humble"):
-        assert admit(replace(T_CAP, presentation=pres), S0)[0] == ADMIT      # admitted stays admitted
-        assert admit(replace(FRAME_MUTANTS[0], presentation=pres), S0)[0] == REJECT  # rejected stays rejected
-
-
-# ─────────── REPLAY family (K_R) — admitted transitions reconstruct the state ───────────
-def test_replay_reconstructs_admitted_state():
-    admitted = [T_CAP, T_AUTH]
-    assert all(admit(t, S0)[0] == ADMIT for t in admitted)
-    reconstructed = replay(S0, admitted)
-    assert reconstructed["Q"] == 1 and reconstructed["A"] == 1
-
-
-# ─────────── the acceptance vector R = (1,…,1), denominators recorded ───────────
-def test_acceptance_vector_all_ones_nonempty():
-    def kr(mutants, expected_reason=None):
-        assert len(mutants) > 0
-        killed = 0
-        for m in mutants:
-            v, why = admit(m, S0)
-            if v == REJECT and (expected_reason is None or why == expected_reason):
-                killed += 1
-        return killed, len(mutants)
-
-    K_F = kr(FRAME_MUTANTS, "FRAME_VIOLATION")
-    K_W = kr(WITNESS_MUTANTS, "OBLIGATION_NOT_DISCHARGED")
-    K_D = kr(DUTY_MUTANTS, "SOD_VIOLATION")
-    K_C = kr(DEPUTY_MUTANTS, "OBLIGATION_NOT_DISCHARGED")
-    K_P = (sum(admit(t, S0)[0] == ADMIT for t in (T_CAP, T_AUTH)), 2)
-    R = [K_F, K_W, K_D, K_C, K_P]
-    # every family non-empty AND fully satisfied (numerator == denominator)
-    assert all(den > 0 and num == den for (num, den) in R), R
-
-
-# ─────────── the ESSENTIAL teeth: a coarse observer must actually let a forbidden write ESCAPE ───────────
-def test_coarse_observer_escape_teeth():
-    # strict observer BLOCKS the forbidden A-write; the SAME write ESCAPES under a blind observer —
-    # proving the blind observer is genuinely dangerous (the teeth actually bite); and installing the
-    # blind observer is itself barred (reflexive-substitution defense).
+# ─────────── D1: contract_override is LIVE, not dead code ───────────
+def test_contract_override_live_and_gated():
     obs = observer_family()
-    assert obs["strict"] == REJECT           # strict blocks
-    assert obs["coarse_escape"] == ADMIT     # blind lets it escape → the danger is real, not hypothetical
-    assert obs["substitution"] == REJECT     # worker cannot install the blind observer
-    assert obs["blind_control_triggered"] is True and obs["adequacy"] is True
-    assert obs["killed"] == 1
+    assert obs["substitution"] == REJECT              # unlicensed override barred
+    assert obs["authorized_override_live"] == ADMIT   # AUTHORIZED override is actually merged (proves live)
+    assert obs["strict"] == REJECT and obs["coarse_escape"] == ADMIT  # blind observer is demonstrably dangerous
+    assert obs["adequacy"] is True and obs["killed"] == 1
 
 
-# ─────────── the full 8-component acceptance vector R = (1,…,1), families non-empty ───────────
-def test_full_acceptance_vector():
-    r = run_receipt()
-    assert r["acceptance_vector"] == (1, 1, 1, 1, 1, 1, 1, 1)
-    assert r["accepted"] is True
-    # every family denominator > 0 (no vacuous 0/0), survivors empty where applicable
+# ─────────── STR / presentation inert ───────────
+def test_presentation_inert():
+    for p in ("plain", "prestige", "cosmic", "urgent", "humble"):
+        assert _v(replace(T_CAP(), presentation=p)) == ADMIT
+
+
+# ─────────── replay ───────────
+def test_replay_reconstructs():
+    recon = replay(S0, [T_CAP(), T_AUTH()])
+    assert recon["Q"] == 1 and recon["A"] == 1
+
+
+# ─────────── the full vectorial receipt + RUN TWICE determinism ───────────
+def test_full_receipt_all_ones_and_deterministic():
+    r1 = run_receipt()
+    r2 = run_receipt()
+    assert r1 == r2                                   # deterministic across two runs
+    assert r1["acceptance_vector"] == (1, 1, 1, 1, 1, 1, 1, 1) and r1["accepted"] is True
     for fam in ("FRAME", "WITNESS", "DUTY", "DEPUTY"):
-        killed, total, survivors = r[fam]
+        killed, total, survivors = r1[fam]
         assert total > 0 and killed == total and survivors == []
-    assert r["POSITIVE"][1] > 0 and r["STR"][1] > 0 and r["REPLAY"] == (1, 1)
+    assert r1["POSITIVE"][1] > 0 and r1["STR"][1] > 0 and r1["REPLAY"] == (1, 1)
