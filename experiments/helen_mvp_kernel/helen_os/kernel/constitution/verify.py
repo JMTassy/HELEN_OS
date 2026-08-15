@@ -2098,6 +2098,64 @@ def _probes():
              "nothing downstream",
              _stemmatics))
 
+    # ── harmonic geometry: sacred !-> physical, typed all the way ──
+    import harmonic_geometry as hgy
+
+    def _harmonic():
+        skip = hgy.psi_climb("FORM", "MEASURED_EFFECT", True)
+        sigma = hgy.sigma_support("PREDICTED_MODAL_EFFECT",
+                                  support_is_symbolic=True)
+        unbridged = hgy.frontier_pair("high", "high",
+                                      inferred_from_other=True,
+                                      bridge_measured=False)
+        naked = hgy.resonance_claim("physical")
+        full = hgy.resonance_claim("physical", "acoustic", "Q",
+                                   "200-800Hz", "clamped")
+        scalar = hgy.typed_power(value=0.92)
+        leap = hgy.domain_cross("acoustic", "biological", None)
+        mystique = hgy.geometry_descriptors({"Aut": "C6"})
+        prior = hgy.symmetry_prior(True, True)
+        uncontrolled = hgy.experiment("g", {"mechanism": "acoustic"},
+                                      ("rotate",), 1)
+        scrambled = hgy.invariant_survival(True, {"scramble": True})
+        phi_abuse = hgy.phi_score(1, 1, 1, 1, used_as_power=True)
+        salience = hgy.adversary_step(100, 0, frontier_moved=True)
+        inert = hgy.adversary_step(0, 1, frontier_moved=False)
+        return (skip["reason"] == "E_RUNG_SKIPPED" and
+                sigma["reason"] == "E_SYMBOLIC_AXIS_CONFUSION" and
+                unbridged["reason"] == "E_UNBRIDGED_FRONTIERS" and
+                naked["reason"] == "E_MECHANISM_UNDEFINED" and
+                full["ok"] is True and
+                full["physical_claim"] is False and
+                scalar["reason"] == "E_UNTYPED_POWER" and
+                leap["reason"] ==
+                "E_DOMAIN_CROSS_WITHOUT_WARRANT" and
+                mystique["reason"] == "E_VISUAL_MYSTIQUE" and
+                prior["reason"] == "E_SYMMETRY_PRIOR" and
+                uncontrolled["reason"] ==
+                "E_UNCONTROLLED_GEOMETRY" and
+                scrambled["verdict"] == "ARRANGEMENT_NOT_CAUSE" and
+                phi_abuse["reason"] == "E_PHI_IS_NOT_POWER" and
+                salience["reason"] ==
+                "E_SALIENCE_MOVED_FRONTIER" and
+                inert["reason"] == "E_UNRESPONSIVE_FRONTIER")
+    A(_probe("sacred_geometry_generates_hypotheses_never_warrants",
+             "the psi ladder climbs one discharged rung at a time and "
+             "the symbolic axis never supports a physical rung; the "
+             "two frontiers stay orthogonal until a bridge is "
+             "MEASURED; physical resonance without mechanism/"
+             "observable/band/boundary refuses — 'harmonic' is not a "
+             "mechanism; Power(g)=0.92 is refused untyped and every "
+             "new domain needs its own CROSS; a hypothesis from the "
+             "picture without compiled invariants is visual mystique; "
+             "symmetry-up is not quality-up; an experiment without "
+             "the counterfactual control family refuses and the "
+             "scrambled control can kill the sacred reading; Phi "
+             "prioritizes and never predicts; and the frontier moves "
+             "on warrant ONLY, in both directions — salience cannot "
+             "move it and genuine measurement must",
+             _harmonic))
+
     # ── T-GRAPH-001: topology audit as an admission gate ────────────
     import graph_audit as gau
     import obliteratus_graph_spec as ogsp
