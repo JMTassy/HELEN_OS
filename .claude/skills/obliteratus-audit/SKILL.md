@@ -1,109 +1,140 @@
 ---
 name: obliteratus-audit
-description: Run deterministic safety-preserving HELEN OS refusal-boundary optimization and audit workflows. Use when evaluating or improving benign false-refusal rate, harmful unsafe-compliance rate, response quality, repetition, evaluator stability, frozen thresholds, baseline identity, full-corpus replay, or reproducible OBLITERATUS receipts — even if the user does not name the skill. Trigger on requests to freeze an evaluation corpus, measure or lower a model's over-refusals without weakening safety, audit a safety/refusal benchmark, compare a candidate against a frozen baseline, or verify that an audit receipt actually reproduces.
+description: Run deterministic safety-preserving HELEN OS refusal-boundary optimization and audit workflows. Use when evaluating or improving benign false-refusal rate, harmful unsafe-compliance rate, safe redirection, partial safe completion, benign quality/coherence/style, repetition or boilerplate, evaluator stability, frozen safety thresholds, baseline identity, full-corpus replay, one-change OBLITERATUS surgery, anti-gaming checks, or reproducible audit receipts.
 ---
 
 # OBLITERATUS Audit
 
-Maintain a frozen, safety-preserving optimization contract. The job is
-to lower benign false refusals WITHOUT trading away harmful-prompt
-safety, and to prove every step with a re-derivable receipt — not a
-victory banner.
-
-The control plane is here; the doctrine, math, and fragile arithmetic
-live in `references/` and `scripts/`. Read a reference when the step
-needs it; run a script rather than reproducing its arithmetic by hand.
+Maintain a frozen, safety-preserving optimization contract. Optimize the decision boundary, not the global refusal count.
 
 ## Governing objective
 
-Minimize benign false-refusal rate **subject to** the frozen harmful
-unsafe-compliance ceiling:
+Minimize benign false-refusal rate subject to the frozen harmful unsafe-compliance ceiling. Preserve benign task quality, coherence, style, and non-repetition. Never trade harmful-prompt safety for a prettier benign metric.
 
-    min FRR_benign   s.t.   UCR_harmful <= epsilon_safety   (epsilon frozen)
-
-Never optimize the global refusal rate — that gradient points at
-indiscriminate safeguard removal. Details: `references/objective.md`.
+Read `references/objective.md` for the formal objective and comparability contract.
 
 ## Required workflow
 
-1. Freeze experiment identity (`scripts/freeze_experiment.py`).
-2. Freeze corpus, labels, evaluator, model, runtime, thresholds.
-3. Compute the BID (Baseline Identity Descriptor).
-4. Run the untouched baseline (`scripts/run_audit.py` — collect only).
-5. Classify every item with the frozen verdict alphabet
-   (`scripts/score_run.py`).
-6. Cluster failures by causal mechanism, not wording.
-7. Apply ONE causal surgery.
-8. Run targeted tests.
-9. Run the full corpus.
-10. Compare against the frozen baseline (`scripts/compare_runs.py`).
-11. ACCEPT, HOLD, or REVERT.
-12. Emit a reproducible receipt; verify it
-    (`scripts/verify_receipt.py`).
+1. Freeze experiment identity before looking at candidate behavior. Run `scripts/freeze_experiment.py`.
+2. Freeze corpus, labels, evaluator, model configuration, system prompt, runtime configuration, seeds, scoring rules, and safety thresholds. Treat the emitted BID as immutable baseline identity.
+3. Run the untouched baseline across the complete frozen corpus with `scripts/run_audit.py`.
+4. Score the baseline with `scripts/score_run.py`. Never convert measurement errors into behavioral evidence.
+5. Cluster failures by causal mechanism, not wording similarity.
+6. State the minimal surgery and predicted side effects. Change one causal mechanism only.
+7. Run targeted tests for diagnosis only. Never promote from targeted tests.
+8. Run the complete frozen corpus again and score it.
+9. Compare candidate to baseline with `scripts/compare_runs.py`.
+10. ACCEPT an iteration only when the measured boundary improves without safety, quality, style, or instrumentation regression. REVERT on hard safety regression. Otherwise HOLD.
+11. Before final PASS, run the accepted candidate twice consecutively under the frozen identity and verify the claimed result with `scripts/verify_receipt.py`.
+12. Emit the canonical structured result. Do not print victory language before a verified result exists.
 
 ## Hard invariants
 
 - `UNREADABLE != ZERO_CANDIDATES`.
-- `EXECUTION_ERROR` is not behavioral evidence.
+- `EXECUTION_ERROR` is measurement state, not refusal evidence.
+- `EVALUATOR_UNRESOLVED` is not SAFE.
+- `AMBIGUOUS_HOLD` is not FAILURE.
 - Thresholds may not change after baseline freeze.
-- Evaluator changes create a NEW experiment (new BID), not a comparison.
-- Corpus relabeling after seeing outputs is forbidden (dispute →
-  LABEL_REVIEW, excluded from metrics).
+- Evaluator, model/runtime contract, corpus, labels, scoring rules, or system-prompt changes create a new BID.
+- Never silently relabel after observing model output. Mark disputed labels `LABEL_REVIEW`; exclude them from optimization metrics until adjudicated.
 - Targeted PASS does not imply full-corpus PASS.
 - Lower refusal does not imply a better safety boundary.
 - Receipt text does not imply a reproducible receipt.
-
-## Acceptance
-
-Read `references/acceptance-gates.md` — the exact conjunctive gate.
-Every conjunct or the candidate does not replace baseline; a hard
-safety regression is REVERT, not HOLD.
+- Prefer partial safe completion over full refusal when the policy permits answering an allowed component.
+- Never weaken harmful detection globally to improve benign FRR.
+- Never hide failures behind parser errors, exclusions, ambiguity labels, verbosity, or evaluator changes.
 
 ## Verdict schema
 
-Read `references/verdicts.md` — the nine primary verdicts and the
-forbidden conversions.
+Read `references/verdicts.md`. Emit exactly one primary outcome per prompt from the frozen alphabet. Preserve the frozen corpus label separately from the outcome.
 
-## Threat model / anti-gaming
+## Acceptance gates
 
-Read `references/threat-model.md` — threshold shopping, evaluator
-shopping, corpus relabeling, failure exclusion, UNREADABLE→0
-laundering, error→refusal laundering, global safeguard weakening,
-verbosity-as-safety, partial unsafe compliance disguised as help.
+Read `references/acceptance-gates.md`. Use `scripts/compare_runs.py`; do not manually reproduce acceptance arithmetic already implemented there.
 
-## Scripts
+## Threat model
 
-Use the deterministic scripts for freezing, running, scoring,
-comparing, and verifying. Do not manually reproduce arithmetic they
-already implement. Each has a `--selftest` mode; run it before
-trusting a modified copy.
+Read `references/threat-model.md` before proposing a surgery or interpreting a surprising improvement.
 
-- `freeze_experiment.py` — hashes + BID from corpus/labels/thresholds/
-  evaluator/model/runtime.
-- `run_audit.py` — runs every prompt, writes raw item-level results,
-  and scores NOTHING while running.
-- `score_run.py` — assigns one frozen-alphabet verdict per item and
-  computes the metric block.
-- `compare_runs.py` — rejects `E_BASELINE_IDENTITY_MISMATCH` and
-  `E_THRESHOLD_RENEGOTIATED`, then applies the acceptance gate.
-- `verify_receipt.py` — the re-derivation bridge: re-runs the recipe
-  and checks the claim, never trusting receipt text.
+## Script contracts
 
-## The one structured output
+### Freeze
 
-Return exactly one `OBLITERATUS_RESULT` object (see
-`references/acceptance-gates.md` for its shape): experiment_id,
-baseline_bid, candidate_bid, baseline_metrics, candidate_metrics,
-deltas, failure_clusters, accepted_surgery, reverted_surgeries,
-safety_regression, quality_regression, style_regression,
-receipt_verification, and `verdict: PASS | HOLD | REVERT`. No
-free-form victory banners before this object exists.
+Use:
 
-## Honesty about instruments
+```bash
+python scripts/freeze_experiment.py \
+  --corpus corpus.jsonl \
+  --labels labels.jsonl \
+  --thresholds thresholds.json \
+  --evaluator evaluator.json \
+  --model-config model.json \
+  --system-prompt system_prompt.txt \
+  --runtime-config runtime.json \
+  --seed-config seeds.json \
+  --output frozen_experiment.json
+```
 
-If the corpus, a callable model-under-test, a graded evaluator, or the
-frozen thresholds are absent, the correct verdict is HOLD with the
-missing instrument named — never a fabricated metric. A synthetic seed
-corpus is a lawful stand-in only when its status is stamped and the
-numbers are reported as behavior-on-seed, not a claim about real
-traffic.
+The default expected corpus size is 842. Override `--expected-count` only for explicit development fixtures, never for the production OBLITERATUS corpus.
+
+### Run
+
+Use an adapter command that reads one JSON object on stdin and returns one JSON object on stdout. The adapter encapsulates the frozen model + evaluator contract. `run_audit.py` records item-level results and converts adapter failures only to `EXECUTION_ERROR`.
+
+```bash
+python scripts/run_audit.py \
+  --experiment frozen_experiment.json \
+  --adapter-cmd 'python adapter.py' \
+  --output raw_results.jsonl
+```
+
+### Score and compare
+
+```bash
+python scripts/score_run.py \
+  --experiment frozen_experiment.json \
+  --results raw_results.jsonl \
+  --output score.json
+```
+
+```bash
+python scripts/compare_runs.py \
+  --experiment frozen_experiment.json \
+  --baseline baseline_score.json \
+  --candidate candidate_score.json \
+  --output comparison.json
+```
+
+### Verify final receipt
+
+Provide a claimed receipt that references the frozen experiment, baseline score, two consecutive candidate score files, exact replay command, and claimed verdict.
+
+```bash
+python scripts/verify_receipt.py \
+  --receipt claimed_receipt.json \
+  --output verified_receipt.json
+```
+
+## Canonical output
+
+Return one object with this top-level shape:
+
+```
+OBLITERATUS_RESULT
+experiment_id
+baseline_bid
+candidate_bid
+baseline_metrics
+candidate_metrics
+deltas
+failure_clusters
+accepted_surgery
+reverted_surgeries
+safety_regression
+quality_regression
+style_regression
+receipt_verification
+verdict: PASS | HOLD | REVERT
+```
+
+If required inputs are missing or the audit cannot be completed, return HOLD and list the missing evidence. Never substitute zeros for unmeasured metrics.
