@@ -2014,6 +2014,90 @@ def _probes():
              "operational",
              _observability))
 
+    # ── Phase A item 9: config & plugins ────────────────────────────
+    import config_plugin_runtime as cpr
+
+    def _config():
+        s = cpr.boot("core-v1", {"theme": "default", "max_upload": 10})
+        s, _ = cpr.provision_tenant(s, "A")
+        s, _ = cpr.provision_tenant(s, "B")
+        _, fork = cpr.set_config(s, "A", "admission_algebra", "x", 1)
+        s, _ = cpr.set_config(s, "A", "theme", "dark", 1)
+        _, unversioned = cpr.set_config(s, "A", "theme", "x", None)
+        cross = cpr.effective_config(s, "A", caller_tenant="B")
+        _, ambient = cpr.install_plugin(s, "A", "p1", ["*"])
+        s, inst = cpr.install_plugin(s, "A", "p1",
+                                     ["store.read", "store.write"])
+        unadmitted = cpr.invoke_plugin(s, "A", "p1", "store.read")
+        _, overgrant = cpr.admit_plugin(s, "A", "p1", ["store.admin"],
+                                        "gamma")
+        s, _ = cpr.admit_plugin(s, "A", "p1", ["store.read"], "gamma")
+        ran = cpr.invoke_plugin(s, "A", "p1", "store.read")
+        notgranted = cpr.invoke_plugin(s, "A", "p1", "store.write")
+        xtenant = cpr.invoke_plugin(s, "A", "p1", "store.read",
+                                    target_tenant="B")
+        return (fork["reason"] == "E_CLIENT_FORK" and
+                unversioned["reason"] == "E_UNVERSIONED_CONFIG" and
+                cross["reason"] == "E_PLUGIN_CROSS_TENANT" and
+                ambient["reason"] == "E_PLUGIN_AMBIENT_AUTHORITY" and
+                inst["status"] == "INSTALLED" and
+                unadmitted["reason"] == "E_PLUGIN_UNADMITTED" and
+                overgrant["reason"] ==
+                "E_PLUGIN_UNDECLARED_CAPABILITY" and
+                ran["ok"] is True and ran["sandboxed_to"] == "A" and
+                notgranted["reason"] ==
+                "E_PLUGIN_CAPABILITY_NOT_GRANTED" and
+                xtenant["reason"] == "E_PLUGIN_CROSS_TENANT" and
+                cpr.config_invariant(s)["holds"] is True)
+    A(_probe("one_core_configured_per_tenant_never_a_client_fork",
+             "Product_i = Core + Configuration_i: a tenant override of "
+             "a core-locked key is a client fork, config is versioned "
+             "and cross-tenant reads are one answer with absent; a "
+             "plugin cannot claim ambient authority, is INSTALLED not "
+             "enabled until an admitter grants a SUBSET of what it "
+             "declared, runs only within its grant and its own "
+             "tenant, and the invariant proves every tenant's product "
+             "is exactly core plus overrides",
+             _config))
+
+    # ── institutional stemmatics (candidate doctrine) ──────────────
+    import institutional_stemmatics as ist
+
+    def _stemmatics():
+        density = ist.rho_epi(1, 5)
+        amp = ist.nonamplification(5, 1)
+        ret = ist.retrieve((("marketing_4", 0.95, 0.01, False),
+                            ("econ_sheet", 0.40, 0.80, True)))
+        surv = ist.capability(3, 0, [], 0)
+        claim = ist.iwg_claim_support("cap C", 5, 1, 0)
+        chain = all(ist.implies(a, c)["implication_licensed"] is False
+                    for a, c in ist.ANTI_MYTHOLOGY)
+        forget = ist.constitutional_forgetting(True, False, False)
+        return (density["rho_epi"] == 0.2 and
+                density["amplification_illusion"] is True and
+                amp["evidence_units"] == 1 and amp["amplified"] and
+                ret["d_star"] == "econ_sheet" and
+                ret["similarity_pick"] == "marketing_4" and
+                surv["reason"] == "E_SURVIVORSHIP_CAPABILITY" and
+                claim["net_independent_support"] == 1 and
+                claim["promoted"] is False and chain and
+                ist.retrieval_policy("max_similarity")["reason"] ==
+                "E_SIMILARITY_BLIND_RETRIEVAL" and
+                forget["present_authority"] is False)
+    A(_probe("repetition_is_not_corroboration_the_archive_is_weighed",
+             "five representations descended from one root are one "
+             "witness (rho_epi 0.2), not five; retrieval ranks by "
+             "expected frontier change so a contradictory economics "
+             "sheet outranks a fourth marketing assertion; a "
+             "capability claimed from successes with no witnessed "
+             "failure is survivorship; a claim's support is counted "
+             "in independent roots net of contradiction, never in "
+             "representations; and the anti-mythology chain holds — "
+             "archive mass, repetition, corporate claim, past "
+             "capability, learned pattern and authority each imply "
+             "nothing downstream",
+             _stemmatics))
+
     # ── T-GRAPH-001: topology audit as an admission gate ────────────
     import graph_audit as gau
     import obliteratus_graph_spec as ogsp
