@@ -1,0 +1,30 @@
+{
+  "auditor": "audit_graph.py",
+  "graph_hash": "d0d6cff50a1d90d986c23c7faa3ada3736e680d76ef14a41dabb3f191aa1ef2b",
+  "ir": "obliteratus_v0.graph.json",
+  "passes": [
+    "PARSE",
+    "TYPECHECK",
+    "DEPENDENCY",
+    "AUTHORITY",
+    "EFFECT",
+    "RESUME",
+    "VERIFICATION",
+    "TOPOLOGY",
+    "OBSERVATIONAL_EQUIVALENCE"
+  ],
+  "schema": "graph_ir.schema.json",
+  "specimen": "obliteratus_v0",
+  "task": "T-GRAPH-002",
+  "verdict": {
+    "GRAPH_VERDICT": "PASS",
+    "authority_non_expansion": true,
+    "critical_path_after": 49,
+    "critical_path_before": 66,
+    "deleted_false_edges": 4,
+    "law": "parallelism is earned by demonstrated independence; parallelism may increase throughput, never authority",
+    "observational_equivalence": true,
+    "reasons": [],
+    "speedup": 17
+  }
+}

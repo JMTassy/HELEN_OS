@@ -1,0 +1,184 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://helen-os/obliteratus/graph_ir.schema.json",
+  "title": "HELEN Governed Execution Graph IR",
+  "description": "T-GRAPH-002 machine-level contract. Authority is manifest-assigned via Grant, never dependency-inherited. Five first-class objects: Graph, Node, Edge, Join, Grant. E_D transports data only; only an admitted E_A moves capability.",
+  "type": "object",
+  "required": ["id", "version", "state_owner", "nodes", "edges"],
+  "additionalProperties": true,
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "version": {"type": "integer", "minimum": 0},
+    "state_owner": {
+      "type": "string",
+      "description": "The single durable-state owner. Nodes never own persistent truth; the workflow engine does.",
+      "minLength": 1
+    },
+    "nodes": {"type": "array", "minItems": 1,
+              "items": {"$ref": "#/definitions/Node"}},
+    "edges": {"type": "array",
+              "items": {"$ref": "#/definitions/Edge"}},
+    "joins": {"type": "array",
+              "items": {"$ref": "#/definitions/Join"}},
+    "routes": {"type": "array",
+               "items": {"$ref": "#/definitions/Route"}},
+    "grants": {"type": "array",
+               "items": {"$ref": "#/definitions/Grant"}},
+    "observational_contract": {"$ref": "#/definitions/ObservationContract"}
+  },
+  "definitions": {
+    "Node": {
+      "type": "object",
+      "required": ["id", "kind", "principal", "consumes", "produces"],
+      "additionalProperties": true,
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "kind": {"enum": ["compute", "decision", "effect", "join",
+                          "route", "verify", "source"]},
+        "principal": {"type": "string", "minLength": 1,
+                      "description": "The identity under which this node acts. Producer and admitter principals must differ on consequential transitions."},
+        "consumes": {"type": "array", "items": {"type": "string"}},
+        "produces": {"type": "array", "items": {"type": "string"}},
+        "grants": {"type": "array", "items": {"type": "string"},
+                   "description": "The capabilities THIS node holds. Equals its effective capability set; never a union of predecessors'."},
+        "cost_class": {"enum": ["CHEAP", "STANDARD", "STRONG"]},
+        "tenant": {"type": "string"},
+        "bounded_task": {"type": "boolean"},
+        "consequential": {"type": "boolean"},
+        "evidence_root": {"type": "string"},
+        "claims_independence": {"type": "boolean"},
+        "fan": {"type": "boolean"},
+        "fan_max": {"type": ["integer", "null"]},
+        "retry": {"$ref": "#/definitions/RetryPolicy"},
+        "state_refs": {"type": "array", "items": {
+          "type": "object",
+          "properties": {"key": {"type": "string"},
+                         "tenant": {"type": "string"}}}},
+        "effect_contract": {"$ref": "#/definitions/EffectContract"},
+        "resume_contract": {"$ref": "#/definitions/ResumeContract"},
+        "verifier_contract": {"$ref": "#/definitions/VerifierContract"},
+        "admission_boundary": {"type": ["string", "null"]},
+        "idempotency_key": {"type": ["string", "null"]}
+      }
+    },
+    "Edge": {
+      "type": "object",
+      "required": ["from", "to", "type"],
+      "additionalProperties": true,
+      "properties": {
+        "from": {"type": "string"},
+        "to": {"type": "string"},
+        "type": {"enum": ["DATA", "DECISION", "AUTHORITY", "CONTROL"],
+                 "description": "DATA transports data only. DECISION carries a decision dependency. AUTHORITY is the ONLY edge that may move capability, and only when admitted. CONTROL is synchronization."},
+        "artifact": {"type": "string",
+                     "description": "For DATA edges: the produced/consumed artifact id. Membership in Produces(from) AND Consumes(to) is checked."},
+        "grant": {"type": "string",
+                  "description": "For AUTHORITY edges: the capability granted."},
+        "admitted": {"type": "boolean",
+                     "description": "AUTHORITY edges must be admitted by Gamma; unadmitted -> INVALID_AUTHORITY_EDGE."},
+        "payload_kind": {"enum": ["reference", "transcript"],
+                         "description": "transcript -> TRANSCRIPT_PASSING warning: pass references, not retellings."}
+      }
+    },
+    "Join": {
+      "type": "object",
+      "required": ["id", "required", "coverage", "on_failure",
+                   "on_timeout"],
+      "additionalProperties": true,
+      "properties": {
+        "id": {"type": "string"},
+        "at_node": {"type": "string"},
+        "required": {"type": "array", "items": {"type": "string"}},
+        "coverage": {"type": "number", "minimum": 0, "maximum": 1},
+        "on_failure": {"enum": ["HOLD", "FAIL", "CONTINUE"]},
+        "on_timeout": {"enum": ["HOLD", "FAIL", "CONTINUE"]},
+        "next_needs_complete_set": {"type": "boolean"}
+      }
+    },
+    "Route": {
+      "type": "object",
+      "required": ["id", "classifier_output", "deterministic_rule",
+                   "destination"],
+      "additionalProperties": true,
+      "properties": {
+        "id": {"type": "string"},
+        "classifier_output": {"type": "string"},
+        "deterministic_rule": {"type": "string",
+                               "description": "The model may classify; a deterministic rule maps label to path. A model-controlled destination -> MODEL_CONTROLLED_AUTHORITY."},
+        "destination": {"type": "string"},
+        "model_controlled_destination": {"type": "boolean"}
+      }
+    },
+    "Grant": {
+      "type": "object",
+      "required": ["capability", "to_node", "via_edge", "admitted_by"],
+      "additionalProperties": false,
+      "properties": {
+        "capability": {"type": "string"},
+        "to_node": {"type": "string"},
+        "via_edge": {"type": "string",
+                     "description": "The AUTHORITY edge id carrying this grant."},
+        "admitted_by": {"type": "string",
+                        "description": "Gamma (the admission principal). A grant with no admitter is illegal."}
+      }
+    },
+    "EffectContract": {
+      "type": "object",
+      "required": ["capability", "idempotency_key",
+                   "admission_boundary"],
+      "properties": {
+        "capability": {"type": "string"},
+        "idempotency_key": {"type": "string"},
+        "admission_boundary": {"type": "string"}
+      }
+    },
+    "ResumeContract": {
+      "type": "object",
+      "required": ["key"],
+      "properties": {
+        "key": {"type": "string"},
+        "idempotent": {"type": "boolean"}
+      }
+    },
+    "VerifierContract": {
+      "type": "object",
+      "description": "Independence is a VECTOR, never a single boolean. Two differently named nodes on the same prompt/context/evidence/model are still self-approval.",
+      "required": ["producer_principal", "verifier_principal",
+                   "method"],
+      "properties": {
+        "producer_principal": {"type": "string"},
+        "verifier_principal": {"type": "string"},
+        "producer_context_hash": {"type": "string"},
+        "verifier_context_hash": {"type": "string"},
+        "evidence_roots": {"type": "array",
+                           "items": {"type": "string"}},
+        "model_path": {"type": "array", "items": {"type": "string"}},
+        "method": {"type": "string"}
+      }
+    },
+    "AdmissionContract": {
+      "type": "object",
+      "required": ["boundary", "admitter_principal"],
+      "properties": {
+        "boundary": {"type": "string"},
+        "admitter_principal": {"type": "string"}
+      }
+    },
+    "ObservationContract": {
+      "type": "object",
+      "description": "G' =_obs G under the frozen contract, not byte-identical prose. Deterministic nodes may demand exact equality.",
+      "properties": {
+        "schema_equal": {"type": "boolean"},
+        "business_state_equal": {"type": "boolean"},
+        "admitted_effects_equal": {"type": "boolean"},
+        "policy_decisions_equal": {"type": "boolean"},
+        "required_evidence_equivalent": {"type": "boolean"}
+      }
+    },
+    "RetryPolicy": {
+      "type": "object",
+      "required": ["max"],
+      "properties": {"max": {"type": ["integer", "null"]}}
+    }
+  }
+}
