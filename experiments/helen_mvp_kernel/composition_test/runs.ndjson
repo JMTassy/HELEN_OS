@@ -1,0 +1,4 @@
+{"Q": 0.997025, "artifacts": 1, "authority": 0, "best_x": 6000, "level": "ATOM", "model_calls": 400, "n_workers": 1, "roots": 1}
+{"Q": 0.999899, "artifacts": 8, "authority": 0, "best_x": 51891, "classify": "SUBADDITIVE", "dQ": 0.002874, "level": "TEAM", "model_calls": 3200, "n_workers": 8, "roots": 1}
+{"Q": 1.0, "artifacts": 64, "authority": 0, "best_x": 35156, "classify": "SUBADDITIVE", "dQ": 0.000101, "level": "SUPERTEAM", "model_calls": 25600, "n_workers": 64, "roots": 1}
+{"Q": 1.0, "artifacts": 512, "authority": 0, "best_x": 35156, "classify": "NO_GAIN", "dQ": 0.0, "level": "BUILDING", "model_calls": 100000, "n_workers": 512, "roots": 1}

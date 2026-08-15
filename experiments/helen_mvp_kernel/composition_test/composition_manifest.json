@@ -1,0 +1,23 @@
+{
+  "authority": false,
+  "budget_per_worker": 400,
+  "canon": false,
+  "domain": 100000,
+  "experiment": "COMPOSITION_TEST_V0",
+  "governance_imported_readonly": [
+    "cognition_replacement.permit_effect",
+    "institutional_stemmatics.rho_epi",
+    "execution_graph.evidence_roots"
+  ],
+  "ledger_effect": "none",
+  "levels": [
+    1,
+    8,
+    64,
+    512
+  ],
+  "models_reachable": [],
+  "task_salt": 42,
+  "true_max": 0.9999932050700906,
+  "workers_are": "DETERMINISTIC_INSTRUMENTS"
+}

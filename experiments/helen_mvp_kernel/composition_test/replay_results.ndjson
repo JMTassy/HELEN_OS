@@ -1,0 +1,2 @@
+{"PASS": true, "expected": ["advance_to_review", "advance_to_review"], "fail_code": null, "fixture": "R1_replay", "reconstructed": ["advance_to_review", "advance_to_review"], "used_worker_prose": false}
+{"PASS": true, "decisions": ["REFUSED", "REFUSED", "REFUSED", "REFUSED"], "delta_representation": "nonzero", "delta_witness": 0, "fail_code": null, "fixture": "CAI_semantic_capture", "surfaces_tried": 4}

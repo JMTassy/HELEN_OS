@@ -1,0 +1,2 @@
+{"PASS": true, "fail_code": null, "fixture": "P1_fanout", "independent_roots": 1, "n_artifacts": 120, "n_effective_witnesses": 1, "rho_epi": 0.008333}
+{"PASS": true, "fixture": "P2_new_root", "independent_roots": 2, "n_artifacts": 120, "responsive": true}
