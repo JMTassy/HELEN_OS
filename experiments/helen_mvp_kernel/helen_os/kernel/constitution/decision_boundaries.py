@@ -319,6 +319,51 @@ def outcome_attribution(outcome_consistent: bool,
                    "excluded"}
 
 
+BLOCK_OUTCOMES = ("RESUMED", "ABANDONED", "TERMINAL_LOSS")
+
+
+def block_transition(claimed_outcome: str,
+                     outcome_receipt: str | None) -> dict:
+    """The J7 counterexample law: BLOCKED_t does not entail
+    LOST_{t+Delta}. A HOLD, BLOCK or CANCEL_INTENT is NOT an
+    absorbing state — the corpus showed an announced cancellation
+    followed eighteen days later by an active budget on the same
+    dossier. Promoting a block to any terminal outcome without an
+    outcome receipt is refused; with one, it resolves to RESUMED,
+    ABANDONED or TERMINAL_LOSS. Recovery trajectories are modeled as
+    carefully as failures, or the model overcounts its losses."""
+    if claimed_outcome not in BLOCK_OUTCOMES:
+        return {"resolved": False, "reason": "E_UNKNOWN_BLOCK_OUTCOME"}
+    if not outcome_receipt:
+        return {"resolved": False, "state": "OPEN_BLOCKED",
+                "absorbing": False,
+                "reason": "E_BLOCK_TREATED_AS_ABSORBING",
+                "law": "an announced cancellation is an intent, "
+                       "never an outcome; blocked states stay open "
+                       "until a receipt closes them"}
+    return {"resolved": True, "outcome": claimed_outcome,
+            "receipt": outcome_receipt, "absorbing":
+                claimed_outcome == "TERMINAL_LOSS"}
+
+
+def feasibility_attribution(model_capability_isolated: bool,
+                            input_coverage_controlled: bool) -> dict:
+    """The Manucurist bound: F_prod = f(model, source coverage,
+    fidelity threshold, variation cardinality) — multiplicative.
+    Blaming the model when input coverage was itself constrained and
+    uncontrolled is misattribution: the confounded-confirmation
+    family, pointed at AI production failures."""
+    if not input_coverage_controlled:
+        return {"model_blame_licensed": False,
+                "reason": "E_UNCONTROLLED_INPUT_ATTRIBUTION",
+                "law": "an AI failure is never automatically the "
+                       "model's when quality, volume or coverage of "
+                       "the inputs were themselves constrained"}
+    return {"model_blame_licensed": model_capability_isolated,
+            "note": "with coverage controlled, the model axis is "
+                    "separable and may be judged"}
+
+
 def j4_cursor() -> dict:
     return {"NEXT_TARGET": "J4",
             "J4_MODE": "FAILURES+COUNTEREXAMPLES+NEGATIVE_CONTROLS",

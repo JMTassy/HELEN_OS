@@ -254,3 +254,34 @@ def test_the_j4_cursor_expects_a_boundary_not_a_method():
 def test_deterministic():
     assert db.canon(qualify(0.5, 0.1, 0.5, 3.0, 1.0)) == \
         db.canon(qualify(0.5, 0.1, 0.5, 3.0, 1.0))
+
+
+# ── J7: blocking states are not absorbing ──────────────────────────────
+
+def test_a_block_without_an_outcome_receipt_stays_open():
+    from decision_boundaries import block_transition
+    v = block_transition("TERMINAL_LOSS", outcome_receipt=None)
+    assert v["resolved"] is False
+    assert v["state"] == "OPEN_BLOCKED"
+    assert v["absorbing"] is False
+    assert v["reason"] == "E_BLOCK_TREATED_AS_ABSORBING"
+
+
+def test_a_receipt_resolves_the_block_and_only_loss_absorbs():
+    from decision_boundaries import block_transition
+    r = block_transition("RESUMED", "thread:nov30_budget_active")
+    assert r["resolved"] is True and r["absorbing"] is False
+    t = block_transition("TERMINAL_LOSS", "receipt:closure")
+    assert t["absorbing"] is True
+    assert block_transition("VIBES", "r")["reason"] == \
+        "E_UNKNOWN_BLOCK_OUTCOME"
+
+
+def test_blaming_the_model_with_uncontrolled_inputs_is_refused():
+    from decision_boundaries import feasibility_attribution
+    v = feasibility_attribution(model_capability_isolated=True,
+                                input_coverage_controlled=False)
+    assert v["model_blame_licensed"] is False
+    assert v["reason"] == "E_UNCONTROLLED_INPUT_ATTRIBUTION"
+    ok = feasibility_attribution(True, True)
+    assert ok["model_blame_licensed"] is True
