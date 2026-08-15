@@ -1,0 +1,119 @@
+{
+  "schema": "HELEN_SKILL_SIGIL_TOKENS_V0",
+  "status": "DESIGN_DOCTRINE_CANDIDATE",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "grammar": "SIGIL = Compose(C, G, S, R, O, N)",
+  "laws": {
+    "composed_not_decorated": "every axis cites the tested kernel structure it derives from",
+    "no_state_by_color_alone": "every sigil carries its mono text label; color is redundant encoding (style_lock)",
+    "representation_only": "a sigil has (dP,dA,dE)=(0,0,0); no status word without an adjacent receipt ref (beautiful_seal_is_not_admission)",
+    "symbolic_not_physical": "chakra column adopted as color->function mnemonic only; sacred ratios are composition tools, not metaphysics",
+    "signature_gesture": "the hem: every sigil is bordered; the hem is the admission boundary made visible",
+    "adversarial_complements": "complementary color pairs (red-green, orange-blue, ochre-indigo) reserved for adversarial displays, always labeled",
+    "static_sigils": "no ambient motion; movement only on receipt-witnessed state transitions"
+  },
+  "palette": {
+    "red_oxide":    {"hex": "#B3402E", "vibration": 1, "function": "stability_foundation"},
+    "orange_earth": {"hex": "#C97B2D", "vibration": 2, "function": "flow_creation"},
+    "ochre_gold":   {"hex": "#D9A441", "vibration": 3, "function": "power_transformation"},
+    "green_deep":   {"hex": "#3E7C5B", "vibration": 4, "function": "harmony_relationship"},
+    "blue_slate":   {"hex": "#2E6F8E", "vibration": 5, "function": "expression_truth"},
+    "indigo":       {"hex": "#4B4E8E", "vibration": 6, "function": "intuition_perception"},
+    "violet_white": {"hex": "#8E7CC3", "hex_alt": "#EFEAE0", "vibration": 7, "function": "unity_human_handoff"}
+  },
+  "grounds": {
+    "night": "#101418",
+    "parchment": "#EFE7D6",
+    "gold_line": {"hex": "#C9A227", "usage": "hem and rules only, never fill"}
+  },
+  "sigils": [
+    {
+      "skill": "helen-institutional-archaeologist",
+      "color": "indigo",
+      "geometry": "meander_greek_key",
+      "symmetry": "translation",
+      "rhythm": "strata",
+      "orientation": "downward",
+      "number": 7,
+      "derivation": "J1->J7 depth ladder (references/depth-model.md, tested)"
+    },
+    {
+      "skill": "helen-receipt-verifier",
+      "color": "blue_slate",
+      "geometry": "circle_compass_rose",
+      "symmetry": "reflection",
+      "rhythm": "round_trip",
+      "orientation": "return",
+      "number": 2,
+      "derivation": "claim<->rederivation pair; two-run replay identity"
+    },
+    {
+      "skill": "helen-counterexample-hunter",
+      "color": "ochre_gold",
+      "geometry": "triangle_wedge",
+      "symmetry": "rotation",
+      "rhythm": "against_grain",
+      "orientation": "leftward",
+      "number": 1,
+      "derivation": "one counterexample suffices; one BLOCKED->RECOVERED outweighs fifty documents (tested reward law)"
+    },
+    {
+      "skill": "helen-account-archaeologist",
+      "color": "green_deep",
+      "geometry": "interlocked_knot",
+      "symmetry": "interlock",
+      "rhythm": "longitudinal",
+      "orientation": "horizontal",
+      "number": 3,
+      "derivation": "Decision->Execution->Outcome arc"
+    },
+    {
+      "skill": "helen-decision-gym",
+      "color": "orange_earth",
+      "geometry": "alternating_dots",
+      "symmetry": "translation",
+      "rhythm": "repetition",
+      "orientation": "forward",
+      "number": 6,
+      "derivation": "verifiers V1-V6 (episode_validator, tested)"
+    },
+    {
+      "skill": "helen-institutional-simulator",
+      "color": "red_oxide",
+      "geometry": "square_closed_arena",
+      "symmetry": "static",
+      "rhythm": "bounded",
+      "orientation": "none",
+      "number": 6,
+      "derivation": "six-decision alphabet GO/PROBE/HOLD/REJECT/STOP/SWITCH (decision_boundaries.DECISIONS, tested)"
+    },
+    {
+      "skill": "helen-review-packet",
+      "color": "violet_white",
+      "geometry": "hemmed_border",
+      "symmetry": "hemmed",
+      "rhythm": "closure",
+      "orientation": "upward",
+      "number": 1,
+      "derivation": "one bounded packet, one human/policy decision"
+    },
+    {
+      "skill": "obliteratus-audit",
+      "lane": "operational",
+      "color": "red_oxide",
+      "geometry": "double_square_interlocked",
+      "symmetry": "interlock",
+      "rhythm": "conjunctive_chain",
+      "orientation": "none",
+      "number": 3,
+      "derivation": "final verdict alphabet PASS|HOLD|REVERT (compare/verify chain, tested)"
+    }
+  ],
+  "notes": {
+    "duplicate_numbers": "N=6 appears twice (gym, simulator): uniqueness is not required, derivation is; color+geometry disambiguate — the source panel itself reuses numbers",
+    "primitive_library": "motifs outside the ATF primitive catalog (natural, maritime, geometric) require operator admission before use",
+    "proportions": "square grid, 1:sqrt(2) margins, central motif in the phi-inverse orthogon — proportions, not meanings"
+  }
+}
