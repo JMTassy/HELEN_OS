@@ -1964,6 +1964,73 @@ def _probes():
              "count comes last, after shape and gates",
              _graph))
 
+    # ── T-GRAPH-001: topology audit as an admission gate ────────────
+    import graph_audit as gau
+    import obliteratus_graph_spec as ogsp
+
+    def _graph_audit():
+        before, after = ogsp.before_graph(), ogsp.after_graph()
+        obs = ogsp.obs_contract()
+        verdict = gau.optimize_verdict(before, after, obs, obs)
+        ab, aa = gau.audit(before), gau.audit(after)
+        # a data edge that consumes nothing is a false edge
+        fe = gau.build_graph([{"id": "A", "job": "j", "inputs": [],
+                               "outputs": ["a"], "output_schema": "s",
+                               "failure_states": ["EXECUTION_ERROR"],
+                               "capabilities": [], "side_effects": [],
+                               "cost_class": "STANDARD"},
+                              {"id": "B", "job": "j", "inputs": [],
+                               "outputs": ["b"], "output_schema": "s",
+                               "failure_states": ["EXECUTION_ERROR"],
+                               "capabilities": [], "side_effects": [],
+                               "cost_class": "STANDARD"}],
+                             [{"from": "A", "to": "B", "consumes": [],
+                               "dependency_type": "DATA"}])["G"]
+        false_edge = any(w["code"] == "EDGE_WITHOUT_CONSUMPTION"
+                         for w in gau.audit(fe)["warnings"])
+        # a non-authority edge granting capability is a hard error
+        grant = gau.build_graph(
+            [{"id": "A", "job": "j", "inputs": [], "outputs": ["a"],
+              "output_schema": "s", "failure_states": ["X"],
+              "capabilities": [], "side_effects": [],
+              "cost_class": "STANDARD"},
+             {"id": "B", "job": "j", "inputs": [], "outputs": ["b"],
+              "output_schema": "s", "failure_states": ["X"],
+              "capabilities": [], "side_effects": [],
+              "cost_class": "STANDARD"}],
+            [{"from": "A", "to": "B", "dependency_type": "DATA",
+              "grants": ["s3.write"]}])["G"]
+        cap_leak = any(e["code"] == "CAPABILITY_WITHOUT_GRANT"
+                       for e in gau.audit(grant)["errors"])
+        # authority expansion in the optimized graph forces HOLD
+        smuggled = ogsp.after_graph()
+        smuggled["nodes"][0]["capabilities"] = ["prod.deploy"]
+        smuggled["_by"]["FREEZE"]["capabilities"] = ["prod.deploy"]
+        expanded = gau.optimize_verdict(before, smuggled, obs, obs)
+        admit_early = gau.pipeline_stage_order(
+            ("WORKFLOW", "GRAPH_IR", "ADMISSION"))
+        return (verdict["GRAPH_VERDICT"] == "PASS" and
+                verdict["critical_path_after"] <
+                verdict["critical_path_before"] and
+                verdict["authority_non_expansion"] is True and
+                ab["metrics"]["F"] == 4 and aa["metrics"]["F"] == 0 and
+                not aa["errors"] and
+                false_edge and cap_leak and
+                expanded["GRAPH_VERDICT"] == "HOLD" and
+                admit_early["reason"] == "E_ADMIT_BEFORE_AUDIT")
+    A(_probe("workers_execute_graphs_helen_admits_graphs",
+             "a DATA edge that consumes nothing is a false edge; a "
+             "non-authority edge cannot grant capability and "
+             "dependency propagation is not privilege propagation; "
+             "the OBLITERATUS optimization reduces the critical path "
+             "(65->48) with four false edges deleted, the observable "
+             "contract held and authority NOT expanded — and the "
+             "moment a capability is smuggled into the faster graph "
+             "the verdict is HOLD, because speedup never licenses "
+             "authority expansion; admission is the last pipeline "
+             "stage, never before the audits",
+             _graph_audit))
+
     return P
 
 

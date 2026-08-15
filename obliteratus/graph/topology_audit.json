@@ -1,0 +1,63 @@
+{
+  "GRAPH_VERDICT": "PASS",
+  "authority_after": 0,
+  "authority_before": 0,
+  "authority_edges": [],
+  "authority_non_expansion": true,
+  "critical_path_after": 48,
+  "critical_path_before": 65,
+  "deleted_false_edges": 4,
+  "errors_after": [],
+  "graph_hash_after": "c4a40c45663f055147d23eeab7f4d1509cef8b0842d1e30c900b27874253be9d",
+  "graph_hash_before": "e2a2f8f5c1be3225a3555708f89e2347dac44f544702470be0542e708cc8353a",
+  "join_policies": [
+    {
+      "at_node": "FULL_CORPUS",
+      "failure_policy": "HOLD",
+      "id": "JOIN_targeted",
+      "minimum_coverage": 1.0,
+      "next_needs_complete_set": true,
+      "required_inputs": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
+      "timeout_policy": "HOLD"
+    },
+    {
+      "at_node": "VERIFY_RECEIPT",
+      "failure_policy": "HOLD",
+      "id": "JOIN_replay",
+      "minimum_coverage": 1.0,
+      "next_needs_complete_set": true,
+      "required_inputs": [
+        "r1",
+        "r2"
+      ],
+      "timeout_policy": "HOLD"
+    }
+  ],
+  "metrics_after": {
+    "A": 0,
+    "A_set": [],
+    "CP": 48,
+    "CP_kept": 48,
+    "F": 0,
+    "I": null,
+    "P": 1.0,
+    "R": 1.0,
+    "V": 1.0,
+    "W": 4,
+    "independent_startable": 1
+  },
+  "observational_equivalence": true,
+  "parallelizable_fans": [
+    "TARGETED_1..4 (independent)",
+    "REPLAY_1||REPLAY_2"
+  ],
+  "specimen": "OBLITERATUS",
+  "speedup": 17,
+  "task": "T-GRAPH-001",
+  "warnings_after": []
+}

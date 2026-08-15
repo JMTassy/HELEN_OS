@@ -1,0 +1,306 @@
+{
+  "node_contracts": [
+    {
+      "capabilities": [],
+      "consequential": false,
+      "cost_class": "STANDARD",
+      "failure_states": [
+        "EXECUTION_ERROR"
+      ],
+      "id": "FREEZE",
+      "inputs": [],
+      "job": "freeze experiment",
+      "output_schema": "FREEZE_schema",
+      "outputs": [
+        "frozen",
+        "bid"
+      ],
+      "resume": true,
+      "side_effects": [],
+      "verifier": null
+    },
+    {
+      "capabilities": [],
+      "consequential": false,
+      "cost_class": "STRONG",
+      "failure_states": [
+        "EXECUTION_ERROR"
+      ],
+      "id": "BASELINE",
+      "inputs": [
+        "frozen"
+      ],
+      "job": "run baseline",
+      "output_schema": "BASELINE_schema",
+      "outputs": [
+        "raw_base"
+      ],
+      "resume": true,
+      "side_effects": [],
+      "verifier": null
+    },
+    {
+      "capabilities": [],
+      "consequential": false,
+      "cost_class": "STANDARD",
+      "failure_states": [
+        "EXECUTION_ERROR"
+      ],
+      "id": "SCORE_BASELINE",
+      "inputs": [
+        "raw_base"
+      ],
+      "job": "score baseline",
+      "output_schema": "SCORE_BASELINE_schema",
+      "outputs": [
+        "score_base"
+      ],
+      "resume": false,
+      "side_effects": [],
+      "verifier": null
+    },
+    {
+      "capabilities": [],
+      "consequential": false,
+      "cost_class": "STANDARD",
+      "failure_states": [
+        "EXECUTION_ERROR"
+      ],
+      "id": "CLUSTER",
+      "inputs": [
+        "score_base"
+      ],
+      "job": "cluster failures",
+      "output_schema": "CLUSTER_schema",
+      "outputs": [
+        "clusters"
+      ],
+      "resume": false,
+      "side_effects": [],
+      "verifier": null
+    },
+    {
+      "capabilities": [],
+      "consequential": false,
+      "cost_class": "STANDARD",
+      "failure_states": [
+        "EXECUTION_ERROR"
+      ],
+      "id": "SELECT_SURGERY",
+      "inputs": [
+        "clusters"
+      ],
+      "job": "select one surgery",
+      "output_schema": "SELECT_SURGERY_schema",
+      "outputs": [
+        "surgery"
+      ],
+      "resume": false,
+      "side_effects": [],
+      "verifier": null
+    },
+    {
+      "capabilities": [],
+      "consequential": false,
+      "cost_class": "STRONG",
+      "failure_states": [
+        "EXECUTION_ERROR"
+      ],
+      "id": "FULL_CORPUS",
+      "inputs": [
+        "surgery",
+        "evidence"
+      ],
+      "job": "full corpus run",
+      "output_schema": "FULL_CORPUS_schema",
+      "outputs": [
+        "raw_cand"
+      ],
+      "resume": true,
+      "side_effects": [],
+      "verifier": null
+    },
+    {
+      "capabilities": [],
+      "consequential": false,
+      "cost_class": "STANDARD",
+      "failure_states": [
+        "EXECUTION_ERROR"
+      ],
+      "id": "SCORE",
+      "inputs": [
+        "raw_cand"
+      ],
+      "job": "score candidate",
+      "output_schema": "SCORE_schema",
+      "outputs": [
+        "score_cand"
+      ],
+      "resume": false,
+      "side_effects": [],
+      "verifier": null
+    },
+    {
+      "capabilities": [],
+      "consequential": false,
+      "cost_class": "STANDARD",
+      "failure_states": [
+        "EXECUTION_ERROR"
+      ],
+      "id": "COMPARE_RUNS",
+      "inputs": [
+        "score_cand",
+        "score_base"
+      ],
+      "job": "compare runs",
+      "output_schema": "COMPARE_RUNS_schema",
+      "outputs": [
+        "comparison"
+      ],
+      "resume": false,
+      "side_effects": [],
+      "verifier": null
+    },
+    {
+      "capabilities": [],
+      "consequential": false,
+      "cost_class": "STRONG",
+      "failure_states": [
+        "EXECUTION_ERROR"
+      ],
+      "id": "REPLAY_1",
+      "inputs": [
+        "comparison"
+      ],
+      "job": "replay one",
+      "output_schema": "REPLAY_1_schema",
+      "outputs": [
+        "r1"
+      ],
+      "resume": true,
+      "side_effects": [],
+      "verifier": null
+    },
+    {
+      "capabilities": [],
+      "consequential": false,
+      "cost_class": "STRONG",
+      "failure_states": [
+        "EXECUTION_ERROR"
+      ],
+      "id": "REPLAY_2",
+      "inputs": [
+        "comparison"
+      ],
+      "job": "replay two",
+      "output_schema": "REPLAY_2_schema",
+      "outputs": [
+        "r2"
+      ],
+      "resume": true,
+      "side_effects": [],
+      "verifier": null
+    },
+    {
+      "capabilities": [],
+      "consequential": true,
+      "cost_class": "STANDARD",
+      "failure_states": [
+        "EXECUTION_ERROR"
+      ],
+      "id": "VERIFY_RECEIPT",
+      "inputs": [
+        "r1",
+        "r2"
+      ],
+      "job": "verify receipt",
+      "output_schema": "VERIFY_RECEIPT_schema",
+      "outputs": [
+        "verdict"
+      ],
+      "resume": false,
+      "side_effects": [],
+      "verifier": "VERIFY_RECEIPT_JUDGE"
+    },
+    {
+      "capabilities": [],
+      "consequential": false,
+      "cost_class": "STANDARD",
+      "failure_states": [
+        "EXECUTION_ERROR"
+      ],
+      "id": "TARGETED_1",
+      "inputs": [
+        "surgery"
+      ],
+      "job": "targeted test",
+      "output_schema": "TARGETED_1_schema",
+      "outputs": [
+        "t1"
+      ],
+      "resume": false,
+      "side_effects": [],
+      "verifier": null
+    },
+    {
+      "capabilities": [],
+      "consequential": false,
+      "cost_class": "STANDARD",
+      "failure_states": [
+        "EXECUTION_ERROR"
+      ],
+      "id": "TARGETED_2",
+      "inputs": [
+        "surgery"
+      ],
+      "job": "targeted test",
+      "output_schema": "TARGETED_2_schema",
+      "outputs": [
+        "t2"
+      ],
+      "resume": false,
+      "side_effects": [],
+      "verifier": null
+    },
+    {
+      "capabilities": [],
+      "consequential": false,
+      "cost_class": "STANDARD",
+      "failure_states": [
+        "EXECUTION_ERROR"
+      ],
+      "id": "TARGETED_3",
+      "inputs": [
+        "surgery"
+      ],
+      "job": "targeted test",
+      "output_schema": "TARGETED_3_schema",
+      "outputs": [
+        "t3"
+      ],
+      "resume": false,
+      "side_effects": [],
+      "verifier": null
+    },
+    {
+      "capabilities": [],
+      "consequential": false,
+      "cost_class": "STANDARD",
+      "failure_states": [
+        "EXECUTION_ERROR"
+      ],
+      "id": "TARGETED_4",
+      "inputs": [
+        "surgery"
+      ],
+      "job": "targeted test",
+      "output_schema": "TARGETED_4_schema",
+      "outputs": [
+        "t4"
+      ],
+      "resume": false,
+      "side_effects": [],
+      "verifier": null
+    }
+  ]
+}
