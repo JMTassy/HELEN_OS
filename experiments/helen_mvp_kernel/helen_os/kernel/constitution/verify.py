@@ -2156,6 +2156,96 @@ def _probes():
              "move it and genuine measurement must",
              _harmonic))
 
+    # ── HGF V0.4: the claim morphism compiler ───────────────────────
+    import claim_morphism as cmx
+
+    def _morphism():
+        irr = cmx.qualify("acoustic", "measurement", True,
+                          "biological")
+        sim = cmx.evidence_promotion("simulation", "measurement")
+        pseudo = cmx.evidence_conservation(
+            ("upscale", "llm_consensus", "citation_copying"),
+            1, 1, frontier_moved=True)
+        launder = cmx.domain_conservation("acoustic", "biological")
+        cond = cmx.condition_conservation(
+            {"material": "A"}, {"material": "C"})
+        scalar = cmx.frontier_product({"acoustic": "MEASURED"},
+                                      collapse_to_scalar=True)
+        nullc = cmx.result_state("NULL_EFFECT",
+                                 converted_from="MEASUREMENT_FAILURE")
+        sacred = cmx.sacredness_regression(True, True, True)
+        rep = cmx.replication_independence(
+            {d: "x" for d in cmx.INDEPENDENCE_DIMS},
+            {d: "x" for d in cmx.INDEPENDENCE_DIMS})
+        mint = cmx.replication_mints(True, truth_claimed=True)
+        pressure = cmx.promotion_pressure(1, 1, 1, 1, 1,
+                                          used_as_truth=True)
+        path = cmx.compiler_path("symbolic", "physical_warrant")
+        inert = cmx.metamorphic_falsifier(0, 1, True, 0)
+        held = cmx.metamorphic_falsifier(100, 0, False, 0)
+        return (irr["W"] == "IRRELEVANT" and
+                sim["reason"] == "E_SIMULATION_IS_NOT_WITNESS" and
+                pseudo["reason"] == "E_PSEUDOREPLICATION" and
+                launder["reason"] == "E_DOMAIN_LAUNDERING" and
+                cond["reason"] == "E_CONDITION_LAUNDERING" and
+                scalar["reason"] == "E_SCALAR_FRONTIER" and
+                nullc["reason"] == "E_FAILURE_AS_NULL" and
+                sacred["never"] == "SACRED_POWER_PROVEN" and
+                rep["n_eff"] == 1.0 and
+                mint["reason"] == "E_REPLICATION_MINTS_TRUTH" and
+                pressure["reason"] == "E_PRESSURE_IS_NOT_TRUTH" and
+                path["reason"] == "E_SYMBOLIC_WARRANT_PATH" and
+                inert["reason"] == "E_UNRESPONSIVE_FRONTIER" and
+                held["conservative_under_representation"] is True)
+    A(_probe("valid_evidence_is_not_relevant_warrant",
+             "evidence is QUALIFIED against the claim before anything "
+             "moves — a valid acoustic measurement is IRRELEVANT to a "
+             "biological claim without a bridge; a simulation is not "
+             "a witness; representations multiplied without roots are "
+             "pseudoreplication; domain, condition and temporal "
+             "conservation each refuse their laundering; the frontier "
+             "is a product never a scalar; measurement failure never "
+             "becomes a null; sacredness regressed on matched "
+             "controls yields RESIDUAL_DIFFERENCE at most, never "
+             "proof; identical replication vectors collapse to "
+             "n_eff=1 and replication mints no truth; promotion "
+             "pressure is an adversarial score; the symbolic plane "
+             "reaches physics only through hypothesis generation; and "
+             "the system must be conservative under representation "
+             "AND responsive under evidence",
+             _morphism))
+
+    # ── the enterprise falsifier: cognition is replaceable ─────────
+    import cognition_replacement as crx
+
+    def _replacement():
+        v = crx.replacement_invariant()
+        rogue = crx.run_application(crx.rogue_cognition)["receipt"]
+        coercion = crx.store_move("S_C", "S_A")
+        read = crx.shared_read("customer_history", cross_tenant=True)
+        replay = crx.run_application(crx.cognition_stub)
+        return (v["BENCHMARK"] == "PASS" and
+                v["delta_structure"] == () and
+                v["quality_collapsed"] is True and
+                v["replay_hash_C"] == v["replay_hash_C0"] and
+                rogue["result"] == "REFUSED" and
+                rogue["effect"] is None and
+                coercion["reason"] == "E_STORE_COERCION" and
+                read["reason"] == "E_TENANT_READ_BOUNDARY" and
+                replay["replayable"] is True and
+                replay["correct"] is None)
+    A(_probe("business_semantics_survive_replacement_of_cognition",
+             "the executed COGNITION_REPLACEMENT_INVARIANT_V0: C -> "
+             "C_0 collapses quality (0.92 -> 0.0) while all ten "
+             "structural properties hold and the governed path is "
+             "byte-stable; a rogue proposal dies at the effect gate "
+             "with a complete refusal receipt — the model may "
+             "propose, only policy executes; conversation never "
+             "coerces into knowledge or authoritative state without "
+             "its named gate; cross-tenant READS refuse; and "
+             "replayability never implies correctness",
+             _replacement))
+
     # ── T-GRAPH-001: topology audit as an admission gate ────────────
     import graph_audit as gau
     import obliteratus_graph_spec as ogsp
