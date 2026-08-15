@@ -179,6 +179,49 @@ def test_the_ultimate_falsifier_both_clauses_and_hold_to_everything():
     assert responsive["responsive_under_evidence"] is True
 
 
+def test_the_harmonic_crossing_contract_separates_three_frontiers():
+    """PR #13's defect, now unrepresentable: simulation moving the
+    hypothesis frontier is ALLOWED and is not a salience violation —
+    while neither salience nor hypothesis motion ever moves the
+    physical frontier."""
+    from claim_morphism import harmonic_crossing
+    # salience-only stack trying to promote physical -> FAIL
+    v = harmonic_crossing(delta_R=6, delta_H=0, delta_P=1)
+    assert v["verdict"] == "FAIL"
+    assert v["reason"] == "E_SALIENCE_PROMOTED_PHYSICAL"
+    # simulation moves hypothesis, physical untouched -> PASS
+    sim = harmonic_crossing(delta_R=0, delta_H=1, delta_P=0)
+    assert sim["verdict"] == "PASS"
+    # hypothesis motion trying to ride into physical -> FAIL
+    ride = harmonic_crossing(0, 1, 1)
+    assert ride["reason"] == "E_HYPOTHESIS_PROMOTED_PHYSICAL"
+    # a warranted physical promotion passes
+    ok = harmonic_crossing(0, 0, 1, physical_warrant="receipt:bench")
+    assert ok["verdict"] == "PASS" and ok["via"] == "physical_warrant"
+
+
+def test_promotion_authority_never_scales_with_search():
+    from claim_morphism import asymmetric_freedom
+    wide = asymmetric_freedom(proposal_power_delta=100,
+                              promotion_power_delta=0)
+    assert wide["ok"] is True
+    leak = asymmetric_freedom(100, promotion_power_delta=1)
+    assert leak["reason"] == "E_PROMOTION_SCALES_WITH_SEARCH"
+
+
+def test_a_loop_without_attack_before_gamma_is_confirmation_machinery():
+    from claim_morphism import research_loop
+    good = research_loop(("SEARCH", "SELF_CRITIQUE", "RED_TEAM",
+                          "PROVENANCE_CHECK", "HELD_OUT_TEST",
+                          "WITNESS_BUILD", "GAMMA"))
+    assert good["licensed"] is True
+    assert good["hold_is_success"] is True
+    assert good["delta_authority_worker_loops"] == 0
+    bad = research_loop(("GENERATE", "TEST", "INTERPRET", "GAMMA",
+                         "UPDATE"))
+    assert bad["reason"] == "E_NO_ATTACK_BEFORE_GAMMA"
+
+
 def test_deterministic():
     assert cm.canon(promotion_pressure(1, 1, 1, 1, 0)) == \
         cm.canon(promotion_pressure(1, 1, 1, 1, 0))

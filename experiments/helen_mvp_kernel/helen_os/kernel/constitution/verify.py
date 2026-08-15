@@ -2183,7 +2183,19 @@ def _probes():
         path = cmx.compiler_path("symbolic", "physical_warrant")
         inert = cmx.metamorphic_falsifier(0, 1, True, 0)
         held = cmx.metamorphic_falsifier(100, 0, False, 0)
+        hc_sal = cmx.harmonic_crossing(6, 0, 1)
+        hc_sim = cmx.harmonic_crossing(0, 1, 0)
+        hc_ride = cmx.harmonic_crossing(0, 1, 1)
+        leak = cmx.asymmetric_freedom(100, 1)
+        noattack = cmx.research_loop(("GENERATE", "TEST", "GAMMA"))
         return (irr["W"] == "IRRELEVANT" and
+                hc_sal["reason"] == "E_SALIENCE_PROMOTED_PHYSICAL" and
+                hc_sim["verdict"] == "PASS" and
+                hc_ride["reason"] ==
+                "E_HYPOTHESIS_PROMOTED_PHYSICAL" and
+                leak["reason"] ==
+                "E_PROMOTION_SCALES_WITH_SEARCH" and
+                noattack["reason"] == "E_NO_ATTACK_BEFORE_GAMMA" and
                 sim["reason"] == "E_SIMULATION_IS_NOT_WITNESS" and
                 pseudo["reason"] == "E_PSEUDOREPLICATION" and
                 launder["reason"] == "E_DOMAIN_LAUNDERING" and

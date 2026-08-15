@@ -335,6 +335,77 @@ def compiler_path(source, target, via=None) -> dict:
     return {"ok": True, "path": (source, via, target)}
 
 
+# ── the harmonic crossing contract (PR #13 salvage) ────────────────────
+# THE INVARIANT, WRITTEN FIRST — the tests derive from this sentence,
+# never the reverse:
+#   "Representational/salience amplification alone must not promote
+#    the physical frontier; and a simulation is NOT salience — it may
+#    move the HYPOTHESIS frontier while still never moving the
+#    PHYSICAL frontier."
+# Three frontiers, not one ladder: dR>0 !=> dP>0; dH>0 !=> dP>0;
+# dP>0 requires a physical/evidentiary warrant. PR #13's negative
+# control failed precisely because one IntEnum ladder fused R, H and
+# P into a single axis, making the simulation step break its own
+# salience invariant. The implementation died; this contract survives:
+# preserve semantics, discard accidental implementation identity.
+
+def harmonic_crossing(delta_R, delta_H, delta_P,
+                      physical_warrant=None) -> dict:
+    """HC: (dR, dH, dP) -> PASS | FAIL over three SEPARATE frontiers:
+    representation, hypothesis, physical."""
+    if delta_P > 0 and not physical_warrant:
+        if delta_R > 0 and delta_H == 0:
+            reason = "E_SALIENCE_PROMOTED_PHYSICAL"
+        elif delta_H > 0:
+            reason = "E_HYPOTHESIS_PROMOTED_PHYSICAL"
+        else:
+            reason = "E_UNWARRANTED_PHYSICAL_PROMOTION"
+        return {"verdict": "FAIL", "reason": reason}
+    if delta_H > 0 and delta_P == 0:
+        return {"verdict": "PASS",
+                "note": "a simulation may move the hypothesis "
+                        "frontier; the physical frontier is untouched "
+                        "— hypothesis motion is not epistemic inertia "
+                        "and not physical promotion"}
+    if delta_P > 0:
+        return {"verdict": "PASS", "via": "physical_warrant"}
+    return {"verdict": "PASS", "note": "no promotion attempted"}
+
+
+# ── asymmetric freedom: search scales, promotion does not ─────────────
+
+def asymmetric_freedom(proposal_power_delta,
+                       promotion_power_delta) -> dict:
+    """Autoresearch is safe to scale iff promotion authority does not
+    scale with search power. More agents, prompts, grammars, ablations
+    and corpora raise ProposalPower freely; any rise in PromotionPower
+    riding along is the leak."""
+    if promotion_power_delta > 0:
+        return {"ok": False,
+                "reason": "E_PROMOTION_SCALES_WITH_SEARCH",
+                "law": "maximize reversible cognition; minimize "
+                       "irreversible promotion"}
+    return {"ok": True,
+            "proposal_power_delta": proposal_power_delta,
+            "promotion_power_delta": promotion_power_delta}
+
+
+def research_loop(stages) -> dict:
+    """GENERATE -> DISCRIMINATE -> ATTACK -> WITNESS -> GAMMA ->
+    UPDATE. A candidate must survive attempts to falsify the exact
+    transition it wants to justify BEFORE Gamma; a loop with no
+    attack stage before Gamma is confirmation machinery. HOLD is a
+    first-class successful outcome, never a failure."""
+    stages = tuple(stages)
+    if "GAMMA" in stages:
+        before = stages[:stages.index("GAMMA")]
+        if not ({"ATTACK", "RED_TEAM"} & set(before)):
+            return {"licensed": False,
+                    "reason": "E_NO_ATTACK_BEFORE_GAMMA"}
+    return {"licensed": True, "hold_is_success": True,
+            "delta_authority_worker_loops": 0}
+
+
 def metamorphic_falsifier(representation_delta, independent_evidence_delta,
                           obligations_discharged, frontier_delta,
                           evidence_domain=None, moved_domain=None) -> dict:
