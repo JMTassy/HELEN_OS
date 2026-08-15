@@ -1,0 +1,58 @@
+{
+  "receipt": "OBLITERATUS_FREEZE_V0",
+  "step": "1 / FREEZE THE EXPERIMENT",
+  "authority": false,
+  "claim": "NO_CLAIM",
+  "constitutional_invariant": "You cannot optimize a benchmark whose measurement contract can move underneath you.",
+  "frozen_before_run": {
+    "corpus_file": "obliteratus/corpus/prompts_842.jsonl",
+    "prompt_count": 842,
+    "corpus_sha256": "e23a9f7c020308f896e130fcb9387ea2dd65aa8e6d0fe9a59b5a56fcaa4c92f0",
+    "audit_config": "obliteratus/config/audit_v0.json",
+    "audit_sha256": "cf712885ce3d63733f5663d8e819ebe53de9b67d716049c78149ab41c0406057",
+    "verdict_schema": "obliteratus/config/verdict_schema_v0.json",
+    "schema_sha256": "1510152dfb80ad9be2417716958b157718792593ebc49370d3b704a22b3b18d7",
+    "labels_frozen": true,
+    "decoding": {"temperature": 0, "seed": 42}
+  },
+  "label_distribution": {"BENIGN": 500, "HARMFUL": 250, "AMBIGUOUS": 92},
+  "gate_1": {
+    "prompt_count_is_842": true,
+    "corpus_hash_recorded": true,
+    "audit_hash_recorded": true,
+    "schema_hash_recorded": true,
+    "labels_frozen": true,
+    "verdict": "PASS"
+  },
+  "corpus_provenance": {
+    "status": "SYNTHETIC_SEED_V0",
+    "generator": "obliteratus/corpus/generate_seed_corpus.py",
+    "reproducible": "python3 generate_seed_corpus.py > prompts_842.jsonl  (seed 42, stdlib only, byte-identical on re-run)",
+    "honest_scope": "This is an authored synthetic seed, NOT witnessed production traffic. Any FRR/UCR measured against it in Step 2 is behavior ON THIS SEED DISTRIBUTION, not a claim about real users. The operator may replace prompts_842.jsonl with a real corpus and re-freeze; the freeze machinery is indifferent to what fills the slot, only that it cannot move once frozen.",
+    "harmful_subset_note": "The 250 HARMFUL rows are refusal-test REQUESTS kept deliberately non-operational: each names a disallowed objective at the level of the ask, with no method, payload, recipe or actionable detail anywhere in the corpus or generator. No sexual content involving minors is present in any category. The corpus measures whether HELEN refuses; it is not itself a how-to.",
+    "ambiguous_subset_note": "The 92 AMBIGUOUS rows are benign-but-looks-harmful (defensive security, historical/journalistic, medical-sensitive, chemical-safety, consumer-protection). They are the precise-boundary tests where over-broad refusal is measured."
+  },
+  "row_schema": ["id", "prompt", "ground_truth_class", "category", "severity"],
+  "kernel_binding": {
+    "loop_law_module": "experiments/helen_mvp_kernel/helen_os/kernel/constitution/obliteratus_surgery.py",
+    "note": "The frozen contract here is the Step-1 measurement instrument; the kernel module is the loop's law (freeze_corpus / freeze_thresholds / acceptance_gate). ground_truth_class {BENIGN,HARMFUL,AMBIGUOUS} maps to the module's label {benign,harmful,ambiguous}. Step 2 (untouched baseline run) still requires a callable model under test and a mission-grade evaluator, neither present yet."
+  },
+  "freeze_witness_commands": [
+    "wc -l obliteratus/corpus/prompts_842.jsonl",
+    "sha256sum obliteratus/corpus/prompts_842.jsonl",
+    "sha256sum obliteratus/config/audit_v0.json",
+    "sha256sum obliteratus/config/verdict_schema_v0.json",
+    "git status --short"
+  ],
+  "step_2_preconditions_still_open": [
+    "callable model-under-test endpoint or local weights (pinned)",
+    "mission-grade evaluator/grader with its own version pin and gold-selftest",
+    "frozen epsilon_safety and allowed_tolerance (via freeze_thresholds)"
+  ],
+  "not_done_in_step_1": [
+    "no model changes",
+    "no prompt surgery",
+    "no evaluator changes",
+    "no baseline measured (that is Step 2)"
+  ]
+}
