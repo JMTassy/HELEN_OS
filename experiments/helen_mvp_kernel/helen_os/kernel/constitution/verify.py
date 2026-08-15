@@ -1964,6 +1964,56 @@ def _probes():
              "count comes last, after shape and gates",
              _graph))
 
+    # ── Phase A item 8: observability & backup ──────────────────────
+    import observability_runtime as obr
+
+    def _observability():
+        s = obr.boot()
+        s, _ = obr.provision_tenant(s, "A")
+        s, _ = obr.provision_tenant(s, "B")
+        _, metric = obr.emit_metric(s, "A", "lat", "gauge", "sha:m")
+        _, minted = obr.emit_metric(s, "A", "x", "counter", "sha:m",
+                                    mutates_world_state=True)
+        _, leak = obr.record_trace(s, "A", "sp", None, "raw content")
+        _, alert_bad = obr.raise_alert(s, "A", "r", True,
+                                       remediated=True)
+        s2, _ = obr.emit_metric(s, "A", "lat", "gauge", "sha:m")
+        cross = obr.read_metrics(s2, "A", caller_tenant="B")
+        s3, bk = obr.take_backup(s2, "A", "bk1", "sha:src",
+                                 "sha:stored")
+        unrestored = obr.usable_for_recovery(s3, "A", "bk1")
+        s4, good = obr.verify_restore(s3, "A", "bk1", "sha:src")
+        usable = obr.usable_for_recovery(s4, "A", "bk1")
+        _, bad = obr.verify_restore(s3, "A", "bk1", "sha:WRONG")
+        return (metric["grade"] == "REPRESENTATION" and
+                (metric["dP"], metric["dA"], metric["dE"]) ==
+                (0, 0, 0) and
+                minted["reason"] == "E_METRIC_MINTS_WORLD_STATE" and
+                leak["reason"] == "E_OBSERVABILITY_CONTENT_LEAK" and
+                alert_bad["reason"] ==
+                "E_ALERT_IS_NOT_REMEDIATION" and
+                cross["reason"] ==
+                "E_CROSS_TENANT_OBSERVABILITY" and
+                bk["status"] == "BACKED_UP" and
+                bk["restorable"] is None and
+                unrestored["reason"] == "E_BACKUP_UNRESTORED" and
+                good["status"] == "RESTORE_VERIFIED" and
+                usable["usable"] is True and
+                bad["reason"] == "E_RESTORE_MISMATCH" and
+                obr.observability_invariant(s4)["holds"] is True)
+    A(_probe("a_backup_is_not_real_until_a_restore_re_derives_it",
+             "a metric is a REPRESENTATION with (dP,dA,dE)=(0,0,0) and "
+             "may not claim to mutate world state; metrics and traces "
+             "carry digests not content; an alert is not a "
+             "remediation; cross-tenant observability is one answer "
+             "with absent; and a written backup is BACKED_UP not "
+             "RESTORABLE — only a witnessed restore that re-derives "
+             "the source proves it, a mismatched re-derivation is "
+             "RESTORE_FAILED caught by arithmetic, and the invariant "
+             "re-derives on real state — PERSISTENCE != TRUTH made "
+             "operational",
+             _observability))
+
     # ── T-GRAPH-001: topology audit as an admission gate ────────────
     import graph_audit as gau
     import obliteratus_graph_spec as ogsp
