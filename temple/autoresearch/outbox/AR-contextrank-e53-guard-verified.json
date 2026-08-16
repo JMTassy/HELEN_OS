@@ -1,0 +1,48 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-contextrank-e53-guard-verified",
+  "target_surface": "context_ranking",
+  "epoch": "E53",
+  "parent_epoch": "E52",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "final": "HOLD_FOR_OPERATOR",
+  "reducer_required": true,
+  "finding_type": "verification",
+  "source_refs": [
+    "temple/autoresearch/outbox/AR-contextrank-e52-metric-broken.json:corrected_metric",
+    "temple/autoresearch/outbox/AR-contextrank-e50-propose-action-contradiction.json:proposed_tweak",
+    "helen_os/api/init_helen_wedge.py:171-209",
+    "helen_os/tests/test_init_determinism_against_chaos.py"
+  ],
+  "summary": "E53 verifies two open questions left by E52: (1) does the E52 corrected_metric actually run in the cloud checkout? (2) does the E50 proposed 3-line guard resolve the contradiction in both directions? Both confirmed. Contradiction still live (E52 corrected_metric exits 0 with 'CONTRADICTION CONFIRMED'). E50 guard simulation: thread-wins case (salience=9 > weight=3) yields next_action='Continue thread: T_HIGH (salience=9)' — T_HIGH in next_action PASS. Tension-wins case (weight=15 > salience=9) yields next_action='Address tension: TEN_HIGH (weight=15)' — TEN_HIGH in next_action PASS. Empty-threads edge: guard does not fire (top_salience=0, any weight >= 0 keeps tension branch) — safe. No crash path found. test_cross_output_coherence (required by E50/E52 next) absent from test_init_determinism_against_chaos.py — gap confirmed.",
+  "evidence": [
+    "Live: python3 -c 'from helen_os.api.init_helen_wedge import init_helen; ...' => top_3_threads=['T_HIGH','T_LOW'], next_action='Address tension: TEN_LOW (weight=3)' — contradiction confirmed, E52 corrected_metric exits 0",
+    "Simulation of E50 guard (weight=3 < salience=9): next_action='Continue thread: T_HIGH (salience=9)' — T_HIGH in next_action: PASS",
+    "Simulation of E50 guard (weight=15 > salience=9): next_action='Address tension: TEN_HIGH (weight=15)' — tension-wins edge: PASS",
+    "Simulation of E50 guard (empty top_thread): guard does not fire, top_salience=0, tension branch proceeds — no crash",
+    "grep -n 'def test_' helen_os/tests/test_init_determinism_against_chaos.py => 7 tests, 0 assert cross_output_coherence between top_3_threads and next_action"
+  ],
+  "mechanism": "E52 corrected the metric but left the contradiction unfixed. E53 closes the verification gap: the corrected metric runs correctly in the cloud checkout (live import, no ImportError), and the E50 proposed guard correctly resolves the contradiction in both directions without crashing on edge cases. The guard is a strict '<' comparison (weight < top_salience), so ties go to tension — a conservative default. The gap remaining is the missing test_cross_output_coherence in the test suite.",
+  "hypothesis": "If E52 corrected_metric runs + E50 guard simulated, expect both PASS — confirmed.",
+  "proposed_tweak": "No new code change proposed. Apply E50 proposed_tweak (3-line guard in _propose_action at line 191) then add test_cross_output_coherence with two cases: (a) thread-wins: salience=9, weight=3 => T_HIGH in next_action; (b) tension-wins: weight=15, salience=9 => tension id in next_action. Proposal only.",
+  "metric": "python3 -c \"from helen_os.api.init_helen_wedge import init_helen; corpus={'threads':{'T_HIGH':{'status':'unresolved','salience':9,'last_updated':'2026-08-12'},'T_LOW':{'status':'unresolved','salience':2}},'tensions':{'TEN_LOW':{'status':'unresolved','weight':3}},'recent_events':[]}; out=init_helen(corpus,{},{}); assert out['top_3_threads'][0]=='T_HIGH'; assert 'T_HIGH' not in out['next_action']; print('CONTRADICTION CONFIRMED')\" exits 0. After E50 3-line guard applied: invert final assert to 'T_HIGH' in out['next_action'] => exits 0 with 'PASS'.",
+  "keep_rule": "KEEP — guard verified in both directions (thread-wins + tension-wins), no crash on edge cases. Apply E50 fix then run metric.",
+  "next": "Operator applies E50 3-line guard to _propose_action. Run E53 metric (invert assertion). Add test_cross_output_coherence (two cases). Then apply E28 last_updated fix for full recency+coherence coverage.",
+  "risk_flags": [
+    "No new code proposed — verification only",
+    "E28 last_updated fix is independent and should be applied separately (different function, different coverage)",
+    "Tie case (weight == salience): tension wins by strict '<' — intentional conservative default"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "scanned_at": "2026-08-16T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (E52 corrected_metric confirmed runnable in cloud checkout; E50 guard simulated and verified in both directions; empty-thread edge case safe; test gap confirmed by grep)",
+    "epoch": "E53",
+    "parent_epoch": "E52",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
