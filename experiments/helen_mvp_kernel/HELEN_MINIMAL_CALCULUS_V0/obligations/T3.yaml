@@ -1,0 +1,65 @@
+# T3 Replay Confluence — proof hypotheses ↔ kernel obligations ↔ falsifiers
+# Rule: no Lean assumption without an implementation witness strategy.
+# Rule: no passing test may be promoted into a theorem.
+# NON_SOVEREIGN · authority=false
+
+theorem: T3_ReplayConfluence
+lean_module: hmc/Hmc/T3_ReplayConfluence.lean
+
+obligations:
+  - id: O1_step_functional
+    lean_hypothesis: "Step is a function State -> Receipt -> Option State (F_nu functional)"
+    kernel_obligation: "same explicit inputs -> same resulting state"
+    falsifier: falsifiers/hidden_state_probe.py
+    status_2026_08_16: >
+      STATE_DETERMINISTIC=True. FINDING: receipts are byte-deterministic only
+      modulo {decision_id, execution_id, artifact_id, their *_ref
+      cross-references, created_at}. Any nu canonicalization for replay or
+      commutator claims must exclude exactly this witnessed ND surface, or the
+      obligation weakens from receipt-determinism to state-determinism.
+
+  - id: O2_admissibility_stability
+    lean_hypothesis: "StrongIndependent folds C1 in: both orders admissible (Adm(F(S,r),q) etc.)"
+    kernel_obligation: "declared-independent receipts remain mutually applicable in either order"
+    falsifier: falsifiers/commutator_probe.py (ADMISSION_INSTABILITY branch)
+    status_2026_08_16: >
+      Probe correctly REFUTES a false independence claim (same-target writes:
+      adm(r;q)=0) and passes disjoint pairs. r||q ∧ ¬(r#q) is detectable.
+
+  - id: O3_local_commutation
+    lean_hypothesis: "srq = sqr in StrongIndependent"
+    kernel_obligation: "both orders yield canonically equal states"
+    falsifier: falsifiers/commutator_probe.py (SEMANTIC_NONCOMMUTATION branch)
+    status_2026_08_16: "COMMUTE observed on disjoint-footprint pairs; 0 noncommutation found"
+
+  - id: O4_causal_poset_fidelity
+    lean_hypothesis: "SwapConnected chains exist between linear extensions (OPEN combinatorial lemma)"
+    kernel_obligation: "receipts carry causal-parent annotations so independence claims are testable"
+    falsifier: "hidden-edge search — NOT BUILDABLE until receipts record causal edges (flagged decision)"
+    status_2026_08_16: "UNWIRED — ledger records sequence, not causal edges"
+
+  - id: O5_explicit_state
+    lean_hypothesis: "State is the only carrier between steps"
+    kernel_obligation: "no ambient hidden input to the reducer"
+    falsifier: falsifiers/hidden_state_probe.py (fresh-environment repetition)
+    status_2026_08_16: "no hidden-state divergence observed on tested sequences"
+
+  - id: O6_version_stability
+    lean_hypothesis: "single nu indexes V, Gamma, F throughout"
+    kernel_obligation: "constitutional fingerprint identical before/after any run"
+    falsifier: "fingerprint diff (pattern established in cheap_goblin_scaling_v0 freeze_hashes)"
+    status_2026_08_16: "mechanism exists and exercised in E1/E2 runs"
+
+  - id: O7_cognitive_identity_free
+    lean_hypothesis: "(implicit: Step never inspects candidate generator identity)"
+    kernel_obligation: "B_nu = 0 — zero TCB branches conditioned on model/provider identity"
+    falsifier: falsifiers/model_identity_probe.py
+    status_2026_08_16: "B_nu_token_level = 0 across 6 scanned TCB components"
+
+proof_status:
+  definitions: PASS (lake build, Lean 4.33.0, no sorry, no axiom)
+  replay_append: PASS
+  replay_adjacent_swap: PASS   # the atomic brick
+  confluence_of_swapConnected: PASS
+  linext_connectivity: OPEN    # stated as explicit hypothesis, never axiomatized
+  global_T3: CONDITIONAL       # = confluence ∘ connectivity; closes when OPEN closes
