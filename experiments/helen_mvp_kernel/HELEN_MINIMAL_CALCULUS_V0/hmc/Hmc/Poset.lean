@@ -138,4 +138,47 @@ theorem pconnected_of_perm_compat {prec : α → α → Prop}
     -- assemble: a :: t₁ ⇝ a :: (u ++ v) ⇝ u ++ a :: v
     exact (hrec.cons_lift a).trans hbub.symm
 
+/- ── L4′ support: swaps preserve permutation and compatibility ── -/
+
+theorem PSwap.perm {prec : α → α → Prop} {l l' : List α}
+    (h : PSwap prec l l') : l.Perm l' := by
+  cases h with
+  | mk A B r q _ => exact List.Perm.append_left A (List.Perm.swap q r B)
+
+theorem PConnected.perm {prec : α → α → Prop} {l l' : List α}
+    (h : PConnected prec l l') : l.Perm l' := by
+  induction h with
+  | refl _ => exact List.Perm.refl _
+  | cons hs _ ih => exact hs.perm.trans ih
+
+/-- An adjacent incomparable swap preserves order-compatibility. -/
+theorem Compat.of_pswap {prec : α → α → Prop} {l l' : List α}
+    (h : PSwap prec l l') (hc : Compat prec l) : Compat prec l' := by
+  cases h with
+  | mk A B r q hrq =>
+    unfold Compat at hc ⊢
+    rw [List.pairwise_append] at hc ⊢
+    obtain ⟨hA, hmid, hcross⟩ := hc
+    rw [List.pairwise_cons] at hmid
+    obtain ⟨hr, hqB⟩ := hmid
+    rw [List.pairwise_cons] at hqB
+    obtain ⟨hq, hB⟩ := hqB
+    refine ⟨hA, ?_, ?_⟩
+    · rw [List.pairwise_cons]
+      refine ⟨?_, ?_⟩
+      · intro b hb
+        rcases List.mem_cons.mp hb with hbr | hbB
+        · subst hbr; exact hrq.1
+        · exact hq b hbB
+      · rw [List.pairwise_cons]
+        exact ⟨fun b hb => hr b (List.mem_cons_of_mem q hb), hB⟩
+    · intro x hx y hy
+      rcases List.mem_cons.mp hy with hyq | hy'
+      · rw [hyq]
+        exact hcross x hx q (List.mem_cons_of_mem r (List.mem_cons_self ..))
+      · rcases List.mem_cons.mp hy' with hyr | hyB
+        · rw [hyr]; exact hcross x hx r (List.mem_cons_self ..)
+        · exact hcross x hx y
+            (List.mem_cons_of_mem r (List.mem_cons_of_mem q hyB))
+
 end HMC

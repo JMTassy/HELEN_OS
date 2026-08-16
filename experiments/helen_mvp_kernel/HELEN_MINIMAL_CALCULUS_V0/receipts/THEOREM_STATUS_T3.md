@@ -125,3 +125,44 @@ tails via Perm.cons_inv / perm_middle / Pairwise.sublist.
 
 Uncommitted at time of writing: Hmc/Poset.lean, Hmc/T3_Global.lean, this
 receipt section, obligations update. Custody pending next COMMIT verb.
+
+---
+## L4′ + O4 CLOSURE WITNESS (frozen 2026-08-16, same session, exact output)
+
+L4′ — Hmc/T3_StateIndexed.lean (state-indexed global T3)
+  ReachablyIndependent step s₀ prec ground: independence demanded ONLY at
+  states reachable by replaying an order-compatible prefix over the actual
+  receipt set, for pairs of that set.
+  replay_confluence_global_stateIndexed :
+    irrefl → ReachablyIndependent step s₀ prec l₁ → l₁.Perm l₂ →
+    Compat l₁ → Compat l₂ → replay s₀ l₁ = replay s₀ l₂
+  Soundness rests on two new Poset lemmas: PSwap preserves Perm and Compat —
+  hence every state where the swap lemma invokes independence is reached by a
+  compatible prefix over ground. L4-uniform is now a corollary
+  (reachablyIndependent_of_uniform, zero axioms).
+  #print axioms (verbatim):
+    replay_confluence_global_stateIndexed: [propext, Classical.choice, Quot.sound]
+    swapConnected_of_pconnected_reachable: [propext, Quot.sound]
+    Compat.of_pswap:                       [propext, Quot.sound]
+    reachablyIndependent_of_uniform:       does not depend on any axioms
+  No sorryAx anywhere.
+
+O4 — falsifiers/hidden_causal_edge_probe.py (real kernel: BoundedExecutor)
+  Declared poset lives at FIXTURE level — production causal-edge annotation
+  decision remains open; nothing sovereign touched.
+  Run 2026-08-16, expected_pattern_match = True:
+    disjoint_declared_indep  -> COMMUTE            (true declaration survives)
+    write_edit_same_target   -> ADMISSION_INSTABILITY 💥 (false decl caught)
+    two_analyze              -> COMMUTE
+    edits_after_prefix       -> SEMANTIC_NONCOMMUTATION 💥
+       ** vacuous at S₀ (both EDITs inadmissible) — ONLY the state-indexed
+       test at the reached state refutes the declaration. This is the
+       operational witness that independence is state-indexed = L4′. **
+    earned_at_reached_state  -> COMMUTE (independence EARNED at reached state,
+       undefined at S₀)
+  All CAUSAL_MISMATCH outputs are MissingEdge PROPOSALS; no DAG or ledger
+  mutated: diagnostic ⊬ DAGMutation.
+
+LADDER: L0-L3 EARNED · L4 EARNED-uniform · L4′ EARNED-state-indexed.
+Residual OPEN, named: production causal-edge annotation (operator/MAYOR) ·
+kernel-scale antichain sampling on a real ledger once edges exist.

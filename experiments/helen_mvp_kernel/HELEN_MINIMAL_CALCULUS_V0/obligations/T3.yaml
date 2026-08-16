@@ -36,7 +36,7 @@ obligations:
     lean_hypothesis: "SwapConnected chains exist between linear extensions (OPEN combinatorial lemma)"
     kernel_obligation: "receipts carry causal-parent annotations so independence claims are testable"
     falsifier: "hidden-edge search — NOT BUILDABLE until receipts record causal edges (flagged decision)"
-    status_2026_08_16: "UNWIRED — ledger records sequence, not causal edges"
+    status_2026_08_16: "PROBE BUILT + RUN (hidden_causal_edge_probe.py, fixture-level poset): 5/5 pattern; state-indexed detection witnessed (vacuous-at-S0 fixture caught only at reached state). Production causal-edge annotation still open."
 
   - id: O5_explicit_state
     lean_hypothesis: "State is the only carrier between steps"
@@ -62,4 +62,5 @@ proof_status:
   replay_adjacent_swap: PASS   # the atomic brick
   confluence_of_swapConnected: PASS
   linext_connectivity: EARNED  # pconnected_of_perm_compat (Poset.lean) — standard classical axioms, no sorryAx
-  global_T3: EARNED_UNIFORM    # replay_confluence_global (T3_Global.lean); state-indexed form OPEN
+  global_T3: EARNED_UNIFORM    # replay_confluence_global (T3_Global.lean)
+  global_T3_state_indexed: EARNED  # replay_confluence_global_stateIndexed (T3_StateIndexed.lean); uniform now a corollary
