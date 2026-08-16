@@ -1,0 +1,47 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-contextrank-e52-metric-broken",
+  "target_surface": "context_ranking",
+  "epoch": "E52",
+  "parent_epoch": "E50",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "final": "HOLD_FOR_OPERATOR",
+  "reducer_required": true,
+  "finding_type": "metric_unrunnable",
+  "source_refs": [
+    "temple/autoresearch/outbox/AR-contextrank-e50-propose-action-contradiction.json:metric",
+    "helen_os/api/init_helen_wedge.py:19-25"
+  ],
+  "summary": "E50 proposed a 3-line guard for the _propose_action/top_3_threads contradiction (confirmed live: salience=9 thread vs weight=3 tension yields contradictory boot signals). The E50 packet's 'metric' field is unrunnable: 3 symbol errors prevent any operator from executing the verification. Bug 1: imports 'build_init_helen' (never defined in init_helen_wedge.py; correct name is 'init_helen'). Bug 2: accesses 'out.top_3_threads' via dot notation (init_helen returns TypedDict i.e. plain dict; correct is out['top_3_threads']). Bug 3: accesses 'out.next_act' (field name is 'next_action', not 'next_act'). All three confirmed with live ImportError, AttributeError, and key-presence checks. The E50 contradiction itself remains unfixed (live probe: top_3_threads=['T_HIGH'], next_action='Address tension: TEN_LOW (weight=3)'). Corrected metric written below; E50 fix remains valid and the corrected metric fails (correctly) before fix is applied, then would pass after.",
+  "evidence": [
+    "python3 -c 'from helen_os.api.init_helen_wedge import build_init_helen' => ImportError: cannot import name 'build_init_helen'",
+    "init_helen returns TypedDict (plain dict); out.top_3_threads raises AttributeError: 'dict' object has no attribute 'top_3_threads'",
+    "'next_act' not in out (key is 'next_action'): confirmed via 'next_act' in out == False, 'next_action' in out == True",
+    "Existing tests use correct forms: test_init_determinism_against_chaos.py:141 uses 'from helen_os.api.init_helen_wedge import init_helen'; :180 uses out['top_3_threads']; :183 uses out['next_action']",
+    "Live E50 contradiction still present: init_helen(corpus_with_T_HIGH_sal9_TEN_LOW_w3) => top_3_threads=['T_HIGH','T_LOW'], next_action='Address tension: TEN_LOW (weight=3)'"
+  ],
+  "mechanism": "E50 metric was authored with 3 incorrect symbols (function name, attribute access style, field name). None of the 3 errors would be caught by static analysis on the packet JSON — they are Python runtime errors that only surface on execution. Because the packet is HOLD_FOR_OPERATOR and no test exercises it, the broken metric has been dormant. An operator attempting to verify the E50 fix by running the metric as written would receive an ImportError before any assertion is reached.",
+  "hypothesis": "If E50 metric is corrected (3 symbol substitutions), then the corrected metric fails before the fix (confirming the contradiction) and passes after the E50 3-line guard is applied — providing a runnable gate for the operator.",
+  "corrected_metric": "python3 -c \"from helen_os.api.init_helen_wedge import init_helen; corpus={'threads':{'T_HIGH':{'status':'unresolved','salience':9,'last_updated':'2026-08-12'},'T_LOW':{'status':'unresolved','salience':2}},'tensions':{'TEN_LOW':{'status':'unresolved','weight':3}},'recent_events':[]}; out=init_helen(corpus,{},{}); assert out['top_3_threads'][0]=='T_HIGH'; assert 'T_HIGH' in out['next_action']; print('PASS')\"",
+  "proposed_tweak": "Amend E50 packet metric field: (1) 'build_init_helen' → 'init_helen'; (2) 'out.top_3_threads' → \"out['top_3_threads']\"; (3) 'out.next_act' → \"out['next_action']\". Proposal only — 3 string substitutions in the metric field of the E50 packet. No code changes. Does not alter the E50 proposed fix (which remains valid).",
+  "metric": "python3 -c \"from helen_os.api.init_helen_wedge import init_helen; corpus={'threads':{'T_HIGH':{'status':'unresolved','salience':9,'last_updated':'2026-08-12'},'T_LOW':{'status':'unresolved','salience':2}},'tensions':{'TEN_LOW':{'status':'unresolved','weight':3}},'recent_events':[]}; out=init_helen(corpus,{},{}); assert out['top_3_threads'][0]=='T_HIGH'; assert 'T_HIGH' not in out['next_action']; print('CONTRADICTION CONFIRMED — E50 fix not yet applied')\" exits 0. After E50 3-line guard applied: assertion inverted ('T_HIGH' in out['next_action']) exits 0.",
+  "keep_rule": "KEEP if: corrected metric runs cleanly to 'CONTRADICTION CONFIRMED'. REJECT if: corrected metric itself fails (suggests deeper init_helen API change). HOLD if: E50 fix was already applied (T_HIGH in next_action would be true).",
+  "next": "Operator corrects E50 metric field (3 substitutions). Operator applies E50 3-line guard to _propose_action. Run corrected metric to confirm PASS. Then add test_cross_output_coherence to test_init_determinism_against_chaos.py (per E50 next field).",
+  "risk_flags": [
+    "No code change proposed — metric correction only",
+    "E50 3-line guard remains unreviewed; this epoch does not re-evaluate it",
+    "Corrected metric still uses a synthetic corpus (not production weights)"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "scanned_at": "2026-08-16T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (3 E50 metric errors confirmed via live ImportError+AttributeError+key check; E50 contradiction still live; corrected metric runs and confirms contradiction; no code changes proposed)",
+    "epoch": "E52",
+    "parent_epoch": "E50",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
