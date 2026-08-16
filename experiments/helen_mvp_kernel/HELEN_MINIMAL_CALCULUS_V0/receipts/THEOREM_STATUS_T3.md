@@ -84,3 +84,44 @@ potentially semantically live and must be re-audited before stripping.
 T-004 (LinExt → SwapConnected connectivity): now UNBLOCKED, still OPEN.
 No mathlib bridge assumed; project has zero deps — the finite-list bridge
 will be built from scratch when its verb arrives.
+
+---
+## T-004 / L3 + L4 CLOSURE WITNESS (frozen 2026-08-16, same session, exact output)
+
+L3 — Hmc/Poset.lean (pure combinatorics: no replay, no HELEN vocabulary)
+  pconnected_of_perm_compat :
+    (∀ x, ¬prec x x) → l₁.Perm l₂ → Compat prec l₁ → Compat prec l₂ →
+    PConnected prec l₁ l₂
+  #print axioms (verbatim):
+    'HMC.pconnected_of_perm_compat' depends on axioms:
+    [propext, Classical.choice, Quot.sound]
+  Classification: the three STANDARD Lean classical axioms (introduced by
+  by_cases and core List.Perm machinery). NO sorryAx. Per audit discipline:
+  recorded verbatim, not naively read as failure.
+
+L4 — Hmc/T3_Global.lean (composition L1/L2 ∘ L3)
+  replay_confluence_global :
+    irrefl prec → (∀ s r q, Incomp prec r q → StrongIndependent step s r q) →
+    l₁.Perm l₂ → Compat prec l₁ → Compat prec l₂ →
+    replay step s₀ l₁ = replay step s₀ l₂
+  #print axioms (verbatim): [propext, Classical.choice, Quot.sound] — no sorryAx.
+
+LADDER STATUS AFTER THIS WITNESS
+  L0 replay semantics ......... EARNED
+  L1 adjacent swap ............ EARNED (zero axioms)
+  L2 swap-chain invariance .... EARNED (zero axioms)
+  L3 LinExt connectivity ...... EARNED (standard classical axioms, no sorryAx)
+  L4 global T3 ................ EARNED — UNIFORM-INDEPENDENCE FORM
+     residual OPEN: state-indexed form (independence only at states actually
+     reached along the swap chain) — needs reachability tracking through L3's
+     induction. Stated in T3_Global.lean header; nothing smuggled.
+
+Proof method (L3): classical bubble argument — head element of one
+enumeration is incomparable with everything preceding its occurrence in the
+other (forward direction from the other list's Compat, backward direction
+from own list's Compat via Perm membership; irreflexivity handles duplicate
+occurrences), bubble to front by adjacent incomparable swaps, recurse on
+tails via Perm.cons_inv / perm_middle / Pairwise.sublist.
+
+Uncommitted at time of writing: Hmc/Poset.lean, Hmc/T3_Global.lean, this
+receipt section, obligations update. Custody pending next COMMIT verb.

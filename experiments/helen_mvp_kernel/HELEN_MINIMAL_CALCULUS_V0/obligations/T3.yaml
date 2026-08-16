@@ -61,5 +61,5 @@ proof_status:
   replay_append: PASS
   replay_adjacent_swap: PASS   # the atomic brick
   confluence_of_swapConnected: PASS
-  linext_connectivity: OPEN    # stated as explicit hypothesis, never axiomatized
-  global_T3: CONDITIONAL       # = confluence ∘ connectivity; closes when OPEN closes
+  linext_connectivity: EARNED  # pconnected_of_perm_compat (Poset.lean) — standard classical axioms, no sorryAx
+  global_T3: EARNED_UNIFORM    # replay_confluence_global (T3_Global.lean); state-indexed form OPEN
