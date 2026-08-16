@@ -1,0 +1,45 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-skillroute-e55-manifest-codes-missing",
+  "target_surface": "skill_routing",
+  "epoch": "E55",
+  "parent_epoch": "E49",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "final": "HOLD_FOR_OPERATOR",
+  "reducer_required": true,
+  "finding_type": "gap",
+  "summary": "E49 found 3 pre-reducer codes (INFERENCE_FAILED, REJECTED, OK_QUARANTINED) missing from failure_to_class. E55 finds 2 additional REDUCER-emitted codes also absent: ERR_MANIFEST_NOT_FOUND (gates 2a/2b in skill_promotion_reducer.py:47-53) and ERR_MANIFEST_SKILL_UNAUTHORIZED (gate 3, line 58). Both default to TRANSFORM — wrong class in both cases. ERR_MANIFEST_NOT_FOUND should be RECONCILE (missing skill manifest = gap between discovered skills and manifest registry, needs reconciliation). ERR_MANIFEST_SKILL_UNAUTHORIZED should be VALIDATE (skill present in manifest but not authorized = policy enforcement gap, needs validator). 0 existing tests assert on these codes in skill_discovery context. Live probe confirmed: both return class=TRANSFORM under current failure_to_class.get(..., 'TRANSFORM') default.",
+  "evidence": [
+    "skill_discovery_v1.py:162-174: failure_to_class has 11 entries, no MANIFEST keys",
+    "skill_promotion_reducer.py:47-53: 2 code paths emit REJECTED+ERR_MANIFEST_NOT_FOUND",
+    "skill_promotion_reducer.py:58: emits REJECTED+ERR_MANIFEST_SKILL_UNAUTHORIZED",
+    "test_skill_promotion_manifest_gate.py:110,121,143 + test_reducer_manifest_gate_v2.py:91-139: reducer emits these codes (test coverage confirmed)",
+    "Live probe: FailureCluster('ERR_MANIFEST_NOT_FOUND',2,...) -> class='TRANSFORM' — WRONG",
+    "Live probe: FailureCluster('ERR_MANIFEST_SKILL_UNAUTHORIZED',2,...) -> class='TRANSFORM' — WRONG",
+    "grep ERR_MANIFEST helen_os/tests/test_skill_discovery*.py -> 0 hits: no test blocks this fix"
+  ],
+  "mechanism": "Reducer gates emit ERR_MANIFEST_NOT_FOUND (gates 2a/2b — manifest file not in registry) and ERR_MANIFEST_SKILL_UNAUTHORIZED (gate 3 — skill not in manifest's authorized_skills list). When either clusters (>=2 occurrences), detect_failure_clusters feeds the raw reason_code as failure_type into analyze_capability_gap, which calls failure_to_class.get(code, 'TRANSFORM'). Since neither code is in failure_to_class, both silently default to TRANSFORM — proposing schema-transformation skills instead of reconciliation or validation skills. The manifest errors are governance boundary failures, not format transformation failures.",
+  "hypothesis": "If ERR_MANIFEST_NOT_FOUND: RECONCILE and ERR_MANIFEST_SKILL_UNAUTHORIZED: VALIDATE are added to failure_to_class, clustered manifest-gate rejections will propose reconciliation skills (fix manifest registry) and validation skills (fix skill authorization policy) instead of wrong TRANSFORM skills.",
+  "proposed_tweak": "skill_discovery_v1.py:174 — after '\"ERR_THRESHOLD_NOT_MET\": \"OPTIMIZE\",' add: '\"ERR_MANIFEST_NOT_FOUND\": \"RECONCILE\",' and '\"ERR_MANIFEST_SKILL_UNAUTHORIZED\": \"VALIDATE\",' . 2-line addition. Proposal only — operator must apply. Combine with E49 3-line fix (INFERENCE_FAILED: OPTIMIZE, REJECTED: FILTER, OK_QUARANTINED: VALIDATE) for a single 5-line patch total.",
+  "metric": "python3 -c 'from helen_os.autonomy.skill_discovery_v1 import analyze_capability_gap, FailureCluster; s={\"active_skills\":{}}; assert analyze_capability_gap(FailureCluster(\"ERR_MANIFEST_NOT_FOUND\",2,[\"t1\"],{}),s)[\"class\"]==\"RECONCILE\"; assert analyze_capability_gap(FailureCluster(\"ERR_MANIFEST_SKILL_UNAUTHORIZED\",2,[\"t1\"],{}),s)[\"class\"]==\"VALIDATE\"; print(\"PASS\")' exits 0. make test green.",
+  "keep_rule": "KEEP if both codes return correct class after patch AND make test green AND no test asserts MANIFEST->TRANSFORM (0 confirmed). REJECT if any TRANSFORM assertion exists for these codes.",
+  "next": "Add test_reducer_manifest_failure_routing in helen_os/tests/test_skill_discovery_v1.py: ERR_MANIFEST_NOT_FOUND->RECONCILE, ERR_MANIFEST_SKILL_UNAUTHORIZED->VALIDATE. Apply 5-line combined patch (E49+E55). Confirm PARSE_FAILED (E49 deferred) stays as operator judgment.",
+  "e49_relation": "E49 found pre-reducer codes. E55 finds reducer-emitted codes. Both batches miss failure_to_class coverage. 5-line combined fix covers all confirmed gaps: INFERENCE_FAILED->OPTIMIZE, REJECTED->FILTER, OK_QUARANTINED->VALIDATE, ERR_MANIFEST_NOT_FOUND->RECONCILE, ERR_MANIFEST_SKILL_UNAUTHORIZED->VALIDATE. PARSE_FAILED remains operator judgment.",
+  "risk_flags": [
+    "Minimal — 2-line dict addition, no control flow change",
+    "0 tests assert MANIFEST->TRANSFORM in skill_discovery context (confirmed by grep)",
+    "Reducer manifest tests confirm these codes are live in the real gate (not hypothetical)"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "scanned_at": "2026-08-16T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (live probe: both codes return TRANSFORM; reducer tests confirm codes are live; 0 tests assert wrong class; correct class derived from gate semantics: MANIFEST_NOT_FOUND=registry reconciliation gap, SKILL_UNAUTHORIZED=policy validation gap)",
+    "epoch": "E55",
+    "parent_epoch": "E49",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
