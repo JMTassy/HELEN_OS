@@ -18,6 +18,7 @@ import uuid
 
 from helen_os.governance.canonical import sha256_prefixed, assert_prefixed_sha256, canonical_json_bytes
 from helen_os.governance.validators import validate_schema
+from helen_kernel.gates.claim_type_policy import pre_dispatch_guard
 
 
 SCHEMA_VERSION = "1.0.0"
@@ -32,6 +33,7 @@ FAILURE_CODES = {
     "unsupported_handler",
     "artifact_write_failed",
     "receipt_emission_failed",
+    "jurisdiction_blocked",
 }
 
 
@@ -333,6 +335,21 @@ class BoundedExecutor:
 
     def execute(self, request: Dict[str, Any]) -> Tuple[ExecutionDecisionReceipt, ExecutionResultReceipt, Optional[ArtifactWriteReceipt]]:
         tool_type = request.get("tool_type")
+
+        # Jurisdiction before effect: this REJECT is terminal for the attempted
+        # effect — no handler resolution, no registry write, no mutation.
+        block = pre_dispatch_guard(
+            {
+                "family": "executor",
+                "op": "task",
+                "claim_type": request.get("claim_type", "RECEIPT"),
+            }
+        )
+        if block is not None:
+            decision = self._reject_decision("jurisdiction_blocked", tool_type or "UNKNOWN")
+            result = self._failure_result(decision, "jurisdiction_blocked", pre_state_hash=EMPTY_STATE_HASH)
+            return decision, result, None
+
         if tool_type not in HANDLERS:
             decision = self._reject_decision("unsupported_handler", tool_type or "UNKNOWN")
             result = self._failure_result(decision, "unsupported_handler", pre_state_hash=EMPTY_STATE_HASH)
