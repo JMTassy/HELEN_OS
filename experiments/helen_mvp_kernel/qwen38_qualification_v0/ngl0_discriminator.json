@@ -1,0 +1,33 @@
+{
+  "phase": "FAILURE_BOUNDARY_DISCRIMINATOR",
+  "timestamp_note": "run immediately after 2K smoke session, 2026-08-16",
+  "question": "Metal/offload failure, or model too large for this Mac at all?",
+  "params": { "ctx": 2048, "ngl": 0, "n_predict": 64, "temperature": 0, "seed": 0, "reasoning": "off", "single_turn": true },
+  "pre_run": { "memory_free_pct": 79, "swap_used_mb": 7019 },
+  "result": {
+    "load_success": true,
+    "exit_code": 0,
+    "wall_time_s": 423.20,
+    "user_time_s": 165.92,
+    "sys_time_s": 270.87,
+    "prompt_tokens_per_second": 1.2,
+    "generation_tokens_per_second": 0.1,
+    "peak_rss_bytes": 9378021376,
+    "metal_oom": false,
+    "error_count_in_stderr": 0,
+    "raw_output": "{\n  \"status\": \"ok\",\n  \"model\": \"qwen3.8\",\n  \"authority\": false\n}",
+    "valid_json": true,
+    "expected_schema": true,
+    "clean_exit": true
+  },
+  "post_run": { "memory_free_pct": 74, "swap_used_mb": 6267 },
+  "thrash_evidence": "sys time (270.9s) exceeds user time (165.9s) — CPU spent more time paging the mmapped 12.6GB weight file than computing; generation 0.1 t/s",
+  "classification": [
+    "METAL_OFFLOAD_BOUNDARY_FOUND (ngl32/ngl16 failures are Metal-specific; CPU path computes correctly)",
+    "RUNNABLE_BUT_NOT_OPERATIONALLY_USEFUL (0.1 t/s generation, paging-dominated)"
+  ],
+  "disposition": "HOLD_UNUSABLE_PERFORMANCE",
+  "raw_logs": ["/tmp/qwen_smoke_2k_ngl0.out", "/tmp/qwen_smoke_2k_ngl0.err"],
+  "authority": false,
+  "ledger_effect": "none"
+}

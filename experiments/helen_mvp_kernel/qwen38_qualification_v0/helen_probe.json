@@ -1,0 +1,8 @@
+{
+  "phase": "HELEN_CONSTITUTIONAL_UNIT_PROBE",
+  "status": "NOT_RUN",
+  "reason": "Precondition failed: no stable runtime configuration exists (2K smoke failed at both permitted ngl settings). The probe packet was never sent to the model.",
+  "candidate_admission_interface": "NOT_EVALUATED",
+  "interface_note": "Because the probe never ran, no output existed to pass through any candidate/admission interface; whether such an interface is wired for llama-cli output was not investigated this session. No integration was fabricated.",
+  "authority": false
+}

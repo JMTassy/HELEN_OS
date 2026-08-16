@@ -1,0 +1,33 @@
+{
+  "experiment": "QWEN38_QUALIFICATION_V0",
+  "timestamp_utc": "2026-08-16T12:52:33Z",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "artifact": {
+    "model_path": "/Users/jean-marietassy/models/qwen38-ridge/Qwen3.8-27B-Ridge-3.7bpw.gguf",
+    "file_size_bytes": 12599187008,
+    "sha256": "95580dbdaad579582ee898257116abc18d7f3625a00c16a15735d41444a09f5e",
+    "hash_classification": "LOCAL_HASH_WITNESSED",
+    "hash_note": "Re-hashed from disk this session with shasum -a 256. Matches expected value recorded in local download metadata (~/models/qwen38-ridge/_download2.log). No remote checksum was fetched or verified this session.",
+    "sibling_dir_note": "~/models/Qwen3.8-27B-GGUF/ contains only an empty .cache — no artifact there."
+  },
+  "runtime": {
+    "runtime_path": "/opt/homebrew/bin/llama-cli",
+    "version": "b9430-d48a56eff",
+    "build": "AppleClang 21.0.0.21000099, Darwin arm64",
+    "supported_flags_used": ["-c", "-ngl", "-n", "--temp", "-s", "-rea off", "-st", "-p"]
+  },
+  "substrate": {
+    "chip": "Apple M3 Pro",
+    "unified_memory_bytes": 19327352832,
+    "memory_free_pct_before": 50,
+    "ollama_residents_during_test": "none (ollama ps empty)",
+    "other_large_processes": "ChatGPT.app ~8.3% MEM, Claude.app, Firefox — not killed (out of scope)"
+  },
+  "helen_stack_untouched": {
+    "hal_8000": true,
+    "city_8002": true,
+    "airi_5173": true
+  }
+}
