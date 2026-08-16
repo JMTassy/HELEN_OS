@@ -95,7 +95,9 @@ class Transition:
     capability: Optional[Capability] = None
     presentation: str = "plain"         # metadata ONLY — must never affect disposition
     contract_override: Mapping[str, ProtectionContract] = field(default_factory=dict)
-    has_contract_authority: bool = False
+    # NIM-07 meta-protection: authority to substitute the protection registry must be an APPLICABLE
+    # capability, NEVER a self-declared field. `boolean says authority ⇏ authority exists`.
+    contract_authority: Optional[Capability] = None
 
 
 # ── kernel ──
@@ -116,6 +118,20 @@ def _applicable(cap: Optional[Capability], t: Transition, s: State) -> bool:
             and cap.tenant == t.tenant                            # TENANT binding
             and cap.fresh                                         # temporal validity / expiry
             and cap.bound_prestate == prestate_digest(s))         # PRESTATE binding (None ⇒ mismatch ⇒ reject)
+
+
+def _meta_applicable(cap: Optional[Capability], t: "Transition", s: State) -> bool:
+    """Contract-override (protection-registry substitution) is a governed META-transition (NIM-07).
+    Its authority must be an APPLICABLE capability for the `observe_substitute` op — a self-declared
+    field can never license weakening the very contracts that judge the transition."""
+    if cap is None:
+        return False
+    return (cap.operation == "observe_substitute"
+            and cap.subject == t.requester
+            and cap.tenant == t.tenant
+            and cap.fresh
+            and cap.bound_prestate == prestate_digest(s)
+            and set(t.contract_override.keys()) <= cap.scope)     # scope must cover the overridden coords
 
 
 def _obligations_discharged(t: Transition, s: State) -> bool:
@@ -157,11 +173,12 @@ def admit(t: Transition, s: State,
           contracts: Optional[Mapping[str, ProtectionContract]] = None) -> Tuple[str, str]:
     contracts = dict(contracts or default_contracts())
 
-    # observer/contract substitution: an unlicensed override is rejected; an AUTHORIZED override is
-    # LIVE — merged into the registry before FrameOK (D1 fix: no dead governance path).
+    # observer/contract substitution is a governed META-transition. The override is merged into the
+    # registry ONLY if licensed by an APPLICABLE capability (NIM-07). A self-declared field can never
+    # license it — `boolean says authority ⇏ authority exists`. Fail-closed: no applicable cap ⇒ REJECT.
     if t.contract_override:
-        if not t.has_contract_authority:
-            return REJECT, "OBSERVER_SUBSTITUTION_UNLICENSED"
+        if not _meta_applicable(t.contract_authority, t, s):
+            return REJECT, "META_AUTHORITY_INAPPLICABLE"
         contracts.update(t.contract_override)
 
     if not _frame_licensed(t):
@@ -258,10 +275,13 @@ def observer_family() -> dict:
     blind_reg = {**default_contracts(), "A": blind_contract("A")}
     coarse = admit(forbidden, S, blind_reg)[0]                                  # ESCAPE (blind is dangerous)
     substitution = admit(replace(forbidden, contract_override={"A": blind_contract("A")},
-                                 has_contract_authority=False), S)[0]           # unlicensed → REJECT
-    # D1 live-check: an AUTHORIZED override is actually applied (merged) — proving it is not dead code.
+                                 contract_authority=None), S)[0]                # self-declared/forged → REJECT
+    # NIM-07 live-check: an APPLICABLE meta-capability actually merges the override (proves not dead code).
+    good_meta = Capability(subject="alice", operation="observe_substitute", object="",
+                           scope=frozenset({"A"}), tenant="tenant-A", fresh=True,
+                           bound_prestate=prestate_digest(S))
     authorized_live = admit(replace(forbidden, contract_override={"A": blind_contract("A")},
-                                    has_contract_authority=True), S)[0]         # licensed override merged → escapes
+                                    contract_authority=good_meta), S)[0]        # licensed override merged → escapes
     adequacy = all(observer_sees(default_contracts()[c], S, (lambda s, c=c: {**dict(s), c: s[c] + 1})) for c in COORDS)
     blind_control_triggered = (strict == REJECT and coarse == ADMIT)
     ok = (substitution == REJECT and blind_control_triggered and adequacy and authorized_live == ADMIT)
@@ -269,10 +289,36 @@ def observer_family() -> dict:
             "substitution": substitution, "authorized_override_live": authorized_live, "adequacy": adequacy}
 
 
+def meta_family() -> dict:
+    """META (NIM-07): a forged/inapplicable contract-authority must be REJECTED for its ONE dimension;
+    a genuinely applicable meta-capability must ADMIT (non-vacuity — not a deny-all)."""
+    S = zero_state()
+    frb = Transition("m_base", frozenset({"Q"}), {"Q": 1, "A": 1}, op="noop",
+                     proposer="p", authorizer="a", discharger="d")   # requester=alice, tenant=tenant-A
+    ov = {"A": blind_contract("A")}
+    good = Capability(subject="alice", operation="observe_substitute", object="",
+                      scope=frozenset({"A"}), tenant="tenant-A", fresh=True, bound_prestate=prestate_digest(S))
+    mutants = {                                    # each flips exactly ONE applicability dimension
+        "forged_none":    None,
+        "wrong_subject":  replace(good, subject="eve"),
+        "wrong_op":       replace(good, operation="grant"),
+        "stale":          replace(good, fresh=False),
+        "wrong_prestate": replace(good, bound_prestate=prestate_digest({**S, "M": 9})),
+        "scope_miss":     replace(good, scope=frozenset({"Q"})),
+    }
+    survivors = [name for name, cap in mutants.items()
+                 if admit(replace(frb, contract_override=ov, contract_authority=cap), S)[0] != REJECT]
+    genuine = admit(replace(frb, contract_override=ov, contract_authority=good), S)[0]
+    ok = (not survivors and genuine == ADMIT)
+    return {"killed": int(ok), "total": 1, "mutants_killed": len(mutants) - len(survivors),
+            "mutants_total": len(mutants), "survivors": survivors, "genuine": genuine}
+
+
 def run_receipt() -> dict:
     corpus = build_corpus()
     fam = {n: _kill_family(corpus[n]) for n in ("FRAME", "WITNESS", "DEPUTY", "DUTY")}
     obs = observer_family()
+    meta = meta_family()
     strk, strt, _ = _kill_family(corpus["STR"])
     pk, pt, _ = _kill_family(corpus["POSITIVE"])
     admitted = [t for t, e in corpus["POSITIVE"] if e == ADMIT]
@@ -283,7 +329,8 @@ def run_receipt() -> dict:
         return 1 if (d > 0 and n == d) else 0
 
     R = (one(*fam["FRAME"][:2]), one(*fam["WITNESS"][:2]), one(*fam["DUTY"][:2]), one(*fam["DEPUTY"][:2]),
-         one(obs["killed"], obs["total"]), one(strk, strt), one(pk, pt), one(replay_exact, 1))
+         one(obs["killed"], obs["total"]), one(meta["killed"], meta["total"]),
+         one(strk, strt), one(pk, pt), one(replay_exact, 1))
     return {"FRAME": fam["FRAME"], "WITNESS": fam["WITNESS"], "DUTY": fam["DUTY"], "DEPUTY": fam["DEPUTY"],
-            "OBSERVER": obs, "STR": (strk, strt), "POSITIVE": (pk, pt), "REPLAY": (replay_exact, 1),
+            "OBSERVER": obs, "META": meta, "STR": (strk, strt), "POSITIVE": (pk, pt), "REPLAY": (replay_exact, 1),
             "acceptance_vector": R, "accepted": all(x == 1 for x in R)}

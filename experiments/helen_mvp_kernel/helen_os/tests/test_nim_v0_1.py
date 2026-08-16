@@ -84,6 +84,19 @@ def test_contract_override_live_and_gated():
     assert obs["adequacy"] is True and obs["killed"] == 1
 
 
+# ─────────── NIM-07: meta-authority must be an applicable capability, never self-declared ───────────
+def test_meta_authority_not_self_declared():
+    from helen_os.audit.nim_v0_1 import meta_family
+    m = meta_family()
+    assert m["survivors"] == [] and m["mutants_killed"] == m["mutants_total"]   # every forged/inapplicable killed
+    assert m["genuine"] == ADMIT                                                # applicable meta-cap admits (non-vacuity)
+    # direct witness: a self-declared (no-capability) authority cannot weaken the protection registry
+    frb = Transition("forge", frozenset({"Q"}), {"Q": 1, "A": 1}, op="noop",
+                     proposer="p", authorizer="a", discharger="d",
+                     contract_override={"A": blind_contract("A")}, contract_authority=None)
+    assert admit(frb, S0) == (REJECT, "META_AUTHORITY_INAPPLICABLE")
+
+
 # ─────────── STR / presentation inert ───────────
 def test_presentation_inert():
     for p in ("plain", "prestige", "cosmic", "urgent", "humble"):
@@ -101,7 +114,7 @@ def test_full_receipt_all_ones_and_deterministic():
     r1 = run_receipt()
     r2 = run_receipt()
     assert r1 == r2                                   # deterministic across two runs
-    assert r1["acceptance_vector"] == (1, 1, 1, 1, 1, 1, 1, 1) and r1["accepted"] is True
+    assert r1["acceptance_vector"] == (1, 1, 1, 1, 1, 1, 1, 1, 1) and r1["accepted"] is True
     for fam in ("FRAME", "WITNESS", "DUTY", "DEPUTY"):
         killed, total, survivors = r1[fam]
         assert total > 0 and killed == total and survivors == []
