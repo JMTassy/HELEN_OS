@@ -1,0 +1,45 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-ctxrank-e24-sortkeys-list-noop",
+  "target_surface": "context_ranking",
+  "epoch": "E24",
+  "parent_epoch": "E23",
+  "source_refs": [
+    "helen_os/autonomy/self_improve_loop_v1.py:281",
+    "helen_os/autonomy/self_improve_loop_v1.py:284"
+  ],
+  "finding_type": "gap",
+  "summary": "At line 284, json.dumps(admitted_skills, sort_keys=True) is called on a list. sort_keys=True only sorts dict object keys — it has no effect on list element order. The admitted_skills list (built at line 281 from dict.keys()) is emitted in dict insertion order (Python 3.7+ guarantee), NOT alphabetical order. The sort_keys=True hint signals deterministic intent but silently fails to achieve it. For multi-skill libraries (2+ admitted skills), prompt content order is admission-time order, not a stable canonical order. The 200-iteration replay determinism check (make anti-regression) passes only because the bootstrap library has one skill; a two-skill library with skills admitted in different orders across serialization paths would produce different prompt hashes — breaking replay determinism.",
+  "evidence": [
+    "live probe: import json; lst=['c_v1','a_v1','b_v1']; json.dumps(lst, sort_keys=True) == '[\"c_v1\", \"a_v1\", \"b_v1\"]' — insertion order preserved, NOT sorted",
+    "live probe: json.dumps(sorted(lst)) == '[\"a_v1\", \"b_v1\", \"c_v1\"]' — alphabetical only via sorted()",
+    "hash probe: sha256(sort_keys on list) = 98d2e5f4, sha256(sorted list) = 6519a4d7 — different hashes → replay divergence possible for multi-skill libraries",
+    "self_improve_loop_v1.py:281: admitted_skills = list(skill_library.get('active_skills', {}).keys()) — insertion order",
+    "self_improve_loop_v1.py:284: json.dumps(admitted_skills, sort_keys=True) — sort_keys no-op on list",
+    "test_autoresearch_step_is_deterministic.py: _state() provides single-skill library ('skill.base') — ordering issue undetectable with one element",
+    "No test exercises 2+ admitted skills in prompt ordering — multi-skill replay gap confirmed"
+  ],
+  "hypothesis": "If admitted_skills list is sorted before serialization (sorted(admitted_skills)), prompt content for admitted_skills becomes canonical and order-independent regardless of skill admission sequence or deserialization path. Replay hash stability extends to multi-skill library runs.",
+  "proposed_tweak": "helen_os/autonomy/self_improve_loop_v1.py line 284: change json.dumps(admitted_skills, sort_keys=True) to json.dumps(sorted(admitted_skills)). Drop the ineffectual sort_keys=True; apply sorted() to the list itself. One-token change on the list. Proposal only — operator must apply.",
+  "metric": "probe: json.dumps(sorted(['c_v1','a_v1','b_v1'])) == '[\"a_v1\", \"b_v1\", \"c_v1\"]' (alphabetical). Prompt content for a 3-skill library is identical regardless of insertion order. Existing test_autoresearch_step_is_deterministic.py remains green. New test: two admitted skills in reversed insertion order produce identical prompt hash.",
+  "keep_rule": "KEEP if existing determinism tests green + two-skill insertion-order-reversed probe produces identical prompt hash; REJECT if any existing test regresses or if sorted() changes single-skill bootstrap output (it should not — sorted(['helen_autoresearch_v1']) == ['helen_autoresearch_v1'])",
+  "next": "Add test: build skill_library with ['z_skill_v1','a_skill_v1'] in insertion order; confirm prompt admitted_skills segment == '[\"a_skill_v1\", \"z_skill_v1\"]' (alphabetical). Operator applies 1-char fix; run make test + make anti-regression.",
+  "risk_flags": [
+    "Very low — sorted() on a list of strings is deterministic and has no side effects on other fields",
+    "Single-skill bootstrap unaffected — sorted(['helen_autoresearch_v1']) == ['helen_autoresearch_v1']",
+    "No admitted-skills consumers assert insertion-order sequence; only uniqueness gate (line 331) uses the dict, not the serialized list"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-01T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (live probe confirmed, insertion-order vs sorted hash divergence verified)",
+    "epoch": "E24",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}

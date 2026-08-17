@@ -1,0 +1,38 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sandbox-vgrammar-e42-liveness-green-residual",
+  "target": "sandbox_visual_grammar",
+  "epoch": "E42",
+  "parent_epoch": "E41",
+  "finding_type": "recurrence_residual",
+  "hypothesis": "If E41's liveness-is-not-admission ruling (akashic LIVE badge → cyan) is correct, then the two warm-light surfaces still rendering 'Online' presence in green (focus.html, helen2027.html) are the last residual of the E31 collision class — and after fixing them, liveness is uniformly non-green across all 11 helen-surface files.",
+  "summary": "Final sweep of the three unswept surfaces. dream_of_conquest.html: CLEAN — painterly parchment palette (rgba earth/cream tones, single #181210 ink), zero governance vocabulary, zero status color coding. goblin/gravure.html: CLEAN — monochrome gold (#c9a43a ×4), status rendered as text only (NO_CLAIM, PENDING_RECEIPT, authority=false at L9/L200/L242), no color-coded governance. focus.html: one finding — presence badge 'Online' in var(--ok):#16a34a (L41-42 CSS, L132 markup), the identical E31-class liveness-green that E40 logged in helen2027.html (L45-46, L224) and E41 already fixed in temple_akashic_v1. Both warm-light files define --helen:#0ea5e9 (sky blue) in their palettes — the natural light-theme OBSERVED slot, so liveness can move off green without introducing a new token. --ok remains defined and reserved for genuine ok/admitted states (currently unused elsewhere in both files). focus.html's other status colors are sound: .sr-n.wait → --warn, .sr-n.block → --blocked (L96-97), each single-meaning. AUDIT CLOSURE: with E42, all 11 apps/helen-surface files are swept — cockpit_v4 (E31), index (E32/E33), garden_conquest_avalon (f2a9), starship (E39), home_v1 + helen2027 (E40), temple + temple_akashic_v1 (E41), focus + dream_of_conquest + gravure (E42).",
+  "evidence": [
+    "apps/helen-surface/focus.html:41-42 — .tb-badge.presence and .presence-dot in var(--ok):#16a34a",
+    "apps/helen-surface/focus.html:132 — 'Online' presence badge markup",
+    "apps/helen-surface/helen2027.html:45-46,224 — identical presence-in-green pattern (logged E40, unfixed)",
+    "apps/helen-surface/focus.html:18 / helen2027.html:21 — --helen:#0ea5e9 available as light-theme OBSERVED slot",
+    "apps/helen-surface/focus.html:96-97 — wait/block statuses correctly single-meaning (--warn/--blocked)",
+    "apps/helen-surface/dream_of_conquest.html — zero governance hexes, zero status vocabulary (CLEAN)",
+    "apps/helen-surface/goblin/gravure.html — monochrome #c9a43a, text-only status: NO_CLAIM, PENDING_RECEIPT (CLEAN)",
+    "AR-sandbox-vgrammar-e41 applied fix f337ce7 — akashic LIVE badge → cyan establishes liveness≠green precedent"
+  ],
+  "proposed_tweak": "focus.html L41-42 and helen2027.html L45-46: presence badge color/background/border var(--ok) → var(--helen) (and rgba(22,163,74,…) border → rgba(14,165,233,…)). Four CSS declarations across two files; markup untouched; --ok stays defined, reserved for genuine ok states. Completes the liveness-off-green migration started in E41.",
+  "metric": "grep 'var(--ok)' apps/helen-surface/focus.html apps/helen-surface/helen2027.html returns 0 hits; grep 'presence' shows only var(--helen) coloring",
+  "rule": "keep if 'Online' renders in --helen blue on both warm-light surfaces and no surface renders liveness in green; reject if operator rules presence is an ok-class state distinct from OBSERVED (then define a dedicated presence token, still non-green)",
+  "next": "Audit closed — 11/11 surfaces swept. Candidate next lane: codify the decoration/governance hex separation (E40/E41 keep-hexes) as a palette table in HELEN_SOURCE_ATLAS_V1 proposal doc",
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-10T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (live probe: focus.html L41-42/L132 confirm presence-in-green; var(--ok) grep confirms no other --ok consumer in either file; dream_of_conquest color inventory confirms zero governance hexes; gravure hex inventory confirms monochrome gold; helen2027 L21 and focus L18 confirm --helen:#0ea5e9 available)",
+    "epoch": "E42",
+    "parent_epoch": "E41",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-initrank-e45-flags-sev-zeroed",
+  "target_surface": "init_ranking",
+  "epoch": "E45",
+  "parent_epoch": "E37",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "source_refs": [
+    "scratch/autoresearch_init_evaluator_v1.py:BASELINE",
+    "scratchpad/init_goldset_v1.json"
+  ],
+  "finding_type": "gap",
+  "summary": "BASELINE dict in autoresearch_init_evaluator_v1.py zeros out w_flags and w_severity (both 0.0), commenting \"mirrors current triage TYPE_PRIORITY intuition\". All 5 approved goldset packets have flags>=2 and sev>=1; all rejected same-type (risk) packets have flags=1 and sev=0. Type score alone ties these — tiebreaker is lexicographic packet ID — producing Top3Match=0.0 on all 20 goldset cases. Minimal fix: w_flags=0.5, w_severity=0.5 lifts Top3Match 0.0->1.0, composite score 0.15->0.8667, Stability=1.0 unchanged. No schema, gate, or ledger change required.",
+  "evidence": [
+    "scratch/autoresearch_init_evaluator_v1.py BASELINE: w_flags=0.0, w_severity=0.0",
+    "Approved packets: all flags>=2, sev>=1 (5 packets, 20 cases)",
+    "Rejected risk packets competing in same cases: flags=1, sev=0",
+    "Type score ties approved/rejected risk packets at 3.0 — tiebreaker is pid alphabetical",
+    "Probe: evaluate(BASELINE) -> Top3Match=0.0, score=0.15, Stability=1.0",
+    "Probe: evaluate({w_type:1.0,w_flags:0.5,w_severity:0.5}) -> Top3Match=1.0, score=0.8667, Stability=1.0",
+    "Grid search 108 combos: best at w_type=1.0,w_flags=0.5,w_severity=0.5"
+  ],
+  "hypothesis": "If w_flags=0.5 and w_severity=0.5 are added to BASELINE, Top3Match lifts from 0.0 to >=0.8 on all 20 goldset cases.",
+  "proposed_tweak": "scratch/autoresearch_init_evaluator_v1.py BASELINE dict: change w_flags from 0.0 to 0.5 and w_severity from 0.0 to 0.5. Update comment from \"mirrors current triage TYPE_PRIORITY intuition\" to \"flag-count + severity discriminate approved from same-type rejected\". Proposal only — operator must apply.",
+  "metric": "Top3Match >= 0.8 on 20-case goldset; Stability >= 0.9",
+  "keep_reject_rule": "KEEP if Top3Match>=0.8 and Stability>=0.9; REJECT if stability drops or Top3Match<0.5",
+  "next_iteration": "E46: expand goldset to 40 cases; verify w_flags/w_severity hold on fresh operator labels"
+}

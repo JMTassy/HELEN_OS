@@ -1,0 +1,44 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-promptcomp-e22-admitted-skills-id-only",
+  "target_surface": "prompt_compression",
+  "epoch": "E22",
+  "parent_epoch": "E21",
+  "source_refs": [
+    "helen_os/autonomy/self_improve_loop_v1.py:281-284",
+    "helen_os/autonomy/self_improve_loop_v1.py:577-591"
+  ],
+  "finding_type": "gap",
+  "summary": "In run_self_improve_loop() (line 281), admitted_skills is built as list(skill_library['active_skills'].keys()) — ID strings only. Line 284 passes this ID-only list into _SKILL_PROPOSAL_PROMPT. But _admit_skill_to_library() (lines 583-590) stores description, expected_effects, and capability_gap_addressed for every admitted skill. Those fields are available in skill_library at prompt-build time but are silently dropped. The LLM therefore cannot detect semantic duplicates: a new proposal 'inference_limiter_v1 — halt inference when token ceiling reached' passes the ID dedup check (line 331) and all scoring gates even if 'token_budget_manager_v1 — tracks token budget per inference call and halts when limit exceeded' is already admitted. Only the ID is checked; capability semantics are invisible to the model.",
+  "evidence": [
+    "line 281: admitted_skills = list(skill_library.get('active_skills', {}).keys()) — .keys() strips all non-ID fields",
+    "line 284: admitted_skills=json.dumps(admitted_skills, sort_keys=True) — JSON array of bare IDs injected into prompt",
+    "lines 583-590: _admit_skill_to_library stores description, expected_effects, capability_gap_addressed — all present in skill_library at cycle start",
+    "live probe: after admitting token_budget_manager_v1 with full proposal, admitted_ids=['helen_autoresearch_v1','token_budget_manager_v1']; description and gap silently dropped from prompt context",
+    "line 331: dedup check is skill_id in skill_library['active_skills'] — exact ID only, no semantic comparison",
+    "no existing test validates that descriptions appear in the built prompt"
+  ],
+  "hypothesis": "If admitted_skills context includes description and capability_gap_addressed (not just IDs), the LLM can avoid proposing skills that duplicate admitted capabilities under a new name, reducing semantic-duplicate cycles and wasted gate passes.",
+  "proposed_tweak": "helen_os/autonomy/self_improve_loop_v1.py line 281: change 'admitted_skills = list(skill_library.get(\"active_skills\", {}).keys())' to 'admitted_skills = {sid: {\"description\": data.get(\"description\", \"\"), \"gap\": data.get(\"capability_gap_addressed\", \"UNKNOWN\")} for sid, data in skill_library.get(\"active_skills\", {}).items()}'. Line 284 stays unchanged (json.dumps still works on dict). Proposal only — operator must apply.",
+  "metric": "In a multi-cycle test with two admitted skills carrying distinct descriptions, assert the built prompt string contains both description values (not just IDs). In a live run, count cycles where skill_id is new but description semantically duplicates an admitted skill — target: 0 such cycles after fix.",
+  "keep_rule": "KEEP if prompt string includes description+gap for all admitted skills AND existing tests in test_score_proposal_specificity.py remain green; REJECT if prompt length regression breaks token budget or scoring gate threshold fires on test fixture",
+  "next": "Add test_admitted_skills_context_includes_descriptions: build skill_library with two admitted skills, call run_self_improve_loop inner prompt-build logic, assert descriptions present in formatted prompt string. Operator applies 2-line change; run make test.",
+  "risk_flags": [
+    "Low — prompt size increases by ~50 chars per admitted skill; at bootstrap (1 skill) impact is minimal",
+    "Bootstrap skill has no description field — dict entry would show empty string; consider filtering or defaulting to skill_id",
+    "Existing tests do not construct multi-cycle libraries — no regression expected from ID-only tests"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-01T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (live probe confirmed: description dropped at line 281)",
+    "epoch": "E22",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}

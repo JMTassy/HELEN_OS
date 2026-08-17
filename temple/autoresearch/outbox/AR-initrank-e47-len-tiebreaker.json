@@ -1,0 +1,30 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-initrank-e47-len-tiebreaker",
+  "target_surface": "init_ranking_weights",
+  "epoch": "E47",
+  "parent_epoch": "E46",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "source_refs": [
+    "scratch/autoresearch_init_evaluator_v1.py:BASELINE",
+    "scratchpad/init_goldset_v1.json:20 cases / 31 packets"
+  ],
+  "finding_type": "gap",
+  "summary": "E46 confirmed w_noise=1.0 as binary separator (score=0.9267, OrderScore=0.6333). E47 finds that adding w_len=0.1 (length penalty for longer summaries) lifts OrderScore from 0.6333 to 0.8000, raising overall score from 0.9267 to 0.9600. Mechanism: 6 of 20 cases have same-type ties (test_gap vs test_gap, both noise=0); w_len promotes the shorter/more-concise packet, matching operator goldset preference. Stable range: 0.05 <= w_len <= 0.27 (cliff at 0.28 where Top3Match drops to 0.45). Top3Match=1.0 and Stability=1.0 are preserved throughout the stable range.",
+  "evidence": [
+    "E46 baseline: w_noise=1.0, score=0.9267, OrderScore=0.6333",
+    "E47 probe: w_noise=1.0 + w_len=0.1, score=0.9600, OrderScore=0.8000",
+    "6/20 cases changed: all same-type (test_gap) ties resolved by shorter summary winning",
+    "Stable range: w_len 0.05..0.27 all yield score=0.96; cliff at w_len=0.28 (score drops to 0.54)",
+    "w_refs addition harms (score drops at w_refs=0.1+); w_len is the unique safe second weight",
+    "AR-eee30b74e78d (len=224) correctly beats AR-e8d1841c6d2f (len=453) in all 6 affected cases"
+  ],
+  "hypothesis": "If w_len=0.1 is added to w_noise=1.0, summary-length penalization resolves same-type ties to match operator goldset preference, lifting OrderScore from 0.6333 to 0.8000 and overall score from 0.9267 to 0.9600.",
+  "proposed_tweak": "scratch/autoresearch_init_evaluator_v1.py BASELINE dict: set w_len from 0.0 to 0.1, keeping w_noise=1.0, w_type=1.0, all others 0.0. Safe choice: any value in [0.05, 0.27] yields identical score=0.96. Proposal only — operator must apply.",
+  "metric": "Top3Match=1.0, OrderScore>=0.80, Stability=1.0, score>=0.96 on 20-case goldset",
+  "keep_reject_rule": "KEEP if score>=0.96 and Top3Match=1.0 and OrderScore>=0.80; REJECT if w_len cliff disrupts Top3Match on expanded goldset",
+  "next_iteration": "E48: expand goldset to 40 cases; verify w_len cliff at 0.28 is stable and same-type tie-breaking pattern holds on fresh operator labels"
+}

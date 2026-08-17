@@ -1,0 +1,46 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-ctxrank-e28-last-updated-dropped",
+  "target_surface": "context_ranking",
+  "epoch": "E28",
+  "parent_epoch": "E27",
+  "source_refs": [
+    "helen_os/api/init_helen_wedge.py:87-118",
+    "helen_os/api/init_helen_wedge.py:104",
+    "helen_os/api/init_helen_wedge.py:112"
+  ],
+  "finding_type": "gap",
+  "summary": "In _top_threads() (line 87-118), the ranking criterion 'recent activity' is declared in the docstring as criterion 3, and last_updated is read at line 104 — but the score formula at line 112 is 'score = (is_unresolved * 1000) + salience' and silently drops last_updated. Two threads with equal status and equal salience are ordered by Python dict insertion order, not recency. The docstring is the contract; the code breaks it.",
+  "evidence": [
+    "Line 104: last_updated = thread_obj.get('last_updated', '') — read but unused",
+    "Line 112: score = (is_unresolved * 1000) + salience — last_updated absent",
+    "Docstring line 90-92 lists '3. recent activity' as a ranking criterion",
+    "Live probe: corpus with 3 unresolved threads, all salience=5, last_updated='2026-01-01', '2026-08-02', '2026-04-01' → result=['STALE_THREAD','RECENT_THREAD','MID_THREAD'] (insertion order, not recency)",
+    "Expected with fix: ['RECENT_THREAD','MID_THREAD','STALE_THREAD']",
+    "Fix verified: sort by (score DESC, last_updated DESC) — ISO-8601 sorts lexicographically, no extra parsing needed",
+    "Regression check: HIGH_SAL (salience=10, stale) still ranks above LOW_SAL (salience=3, recent) — salience dominates as intended"
+  ],
+  "hypothesis": "If last_updated is used as a lexicographic tiebreaker in the sort key (score DESC, last_updated DESC), then two threads with equal score will rank the more recently updated one first, matching the declared docstring contract. Salience and status remain the primary signals.",
+  "proposed_tweak": "helen_os/api/init_helen_wedge.py line 114: change 'scored.append((thread_id, score))' to 'scored.append((thread_id, score, last_updated))'; line 117: change 'scored.sort(key=lambda x: x[1], reverse=True)' to 'scored.sort(key=lambda x: (x[1], x[2]), reverse=True)'; line 118: change '[tid for tid, _ in scored[:n]]' to '[tid for tid, _, _ in scored[:n]]'. Three-line change, proposal only — operator must apply.",
+  "metric": "probe: corpus with 3 unresolved threads, all salience=5, last_updated 2026-01-01/2026-08-02/2026-04-01 (in that insertion order) → _top_threads returns ['RECENT_THREAD','MID_THREAD','STALE_THREAD']. All existing tests in test_init_determinism_against_chaos.py remain deterministic (ISO-8601 sort is still fully deterministic).",
+  "keep_rule": "KEEP if recency-tie probe returns RECENT_THREAD first AND all 6 existing test_init_determinism_against_chaos tests remain green; REJECT if any determinism test breaks or if salience ordering regresses",
+  "next": "Add test_tie_broken_by_recency: two unresolved threads equal salience, different last_updated → assert recent one ranks first. Operator applies 3-line fix; run make test.",
+  "risk_flags": [
+    "Low — fix adds last_updated as secondary sort key only; primary keys (is_unresolved, salience) are unchanged",
+    "ISO-8601 lexicographic sort is deterministic (no timezone parsing, no datetime object construction)",
+    "Dead variable at line 153 of _recent_delta: current_time = datetime.now(timezone.utc).isoformat() — assigned but never read; low-risk cosmetic but worth noting separately"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-03T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (live probe confirmed gap; fix verified correct; salience-dominance regression check passed)",
+    "epoch": "E28",
+    "session": "scheduled autoresearch"
+  }
+}

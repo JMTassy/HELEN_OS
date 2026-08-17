@@ -1,0 +1,42 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-context-rank-companion-fix-e15",
+  "target_surface": "context_ranking",
+  "epoch": "E15",
+  "parent_epoch": "E14",
+  "source_refs": [
+    "helen_os/persona_entry_shell/init_airlock.py:96-107",
+    "helen_os/boot/boot_loader.py:27-43",
+    "helen_os/tests/test_init_airlock.py"
+  ],
+  "finding_type": "fix_proposal",
+  "summary": "E14 data_loss confirmed on fresh checkout (2026-07-25). companion_state and live_context are loaded by boot_loader (any_loaded check) but silently dropped from prior_context dict in _check_memory_source(). Fix: two-line dict expansion. Probe-confirmed: fix simulation yields prior_context['companion_state'] == {'companion_id':'C1','mood':'curious'}. 20 existing tests unaffected (no companion_state/live_context coverage in test_init_airlock.py).",
+  "evidence": [
+    "fresh checkout probe: storage dir with only companion_state_v1.json → memory_source='storage', prior_context keys=['loaded_from','last_session','epoch_state','person_profile'] — companion_state MISSING",
+    "fix simulation: add companion_state+live_context to prior dict → prior_context['companion_state']={'companion_id':'C1','mood':'curious'} CONFIRMED",
+    "grep test_init_airlock.py for companion_state|live_context|_check_memory_source: 0 hits — no existing test covers this gap",
+    "init_airlock.py:96-107: prior dict has 4 keys; boot_loader.py:37-38 loads 5 (companion_state, live_context added); any_loaded uses all 5"
+  ],
+  "proposed_tweak": "Add two lines to prior dict at init_airlock.py:103-104: 'companion_state': boot_ctx.companion_state, 'live_context': boot_ctx.live_context. No schema change — ContextPacket.prior_context is dict[str,Any].",
+  "hypothesis": "If companion_state and live_context are added to prior dict, memory_source='storage' will carry real data (not all-None) when only companion/live files exist.",
+  "metric": "Probe: tmpdir with only companion_state_v1.json; assert prior_context['companion_state'] == {'companion_id':'C1','mood':'curious'} after fix. Simulation: PASS.",
+  "keep_rule": "KEEP if all 20 test_init_airlock tests pass + new companion probe passes; REJECT if ContextPacket consumers break on new keys.",
+  "next": "Write test_companion_only_storage_prior_propagates; apply dict expansion at init_airlock.py:103-104; run make test.",
+  "risk_flags": [
+    "Low structural risk: prior_context is untyped dict, consumers should tolerate new keys",
+    "Medium semantic risk: if any consumer explicitly asserts prior_context keys == 4, will break — grep needed before applying"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-07-25T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (claude-sonnet-4-6, FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (probe double-confirmed: bug + fix simulation)",
+    "epoch": "E15",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}

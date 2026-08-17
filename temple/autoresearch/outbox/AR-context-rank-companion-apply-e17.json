@@ -1,0 +1,43 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-context-rank-companion-apply-e17",
+  "target_surface": "context_ranking",
+  "epoch": "E17",
+  "parent_epoch": "E16",
+  "source_refs": [
+    "helen_os/persona_entry_shell/init_airlock.py:102-107",
+    "helen_os/boot/boot_loader.py:32-44",
+    "helen_os/boot/runtime_boot_context.py:19-20"
+  ],
+  "finding_type": "fix_ready",
+  "summary": "E15 fix confirmed by live probe. companion_state absent from prior dict at init_airlock.py:102-107. boot_loader loads both fields into RuntimeBootContext; _check_memory_source drops them. Probe: tmpdir with only companion_state_v1.json → loaded_from=storage, companion_state={'mood':'calm',...}, current prior has 4 keys (no companion_state), fixed prior has 6 keys (propagates). 20/20 test_init_airlock tests green on unpatched code.",
+  "evidence": [
+    "probe: load_boot_context(tmpdir) → loaded_from='storage', companion_state={'mood':'calm','trust_score':0.85}",
+    "current prior (4 keys): ['loaded_from','last_session','epoch_state','person_profile'] — companion_state ABSENT",
+    "fixed prior (6 keys): adds companion_state + live_context — companion_state propagates correctly",
+    "20/20 test_init_airlock tests: PASS on unpatched code (no regressions from adding keys)",
+    "0 key-count assertions on prior_context across full codebase (confirmed E16)",
+    "fix scope: 2 lines added to init_airlock.py:105-106 — proposal only, authority=false"
+  ],
+  "hypothesis": "If prior dict expanded with companion_state+live_context at init_airlock.py:105-106, memory_source='storage' carries real companion data — 0 existing consumers break.",
+  "proposed_tweak": "init_airlock.py lines 102-107: add two lines after 'person_profile': 'companion_state': boot_ctx.companion_state, 'live_context': boot_ctx.live_context. Proposal only — operator must apply and commit.",
+  "metric": "20 existing tests green + probe: prior_context['companion_state'] == {'mood':'calm','trust_score':0.85} for companion-only storage.",
+  "keep_rule": "KEEP if 20 tests green + companion probe passes; REJECT if any consumer fails on 6-key prior (none identified across 3 epochs).",
+  "next": "Operator applies 2-line fix; run make test; write test_companion_only_storage_prior_propagates; seal E15/E17 together.",
+  "risk_flags": [
+    "None remaining — E16 cleared all key-count assertion risks"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-07-26T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (live probe + 20 tests green)",
+    "epoch": "E17",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}

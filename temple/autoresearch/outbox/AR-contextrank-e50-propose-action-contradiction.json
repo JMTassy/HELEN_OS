@@ -1,0 +1,48 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-contextrank-e50-propose-action-contradiction",
+  "target_surface": "context_ranking",
+  "epoch": "E50",
+  "parent_epoch": "E28",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "final": "HOLD_FOR_OPERATOR",
+  "reducer_required": true,
+  "finding_type": "cross_output_contradiction",
+  "source_refs": [
+    "helen_os/api/init_helen_wedge.py:184-208",
+    "helen_os/api/init_helen_wedge.py:87-118"
+  ],
+  "summary": "E28 found _top_threads() drops last_updated from its sort key (line 112, unfixed). E50 finds a second, distinct defect: _propose_action() (line 184-208) tension-first branch is salience-blind. When any unresolved tension exists, next_act returns 'Address tension: X' regardless of thread salience. _top_threads() independently surfaces the top-salience thread (e.g. T_HIGH salience=9). InitOutput therefore carries two fields pointing at different targets: top_3_threads[0]=T_HIGH but next_act='Address tension: TEN_LOW'. No cross-check is performed between the two functions. No test asserts cross-coherence between top_3_threads and next_act (grep confirmed 0 tests cover this path). Live probe: corpus with T_HIGH(salience=9) and TEN_LOW(weight=100, unrelated thread) yields top_3_threads=['T_HIGH'] and next_act='Address tension: TEN_LOW' — contradictory operator signals in one boot response.",
+  "evidence": [
+    "init_helen_wedge.py:191-196: tension-first branch fires if any unresolved tension exists",
+    "init_helen_wedge.py:193: max(unresolved_weights, key=lambda x: x[1]) — maximizes weight, not salience",
+    "init_helen_wedge.py:195: returns 'Address tension: {tid}' — thread salience never consulted",
+    "init_helen_wedge.py:112: score = (is_unresolved*1000) + salience — _top_threads uses salience only",
+    "Live probe: corpus{T_HIGH:salience=9, T_LOW:salience=2}, tension{TEN_LOW:weight=100} => top_3_threads=['T_HIGH'], next_act='Address tension: TEN_LOW'",
+    "grep -rn 'next_act.*top_3|top_3.*next_act|cross.*coherence' helen_os/tests/*.py => 0 hits",
+    "_propose_action() signature: (corpus, epoch_state) — no top_3 argument, no _top_threads call inside"
+  ],
+  "mechanism": "InitOutput has 5 fields computed independently: _top_threads() and _propose_action() share no state. A high-salience thread ranks first in top_3_threads; an unrelated tension with higher weight fires first in _propose_action. Both land in the same JSON response. The operator boot context receives 'focus on T_HIGH' (from top_3_threads) and 'do TEN_LOW' (from next_act) simultaneously. The tension-weight scale and the thread-salience scale are not normalized, so no ordering principle resolves the contradiction. The operator cannot tell from InitOutput alone which signal should win.",
+  "hypothesis": "If _propose_action() calls _top_threads(corpus, n=1) internally and guards the tension path with 'return thread action if top thread salience > tension weight', then top_3_threads[0] and next_act will point at the same target when thread salience dominates, eliminating the contradiction for the common case.",
+  "proposed_tweak": "init_helen_wedge.py:191 — before returning the tension action, add: top_thread = _top_threads(corpus, n=1); top_salience = corpus.get('threads', {}).get(top_thread[0] if top_thread else '', {}).get('salience', 0) if top_thread else 0; if weight < top_salience: return f'Continue thread: {top_thread[0]} (salience={top_salience})'. This 3-line guard ensures the highest-salience thread wins when its salience exceeds tension weight. Proposal only — operator must apply. No other files touched.",
+  "metric": "python3 -c 'from helen_os.api.init_helen_wedge import build_init_helen; corpus={\"threads\":{\"T_HIGH\":{\"status\":\"unresolved\",\"salience\":9,\"last_updated\":\"2026-08-12\"},\"T_LOW\":{\"status\":\"unresolved\",\"salience\":2}},\"tensions\":{\"TEN_LOW\":{\"status\":\"unresolved\",\"weight\":3}},\"recent_events\":[]}; out=build_init_helen(corpus,{},{}); assert out.top_3_threads[0]==\"T_HIGH\"; assert \"T_HIGH\" in out.next_act; print(\"PASS\")' exits 0. make test green.",
+  "keep_rule": "KEEP if: after fix, probe returns next_act pointing to T_HIGH (salience=9 > weight=3). REJECT if: any test asserts tension-first unconditionally. HOLD if: test shows tension weight > salience in canonical corpus (expected production scenario unclear).",
+  "next": "Add test_cross_output_coherence: corpus with top-salience thread + low-weight tension => assert top_3_threads[0] and next_act agree. Add second test: high-weight tension (weight > salience) => assert tension wins. Operator applies 3-line guard. Wire with E28 fix for full recency+coherence coverage.",
+  "risk_flags": [
+    "Minimal — 3-line guard in _propose_action, no control flow removed",
+    "Tension path still fires when weight > top-thread salience (intentional fallback preserved)",
+    "0 tests assert tension-first behavior unconditionally (confirmed: grep 0 hits)"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "scanned_at": "2026-08-13T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (live probe: top_3_threads[0]=T_HIGH vs next_act=TEN_LOW contradiction confirmed; 0 cross-coherence tests; _propose_action reads no thread salience in tension branch; 3-line fix scoped, reversible)",
+    "epoch": "E50",
+    "parent_epoch": "E28",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}

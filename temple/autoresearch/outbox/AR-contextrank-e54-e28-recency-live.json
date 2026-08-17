@@ -1,0 +1,47 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-contextrank-e54-e28-recency-live",
+  "target_surface": "context_ranking",
+  "epoch": "E54",
+  "parent_epoch": "E53",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "final": "HOLD_FOR_OPERATOR",
+  "reducer_required": true,
+  "finding_type": "live_confirmation + fix_simulation",
+  "source_refs": [
+    "helen_os/api/init_helen_wedge.py:87-118",
+    "temple/autoresearch/outbox/AR-ctxrank-e28-last-updated-dropped.json",
+    "helen_os/tests/test_init_determinism_against_chaos.py"
+  ],
+  "summary": "E54 confirms E28 live: _top_threads() silently drops last_updated at line 114. Two equal-salience/status threads produce insertion-order output, not recency order. Live: T_OLD (2026-01-01) ranks before T_NEW (2026-08-15) with identical salience=5 and status=unresolved. E28 3-line fix simulated: T_NEW first after fix (recency wins). Regression check: high-salience thread (salience=9, date=old) still beats low-salience (salience=3, date=new) — salience priority preserved. Edge case: missing last_updated defaults to '' (sorts before any ISO date) — safe, no crash. No existing test covers recency tiebreak in _top_threads. test_recency_tiebreak missing from test_init_determinism_against_chaos.py.",
+  "evidence": [
+    "Live: python3 -c 'T_OLD/T_NEW equal salience=5' => top_3_threads=['T_OLD','T_NEW'] — T_NEW should be first, FAIL",
+    "E28 fix simulation (3-line): T_NEW first, T_OLD second — PASS",
+    "Regression: T_HIGH_SAL (salience=9, old date) before T_LOW_SAL (salience=3, new date) — salience priority PRESERVED",
+    "Edge case: T_NO_DATE ('') < T_DATED ('2026-08-15') in string sort => T_DATED first — safe, no crash",
+    "grep -n 'last_updated|_top_threads' helen_os/tests/test_init_determinism_against_chaos.py => 2 hits (line 69, 79) — both fixture setup only, 0 assertions on recency ordering"
+  ],
+  "mechanism": "Score formula at line 112 is 'score = (is_unresolved * 1000) + salience'. last_updated is read at line 104 but not used in the tuple at line 114. Python's sort is stable, so equal-score threads preserve their dict insertion order. E28 fix adds last_updated as a third tuple element, making sort key (score, last_updated) — ISO date strings compare lexicographically, so newer date wins in descending sort. No type mismatch: both score (int) and last_updated (str) sort cleanly in the tuple.",
+  "hypothesis": "If last_updated is included in sort tuple, equal-salience threads rank by recency not insertion order.",
+  "proposed_tweak": "helen_os/api/init_helen_wedge.py (proposal only — operator must apply): line 114: 'scored.append((thread_id, score, last_updated))'; line 117: 'scored.sort(key=lambda x: (x[1], x[2]), reverse=True)'; line 118: '[tid for tid, _, _ in scored[:n]]'. Then add test_recency_tiebreak (two cases: recency-wins + salience-still-wins) to test_init_determinism_against_chaos.py.",
+  "metric": "python3 -c \"from helen_os.api.init_helen_wedge import _top_threads; corpus={'threads':{'T_OLD':{'status':'unresolved','salience':5,'last_updated':'2026-01-01'},'T_NEW':{'status':'unresolved','salience':5,'last_updated':'2026-08-15'}},'tensions':{},'recent_events':[]}; top=_top_threads(corpus); print(top); assert top[0]=='T_OLD'; print('BUG CONFIRMED')\" exits 0. After E28 3-line fix: invert assert to top[0]=='T_NEW' => exits 0 with 'FIX CONFIRMED'.",
+  "keep_rule": "KEEP — fix confirmed in both directions (recency-wins + salience-wins preserved + empty-date edge safe). No regression risk.",
+  "next": "Operator applies E28 3-line fix to _top_threads. Add test_recency_tiebreak (two cases). Then combine E28 recency fix + E50 guard in a single coherence PR covering both _top_threads and _propose_action.",
+  "risk_flags": [
+    "String sort on ISO dates is safe only for YYYY-MM-DD format — any other format breaks lexicographic order",
+    "E50 guard (_propose_action) and E28 fix (_top_threads) are independent — can land separately",
+    "test_cross_output_coherence (E53) still missing and independent from E28 test"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "scanned_at": "2026-08-16T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (E28 bug live-confirmed; fix simulated in two directions; regression check PASS; edge case PASS; test gap confirmed by grep)",
+    "epoch": "E54",
+    "parent_epoch": "E53",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}

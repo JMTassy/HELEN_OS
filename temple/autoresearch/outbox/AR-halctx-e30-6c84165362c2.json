@@ -1,0 +1,29 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-halctx-e30-6c84165362c2",
+  "target": "prompt_compression",
+  "epoch": "E30",
+  "hypothesis": "HAL review at helen.py:63 receives full conversation history as context; HAL only needs the proposal dict to evaluate determinism/safety. Stripping history from HAL's context yields 80-94% token savings per review call.",
+  "finding_type": "gap",
+  "summary": "helen.py:63 calls hal.review(proposal, context) where context = [system_msg] + full_history (O(history) tokens). hal.review() passes context unchanged to adapter.generate() — the history is never inspected by HAL logic, only forwarded to the LLM. For a 20-turn session this adds ~1741 tokens to every HAL call (system+history) for zero benefit. Proposed fix: pass context=[] to hal.review() at both call sites (helen.py:63 and helen.py:170).",
+  "evidence": [
+    "helen_os_scaffold/helen_os/helen.py:57 — context = [system_msg] + history (full unbounded history)",
+    "helen_os_scaffold/helen_os/helen.py:63 — hal.review(proposal, context) passes full history",
+    "helen_os_scaffold/helen_os/hal.py:31 — adapter.generate(prompt, context) — context forwarded unchanged",
+    "helen_os_scaffold/helen_os/hal.py:12-47 — HAL logic never reads context, only passes it to adapter",
+    "helen_os_scaffold/helen_os/helen.py:169-170 — second call site: context=[system_msg_only], hal.review(proposal, context)",
+    "Measured: 20-turn session → 1951t HAL input vs 210t lean (89% waste)"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "proposed_tweak": "At helen.py:63 change to hal.review({...}, []). At helen.py:170 change to hal.review(proposal, []). No change to hal.py or adapters.py. Two one-line edits.",
+  "metric": "Stub test: mock adapter captures context arg in hal.review(); assert len(context_passed) == 0; run existing helen_os_scaffold/tests/ suite to confirm no regression.",
+  "rule": "keep if HAL verdict distribution unchanged in smoke test (PASS/WARN/BLOCK rates stable) and no test regression; reject if any downstream system depends on HAL receiving history",
+  "next": "Patch helen.py:63 and helen.py:170; add mock-adapter test for context=[] enforcement; run scaffold tests",
+  "prior_packet": "AR-promptcomp-e3a1",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-03"
+}

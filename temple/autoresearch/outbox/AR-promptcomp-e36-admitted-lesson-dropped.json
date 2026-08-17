@@ -1,0 +1,50 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-promptcomp-e36-admitted-lesson-dropped",
+  "target_surface": "prompt_compression",
+  "epoch": "E36",
+  "parent_epoch": "E23",
+  "source_refs": [
+    "helen_os/autonomy/self_improve_loop_v1.py:418",
+    "helen_os/autonomy/self_improve_loop_v1.py:275",
+    "helen_os/autonomy/self_improve_loop_v1.py:282-285"
+  ],
+  "finding_type": "gap",
+  "summary": "run_self_improve_loop appends rejection history to feedback_lines (lines 423, 426) but silently drops admission history. Line 418 computes lesson = 'Admitted skill X: description' but no feedback_lines.append follows. The next cycle's {feedback} slot carries zero signal about admitted skills' descriptions — only rejection reasons. Combined with E22/E23 (admitted_skills is ID-only, no description/gap), the LLM proposing cycle N+1 sees N rejected IDs in feedback and N admitted IDs in admitted_skills, but has no semantic description for any admitted skill from either source. One-line fix: add feedback_lines.append(lesson) after line 418.",
+  "evidence": [
+    "self_improve_loop_v1.py:275: feedback_lines comment reads '# Gate failures from prior rejected cycles' — admission excluded by design or oversight",
+    "self_improve_loop_v1.py:418: lesson = f\"Admitted skill {skill_id!r}: {skill_proposal.get('description', '')}\" — description computed",
+    "self_improve_loop_v1.py:423: feedback_lines.append(f\"Gate {blocker} blocked {skill_id!r}\") — REJECTED path appends",
+    "self_improve_loop_v1.py:426: feedback_lines.append(f\"Reducer rejected {skill_id!r}: {reason_code}\") — REJECTED path appends",
+    "No feedback_lines.append after line 418 — ADMITTED path silent",
+    "grep -n 'feedback_lines.append' helen_os/autonomy/self_improve_loop_v1.py → 3 hits (lines 304, 423, 426); 0 hits in ADMITTED branch",
+    "grep -rn 'feedback_lines' helen_os/tests/ → 0 hits — no test covers this asymmetry",
+    "E22/E23 confirmed admitted_skills at line 281 is ID-only list — description not in admitted_skills either"
+  ],
+  "hypothesis": "If feedback_lines.append(lesson) is added after line 418 (ADMITTED branch), then each subsequent cycle's {feedback} slot contains the admitted skill's description, enabling LLM semantic dedup without changing any schema, gate, or ledger logic.",
+  "proposed_tweak": "helen_os/autonomy/self_improve_loop_v1.py line 418-419: after 'lesson = f\"Admitted skill {skill_id!r}: {skill_proposal.get(\"description\", \"\")}\"' add one line: 'feedback_lines.append(lesson)'. Symmetry: admitted and rejected cycles both feed back. Also update comment at line 275 from '# Gate failures from prior rejected cycles' to '# Cycle lessons (admissions + gate failures)'. Proposal only — operator must apply.",
+  "metric": "grep -c 'feedback_lines.append' helen_os/autonomy/self_improve_loop_v1.py → 4 after fix (currently 3). make test → green. Construct mock admitted cycle, assert feedback_lines contains 'Admitted skill' substring after fix.",
+  "keep_rule": "KEEP if: make test green AND feedback_lines contains admitted lesson string after ADMITTED cycle; REJECT if any test asserts feedback_lines does NOT contain admission signal (no such test found)",
+  "next": "Add test_admitted_lesson_feeds_back: mock ADMITTED CycleResult, assert feedback_lines contains 'Admitted skill X' in next cycle prompt. Combine with E22 fix (admitted_skills dict) for full semantic dedup coverage.",
+  "risk_flags": [
+    "Minimal — one-line append to an in-memory list; no schema/gate/ledger change",
+    "feedback_lines grows by 1 per admitted cycle (was 0); at DEFAULT_MAX_CYCLES=5 still bounded",
+    "Admitted lesson description may be empty if skill_proposal missing 'description' — guard already in place via .get('description', '')"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "final": "HOLD_FOR_OPERATOR",
+  "reducer_required": true,
+  "scanned_at": "2026-08-07T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (source read confirmed: 0 feedback_lines.append in ADMITTED branch; grep 3 hits all in REJECTED path; 0 test hits for feedback_lines; lesson string computed at line 418 and dropped)",
+    "epoch": "E36",
+    "parent_epoch": "E23",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}

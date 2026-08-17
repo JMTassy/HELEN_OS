@@ -1,0 +1,47 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-skillroute-e49-inference-rejected-missing",
+  "target_surface": "skill_routing",
+  "epoch": "E49",
+  "parent_epoch": "E34",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "final": "HOLD_FOR_OPERATOR",
+  "reducer_required": true,
+  "finding_type": "gap",
+  "summary": "E34 found OK_QUARANTINED missing from failure_to_class (skill_discovery_v1.py:162-174). E49 live-probe finds two additional pre-reducer outcome codes also missing: (1) INFERENCE_FAILED → TRANSFORM (wrong; OPTIMIZE is correct — inference failure is a model/infra issue, not schema transformation); (2) REJECTED (dedup path) → TRANSFORM (wrong; FILTER is correct — same category as ERR_DUPLICATE_DETECTION_FAILED). _make_failed_cycle() sets reason_code=outcome for all pre-reducer failures, so INFERENCE_FAILED and REJECTED become live cluster failure_types. OK_QUARANTINED remains unfixed (E34 HOLD_FOR_OPERATOR). 4 missing codes total; all default to TRANSFORM.",
+  "evidence": [
+    "skill_discovery_v1.py:162-174: failure_to_class has 11 entries, none for INFERENCE_FAILED, PARSE_FAILED, REJECTED, OK_QUARANTINED",
+    "skill_discovery_v1.py:177: failure_to_class.get(cluster.failure_type, 'TRANSFORM') — default fires for all 4 codes",
+    "self_improve_loop_v1.py:664: _make_failed_cycle sets reason_code=outcome — so INFERENCE_FAILED/PARSE_FAILED/REJECTED become reason_codes in ledger decisions",
+    "self_improve_loop_v1.py:300: outcome='INFERENCE_FAILED' (LLM connectivity/timeout path)",
+    "self_improve_loop_v1.py:332-341: outcome='REJECTED' with reason_code='REJECTED' (dedup path — skill already admitted)",
+    "skill_discovery_v1.py:61: detect_failure_clusters skips only ADMITTED; REJECTED/INFERENCE_FAILED/QUARANTINED all pass through",
+    "Live probe: analyze_capability_gap(FailureCluster('INFERENCE_FAILED',2,[],{})) -> class='TRANSFORM'",
+    "Live probe: analyze_capability_gap(FailureCluster('REJECTED',2,[],{})) -> class='TRANSFORM'",
+    "Live probe: analyze_capability_gap(FailureCluster('OK_QUARANTINED',2,[],{})) -> class='TRANSFORM' (E34 unfixed)"
+  ],
+  "mechanism": "E27 added 6 ERR_* codes from the reducer path. Pre-reducer failures (_make_failed_cycle) emit raw outcome strings as reason_code. Three pre-reducer outcomes (INFERENCE_FAILED, PARSE_FAILED, REJECTED) are never in failure_to_class. When 2+ of these cluster, analyze_capability_gap receives them and silently defaults to TRANSFORM class — proposing schema-transformation skills instead of the correct class. INFERENCE_FAILED should discover OPTIMIZE-class skills (model tuning, retry, fallback model config). REJECTED-dedup should discover FILTER-class skills (better duplicate detection), matching ERR_DUPLICATE_DETECTION_FAILED.",
+  "hypothesis": "If INFERENCE_FAILED: OPTIMIZE and REJECTED: FILTER are added to failure_to_class, clustered pre-reducer failures will propose correct skill classes — OPTIMIZE skills for model/infra issues, FILTER skills for duplicate detection — instead of wrong TRANSFORM skills.",
+  "proposed_tweak": "skill_discovery_v1.py:174 — after 'ERR_THRESHOLD_NOT_MET': 'OPTIMIZE', add two entries: '\"INFERENCE_FAILED\": \"OPTIMIZE\",' and '\"REJECTED\": \"FILTER\"'. (PARSE_FAILED: TRANSFORM may be correct — JSON formatting is a transformation concern; leave for operator judgment.) Proposal only — operator must apply. Also apply E34 fix: 'OK_QUARANTINED': 'VALIDATE'. 3-line total change.",
+  "metric": "python3 -c 'from helen_os.autonomy.skill_discovery_v1 import analyze_capability_gap, FailureCluster; s={\"active_skills\":{}}; assert analyze_capability_gap(FailureCluster(\"INFERENCE_FAILED\",2,[\"t1\"],{}),s)[\"class\"]==\"OPTIMIZE\"; assert analyze_capability_gap(FailureCluster(\"REJECTED\",2,[\"t1\"],{}),s)[\"class\"]==\"FILTER\"; print(\"PASS\")' exits 0. make test green.",
+  "keep_rule": "KEEP if probe returns OPTIMIZE/FILTER for respective codes AND make test green AND no test asserts INFERENCE_FAILED→TRANSFORM or REJECTED→TRANSFORM (0 such tests confirmed). REJECT if any TRANSFORM assertion exists for these codes.",
+  "next": "Add test_pre_reducer_failure_routing in helen_os/tests/test_skill_discovery_v1.py: INFERENCE_FAILED->OPTIMIZE, REJECTED->FILTER, OK_QUARANTINED->VALIDATE. Apply 3-line fix. Confirm PARSE_FAILED->TRANSFORM intentional or route to OPTIMIZE.",
+  "e34_relation": "E34 found OK_QUARANTINED missing (still HOLD_FOR_OPERATOR, unfixed). E49 finds 2 additional pre-reducer codes missing. All 3 can be fixed in same 3-line patch. PARSE_FAILED (4th missing code) left for operator judgment — TRANSFORM arguable.",
+  "risk_flags": [
+    "Minimal — 2-line dict addition, no control flow change",
+    "No existing test asserts INFERENCE_FAILED→TRANSFORM or REJECTED→TRANSFORM (confirmed: 0 hits)",
+    "PARSE_FAILED→TRANSFORM intentionally left unresolved — operator decides if format failure = TRANSFORM or OPTIMIZE"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "scanned_at": "2026-08-13T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (live probe: 4 codes confirmed TRANSFORM default; _make_failed_cycle confirmed reason_code=outcome; detect_failure_clusters confirmed REJECTED passes through; 0 tests assert on pre-reducer class)",
+    "epoch": "E49",
+    "parent_epoch": "E34",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}

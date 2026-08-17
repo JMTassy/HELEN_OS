@@ -165,6 +165,13 @@ def analyze_capability_gap(
         "ERR_RANKING_INCONSISTENT": "OPTIMIZE",
         "ERR_SCHEMA_TRANSFORMATION_FAILED": "TRANSFORM",
         "ERR_VALIDATION_FAILED": "VALIDATE",
+        # self_improve_loop_v1 error codes (were silently defaulting to TRANSFORM)
+        "ERR_SCHEMA_INVALID": "VALIDATE",
+        "ERR_RECEIPT_MISSING": "VALIDATE",
+        "ERR_RECEIPT_HASH_MISMATCH": "VALIDATE",
+        "ERR_CAPABILITY_DRIFT": "RECONCILE",
+        "ERR_DOCTRINE_CONFLICT": "VALIDATE",
+        "ERR_THRESHOLD_NOT_MET": "OPTIMIZE",
     }
 
     skill_class = failure_to_class.get(cluster.failure_type, "TRANSFORM")

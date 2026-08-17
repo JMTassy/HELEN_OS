@@ -1,0 +1,34 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-context-rank-companion-drop-e14",
+  "target_surface": "context_ranking",
+  "epoch": "E14",
+  "source_refs": [
+    "helen_os/persona_entry_shell/init_airlock.py:96-101",
+    "helen_os/boot/boot_loader.py:27-33"
+  ],
+  "finding_type": "data_loss",
+  "summary": "boot_loader.py loads 5 context fields (person_profile, last_session, epoch_state, companion_state, live_context). all 5 influence any_loaded (memory_source='storage' detection). but _check_memory_source() in init_airlock.py builds prior_context with only 4 keys — companion_state and live_context are silently dropped. consequence: if only companion_state_v1.json exists in storage, packet reports memory_source='storage' but prior_context contains only None values. misleading signal to downstream consumers. probe-confirmed.",
+  "evidence": [
+    "boot_loader.py:27-33 — any_loaded uses all 5: person_profile, last_session, epoch_state, companion_state, live_context",
+    "init_airlock.py:96-101 — prior dict only has: loaded_from, last_session, epoch_state, person_profile",
+    "probe result: storage with only companion_state_v1.json → memory_source='storage', all prior_context values None",
+    "no test in helen_os/tests/test_init_airlock.py covers companion_state or live_context drop (224-line file, grep: 0 hits)"
+  ],
+  "hypothesis": "If companion_state or live_context is the only populated storage file, memory_source='storage' but prior_context carries all-None values — a phantom storage signal that cannot carry any continuity to the session.",
+  "proposed_tweak": "Add companion_state and live_context to the prior dict in _check_memory_source() (init_airlock.py:96-101). One dict expansion, two lines. No schema change needed — ContextPacket.prior_context is dict[str, Any].",
+  "metric": "Probe: tmp dir with only companion_state_v1.json; assert prior_context['companion_state'] == {'companion_id': 'C1', 'mood': 'curious'} after fix.",
+  "keep_rule": "KEEP if prior_context['companion_state'] propagates correctly and no test regression; REJECT if ContextPacket consumers break on unexpected keys.",
+  "next": "Add test: storage_with_companion_only → prior_context['companion_state'] not None; apply fix to init_airlock.py:96-101; re-run make test.",
+  "risk_flags": [
+    "Low structural risk — ContextPacket.prior_context is untyped dict, consumers should tolerate new keys",
+    "Medium semantic risk — downstream LLM or router may treat all-None prior_context as 'fresh session' when companion_state data exists"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-07-25T00:00:00Z"
+}

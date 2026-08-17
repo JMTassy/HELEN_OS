@@ -1,0 +1,50 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-skillroute-e56-parse-failed-optimize",
+  "target_surface": "skill_routing",
+  "epoch": "E56",
+  "parent_epoch": "E49",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "final": "HOLD_FOR_OPERATOR",
+  "reducer_required": true,
+  "finding_type": "gap",
+  "summary": "E49 deferred PARSE_FAILED as 'operator judgment: OPTIMIZE or TRANSFORM?' E56 resolves it from code: _parse_skill_proposal (self_improve_loop_v1.py:676-713) already handles 3 extraction patterns (direct JSON, markdown code block, bare JSON object). When all three fail, the LLM produced output with no JSON anywhere — raw prompt non-compliance. The correct skill class is OPTIMIZE (improve prompt to elicit reliable JSON output), not TRANSFORM (which is about data schema transformation). TRANSFORM defaults to 'skill.transform_enhanced' — wrong domain. OPTIMIZE defaults to 'skill.optimize_enhanced' — correct (optimize inference to produce valid JSON). Combined with E49 3-line fix and E55 2-line fix: 6-line total patch completes the failure_to_class coverage for all confirmed gaps.",
+  "evidence": [
+    "self_improve_loop_v1.py:676-713: _parse_skill_proposal tries 3 patterns before returning PARSE_FAILED",
+    "Pattern 1 (line 688): direct json.loads(raw) after stripping <think> blocks",
+    "Pattern 2 (line 695): extract JSON from markdown ```json``` code block",
+    "Pattern 3 (line 705): regex extract bare JSON object with 'skill_id' key",
+    "All 3 fail -> LLM produced no JSON anywhere: prompt non-compliance, not schema mismatch",
+    "Live probe: FailureCluster('PARSE_FAILED',2,...) -> class='TRANSFORM' — WRONG",
+    "Correct: OPTIMIZE (improve prompt/inference to produce parseable JSON output)"
+  ],
+  "mechanism": "failure_to_class.get('PARSE_FAILED', 'TRANSFORM') hits default. PARSE_FAILED = 3-pattern extraction all failed = LLM did not produce JSON despite prompt requesting it. This is an inference-loop quality failure: better prompt engineering, JSON-enforcement instruction, or output validation retry would prevent it. OPTIMIZE covers these: 'capability gap: optimize inference to reliably produce JSON'. TRANSFORM would propose a data-format transformation skill — wrong domain (no data to transform; the LLM output isn't parseable JSON at all).",
+  "hypothesis": "If 'PARSE_FAILED': 'OPTIMIZE' is added to failure_to_class, clustered JSON-parse failures will propose prompt-optimization skills (improve JSON reliability) instead of wrong TRANSFORM skills.",
+  "proposed_tweak": "skill_discovery_v1.py:174 — after '\"ERR_THRESHOLD_NOT_MET\": \"OPTIMIZE\",' add: '\"PARSE_FAILED\": \"OPTIMIZE\",' . 1-line addition. Combined 6-line patch (E49+E55+E56): INFERENCE_FAILED:OPTIMIZE, REJECTED:FILTER, OK_QUARANTINED:VALIDATE, ERR_MANIFEST_NOT_FOUND:RECONCILE, ERR_MANIFEST_SKILL_UNAUTHORIZED:VALIDATE, PARSE_FAILED:OPTIMIZE. Proposal only — operator must apply.",
+  "metric": "python3 -c 'from helen_os.autonomy.skill_discovery_v1 import analyze_capability_gap, FailureCluster; s={\"active_skills\":{}}; assert analyze_capability_gap(FailureCluster(\"PARSE_FAILED\",2,[\"t1\",\"t2\"],{}),s)[\"class\"]==\"OPTIMIZE\"; print(\"PASS\")' exits 0. All 6 combined codes correct. make test green.",
+  "keep_rule": "KEEP if PARSE_FAILED->OPTIMIZE AND no test asserts PARSE_FAILED->TRANSFORM in skill_discovery context (grep confirmed 0 hits). REJECT if _parse_skill_proposal gains a 4th extraction pattern that would change the semantic (re-check if _parse_skill_proposal is modified).",
+  "next": "6-line combined patch (E49+E55+E56) ready for operator application. Add test_all_pre_reducer_failure_routing in helen_os/tests/test_skill_discovery_v1.py: PARSE_FAILED->OPTIMIZE, INFERENCE_FAILED->OPTIMIZE, REJECTED->FILTER, OK_QUARANTINED->VALIDATE, ERR_MANIFEST_NOT_FOUND->RECONCILE, ERR_MANIFEST_SKILL_UNAUTHORIZED->VALIDATE. Then close the skill_routing chain.",
+  "combined_patch_summary": {
+    "E49_lines": ["\"INFERENCE_FAILED\": \"OPTIMIZE\",", "\"REJECTED\": \"FILTER\",", "\"OK_QUARANTINED\": \"VALIDATE\","],
+    "E55_lines": ["\"ERR_MANIFEST_NOT_FOUND\": \"RECONCILE\",", "\"ERR_MANIFEST_SKILL_UNAUTHORIZED\": \"VALIDATE\","],
+    "E56_lines": ["\"PARSE_FAILED\": \"OPTIMIZE\","],
+    "total": "6 lines added to failure_to_class dict in skill_discovery_v1.py after line 174"
+  },
+  "risk_flags": [
+    "Minimal — 1-line dict addition, no control flow change",
+    "0 tests assert PARSE_FAILED->TRANSFORM in skill_discovery context (confirmed by grep)",
+    "If _parse_skill_proposal gains new extraction patterns, OPTIMIZE class may need re-evaluation"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "scanned_at": "2026-08-16T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (live probe: PARSE_FAILED returns TRANSFORM; _parse_skill_proposal code inspection confirms OPTIMIZE is correct; 0 tests assert wrong class; 6-line combined patch scope verified)",
+    "epoch": "E56",
+    "parent_epoch": "E49",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}

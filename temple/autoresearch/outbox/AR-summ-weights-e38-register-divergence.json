@@ -1,0 +1,41 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-summ-weights-e38-register-divergence",
+  "target_surface": "summarization_weights",
+  "epoch": "E38",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "reducer_required": true,
+  "finding_type": "gap",
+  "summary": "register_source() in sources.py updates SOURCES dict but has no coupling to SOURCE_WEIGHT in engine.py. Any dynamically-registered corpus (e.g. symbolic_sources) immediately gets fallback weight=1.0 — silently outranking helen_os (0.9). Two registries diverge on every new source addition.",
+  "evidence": [
+    "sources.py:72 — register_source(source) updates only SOURCES dict; no SOURCE_WEIGHT update",
+    "engine.py:53-57 — SOURCE_WEIGHT is a hardcoded parallel dict; not derived from SOURCES",
+    "engine.py:342 — source_w = SOURCE_WEIGHT.get(unit.source_id, 1.0); fallback=1.0",
+    "live probe: register_source(symbolic_sources) -> SOURCES has 4 keys, SOURCE_WEIGHT has 3",
+    "live probe: SOURCE_WEIGHT.get('symbolic_sources', 1.0) = 1.0 (beats helen_os=0.9)",
+    "Distinct from E29: E29 found fallback=1.0 for empty source_id; E38 finds register_source() is the divergence vector"
+  ],
+  "mechanism": "sources.py and engine.py maintain separate epistemic registries. SOURCES is the identity registry (metadata, paths); SOURCE_WEIGHT is the retrieval ranking dict. register_source() is the public API for adding new corpora — it updates only SOURCES. Any caller who registers a source then ingests content will find that content ranks at fallback=1.0, above established corpora like helen_os (0.9). symbolic_sources/ is a documented corpus with T4/T6 floor doctrine; if registered, it outranks the sovereign codebase.",
+  "hypothesis": "If weight field is added to KnowledgeSource and SOURCE_WEIGHT is derived from SOURCES at retrieval time, register_source() will enforce explicit weight assignment for every new corpus — no silent promotion via fallback.",
+  "proposed_tweak": "Add weight: float = 0.5 to KnowledgeSource dataclass in sources.py. Update existing entries: plugins=1.0, helen_os=0.9, apple_notes=0.8. In engine.py, replace hardcoded SOURCE_WEIGHT dict with: from helen_os.knowledge.sources import SOURCES; source_w = SOURCES[unit.source_id].weight if unit.source_id in SOURCES else 0.5. register_source() then requires explicit weight — no silent fallback to top tier.",
+  "metric": "After tweak: SOURCE_WEIGHT equivalent for 'symbolic_sources' after register_source call must equal KnowledgeSource.weight (not 1.0). Existing retrieval tests must stay green. Register call without weight field must default to 0.5, not 1.0.",
+  "keep_rule": "KEEP if: no register_source call can produce weight > max(registered weights) silently. REJECT if: any existing caller relies on implicit top-tier weight for dynamic sources.",
+  "next": "Unify SOURCES registry with weight field; remove hardcoded SOURCE_WEIGHT dict from engine.py; add test_register_source_weight_enforced: assert dynamically registered source never exceeds max registered weight without explicit override.",
+  "e29_relation": "E29 proposal (lower fallback from 1.0 to 0.5) is complementary and still pending. E38 addresses the structural gap: fallback=0.5 alone does not prevent register_source() from being called without a weight — the field must be mandatory.",
+  "risk_flags": [
+    "Low — additive field with default; no behavioral change to existing 3 registered sources",
+    "Breaking only if caller passes weight=None or omits field — default=0.5 is safe",
+    "No sovereign layer touched — sources.py and engine.py are non-sovereign knowledge layer"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "scanned_at": "2026-08-10T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (live probe confirmed: register_source divergence from SOURCE_WEIGHT)",
+    "epoch": "E38",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}

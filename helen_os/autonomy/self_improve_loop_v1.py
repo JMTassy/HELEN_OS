@@ -67,7 +67,11 @@ BOOTSTRAP_SKILL_VERSION = "1.0.0"
 LAW_SURFACE_VERSION = "KERNEL_V2.0"
 
 # Proposal quality eval threshold (score must be >= to pass gate 6)
-PROPOSAL_QUALITY_THRESHOLD = 0.5
+PROPOSAL_QUALITY_THRESHOLD = 0.75
+
+# Penalty applied when capability_gap_addressed == "UNKNOWN"
+# Vague+UNKNOWN → 0.65 (below gate); specific+UNKNOWN → 0.90 (still passes)
+UNKNOWN_GAP_PENALTY = 0.10
 
 # Required fields for a valid skill proposal JSON
 REQUIRED_PROPOSAL_FIELDS = frozenset({
@@ -83,7 +87,22 @@ _VAGUE_EFFECT_TERMS = {
     "optimize",
     "increase performance",
     "more efficient",
+    "boost",
+    "fix",
+    "streamline",
+    "faster",
+    "reliable",
+    "accurate",
+    "effective",
+    "extend",
 }
+
+# Word-boundary matcher — bare substring containment collided with technical
+# vocabulary (fix ⊂ suffix/prefix, extend ⊂ extended). sorted() for
+# deterministic alternation order (mu_DETERMINISM).
+_VAGUE_EFFECT_PATTERN = re.compile(
+    r"\b(?:" + "|".join(re.escape(term) for term in sorted(_VAGUE_EFFECT_TERMS)) + r")\b"
+)
 
 # Bootstrap initial skill library (used when no library is provided)
 BOOTSTRAP_SKILL_LIBRARY_STATE: Dict[str, Any] = {
@@ -503,7 +522,7 @@ def _has_specific_effects(effects: list) -> bool:
             token in text
             for token in ("while", "without", "under", "above", "below", "when")
         )
-        vague_only = any(term in text for term in _VAGUE_EFFECT_TERMS)
+        vague_only = _VAGUE_EFFECT_PATTERN.search(text) is not None
         if has_quantity or has_identifier or has_constraint:
             return True
         if not vague_only and len(text.split()) >= 6:
@@ -515,10 +534,12 @@ def _score_proposal(proposal: Dict[str, Any]) -> float:
     """
     Score a parsed skill proposal for quality (0.0 → 1.0).
 
-    1.0 = complete proposal with specific expected effects
-    0.75 = complete proposal with vague expected effects
-    0.5 = complete noop proposal
-    0.0 = invalid or incomplete proposal
+    1.0  = complete proposal with specific effects and named gap
+    0.90 = complete proposal with specific effects, gap="UNKNOWN"
+    0.75 = complete proposal with vague effects and named gap
+    0.65 = complete proposal with vague effects, gap="UNKNOWN" (below gate)
+    0.5  = complete noop proposal
+    0.0  = invalid or incomplete proposal
     """
     if not isinstance(proposal, dict):
         return 0.0
@@ -538,9 +559,16 @@ def _score_proposal(proposal: Dict[str, Any]) -> float:
 
     if is_noop:
         return 0.5
-    if has_effects:
-        return 1.0 if _has_specific_effects(effects) else 0.75
-    return 0.5
+    if not has_effects:
+        return 0.5
+
+    score = 1.0 if _has_specific_effects(effects) else 0.75
+
+    gap = proposal.get("capability_gap_addressed", "")
+    if isinstance(gap, str) and gap.strip().upper() == "UNKNOWN":
+        score -= UNKNOWN_GAP_PENALTY
+
+    return score
 
 
 # ── Skill library mutation (only on reducer ADMITTED) ─────────────────────────
