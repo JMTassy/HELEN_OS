@@ -1,0 +1,30 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-initrank-e57-analytic-cliff-bounds",
+  "target_surface": "init_ranking_weights",
+  "epoch": "E57",
+  "parent_epoch": "E48",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "final": "HOLD_FOR_OPERATOR",
+  "reducer_required": true,
+  "finding_type": "gap",
+  "summary": "E48 identified the w_refs safe window [0.026, 0.030] empirically (score=1.0 inside, 0.96 outside). E57 derives it analytically from goldset pair constraints: (1) lower bound = max(|non_refs_deficit|/refs_delta) over pairs where A>B but A is longer with more refs = 0.025000 (eee30>1f936: need w_refs>0.025 to overcome -0.05 len disadvantage with 2-ref advantage); (2) upper bound = min(non_refs_margin/refs_delta) over pairs where A>B but B has more refs = 0.030833 (332>cecf: 0.0925 len+noise margin / 3-ref delta). Window width = 0.005833. Proposed w_refs=0.028 sits at 0.003 from each cliff — effectively the window midpoint (analytic center = 0.027917). E48's empirical choice was within 0.0002 of optimal. This analytic derivation enables pre-screening any future w_refs proposal without running the full evaluator, and pre-screening any new goldset case to determine whether it narrows the safe window before admission.",
+  "evidence": [
+    "analytic_cliff_bounds(): upper=0.03083, lower=0.02500, width=0.00583",
+    "Lower bound: eee30 (len=224,refs_cap=4) > 1f936 (len=124,refs_cap=2) — same type. non_refs=-0.050 (len penalty). Need w_refs>0.050/2=0.025000",
+    "Upper bound: 332 (len=224,refs_cap=2) > cecf (len=409,refs_cap=5) — same type. non_refs=+0.0925 (len+noise margin). Cliff at w_refs=0.0925/3=0.030833",
+    "Empirical probe confirms: w_refs=0.025 -> OrderScore=0.8 (below lower), w_refs=0.030 -> score=1.0 (inside), w_refs=0.031 -> OrderScore=0.8 (above upper)",
+    "w_refs=0.028: dist_to_lower=0.003, dist_to_upper=0.00283 — balanced near midpoint 0.02792",
+    "Next upper constraint (1f936>e8d18 pair): 0.08225 — not binding. Only 332>cecf determines upper cliff.",
+    "E48 empirical window [0.026, 0.030] matches analytic window (0.025, 0.03083) rounded to safe integer steps"
+  ],
+  "mechanism": "For any ordered pair (A>B) in goldset where B.refs_cap > A.refs_cap (B has more refs but should rank lower): the margin M = (type_delta + len_delta + noise_delta) - (B.refs_cap - A.refs_cap)*w_refs must stay positive. This gives w_refs < M/(refs_delta). The minimum such bound over all at-risk pairs is the binding upper cliff. Symmetrically, pairs where A.refs_cap > B.refs_cap and non_refs margin is negative require w_refs > |non_refs|/refs_delta (lower cliff). The safe window is (max_lower, min_upper) = (0.025000, 0.030833). The evaluator script (scratch/autoresearch_init_evaluator_v1.py) computes rank_score with min(n_refs,5) cap — this cap is load-bearing: without it, cecf (n_refs=6) would contribute 6*w_refs instead of 5*w_refs, tightening the upper cliff to 0.0925/4=0.023125, which would make w_refs=0.028 unsafe.",
+  "hypothesis": "If analytic_cliff_bounds() is added to the evaluator, any future goldset expansion or w_refs proposal can be pre-screened without full empirical re-probing. New cases with refs-heavy risk packets shorter than cecf could tighten the upper bound below 0.030833.",
+  "proposed_tweak": "Add analytic_cliff_bounds(cases, packets, w_len, w_noise, w_type) function to scratch/autoresearch_init_evaluator_v1.py — 12 lines. Function returns (lower, upper) bounds analytically from goldset pair constraints. Use as: lo, hi = analytic_cliff_bounds(...); assert lo < w_proposed < hi. Proposal only — operator must apply. Does not change BASELINE dict or any scoring logic.",
+  "metric": "analytic_cliff_bounds() returns (0.025000, 0.030833) on current 20-case goldset; w_refs=0.028 satisfies lo < 0.028 < hi; any new goldset case that tightens upper_bound below 0.029 flags a WARNING before operator admission.",
+  "keep_rule": "KEEP if analytic_cliff_bounds() returns window width >= 0.003 and proposed w_refs remains strictly inside. REJECT if any new goldset case (refs-heavy shorter risk packet) closes upper bound below 0.027 — would require re-centering w_refs. Note: min(n_refs,5) cap in rank_score is load-bearing for window stability; do not remove it.",
+  "next_iteration": "E58: Add analytic_cliff_bounds() to evaluator (proposal-only); expand goldset by 5 operator-marked cases from the 82-packet outbox; re-run analytic bounds to verify window does not narrow below width=0.003. If window narrows: re-center w_refs to new midpoint."
+}
