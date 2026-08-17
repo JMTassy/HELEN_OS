@@ -1,0 +1,30 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-initrank-e58-prescreen-formula",
+  "target_surface": "init_ranking_weights",
+  "epoch": "E58",
+  "parent_epoch": "E57",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "final": "HOLD_FOR_OPERATOR",
+  "reducer_required": true,
+  "finding_type": "gap",
+  "summary": "E57 proposed adding analytic_cliff_bounds() to the evaluator. E58 verifies that function returns (0.025000, 0.030833) on the 20-case goldset — exactly matching E57's derivation. New finding: the window is bottlenecked by exactly 2 unique pair constraints out of all ordered pairs in 20 cases (1 lower: eee30>1f936; 1 binding upper: 332>cecf; 3 slack uppers: 0.082, 0.250, 0.307). Concentration risk: any new goldset case not involving these 4 anchor packets is the only source of future window narrowing. Derives pre-screen formula: a new risk packet with refs_cap=4, noise=0, len < 348 ordered below 332 would close the upper cliff to (len-224)/4000 — at len=270, upper_cliff=0.0115 < lower_cliff=0.025 (window CLOSED, no valid w_refs exists). A new test_gap packet with refs_cap=5, noise=0, len > 299 ordered above 1f936 would raise lower cliff to 0.029333, leaving window width=0.001500 (< E48 safety threshold of 0.003). Both scenarios would require re-centering w_refs before goldset expansion is admitted.",
+  "evidence": [
+    "analytic_cliff_bounds() on 20-case goldset: lower=0.025000, upper=0.030833, width=0.005833 — exact match with E57",
+    "Unique pair analysis: 1 lower constraint, 4 upper constraints (only 2 are binding or near-binding)",
+    "Second upper constraint: 1f936>e8d1841 at 0.082250 — 2.66x the window width above binding upper, no current narrowing threat",
+    "Pre-screen Scenario A (new risk, refs=3, noise=0, ordered below 332): ub=(len-224)/2000; critical len<286 (e.g. len=270 → ub=0.0230, window narrows to 0.0230-0.025=-0.002, CLOSED)",
+    "Pre-screen Scenario B (new risk, refs=4, noise=0, ordered below 332): ub=(len-224)/4000; critical len<348 (e.g. len=270 → ub=0.0115, CLOSED)",
+    "Pre-screen Scenario C (new test_gap, refs=5, noise=0, ordered above 1f936): lb=0.1*(len-124)/200/3; critical len>299 (e.g. len=300 → lb=0.0293, window narrows to 0.0015, below 0.003 threshold)",
+    "Dedup: the current 20-case goldset generates 6 copies of each binding constraint (same pair appearing in 6 cases) — deduplication is needed to count unique pairs accurately"
+  ],
+  "mechanism": "analytic_cliff_bounds() is verified by local computation (not the evaluator script, which only computes top-level score). The window is determined exclusively by 2 unique pairs: (eee30, 1f936) sets the lower cliff; (332, cecf) sets the upper cliff. All other ordered pairs generate slack constraints (upper > 0.080). The 3 slack upper constraints come from cross-type pairs (risk > test_gap) where the type advantage provides a large non_refs margin. The pre-screen formula generalizes: for any new packet X with refs_cap(X) > refs_cap(332)=2, the upper cliff candidate = non_refs_margin(332, X) / (refs_cap(X) - 2). If this candidate < current ub=0.030833, the window narrows. The most dangerous new packet profile is refs_cap=4-5, same type as 332 (risk), noise=0, len in [225, 350].",
+  "hypothesis": "If analytic_cliff_bounds() is added to the evaluator WITH deduplication and a pre_screen_packet() helper, any proposed goldset expansion can be pre-screened before running the full evaluator. New risk packets with refs_cap in [3,5] and len in [225,350] are the primary window-narrowing threat and should be flagged automatically.",
+  "proposed_tweak": "Add two functions to scratch/autoresearch_init_evaluator_v1.py (proposal-only, operator must apply): (1) analytic_cliff_bounds(cases, packets, w_type=1.0, w_noise=1.0, w_len=0.1) — returns (lower, upper) from deduped unique pair constraints; (2) pre_screen_packet(new_features, w_refs_proposed=0.028, w_type=1.0, w_noise=1.0, w_len=0.1) — returns {'upper_cliff_candidate': float, 'lower_cliff_candidate': float, 'safe': bool} given the feature vector of a new packet hypothetically ordered in the top3. Functions are pure read-only, ~25 lines total. Do not change BASELINE dict or scoring logic.",
+  "metric": "analytic_cliff_bounds() returns (0.025000, 0.030833) on current goldset; pre_screen_packet({'finding_type':'risk','n_refs':4,'summary_len':270,'lexical_noise_kw':0,...}) returns safe=False (ub=0.0115 < lb=0.025); pre_screen_packet({'finding_type':'risk','n_refs':4,'summary_len':350,...}) returns safe=True (ub=0.031>lb=0.025)",
+  "keep_rule": "KEEP if analytic_cliff_bounds() passes metric above; KEEP if pre_screen_packet() correctly identifies dangerous packet profiles before goldset admission. REJECT if implementation requires changes to rank_score() or BASELINE — those are operator-only mutations.",
+  "next_iteration": "E59: Operator marks 5 new cases from the 83-packet outbox (prioritize acted/deferred packets not yet in goldset). Run pre_screen_packet() on each candidate before admission. If any new packet is flagged safe=False, report cliff-closing scenario before admitting the case. After 5-case expansion, re-run analytic_cliff_bounds() to verify window width remains >= 0.003."
+}
