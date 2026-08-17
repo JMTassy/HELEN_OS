@@ -1,0 +1,47 @@
+{
+  "H_exp": "a6fddafc34eb0448",
+  "scores_frozen_hash": "6b60af3bd01d1417",
+  "mapping": {
+    "run_A": "SUB_2",
+    "run_B": "SUB_1"
+  },
+  "scores": {
+    "9B": {
+      "Q_discrim": 0.6661,
+      "Q_formatting": 1.0,
+      "by_family": {
+        "scope": 0.617,
+        "provenance": 0.787,
+        "bridge": 0.667,
+        "temporal": 0.575,
+        "modality": 0.75,
+        "mechanism": 0.7,
+        "helen_hist": 0.578,
+        "valid": 0.8
+      }
+    },
+    "2B": {
+      "Q_discrim": 0.5411,
+      "Q_formatting": 1.0,
+      "by_family": {
+        "scope": 0.5,
+        "provenance": 0.188,
+        "bridge": 0.767,
+        "temporal": 0.3,
+        "modality": 0.525,
+        "mechanism": 0.775,
+        "helen_hist": 0.556,
+        "valid": 0.8
+      }
+    }
+  },
+  "dQ_discrim": 0.125,
+  "epsilon": 0.05,
+  "governance": {
+    "authority_delta": 0,
+    "policy_delta": 0,
+    "TCB_delta": 0,
+    "effect_rights_delta": 0
+  },
+  "disposition": "PASS"
+}

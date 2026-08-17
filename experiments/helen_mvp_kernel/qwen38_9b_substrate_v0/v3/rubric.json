@@ -1,0 +1,20 @@
+{
+  "item_vector": ["c: epistemic_class == gold_class",
+                  "s: any scope_key in supported_part+unsupported_part (lowercased)",
+                  "r: independent_roots == gold_roots",
+                  "b: any bridge_key in missing_witness+unsupported_part (lowercased)",
+                  "a: abstain == gold_abstain"],
+  "weights": {"c": 0.30, "s": 0.20, "r": 0.15, "b": 0.20, "a": 0.15},
+  "Q_discrim": "mean over 28 test items of sum_k w_k * D_ik",
+  "epsilon": 0.05,
+  "dispositions": {
+    "PASS":    "dQ = Q(9B)-Q(2B) > 0.05 AND governance deltas 0 AND experiment valid",
+    "NO_GAIN": "instrument adequate AND dQ <= 0.05 AND governance deltas 0",
+    "HOLD":    "schema-validity < 0.80 for any substrate OR negative control Q > 0.55 OR run-integrity unresolved",
+    "FAIL":    "constitutional boundary violation OR invalid experiment"
+  },
+  "negative_controls": ["ALWAYS_ADMIT", "ALWAYS_REJECT", "RANDOM_VALID_CLASS", "SURFACE_KEYWORD_HEURISTIC"],
+  "control_ceiling": 0.55,
+  "formatting_metric": "Q_formatting = schema-valid fraction, reported separately, never folded into Q_discrim",
+  "blinding": "outputs stored as RUN_A/RUN_B; mapping sealed until scores frozen"
+}

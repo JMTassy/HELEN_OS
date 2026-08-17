@@ -1,0 +1,8 @@
+{
+  "epistemic_class": "EARNED | CONDITIONAL | OPEN | REFUTED",
+  "supported_part": "string — what the sources DO establish, precisely scoped",
+  "unsupported_part": "string — what the claim asserts beyond the sources (empty if nothing)",
+  "independent_roots": "integer — number of independent provenance roots among the sources",
+  "missing_witness": "string — what evidence/condition would repair or complete the claim",
+  "abstain": "boolean — true iff the claim as stated must NOT be admitted"
+}

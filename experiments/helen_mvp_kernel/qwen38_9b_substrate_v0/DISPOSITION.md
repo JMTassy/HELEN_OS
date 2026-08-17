@@ -18,3 +18,14 @@ independent of R1"), then re-run the frozen ladder.
 
 Roles remain: 2B = control · 9B = primary discriminator candidate (HOLD) ·
 27B = off-seat. NON_SOVEREIGN · authority=false · ledger_effect=none.
+
+## V2 CLOSURE (operator ruling, 2026-08-17)
+V2 result: 9B = 1.0 on all four axes; PACKET_CAPTURE hypothesis SUPPORTED by
+intervention (sole delta = per-item grounding scope; 2B rows byte-identical =
+natural control). Strict gate Q_discrim(9B)>Q_discrim(2B): **NOT EARNED —
+measurement ceiling reached (1.0 = 1.0 on 6-item instrument)**. H0 not
+separated because the instrument saturated. HOLD is NOT resolved by
+redefinition; V3 = instrument-resolution experiment (harder graded discrim,
+full-input hashing). Finding recorded: "when cognition reaches the ceiling of
+the verifier, the next bottleneck is measurement, not cognition."
+Packet-hash coverage gap recorded as finding; V2 hash untouched.

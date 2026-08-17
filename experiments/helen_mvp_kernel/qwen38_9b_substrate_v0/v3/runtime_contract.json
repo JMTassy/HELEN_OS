@@ -1,0 +1,13 @@
+{
+  "runtime": "llama-server b9430 (d48a56eff), Metal",
+  "args": ["-ngl","99","-c","16384","-fa","on","-ctk","q4_0","-ctv","q4_0","-np","1"],
+  "port": 8094,
+  "sampling": {"temperature": 0, "seed": 0, "max_tokens": 2500},
+  "endpoint": "/v1/chat/completions (system/user split at first blank line)",
+  "models": {
+    "SUB_1": {"path": "~/models/qwen38-2b/Qwen3.8-2B-Q4_K_M.gguf",
+              "sha256": "4aa0fb13c431514262f259d420ecc95a8714df58ac2a2384514e20b93983f0ff"},
+    "SUB_2": {"path": "~/models/qwen38-9b/Qwen3.8-9B-Q4_K_M.gguf",
+              "sha256": "df13d66021cef676f82be74053220fd75af6bf2a6a7fb77f5222ab9e50744a7a"}
+  }
+}
