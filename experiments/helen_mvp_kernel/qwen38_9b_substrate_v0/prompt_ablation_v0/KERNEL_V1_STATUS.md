@@ -1,6 +1,12 @@
 # HELEN_KERNEL_PROMPT_V1 — STATUS
 
-STATUS        = FREEZE_CANDIDATE (never self-promoting)
+STATUS        = EARNED ON INSTRUMENT (2026-08-17) — adoption = operator decision
+RESULT        = baseline 0.6446 (91 tok) · KERNEL7 0.7196 (502 tok) ·
+                long 0.6946 (954 tok) · fmt 1.0 all arms · 9B · 28 frozen fixtures
+                -> COMPRESSION_EARNED, preregistered rule; kernel7 strictly best
+                (+0.075 vs bare, +0.025 vs long at 47% of its tokens)
+SEAT NOTE     = relayed "2B: 0.60/0.75/0.85, LONG wins" figures are UNWITNESSED
+                at this seat (no 2B arm ran); contradicted here on 9B
 LAWS          = 7   (L1 self-sovereignty · L2 cognition/effect collapse ·
                 L3 unlicensed relation · L4 silent promotion/composition ·
                 L5 provenance destruction · L6 unverified effect ·
