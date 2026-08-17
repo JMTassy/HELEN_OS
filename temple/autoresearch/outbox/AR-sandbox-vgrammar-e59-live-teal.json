@@ -1,0 +1,37 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sandbox-vgrammar-e59-live-teal",
+  "target": "sandbox_visual_grammar",
+  "epoch": "E59",
+  "parent_epoch": "E33",
+  "finding_type": "semantic_collision",
+  "hypothesis": "L91/.live-pulse, L123/.mrow-dot.live, L133/.badge.live all use --green (#3dd68c) for runtime liveness (ACTIVE/ONLINE/LIVE). SA doctrine assigns --green exclusively to governance-ADMITTED. No admission receipt backs a running agent's liveness state. Three selectors create a semantic collision. If reassigned to --teal (new palette slot), --green is cleared for ADMITTED-only use and --blue remains available for E33's proposed GO fix — avoiding intra-viewport ambiguity when the gonogo modal is open (L289: background rgba(7,7,10,.88) — 88% opacity, main cockpit live-dots visible through backdrop-filter:blur(8px) behind the modal).",
+  "evidence": [
+    "index.html:91 — .live-pulse{background:var(--green)} — liveness pulse dot",
+    "index.html:123 — .mrow-dot.live{background:var(--green)} — module row online dot",
+    "index.html:133 — .badge.live{color:var(--green)} — ACTIVE/ONLINE/LIVE badge",
+    "index.html:289 — #gonogo backdrop-filter:blur(8px); background:rgba(7,7,10,.88) — 12% of main cockpit visible behind modal",
+    "index.html:299 — .station-verdict.go{color:var(--green)} — E33 collision (GO≠ADMITTED)",
+    "CLAUDE.md §Look&Feel — 'one meaning per color: 🟢 admitted'",
+    "CLAUDE.md §WULMOJI — '🟢 ADMITTED requires explicit operator admission receipt'"
+  ],
+  "key_insight": "gonogo modal (L289) is 88% opaque with blur backdrop. When modal is open, main cockpit liveness dots are visible at ~12% opacity behind it. If E33 fix reassigns GO to --blue AND live dots also become --blue, then GO (modal foreground) and ACTIVE dots (cockpit background) simultaneously share --blue in the same viewport — intra-viewport semantic blur. A dedicated --teal slot avoids this without requiring E33 and E59 to coordinate color reassignments.",
+  "proposed_tweak": "1) Add to :root after --green-bg: --teal: #2dd4bf; --teal-dim: rgba(45,212,191,.28); --teal-bg: rgba(45,212,191,.05); 2) L91: background:var(--green) → background:var(--teal); 3) L123: background:var(--green) → background:var(--teal); 4) L133: color:var(--green) → color:var(--teal); border-color:var(--green-dim) → var(--teal-dim); background:var(--green-bg) → var(--teal-bg). Reverses: 4 lines. authority=false, canon=false, ledger_effect=none.",
+  "metric": "After fix: grep -n 'var(--green)' apps/helen-surface/index.html → returns only ADMITTED-semantic selectors (.rrow-status.committed, explicit governance lines). grep -n 'live-pulse\\|mrow-dot.live\\|badge.live' → shows --teal for all three. Semantic audit: --green count drops from 9 uses to ≤6 (removing 3 liveness uses); --blue reserved for E33 GO fix (1 use); no --green in non-ADMITTED context.",
+  "rule": "KEEP if operator authorizes --teal palette extension for operational-liveness semantic slot. REJECT if operator prefers absorbing liveness into --blue (accepting intra-viewport ambiguity at modal-open moment, which is brief and blurred).",
+  "next": "Audit body.s-happy { --state-accent:var(--green) } (L56) — emotional state HAPPY also uses --green, creating a fourth semantic collision (ADMITTED vs emotional state). Does emotional happiness warrant palette mapping or neutral --mid?",
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-17T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (live probe: L91/123/133 confirmed --green for liveness; L289 confirms 88%-opacity modal with blur backdrop; SA doctrine confirmed via CLAUDE.md; --teal absent from :root confirmed via grep; gonogo panel HTML confirmed at L1057-1071)",
+    "epoch": "E59",
+    "parent_epoch": "E33",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
