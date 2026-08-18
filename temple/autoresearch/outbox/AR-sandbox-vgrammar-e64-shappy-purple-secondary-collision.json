@@ -1,0 +1,38 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sandbox-vgrammar-e64-shappy-purple-secondary-collision",
+  "target": "sandbox_visual_grammar",
+  "epoch": "E64",
+  "parent_epoch": "E63",
+  "finding_type": "semantic_collision_cascade",
+  "hypothesis": "E60 proposed body.s-happy → --state-accent:var(--purple) to fix the s-happy/--green SA-ADMITTED collision. If this lands, --state-accent:var(--purple) floods state-badge, presence-mark, obj-pill.active, hover borders with --purple simultaneously with .src-type.gh{color:var(--purple)} (L168) and .badge.purple (L140). When an operator views a GitHub-sourced object while HELEN is in s-happy state, 'emotional-happy' and 'source provenance: GitHub' both render --purple in the same viewport. SA one-meaning-per-color rule is violated by the proposed fix.",
+  "evidence": [
+    "index.html:56 — body.s-happy{--state-accent:var(--green)} — current SA-ADMITTED collision (confirmed, --green)",
+    "index.html:168 — .src-type.gh{color:var(--purple);border:1px solid var(--purple-dim)} — GitHub source type uses --purple",
+    "index.html:140 — .badge.purple{color:var(--purple)} — generic purple badge variant also active",
+    "index.html:128 — .mrow-dot.purple{background:var(--purple)} — mrow dot purple semantic",
+    "E60 packet — proposed_tweak: body.s-happy{--state-accent:var(--purple);--state-bg:var(--purple-bg)} — fix creates secondary collision",
+    "index.html:50 — body.s-excited{--state-accent:var(--blue)} — cascade: E62 station-verdict.go→--blue also collides with s-excited",
+    "grep purple index.html → 9 semantic uses — palette slot is already loaded"
+  ],
+  "key_insight": "The body.s-* emotional palette forms a cascading collision risk. Every proposed color reassignment for s-happy (--green → --purple, --teal, --blue) risks hitting an already-loaded slot. The root cause: the body-state emotional register was not allocated its own palette segment at design time. Two structural remedies exist: (A) introduce new leaf tokens (--rose:#fb7185 for s-happy, narrow surgery, no cascade) or (B) formally designate body.s-* as a scoped expressive-overlay register exempt from WULMOJI one-meaning-per-color at the state-accent injection level, with explicit SA doctrine annotation. Option B is zero new tokens but requires doctrine amendment. Option A is one new token with no doctrine change. The cascade pattern also affects s-excited/--blue (E62 proposal creates the same type of collision there).",
+  "secondary_cascade": "If E62 lands (station-verdict.go → --blue), then body.s-excited (L50: --state-accent:var(--blue)) creates intra-viewport ambiguity: 'operator is excited' (state-badge, presence-mark, all --blue) vs 'station pre-condition cleared' (station-verdict.go, --blue). Same structural failure. E64 finding unifies E60/E62 as instances of the same palette-register gap.",
+  "proposed_tweak": "Option A (preferred, no doctrine change): Add after --purple-bg in :root: --rose:#fb7185; --rose-dim:rgba(251,113,133,.28); --rose-bg:rgba(251,113,133,.05). Then L56: body.s-happy{--state-accent:var(--rose);--state-bg:var(--rose-bg)}. 3 new :root vars + 1 state rule change. For s-excited/E62 cascade: also audit body.s-excited and assign to --teal (E63 assigns liveness-cluster to --teal; but s-excited semantics differ). OR: accept that s-excited is a distinct emotional-to-color semantic from 'agent online' and assign a different slot. Option B (doctrine route): Annotate CLAUDE.md emotional palette as scoped-overlay-exempt, blocking no tokens. Reversible: remove annotation + restore L56. authority=false, canon=false, ledger_effect=none.",
+  "metric": "After Option A fix: grep -n 'src-type.gh\\|s-happy' index.html | grep purple → 0 results. grep 'rose' index.html → 4 hits (3 :root defs + 1 body.s-happy). --purple remains single-meaning: src-type.gh + badge.purple + mrow-dot.purple (all GitHub/source-provenance semantic). --green: verify no remaining non-ADMITTED uses after E61/E62/E63 also land (s-happy was last open item per E63 next field).",
+  "rule": "KEEP (Option A) if operator accepts --rose as new palette slot for emotional-happy. KEEP (Option B) if operator prefers zero new tokens and will annotate SA doctrine with explicit body.s-* exemption. REJECT if operator deems emotional states entirely out of scope for palette governance (then s-happy/--green collision is tolerated as expressive-overlay by operator fiat).",
+  "next": "s-excited/--blue secondary cascade from E62: body.s-excited (L50) needs audit. If E62 (station-verdict.go → --blue) lands AND s-excited stays --blue, 'excited' and 'station cleared' share --blue. Propose: s-excited → --cyan or new --sky token. One more emotional-state audit epoch closes the full body.s-* palette register gap.",
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-18T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (s-happy L56 confirmed --green; .src-type.gh L168 confirmed --purple; E60 proposed_tweak confirmed; 9 purple semantic uses counted; s-excited L50 --blue confirmed; E62 station-verdict.go --blue proposal confirmed from E62 packet; cascade path verified grep-clean)",
+    "epoch": "E64",
+    "parent_epoch": "E63",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
