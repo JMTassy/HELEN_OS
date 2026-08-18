@@ -1,0 +1,28 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sandbox-vgrammar-e62-station-verdict-blue",
+  "target": "sandbox_visual_grammar",
+  "epoch": "E62",
+  "parent_epoch": "E61",
+  "finding_type": "semantic_collision",
+  "hypothesis": ".station-verdict.go (L299) assigns color:var(--green) to the 'GO' verdict label in the Go/No-Go pre-SHIP gate panel (#gonogo). The panel subtitle reads 'All stations must be GO before SHIP is authorized' — it is a pre-admission readiness check, not an admission event. In the demo state, HER=GO and HAL=GO while LEDGER=HOLD, MAYOR=PENDING, FLIGHT=NO_GO, and the COMMIT button is disabled. A station voting GO means 'this station has observed and cleared its pre-condition' — not 'the object is admitted.' Using --green (SA-ADMITTED) for a pre-admission clearance verdict violates the one-meaning-per-color rule. SA palette maps 🔵 observed to --blue (#5b8af0, defined at L32 with dim/bg variants). Reassigning station-verdict.go to --blue — 'the station has observed and cleared' — is semantically accurate and requires no new palette token.",
+  "evidence": [
+    "index.html:299 — .station-verdict.go{color:var(--green)} — collision target",
+    "index.html:1059 — 'All stations must be GO before SHIP is authorized.' — panel subtitle confirming pre-admission context",
+    "index.html:1060-1061 — HER=GO, HAL=GO while LEDGER=HOLD; object explicitly not admitted at this state",
+    "index.html:1067 — COMMIT button disabled: 'locked until LEDGER GO' — admission blocked, green misleading",
+    "index.html:32-34 — --blue:#5b8af0 defined with --blue-dim / --blue-bg variants; no new token needed",
+    "CLAUDE.md §WULMOJI — 🟢 ADMITTED requires admission receipt; SA palette: 🔵=observed"
+  ],
+  "key_insight": "E61 identified L299 as the borderline case and asked whether GO=ADMITTED or GO=pre-admission. Verdict: pre-admission. The panel is structurally a FLIGHT_CHECK panel — all gates must pass before COMMIT unlocks. A single station clearing does not constitute admission; the COMMIT button enforces this. The sibling triplet (go/hold/pend) maps cleanly to (observed/breach/review) = (--blue/--red/--amber). No color is added; the semantic mapping is exact. After E61 (.task-check.done→--gold) and E62 (.station-verdict.go→--blue) land, non-ADMITTED --green drops to 3 live uses (L56 s-happy, L91/123/133 live-pulse/mrow-dot/badge.live), pending operator admission of E59/E60 proposals.",
+  "proposed_tweak": "L299: .station-verdict.go{color:var(--blue)}. Single line. Reverses in 1 edit. authority=false, canon=false, ledger_effect=none.",
+  "metric": "grep -n 'station-verdict.go' apps/helen-surface/index.html | grep 'green' → 0 results after fix. Non-ADMITTED --green collision count drops from 5 (E61 baseline) to 4 (L56/91/123/133/195); after E61 lands to 3; after E62 lands to 2 (L56 s-happy, L91/123/133 live cluster).",
+  "rule": "KEEP if 'station cleared its pre-condition check' (no receipt) is semantically distinct from 'object governance-admitted' (receipt required), and --blue for observed/cleared is acceptable in the gonogo panel alongside --red (hold) and --amber (pending). REJECT if operator reads station-GO as admission-equivalent and prefers --green to stay.",
+  "next": "Complete non-ADMITTED --green audit: L56 (s-happy), L91/123/133 (live-pulse/mrow-dot/badge.live). E59 proposed --teal for the live cluster but --teal is undefined in the palette. Evaluate: (a) add --teal token with #2dd4bf analogous to --blue, or (b) reuse --blue for live-dot (observed=live connection confirmed). One-token vs two-token fork is the next decision.",
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true
+}
