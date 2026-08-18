@@ -1,0 +1,43 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sandbox-vgrammar-e66-proud-purple-calm-gold",
+  "target_surface": "sandbox_visual_grammar",
+  "epoch": "E66",
+  "parent_epoch": "E65",
+  "source_refs": [
+    "apps/helen-surface/index.html:49",
+    "apps/helen-surface/index.html:54",
+    "apps/helen-surface/index.html:1288"
+  ],
+  "finding_type": "semantic_collision_benign_rendering",
+  "summary": "body.s-calm and body.s-proud both assign --state-accent:var(--gold) and --state-bg:var(--gold-bg). Rendering collision is impossible: line 1288 (document.body.className = \"s-\"+s) enforces mutual exclusivity. Semantic collision is real: proud and calm produce identical state-badge visual output \u2014 operator cannot distinguish them by color alone. Default state (lines 45-46) also uses --gold, making this a 3-way overload: DEFAULT=gold, calm=gold, proud=gold. --purple (#a78bfa) is in the palette (lines 40-42) and unassigned to any emotional state. SECONDARY FIND: s-scared (line 55) and s-angry (line 52) both use --red \u2014 same pattern, deferred to E67.",
+  "evidence": [
+    "index.html:49: body.s-calm { --state-accent:var(--gold); --state-bg:var(--gold-bg) }",
+    "index.html:54: body.s-proud { --state-accent:var(--gold); --state-bg:var(--gold-bg) }",
+    "index.html:45-46: :root defaults --state-accent:var(--gold) \u2014 3-way gold overload with calm+proud",
+    "index.html:1288: document.body.className = \"s-\" + s \u2014 states are mutually exclusive; no rendering collision",
+    "index.html:40-42: --purple:#a78bfa; --purple-dim; --purple-bg declared, unassigned to any s-* state",
+    "index.html:52,55: s-angry and s-scared both --red \u2014 secondary collision, deferred E67"
+  ],
+  "hypothesis": "If s-proud is reassigned to --purple/--purple-bg, the state-badge renders violet for proud and gold for calm \u2014 operator can distinguish visually. Calm retains gold (default alignment). All other states unaffected.",
+  "proposed_tweak": "apps/helen-surface/index.html line 54: change body.s-proud{--state-accent:var(--gold);--state-bg:var(--gold-bg)} to body.s-proud{--state-accent:var(--purple);--state-bg:var(--purple-bg)}. One character class name change. Proposal only \u2014 operator must apply.",
+  "metric": "After operator applies: selectState(\"proud\") \u2192 state-badge renders #a78bfa (violet). selectState(\"calm\") \u2192 state-badge renders #c9a43a (gold). Values visually distinct. No other state regresses.",
+  "keep_rule": "KEEP if --purple is unassigned elsewhere in state color grammar; REJECT if purple is later reserved for a governance status or src-type token (check E64 --purple secondary collision context).",
+  "next": "E67: audit s-scared/--red vs s-angry/--red \u2014 same mutual-exclusivity condition applies. Candidate reassignment: --amber or --mid for s-scared (fearful \u2260 aggressive). Confirm --amber not blocked by s-worried assignment.",
+  "risk_flags": [
+    "Low \u2014 one-line CSS change; mutually exclusive states mean no rendering regression",
+    "E64 flagged a --purple secondary collision on src-type.gh; verify purple is clear of that context before applying"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-18T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE \u2014 PASS (live grep confirmed, exclusivity verified)",
+    "epoch": "E66"
+  }
+}
