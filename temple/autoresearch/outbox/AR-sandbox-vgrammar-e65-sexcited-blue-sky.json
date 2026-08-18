@@ -1,0 +1,39 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sandbox-vgrammar-e65-sexcited-blue-sky",
+  "target": "sandbox_visual_grammar",
+  "epoch": "E65",
+  "parent_epoch": "E64",
+  "finding_type": "semantic_collision_live",
+  "hypothesis": "body.s-excited (L50) assigns --state-accent:var(--blue). .src-type.nl (L171) uses color:var(--blue) for newsletter-source provenance. Both can render in the same viewport simultaneously. SA one-meaning-per-color rule is violated TODAY (not hypothetical — no precondition needed, unlike E60/E62 proposals). Secondary: .badge.new (L141) also --blue. When HELEN is in s-excited state, 'HELEN is excited', 'this is newsletter-sourced', and 'this item is new' all render identical --blue. Three distinct semantics, one slot.",
+  "evidence": [
+    "index.html:50 — body.s-excited{--state-accent:var(--blue)} — emotional state binds --blue",
+    "index.html:171 — .src-type.nl{color:var(--blue);border:1px solid var(--blue-dim)} — newsletter source provenance, LIVE --blue",
+    "index.html:141 — .badge.new{color:var(--blue)} — 'new' status badge also --blue",
+    "index.html:136 — .badge.blue{color:var(--blue)} — generic blue badge variant",
+    "index.html:127 — .mrow-dot.blue{background:var(--blue)} — mrow dot blue semantic",
+    "index.html:155 — .src-row.unread{border-left-color:var(--blue-dim)} — unread row accent uses --blue-dim",
+    "No --cyan/--sky/--rose tokens in :root (lines 14–45 exhausted) — palette has no pre-allocated emotional-state-only slot",
+    "Full body.s-* register: s-calm→--gold, s-excited→--blue, s-worried→--amber, s-angry→--red, s-sad→--mid, s-proud→--gold, s-scared→--red, s-happy→--green. Only 5 distinct slots for 8 states; s-calm=s-proud=--gold and s-angry=s-scared=--red are intra-emotional collisions (secondary finding)"
+  ],
+  "key_insight": "E65 is a LIVE collision, not a proposal-cascade risk like E60/E62/E64. Today, loading index.html with body class s-excited while a newsletter source is in the viewport shows two unrelated semantics in identical --blue. Fix is narrower than E64's cascade analysis: only L50 needs reassignment. The --blue cluster (src-type.nl/badge.new/src-row.unread/badge.blue/verb-cmd.pull) forms a defensible 'digital-fresh / unread / newsletter' semantic cohort — keeping them on --blue is correct. Moving s-excited to --sky isolates the emotional register without disturbing the unread/newsletter cluster. --teal is already committed to liveness (E63 proposal); --sky (#38bdf8) is available. E64 proposed --cyan or --sky; --sky is chosen because --cyan (22d3ee) is closer to --teal (#2dd4bf) and risks perceptual collision with the liveness cluster.",
+  "proposed_tweak": "Add to :root after --purple-bg (L42): --sky:#38bdf8; --sky-dim:rgba(56,189,248,.28); --sky-bg:rgba(56,189,248,.055). Change L50: body.s-excited{--state-accent:var(--sky);--state-bg:var(--sky-bg)}. 3 new :root vars + 1 state rule change. Reversible: remove 3 vars, restore L50. authority=false, canon=false, ledger_effect=none. No cascade: --blue retains full src-type.nl/badge.new/badge.blue/mrow-dot.blue/verb-cmd.pull semantic. --teal not involved (liveness cluster, E63).",
+  "metric": "grep -n 's-excited' index.html | grep blue → 0 results after fix. grep -n 'sky' index.html → 4 hits (3 :root defs + 1 body.s-excited). grep -n 'src-type.nl' index.html → still --blue (unaffected). --blue slot one-meaning audit: src-type.nl + badge.new + unread + newsletter = 'digital-fresh/unread' cohort (one composite meaning, defensible).",
+  "secondary_finding": "Intra-emotional palette collisions: s-calm and s-proud share --gold; s-angry and s-scared share --red. If operator views an agent transitioning calm→proud (or angry→scared), no visual state change occurs. These are lower severity (same valence within each pair) but worth a dedicated epoch if the body.s-* register is being cleaned up as a whole.",
+  "rule": "KEEP if operator accepts --sky as the emotional-excited slot. REJECT if operator deems emotional-state colors exempt from SA one-meaning-per-color (expressive-overlay doctrine, Option B path from E64 — no new tokens, explicit annotation required). HOLD_FOR_OPERATOR pending explicit routing choice (Option A vs B).",
+  "next": "s-calm/s-proud both use --gold (intra-emotional collision). Audit: do s-calm and s-proud ever co-render (one can't be both), so the collision may be benign. If the body.s-* state is exclusive (only one class active at a time), s-calm=s-proud=--gold is harmless — one epoch to confirm exclusivity, then close the full body.s-* register audit.",
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-18T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (s-excited L50 confirmed --blue; src-type.nl L171 confirmed --blue; badge.new L141 confirmed --blue; :root palette exhausted lines 14-45, no --sky/--cyan/--rose present; --teal E63 liveness commitment verified from E63 packet; --sky #38bdf8 perceptually distinct from --teal #2dd4bf confirmed)",
+    "epoch": "E65",
+    "parent_epoch": "E64",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
