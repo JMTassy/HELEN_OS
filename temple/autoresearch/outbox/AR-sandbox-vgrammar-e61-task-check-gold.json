@@ -1,0 +1,28 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sandbox-vgrammar-e61-task-check-gold",
+  "target": "sandbox_visual_grammar",
+  "epoch": "E61",
+  "parent_epoch": "E60",
+  "finding_type": "semantic_collision",
+  "hypothesis": ".task-check.done (L195) assigns background/border/color via var(--green) to mark an operator-clicked task checkbox as complete. toggleTask() (L1330-1335) is pure UI: no receipt, no ledger, no governance. --green is SA-ADMITTED per CLAUDE.md §WULMOJI. When a task is clicked done, .task-check.done appears green beside .rrow-status.committed (L256, genuine receipt-committed ledger row, also --green). Both are simultaneously visible in the kernel task panel. SA doctrine: one meaning per color, 🟢=admitted. Operational completion ≠ governance admission. If reassigned to --gold (achievement semantic, already used for calm/proud/sovereign/brand-chrome), the visual distinction is restored at zero palette cost.",
+  "evidence": [
+    "index.html:195 — .task-check.done{background:var(--green-bg);border-color:var(--green-dim);color:var(--green)}",
+    "index.html:1330-1335 — toggleTask(): pure UI classList.toggle('done'), no ledger write, no receipt",
+    "index.html:901/906/911 — three tasks hardcoded as .done in HTML src, visible from load",
+    "index.html:256 — .rrow-status.committed{color:var(--green)} — genuine receipt-committed row, legitimate --green",
+    "index.html:26-28 — --gold:#c9a43a already defined with dim/bg variants; no new palette token needed",
+    "CLAUDE.md §WULMOJI — 'Never render 🟢 ADMITTED for any artifact without admission receipt'"
+  ],
+  "key_insight": "After E59 (live-pulse/mrow-dot/badge.live → --teal) and E60 (s-happy → --purple) land, 3 of 5 non-ADMITTED --green uses resolve. L195 (.task-check.done) and L299 (.station-verdict.go) remain. L299 is borderline: GO verdict in a governance panel is semantically admission-adjacent; L195 is the cleaner target. --gold already carries achievement/accomplishment in the emotional state map (calm=gold, proud=gold) and as sovereign-badge color (L139). Reassigning task-check.done to gold reads as 'task accomplished' — semantically coherent, zero palette additions.",
+  "proposed_tweak": "L195: .task-check.done{background:var(--gold-bg);border-color:var(--gold-dim);color:var(--gold)}. Single line. Reverses in 1 edit. authority=false, canon=false, ledger_effect=none.",
+  "metric": "grep -n 'task-check.done' apps/helen-surface/index.html | grep 'green' → 0 results after fix. Non-ADMITTED --green uses drop from 5 (L56/91/123/133/195) to 4 (L56/91/123/133) — pending E59/E60 operator admission. After all three land: non-ADMITTED --green = 1 (L299 .station-verdict.go, borderline).",
+  "rule": "KEEP if 'task operationally done' (no receipt) is semantically distinct from 'object governance-admitted' (receipt required), and --gold overload (brand + sovereign + achievement + task-done) is acceptable. REJECT if operator reserves --gold exclusively for governance/sovereign tier or prefers a new dedicated --teal-variant for completion.",
+  "next": "Audit .station-verdict.go (L299) — GO verdict in #gonogo panel uses --green. Determine: is 'gate GO' equivalent to ADMITTED (keep --green) or is it a pre-admission verdict (needs own token --verdict-go: teal/blue)?",
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true
+}
