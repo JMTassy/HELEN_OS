@@ -1,0 +1,37 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sandbox-vgrammar-e60-happy-purple",
+  "target": "sandbox_visual_grammar",
+  "epoch": "E60",
+  "parent_epoch": "E59",
+  "finding_type": "semantic_collision",
+  "hypothesis": "body.s-happy (L56) assigns --state-accent:var(--green) and --state-bg:var(--green-bg). --green maps to 🟢 ADMITTED per SA doctrine (CLAUDE.md §Look&Feel; §WULMOJI). HAPPY is an emotional state, not a governance admission receipt. If a user enters HAPPY state, every --state-accent consumer (state-badge L90, state-card.selected L69, presence-mark L241, obj-pill.active L237, task-check:hover L194, ac-card:hover L334, nc-val.v-mode L374) becomes green — indistinguishable from ADMITTED governance objects in the same viewport. --purple already exists in the :root palette (L15-17: #a78bfa / dim / bg) and is unassigned to any emotional state or governance tier, making it a zero-cost reassignment target.",
+  "evidence": [
+    "index.html:56 — body.s-happy { --state-accent:var(--green); --state-bg:var(--green-bg) }",
+    "index.html:90 — .state-badge uses var(--state-accent) — badge turns green in HAPPY state",
+    "index.html:241 — .presence-mark uses background:var(--state-accent) — presence dot turns green in HAPPY state",
+    "index.html:256 — .rrow-status.committed uses var(--green) — receipt row committed uses same green",
+    "index.html:14-16 — --purple:#a78bfa; --purple-dim/bg defined; no emotional or governance assignment in grep scan",
+    "CLAUDE.md §Look&Feel — 'one meaning per color: 🟢 admitted'; palette shows 8 states, HAPPY is the only one sharing a governance color",
+    "State mapping audit: calm→gold, excited→blue, worried→amber, angry→red, sad→mid, proud→gold, scared→red — only HAPPY uses governance-tier color"
+  ],
+  "key_insight": "--purple is already in the palette but orphaned from the state system. HAPPY ('Create · Connect · Full grammar') has a creative/transcendent character that maps well to purple's elevated/imaginative tone. Reassigning costs 1 line change (L56) and zero palette additions. After E59's --teal lands for liveness (L91/123/133) and this fix lands for HAPPY (L56), --green in non-receipt contexts drops from 4 collisions to 0, leaving only governance-legitimate uses: .rrow-status.committed (L256), inline receipt dots (L948/953), .task-check.done (L195 — flagged separately as E61 candidate).",
+  "proposed_tweak": "L56: body.s-happy { --state-accent:var(--purple); --state-bg:var(--purple-bg) }. Single line. Reverses in 1 edit. authority=false, canon=false, ledger_effect=none.",
+  "metric": "grep -n 's-happy' apps/helen-surface/index.html | grep 'green' → 0 results after fix. grep -n 'var(--purple)' apps/helen-surface/index.html adds exactly 1 new hit (L56 state-accent). --green non-ADMITTED uses drop from 4 (L56/91/123/133) to 3 (L91/123/133, pending E59 --teal). SA doctrine audit: no emotional state references --green.",
+  "rule": "KEEP if operator confirms --purple unallocated for future governance tier and HAPPY→purple semantic is acceptable. REJECT if operator reserves purple for a governance tier (e.g. REPLAY/REPLAYABLE) or prefers HAPPY→gold (same as calm/proud, accepting calm/happy conflation).",
+  "next": "Audit .task-check.done (L195) — operational task-completion uses var(--green); if 'done' means operationally complete (not governance-admitted), this is a 5th semantic collision. Candidate reassignment: --gold (achievement semantic, already used for calm/proud).",
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-18T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (L56 s-happy confirmed --green; --purple palette tokens confirmed at L14-16 with dim/bg; emotional state map exhausted via grep; SA doctrine confirmed via CLAUDE.md; no existing --purple emotional assignment confirmed via grep)",
+    "epoch": "E60",
+    "parent_epoch": "E59",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
