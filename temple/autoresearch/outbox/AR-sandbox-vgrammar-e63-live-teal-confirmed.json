@@ -1,0 +1,37 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sandbox-vgrammar-e63-live-teal-confirmed",
+  "target": "sandbox_visual_grammar",
+  "epoch": "E63",
+  "parent_epoch": "E62",
+  "finding_type": "semantic_collision_fork_resolution",
+  "hypothesis": "E62 confirmed station-verdict.go (L299) → --blue ('station cleared pre-condition'). If live-dot cluster (L91/123/133) also reassigns to --blue, then when the gonogo modal opens (rgba(7,7,10,.88) + backdrop-filter:blur(8px)), both GO verdict labels (modal foreground, --blue) and live-pulse/mrow-dot.live/badge.live (cockpit background, ~12% visible through 88% opacity + blur) occupy --blue simultaneously in the same viewport. This creates intra-viewport semantic blur: 'station cleared' and 'agent online' are indistinguishable by color. --teal (#2dd4bf, proposed by E59) is absent from :root (confirmed: grep returns 0 results for --teal), making it an available palette slot. Assigning --teal to the live cluster separates operational-liveness (connection active/agent online) from pre-condition-cleared (GO verdict) without requiring E59 and E62 to share a color, and without inventing a semantic collision the blur can mask.",
+  "evidence": [
+    "index.html:289 — #gonogo{background:rgba(7,7,10,.88);backdrop-filter:blur(8px)} — modal 12% transparent, cockpit visible behind",
+    "index.html:91 — .live-pulse{background:var(--green)} — liveness collision target",
+    "index.html:123 — .mrow-dot.live{background:var(--green)} — liveness collision target",
+    "index.html:133 — .badge.live{color:var(--green)} — liveness collision target",
+    "index.html:299 — .station-verdict.go{color:var(--green)} — E62 proposes this → --blue",
+    "grep --teal apps/helen-surface/index.html → 0 results — slot available",
+    "E59 packet — --teal:#2dd4bf proposed with --teal-dim/--teal-bg variants; E62 next field named this fork"
+  ],
+  "key_insight": "The --teal vs --blue fork resolves in favor of --teal. Reason: E62 has already claimed --blue for 'station pre-condition cleared' (observed/cleared semantic). The gonogo modal is only 88% opaque; at modal-open time both layers are visible. If both GO (foreground) and ACTIVE-agent dots (background) use --blue, the WULMOJI palette rule ('one meaning per color') is violated in the same viewport frame. --teal cleanly maps to 'runtime liveness: connection confirmed, agent online' — distinct from 'station cleared its gate' (--blue) and distinct from 'governance admitted' (--green). The 3-token extension (--teal/--teal-dim/--teal-bg) is the minimal surgical patch. No downstream governance selectors use --teal, so no SA collision is introduced.",
+  "proposed_tweak": "1) Add after --green-bg in :root: --teal:#2dd4bf; --teal-dim:rgba(45,212,191,.28); --teal-bg:rgba(45,212,191,.05). 2) L91: var(--green)→var(--teal); var(--green-dim)→var(--teal-dim). 3) L123: var(--green)→var(--teal); var(--green-dim)→var(--teal-dim). 4) L133: color:var(--green)→var(--teal); border:var(--green-dim)→var(--teal-dim); bg:var(--green-bg)→var(--teal-bg). 7 token substitutions + 3 new :root vars. Reverses in 1 edit. authority=false, canon=false, ledger_effect=none.",
+  "metric": "After fix: grep -n 'live-pulse\\|mrow-dot.live\\|badge.live' index.html | grep 'green' → 0 results. grep 'teal' index.html → 7 hits (3 :root defs + 4 semantic uses). Non-ADMITTED --green count drops from 5 to 2 (L56 s-happy, pending further epoch; L195 task-check.done pending E61 landing). Intra-viewport ambiguity audit: at gonogo modal-open, --blue appears only in station-verdict.go (E62); --teal appears only in live cluster; no overlap.",
+  "rule": "KEEP if operator agrees 'runtime liveness (agent online)' is a distinct semantic from 'station pre-condition cleared' and from 'governance admitted', warranting its own palette slot. REJECT if operator prefers absorbing liveness into --blue (accepting brief modal-open ambiguity, which blur(8px) mitigates visually but does not eliminate semantically).",
+  "next": "s-happy (L56): only non-ADMITTED --green remaining after E61/E62/E63 land. Emotional state HAPPY uses --green; E60 proposed --purple. Confirm: does SA doctrine treat emotional state colors as governance-semantic (requiring strict ADMITTED-only for --green), or as expressive-overlay (where --green for happiness is acceptable under 'expressive overlays do not determine governance status')?",
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-18T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (live probe: L289 modal opacity+blur confirmed; L91/123/133 --green confirmed; --teal absent from :root confirmed; E62 --blue assignment for GO confirmed; E59 --teal proposal confirmed; SA one-meaning-per-color rule confirmed via CLAUDE.md)",
+    "epoch": "E63",
+    "parent_epoch": "E62",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
