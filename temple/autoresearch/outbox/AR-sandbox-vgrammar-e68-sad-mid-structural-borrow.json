@@ -1,0 +1,55 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sandbox-vgrammar-e68-sad-mid-structural-borrow",
+  "target_surface": "sandbox_visual_grammar",
+  "epoch": "E68",
+  "parent_epoch": "E67",
+  "source_refs": [
+    "apps/helen-surface/index.html:53",
+    "apps/helen-surface/index.html:23",
+    "apps/helen-surface/index.html:25",
+    "apps/helen-surface/index.html:90",
+    "apps/helen-surface/index.html:241"
+  ],
+  "finding_type": "semantic_collision_structural_token_borrowed_for_emotional_state_plus_dim_option_blocked",
+  "summary": "body.s-sad (L53) assigns --state-accent:var(--mid) and --state-bg:var(--ghost). VIOLATION: --mid (L23: rgba(255,255,255,.32)) is a structural dimming/secondary-text token with 5 non-emotional uses (L269 .blocker-text, L283 .verb-cmd.persist, L293 .gonogo-sub, L297 .station-status, L322 .ac-eyebrow span). --ghost (L25: rgba(255,255,255,.035)) is a structural hover-background token with 4 non-emotional uses (L120, L154, L188, L276). Both tokens violate the SA one-meaning rule: a token designed as structural UI opacity is serving as an emotional state accent. E67 question ('audit whether --slate-dim could double as sad-state neutral') resolved: BLOCKED. --slate-dim (proposed: rgba(148,163,184,.28)) has opacity .28 — insufficient for state-badge roles: L90 (border:1px solid var(--state-accent); color:var(--state-accent)) and L241 (.presence-mark: background:var(--state-accent); box-shadow:0 0 8px var(--state-accent)). A .28-opacity grey renders as near-invisible border text and a ghost glow dot — functionally unreadable as a state-badge accent. Proposed fix: new full-opacity token --stone:#a1adb8 (cool stone grey; warm-neutral, distinct from --slate:#94a3b8/scared by warmer undertone). New token family: --stone:#a1adb8; --stone-dim:rgba(161,173,184,.28); --stone-bg:rgba(161,173,184,.06). body.s-sad changes to --state-accent:var(--stone); --state-bg:var(--stone-bg). Closes body.s-* collision audit: all 8 states now have dedicated full-opacity tokens (pending operator application of E60/E64/E65/E66/E67/E68 proposals).",
+  "evidence": [
+    "index.html:53: body.s-sad{--state-accent:var(--mid);--state-bg:var(--ghost)}",
+    "index.html:23: --mid:rgba(255,255,255,.32) — structural opacity token",
+    "index.html:25: --ghost:rgba(255,255,255,.035) — structural hover-bg token",
+    "index.html:269: .blocker-text{color:var(--mid)} — structural use 1",
+    "index.html:283: .verb-cmd.persist{color:var(--mid)} — structural use 2",
+    "index.html:293: .gonogo-sub{color:var(--mid)} — structural use 3",
+    "index.html:297: .station-status{color:var(--mid)} — structural use 4",
+    "index.html:322: .ac-eyebrow span{color:var(--mid)} — structural use 5",
+    "index.html:120,154,188,276: --ghost as hover-bg — 4 structural uses",
+    "index.html:90: .state-badge{border:1px solid var(--state-accent);color:var(--state-accent)} — needs full-opacity accent",
+    "index.html:241: .presence-mark{background:var(--state-accent);box-shadow:0 0 8px var(--state-accent)} — needs full-opacity for glow",
+    "E67 --slate-dim:rgba(148,163,184,.28) BLOCKED: .28 opacity → near-invisible badge text+border+glow",
+    "No existing full-opacity token available for sad semantics (all occupied: gold/calm, blue/excited, amber/worried, red/angry, purple/proud, slate/scared, green+rose/happy)"
+  ],
+  "hypothesis": "If body.s-sad is reassigned to a new full-opacity token --stone:#a1adb8 (warm-neutral stone grey), state-badge renders a legible, emotionally appropriate desaturated accent for grief/withdrawal. --stone is perceptually distinct from --slate:#94a3b8 (scared) by warmer undertone and from all other 7 emotional tokens. --mid and --ghost revert to pure structural roles. SA one-meaning rule restored for both tokens.",
+  "proposed_tweak": "Add to :root after --slate-bg (after E67 is applied; or after --purple-bg at L42 if E67 pending): --stone:#a1adb8; --stone-dim:rgba(161,173,184,.28); --stone-bg:rgba(161,173,184,.06). Change L53: body.s-sad{--state-accent:var(--stone);--state-bg:var(--stone-bg)}. 3 new :root vars + 1 state rule. Reversible: remove 3 vars, restore L53. authority=false, canon=false, ledger_effect=none. Operator must apply. Perceptual check: --stone (#a1adb8) vs --slate (#94a3b8) — same saturation family, differentiated by warmer (more purple) undertone in --stone vs cooler (more teal) undertone in --slate. Operator should verify distinct at screen brightness before applying.",
+  "metric": "After operator applies: selectState('sad') -> state-badge renders rgba(161,173,184,1) [stone]. selectState('scared') -> state-badge renders rgba(148,163,184,1) [slate]. grep -n 's-sad' index.html | grep mid -> 0 results. grep 'stone' index.html -> 4 hits (3 :root defs + 1 body.s-sad). --mid retains pure structural semantic: 5 structural uses only, 0 emotional. --ghost retains pure structural semantic: 4 structural uses only, 0 emotional. Full body.s-* audit: 8 states, 8 dedicated full-opacity tokens (pending all E60/E64/E65/E66/E67/E68 operator applications).",
+  "keep_rule": "KEEP if operator confirms --stone (#a1adb8) is perceptually distinct from --slate (#94a3b8) at normal display brightness and accepts new token. REJECT if operator prefers --slate-dim doubling as sad (even with opacity compromise, e.g. if sad is deliberately rendered as a faded/ghost state). HOLD_FOR_OPERATOR if E67 (--slate for scared) is rejected first — E68 token choice depends on E67 palette state.",
+  "next": "BODY.S-* AUDIT CLOSED: E68 closes the 8-state collision audit (E59-E68). Next frontier: audit state-badge rendering on OTHER surface files (helen2027.html, cockpit_v4.html, focus.html) for --state-accent/--state-bg token parity. These surfaces may have independent state-color definitions not covered by index.html audit.",
+  "risk_flags": [
+    "Perceptual proximity: --stone (#a1adb8) and --slate (#94a3b8) are close hue siblings; operator must verify at actual screen brightness",
+    "E67/E68 dependency: if --slate (scared) is rejected, --stone (sad) may need repositioning to avoid conflict with the revised scared token",
+    "Sequencing: landing E60+E64+E65+E66+E67+E68 simultaneously makes --green=SA-ADMITTED more isolated; recommend sequential application with operator review between each"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-19T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (body.s-sad L53 confirmed --mid+--ghost; --mid L23 rgba(255,255,255,.32) confirmed; --ghost L25 rgba(255,255,255,.035) confirmed; 5 structural --mid uses confirmed L269/283/293/297/322; 4 structural --ghost uses confirmed L120/154/188/276; state-badge L90+L241 full-opacity requirement confirmed; --slate-dim opacity .28 BLOCKED confirmed; 0 existing full-opacity token available for sad; --stone:#a1adb8 not in :root lines 14-46; body.s-* 8-state audit closed)",
+    "epoch": "E68",
+    "parent_epoch": "E67",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
