@@ -1,0 +1,48 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sandbox-vgrammar-e67-scared-red-angry-red",
+  "target_surface": "sandbox_visual_grammar",
+  "epoch": "E67",
+  "parent_epoch": "E66",
+  "source_refs": [
+    "apps/helen-surface/index.html:52",
+    "apps/helen-surface/index.html:55",
+    "apps/helen-surface/index.html:1288"
+  ],
+  "finding_type": "semantic_collision_benign_rendering_no_existing_slot",
+  "summary": "body.s-scared (L55) and body.s-angry (L52) both assign --state-accent:var(--red) and --state-bg:var(--red-bg). Rendering collision is IMPOSSIBLE: L1288 (document.body.className = 's-' + s) and L1309 (reset: className='') enforce strict mutual exclusivity — only one body.s-* class is ever active. Semantic collision IS real: state-badge renders identical --red for both fear and aggression; operator cannot distinguish them by color alone. E66 candidate reassignment audit: --amber BLOCKED (body.s-worried L51); --mid BLOCKED (body.s-sad L53). All 6 main palette color slots are occupied by at least one body.s-* state, leaving NO existing slot available for s-scared reassignment without secondary collision. Structural gap confirmed: body.s-* register was not allocated its own palette segment. This is the same root cause as E64 (s-happy/s-excited). E64 Option A (new leaf token) applies here. Proposed new token: --slate:#94a3b8 (cool grey-blue; fear = cold, retreating, desaturated — semantically distinct from --red/aggression). No existing --slate in :root (lines 14–46 exhausted). Secondary confirmation: s-angry correctly retains --red (aggression/danger = canonical red; aligns with .badge.blocked, .station-verdict.hold, .gonogo-btn.abort — all danger semantics). Full body.s-* collision audit status: s-happy/--green (E60, open), s-excited/--blue (E65, --sky proposed), s-calm+s-proud/--gold (E66, --purple proposed for s-proud), s-scared/--red (E67, --slate proposed). One remaining: s-sad/--mid (structural use, low-severity, deferred).",
+  "evidence": [
+    "index.html:52: body.s-angry{--state-accent:var(--red);--state-bg:var(--red-bg)}",
+    "index.html:55: body.s-scared{--state-accent:var(--red);--state-bg:var(--red-bg)}",
+    "index.html:1288: document.body.className = 's-' + s — states mutually exclusive; no rendering collision",
+    "index.html:1309: document.body.className = '' — reset clears all body.s-* class",
+    "index.html:51: body.s-worried{--state-accent:var(--amber)} — --amber BLOCKED for s-scared",
+    "index.html:53: body.s-sad{--state-accent:var(--mid)} — --mid BLOCKED for s-scared",
+    "index.html:14-46: :root palette exhausted — no --slate, --coral, --sky-gray, or other cool neutral token declared",
+    "E64 Option A: --rose proposed for s-happy; --slate is the analogous new-token path for s-scared"
+  ],
+  "hypothesis": "If s-scared is reassigned to --slate:#94a3b8 (cool grey-blue), state-badge renders a cold, desaturated accent for fear vs hot --red for anger. Semantics align: fear = cold/retreating, aggression = hot/approaching. Operator can distinguish both states visually. No existing palette semantic uses --slate — zero secondary collisions.",
+  "proposed_tweak": "Add to :root after --purple-bg (L42): --slate:#94a3b8; --slate-dim:rgba(148,163,184,.28); --slate-bg:rgba(148,163,184,.06). Change L55: body.s-scared{--state-accent:var(--slate);--state-bg:var(--slate-bg)}. 3 new :root vars + 1 state rule change. Reversible: remove 3 vars, restore L55. authority=false, canon=false, ledger_effect=none. Operator must apply. Verify: --slate is perceptually distinct from --blue (#5b8af0) and --mid (rgba white). Grey-blue vs saturated blue vs pure white-alpha — visually distinct at glance.",
+  "metric": "After operator applies: selectState('scared') -> state-badge renders rgba(148,163,184,1) [slate]. selectState('angry') -> state-badge renders #e05252 [red]. grep -n 's-scared' index.html | grep red -> 0 results. grep 'slate' index.html -> 4 hits (3 :root defs + 1 body.s-scared). --red retains single primary emotional mapping: s-angry only (plus non-emotional: blocked/noship/hold/abort — danger cohort, defensible composite).",
+  "keep_rule": "KEEP if operator accepts --slate as new emotional-scared palette slot and perceptual distinction from --blue/--mid is confirmed sufficient. REJECT if operator deems all fear/worry states should share --amber (aversive-anticipatory cohort — less granular but zero new tokens). HOLD_FOR_OPERATOR if Option B (doctrine exemption, E64) is chosen instead.",
+  "next": "E68: s-sad/--mid audit. --mid (rgba(255,255,255,.32)) is a structural opacity token used across multiple non-emotional contexts (.verb-cmd.persist, .station-status, .gonogo-sub). Assigning an emotional state to a structural opacity slot violates SA one-meaning rule differently than color collisions. Low-severity: s-sad is rare operationally. Audit whether --slate-dim (new, E67) could double as a sad-state neutral, or whether s-sad warrants its own token. Closes full body.s-* collision audit.",
+  "risk_flags": [
+    "Low — one-line CSS change; mutual exclusivity confirmed; --slate not used elsewhere",
+    "Perceptual check needed: --slate (#94a3b8) vs --blue (#5b8af0) — both blue-family, may be too similar on some displays. Operator should verify at actual screen brightness before applying.",
+    "E64 --rose (for s-happy) and this --slate (for s-scared) are independent new tokens; landing both simultaneously doubles palette expansion. Operator may prefer to sequence them."
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-19T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (s-scared L55 confirmed --red; s-angry L52 confirmed --red; exclusivity L1288+L1309 confirmed; --amber blocked L51 confirmed; --mid blocked L53 confirmed; :root palette lines 14-46 exhausted, no --slate present; E64 Option A pattern confirmed from E64 packet; --slate:#94a3b8 no existing :root hit)",
+    "epoch": "E67",
+    "parent_epoch": "E66",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
