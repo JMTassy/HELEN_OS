@@ -1,0 +1,52 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sandbox-vgrammar-e69-cockpit-live-grn-teal",
+  "target_surface": "sandbox_visual_grammar",
+  "epoch": "E69",
+  "parent_epoch": "E68",
+  "source_refs": [
+    "apps/helen-surface/cockpit_v4.html:17",
+    "apps/helen-surface/cockpit_v4.html:64",
+    "apps/helen-surface/cockpit_v4.html:67",
+    "apps/helen-surface/cockpit_v4.html:234",
+    "apps/helen-surface/cockpit_v4.html:247-248"
+  ],
+  "finding_type": "semantic_collision_grn_token_dual_use_shipped_and_live_states",
+  "summary": "cockpit_v4.html assigns --grn:#00ff88 to both .si-state.shipped (L64) and .si-state.live (L67). JS color map (L234) confirms: shipped:'#00ff88' and live:'#00ff88' — identical hex. In the orbital visualization, claim nodes (type:'claim', state:'shipped', e.g. STARSHIP_V3 at L241) and source nodes (type:'source', state:'live', e.g. temple.html/focus.html at L247-248) both render green. SA one-meaning rule violation: --grn serves both COMPLETED_CLAIM (closest to SA-ADMITTED: governance object approved/shipped) and ACTIVE_SOURCE_FILE (closest to SA-OBSERVED: object is live/deployed/running). A viewer scanning the orbital cannot distinguish a shipped claim from a live source file by color alone. E63 established a precedent: in index.html, live-cluster/--green collision was resolved by introducing --teal:#2dd4bf for liveness, reserving --green for emotional-state-happy (and by implication SA-ADMITTED green). E69 applies the same principle to cockpit_v4.html: reassign .si-state.live from --grn to --teal, restoring one-meaning for --grn (shipped/ADMITTED) and creating a dedicated live/liveness token consistent with index.html E63 outcome.",
+  "evidence": [
+    "cockpit_v4.html:17: --grn:#00ff88",
+    "cockpit_v4.html:64: .si-state.shipped{color:var(--grn)} — ADMITTED-adjacent (claim completed/delivered)",
+    "cockpit_v4.html:67: .si-state.live{color:var(--grn)} — OBSERVED-adjacent (source file actively deployed)",
+    "cockpit_v4.html:234: shipped:'#00ff88', live:'#00ff88' — JS color map: same hex for both states",
+    "cockpit_v4.html:241: STARSHIP_V3 claim — state:'shipped' — renders green",
+    "cockpit_v4.html:247: temple.html source — state:'live' — renders green (same green as shipped)",
+    "cockpit_v4.html:248: focus.html source — state:'live' — renders green (same green as shipped)",
+    "cockpit_v4.html:65: .si-state.canon{color:var(--cy)} — cyan already used for canon/memory, blocks teal-cyan proximity check required",
+    "E63 AR packet: --teal:#2dd4bf established for liveness in index.html (live-cluster); same hue family applicable cross-surface",
+    "No --teal token exists in cockpit_v4.html :root (lines 9-23 checked)"
+  ],
+  "hypothesis": "If .si-state.live is reassigned from --grn to new token --teal:#2dd4bf (matching E63 precedent), cockpit_v4.html's orbital visualization distinguishes shipped claims (green, SA-ADMITTED) from live source files (teal, SA-OBSERVED/liveness). SA one-meaning rule restored for --grn. Cross-surface token consistency: --teal=liveness in both index.html (E63) and cockpit_v4.html (E69).",
+  "proposed_tweak": "1) Add to :root after --grn-related tokens (insert after L17 --grn): --teal:#2dd4bf; --teal-dim:rgba(45,212,191,.45). 2) Change L67: .si-state.live{color:var(--teal)}. 3) Change L234 JS color map: live:'#2dd4bf'. Total: 3 lines changed (2 :root + 1 CSS + 1 JS hex). Reversible: delete --teal/:root line, restore L67 to var(--grn), restore L234 to '#00ff88'. Operator perceptual check required: --teal:#2dd4bf vs --cy:#00e5ff — both are blue-green family; teal is warmer/more green (#2dd4bf) vs cyan is cooler/more blue (#00e5ff). Must verify distinct at screen brightness before applying. authority=false, canon=false, ledger_effect=none. Operator must apply.",
+  "metric": "After operator applies: grep 'si-state.live' cockpit_v4.html -> color:var(--teal). grep '#00ff88' cockpit_v4.html -> 0 hits for live state; only shipped retains #00ff88. JS color map: live:'#2dd4bf'. Node s2 (temple.html) and s3 (focus.html) render teal orbital dots, not green. Node c2 (STARSHIP_V3 shipped) renders green, perceptually distinct from live source nodes. grep teal cockpit_v4.html -> 2 :root lines + 1 CSS + 1 JS = 4 hits.",
+  "keep_rule": "KEEP if operator confirms --teal (#2dd4bf) is perceptually distinct from --cy (#00e5ff, canon) at normal display brightness. REJECT if teal-cyan proximity causes live/canon confusion (both are blue-green; depends on display calibration). HOLD_FOR_OPERATOR pending perceptual verification.",
+  "next": "If KEPT: audit remaining --grn uses in cockpit_v4.html: .sb-v.ok (L35), .sb-dot (L38), .le-st.ok (L92), .vr-v.pass (L97), .replay-row .ok (L106) — each uses --grn for 'system passing/clear' semantics. Determine if these align with SA-ADMITTED or if 'ok/pass' deserves its own token distinct from 'shipped'.",
+  "risk_flags": [
+    "Teal-cyan proximity: --teal:#2dd4bf and --cy:#00e5ff are same hue family; operator must verify at screen brightness",
+    "JS color map update: L234 uses literal hex '#00ff88', not CSS var reference; requires manual update to match CSS change",
+    "E63 cross-surface consistency: if operator rejects E63 (--teal for liveness in index.html), E69 should be rejected too for consistency"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-20T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (--grn:L17 confirmed; .si-state.shipped:L64 --grn confirmed; .si-state.live:L67 --grn confirmed; JS shipped:'#00ff88' L234 confirmed; JS live:'#00ff88' L234 confirmed; source nodes temple.html/focus.html state:live L247-248 confirmed; no --teal in :root L9-23 confirmed; E63 --teal precedent confirmed in AR outbox; --cy:#00e5ff canon collision risk identified and flagged)",
+    "epoch": "E69",
+    "parent_epoch": "E68",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
