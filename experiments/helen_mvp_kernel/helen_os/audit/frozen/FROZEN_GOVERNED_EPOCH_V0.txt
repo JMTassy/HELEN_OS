@@ -1,0 +1,6 @@
+# FROZEN GOVERNED_EPOCH_V0 — one complete governed-causal-discovery epoch, audit-green
+# witnessed contraction (ContractionCount=1, eliminated H_L1) · Γ_E=CONTRACT · Γ_I=NO_ADMISSION (ΔKnowledge⇏ΔAuthority)
+# replay reproduces (H_before,H_after,B_forbidden), zero unjustified elimination · reuses FROZEN proof_carrying_receipt
+# pytest 52 passed (7 gov_epoch + 7 pcr + 7 wul_seam + 11 slice + 11 nim1 + 9 nim2) · HEAD: 0bdbf06c270ef4cb5fac128507be06bb40449572
+9645590dc713107b99389c99e30531aa09378e782121ab5020cbc4d063e7b82f  helen_os/kernel/governed_epoch_v0.py
+6c9f79365e22562ace2f2b3cabac37edfa6c5195c7ebdd2943ed9bf0f7be01fb  helen_os/tests/test_governed_epoch_v0.py

@@ -1,0 +1,7 @@
+# FROZEN GOVERNED_EPOCH_V0_KILL_SUITE — falsifier for witnessed contraction ('no hypothesis dies for free'), audit-green
+# 7 mutants dead: no-witness · witness-target-mismatch · kill-non-refuted · obs-tamper · Γ_E→Γ_I leak · both-survive-HOLD · replay-determinism
+# precision/recall of kills: lazy always-HOLD penalised by recall; false kill penalised by FKR; base P=R=1.0 FKR=0
+# objective = max ValidContraction/Cost s.t. FalseKillRate ≤ ε · AuthorityGain=0 · reuses FROZEN governed_epoch_v0
+# pytest 63 passed · HEAD: 0bdbf06c270ef4cb5fac128507be06bb40449572
+f44f669d322397dc77a7b826b7b4ee5cf1c6eba0fd8fbbc5f970f941daa945e5  helen_os/kernel/governed_epoch_kill_suite.py
+1d9f44fb14c5aa1b58d375f2a153f81327320de8f140885de4c03569cf4ac997  helen_os/tests/test_governed_epoch_kill_suite.py

@@ -1,0 +1,5 @@
+# FROZEN SENTINEL_LOOP_V0 — cumulative iterative-deepening loop, falsification-gated, corpus-agnostic (12 tests green)
+# promotion: 1 source→observation · ≥2 INDEPENDENT roots→pattern · +survived falsify→chiddush · novelty gate INSIDE
+bfba9af5c3a764c7785d46735d695e670e65cc6f2eaa0541c0bacb2930a45ea7  sentinel_loop.py
+6d10abebbe824eeea9a241196710289597dd66b8e436142c3dc6e66abbfe9768  test_sentinel_loop.py
+a9e9994be0cb1ea190d7eebc9fee7b5571bb1d77141a5cd751266e8bb1bc115a  README.md

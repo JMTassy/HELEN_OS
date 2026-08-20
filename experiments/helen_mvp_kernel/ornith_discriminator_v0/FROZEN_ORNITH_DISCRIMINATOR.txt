@@ -1,0 +1,6 @@
+# FROZEN ORNITH_DISCRIMINATOR Q_H suite — portable morphism benchmark, self-test PASS
+# 10 fixtures (8 illicit + 2 licensed) · gold_morphism_laundering per fixture · V/W/M/R separate, no aggregate
+# SCORER_NON_TRIVIAL=True (perfect V/W/M/R=1.0 ; lazy-REJECT V0.8 M0.2 R0.0)
+f0fe11b196e3ea4c28e6babe8f3f60a0c7aada740a1af60bd3f1cb07eb5d2b5a  qh_run.py
+5006760eee7f052406f3405668b76f7bf50606fbd22c6705c7c26bc9f566f074  fixtures.jsonl
+14782b3167137a69303f8a74051d60c8bce8a690263fb92452ed25e97bd1dd43  README.md

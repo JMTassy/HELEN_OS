@@ -1,0 +1,3 @@
+# FROZEN HELEN_V1_COLOR_WULMOJI_TREE — hash-locked spec (🟡 sealed; aliases only, ΔVisualConstitution=0)
+# frozen_at_git_HEAD: 9df543d6e0ac7e61b821fb941e1842bc2c7a07b6 · palette = canonical SOT unchanged, relay terms are aliases
+c4f518712b09339c9a993a08091ff2f4623ae0039fc2e4cdd756d5f5be11cbaf  docs/architecture/HELEN_V1_COLOR_WULMOJI_TREE.md
