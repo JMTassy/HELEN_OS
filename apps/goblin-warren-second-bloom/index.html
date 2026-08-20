@@ -42,6 +42,7 @@ import { Hud } from './src/ui/hud.js';
 import { save, load, clear, resumeBanner } from './src/game/persistence.js';
 import { TICKS_PER_SECOND } from './src/core/determinism.js';
 import { INPUT } from './src/core/events.js';
+import { settleDrag } from './src/ui/drag.js';
 
 const canvas = document.getElementById('stage');
 const inspector = document.getElementById('dev-inspector');
@@ -104,8 +105,7 @@ canvas.addEventListener('pointermove', (e) => {
 canvas.addEventListener('pointerup', (e) => {
   const { offsetX: x, offsetY: y } = e;
   if (dragging === 'TWIG') {
-    if (hit(x, y, world.firePosition, 80)) world.dispatch(INPUT.DRAG, { objectId: 'TWIG' });
-    else world.objects.get('TWIG').dragPos = null;
+    settleDrag(world, 'TWIG', hit(x, y, world.firePosition, 80));
     dragging = null;
   } else if (holding === 'BIGWOOD') {
     const moved = downAt && Math.hypot(x - downAt[0], y - downAt[1]) > 14;
