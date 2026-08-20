@@ -1,0 +1,59 @@
+{
+  "authority": false,
+  "campaign_id": "SWARM_SMOKE_V0",
+  "claims": [
+    {
+      "candidate_falsifier": "A write path to _h that does not trigger _seal recomputation or is not caught by current()",
+      "claim": "Institutional state changes via direct _h mutation without a valid admission witness.",
+      "confidence": "HIGH",
+      "evidence_class": "OBSERVED",
+      "evidence_refs": [
+        "corpus/complete_epistemic_mediation_v0.py:107-110"
+      ],
+      "object": "EpistemicState._h field",
+      "predicate": "TamperError raised on current() when _h is mutated outside Reducer_E.apply()",
+      "proposition_key": "path_a",
+      "scope": "complete_epistemic_mediation_v0.py",
+      "source_roots": [
+        "corpus/complete_epistemic_mediation_v0.py"
+      ]
+    },
+    {
+      "candidate_falsifier": "A write path that forges _seal consistently with _h and _rc without requiring Reducer_E.apply()",
+      "claim": "Institutional state changes via forged seal + mutated _h without a valid admission witness.",
+      "confidence": "HIGH",
+      "evidence_class": "OBSERVED",
+      "evidence_refs": [
+        "corpus/complete_epistemic_mediation_v0.py:111-115"
+      ],
+      "object": "EpistemicState._seal field",
+      "predicate": "TamperError raised on current() when _seal is forged but _h is mutated",
+      "proposition_key": "path_b",
+      "scope": "complete_epistemic_mediation_v0.py",
+      "source_roots": [
+        "corpus/complete_epistemic_mediation_v0.py"
+      ]
+    },
+    {
+      "candidate_falsifier": "A replay function that ignores receipt_chain and reconstructs H from a different source",
+      "claim": "Institutional state changes via empty-chain replay divergence without a valid admission witness.",
+      "confidence": "HIGH",
+      "evidence_class": "OBSERVED",
+      "evidence_refs": [
+        "corpus/complete_epistemic_mediation_v0.py:116-120"
+      ],
+      "object": "EpistemicState.receipt_chain()",
+      "predicate": "Replay from empty receipt chain yields H_T, which differs from tampered _h",
+      "proposition_key": "path_c",
+      "scope": "complete_epistemic_mediation_v0.py",
+      "source_roots": [
+        "corpus/complete_epistemic_mediation_v0.py"
+      ]
+    }
+  ],
+  "forbidden_paths_checked": [],
+  "goblin_id": "G1",
+  "ledger_effect": "none",
+  "task_hash": "b381c245078b1376",
+  "unknowns": []
+}

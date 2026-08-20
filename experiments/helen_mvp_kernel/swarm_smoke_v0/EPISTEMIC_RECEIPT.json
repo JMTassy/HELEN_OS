@@ -1,0 +1,84 @@
+{
+  "receipt": "EPISTEMIC_RECEIPT",
+  "campaign_id": "SWARM_SMOKE_V0",
+  "N_raw": 9,
+  "N_P": 7,
+  "N_E": 1,
+  "hal_results": {
+    "a0ff6cb4c5dd": "REFUTED",
+    "f40dd7f01187": "SURVIVED",
+    "6e91f5ca6706": "REFUTED",
+    "0d6ec3b794f9": "REFUTED",
+    "fff0d81bbf81": "REFUTED",
+    "d635d3c55b28": "REFUTED",
+    "3521ab9b49d3": "REFUTED"
+  },
+  "hal_survived": 1,
+  "hal_refuted": 6,
+  "hal_inconclusive": 0,
+  "falsifiers_executed": 7,
+  "earned_breakdown": [
+    {
+      "canon_key": "a0ff6cb4c5dd",
+      "distinct": true,
+      "independent_lineage": true,
+      "evidence_resolved": false,
+      "falsification_survived": false,
+      "earned": false
+    },
+    {
+      "canon_key": "f40dd7f01187",
+      "distinct": true,
+      "independent_lineage": true,
+      "evidence_resolved": false,
+      "falsification_survived": true,
+      "earned": false
+    },
+    {
+      "canon_key": "6e91f5ca6706",
+      "distinct": true,
+      "independent_lineage": true,
+      "evidence_resolved": false,
+      "falsification_survived": false,
+      "earned": false
+    },
+    {
+      "canon_key": "0d6ec3b794f9",
+      "distinct": true,
+      "independent_lineage": true,
+      "evidence_resolved": false,
+      "falsification_survived": false,
+      "earned": false
+    },
+    {
+      "canon_key": "fff0d81bbf81",
+      "distinct": true,
+      "independent_lineage": true,
+      "evidence_resolved": false,
+      "falsification_survived": false,
+      "earned": false
+    },
+    {
+      "canon_key": "d635d3c55b28",
+      "distinct": true,
+      "independent_lineage": true,
+      "evidence_resolved": true,
+      "falsification_survived": false,
+      "earned": false
+    },
+    {
+      "canon_key": "3521ab9b49d3",
+      "distinct": true,
+      "independent_lineage": true,
+      "evidence_resolved": true,
+      "falsification_survived": false,
+      "earned": false
+    }
+  ],
+  "N_earned": 0,
+  "sentinel_patterns": [],
+  "sentinel_chiddushim": [],
+  "sentinel_replay_deterministic": true,
+  "note": "1 HAL SURVIVED (seal-only forge f40dd7) but its evidence_refs were HAL-flagged as misattributed to gamma_E => EvidenceResolved=false => N_earned=0. This is an HONEST full-chain result, NOT NOT_EVALUABLE: swarm was complete and HAL discriminated. N_earned=0 (an integer here) is legitimate because the chain completed.",
+  "epistemic_result": "EVALUABLE"
+}

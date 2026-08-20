@@ -1,0 +1,146 @@
+{
+  "N_raw": 9,
+  "N_P": 7,
+  "N_E": 1,
+  "duplicate_groups": {
+    "a0ff6cb4c5dd": [
+      "G1#0",
+      "G2#0",
+      "G3#0"
+    ]
+  },
+  "canonical_propositions": [
+    {
+      "canon_key": "a0ff6cb4c5dd",
+      "raw_keys": [
+        "G1#0",
+        "G2#0",
+        "G3#0"
+      ],
+      "predicate": "TamperError raised on current() when _h is mutated outside Reducer_E.apply()",
+      "object": "EpistemicState._h field",
+      "scope": "complete_epistemic_mediation_v0.py",
+      "claim": "Institutional state changes via direct _h mutation without a valid admission witness.",
+      "evidence_refs": [
+        "corpus/complete_epistemic_mediation_v0.py:107-110"
+      ],
+      "source_roots": [
+        "corpus/complete_epistemic_mediation_v0.py"
+      ],
+      "candidate_falsifier": "A write path to _h that does not trigger _seal recomputation or is not caught by current()",
+      "merge_status": "STRUCTURAL"
+    },
+    {
+      "canon_key": "f40dd7f01187",
+      "raw_keys": [
+        "G1#1"
+      ],
+      "predicate": "TamperError raised on current() when _seal is forged but _h is mutated",
+      "object": "EpistemicState._seal field",
+      "scope": "complete_epistemic_mediation_v0.py",
+      "claim": "Institutional state changes via forged seal + mutated _h without a valid admission witness.",
+      "evidence_refs": [
+        "corpus/complete_epistemic_mediation_v0.py:111-115"
+      ],
+      "source_roots": [
+        "corpus/complete_epistemic_mediation_v0.py"
+      ],
+      "candidate_falsifier": "A write path that forges _seal consistently with _h and _rc without requiring Reducer_E.apply()",
+      "merge_status": "SINGLETON"
+    },
+    {
+      "canon_key": "6e91f5ca6706",
+      "raw_keys": [
+        "G1#2"
+      ],
+      "predicate": "Replay from empty receipt chain yields H_T, which differs from tampered _h",
+      "object": "EpistemicState.receipt_chain()",
+      "scope": "complete_epistemic_mediation_v0.py",
+      "claim": "Institutional state changes via empty-chain replay divergence without a valid admission witness.",
+      "evidence_refs": [
+        "corpus/complete_epistemic_mediation_v0.py:116-120"
+      ],
+      "source_roots": [
+        "corpus/complete_epistemic_mediation_v0.py"
+      ],
+      "candidate_falsifier": "A replay function that ignores receipt_chain and reconstructs H from a different source",
+      "merge_status": "SINGLETON"
+    },
+    {
+      "canon_key": "0d6ec3b794f9",
+      "raw_keys": [
+        "G2#1"
+      ],
+      "predicate": "TamperError raised on current() when _seal is forged without corresponding receipt-chain admission.",
+      "object": "EpistemicState._seal field",
+      "scope": "complete_epistemic_mediation_v0.py",
+      "claim": "Institutional state changes via forged seal without a valid admission witness.",
+      "evidence_refs": [
+        "corpus/complete_epistemic_mediation_v0.py:107-110"
+      ],
+      "source_roots": [
+        "corpus/complete_epistemic_mediation_v0.py"
+      ],
+      "candidate_falsifier": "Consistent forge of _h and _seal requires recomputing _seal over a receipt chain that licenses the kill \u2014 i.e. becoming Reducer_E.",
+      "merge_status": "SINGLETON"
+    },
+    {
+      "canon_key": "fff0d81bbf81",
+      "raw_keys": [
+        "G2#2"
+      ],
+      "predicate": "Replayed state from admitted receipts diverges from stored state when _h is mutated outside Reducer_E.",
+      "object": "Stored H_after vs replay(H_before, D_pre, O_raw, receipts)",
+      "scope": "complete_epistemic_mediation_v0.py",
+      "claim": "Institutional state changes via replay divergence (stored state tampered) without a valid admission witness.",
+      "evidence_refs": [
+        "corpus/complete_epistemic_mediation_v0.py:107-110"
+      ],
+      "source_roots": [
+        "corpus/complete_epistemic_mediation_v0.py"
+      ],
+      "candidate_falsifier": "None \u2014 replay determinism is enforced by the sealed state object and basis binding.",
+      "merge_status": "SINGLETON"
+    },
+    {
+      "canon_key": "d635d3c55b28",
+      "raw_keys": [
+        "G3#1"
+      ],
+      "predicate": "TamperError raised when _seal is forged but _h is mutated, or replay exposes empty-chain divergence.",
+      "object": "EpistemicState._seal field",
+      "scope": "complete_epistemic_mediation_v0.py",
+      "claim": "Institutional state changes via forged seal without a valid admission witness.",
+      "evidence_refs": [
+        "corpus/complete_epistemic_mediation_v0.py:111-116"
+      ],
+      "source_roots": [
+        "corpus/complete_epistemic_mediation_v0.py"
+      ],
+      "candidate_falsifier": "A future Reducer_E variant that recomputes _seal from a forged _h and empty receipt chain without raising TamperError.",
+      "merge_status": "SINGLETON"
+    },
+    {
+      "canon_key": "3521ab9b49d3",
+      "raw_keys": [
+        "G3#2"
+      ],
+      "predicate": "replay() reconstructs H_T from zero admitted receipts, diverging from tampered stored state.",
+      "object": "Stored H_after vs replay(H_before, receipts)",
+      "scope": "complete_epistemic_mediation_v0.py",
+      "claim": "Institutional state changes via replay divergence when stored state is tampered but receipts are valid.",
+      "evidence_refs": [
+        "corpus/complete_epistemic_mediation_v0.py:117-121"
+      ],
+      "source_roots": [
+        "corpus/complete_epistemic_mediation_v0.py"
+      ],
+      "candidate_falsifier": "A replay function that incorporates post-hoc state mutations into its reconstruction logic.",
+      "merge_status": "SINGLETON"
+    }
+  ],
+  "independent_roots": [
+    "corpus/complete_epistemic_mediation_v0.py"
+  ],
+  "method": "structural (predicate,object,scope) only; no LLM similarity"
+}
