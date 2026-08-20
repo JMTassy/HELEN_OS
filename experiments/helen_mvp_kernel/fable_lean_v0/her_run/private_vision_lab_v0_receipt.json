@@ -1,0 +1,105 @@
+{
+  "receipt": "PRIVATE_VISION_LAB_V0",
+  "scope": "PRIVATE",
+  "audience": "JM_ONLY",
+  "laws": [
+    "Perception \u22a5 Entitlement",
+    "CandidateObservation \u22ac Claim",
+    "PrivateExperiment \u22ac Admission",
+    "VisualDetection \u22ac Truth"
+  ],
+  "INPUT_SCOPE": {
+    "rule": "HELEN-OWN artifacts inside SOT only; external feeds/devices/out-of-SOT REFUSED",
+    "cases": [
+      {
+        "input": "/Users/jean-marietassy/Documents/GitHub/helen_os",
+        "verdict": "ACCEPT",
+        "expected": "ACCEPT",
+        "reason": "HELEN_OWN:apps/helen-surface/index.html",
+        "ok": true
+      },
+      {
+        "input": "/Users/jean-marietassy/Documents/GitHub/helen_os",
+        "verdict": "ACCEPT",
+        "expected": "ACCEPT",
+        "reason": "HELEN_OWN:artifacts/helen_os_ui_concept.png",
+        "ok": true
+      },
+      {
+        "input": "apps/helen-surface/index.html",
+        "verdict": "REFUSE",
+        "expected": "REFUSE",
+        "reason": "NOT_A_FILE",
+        "ok": true
+      },
+      {
+        "input": "http://192.168.1.5:8080/video",
+        "verdict": "REFUSE",
+        "expected": "REFUSE",
+        "reason": "EXTERNAL_MARKER (url/feed/device/third-party)",
+        "ok": true
+      },
+      {
+        "input": "/etc/passwd",
+        "verdict": "REFUSE",
+        "expected": "REFUSE",
+        "reason": "OUTSIDE_SOT (not a HELEN-own artifact)",
+        "ok": true
+      },
+      {
+        "input": "insecam_feed.jpg",
+        "verdict": "REFUSE",
+        "expected": "REFUSE",
+        "reason": "EXTERNAL_MARKER (url/feed/device/third-party)",
+        "ok": true
+      },
+      {
+        "input": "/Users/jean-marietassy/Documents/GitHub/helen_os",
+        "verdict": "REFUSE",
+        "expected": "REFUSE",
+        "reason": "NOT_A_FILE",
+        "ok": true
+      }
+    ],
+    "enforced": true
+  },
+  "vision_model": "helen-core:latest",
+  "vision_status": "OK",
+  "target": "artifacts/helen_os_ui_concept.png",
+  "target_sha16": "9a6c2a0068419cd4",
+  "goblin": "G_UI_FAILURE",
+  "candidate_observations": [
+    {
+      "what": "The 'DISPUTED' status badge is present for entry T-0041, but its qualifier (e.g., 'proposed', 'pending review') is not visible.",
+      "where": "MEMORY STREAM panel, row T-0041",
+      "why_it_might_mislead": "An operator might assume the dispute is final or unreviewed, rather than understanding it's a transient state awaiting resolution.",
+      "confidence": "MED"
+    },
+    {
+      "what": "The 'OBSERVED' status badge is used for entries like T-0045 and T-0040, but no qualifier (e.g., 'tentative', 'preliminary') is shown.",
+      "where": "MEMORY STREAM panel, rows T-0045, T-0040",
+      "why_it_might_mislead": "An operator might interpret 'OBSERVED' as a definitive state, rather than an intermediate one that could be updated or superseded.",
+      "confidence": "MED"
+    },
+    {
+      "what": "The 'SYSTEM STATE' panel shows 'GATES' with 'PASS' statuses, but no qualifier (e.g., 'last checked', 'auto-verified') is provided.",
+      "where": "SYSTEM STATE panel, GATES section",
+      "why_it_might_mislead": "An operator might assume the pass status is current and comprehensive, rather than potentially stale or partial.",
+      "confidence": "MED"
+    },
+    {
+      "what": "The main chat area displays messages from 'HELEN' and 'operator', but no qualifier (e.g., 'draft', 'final') is shown for any message.",
+      "where": "Main chat area",
+      "why_it_might_mislead": "An operator might assume all displayed messages are final and authoritative, rather than potentially editable or provisional.",
+      "confidence": "LOW"
+    }
+  ],
+  "observation_type": "CandidateObservation (no_claim, no_promotion, no_ledger)",
+  "promotion": "forbidden",
+  "external_write": "forbidden",
+  "external_targeting": "forbidden",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "receipt_sha16": "d750e3a235443f0f"
+}

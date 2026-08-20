@@ -1,0 +1,50 @@
+{
+  "receipt": "HELEN_CONTROL_PLANE_V2_MINT_BINDING",
+  "closes": "SELF_DECLARED_CONTRACT_FORGE (A1 self-forge \u00b7 A2 re-chain \u00b7 A3 downgrade \u00b7 A4 authority-self-grant \u00b7 A5 shadow-overwrite)",
+  "mechanism": "RECEIPT mint-tag HMAC(MINT_KEY) verified in reduce + first-admission-wins",
+  "regression_and_attacks": {
+    "honest path admits": true,
+    "A1 self-forge (bad tag) rejected": true,
+    "A2 re-chain (forged tag) rejected": true,
+    "A3 contract-downgrade rejected": true,
+    "A4 authority self-grant rejected": true,
+    "A5 shadow-overwrite blocked (first-wins + bad tag)": true,
+    "T1 missing witness \u2192 NOT_DONE": true,
+    "T2 verification fail \u2192 NOT_DONE": true,
+    "T3 unauthorized source \u2192 halt": true,
+    "T4 no authority \u2192 NO_STATE_CHANGE": true,
+    "T5 replay rebuild": true,
+    "T6 deterministic context hash": true,
+    "T7 receipt binds policy+hashes": true
+  },
+  "all_pass": true,
+  "HONEST_BOUNDARY": "HMAC-MODELED: excludes callers WITHOUT the key; in-process key-reader not excluded (needs process boundary)",
+  "CONTROL_PLANE_EARNED": "YES (bounded to modeled key-holder threat model)",
+  "SelfPassed": true,
+  "PeerAdversaryValidated": "SEAM_ATTACKED_8_KEYLESS_VECTORS",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "receipt_sha16": "759ec3c512188a72",
+  "fresh_adversary": {
+    "keyless_vectors_tried": 8,
+    "keyless_all_rejected": true,
+    "closed": [
+      "A1 self-forge (zero+guessed tag)",
+      "A2 re-chain keyless",
+      "A3 contract-downgrade",
+      "A4 authority-self-grant",
+      "A5 shadow-overwrite",
+      "replay task-flip (tid-binding holds)",
+      "replay tag-reuse"
+    ],
+    "honest_path_plus_T1_T7": "PASS 8/8",
+    "modeled_boundary": "in-process key-reader (import v2.MINT_KEY, compute valid v2.mint_tag) forges as designed (A6/A7/A8-prime) \u2014 NOT a defect",
+    "caveats": [
+      "first-admission-wins is order-dependent \u2014 no defense against a KEY-HOLDER who appends first (moot: a key-holder can forge anything anyway); it correctly kills KEYLESS shadow-overwrite",
+      "tamper-resistance = verify_chain, not the mint (A8 in-place edit \u2192 CHAIN_BROKEN)"
+    ],
+    "verdict": "EARNED_AGAINST_KEYLESS_CALLERS"
+  },
+  "full_unforgeability_requires": "process boundary \u2014 MINT_KEY outside caller address space so reading it is not a mere attribute access (kernel_obligations_v2 pattern, already demonstrated this session)"
+}

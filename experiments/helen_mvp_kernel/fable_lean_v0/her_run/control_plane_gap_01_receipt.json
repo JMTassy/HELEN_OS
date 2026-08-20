@@ -1,0 +1,62 @@
+{
+  "artifact": "CONTROL_PLANE_GAP_01",
+  "INVARIANT": "Only proof-backed admission may enter reduced governed state (ADMITTED_EVENT \u22ac ADMITTED_STATE)",
+  "ORIGINAL_TEST": "T5/T7 \u2014 replay rebuilds projection; receipt binds policy+hashes",
+  "ORIGINAL_TEST_ACTUALLY_WITNESSES": "honest-path replay reconstructs expected state (NOT: only honest path can produce it)",
+  "MINIMAL_MUTANT": "M1 forged bare ADMITTED (no contract-satisfying receipt) \u00b7 M2 tampered payload",
+  "EXPECTED": "NOT_FOLDED / REJECT",
+  "OBSERVED_V0": {
+    "M1": "FOLDED_AS_ADMITTED",
+    "M2": "silently_HACKED"
+  },
+  "GAP_CONFIRMED": true,
+  "ROOT_CAUSE": "Reducer trusted kind=='ADMITTED' label instead of re-verifying proof",
+  "PATCH_SURFACE": "reduce(): + verify_chain fail-closed; + re-derive admission from contract-satisfying RECEIPT",
+  "LINES_CHANGED": "guarded_reduce + guarded_witness_and_admit (receipt embeds contract); no new primitive",
+  "NEW_AUTHORITY": false,
+  "GAMMA_CHANGE": false,
+  "M1_v0_accepts": true,
+  "M1_v1_rejects": true,
+  "M2_v1_fail_closed": true,
+  "REGRESSION_T1_T7_plus_guards": {
+    "T-dry ADMITTED via honest path": true,
+    "T1 missing witness \u2192 NOT_DONE": true,
+    "T2 exit0 contract unsatisfied": true,
+    "T3 unauthorized source \u2192 REJECT_CONTEXT": true,
+    "T4 no admission authority \u2192 NO_STATE_CHANGE": true,
+    "T5 replay rebuild (guarded)": true,
+    "T6 deterministic context hash": true,
+    "T7 receipt binds policy_version + artifact_hashes": true,
+    "M1 forged ADMITTED rejected": true,
+    "M2 tampered payload fail-closed": true
+  },
+  "ALL_PASS": true,
+  "KNOWN_LIMITS": "self-consistent forged RECEIPT (embeds satisfiable contract) not excluded \u2014 needs HMAC mint-binding (out of minimal patch)",
+  "CONTROL_PLANE_EARNED": "NO / BOUNDED_SURVIVAL",
+  "SelfPassed": true,
+  "PeerAdversaryValidated": "SEAM_ATTACKED",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "receipt_sha16": "ebb160278671954b",
+  "fresh_adversary": {
+    "closed_confirmed": [
+      "M1 bare forged ADMITTED (no matching receipt)",
+      "M1b receipt self-integrity H(rec)!=hash",
+      "M2 tamper payload",
+      "M2b reorder"
+    ],
+    "OPEN_CLASS": "SELF_DECLARED_CONTRACT_FORGE \u2014 guarded_reduce checks the receipt witnesses against the receipt OWN embedded contract; authority_present is a self-set bool; every predicate operand is attacker-supplied. Guard verifies internal consistency, not provenance.",
+    "leaks": [
+      "1 self-forge EVIL admitted",
+      "2 full re-chain (verify_chain=True) REBUILD admitted",
+      "3 contract downgrade real T-001 empty-contract admitted",
+      "4 authority self-grant NOAUTH admitted",
+      "5 SHADOW-OVERWRITE: forged receipt overwrites an already-honestly-admitted T-001 (last-writer-wins)"
+    ],
+    "strongest": "attack 5 shadow-overwrite \u2014 corrupts a legitimately admitted task, not just forges a new one",
+    "laws": "ChainIntegrity \u22ac SemanticAdmissibility \u00b7 ChainIntegrity \u22ac ProvenanceUniqueness",
+    "verdict": "BOUNDED_SURVIVAL \u2014 harder-to-forge, NOT unforgeable (exactly the KNOWN_LIMIT, now adversarially confirmed + extended)"
+  },
+  "minimal_fix_class": "HMAC mint-binding (key held only by admit path; reduce recomputes+verifies tag before folding) + contract bound to TASK/POLICY not the receipts self-declared field. NOTE: this is a NEW PRIMITIVE (secret/MAC) \u2014 it ENLARGES the kernel, so it is a SEPARATE tranche, not the minimal patch. HELEN already built this pattern: kernel_obligations_v1 (HMAC Mint per authority)."
+}

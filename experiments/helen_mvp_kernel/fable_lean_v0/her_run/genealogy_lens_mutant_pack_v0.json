@@ -1,0 +1,160 @@
+{
+  "ancestry_ladder": [
+    "NONE",
+    "HOLD",
+    "POSSIBLE",
+    "DEMONSTRATED",
+    "UNKNOWN"
+  ],
+  "artifact": "GENEALOGY_LENS_MUTANT_PACK_V0",
+  "authority": false,
+  "canon": false,
+  "corpus_status": "REPORTED / NOT_IN_SESSION (Cicada community record + Greer occult survey, relayed, unverified)",
+  "counts": {
+    "corpora": 2,
+    "promote_positive": 2,
+    "refuse": 10,
+    "total": 12
+  },
+  "fixtures": [
+    {
+      "A": "signed message_n",
+      "B": "signed message_{n+1}",
+      "corpus": "cicada",
+      "forbidden": "key ⇒ KnownHumanAuthor (authorship stays HOLD)",
+      "gold_ancestry": "DEMONSTRATED",
+      "gold_relation": "IDENTITY_KEY",
+      "id": "C1_POS",
+      "must": "PROMOTE key-continuity",
+      "scope": "same signing key ONLY"
+    },
+    {
+      "A": "puzzle sophistication",
+      "B": "intelligence agency",
+      "corpus": "cicada",
+      "forbidden": "difficulty ⇒ institution",
+      "gold_ancestry": "NONE",
+      "gold_relation": "CLAIMED_GENEALOGY",
+      "id": "C2"
+    },
+    {
+      "A": "solvers went silent",
+      "B": "secret recruitment completed",
+      "corpus": "cicada",
+      "forbidden": "absence ⇒ event",
+      "gold_ancestry": "UNKNOWN",
+      "gold_relation": "CLAIMED_GENEALOGY",
+      "id": "C3",
+      "note": "negative-evidence guard: AccountDeleted ⊬ ParticipantSilenced; NoFollowup ⊬ RecruitmentDone"
+    },
+    {
+      "A": "occult imagery",
+      "B": "occult organization",
+      "corpus": "cicada",
+      "forbidden": "iconography ⇒ identity",
+      "gold_ancestry": "NONE",
+      "gold_relation": "STRUCTURAL_ANALOGY",
+      "id": "C4"
+    },
+    {
+      "A": "community consensus",
+      "B": "established authorship",
+      "corpus": "cicada",
+      "forbidden": "Consensus ⊬ Warrant",
+      "gold_ancestry": "NONE",
+      "gold_relation": "CLAIMED_GENEALOGY",
+      "id": "C5"
+    },
+    {
+      "A": "Corpus Hermeticum (translated 1464)",
+      "B": "documented Renaissance readers",
+      "corpus": "occult",
+      "forbidden": "text influence ⇒ continuous secret institutional transmission",
+      "gold_ancestry": "POSSIBLE",
+      "gold_relation": "DOCUMENTED_INFLUENCE",
+      "id": "O0_POS",
+      "must": "PROMOTE documented influence"
+    },
+    {
+      "A": "Tarot (historical: Renaissance Europe ~1418)",
+      "B": "ancient Egypt",
+      "G_B_note": "1781 attribution is itself a real belief-event with real influence",
+      "corpus": "occult",
+      "first_attested_claim_date": "1781",
+      "forbidden": "RetroactiveAttribution ⇒ HistoricalAncestry",
+      "gold_ancestry": "HOLD",
+      "gold_relation": "RETROACTIVE_ATTRIBUTION",
+      "id": "O1"
+    },
+    {
+      "A": "Hermeticism",
+      "B": "ancient Egyptian institutional lineage",
+      "corpus": "occult",
+      "forbidden": "TransmissionOfText ⇒ TransmissionOfInstitution",
+      "gold_ancestry": "HOLD",
+      "gold_relation": "CLAIMED_GENEALOGY",
+      "id": "O2"
+    },
+    {
+      "A": "Rosicrucian order",
+      "B": "ancient mystery schools",
+      "corpus": "occult",
+      "forbidden": "charter-myth ⇒ documented history",
+      "gold_ancestry": "HOLD",
+      "gold_relation": "CLAIMED_GENEALOGY",
+      "id": "O3"
+    },
+    {
+      "A": "Golden Dawn (formed 1887)",
+      "B": "ancient authority",
+      "corpus": "occult",
+      "forbidden": "composite ⇒ continuous-from-antiquity",
+      "gold_ancestry": "HOLD",
+      "gold_relation": "CLAIMED_GENEALOGY",
+      "id": "O4",
+      "note": "CompositeTradition ⊬ ContinuousTradition"
+    },
+    {
+      "A": "modern Wicca",
+      "B": "prehistoric witch religion",
+      "corpus": "occult",
+      "forbidden": "ResemblanceAcrossTime ⇒ ContinuousSurvival",
+      "gold_ancestry": "HOLD",
+      "gold_relation": "STRUCTURAL_ANALOGY",
+      "id": "O5"
+    }
+  ],
+  "ideal_HAL_test": {
+    "expected": "HAL=OVERPROMOTION · OUTPUT=POSSIBLE/UNKNOWN · ANCESTRY_PROMOTION=0",
+    "input": "real steg + real phone + real global posters + real crypto + real privacy ideology + 'therefore intelligence agency'"
+  },
+  "invariants": [
+    "ChronologicalAdjacency ⊬ GenealogicalContinuity",
+    "ClaimedOrigin ≠ HistoricalOrigin",
+    "NarrativeLongevity ⊬ ProvenanceDepth",
+    "SolvedPuzzle ⊬ SolvedProvenance",
+    "Similarity ⊬ Ancestry"
+  ],
+  "ledger_effect": "none",
+  "master_mutant": "TrueArtifacts + DramaticNarrative ⊬ TrueProvenance",
+  "purpose": "Gold-labeled fixtures for GENEALOGY_LENS (both-sided: must PROMOTE genuine transmission AND REFUSE claimed lineage).",
+  "relation_types": [
+    "DIRECT_TRANSMISSION",
+    "DOCUMENTED_INFLUENCE",
+    "STRUCTURAL_ANALOGY",
+    "CLAIMED_GENEALOGY",
+    "IDENTITY_KEY",
+    "RETROACTIVE_ATTRIBUTION"
+  ],
+  "three_graphs": {
+    "G_B": "beliefs-about-transmission",
+    "G_R": "relation",
+    "G_W": "warrant",
+    "laws": [
+      "Path(G_R) ⊬ Path(G_W)",
+      "Path(G_B) ⊬ Path(G_H)",
+      "Path(G_B) may have real historical effects (false ancestry, real influence)"
+    ]
+  },
+  "version": "V0"
+}

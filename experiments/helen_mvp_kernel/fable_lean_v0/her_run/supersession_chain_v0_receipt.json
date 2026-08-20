@@ -1,0 +1,60 @@
+{
+  "receipt": "SUPERSESSION_CHAIN_V0",
+  "semantics": "append-supersession; monotonic v_new=v_prior+1 is an internal invariant",
+  "current_rule": "Terminal(ValidSupersessionChain(task)); NEVER argmax(timestamp)/insertion/last-writer",
+  "fork_rule": "\u22652 admitted direct successors \u21d2 HOLD",
+  "history": "append-only immutable",
+  "tests": {
+    "M+ valid v1\u2192v2\u2192v3 chain, current=v3, lineage kept": true,
+    "1 forged version=99 \u2192 not folded (stays v1)": true,
+    "2 missing predecessor \u2192 stays v1": true,
+    "3 wrong-task predecessor \u2192 T-001 stays v1": true,
+    "4 unauthorized supersession (no scope) \u2192 stays v1": true,
+    "5 two v2 from same predecessor \u2192 HOLD (fork)": true,
+    "6 same-version successor \u2192 stays v1": true,
+    "7 skipped version (v3 after v1) \u2192 stays v1": true,
+    "8 contract substitution \u2192 stays v1": true,
+    "9 unauthorized migration \u2192 stays v1": true,
+    "10 two v2 successors \u2192 HOLD (fork)": true,
+    "11 reordered ledger \u2192 fail-closed": true,
+    "12 shadow overwrite (bad tag) \u2192 single valid genesis, current=v1": true
+  },
+  "all_pass": true,
+  "adversarial_covered": [
+    "forged v99",
+    "missing predecessor",
+    "wrong-task predecessor",
+    "unauthorized supersession",
+    "stale/fork v2",
+    "same-version",
+    "skipped version",
+    "contract substitution",
+    "unauthorized migration",
+    "two successors\u2192HOLD",
+    "reordered\u2192fail-closed",
+    "shadow overwrite",
+    "valid v1\u2192v2\u2192v3 replay"
+  ],
+  "HONEST_BOUNDARY": "in-process stores/keys modeled; witness-existence gap (label \u22ac existence) still open; process boundary for full unforgeability",
+  "CONTROL_PLANE_EARNED": "chain-semantics EARNED vs keyless FORGERY; NEW GAP: keyless DENIAL",
+  "SelfPassed": true,
+  "PeerAdversaryValidated": "SEAM_ATTACKED",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "receipt_sha16": "c26c1f501f3ee46e",
+  "fresh_adversary": {
+    "confirmed": [
+      "current=chain terminal, NOT arrival-derived (1a/1b/1c)",
+      "monotonic+fork enforced vs keyless AND keyed",
+      "keyless cannot forge a valid receipt (bad tag falls out of valid)",
+      "append-only holds (superseded kept in lineage)",
+      "reduce terminates, cycle unsatisfiable",
+      "deterministic replay"
+    ],
+    "NEW_GAP": "keyless DENIAL-of-admission via unauthenticated envelope-kind poisoning. ADMITTED/SUPERSEDES envelope has NO grant_tag (only RECEIPT does); reduce builds kinds[rh] from untagged envelopes LAST-WRITER-WINS, so a keyless appender names a valid receipt hash under the WRONG kind \u2192 legit supersession DENIED / reverts to prior version, or genesis\u2192GENESIS_MISSING HOLD.",
+    "bounds": "denial-only, NEVER false-admission (minting a valid receipt needs the key); recoverable (re-append correct envelope last)",
+    "fix_class": "authenticate the KIND: derive kind from the receipt authenticated content (kind field covered by grant_tag) OR require the envelope to carry the same grant_tag OR first-writer-wins for a given rh. Same reconstruct-from-proof fix as v1.",
+    "honest_line": "current genuinely lineage-derived; keyless caller cannot false-admit but CAN deny (forced HOLD/version revert)"
+  }
+}

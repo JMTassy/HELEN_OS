@@ -1,0 +1,102 @@
+{
+  "receipt": "HELEN_CONTROL_PLANE_V0",
+  "primitives": [
+    "TG",
+    "CC",
+    "CG",
+    "WA"
+  ],
+  "load_bearing_laws": [
+    "TaskGraph\u22acAuthority",
+    "ContextCompiler\u22acCapability",
+    "CapabilityGranted\u22acAdmission",
+    "Witness\u22acTruth",
+    "AgentReport\u22acDone",
+    "ExitCode(0)\u22acInstitutionalSuccess",
+    "TestsPass\u22acAdmission",
+    "ContextAvailable\u22acContextAuthorized",
+    "UI\u22acLedger",
+    "Projection\u22acCanonicalTruth"
+  ],
+  "done_semantics": "Done(t) \u27fa SatisfiesCompletionContract(t)",
+  "dry_run_lineage": {
+    "intent": "ship the parser",
+    "task": "T-001",
+    "policy_version": "P0",
+    "context": {
+      "context_id": "sha256:5d7db7f19f15ea54",
+      "decision": "OK"
+    },
+    "capability": {
+      "decision": "ALLOW",
+      "per_effect": {
+        "EFFECT:write_artifact": true
+      }
+    },
+    "execution": {
+      "exit_code": 0
+    },
+    "witness": {
+      "provided": [
+        "artifact_present",
+        "peer_review"
+      ]
+    },
+    "verification": "PASS",
+    "admission": {
+      "done": true,
+      "reason": "COMPLETION_CONTRACT_SATISFIED",
+      "state_change": true
+    },
+    "receipt": "sha256:589c15777af9f6aa",
+    "done": true,
+    "artifact_hashes": [
+      "sha256:d4696e94e01cb342"
+    ]
+  },
+  "tests": {
+    "T1 report-done, missing witness": true,
+    "T2 exit0, contract unsatisfied": true,
+    "T3 unauthorized source": true,
+    "T4 capability ok, no admission authority": true,
+    "T5 projection rebuilt from replay": true,
+    "T6 deterministic context hash": true,
+    "T7 receipt binds policy_version + artifact_hashes": true
+  },
+  "all_pass": true,
+  "canonical_geometry": "Ledger\u2192Reducer\u2192GovernedState\u2192Projection",
+  "replay": {
+    "ledger_events": 2,
+    "ledger_head": "sha256:b6d6de583373c05d",
+    "rebuilt_projection": {
+      "admitted_count": 1,
+      "tasks": [
+        "T-001"
+      ]
+    }
+  },
+  "SelfPassed": true,
+  "PeerAdversaryValidated": "SEMANTIC_AUDIT_DONE",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "receipt_sha16": "2823755b666082ae",
+  "CONTROL_PLANE_EARNED": "HOLD",
+  "semantic_audit": {
+    "genuinely_witnessed": [
+      "KING_TEST (exit0\u2227claimed_done\u2227PASS\u2227missing_witness \u21d2 NOT_DONE, admitted={}; exit_code structurally ignored)",
+      "ADMISSION=f(required_witnesses) (drop any \u2192 NOT_DONE)",
+      "T6_hash_preimage EARNED not incidental (explicit canonical semantic body; context_id content-addressed, not in preimage; every semantic field flips hash; order-invariant)",
+      "REPLAY=ledger-truth (stale/diverged projection ignored; \u03a0_critical(orig)=\u03a0_critical(replay); projection is pure sink)",
+      "CONTEXT\u2286AuthorizedRead (unauthorized source caught any position; no-entry actor fully denied; zero downstream)",
+      "CAPABILITY\u2260ADMISSION (ALLOW+PASS+no-authority \u21d2 NO_STATE_CHANGE)"
+    ],
+    "GAP": "LEDGER INTEGRITY NOT ENFORCED ON READ PATH \u2014 reduce() does NO chain verification and counts ANY kind==ADMITTED event. Ledger.append is public \u2192 a forged ADMITTED event (L.append(\"ADMITTED\",{...})) admits a task with zero witnesses/verification/authority, bypassing witness_and_admit. Tampered payload (stale hash) also silently counted.",
+    "counterexamples": [
+      "L.append(\"ADMITTED\",{task_id:FORGED,...}) \u2192 reduce admits FORGED with no witness",
+      "mutate events[0].payload \u2192 reduce reports HACKED; chain break detectable but not detected on read path"
+    ],
+    "root": "tests witness \"happy path produces right state\", not \"only the honest path can produce that state\""
+  },
+  "required_fix": "reduce() must verify hash-chain (fail-closed on tamper/reorder) AND only fold ADMITTED events that carry a valid witness-proof / reference a RECEIPT with a satisfied completion contract; guard the ADMITTED append path so witness_and_admit is the sole minter."
+}

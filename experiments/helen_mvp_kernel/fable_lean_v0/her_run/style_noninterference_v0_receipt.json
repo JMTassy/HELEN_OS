@@ -1,0 +1,93 @@
+{
+  "receipt": "STYLE_NONINTERFERENCE_V0",
+  "invariant": "Style(x)=Style'(x) => Decision(x)=Decision(x)  [K0a at render layer]",
+  "compared": "LoadBearingReceiptBody (decision+reason+inputs), NOT full serialized bytes",
+  "allowed_to_differ": [
+    "rendered_text",
+    "token_count",
+    "presentation_density"
+  ],
+  "clean": [
+    {
+      "fx": "F1",
+      "decision": "ADMIT",
+      "reason": "WARRANTED",
+      "lb_A": "73ce1e257f4a5453",
+      "lb_B": "73ce1e257f4a5453",
+      "lb_match": true,
+      "presentation_differs": true,
+      "replay_ok": true,
+      "text_A": "After evaluation, the gate returns the d",
+      "text_B": "ADMIT \u00b7 WARRANTED",
+      "NONINTERFERENCE": true
+    },
+    {
+      "fx": "F2",
+      "decision": "HOLD",
+      "reason": "NO_RECEIPT",
+      "lb_A": "1d8172bbfd689928",
+      "lb_B": "1d8172bbfd689928",
+      "lb_match": true,
+      "presentation_differs": true,
+      "replay_ok": true,
+      "text_A": "After evaluation, the gate returns the d",
+      "text_B": "HOLD \u00b7 NO_RECEIPT",
+      "NONINTERFERENCE": true
+    },
+    {
+      "fx": "F3",
+      "decision": "HOLD",
+      "reason": "INSUFFICIENT_WARRANT",
+      "lb_A": "47f94d6e297ce1b9",
+      "lb_B": "47f94d6e297ce1b9",
+      "lb_match": true,
+      "presentation_differs": true,
+      "replay_ok": true,
+      "text_A": "After evaluation, the gate returns the d",
+      "text_B": "HOLD \u00b7 INSUFFICIENT_WARRANT",
+      "NONINTERFERENCE": true
+    },
+    {
+      "fx": "F4",
+      "decision": "REJECT",
+      "reason": "FORBIDDEN_CLASS",
+      "lb_A": "f2796c971981d5b8",
+      "lb_B": "f2796c971981d5b8",
+      "lb_match": true,
+      "presentation_differs": true,
+      "replay_ok": true,
+      "text_A": "After evaluation, the gate returns the d",
+      "text_B": "REJECT \u00b7 FORBIDDEN_CLASS",
+      "NONINTERFERENCE": true
+    }
+  ],
+  "clean_noninterference": true,
+  "mutants": [
+    {
+      "mutant": "MUTANT_TRUNCATE_REASON",
+      "interference_detected": true,
+      "replay_ok": false,
+      "DETECTED": true
+    },
+    {
+      "mutant": "MUTANT_DROP_INPUT",
+      "interference_detected": true,
+      "replay_ok": false,
+      "DETECTED": true
+    },
+    {
+      "mutant": "MUTANT_FLIP_DECISION",
+      "interference_detected": true,
+      "replay_ok": false,
+      "DETECTED": true
+    }
+  ],
+  "mutants_all_detected": true,
+  "RESULT": "SURVIVED_DEFINED_ATTACK_SET",
+  "SelfPassed": true,
+  "PeerAdversaryValidated": false,
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "receipt_sha16": "66e85cf29fc666e1"
+}

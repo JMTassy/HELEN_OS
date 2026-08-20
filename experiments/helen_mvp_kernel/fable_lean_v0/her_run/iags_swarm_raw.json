@@ -1,0 +1,212 @@
+[
+  {
+    "A": "HEKHALOT",
+    "B": "YETZIRAH",
+    "relation_type": "ANALOGY",
+    "support_level": "PLAUSIBLE",
+    "evidence_refs": [
+      "HEKHALOT",
+      "YETZIRAH"
+    ],
+    "ancestry_status": "none",
+    "candidate_falsifier": "lack of explicit structural mapping in primary texts",
+    "unknowns": "exact chronological sequence of influence",
+    "lens": "G1_ANALOGY"
+  },
+  {
+    "A": "YETZIRAH",
+    "B": "BAHIR",
+    "relation_type": "ANTECEDENCE",
+    "support_level": "SUPPORTED",
+    "evidence_refs": [
+      "YETZIRAH",
+      "BAHIR"
+    ],
+    "ancestry_status": "none",
+    "candidate_falsifier": "uncertain dating of Yetzirah",
+    "unknowns": "specific textual transmission path",
+    "lens": "G1_ANALOGY"
+  },
+  {
+    "A": "ETZCHAIM",
+    "B": "PARDES",
+    "relation_type": "ANALOGY",
+    "support_level": "SUPPORTED",
+    "evidence_refs": [
+      "ETZCHAIM",
+      "PARDES"
+    ],
+    "ancestry_status": "none",
+    "candidate_falsifier": "differences in systematization methodology",
+    "unknowns": "extent of cross-pollination between Lurianic and Cordoveran systems",
+    "lens": "G1_ANALOGY"
+  },
+  {
+    "A": "HEKHALOT",
+    "B": "YETZIRAH",
+    "relation_type": "ANTECEDENCE",
+    "support_level": "PLAUSIBLE",
+    "evidence_refs": [
+      "HEKHALOT",
+      "YETZIRAH"
+    ],
+    "ancestry_status": "PROPOSED",
+    "candidate_falsifier": "Lack of explicit textual cross-reference or linguistic bridge.",
+    "unknowns": "Exact dates of both texts.",
+    "lens": "G2_ADVERSARY"
+  },
+  {
+    "A": "YETZIRAH",
+    "B": "ZOHAR",
+    "relation_type": "INFLUENCE",
+    "support_level": "SUPPORTED",
+    "evidence_refs": [
+      "YETZIRAH",
+      "ZOHAR"
+    ],
+    "ancestry_status": "PROPOSED",
+    "candidate_falsifier": "The Zohar's structural innovations may supersede Yetzirah's cosmology.",
+    "unknowns": "Specific transmission chain between late antiquity and 13th century.",
+    "lens": "G2_ADVERSARY"
+  },
+  {
+    "A": "ABULAFIA",
+    "B": "ETZCHAIM",
+    "relation_type": "INTERPRETATION",
+    "support_level": "PLAUSIBLE",
+    "evidence_refs": [
+      "ABULAFIA",
+      "ETZCHAIM"
+    ],
+    "ancestry_status": "PROPOSED",
+    "candidate_falsifier": "Lurianic systemization may intentionally obscure Abulafian prophetic methods.",
+    "unknowns": "Degree of conscious synthesis by Chaim Vital.",
+    "lens": "G2_ADVERSARY"
+  },
+  {
+    "A": "YETZIRAH",
+    "B": "BAHIR",
+    "relation_type": "ANTECEDENCE",
+    "support_level": "PLAUSIBLE",
+    "evidence_refs": [
+      "YETZIRAH",
+      "BAHIR"
+    ],
+    "ancestry_status": "UNWITNESSED",
+    "candidate_falsifier": "Lack of explicit textual citation in Bahir regarding Yetzirah",
+    "unknowns": "Exact chronological sequence of early sefirotic development",
+    "lens": "G3_PROVENANCE"
+  },
+  {
+    "A": "ZOHAR",
+    "B": "ABULAFIA",
+    "relation_type": "INFLUENCE",
+    "support_level": "SUPPORTED",
+    "evidence_refs": [
+      "ZOHAR",
+      "ABULAFIA"
+    ],
+    "ancestry_status": "DOCUMENTED",
+    "candidate_falsifier": "None",
+    "unknowns": "",
+    "lens": "G3_PROVENANCE"
+  },
+  {
+    "A": "ETZCHAIM",
+    "B": "PARDES",
+    "relation_type": "INTERPRETATION",
+    "support_level": "OBSERVED",
+    "evidence_refs": [
+      "ETZCHAIM",
+      "PARDES"
+    ],
+    "ancestry_status": "DOCUMENTED",
+    "candidate_falsifier": "None",
+    "unknowns": "Specific degrees of systematic divergence",
+    "lens": "G3_PROVENANCE"
+  },
+  {
+    "A": "YETZIRAH",
+    "B": "BAHIR",
+    "relation_type": "ANTECEDENCE",
+    "support_level": "PLAUSIBLE",
+    "evidence_refs": [
+      "YETZIRAH",
+      "BAHIR"
+    ],
+    "ancestry_status": "PROPOSED",
+    "candidate_falsifier": "Lack of explicit textual citations linking specific letter-combinations to early sefirotic structures.",
+    "unknowns": "Exact chronological overlap between early mystical cosmologies.",
+    "lens": "G4_CONTINUITY"
+  },
+  {
+    "A": "BAHIR",
+    "B": "ZOHAR",
+    "relation_type": "INFLUENCE",
+    "support_level": "SUPPORTED",
+    "evidence_refs": [
+      "BAHIR",
+      "ZOHAR"
+    ],
+    "ancestry_status": "ESTABLISHED",
+    "candidate_falsifier": "The Zohar's unique development of the Tree of Life structure beyond Bahir's simpler model.",
+    "unknowns": "Extent of Bahir's circulation in Castilian circles.",
+    "lens": "G4_CONTINUITY"
+  },
+  {
+    "A": "ABULAFIA",
+    "B": "PARDES",
+    "relation_type": "INTERPRETATION",
+    "support_level": "OBSERVED",
+    "evidence_refs": [
+      "ABULAFIA",
+      "PARDES"
+    ],
+    "ancestry_status": "OPPOSED",
+    "candidate_falsifier": "PARDES's systematic normalization explicitly steers away from Abulafian prophetic ecstaticism toward structured meditation.",
+    "unknowns": "Degree of clandestine influence of Abulafia on Cordovero's internal circle.",
+    "lens": "G4_CONTINUITY"
+  },
+  {
+    "A": "HEKHALOT",
+    "B": "YETZIRAH",
+    "relation_type": "ANTECEDENCE",
+    "support_level": "PLAUSIBLE",
+    "evidence_refs": [
+      "HEKHALOT",
+      "YETZIRAH"
+    ],
+    "ancestry_status": "false",
+    "candidate_falsifier": "Discovery of an independent, non-Merkavah source for the 10 sefirot structure predating late antiquity.",
+    "unknowns": "Exact dating of Yetzirah",
+    "lens": "G5_FALSIFIER"
+  },
+  {
+    "A": "YETZIRAH",
+    "B": "BAHIR",
+    "relation_type": "INFLUENCE",
+    "support_level": "SUPPORTED",
+    "evidence_refs": [
+      "YETZIRAH",
+      "BAHIR"
+    ],
+    "ancestry_status": " false",
+    "candidate_falsifier": "Evidence that Bahir's sefirotic descriptions derive from a lost oral tradition unrelated to Yetzirah's cosmogony.",
+    "unknowns": "Intermediate transmission links",
+    "lens": "G5_FALSIFIER"
+  },
+  {
+    "A": "ZOHAR",
+    "B": "ABULAFIA",
+    "relation_type": "INTERPRETATION",
+    "support_level": "OBSERVED",
+    "evidence_refs": [
+      "ZOHAR",
+      "ABULAFIA"
+    ],
+    "ancestry_status": " false",
+    "candidate_falsifier": "Proof that Abulafia's letter-combinations were derived from a distinct, non-Zoharic mystical system.",
+    "unknowns": "Extent of Abulafia's access to the Zohar manuscript",
+    "lens": "G5_FALSIFIER"
+  }
+]

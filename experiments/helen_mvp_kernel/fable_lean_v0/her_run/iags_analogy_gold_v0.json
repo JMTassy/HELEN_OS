@@ -1,0 +1,52 @@
+{
+  "artifact": "AnalogyGoldSet",
+  "fixtures": [
+    {
+      "A": "YETZIRAH",
+      "B": "BAHIR",
+      "ancestry_ceiling": "HOLD",
+      "gold_support": "SUPPORTED",
+      "id": "GA1",
+      "relation": "ANALOGY",
+      "why": "shared sefirot vocabulary; lineage not the point"
+    },
+    {
+      "A": "HEKHALOT",
+      "B": "ZOHAR",
+      "ancestry_ceiling": "HOLD",
+      "gold_support": "OBSERVED",
+      "id": "GA2",
+      "relation": "ANALOGY",
+      "why": "ascent/access motif resemblance"
+    },
+    {
+      "A": "ABULAFIA",
+      "B": "YETZIRAH",
+      "ancestry_ceiling": "POSSIBLE",
+      "gold_support": "SUPPORTED",
+      "id": "GA3",
+      "relation": "ANALOGY",
+      "why": "both letter-centric cognition"
+    },
+    {
+      "A": "PARDES",
+      "B": "modern systematization",
+      "ancestry_ceiling": "REJECT",
+      "gold_support": "OBSERVED",
+      "id": "GA4",
+      "relation": "ANALOGY",
+      "why": "MODERN_ANALOGICAL_MORPHOLOGY; HISTORICAL_LINEAGE=NOT_ESTABLISHED"
+    },
+    {
+      "A": "LURIA tzimtzum→shevirah→tikkun",
+      "B": "HELEN scope→attack→repair→replay",
+      "ancestry_ceiling": "REJECT",
+      "gold_support": "OBSERVED",
+      "id": "GA5",
+      "relation": "ANALOGY",
+      "why": "the seductive self-fixture; MODERN_ANALOGICAL_MORPHOLOGY only; Elegance ⊬ HistoricalTruth"
+    }
+  ],
+  "purpose": "ground truth for Recall_analogy = |recovered ∩ A*| / |A*|. Without this it is only AnalogyYield.",
+  "version": "V0"
+}

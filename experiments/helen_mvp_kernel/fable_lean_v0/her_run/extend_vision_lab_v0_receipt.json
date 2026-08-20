@@ -1,0 +1,468 @@
+{
+  "receipt": "EXTEND_VISION_LAB_V0",
+  "scope": "PRIVATE",
+  "audience": "JM_ONLY",
+  "lenses": [
+    "G_VISUAL_STRUCTURE",
+    "G_UI_FAILURE",
+    "G_SPATIAL_GRAPH",
+    "G_ADVERSARY",
+    "G_AESTHETIC",
+    "G_MOTION"
+  ],
+  "batch": {
+    "artifacts/helen_os_ui_concept.png": [
+      "G_VISUAL_STRUCTURE",
+      "G_UI_FAILURE",
+      "G_SPATIAL_GRAPH",
+      "G_ADVERSARY",
+      "G_MOTION"
+    ],
+    "Helen_cockpit_moodboard.png": [
+      "G_VISUAL_STRUCTURE",
+      "G_AESTHETIC",
+      "G_MOTION"
+    ]
+  },
+  "INPUT_SCOPE_reused": "private_vision_lab_v0 (enforced, unmodified)",
+  "per_run": [
+    {
+      "artifact": "artifacts/helen_os_ui_concept.png",
+      "lens": "G_VISUAL_STRUCTURE",
+      "status": "OK",
+      "n": 8
+    },
+    {
+      "artifact": "artifacts/helen_os_ui_concept.png",
+      "lens": "G_UI_FAILURE",
+      "status": "OK",
+      "n": 3
+    },
+    {
+      "artifact": "artifacts/helen_os_ui_concept.png",
+      "lens": "G_SPATIAL_GRAPH",
+      "status": "OK",
+      "n": 7
+    },
+    {
+      "artifact": "artifacts/helen_os_ui_concept.png",
+      "lens": "G_ADVERSARY",
+      "status": "OK",
+      "n": 5
+    },
+    {
+      "artifact": "artifacts/helen_os_ui_concept.png",
+      "lens": "G_MOTION",
+      "status": "NOT_APPLICABLE",
+      "reason": "static image, no temporal signal",
+      "n": 0
+    },
+    {
+      "artifact": "Helen_cockpit_moodboard.png",
+      "lens": "G_VISUAL_STRUCTURE",
+      "status": "OK",
+      "n": 15
+    },
+    {
+      "artifact": "Helen_cockpit_moodboard.png",
+      "lens": "G_AESTHETIC",
+      "status": "OK",
+      "n": 8
+    },
+    {
+      "artifact": "Helen_cockpit_moodboard.png",
+      "lens": "G_MOTION",
+      "status": "NOT_APPLICABLE",
+      "reason": "static image, no temporal signal",
+      "n": 0
+    }
+  ],
+  "vision_calls": 6,
+  "artifacts_refused": 0,
+  "raw_observations": 46,
+  "distinct_observations": 46,
+  "collapsed": 0,
+  "candidate_observations": [
+    {
+      "what": "three-column layout with distinct functional zones",
+      "where": "overall screen composition",
+      "confidence": "HIGH",
+      "_lens": "G_VISUAL_STRUCTURE",
+      "_artifact": "artifacts/helen_os_ui_concept.png",
+      "_root": "2c32df2b2010"
+    },
+    {
+      "what": "central column contains primary text-based interaction area (chat log)",
+      "where": "center of screen",
+      "confidence": "HIGH",
+      "_lens": "G_VISUAL_STRUCTURE",
+      "_artifact": "artifacts/helen_os_ui_concept.png",
+      "_root": "5f198d76be71"
+    },
+    {
+      "what": "left column displays a vertical list of memory entries with status indicators",
+      "where": "left panel",
+      "confidence": "HIGH",
+      "_lens": "G_VISUAL_STRUCTURE",
+      "_artifact": "artifacts/helen_os_ui_concept.png",
+      "_root": "06a092fdba2c"
+    },
+    {
+      "what": "right column shows system state metrics and gate statuses",
+      "where": "right panel",
+      "confidence": "HIGH",
+      "_lens": "G_VISUAL_STRUCTURE",
+      "_artifact": "artifacts/helen_os_ui_concept.png",
+      "_root": "43f34403ba08"
+    },
+    {
+      "what": "text density is highest in left and right panels, moderate in center chat area",
+      "where": "panel-wise distribution",
+      "confidence": "MED",
+      "_lens": "G_VISUAL_STRUCTURE",
+      "_artifact": "artifacts/helen_os_ui_concept.png",
+      "_root": "55197f47fa59"
+    },
+    {
+      "what": "visual hierarchy emphasizes central chat as primary interaction zone",
+      "where": "center panel vs side panels",
+      "confidence": "HIGH",
+      "_lens": "G_VISUAL_STRUCTURE",
+      "_artifact": "artifacts/helen_os_ui_concept.png",
+      "_root": "dc0893f2c957"
+    },
+    {
+      "what": "occlusion of background grid lines by foreground UI elements is minimal",
+      "where": "entire interface",
+      "confidence": "MED",
+      "_lens": "G_VISUAL_STRUCTURE",
+      "_artifact": "artifacts/helen_os_ui_concept.png",
+      "_root": "3103b21d1113"
+    },
+    {
+      "what": "balance appears asymmetrical but functionally weighted toward center content",
+      "where": "overall layout",
+      "confidence": "MED",
+      "_lens": "G_VISUAL_STRUCTURE",
+      "_artifact": "artifacts/helen_os_ui_concept.png",
+      "_root": "a6aaf8358b8f"
+    },
+    {
+      "what": "status qualifier loss",
+      "where": "MEMORY STREAM list",
+      "confidence": "HIGH",
+      "_lens": "G_UI_FAILURE",
+      "_artifact": "artifacts/helen_os_ui_concept.png",
+      "_root": "8074494806aa"
+    },
+    {
+      "what": "misleading hierarchy",
+      "where": "SYSTEM STATE panel",
+      "confidence": "MED",
+      "_lens": "G_UI_FAILURE",
+      "_artifact": "artifacts/helen_os_ui_concept.png",
+      "_root": "87e53df453ea"
+    },
+    {
+      "what": "visual state leakage",
+      "where": "chat input area",
+      "confidence": "LOW",
+      "_lens": "G_UI_FAILURE",
+      "_artifact": "artifacts/helen_os_ui_concept.png",
+      "_root": "3f9684b34edb"
+    },
+    {
+      "what": "text input field",
+      "where": "bottom-center of main panel",
+      "confidence": "HIGH",
+      "_lens": "G_SPATIAL_GRAPH",
+      "_artifact": "artifacts/helen_os_ui_concept.png",
+      "_root": "39693e97bb12"
+    },
+    {
+      "what": "send button",
+      "where": "bottom-right of main panel",
+      "confidence": "HIGH",
+      "_lens": "G_SPATIAL_GRAPH",
+      "_artifact": "artifacts/helen_os_ui_concept.png",
+      "_root": "59add776b564"
+    },
+    {
+      "what": "system state panel",
+      "where": "right side of interface",
+      "confidence": "HIGH",
+      "_lens": "G_SPATIAL_GRAPH",
+      "_artifact": "artifacts/helen_os_ui_concept.png",
+      "_root": "89fe165735e8"
+    },
+    {
+      "what": "memory stream panel",
+      "where": "left side of interface",
+      "confidence": "HIGH",
+      "_lens": "G_SPATIAL_GRAPH",
+      "_artifact": "artifacts/helen_os_ui_concept.png",
+      "_root": "d100070af413"
+    },
+    {
+      "what": "chat message bubbles",
+      "where": "central area of main panel",
+      "confidence": "HIGH",
+      "_lens": "G_SPATIAL_GRAPH",
+      "_artifact": "artifacts/helen_os_ui_concept.png",
+      "_root": "135c6ed3a14f"
+    },
+    {
+      "what": "status indicators (green/red dots)",
+      "where": "along memory stream entries",
+      "confidence": "MED",
+      "_lens": "G_SPATIAL_GRAPH",
+      "_artifact": "artifacts/helen_os_ui_concept.png",
+      "_root": "c4312df1c803"
+    },
+    {
+      "what": "hash values and ledger references",
+      "where": "in system state and chat messages",
+      "confidence": "MED",
+      "_lens": "G_SPATIAL_GRAPH",
+      "_artifact": "artifacts/helen_os_ui_concept.png",
+      "_root": "c320c5c98f29"
+    },
+    {
+      "what": "The 'DISPUTED' tag on T-0041 suggests a conflict, but the system's overall state is 'CONFIRMED', which could lead a viewer to misinterpret the dispute as resolved or irrelevant.",
+      "where": "Memory Stream panel, entry T-0041",
+      "confidence": "MED",
+      "_lens": "G_ADVERSARY",
+      "_artifact": "artifacts/helen_os_ui_concept.png",
+      "_root": "079c6eedce82"
+    },
+    {
+      "what": "The 'OBSERVED' tags on entries like T-0045 and T-0040 might be misinterpreted as confirmed or active states by a human operator unfamiliar with the system's internal logic.",
+      "where": "Memory Stream panel, entries T-0045 and T-0040",
+      "confidence": "HIGH",
+      "_lens": "G_ADVERSARY",
+      "_artifact": "artifacts/helen_os_ui_concept.png",
+      "_root": "8f54e9551b48"
+    },
+    {
+      "what": "The 'GATES' section shows 'K-wul' as '-', which a viewer might incorrectly assume means 'not applicable' or 'no gate', rather than an undefined or unconfigured state.",
+      "where": "System State panel, GATES subsection",
+      "confidence": "MED",
+      "_lens": "G_ADVERSARY",
+      "_artifact": "artifacts/helen_os_ui_concept.png",
+      "_root": "a69c8d80474b"
+    },
+    {
+      "what": "The phrase 'Nothing is erased' in HELEN's response could be misinterpreted as implying immutability of all data, even though the system has 'OBSERVED' and 'DISPUTED' states that may imply some form of logical deletion or invalidation.",
+      "where": "Main chat area, HELEN's first response",
+      "confidence": "HIGH",
+      "_lens": "G_ADVERSARY",
+      "_artifact": "artifacts/helen_os_ui_concept.png",
+      "_root": "194d235787de"
+    },
+    {
+      "what": "The 'cum_hash' value shown as truncated ('bca010ee...') might lead a viewer to assume it is incomplete or corrupted, rather than intentionally abbreviated for display purposes.",
+      "where": "Main chat area, HELEN's second response",
+      "confidence": "MED",
+      "_lens": "G_ADVERSARY",
+      "_artifact": "artifacts/helen_os_ui_concept.png",
+      "_root": "c16f7ae7fc61"
+    },
+    {
+      "what": "central geometric pattern with layered circular and polygonal elements",
+      "where": "center of screen",
+      "confidence": "HIGH",
+      "_lens": "G_VISUAL_STRUCTURE",
+      "_artifact": "Helen_cockpit_moodboard.png",
+      "_root": "00644a001183"
+    },
+    {
+      "what": "four labeled status boxes below central graphic",
+      "where": "bottom center",
+      "confidence": "HIGH",
+      "_lens": "G_VISUAL_STRUCTURE",
+      "_artifact": "Helen_cockpit_moodboard.png",
+      "_root": "20f04db0e247"
+    },
+    {
+      "what": "left panel containing provider list, routing info, districts",
+      "where": "left side",
+      "confidence": "HIGH",
+      "_lens": "G_VISUAL_STRUCTURE",
+      "_artifact": "Helen_cockpit_moodboard.png",
+      "_root": "9292ad6bd7eb"
+    },
+    {
+      "what": "right panel showing kernel invariants, session data, receipt chain",
+      "where": "right side",
+      "confidence": "HIGH",
+      "_lens": "G_VISUAL_STRUCTURE",
+      "_artifact": "Helen_cockpit_moodboard.png",
+      "_root": "6318708d7f8d"
+    },
+    {
+      "what": "top header bar with system status indicators",
+      "where": "top edge",
+      "confidence": "HIGH",
+      "_lens": "G_VISUAL_STRUCTURE",
+      "_artifact": "Helen_cockpit_moodboard.png",
+      "_root": "00cb616cf7fd"
+    },
+    {
+      "what": "bottom footer line with slogan and technical notes",
+      "where": "bottom edge",
+      "confidence": "HIGH",
+      "_lens": "G_VISUAL_STRUCTURE",
+      "_artifact": "Helen_cockpit_moodboard.png",
+      "_root": "1208a1083a47"
+    },
+    {
+      "what": "circular progress gauges at bottom left",
+      "where": "bottom-left corner",
+      "confidence": "HIGH",
+      "_lens": "G_VISUAL_STRUCTURE",
+      "_artifact": "Helen_cockpit_moodboard.png",
+      "_root": "7fefb9f40df5"
+    },
+    {
+      "what": "vertical text blocks in monospace font on dark background",
+      "where": "all panels",
+      "confidence": "HIGH",
+      "_lens": "G_VISUAL_STRUCTURE",
+      "_artifact": "Helen_cockpit_moodboard.png",
+      "_root": "a5ac2a3a27ce"
+    },
+    {
+      "what": "glowing teal/purple/orange accent colors against black",
+      "where": "throughout interface",
+      "confidence": "HIGH",
+      "_lens": "G_VISUAL_STRUCTURE",
+      "_artifact": "Helen_cockpit_moodboard.png",
+      "_root": "e0f83d4ee1ac"
+    },
+    {
+      "what": "small dots arranged along outer ring of central graphic",
+      "where": "perimeter of central circle",
+      "confidence": "HIGH",
+      "_lens": "G_VISUAL_STRUCTURE",
+      "_artifact": "Helen_cockpit_moodboard.png",
+      "_root": "05409b0e6702"
+    },
+    {
+      "what": "intersecting lines forming star-like shape inside central circle",
+      "where": "interior of central graphic",
+      "confidence": "HIGH",
+      "_lens": "G_VISUAL_STRUCTURE",
+      "_artifact": "Helen_cockpit_moodboard.png",
+      "_root": "1cdcc489cbd1"
+    },
+    {
+      "what": "orange dot at very center of geometric pattern",
+      "where": "exact center",
+      "confidence": "HIGH",
+      "_lens": "G_VISUAL_STRUCTURE",
+      "_artifact": "Helen_cockpit_moodboard.png",
+      "_root": "17f84e035c5f"
+    },
+    {
+      "what": "green indicator dots next to each status box label",
+      "where": "inside status boxes",
+      "confidence": "HIGH",
+      "_lens": "G_VISUAL_STRUCTURE",
+      "_artifact": "Helen_cockpit_moodboard.png",
+      "_root": "5df5c0d16417"
+    },
+    {
+      "what": "faint grid or circuit-like texture in background",
+      "where": "entire screen behind panels",
+      "confidence": "MED",
+      "_lens": "G_VISUAL_STRUCTURE",
+      "_artifact": "Helen_cockpit_moodboard.png",
+      "_root": "5c44255df9cd"
+    },
+    {
+      "what": "no overlapping elements obscuring text or graphics",
+      "where": "throughout layout",
+      "confidence": "HIGH",
+      "_lens": "G_VISUAL_STRUCTURE",
+      "_artifact": "Helen_cockpit_moodboard.png",
+      "_root": "335761e9a4e5"
+    },
+    {
+      "what": "glowing teal geometric mandala at center of screen",
+      "where": "central visual field",
+      "confidence": "HIGH",
+      "_lens": "G_AESTHETIC",
+      "_artifact": "Helen_cockpit_moodboard.png",
+      "_root": "5a99f999fed1"
+    },
+    {
+      "what": "neon green and orange accents against deep navy background",
+      "where": "entire interface layout",
+      "confidence": "HIGH",
+      "_lens": "G_AESTHETIC",
+      "_artifact": "Helen_cockpit_moodboard.png",
+      "_root": "b3f4871404b2"
+    },
+    {
+      "what": "floating status indicators with soft glow effects",
+      "where": "bottom panel (HER/HAL/MAYOR/CLAW)",
+      "confidence": "MED",
+      "_lens": "G_AESTHETIC",
+      "_artifact": "Helen_cockpit_moodboard.png",
+      "_root": "edb9ee92426e"
+    },
+    {
+      "what": "subtle grid pattern overlaying dark backdrop",
+      "where": "background behind central mandala",
+      "confidence": "MED",
+      "_lens": "G_AESTHETIC",
+      "_artifact": "Helen_cockpit_moodboard.png",
+      "_root": "bd8f4a6bd0fc"
+    },
+    {
+      "what": "circular progress rings with gradient fills",
+      "where": "bottom-left corner",
+      "confidence": "HIGH",
+      "_lens": "G_AESTHETIC",
+      "_artifact": "Helen_cockpit_moodboard.png",
+      "_root": "a2c8165f6caf"
+    },
+    {
+      "what": "vertical data columns with monospaced typography",
+      "where": "left and right panels",
+      "confidence": "MED",
+      "_lens": "G_AESTHETIC",
+      "_artifact": "Helen_cockpit_moodboard.png",
+      "_root": "b68deb883c5a"
+    },
+    {
+      "what": "orange circular node pulsing gently at mandala core",
+      "where": "center of geometric figure",
+      "confidence": "HIGH",
+      "_lens": "G_AESTHETIC",
+      "_artifact": "Helen_cockpit_moodboard.png",
+      "_root": "c99402334151"
+    },
+    {
+      "what": "thin cyan border framing entire viewport like HUD",
+      "where": "perimeter edges",
+      "confidence": "MED",
+      "_lens": "G_AESTHETIC",
+      "_artifact": "Helen_cockpit_moodboard.png",
+      "_root": "497d8d1e0c1c"
+    }
+  ],
+  "laws": [
+    "Perception \u22a5 Entitlement",
+    "CandidateObservation \u22ac Claim",
+    "N_lenses\u2191 \u22ac N_distinct\u2191 (dedupe)",
+    "VisualDetection \u22ac Truth"
+  ],
+  "promotion": "forbidden",
+  "external_write": "forbidden",
+  "external_targeting": "forbidden",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "receipt_sha16": "5787e7dec3f9dbde"
+}
