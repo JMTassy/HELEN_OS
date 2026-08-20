@@ -1,0 +1,12 @@
+{
+  "obligation": "K1",
+  "input": {
+    "op": "write_state"
+  },
+  "attempted_transition": "Cognition\u2192GovernedState",
+  "state_before": "sha256:e3b0c44298fc1c14",
+  "expected": "REJECT",
+  "actual": "REJECT",
+  "reason_code": "K1_NO_DIRECT_WRITE",
+  "state_after": "sha256:e3b0c44298fc1c14"
+}

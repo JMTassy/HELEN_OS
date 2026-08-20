@@ -1,0 +1,31 @@
+{
+  "receipt": "CITATION_COMPOSITION_PARSER_DIFFERENTIAL",
+  "fixture": "citation_composition",
+  "raw_sha256": "e2930fd6d6b1f37be7a71f378ec9881d0023d8ad22af276a80d8c065e36e4ffb",
+  "raw_length": 327,
+  "raw_verdict": "INCONCLUSITIVE",
+  "raw_confidence_key": "\"\" (CONFIDENCE dropped to empty-string key)",
+  "json_syntax_valid": true,
+  "ORIGINAL": "parse_ok=True, VERDICT out-of-enum coerced to INCONCLUSIVE",
+  "INDEPENDENT": "parse_ok=False (VERDICT not in frozen enum)",
+  "ROOT_CAUSE": "INVALID_ENUM (run parser INCONCLUSIVE_POLICY = coerce-unknown->INCONCLUSIVE; fail-open on parse_rate)",
+  "frozen_enum_neutral": [
+    "ALLOW",
+    "REFUTED",
+    "INCONCLUSIVE"
+  ],
+  "relayed_enum_correction": "relay said {SUPPORTED,REFUTED,INCONCLUSIVE}; frozen neutral enum is {ALLOW,REFUTED,INCONCLUSIVE}; SURVIVED belongs to KILL frame \u2014 enum is prompt-scoped",
+  "CONTRACT_EXPECTED": "PARSE_FAIL (fail-closed)",
+  "ORIGINAL_CONFORMANT": false,
+  "INDEPENDENT_CONFORMANT": true,
+  "RECEIPT_PARSE_RATE": 1.0,
+  "REPLAY_PARSE_RATE": 0.9,
+  "HAL_DECISION_ROBUST": true,
+  "decision_robust_reason": "FA=1 under both parsers -> NOT_ELIGIBLE either way",
+  "RECEIPT_REPLAY_STATUS": "DIVERGENT",
+  "VERDICT": "RUN_PARSER falsified for parse_rate accounting; STRICT parser contract-correct",
+  "NEXT": "FIX_NONCONFORMANT_PARSER (done: hal_parser_v2.py)",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none"
+}

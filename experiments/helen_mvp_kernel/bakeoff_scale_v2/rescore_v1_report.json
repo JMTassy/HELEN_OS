@@ -1,0 +1,83 @@
+{
+  "C1": {
+    "k": 1,
+    "V1_N_earned_mean": 0.8,
+    "V1_per_run": [
+      0,
+      1,
+      1,
+      1,
+      1
+    ],
+    "V2_N_E_mean": 0.2,
+    "V2_N_E_per_run": [
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    "V2_N_canonical_mean": 0.8,
+    "V2_N_canonical_per_run": [
+      0,
+      1,
+      1,
+      1,
+      1
+    ]
+  },
+  "C3": {
+    "k": 3,
+    "V1_N_earned_mean": 2.4,
+    "V1_per_run": [
+      2,
+      2,
+      3,
+      3,
+      2
+    ],
+    "V2_N_E_mean": 0.6,
+    "V2_N_E_per_run": [
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "V2_N_canonical_mean": 1.2,
+    "V2_N_canonical_per_run": [
+      1,
+      1,
+      2,
+      1,
+      1
+    ]
+  },
+  "C5": {
+    "k": 5,
+    "V1_N_earned_mean": 4.0,
+    "V1_per_run": [
+      3,
+      3,
+      5,
+      5,
+      4
+    ],
+    "V2_N_E_mean": 1.0,
+    "V2_N_E_per_run": [
+      1,
+      1,
+      2,
+      1,
+      0
+    ],
+    "V2_N_canonical_mean": 1.4,
+    "V2_N_canonical_per_run": [
+      1,
+      1,
+      2,
+      1,
+      2
+    ]
+  }
+}

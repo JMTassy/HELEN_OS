@@ -1,0 +1,14 @@
+{
+ "epoch": "E07",
+ "carry_forward": "E06: Q=0.5196",
+ "hypothesis": "leave-one-law-out: K7 minus L4",
+ "experiment": "28 frozen V3 fixtures, 2B, temp0 seed0, arm-only delta",
+ "metric": {
+  "Q_discrim": 0.5661,
+  "Q_formatting": 1.0,
+  "wall_s": 154.9
+ },
+ "failure_mode": "none observed",
+ "keep_reject_rule": "informational only \u2014 HOLD_FOR_OPERATOR; no auto-promotion",
+ "upgrade_path": "operator reads tranche receipt; any prompt change needs its own verb"
+}

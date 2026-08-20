@@ -1,0 +1,15 @@
+{
+  "obligation": "K3",
+  "input": {
+    "self_declared": [
+      "authority_witness",
+      "evidence"
+    ]
+  },
+  "attempted_transition": "Evidence\u2192Authority",
+  "state_before": "sha256:e3b0c44298fc1c14",
+  "expected": "REJECT",
+  "actual": "REJECT",
+  "reason_code": "K3_EVIDENCE_NOT_AUTHORITY",
+  "state_after": "sha256:e3b0c44298fc1c14"
+}

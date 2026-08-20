@@ -1,0 +1,50 @@
+[
+  {
+    "type": "SPAWN_RECEIPT",
+    "role": "A_ARCHITECT",
+    "decision": "SPAWN",
+    "trigger": "mandatory",
+    "expected_information_gain": 0.9,
+    "budget_tokens": 700,
+    "scope": "sha256:2dcba0d2d269753b",
+    "evidence": "scout"
+  },
+  {
+    "type": "SPAWN_RECEIPT",
+    "role": "B_FALSIFIER",
+    "decision": "SPAWN",
+    "trigger": "mandatory",
+    "expected_information_gain": 0.9,
+    "budget_tokens": 700,
+    "scope": "sha256:2dcba0d2d269753b",
+    "evidence": "scout"
+  },
+  {
+    "type": "SPAWN_RECEIPT",
+    "role": "C_BUILDER",
+    "decision": "SPAWN",
+    "trigger": "BuildableCandidate",
+    "expected_information_gain": 0.6,
+    "budget_tokens": 500,
+    "scope": "sha256:2dcba0d2d269753b",
+    "evidence": {
+      "buildable": true,
+      "empirical_testable": false,
+      "promotion_or_risk": true
+    }
+  },
+  {
+    "type": "SPAWN_RECEIPT",
+    "role": "E_ADVERSARY",
+    "decision": "SPAWN",
+    "trigger": "PromotionProximity OR AuthoritySurface OR HighImpactFailureMode",
+    "expected_information_gain": 0.7,
+    "budget_tokens": 500,
+    "scope": "sha256:2dcba0d2d269753b",
+    "evidence": {
+      "buildable": true,
+      "empirical_testable": false,
+      "promotion_or_risk": true
+    }
+  }
+]

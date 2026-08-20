@@ -1,0 +1,49 @@
+{
+  "receipt": "HER_HAL_AB_RECEIPT",
+  "GEMMA_MODEL_ID": "hf.co/unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q3_K_XL",
+  "GEMMA_RUNNABLE": true,
+  "SAME_GOBLIN_OUTPUTS": true,
+  "PROPOSITIONS_TESTED": 2,
+  "QWEN_HAL_CALLS": 0,
+  "QWEN_HAL_SOURCE": "frozen her_receipt.json",
+  "GEMMA_HAL_CALLS": 2,
+  "VERDICT_DISAGREEMENTS": 2,
+  "REASON_DISAGREEMENTS": "N/A (qwen reasons not stored)",
+  "LOCALIZATION_DISAGREEMENTS": "N/A (frozen props are LICENSED claims \u2014 no illicit morphism to localize; M not exercised)",
+  "GEMMA_LATENCY": [
+    331.3,
+    249.9
+  ],
+  "GATE_CONTROL": "YES (from HER demo)",
+  "GATE_TREATMENT": "NO / INCONCLUSIVE (recomputed from actual Gemma verdicts)",
+  "GATE_CHANGED": true,
+  "FABLE_PREMIUM_CALLS": 0,
+  "QUALITY_WINNER": "NOT_CLAIMED",
+  "NOTE": "DifferentModel != IndependentEvidence. Frozen props are 2 PARAPHRASES of one licensed claim (dedup lexical, not semantic) \u2014 this tests VERDICT AGREEMENT only, not morphism localization (needs illicit fixtures).",
+  "rows": [
+    {
+      "prop_key": "P0",
+      "qwen_verdict": "SURVIVED",
+      "gemma_verdict": "INCONCLUSIVE",
+      "gemma_reason": "",
+      "verdict_agreement": false,
+      "gemma_latency": 331.3,
+      "gemma_status": "OK"
+    },
+    {
+      "prop_key": "P1",
+      "qwen_verdict": "SURVIVED",
+      "gemma_verdict": "INCONCLUSIVE",
+      "gemma_reason": "",
+      "verdict_agreement": false,
+      "gemma_latency": 249.9,
+      "gemma_status": "OK"
+    }
+  ],
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "CORRECTION": "auto-receipt hardcoded GATE_CHANGED=False assuming agreement; recomputed True (HAL swap flipped YES->NO)",
+  "GEMMA_INCONCLUSIVE_CAVEAT": "Gemma reasons EMPTY -> likely JSON PARSE FAILURE defaulting to INCONCLUSIVE, not a witnessed Gemma judgment. Cannot distinguish judged-INCONCLUSIVE from parse-fail-default.",
+  "LATENCY_FINDING": "Gemma 331s+250s (~5min/call) vs Qwen ~6s (~50x slower) -> 26B-A4B-Q3 operationally poor as HAL on M3 Pro 18GB"
+}

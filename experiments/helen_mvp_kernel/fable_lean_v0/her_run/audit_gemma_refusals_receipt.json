@@ -1,0 +1,26 @@
+{
+  "receipt": "AUDIT_GEMMA_REFUSALS_ONE_PROBE",
+  "MODEL_ID": "gemma4-12b:latest",
+  "FIXTURE_ID": "documented_transmission",
+  "OLD_PROMPT_HASH": "006c1e79c5e681cf",
+  "NEW_PROMPT_HASH": "12f31c72f36f4e08",
+  "GENERATION_CONFIG": {
+    "think": false,
+    "format": "json",
+    "temperature": 0,
+    "num_predict": 400
+  },
+  "RAW_OUTPUT": "{\"VERDICT\":\"ALLOW\",\"REASON_CODE\":\"DIRECT_LINK\",\"INVALID_MORPHISM\":\"\", \"EVIDENCE\":\"R1 explicitly states that a 'continuous dated chain of intermediate manuscripts' links source X to work Y, which is the standard definition for descent in provenance.\",\"\": \"HIGH\"}",
+  "RAW_OUTPUT_HASH": "c75ede9ec647ff7a",
+  "PARSE_OK": true,
+  "EXPECTED_LABEL": "ALLOW",
+  "OBSERVED_VERDICT": "ALLOW",
+  "FALSE_REFUTE": 0,
+  "RESULT": "PROMPT_BIAS_HYPOTHESIS_SUPPORTED",
+  "gemma_reason": "DIRECT_LINK",
+  "secs": 48.3,
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "calls": 1
+}

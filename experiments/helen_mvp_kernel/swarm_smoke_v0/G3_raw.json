@@ -1,0 +1,15 @@
+{
+  "goblin_id": "G3",
+  "raw": "```json\n{\n \"goblin_id\": \"G3\",\n \"campaign_id\": \"SWARM_SMOKE_V0\",\n \"task_hash\": \"b381c245078b1376\",\n \"claims\": [\n  {\n   \"proposition_key\": \"path_a\",\n   \"claim\": \"Institutional state changes via direct _h mutation without a valid admission witness.\",\n   \"predicate\": \"TamperError raised on current() when _h is mutated outside Reducer_E.apply()\",\n   \"object\": \"EpistemicState._h field\",\n   \"scope\": \"complete_epistemic_mediation_v0.py\",\n   \"evidence_refs\": [\n    \"corpus/complete_epistemic_mediation_v0.py:107-110\"\n   ],\n   \"source_roots\": [\n    \"corpus/complete_epistemic_mediation_v0.py\"\n   ],\n   \"evidence_class\": \"OBSERVED\",\n   \"candidate_falsifier\": \"Forging both _h and _seal consistently (route c) is still detected by replay divergence (route d) because empty-chain replay reconstructs H_T.\",\n   \"confidence\": \"HIGH\"\n  },\n  {\n   \"proposition_key\": \"path_b\",\n   \"claim\": \"Institutional state changes via forged seal without a valid admission witness.\",\n   \"predicate\": \"TamperError raised when _seal is forged but _h is mutated, or replay exposes empty-chain divergence.\",\n   \"object\": \"EpistemicState._seal field\",\n   \"scope\": \"complete_epistemic_mediation_v0.py\",\n   \"evidence_refs\": [\n    \"corpus/complete_epistemic_mediation_v0.py:111-116\"\n   ],\n   \"source_roots\": [\n    \"corpus/complete_epistemic_mediation_v0.py\"\n   ],\n   \"evidence_class\": \"OBSERVED\",\n   \"candidate_falsifier\": \"A future Reducer_E variant that recomputes _seal from a forged _h and empty receipt chain without raising TamperError.\",\n   \"confidence\": \"MEDIUM\"\n  },\n  {\n   \"proposition_key\": \"path_c\",\n   \"claim\": \"Institutional state changes via replay divergence when stored state is tampered but receipts are valid.\",\n   \"predicate\": \"replay() reconstructs H_T from zero admitted receipts, diverging from tampered stored state.\",\n   \"object\": \"Stored H_after vs replay(H_before, receipts)\",\n   \"scope\": \"complete_epistemic_mediation_v0.py\",\n   \"evidence_refs\": [\n    \"corpus/complete_epistemic_mediation_v0.py:117-121\"\n   ],\n   \"source_roots\": [\n    \"corpus/complete_epistemic_mediation_v0.py\"\n   ],\n   \"evidence_class\": \"OBSERVED\",\n   \"candidate_falsifier\": \"A replay function that incorporates post-hoc state mutations into its reconstruction logic.\",\n   \"confidence\": \"HIGH\"\n  }\n ],\n \"unknowns\": [],\n \"forbidden_paths_checked\": [],\n \"authority\": false,\n \"ledger_effect\": \"none\"\n}\n```",
+  "usage": {
+    "completion_tokens": 731,
+    "prompt_tokens": 7429,
+    "total_tokens": 8160,
+    "prompt_tokens_details": {
+      "cached_tokens": 51
+    }
+  },
+  "latency_s": 78.8,
+  "enable_thinking": false,
+  "finish_reason": "stop"
+}

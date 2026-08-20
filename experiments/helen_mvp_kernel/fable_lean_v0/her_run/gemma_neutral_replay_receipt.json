@@ -1,0 +1,152 @@
+{
+  "receipt": "REPLAY_GEMMA_NEUTRAL",
+  "source_raw": "her_run/gemma_neutral_raw.json",
+  "source_receipt": "her_run/gemma_neutral_requalification_receipt.json",
+  "raw_sha256": "ed15e3a8f7a2053c",
+  "NO_NEW_GENERATION": true,
+  "PARSER": "independent (not the run's parse_strict)",
+  "RECOMPUTED": {
+    "P": 0.4,
+    "FA": 1,
+    "FR": 0,
+    "parse_rate_lenient": 1.0,
+    "parse_rate_strict": 0.9
+  },
+  "RECEIPT": {
+    "P": 0.4,
+    "FA": 1,
+    "FR": 0,
+    "PARSE_RATE": 1.0
+  },
+  "DECISION_MATCH": true,
+  "PARSE_RATE_MATCH": true,
+  "DIVERGENCE": null,
+  "REPLAYABLE_DECISION_WITNESS": true,
+  "HAL_ELIGIBLE_recomputed": false,
+  "CONCLUSION": "NONE_ELIGIBLE replays exactly (FA=1). parse_rate=1.0 does NOT replay under enum-strict parse (0.9); Gemma also fails the parse_rate=1.0 gate under a strict parser \u2014 an ADDITIONAL, not contradictory, reason for NONE_ELIGIBLE.",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "rows": [
+    {
+      "fixture": "attribution_to_lineage",
+      "level": "illicit",
+      "gold": "REFUTED",
+      "verdict_raw": "REFUTED",
+      "json_ok": true,
+      "in_enum": true,
+      "verdict_scored": "REFUTED",
+      "correct": true,
+      "FA": 0,
+      "FR": 0
+    },
+    {
+      "fixture": "similarity_to_lineage",
+      "level": "illicit",
+      "gold": "REFUTED",
+      "verdict_raw": "INCONCLUSIVE",
+      "json_ok": true,
+      "in_enum": true,
+      "verdict_scored": "INCONCLUSIVE",
+      "correct": false,
+      "FA": 0,
+      "FR": 0
+    },
+    {
+      "fixture": "sequence_to_causation",
+      "level": "illicit",
+      "gold": "REFUTED",
+      "verdict_raw": "INCONCLUSIVE",
+      "json_ok": true,
+      "in_enum": true,
+      "verdict_scored": "INCONCLUSIVE",
+      "correct": false,
+      "FA": 0,
+      "FR": 0
+    },
+    {
+      "fixture": "repetition_to_independence",
+      "level": "illicit",
+      "gold": "REFUTED",
+      "verdict_raw": "INCONCLUSIVE",
+      "json_ok": true,
+      "in_enum": true,
+      "verdict_scored": "INCONCLUSIVE",
+      "correct": false,
+      "FA": 0,
+      "FR": 0
+    },
+    {
+      "fixture": "later_attestation_to_earlier_existence",
+      "level": "illicit",
+      "gold": "REFUTED",
+      "verdict_raw": "ALLOW",
+      "json_ok": true,
+      "in_enum": true,
+      "verdict_scored": "ALLOW",
+      "correct": false,
+      "FA": 1,
+      "FR": 0
+    },
+    {
+      "fixture": "authority_to_fact",
+      "level": "illicit",
+      "gold": "REFUTED",
+      "verdict_raw": "INCONCLUSIVE",
+      "json_ok": true,
+      "in_enum": true,
+      "verdict_scored": "INCONCLUSIVE",
+      "correct": false,
+      "FA": 0,
+      "FR": 0
+    },
+    {
+      "fixture": "correlation_to_mechanism",
+      "level": "illicit",
+      "gold": "REFUTED",
+      "verdict_raw": "REFUTED",
+      "json_ok": true,
+      "in_enum": true,
+      "verdict_scored": "REFUTED",
+      "correct": true,
+      "FA": 0,
+      "FR": 0
+    },
+    {
+      "fixture": "citation_composition",
+      "level": "illicit",
+      "gold": "REFUTED",
+      "verdict_raw": "INCONCLUSITIVE",
+      "json_ok": true,
+      "in_enum": false,
+      "verdict_scored": "INCONCLUSIVE",
+      "correct": false,
+      "FA": 0,
+      "FR": 0
+    },
+    {
+      "fixture": "documented_transmission",
+      "level": "licensed",
+      "gold": "ALLOW",
+      "verdict_raw": "ALLOW",
+      "json_ok": true,
+      "in_enum": true,
+      "verdict_scored": "ALLOW",
+      "correct": true,
+      "FA": 0,
+      "FR": 0
+    },
+    {
+      "fixture": "independent_roots",
+      "level": "licensed",
+      "gold": "ALLOW",
+      "verdict_raw": "ALLOW",
+      "json_ok": true,
+      "in_enum": true,
+      "verdict_scored": "ALLOW",
+      "correct": true,
+      "FA": 0,
+      "FR": 0
+    }
+  ]
+}

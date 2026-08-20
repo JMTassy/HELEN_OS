@@ -1,0 +1,16 @@
+{
+  "obligation": "K2",
+  "input": {
+    "self_declared": [
+      "exec_ok",
+      "epistemic_ok",
+      "permission_ok"
+    ]
+  },
+  "attempted_transition": "ExecOK\u2192Admission",
+  "state_before": "sha256:e3b0c44298fc1c14",
+  "expected": "REJECT",
+  "actual": "REJECT",
+  "reason_code": "K2_EXEC_NOT_ADMISSION",
+  "state_after": "sha256:e3b0c44298fc1c14"
+}

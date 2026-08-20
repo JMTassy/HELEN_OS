@@ -1,0 +1,57 @@
+{
+  "schema_id": "FABLE_LEAN_V0_RECEIPTS",
+  "version": 0,
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "note": "Non-sovereign sidecar receipts. NOT the HELEN ledger. 'SKIPPED CHECKS ARE RECEIPTED CHECKS' — a skip is a decision that carries a witness, so 'not searched' can never silently render as 'nothing found'.",
+  "SPAWN_RECEIPT": {
+    "type": "SPAWN_RECEIPT",
+    "role": "A_ARCHITECT|B_FALSIFIER|C_BUILDER|D_EXPERIMENTER|E_ADVERSARY",
+    "decision": "SPAWN",
+    "trigger": "mandatory | <condition string that fired>",
+    "expected_information_gain": "float (V0 heuristic prior; V1 empirical)",
+    "budget_tokens": "int",
+    "scope": "frozen input id / jurisdiction",
+    "evidence": "which scout signal(s) fired (for conditional roles)"
+  },
+  "SKIP_RECEIPT": {
+    "type": "SKIP_RECEIPT",
+    "role": "C_BUILDER|D_EXPERIMENTER|E_ADVERSARY",
+    "decision": "SKIP",
+    "reason": "the condition that did NOT fire",
+    "evidence": "the scout signals observed (proving the skip was a judgement, not an omission)"
+  },
+  "COMPACT_PACKET": {
+    "ID": "role id",
+    "STATUS": "COMPLETE | TRUNCATED | RUNTIME_FAILED",
+    "CLAIM_CLASS": "OBSERVED | INFERRED | PROPOSAL | UNKNOWN",
+    "FINDINGS": "list, max 3",
+    "NOVEL": "list, max 3",
+    "ROOTS": "list of evidence roots",
+    "FALSIFIERS": "list, max 3",
+    "RISKS": "list, max 3",
+    "NEXT_TEST": "string",
+    "COMPLETE": "bool — minted ONLY on field completeness, NEVER on runtime exit success",
+    "authority": false,
+    "ledger_effect": "none",
+    "signals": "scout-only: {buildable, empirical_testable, promotion_or_risk} (A/B report; gate consumes)"
+  },
+  "TERMINAL_RECEIPT": {
+    "type": "FABLE_LEAN_V0_TERMINAL",
+    "A_ARCHITECT": "COMPLETE|INCOMPLETE",
+    "B_FALSIFIER": "COMPLETE|INCOMPLETE",
+    "C_BUILDER": "COMPLETE|INCOMPLETE|SKIPPED",
+    "D_EXPERIMENTER": "COMPLETE|INCOMPLETE|SKIPPED",
+    "E_ADVERSARY": "COMPLETE|INCOMPLETE|SKIPPED",
+    "SWARM_COMPLETE": "YES|NO (mandatory scouts complete)",
+    "DISCRIMINATION": "ALLOWED|BLOCKED",
+    "EARNED_CHIDDUSH": "count | NOT_EVALUABLE",
+    "AUTHORITY": false,
+    "CANON": false,
+    "LEDGER_EFFECT": "none",
+    "INSTITUTIONAL_ADMISSION": "NOT_PERFORMED",
+    "COMMIT": "none",
+    "PUSH": "none"
+  }
+}

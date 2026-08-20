@@ -1,0 +1,14 @@
+{
+  "fixture_id": "CONTROL_NOLAUNDER_001",
+  "class": "constructed_control (DECLARED constructed, not model-generated)",
+  "purpose": "false-positive check: compiler must leave morphism_laundering EMPTY",
+  "frozen_prose": {
+    "verdict": "REJECT",
+    "reason": "The claim states water boils at 90 degrees Celsius at sea level. Source R1 is a direct witnessed measurement showing water boiling at 100 degrees Celsius at sea level under standard conditions. The claim is directly contradicted by the measurement. No further inference is involved: measurement and claim address the same quantity under the same conditions."
+  },
+  "expected_compile": {
+    "morphism_laundering": [],
+    "verdict": "REJECT"
+  },
+  "authority": false
+}

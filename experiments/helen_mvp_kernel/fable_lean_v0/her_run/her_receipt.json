@@ -1,0 +1,72 @@
+{
+  "goblins": [
+    {
+      "g": 0,
+      "complete": true,
+      "packet": {
+        "proposition": "Tarot originated in Europe rather than ancient Egypt, as there is no manuscript transmission chain linking any Egyptian Tarot to European Tarot, and Tarot is independently attested in Europe centuries earlier than any Egyptian attribution.",
+        "declared_falsifier": "A discovered manuscript transmission chain that definitively links an ancient Egyptian Tarot deck to European Tarot decks.",
+        "evidence_refs": [
+          "R2",
+          "R3"
+        ]
+      },
+      "tok": 85
+    },
+    {
+      "g": 1,
+      "complete": true,
+      "packet": {
+        "proposition": "Tarot originated in Europe, not Egypt, as there is no manuscript transmission chain linking Egyptian Tarot to European Tarot.",
+        "declared_falsifier": "A surviving manuscript or artifact demonstrating an unbroken transmission chain from ancient Egypt to early European Tarot.",
+        "evidence_refs": [
+          "R3"
+        ]
+      },
+      "tok": 63
+    }
+  ],
+  "distinct": [
+    "Tarot originated in Europe rather than ancient Egypt, as there is no manuscript transmission chain linking any Egyptian Tarot to European Tarot, and Tarot is independently attested in Europe centuries earlier than any Egyptian attribution.",
+    "Tarot originated in Europe, not Egypt, as there is no manuscript transmission chain linking Egyptian Tarot to European Tarot."
+  ],
+  "independent_roots": 2,
+  "hal": [
+    {
+      "prop": "Tarot originated in Europe rather than ancient Egypt, as there is no manuscript transmission chain linking any Egyptian Tarot to European Tarot, and Tarot is independently attested in Europe centuries earlier than any Egyptian attribution.",
+      "verdict": "SURVIVED"
+    },
+    {
+      "prop": "Tarot originated in Europe, not Egypt, as there is no manuscript transmission chain linking Egyptian Tarot to European Tarot.",
+      "verdict": "SURVIVED"
+    }
+  ],
+  "packet": {
+    "question": "",
+    "task_hash": "b428cd61e6f8",
+    "corpus_hash": "dd00ae921ab9",
+    "her_status": "ok",
+    "goblin_complete": true,
+    "hal_status": "SURVIVED",
+    "best_candidate": "Tarot originated in Europe rather than ancient Egypt, as the",
+    "evidence_roots": 2,
+    "falsifier_result": "SURVIVED",
+    "authority_delta": 0,
+    "state_delta": 0,
+    "scope_delta": 0,
+    "hard_gates": [
+      true
+    ],
+    "unknown_unresolved": false,
+    "operator_witness": false,
+    "recommended_verdict": ""
+  },
+  "verdict": "YES",
+  "reason": "GATES_SATISFIED",
+  "counts": {
+    "qwen": 2,
+    "hal": 2,
+    "fable_premium": 0
+  },
+  "secs": 11.9
+}

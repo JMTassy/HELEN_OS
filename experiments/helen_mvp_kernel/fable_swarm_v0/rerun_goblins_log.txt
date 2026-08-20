@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "<stdin>", line 9, in <module>
+  File "<string>", line 10, in <module>
+NameError: name '__file__' is not defined. Did you mean: '__name__'?

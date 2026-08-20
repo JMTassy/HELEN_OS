@@ -1,0 +1,17 @@
+{
+  "receipt": "CONFIGURATION_RECEIPT",
+  "run": "SCALE_V1",
+  "prereg_hash": "5e2198fbb499ddaeeaa336c1d9a75bae554942c5c49a05b9a6da7e619387c5bd",
+  "corpus_sha256": "sha256:99cce9cd1644dbabc7d9de6e7e91410abd676a8e59ceaad7c116f78e441e63ad",
+  "R": 5,
+  "valid_runs": {
+    "C1": 5,
+    "C3": 5,
+    "C5": 5
+  },
+  "status": {
+    "C1": "EVALUABLE",
+    "C3": "EVALUABLE",
+    "C5": "EVALUABLE"
+  }
+}

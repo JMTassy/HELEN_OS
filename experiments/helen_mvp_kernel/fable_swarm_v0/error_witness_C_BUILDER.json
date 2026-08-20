@@ -1,0 +1,6 @@
+{
+  "goblin": "C_BUILDER",
+  "error": "TimeoutError('timed out')",
+  "elapsed_s": 600.0,
+  "note": "execution witness, not cognitive result"
+}

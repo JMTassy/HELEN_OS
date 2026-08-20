@@ -1,0 +1,4 @@
+# Non-sovereign scratch — large binaries, OCR dumps, unzipped decks, swarm slices.
+# Files stay on disk; git just stops treating them as signal. Reversible (delete this line).
+scratch/
+*.log

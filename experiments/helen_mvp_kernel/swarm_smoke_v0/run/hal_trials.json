@@ -1,0 +1,17 @@
+{
+  "G1_proposer": {
+    "verdict": "REFUTED",
+    "reason": "R2 states that Tarot is independently attested in Europe centuries earlier than the 1781 document attributing it to ancient Egypt. This directly contradicts the proposition that Tarot originated in ancient Egypt, as independent attestation in Europe prior to the 1781 claim implies an origin in Europe, not Egypt.",
+    "status": "OK"
+  },
+  "G2_skeptic": {
+    "verdict": "SURVIVED",
+    "reason": "The proposition is supported by the corpus: R2 confirms independent attestation in Europe centuries earlier, and R3 confirms no documented manuscript transmission chain links Egyptian Tarot to European Tarot. The declared falsifier (a documented transmission chain or earlier Egyptian attestation) is not present in the corpus, so the proposition stands.",
+    "status": "OK"
+  },
+  "G3_synthesizer": {
+    "verdict": "REFUTED",
+    "reason": "R2 states Tarot is independently attested in Europe centuries earlier, which directly contradicts the proposition's claim that Tarot originated in ancient Egypt and was transmitted to Europe. The 'independently attested' nature of the European Tarot refutes the idea of Egyptian origin and transmission.",
+    "status": "OK"
+  }
+}

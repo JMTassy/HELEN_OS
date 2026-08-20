@@ -1,0 +1,35 @@
+FABLE_LEAN_V0 — TOKEN MEASUREMENT
+TASKS_MEASURED      = 3
+BASELINE_TOKENS     = 7746
+LEAN_TOKENS         = 7746
+TOKENS_SAVED        = 0
+SAVINGS_PCT         = 0.00%
+A_SPAWN_RATE        = 100.00%
+B_SPAWN_RATE        = 100.00%
+C_SPAWN_RATE        = 100.00%
+D_SPAWN_RATE        = 100.00%
+E_SPAWN_RATE        = 100.00%
+CONTAMINATED_TASKS  = 0
+QUALITY_COMPARISON  = NOT_YET_CLAIMED
+SCALE_V1            = UNTOUCHED
+AUTHORITY            = false
+CANON                = false
+LEDGER_EFFECT        = none
+COMMIT               = none
+PUSH                 = none
+
+PER_TASK_MEASUREMENTS
+  task_id baseline lean   saved pct     spawned / skipped | gate_reason
+  T1          1946   1946     0  0.00%  C+D+E / - | all gate signals fired (buildable, empirical_testable, promotion_or_risk) → all specialists spawned; 0 skipped
+          tokens A=361 B=496 C=256 D=500 E=333 | task: Make Authority(T(x)) <= Authority(x) executable as one sea
+  T2          2900   2900     0  0.00%  C+D+E / - | all gate signals fired (buildable, empirical_testable, promotion_or_risk) → all specialists spawned; 0 skipped
+          tokens A=700 B=700 C=500 D=500 E=500 | task: Is 'HELEN is a legitimacy-preserving cognition system' a g
+  T3          2900   2900     0  0.00%  C+D+E / - | all gate signals fired (buildable, empirical_testable, promotion_or_risk) → all specialists spawned; 0 skipped
+          tokens A=700 B=700 C=500 D=500 E=500 | task: Design an experiment to test whether 5 isolated goblins ea
+
+MEASUREMENT_ONLY_ROLE_RUNS
+  NONE — gate spawned all specialists on every task; 0 counterfactual/skip executions.
+
+COMPARABILITY_GATE
+  PASS — same_task=true same_model=true same_role_prompts=true same_budgets=true for all tasks
+  (baseline & lean derive from the SAME per-task role executions; identical model/prompts/budgets by construction)

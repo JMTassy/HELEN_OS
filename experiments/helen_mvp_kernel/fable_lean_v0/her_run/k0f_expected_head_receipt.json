@@ -1,0 +1,24 @@
+{
+  "receipt": "K0f_EXPECTED_HEAD",
+  "property": "Commit(delta,h) succeeds only if h==Head_at_commit_time (atomic compare-and-swap)",
+  "diamond": "H0 --dA--> H1 ; dB.expectedHead=H0 ; Apply(dB,H1)=STALE_HEAD",
+  "earned_condition": "STALE_HEAD AND sigma_after==sigma_before AND H_after==H_before AND no-history-append-for-B",
+  "tests": {
+    "1_VALID_CONTROL_A@H0": "ADMIT/HEAD_MATCH (head advances, history+1)",
+    "2_STALE_HEAD_B@H0": "REJECT/STALE_HEAD ; sigma= H= hist= (all four invariants hold)",
+    "3_TOCTOU_commit_vs_verify": "correct reducer REJECT/STALE_HEAD ; naive verify-time reducer ADMITS (teeth=YES)",
+    "4_FRESH_HEAD_B@H1": "ADMIT/HEAD_MATCH (FailClosed != RefuseEverything; rejection head-specific)"
+  },
+  "result": "SURVIVED_DEFINED_ATTACK_SET (4/4)",
+  "TOCTOU_closed": "commit-time CAS re-reads head; verify-time-head trust shown to corrupt (falsification control)",
+  "SelfPassed": true,
+  "PeerAdversaryValidated": true,
+  "honest_state": "WITNESSED: proposer 4/4 + fresh adversary 5/5 defined attacks, independent harness, no bypass",
+  "src_sha16": "aed20cb17b52c533",
+  "scope_excluded": "K0b/K0c process isolation; crash-consistency; concurrency beyond single-thread CAS model",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "earned_status": "WITNESSED",
+  "peer_attack_receipt": "her_run/k0f_peer_attack_receipt.json"
+}

@@ -1,0 +1,27 @@
+{
+  "policy_id": "FABLE_LEAN_V0_SPAWN_POLICY",
+  "version": 0,
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "objective": "maximize ExpectedEarnedInformationGain per token: Spawn(G_i) iff E[dN_earned | G_i] / Cost(G_i) > lambda. V0 is RULE-BASED (heuristic priors); receipts accumulate training data for FABLE_V1 empirical calibration. The authority model does NOT change between V0 and V1.",
+  "mandatory_roles": ["A_ARCHITECT", "B_FALSIFIER"],
+  "conditional_roles": {
+    "C_BUILDER":      {"trigger": "BuildableCandidate", "eig_prior": 0.6},
+    "D_EXPERIMENTER": {"trigger": "EmpiricalClaim AND Testable", "eig_prior": 0.6},
+    "E_ADVERSARY":    {"trigger": "PromotionProximity OR AuthoritySurface OR HighImpactFailureMode", "eig_prior": 0.7}
+  },
+  "eig_prior_mandatory": {"A_ARCHITECT": 0.9, "B_FALSIFIER": 0.9},
+  "lambda_threshold": 0.4,
+  "gate_signals_source": "derived from the A+B scout packets ONLY (scouts run first; gate is a pure function of their reported signals).",
+  "gate_signal_keys": ["buildable", "empirical_testable", "promotion_or_risk"],
+  "budgets_tokens": {"A_ARCHITECT": 700, "B_FALSIFIER": 700, "C_BUILDER": 500, "D_EXPERIMENTER": 500, "E_ADVERSARY": 500},
+  "no_auto_budget_rescue": true,
+  "need_more_budget_rule": "A role that exhausts its budget returns STATUS=TRUNCATED + NeedMoreBudget{reason}. It is NON-AUTHORITATIVE and is NOT auto-rescued. TRUNCATED != scored 0 (NOT_EVALUABLE != 0).",
+  "receipts_required": {"on_spawn": true, "on_skip": true},
+  "hard_boundary": "Gamma_C != Gamma_A. This scheduler optimizes (k, roles, budgets, stopping). It MUST NOT optimize, relax, or simulate Gamma_A admission. Pipeline STOPS at CANDIDATE.",
+  "controller_metrics_for_v1": {
+    "Precision_spawn": "#spawned specialists producing earned novelty / #spawned specialists",
+    "MissRate_skip": "#skipped roles later shown necessary / #skipped roles"
+  }
+}

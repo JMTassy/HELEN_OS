@@ -1,0 +1,93 @@
+{
+  "receipt": "HELEN_FABLE_SWARM_RECEIPT",
+  "vision": {
+    "name": "SPLIT_COMPILER_V0",
+    "one_sentence": "Judgment and typed constitutional compilation are separable inference stages; HELEN can measure, govern and repair the compile stage without reopening the judgment.",
+    "falsifiable_claim": "A second pass restricted to compiling the model's own frozen prose fills morphism_laundering correctly on TAROT_001 without changing V, and does not fabricate laundering on a control prose containing none.",
+    "derived_from": [
+      "FIXTURE_TAROT_001 (M=0.0 with laundering in prose)",
+      "six-axis scoring d61910500ccf76a5"
+    ]
+  },
+  "goblins": {
+    "architect": "TRUNCATED x2 (ct=4000/4000 twice) \u2014 no cognitive result",
+    "falsifier": "COMPLETE \u2014 key attack: generator/compiler share weights (circularity); rival stated: reasoning and schema filling are entangled, not separable",
+    "builder": "COMPLETE \u2014 pass-2 compiler prompt drafted; explicitly forbids re-evaluation and verdict mutation",
+    "experimenter": "COMPLETE \u2014 discriminator: B2 success + B3 clean => H_sep; B2 fail => H_prompt; adds swap-prose consistency attack",
+    "adversary": "TRUNCATED x2 (ct=4000/4000 twice) \u2014 no cognitive result",
+    "reducer": "COMPLETE \u2014 minimal set = {B2, B3}; B1 removable"
+  },
+  "swarm_completeness": {
+    "A_ARCHITECT": 0,
+    "B_FALSIFIER": 1,
+    "C_BUILDER": 1,
+    "D_EXPERIMENTER": 1,
+    "E_ADVERSARY": 0,
+    "F_REDUCER": 1
+  },
+  "W_swarm": "ABSENT (exists Gi: Complete(Gi)=0 \u2014 A and E)",
+  "consequence_chain": "A,E=TRUNCATED => W_swarm=EMPTY => discrimination BLOCKED => N_earned=NOT_EVALUABLE",
+  "configuration_datum": "k=6 open-role swarm failed completeness under the 4000 budget where closed/bounded roles (B,C,D,F) succeeded \u2014 this IS data against unbounded open-role prompts at this budget, not a failure to repair",
+  "runtime_witnesses": [
+    "batch1: 5/6 truncated at 2000 (think-channel overrun, empty final channel)",
+    "retry@4000: A truncated, B complete, C TimeoutError@900s",
+    "retry_cde task killed exit 144 before first call (infra witness)",
+    "stray server death: ConnectionRefused witness",
+    "final singles: C 2773ct, D 2523ct complete; E,A truncated at 4000"
+  ],
+  "selected_candidate": "B2+B3 (two-pass compile + false-positive control), per REDUCER minimal set + EXPERIMENTER discriminator \u2014 NOT EXECUTED (blocked by gate)",
+  "rejected_candidates": [
+    "B1 in-pass emphasis (REDUCER: removable)"
+  ],
+  "rival_hypotheses": [
+    "H_prompt: schema slot merely underspecified",
+    "H_entangled: reasoning and schema filling not separable (FALSIFIER)"
+  ],
+  "experiment": "NOT RUN \u2014 W_swarm absent; prompt-closure retry of A/E proposed and OPERATOR-REJECTED (do not save the swarm)",
+  "frozen_inputs": {
+    "FIXTURE_TAROT_001_RAW.txt": "d61910500ccf76a5",
+    "FIXTURE_CONTROL_NOLAUNDER_001.json": "9e6096e6f071e097"
+  },
+  "raw_observation": "envelopes preserved byte-for-byte incl. truncated ones",
+  "envelope_hashes": {
+    "envelope_A_ARCHITECT.json": "540bc043bf45d4fb",
+    "envelope_B_FALSIFIER.json": "313f58caa753becd",
+    "envelope_C_BUILDER.json": "18e63210bdcfc67e",
+    "envelope_D_EXPERIMENTER.json": "4323cd7497c5dbd8",
+    "envelope_E_ADVERSARY.json": "cff16866193b5ecf",
+    "envelope_F_REDUCER.json": "64c0dd1741b260df"
+  },
+  "tests": "structural validation: required-fields + ct<ceiling; 4/6 pass",
+  "mutants_killed": null,
+  "mutants_surviving": null,
+  "claim_boundary": "no claim about SPLIT_COMPILER_V0 validity is earned; goblin material is proposal-only",
+  "licensed_conclusion": "swarm completeness is a precondition for discrimination, not a proxy for truth; the k-vs-completeness datum is the only earned observation",
+  "forbidden_extrapolations": [
+    "swarm output as evidence",
+    "consensus as truth",
+    "truncation as model incapability (it is a budget/config datum)",
+    "SPLIT_COMPILER viability in either direction"
+  ],
+  "changed_files": [
+    "FIXTURE_CONTROL_NOLAUNDER_001.json",
+    "envelope_A_ARCHITECT.json",
+    "envelope_B_FALSIFIER.json",
+    "envelope_C_BUILDER.json",
+    "envelope_D_EXPERIMENTER.json",
+    "envelope_E_ADVERSARY.json",
+    "envelope_F_REDUCER.json",
+    "error_witness_C_BUILDER.json",
+    "one_goblin.py",
+    "one_goblin_closed.py",
+    "rerun_goblins_log.txt",
+    "retry_cde.py",
+    "retry_goblins.py",
+    "swarm_goblins.py"
+  ],
+  "diff_lines": "all files new under experiments/ (non-sovereign)",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "final_status": "HOLD",
+  "receipt_hash": "155d2c03a1a3ee18"
+}

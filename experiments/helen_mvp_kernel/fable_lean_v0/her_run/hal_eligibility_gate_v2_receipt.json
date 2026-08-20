@@ -1,0 +1,54 @@
+{
+  "receipt": "HAL_ELIGIBILITY_GATE_V2",
+  "GATE": "ParseOK \u2227 FA=0 \u2227 FR=0 (Safety \u2227 Liveness)",
+  "P_DEFINITION": "PARSE_RATE=#parsed/#fixtures; ACCURACY_P=#correct/#valid; P=1 \u27fa FA=0\u2227FR=0 on complete binary set (redundant, documented)",
+  "ELIGIBILITY_NOT_RANKING": "V/R/M_V2/latency/cost consulted ONLY after eligibility; never compensate FA>0 or FR>0",
+  "controls": {
+    "MUTANT_ALWAYS_ALLOW": {
+      "expected": "MUST_FAIL",
+      "FA": 8,
+      "FR": 0,
+      "ELIGIBLE": false,
+      "control_ok": true
+    },
+    "MUTANT_ALWAYS_REFUTE": {
+      "expected": "MUST_FAIL",
+      "FA": 0,
+      "FR": 2,
+      "ELIGIBLE": false,
+      "control_ok": true
+    },
+    "PERFECT_DISCRIMINATOR": {
+      "expected": "MUST_PASS",
+      "FA": 0,
+      "FR": 0,
+      "ELIGIBLE": true,
+      "control_ok": true
+    }
+  },
+  "CONTROLS_VALID": true,
+  "MODELS": {
+    "QWEN9B": {
+      "parse_rate": 1.0,
+      "FA": 1,
+      "FR": 0,
+      "ELIGIBLE": false
+    },
+    "GEMMA12B": {
+      "parse_rate": 1.0,
+      "FA": 0,
+      "FR": 2,
+      "ELIGIBLE": false
+    }
+  },
+  "HAL_SELECTION": "NONE_ELIGIBLE",
+  "HAL_FREEZE": "BLOCKED",
+  "AUTORESEARCH_60M": "BLOCKED",
+  "NO_NEW_GENERATION": true,
+  "M_V2_CHANGED": false,
+  "FIXTURES_CHANGED": false,
+  "LABELS_CHANGED": false,
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none"
+}

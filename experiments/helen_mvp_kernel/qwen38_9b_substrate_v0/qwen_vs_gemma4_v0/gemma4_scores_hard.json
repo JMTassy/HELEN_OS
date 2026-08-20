@@ -1,0 +1,497 @@
+{
+  "arm": "A_gemma4-12b_ollama_SOLO",
+  "n_fixtures": 28,
+  "completion_witness": {
+    "completed_fixtures": 28,
+    "crashes": 0,
+    "schema_valid": 21,
+    "valid_run": false
+  },
+  "Q_discrim": null,
+  "disposition": "HOLD:MATCHED_ARM_INCOMPLETE",
+  "by_family": null,
+  "qwen9b_kernel7_baseline": 0.7196,
+  "delta_Q_discrim": null,
+  "wall_s": 3522.3,
+  "rows": [
+    {
+      "fixture_id": "SC1",
+      "family": "scope",
+      "parse_status": "OK",
+      "schema_valid": true,
+      "latency_s": 77.09,
+      "in_tokens": 725,
+      "out_tokens": 1127,
+      "score": {
+        "c": 1,
+        "s": 1,
+        "r": 1,
+        "b": 0,
+        "a": 1,
+        "valid": 1
+      }
+    },
+    {
+      "fixture_id": "SC2",
+      "family": "scope",
+      "parse_status": "OK",
+      "schema_valid": false,
+      "latency_s": 171.11,
+      "in_tokens": 735,
+      "out_tokens": 2500,
+      "score": {
+        "c": 0,
+        "s": 0,
+        "r": 0,
+        "b": 0,
+        "a": 0,
+        "valid": 0
+      }
+    },
+    {
+      "fixture_id": "SC3",
+      "family": "scope",
+      "parse_status": "OK",
+      "schema_valid": true,
+      "latency_s": 137.83,
+      "in_tokens": 728,
+      "out_tokens": 2048,
+      "score": {
+        "c": 0,
+        "s": 1,
+        "r": 1,
+        "b": 0,
+        "a": 1,
+        "valid": 1
+      }
+    },
+    {
+      "fixture_id": "PR1",
+      "family": "provenance",
+      "parse_status": "OK",
+      "schema_valid": false,
+      "latency_s": 168.12,
+      "in_tokens": 715,
+      "out_tokens": 2500,
+      "score": {
+        "c": 0,
+        "s": 0,
+        "r": 0,
+        "b": 0,
+        "a": 0,
+        "valid": 0
+      }
+    },
+    {
+      "fixture_id": "PR2",
+      "family": "provenance",
+      "parse_status": "OK",
+      "schema_valid": true,
+      "latency_s": 120.14,
+      "in_tokens": 728,
+      "out_tokens": 1680,
+      "score": {
+        "c": 0,
+        "s": 1,
+        "r": 1,
+        "b": 1,
+        "a": 1,
+        "valid": 1
+      }
+    },
+    {
+      "fixture_id": "PR3",
+      "family": "provenance",
+      "parse_status": "OK",
+      "schema_valid": false,
+      "latency_s": 173.01,
+      "in_tokens": 742,
+      "out_tokens": 2500,
+      "score": {
+        "c": 0,
+        "s": 0,
+        "r": 0,
+        "b": 0,
+        "a": 0,
+        "valid": 0
+      }
+    },
+    {
+      "fixture_id": "PR4",
+      "family": "provenance",
+      "parse_status": "OK",
+      "schema_valid": false,
+      "latency_s": 174.91,
+      "in_tokens": 739,
+      "out_tokens": 2500,
+      "score": {
+        "c": 0,
+        "s": 0,
+        "r": 0,
+        "b": 0,
+        "a": 0,
+        "valid": 0
+      }
+    },
+    {
+      "fixture_id": "BR1",
+      "family": "bridge",
+      "parse_status": "OK",
+      "schema_valid": true,
+      "latency_s": 95.34,
+      "in_tokens": 723,
+      "out_tokens": 1371,
+      "score": {
+        "c": 1,
+        "s": 1,
+        "r": 1,
+        "b": 1,
+        "a": 1,
+        "valid": 1
+      }
+    },
+    {
+      "fixture_id": "BR2",
+      "family": "bridge",
+      "parse_status": "OK",
+      "schema_valid": true,
+      "latency_s": 130.45,
+      "in_tokens": 724,
+      "out_tokens": 1882,
+      "score": {
+        "c": 1,
+        "s": 1,
+        "r": 1,
+        "b": 1,
+        "a": 1,
+        "valid": 1
+      }
+    },
+    {
+      "fixture_id": "BR3",
+      "family": "bridge",
+      "parse_status": "OK",
+      "schema_valid": true,
+      "latency_s": 119.06,
+      "in_tokens": 732,
+      "out_tokens": 1695,
+      "score": {
+        "c": 0,
+        "s": 1,
+        "r": 0,
+        "b": 0,
+        "a": 1,
+        "valid": 1
+      }
+    },
+    {
+      "fixture_id": "TE1",
+      "family": "temporal",
+      "parse_status": "OK",
+      "schema_valid": true,
+      "latency_s": 133.17,
+      "in_tokens": 741,
+      "out_tokens": 1876,
+      "score": {
+        "c": 1,
+        "s": 1,
+        "r": 1,
+        "b": 0,
+        "a": 1,
+        "valid": 1
+      }
+    },
+    {
+      "fixture_id": "TE2",
+      "family": "temporal",
+      "parse_status": "OK",
+      "schema_valid": true,
+      "latency_s": 171.92,
+      "in_tokens": 742,
+      "out_tokens": 2446,
+      "score": {
+        "c": 1,
+        "s": 0,
+        "r": 1,
+        "b": 0,
+        "a": 1,
+        "valid": 1
+      }
+    },
+    {
+      "fixture_id": "MO1",
+      "family": "modality",
+      "parse_status": "OK",
+      "schema_valid": true,
+      "latency_s": 129.01,
+      "in_tokens": 716,
+      "out_tokens": 1821,
+      "score": {
+        "c": 0,
+        "s": 1,
+        "r": 1,
+        "b": 0,
+        "a": 1,
+        "valid": 1
+      }
+    },
+    {
+      "fixture_id": "MO2",
+      "family": "modality",
+      "parse_status": "OK",
+      "schema_valid": false,
+      "latency_s": 178.67,
+      "in_tokens": 713,
+      "out_tokens": 2500,
+      "score": {
+        "c": 0,
+        "s": 0,
+        "r": 0,
+        "b": 0,
+        "a": 0,
+        "valid": 0
+      }
+    },
+    {
+      "fixture_id": "ME1",
+      "family": "mechanism",
+      "parse_status": "OK",
+      "schema_valid": true,
+      "latency_s": 138.14,
+      "in_tokens": 718,
+      "out_tokens": 1910,
+      "score": {
+        "c": 1,
+        "s": 1,
+        "r": 1,
+        "b": 0,
+        "a": 1,
+        "valid": 1
+      }
+    },
+    {
+      "fixture_id": "ME2",
+      "family": "mechanism",
+      "parse_status": "OK",
+      "schema_valid": true,
+      "latency_s": 139.88,
+      "in_tokens": 723,
+      "out_tokens": 1954,
+      "score": {
+        "c": 0,
+        "s": 1,
+        "r": 1,
+        "b": 0,
+        "a": 1,
+        "valid": 1
+      }
+    },
+    {
+      "fixture_id": "HH1",
+      "family": "helen_hist",
+      "parse_status": "OK",
+      "schema_valid": true,
+      "latency_s": 108.01,
+      "in_tokens": 737,
+      "out_tokens": 1510,
+      "score": {
+        "c": 0,
+        "s": 1,
+        "r": 1,
+        "b": 0,
+        "a": 1,
+        "valid": 1
+      }
+    },
+    {
+      "fixture_id": "HH2",
+      "family": "helen_hist",
+      "parse_status": "OK",
+      "schema_valid": true,
+      "latency_s": 84.97,
+      "in_tokens": 716,
+      "out_tokens": 1193,
+      "score": {
+        "c": 1,
+        "s": 1,
+        "r": 1,
+        "b": 0,
+        "a": 1,
+        "valid": 1
+      }
+    },
+    {
+      "fixture_id": "HH3",
+      "family": "helen_hist",
+      "parse_status": "OK",
+      "schema_valid": true,
+      "latency_s": 124.62,
+      "in_tokens": 711,
+      "out_tokens": 1759,
+      "score": {
+        "c": 1,
+        "s": 0,
+        "r": 1,
+        "b": 0,
+        "a": 1,
+        "valid": 1
+      }
+    },
+    {
+      "fixture_id": "HH4",
+      "family": "helen_hist",
+      "parse_status": "OK",
+      "schema_valid": true,
+      "latency_s": 143.15,
+      "in_tokens": 714,
+      "out_tokens": 2027,
+      "score": {
+        "c": 1,
+        "s": 1,
+        "r": 1,
+        "b": 1,
+        "a": 1,
+        "valid": 1
+      }
+    },
+    {
+      "fixture_id": "HH5",
+      "family": "helen_hist",
+      "parse_status": "OK",
+      "schema_valid": false,
+      "latency_s": 109.4,
+      "in_tokens": 719,
+      "out_tokens": 1526,
+      "score": {
+        "c": 0,
+        "s": 0,
+        "r": 0,
+        "b": 0,
+        "a": 0,
+        "valid": 0
+      }
+    },
+    {
+      "fixture_id": "HH6",
+      "family": "helen_hist",
+      "parse_status": "OK",
+      "schema_valid": true,
+      "latency_s": 106.8,
+      "in_tokens": 720,
+      "out_tokens": 1483,
+      "score": {
+        "c": 0,
+        "s": 1,
+        "r": 1,
+        "b": 0,
+        "a": 1,
+        "valid": 1
+      }
+    },
+    {
+      "fixture_id": "HH7",
+      "family": "helen_hist",
+      "parse_status": "OK",
+      "schema_valid": true,
+      "latency_s": 124.34,
+      "in_tokens": 726,
+      "out_tokens": 1742,
+      "score": {
+        "c": 1,
+        "s": 0,
+        "r": 1,
+        "b": 0,
+        "a": 1,
+        "valid": 1
+      }
+    },
+    {
+      "fixture_id": "HH8",
+      "family": "helen_hist",
+      "parse_status": "OK",
+      "schema_valid": true,
+      "latency_s": 135.57,
+      "in_tokens": 728,
+      "out_tokens": 1910,
+      "score": {
+        "c": 0,
+        "s": 1,
+        "r": 1,
+        "b": 0,
+        "a": 1,
+        "valid": 1
+      }
+    },
+    {
+      "fixture_id": "HH9",
+      "family": "helen_hist",
+      "parse_status": "OK",
+      "schema_valid": false,
+      "latency_s": 176.11,
+      "in_tokens": 717,
+      "out_tokens": 2500,
+      "score": {
+        "c": 0,
+        "s": 0,
+        "r": 0,
+        "b": 0,
+        "a": 0,
+        "valid": 0
+      }
+    },
+    {
+      "fixture_id": "VA1",
+      "family": "valid",
+      "parse_status": "OK",
+      "schema_valid": true,
+      "latency_s": 33.76,
+      "in_tokens": 730,
+      "out_tokens": 449,
+      "score": {
+        "c": 1,
+        "s": 1,
+        "r": 1,
+        "b": 0,
+        "a": 1,
+        "valid": 1
+      }
+    },
+    {
+      "fixture_id": "VA2",
+      "family": "valid",
+      "parse_status": "OK",
+      "schema_valid": true,
+      "latency_s": 52.77,
+      "in_tokens": 716,
+      "out_tokens": 722,
+      "score": {
+        "c": 1,
+        "s": 1,
+        "r": 1,
+        "b": 0,
+        "a": 1,
+        "valid": 1
+      }
+    },
+    {
+      "fixture_id": "VA3",
+      "family": "valid",
+      "parse_status": "OK",
+      "schema_valid": true,
+      "latency_s": 64.88,
+      "in_tokens": 722,
+      "out_tokens": 879,
+      "score": {
+        "c": 1,
+        "s": 1,
+        "r": 1,
+        "b": 0,
+        "a": 1,
+        "valid": 1
+      }
+    }
+  ],
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none"
+}

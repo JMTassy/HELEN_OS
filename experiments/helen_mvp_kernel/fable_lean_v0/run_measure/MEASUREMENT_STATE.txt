@@ -1,0 +1,43 @@
+FABLE_LEAN_V0 — MEASURE COST : ADJUDICATED CLOSURE STATE
+authority=false · canon=false · ledger_effect=none · NON-SOVEREIGN
+(operator-adjudicated refinement of the VERIFIED receipt; does NOT mutate it)
+
+REFERENCES (immutable, independently verified):
+  report   savings_report.json      sha256 874aac4acef895ddad9f677ce0aa181c29dfba5a818072d2fb69dae12657e101
+  receipt  MEASUREMENT_RECEIPT.txt  sha256 adeae7e13d8ea01d762b1fd3de830fc61cb78a38d4f2e9146ca2ab216e18f4dd
+  verify   peer-review (proposer≠validator) 9/9 PASS
+
+ADJUDICATED STATE:
+  MEASURE_COST          = CLOSED
+  TOKEN_SAVING          = 0
+  SAVINGS_PCT           = 0.00%
+  COMPARABILITY         = PASS
+  SEPARATION_GATE       = VACUOUS_PASS      (0 skipped roles ⇒ 0 MEASUREMENT_ONLY runs; non-leakage boundary NOT violated but NOT exercised)
+  BUDGET_CENSORED       = T2, T3            (T1: only role D censored)
+  QUALITY_PRESERVED     = NOT_CLAIMED
+  EFFICIENCY_IMPROVED   = HOLD
+  SCALE_V1              = UNTOUCHED
+  AUTHORITY             = false
+  CANON                 = false
+  LEDGER_EFFECT         = none
+  COMMIT                = none
+  PUSH                  = none
+
+CENSORING FORMALISM (T2,T3 saturated roles; T1 role D):
+  ObservedTokens_i = min(NaturalTokens_i, Budget_i)
+  saturated ⇒ NaturalTokens_i ≥ Budget_i,  exact natural length UNKNOWN.
+  Therefore baseline/lean absolute token totals for T2,T3 are budget-bound, not content-bound.
+  The savings RATIO is unaffected (identical cap on both arms); the ABSOLUTE totals are lower bounds.
+
+NULL AS EVIDENCE (this sample, n=3):
+  SpawnRate = 100%  ⇒  NoCostAdvantage.
+  Lazy spawning is NOT refuted and NOT confirmed — on this task set the gate never skipped, so there was
+  nothing to save. TokenSaving = 0 ⇏ EfficiencyImproved (and ⇏ EfficiencyWorsened).
+
+QUALITY LANE (next admissible) — VACUITY NOTE:
+  Because 0 roles were skipped, lean ≡ baseline (byte-identical role outputs on all 3 tasks).
+  ⇒ lean-vs-baseline ΔQuality = 0 TRIVIALLY (identical outputs). A NON-vacuous quality comparison
+    requires a run with ≥1 production skip (lean ⊊ baseline). Per operator: DO NOT tune the spawn gate yet.
+  ⇒ QUALITY(lean-vs-baseline) on THIS sample = VACUOUS, parallel to SEPARATION_GATE = VACUOUS_PASS.
+
+LANE:  MEASURE ✓  →  VERIFY ✓  →  QUALITY (open; vacuous on this sample)  →  SCALE_V1 (frozen)

@@ -1,0 +1,16 @@
+{
+  "receipt": "EPISTEMIC_RECEIPT",
+  "N_earned_mean": {
+    "C1": 0.8,
+    "C3": 2.4,
+    "C5": 4.0
+  },
+  "Stability": {
+    "C1": 0.0,
+    "C3": 0.0,
+    "C5": 0.0
+  },
+  "primary_comparison": "N_earned(C_k) vs k under byte-frozen conditions",
+  "boundary": "HAL_SURVIVED != TRUE != admission; N_earned is candidate-level only",
+  "prereg_frame": "single-answer corpus => null/reliability probe; N_earned growth = fan-out red flag"
+}

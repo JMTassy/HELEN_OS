@@ -1,0 +1,28 @@
+{
+  "fixture_id": "TAROT_001",
+  "class": "semantic_success_plus_typed_compilation_failure",
+  "frozen_utc": "2026-08-17",
+  "raw_sha256": "d61910500ccf76a5cc1ec8f56094cd9061ec8d77db1767484908b53b07fadfa6",
+  "raw_bytes": 994,
+  "source_run": "ONESHOT_TAROT_DEMO.json",
+  "source_run_sha256": "e94aa5a735c614255effddda13906e8387ed999e04bdcaa4a0ada1d8d67660fc",
+  "model": {
+    "file": "/Users/jean-marietassy/models/qwen38-9b/Qwen3.8-9B-Q4_K_M.gguf",
+    "sha256": "df13d66021cef676f82be74053220fd75af6bf2a6a7fb77f5222ab9e50744a7a",
+    "runtime": "llama-server b9430, V3 runtime contract, temp0 seed0"
+  },
+  "prompt_provenance": "operator verbatim 2026-08-17, bare user message, no system",
+  "usage": {
+    "completion_tokens": 1881,
+    "prompt_tokens": 180,
+    "total_tokens": 2061,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  },
+  "latency_s": 95.88,
+  "note": "visible final channel only; ~1600 think tokens not captured (declared)",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none"
+}

@@ -1,0 +1,117 @@
+{
+  "n_tasks": 3,
+  "baseline_tokens": 7746,
+  "lean_tokens": 7746,
+  "saved_tokens": 0,
+  "savings_pct": 0.0,
+  "roles_run_lean": 15,
+  "roles_run_baseline": 15,
+  "per_task": [
+    {
+      "task": "Make Authority(T(x)) <= Authority(x) executable as one seam with a bypass mutant.",
+      "gate_signals": {
+        "buildable": true,
+        "empirical_testable": true,
+        "promotion_or_risk": true
+      },
+      "spawned": [
+        "C_BUILDER",
+        "D_EXPERIMENTER",
+        "E_ADVERSARY"
+      ],
+      "skipped": [],
+      "tokens": {
+        "A": 361,
+        "B": 496,
+        "C": 256,
+        "D": 500,
+        "E": 333
+      },
+      "baseline_total": 1946,
+      "lean_total": 1946,
+      "saved_tokens": 0,
+      "savings_pct": 0.0,
+      "roles_run_lean": 5,
+      "roles_run_baseline": 5,
+      "statuses": {
+        "A": "OK",
+        "B": "OK",
+        "C": "OK",
+        "D": "OK",
+        "E": "OK"
+      }
+    },
+    {
+      "task": "Is 'HELEN is a legitimacy-preserving cognition system' a good one-line positioning?",
+      "gate_signals": {
+        "buildable": true,
+        "empirical_testable": true,
+        "promotion_or_risk": true
+      },
+      "spawned": [
+        "C_BUILDER",
+        "D_EXPERIMENTER",
+        "E_ADVERSARY"
+      ],
+      "skipped": [],
+      "tokens": {
+        "A": 700,
+        "B": 700,
+        "C": 500,
+        "D": 500,
+        "E": 500
+      },
+      "baseline_total": 2900,
+      "lean_total": 2900,
+      "saved_tokens": 0,
+      "savings_pct": 0.0,
+      "roles_run_lean": 5,
+      "roles_run_baseline": 5,
+      "statuses": {
+        "A": "OK",
+        "B": "OK",
+        "C": "OK",
+        "D": "OK",
+        "E": "OK"
+      }
+    },
+    {
+      "task": "Design an experiment to test whether 5 isolated goblins earn more knowledge than 1.",
+      "gate_signals": {
+        "buildable": true,
+        "empirical_testable": true,
+        "promotion_or_risk": true
+      },
+      "spawned": [
+        "C_BUILDER",
+        "D_EXPERIMENTER",
+        "E_ADVERSARY"
+      ],
+      "skipped": [],
+      "tokens": {
+        "A": 700,
+        "B": 700,
+        "C": 500,
+        "D": 500,
+        "E": 500
+      },
+      "baseline_total": 2900,
+      "lean_total": 2900,
+      "saved_tokens": 0,
+      "savings_pct": 0.0,
+      "roles_run_lean": 5,
+      "roles_run_baseline": 5,
+      "statuses": {
+        "A": "OK",
+        "B": "OK",
+        "C": "OK",
+        "D": "OK",
+        "E": "OK"
+      }
+    }
+  ],
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "note": "Skipped roles were run only to price the counterfactual; production never runs them. temp0, enable_thinking:false, no auto-rescue."
+}

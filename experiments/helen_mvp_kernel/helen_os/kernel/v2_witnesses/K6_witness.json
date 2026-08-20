@@ -1,0 +1,13 @@
+{
+  "obligation": "K6",
+  "input": {
+    "requests_capability": "delete",
+    "operator_secret": null
+  },
+  "attempted_transition": "\u0394\u207a\u0393\u2192admit",
+  "state_before": "sha256:e3b0c44298fc1c14",
+  "expected": "REJECT",
+  "actual": "REJECT",
+  "reason_code": "K6_EXPANSION_WITHOUT_OPERATOR",
+  "state_after": "sha256:e3b0c44298fc1c14"
+}

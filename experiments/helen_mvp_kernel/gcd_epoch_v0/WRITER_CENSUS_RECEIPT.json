@@ -1,0 +1,298 @@
+{
+  "suite": "WRITER_CENSUS_V0",
+  "question": "exists f in W_H \\ {R_E} ?",
+  "perimeter": {
+    "gcd_kill_mediation.py": "ef698d900ad8dbab",
+    "complete_epistemic_mediation_v0.py": "1f703caebbf9e23a"
+  },
+  "method": "AST sweep: constructions, state-attr/__dict__ assigns, external state params; unmapped site => UNREVIEWED => FAIL",
+  "sites_found": 22,
+  "table": [
+    {
+      "writer_path": "complete_epistemic_mediation_v0.py:73",
+      "entry_point": "ReducerE [param:state]",
+      "can_create_H": false,
+      "can_replace_H": false,
+      "can_mutate_H": false,
+      "delegates_to_R_E": false,
+      "requires_verified_receipts": false,
+      "covered_by_test": true,
+      "status": "BINDING_PARAM (state enters the reducer here; the param cannot write H \u2014 apply() re-verifies the seal before any transition, and a consistently-forged input state is exposed by receipt-chain replay: witnessed as mutant 1 routes c-d). CAUGHT BY FAIL-CLOSED CENSUS, then classified \u2014 not suppressed."
+    },
+    {
+      "writer_path": "complete_epistemic_mediation_v0.py:155",
+      "entry_point": "main [assign:_h]",
+      "can_create_H": false,
+      "can_replace_H": false,
+      "can_mutate_H": true,
+      "delegates_to_R_E": false,
+      "requires_verified_receipts": false,
+      "covered_by_test": true,
+      "status": "ATTACK_FIXTURE (mutant 1 routes a-d; product is TamperError'd or replay-diverged => NOT an effective writer: its H is never readable as accepted state)"
+    },
+    {
+      "writer_path": "complete_epistemic_mediation_v0.py:161",
+      "entry_point": "main [assign:__dict__]",
+      "can_create_H": false,
+      "can_replace_H": false,
+      "can_mutate_H": true,
+      "delegates_to_R_E": false,
+      "requires_verified_receipts": false,
+      "covered_by_test": true,
+      "status": "ATTACK_FIXTURE (mutant 1 routes a-d; product is TamperError'd or replay-diverged => NOT an effective writer: its H is never readable as accepted state)"
+    },
+    {
+      "writer_path": "complete_epistemic_mediation_v0.py:176",
+      "entry_point": "main [assign:_h]",
+      "can_create_H": false,
+      "can_replace_H": false,
+      "can_mutate_H": true,
+      "delegates_to_R_E": false,
+      "requires_verified_receipts": false,
+      "covered_by_test": true,
+      "status": "ATTACK_FIXTURE (mutant 1 routes a-d; product is TamperError'd or replay-diverged => NOT an effective writer: its H is never readable as accepted state)"
+    },
+    {
+      "writer_path": "complete_epistemic_mediation_v0.py:177",
+      "entry_point": "main [assign:_seal]",
+      "can_create_H": false,
+      "can_replace_H": false,
+      "can_mutate_H": true,
+      "delegates_to_R_E": false,
+      "requires_verified_receipts": false,
+      "covered_by_test": true,
+      "status": "ATTACK_FIXTURE (mutant 1 routes a-d; product is TamperError'd or replay-diverged => NOT an effective writer: its H is never readable as accepted state)"
+    },
+    {
+      "writer_path": "complete_epistemic_mediation_v0.py:61",
+      "entry_point": "EpistemicState.__init__ [assign:_h]",
+      "can_create_H": true,
+      "can_replace_H": false,
+      "can_mutate_H": false,
+      "delegates_to_R_E": false,
+      "requires_verified_receipts": false,
+      "covered_by_test": true,
+      "status": "GENESIS_PREREG (creates H_0 = preregistered basis element bound into B_E; receipt-mediation does not apply to genesis BY DECLARATION, not by oversight)"
+    },
+    {
+      "writer_path": "complete_epistemic_mediation_v0.py:61",
+      "entry_point": "EpistemicState.__init__ [assign:_rc]",
+      "can_create_H": true,
+      "can_replace_H": false,
+      "can_mutate_H": false,
+      "delegates_to_R_E": false,
+      "requires_verified_receipts": false,
+      "covered_by_test": true,
+      "status": "GENESIS_PREREG (creates H_0 = preregistered basis element bound into B_E; receipt-mediation does not apply to genesis BY DECLARATION, not by oversight)"
+    },
+    {
+      "writer_path": "complete_epistemic_mediation_v0.py:61",
+      "entry_point": "EpistemicState.__init__ [assign:_basis]",
+      "can_create_H": true,
+      "can_replace_H": false,
+      "can_mutate_H": false,
+      "delegates_to_R_E": false,
+      "requires_verified_receipts": false,
+      "covered_by_test": true,
+      "status": "GENESIS_PREREG (creates H_0 = preregistered basis element bound into B_E; receipt-mediation does not apply to genesis BY DECLARATION, not by oversight)"
+    },
+    {
+      "writer_path": "complete_epistemic_mediation_v0.py:62",
+      "entry_point": "EpistemicState.__init__ [assign:_seal]",
+      "can_create_H": true,
+      "can_replace_H": false,
+      "can_mutate_H": false,
+      "delegates_to_R_E": false,
+      "requires_verified_receipts": false,
+      "covered_by_test": true,
+      "status": "GENESIS_PREREG (creates H_0 = preregistered basis element bound into B_E; receipt-mediation does not apply to genesis BY DECLARATION, not by oversight)"
+    },
+    {
+      "writer_path": "complete_epistemic_mediation_v0.py:84",
+      "entry_point": "ReducerE.apply [assign:_h]",
+      "can_create_H": false,
+      "can_replace_H": true,
+      "can_mutate_H": false,
+      "delegates_to_R_E": true,
+      "requires_verified_receipts": true,
+      "covered_by_test": true,
+      "status": "R_E_ITSELF (the sole lawful transition)"
+    },
+    {
+      "writer_path": "complete_epistemic_mediation_v0.py:85",
+      "entry_point": "ReducerE.apply [assign:_rc]",
+      "can_create_H": false,
+      "can_replace_H": true,
+      "can_mutate_H": false,
+      "delegates_to_R_E": true,
+      "requires_verified_receipts": true,
+      "covered_by_test": true,
+      "status": "R_E_ITSELF (the sole lawful transition)"
+    },
+    {
+      "writer_path": "complete_epistemic_mediation_v0.py:86",
+      "entry_point": "ReducerE.apply [assign:_basis]",
+      "can_create_H": false,
+      "can_replace_H": true,
+      "can_mutate_H": false,
+      "delegates_to_R_E": true,
+      "requires_verified_receipts": true,
+      "covered_by_test": true,
+      "status": "R_E_ITSELF (the sole lawful transition)"
+    },
+    {
+      "writer_path": "complete_epistemic_mediation_v0.py:87",
+      "entry_point": "ReducerE.apply [assign:_seal]",
+      "can_create_H": false,
+      "can_replace_H": true,
+      "can_mutate_H": false,
+      "delegates_to_R_E": true,
+      "requires_verified_receipts": true,
+      "covered_by_test": true,
+      "status": "R_E_ITSELF (the sole lawful transition)"
+    },
+    {
+      "writer_path": "complete_epistemic_mediation_v0.py:142",
+      "entry_point": "main [construct]",
+      "can_create_H": false,
+      "can_replace_H": false,
+      "can_mutate_H": false,
+      "delegates_to_R_E": false,
+      "requires_verified_receipts": false,
+      "covered_by_test": true,
+      "status": "GENESIS_CALLSITE (invokes EpistemicState.__init__; the writer is __init__, already in table \u2014 a call site is not a new door)"
+    },
+    {
+      "writer_path": "complete_epistemic_mediation_v0.py:154",
+      "entry_point": "main [construct]",
+      "can_create_H": false,
+      "can_replace_H": false,
+      "can_mutate_H": false,
+      "delegates_to_R_E": false,
+      "requires_verified_receipts": false,
+      "covered_by_test": true,
+      "status": "GENESIS_CALLSITE (invokes EpistemicState.__init__; the writer is __init__, already in table \u2014 a call site is not a new door)"
+    },
+    {
+      "writer_path": "complete_epistemic_mediation_v0.py:160",
+      "entry_point": "main [construct]",
+      "can_create_H": false,
+      "can_replace_H": false,
+      "can_mutate_H": false,
+      "delegates_to_R_E": false,
+      "requires_verified_receipts": false,
+      "covered_by_test": true,
+      "status": "GENESIS_CALLSITE (invokes EpistemicState.__init__; the writer is __init__, already in table \u2014 a call site is not a new door)"
+    },
+    {
+      "writer_path": "complete_epistemic_mediation_v0.py:166",
+      "entry_point": "main [construct]",
+      "can_create_H": false,
+      "can_replace_H": false,
+      "can_mutate_H": false,
+      "delegates_to_R_E": false,
+      "requires_verified_receipts": false,
+      "covered_by_test": true,
+      "status": "GENESIS_CALLSITE (invokes EpistemicState.__init__; the writer is __init__, already in table \u2014 a call site is not a new door)"
+    },
+    {
+      "writer_path": "complete_epistemic_mediation_v0.py:168",
+      "entry_point": "main [assign:_seal]",
+      "can_create_H": false,
+      "can_replace_H": false,
+      "can_mutate_H": true,
+      "delegates_to_R_E": false,
+      "requires_verified_receipts": false,
+      "covered_by_test": true,
+      "status": "ATTACK_FIXTURE (mutant 1 routes a-d; product is TamperError'd or replay-diverged => NOT an effective writer: its H is never readable as accepted state)"
+    },
+    {
+      "writer_path": "complete_epistemic_mediation_v0.py:169",
+      "entry_point": "main [assign:_h]",
+      "can_create_H": false,
+      "can_replace_H": false,
+      "can_mutate_H": true,
+      "delegates_to_R_E": false,
+      "requires_verified_receipts": false,
+      "covered_by_test": true,
+      "status": "ATTACK_FIXTURE (mutant 1 routes a-d; product is TamperError'd or replay-diverged => NOT an effective writer: its H is never readable as accepted state)"
+    },
+    {
+      "writer_path": "complete_epistemic_mediation_v0.py:175",
+      "entry_point": "main [construct]",
+      "can_create_H": false,
+      "can_replace_H": false,
+      "can_mutate_H": false,
+      "delegates_to_R_E": false,
+      "requires_verified_receipts": false,
+      "covered_by_test": true,
+      "status": "GENESIS_CALLSITE (invokes EpistemicState.__init__; the writer is __init__, already in table \u2014 a call site is not a new door)"
+    },
+    {
+      "writer_path": "complete_epistemic_mediation_v0.py:224",
+      "entry_point": "main [construct]",
+      "can_create_H": false,
+      "can_replace_H": false,
+      "can_mutate_H": false,
+      "delegates_to_R_E": false,
+      "requires_verified_receipts": false,
+      "covered_by_test": true,
+      "status": "GENESIS_CALLSITE (invokes EpistemicState.__init__; the writer is __init__, already in table \u2014 a call site is not a new door)"
+    },
+    {
+      "writer_path": "complete_epistemic_mediation_v0.py:83",
+      "entry_point": "ReducerE.apply [construct]",
+      "can_create_H": false,
+      "can_replace_H": true,
+      "can_mutate_H": false,
+      "delegates_to_R_E": true,
+      "requires_verified_receipts": true,
+      "covered_by_test": true,
+      "status": "R_E_ITSELF (the sole lawful transition)"
+    }
+  ],
+  "surface_checklist": {
+    "constructors_factories": "PRESENT \u2014 EpistemicState.__init__ (genesis) + EpistemicState.__new__ inside ReducerE.apply (transition). Both in table.",
+    "direct_assignments": "PRESENT only as mutant-1 attack fixtures; all seal-detected. No production direct-assign path.",
+    "in_place_mutations": "ABSENT \u2014 _h is a tuple (immutable); no list H in CEM.",
+    "deserialization_load": "ABSENT for H \u2014 the only file read is GOLD_PREREG_FIXTURE.json, loaded by the SCORER, never into H.",
+    "restore_recovery": "PRESENT as replay \u2014 recomputed from (H_0, receipts) through gamma_E => f ~> R_E by construction. No raw-state restore.",
+    "snapshots_cache": "ABSENT \u2014 no snapshot/pickle/copy of state objects.",
+    "migration_version_upgrade": "ABSENT \u2014 single PolicyVersion CEM_V0, frozen in B_E.",
+    "test_helpers_fixtures": "PRESENT \u2014 mutant sites; classified ATTACK_FIXTURE.",
+    "admin_debug_paths": "ABSENT \u2014 no repl/debug hook touches H.",
+    "import_export": "ABSENT \u2014 receipts export via json for the receipt file; H itself is never serialized out or read back in.",
+    "copies_clones": "ABSENT \u2014 no copy/deepcopy of EpistemicState.",
+    "external_hypotheses_after_params": "ABSENT \u2014 no function accepts an hypotheses_after/state/restore_state parameter (AST-checked)."
+  },
+  "out_of_perimeter": [
+    "Python dynamism itself (object.__setattr__, ctypes, gc) \u2014 cannot be closed by census; mitigated by seal-at-read + replay, witnessed by mutant 1 routes a-d.",
+    "Any FUTURE module importing EpistemicState \u2014 census is valid for the inspected perimeter at the recorded file hashes only."
+  ],
+  "W_H_effective": [
+    "complete_epistemic_mediation_v0.py:61 EpistemicState.__init__ [assign:_h]",
+    "complete_epistemic_mediation_v0.py:61 EpistemicState.__init__ [assign:_rc]",
+    "complete_epistemic_mediation_v0.py:61 EpistemicState.__init__ [assign:_basis]",
+    "complete_epistemic_mediation_v0.py:62 EpistemicState.__init__ [assign:_seal]",
+    "complete_epistemic_mediation_v0.py:84 ReducerE.apply [assign:_h]",
+    "complete_epistemic_mediation_v0.py:85 ReducerE.apply [assign:_rc]",
+    "complete_epistemic_mediation_v0.py:86 ReducerE.apply [assign:_basis]",
+    "complete_epistemic_mediation_v0.py:87 ReducerE.apply [assign:_seal]",
+    "complete_epistemic_mediation_v0.py:83 ReducerE.apply [construct]"
+  ],
+  "logical_writer_paths": [
+    "EpistemicState.__init__",
+    "ReducerE.apply"
+  ],
+  "genesis_paths": [
+    "complete_epistemic_mediation_v0.py:61",
+    "complete_epistemic_mediation_v0.py:61",
+    "complete_epistemic_mediation_v0.py:61",
+    "complete_epistemic_mediation_v0.py:62"
+  ],
+  "WriterCoverage_nongenesis": 1.0,
+  "unreviewed_sites": 0,
+  "answer": "NO effective f in W_H \\ {R_E} found in perimeter; genesis H_0 creation is the one non-R_E writer, declared and bound into B_E (prereg act, not runtime door)",
+  "verdict": "SURVIVED_CENSUS",
+  "claim_bound": "valid for the inspected perimeter at the recorded hashes; NOT a global proof"
+}

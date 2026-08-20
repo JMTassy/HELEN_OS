@@ -1,0 +1,686 @@
+{
+  "k": 5,
+  "R": 5,
+  "valid_runs": 5,
+  "status": "EVALUABLE",
+  "N_earned_mean": 4.0,
+  "N_earned_var": 0.8,
+  "N_earned_per_valid_run": [
+    3,
+    3,
+    5,
+    5,
+    4
+  ],
+  "Stability": 0.0,
+  "DuplicateRate": 0.0,
+  "ResolutionRate": 1.0,
+  "TruncationRate": 0.0,
+  "OperatorReview": 20,
+  "CognitiveCost_tokens": 3931,
+  "CognitiveCost_secs": 245.7,
+  "AuthorityViolations": 0,
+  "runs": [
+    {
+      "r": 0,
+      "k": 5,
+      "valid": true,
+      "G_config": true,
+      "G_evaluable": true,
+      "G_gov": true,
+      "N_P": 5,
+      "N_E": 5,
+      "N_earned": 3,
+      "earned_keys": [
+        "tarot originated in europe not ancient egypt as there is no documented manuscript transmission chain linking egyptian tarot to european tarot r3",
+        "tarot originated independently in europe centuries before any 1781 egyptian attribution",
+        "tarot originated independently in europe centuries earlier than any hypothesized egyptian origin with no documented manuscript transmission chain linking egypt to europe"
+      ],
+      "distinct_props": 5,
+      "review_ambiguous": 0,
+      "decisive": 5,
+      "hal": [
+        {
+          "g": 0,
+          "verdict": "REFUTED",
+          "tok": 102,
+          "secs": 7.2
+        },
+        {
+          "g": 1,
+          "verdict": "SURVIVED",
+          "tok": 71,
+          "secs": 5.6
+        },
+        {
+          "g": 2,
+          "verdict": "SURVIVED",
+          "tok": 69,
+          "secs": 5.9
+        },
+        {
+          "g": 3,
+          "verdict": "SURVIVED",
+          "tok": 77,
+          "secs": 5.0
+        },
+        {
+          "g": 4,
+          "verdict": "REFUTED",
+          "tok": 83,
+          "secs": 5.0
+        }
+      ],
+      "packets": [
+        {
+          "g": 0,
+          "seed": 1000,
+          "tok": 69,
+          "secs": 3.8,
+          "status": "OK",
+          "complete": true,
+          "packet": {
+            "proposition": "Tarot originated in Europe rather than ancient Egypt, as European attestation predates any Egyptian claims and no documentary transmission chain links Egypt to Europe.",
+            "declared_falsifier": "A documented manuscript transmission chain linking an ancient Egyptian Tarot to the European Tarot deck.",
+            "evidence_refs": [],
+            "confidence": 0.0
+          }
+        },
+        {
+          "g": 1,
+          "seed": 1001,
+          "tok": 70,
+          "secs": 3.7,
+          "status": "OK",
+          "complete": true,
+          "packet": {
+            "proposition": "Tarot originated in Europe, not ancient Egypt, as there is no documented manuscript transmission chain linking Egyptian Tarot to European Tarot (R3).",
+            "declared_falsifier": "A documented manuscript transmission chain linking ancient Egyptian Tarot to European Tarot.",
+            "evidence_refs": [
+              "R3"
+            ],
+            "confidence": 1.0
+          }
+        },
+        {
+          "g": 2,
+          "seed": 1002,
+          "tok": 71,
+          "secs": 3.7,
+          "status": "OK",
+          "complete": true,
+          "packet": {
+            "proposition": "Tarot originated independently in Europe centuries earlier than any hypothesized Egyptian origin, with no documented manuscript transmission chain linking Egypt to Europe.",
+            "declared_falsifier": "A documented manuscript transmission chain linking an Egyptian Tarot to European Tarot.",
+            "evidence_refs": [
+              "R1",
+              "R2",
+              "R3"
+            ],
+            "confidence": 1.0
+          }
+        },
+        {
+          "g": 3,
+          "seed": 1003,
+          "tok": 54,
+          "secs": 2.9,
+          "status": "OK",
+          "complete": true,
+          "packet": {
+            "proposition": "Tarot originated independently in Europe centuries before any 1781 Egyptian attribution.",
+            "declared_falsifier": "A documented manuscript transmission chain linking an Egyptian Tarot to European Tarot.",
+            "evidence_refs": [],
+            "confidence": 0.0
+          }
+        },
+        {
+          "g": 4,
+          "seed": 1004,
+          "tok": 67,
+          "secs": 3.9,
+          "status": "OK",
+          "complete": true,
+          "packet": {
+            "proposition": "Tarot originated independently in Europe, not in ancient Egypt, because no manuscript transmission chain exists to link any alleged Egyptian Tarot to European Tarot.",
+            "declared_falsifier": "A documented manuscript transmission chain linking an Egyptian Tarot to European Tarot.",
+            "evidence_refs": [],
+            "confidence": 1.0
+          }
+        }
+      ],
+      "tokens": 733,
+      "secs": 46.7,
+      "admission": 0
+    },
+    {
+      "r": 1,
+      "k": 5,
+      "valid": true,
+      "G_config": true,
+      "G_evaluable": true,
+      "G_gov": true,
+      "N_P": 5,
+      "N_E": 5,
+      "N_earned": 3,
+      "earned_keys": [
+        "tarot originated in europe not egypt because it is independently attested in europe centuries earlier than any egyptian attribution and lacks any documented manuscript transmission chain linking egypt to europe",
+        "the origin of tarot is not egypt but rather europe with independent attestation of tarot in europe predating any claim of egyptian origin and no documented chain of transmission linking egyptian tarot to european tarot",
+        "the tarots origin is in europe not ancient egypt as evidenced by its independent attestation in europe centuries before the 1781 claim of egyptian origins and the absence of any documented manuscript transmission chain linking egyptian tarot to european tarot"
+      ],
+      "distinct_props": 5,
+      "review_ambiguous": 0,
+      "decisive": 5,
+      "hal": [
+        {
+          "g": 0,
+          "verdict": "SURVIVED",
+          "tok": 70,
+          "secs": 4.3
+        },
+        {
+          "g": 1,
+          "verdict": "REFUTED",
+          "tok": 64,
+          "secs": 4.2
+        },
+        {
+          "g": 2,
+          "verdict": "SURVIVED",
+          "tok": 73,
+          "secs": 4.4
+        },
+        {
+          "g": 3,
+          "verdict": "REFUTED",
+          "tok": 66,
+          "secs": 4.2
+        },
+        {
+          "g": 4,
+          "verdict": "SURVIVED",
+          "tok": 94,
+          "secs": 5.1
+        }
+      ],
+      "packets": [
+        {
+          "g": 0,
+          "seed": 1100,
+          "tok": 114,
+          "secs": 7.1,
+          "status": "OK",
+          "complete": true,
+          "packet": {
+            "proposition": "The origin of Tarot is not Egypt, but rather Europe, with independent attestation of Tarot in Europe predating any claim of Egyptian origin, and no documented chain of transmission linking Egyptian Tarot to European Tarot.",
+            "declared_falsifier": "A documented manuscript transmission chain linking an Egyptian Tarot to a European Tarot.",
+            "evidence_refs": [
+              "R2",
+              "R3"
+            ],
+            "confidence": 0.9
+          }
+        },
+        {
+          "g": 1,
+          "seed": 1101,
+          "tok": 85,
+          "secs": 4.9,
+          "status": "OK",
+          "complete": true,
+          "packet": {
+            "proposition": "The Tarot originated in Europe, not Egypt, as evidenced by its independent attestation in Europe centuries before the 1781 Egyptian attribution and the absence of any documented manuscript transmission chain linking Egypt to Europe.",
+            "declared_falsifier": "A documented manuscript transmission chain linking ancient Egyptian Tarot to European Tarot.",
+            "evidence_refs": [
+              "R2",
+              "R3"
+            ],
+            "confidence": 0.9
+          }
+        },
+        {
+          "g": 2,
+          "seed": 1102,
+          "tok": 72,
+          "secs": 4.8,
+          "status": "OK",
+          "complete": true,
+          "packet": {
+            "proposition": "Tarot originated in Europe, not Egypt, because it is independently attested in Europe centuries earlier than any Egyptian attribution and lacks any documented manuscript transmission chain linking Egypt to Europe.",
+            "declared_falsifier": "A documented manuscript transmission chain linking an Egyptian Tarot to European Tarot.",
+            "evidence_refs": [],
+            "confidence": 0.0
+          }
+        },
+        {
+          "g": 3,
+          "seed": 1103,
+          "tok": 111,
+          "secs": 6.4,
+          "status": "OK",
+          "complete": true,
+          "packet": {
+            "proposition": "Tarot did not originate in ancient Egypt, as the 1781 document attributing it to Egypt lacks supporting evidence and contradicts the earlier attestation of Tarot in Europe and the absence of a documented manuscript transmission chain linking Egyptian Tarot to European Tarot.",
+            "declared_falsifier": "A documented manuscript transmission chain linking any Egyptian Tarot to European Tarot, or evidence of Tarot in Europe dating centuries earlier than the 1781 document.",
+            "evidence_refs": [],
+            "confidence": 0.8
+          }
+        },
+        {
+          "g": 4,
+          "seed": 1104,
+          "tok": 95,
+          "secs": 5.2,
+          "status": "OK",
+          "complete": true,
+          "packet": {
+            "proposition": "The Tarot's origin is in Europe, not ancient Egypt, as evidenced by its independent attestation in Europe centuries before the 1781 claim of Egyptian origins and the absence of any documented manuscript transmission chain linking Egyptian Tarot to European Tarot.",
+            "declared_falsifier": "A documented manuscript transmission chain linking an ancient Egyptian Tarot to European Tarot.",
+            "evidence_refs": [
+              "R2",
+              "R3"
+            ],
+            "confidence": 0.0
+          }
+        }
+      ],
+      "tokens": 844,
+      "secs": 50.6,
+      "admission": 0
+    },
+    {
+      "r": 2,
+      "k": 5,
+      "valid": true,
+      "G_config": true,
+      "G_evaluable": true,
+      "G_gov": true,
+      "N_P": 5,
+      "N_E": 5,
+      "N_earned": 5,
+      "earned_keys": [
+        "tarot did not originate in ancient egypt",
+        "tarot is independently attested in europe centuries earlier than any egyptian origin claim and no documented manuscript transmission chain links egyptian tarot to european tarot",
+        "tarot is not of ancient egyptian origin",
+        "tarot is not of egyptian origin but was independently attested in europe centuries earlier",
+        "tarot originated independently in europe centuries before any egyptian attribution could be substantiated rendering the ancient egyptian origin claim unfalsified but unsupported"
+      ],
+      "distinct_props": 5,
+      "review_ambiguous": 0,
+      "decisive": 5,
+      "hal": [
+        {
+          "g": 0,
+          "verdict": "SURVIVED",
+          "tok": 83,
+          "secs": 6.0
+        },
+        {
+          "g": 1,
+          "verdict": "SURVIVED",
+          "tok": 71,
+          "secs": 5.8
+        },
+        {
+          "g": 2,
+          "verdict": "SURVIVED",
+          "tok": 88,
+          "secs": 8.1
+        },
+        {
+          "g": 3,
+          "verdict": "SURVIVED",
+          "tok": 120,
+          "secs": 9.5
+        },
+        {
+          "g": 4,
+          "verdict": "SURVIVED",
+          "tok": 88,
+          "secs": 8.7
+        }
+      ],
+      "packets": [
+        {
+          "g": 0,
+          "seed": 1200,
+          "tok": 68,
+          "secs": 3.7,
+          "status": "OK",
+          "complete": true,
+          "packet": {
+            "proposition": "Tarot is independently attested in Europe centuries earlier than any Egyptian origin claim, and no documented manuscript transmission chain links Egyptian Tarot to European Tarot.",
+            "declared_falsifier": "A discovered manuscript transmission chain linking an Egyptian Tarot to European Tarot.",
+            "evidence_refs": [],
+            "confidence": 0.0
+          }
+        },
+        {
+          "g": 1,
+          "seed": 1201,
+          "tok": 54,
+          "secs": 2.9,
+          "status": "OK",
+          "complete": true,
+          "packet": {
+            "proposition": "Tarot is not of Egyptian origin but was independently attested in Europe centuries earlier.",
+            "declared_falsifier": "A documented manuscript transmission chain linking any Egyptian Tarot to European Tarot.",
+            "evidence_refs": [],
+            "confidence": 0.0
+          }
+        },
+        {
+          "g": 2,
+          "seed": 1202,
+          "tok": 78,
+          "secs": 4.3,
+          "status": "OK",
+          "complete": true,
+          "packet": {
+            "proposition": "Tarot is not of ancient Egyptian origin.",
+            "declared_falsifier": "A documented manuscript transmission chain linking any ancient Egyptian Tarot to European Tarot.",
+            "evidence_refs": [
+              "R2",
+              "R3"
+            ],
+            "confidence": 1.0
+          }
+        },
+        {
+          "g": 3,
+          "seed": 1203,
+          "tok": 65,
+          "secs": 4.0,
+          "status": "OK",
+          "complete": true,
+          "packet": {
+            "proposition": "Tarot originated independently in Europe centuries before any Egyptian attribution could be substantiated, rendering the ancient Egyptian origin claim unfalsified but unsupported.",
+            "declared_falsifier": "A documented manuscript transmission chain linking an Egyptian Tarot to European Tarot.",
+            "evidence_refs": [],
+            "confidence": 0.0
+          }
+        },
+        {
+          "g": 4,
+          "seed": 1204,
+          "tok": 47,
+          "secs": 2.8,
+          "status": "OK",
+          "complete": true,
+          "packet": {
+            "proposition": "Tarot did not originate in ancient Egypt.",
+            "declared_falsifier": "A documented manuscript transmission chain linking an Egyptian Tarot to European Tarot.",
+            "evidence_refs": [
+              3
+            ],
+            "confidence": 0.9
+          }
+        }
+      ],
+      "tokens": 762,
+      "secs": 55.8,
+      "admission": 0
+    },
+    {
+      "r": 3,
+      "k": 5,
+      "valid": true,
+      "G_config": true,
+      "G_evaluable": true,
+      "G_gov": true,
+      "N_P": 5,
+      "N_E": 5,
+      "N_earned": 5,
+      "earned_keys": [
+        "tarot originated in europe centuries before any egyptian attribution as evidenced by independent european attestations predating the 1781 claim with no documented chain of transmission from egypt to europe",
+        "tarot originated in europe centuries before the 18th century rendering ancient egyptian origin claims unsubstantiated",
+        "tarot originated in europe not ancient egypt as egyptian origin claims lack a documented manuscript transmission chain and european attestations predate the 1781 egyptian attribution",
+        "the tarot originated in europe centuries prior to the 1781 claim of egyptian origin rendering the 1781 egyptian origin claim unsupported",
+        "the tarot originated in europe not ancient egypt as evidenced by its independent attestation in europe centuries before the 1781 claim of egyptian origin and the complete absence of any documented manuscript transmission chain linking egypt to europe"
+      ],
+      "distinct_props": 5,
+      "review_ambiguous": 0,
+      "decisive": 5,
+      "hal": [
+        {
+          "g": 0,
+          "verdict": "SURVIVED",
+          "tok": 91,
+          "secs": 5.8
+        },
+        {
+          "g": 1,
+          "verdict": "SURVIVED",
+          "tok": 80,
+          "secs": 4.9
+        },
+        {
+          "g": 2,
+          "verdict": "SURVIVED",
+          "tok": 77,
+          "secs": 5.0
+        },
+        {
+          "g": 3,
+          "verdict": "SURVIVED",
+          "tok": 80,
+          "secs": 5.2
+        },
+        {
+          "g": 4,
+          "verdict": "SURVIVED",
+          "tok": 74,
+          "secs": 4.0
+        }
+      ],
+      "packets": [
+        {
+          "g": 0,
+          "seed": 1300,
+          "tok": 71,
+          "secs": 5.8,
+          "status": "OK",
+          "complete": true,
+          "packet": {
+            "proposition": "Tarot originated in Europe, not ancient Egypt, as Egyptian origin claims lack a documented manuscript transmission chain and European attestations predate the 1781 Egyptian attribution.",
+            "declared_falsifier": "A documented manuscript transmission chain linking ancient Egypt to European Tarot decks.",
+            "evidence_refs": [],
+            "confidence": 0.0
+          }
+        },
+        {
+          "g": 1,
+          "seed": 1301,
+          "tok": 69,
+          "secs": 4.4,
+          "status": "OK",
+          "complete": true,
+          "packet": {
+            "proposition": "The Tarot originated in Europe centuries prior to the 1781 claim of Egyptian origin, rendering the 1781 Egyptian origin claim unsupported.",
+            "declared_falsifier": "A documented manuscript transmission chain linking an Egyptian Tarot to European Tarot.",
+            "evidence_refs": [],
+            "confidence": 0.0
+          }
+        },
+        {
+          "g": 2,
+          "seed": 1302,
+          "tok": 88,
+          "secs": 5.4,
+          "status": "OK",
+          "complete": true,
+          "packet": {
+            "proposition": "The Tarot originated in Europe, not ancient Egypt, as evidenced by its independent attestation in Europe centuries before the 1781 claim of Egyptian origin and the complete absence of any documented manuscript transmission chain linking Egypt to Europe.",
+            "declared_falsifier": "A documented manuscript transmission chain linking an Egyptian Tarot to European Tarot would refute this claim.",
+            "evidence_refs": [],
+            "confidence": 0.0
+          }
+        },
+        {
+          "g": 3,
+          "seed": 1303,
+          "tok": 88,
+          "secs": 5.9,
+          "status": "OK",
+          "complete": true,
+          "packet": {
+            "proposition": "Tarot originated in Europe centuries before any Egyptian attribution, as evidenced by independent European attestations pre-dating the 1781 claim, with no documented chain of transmission from Egypt to Europe.",
+            "declared_falsifier": "A documented manuscript transmission chain linking an Egyptian Tarot to European Tarot, existing prior to the 1781 document.",
+            "evidence_refs": [],
+            "confidence": 0.0
+          }
+        },
+        {
+          "g": 4,
+          "seed": 1304,
+          "tok": 68,
+          "secs": 4.4,
+          "status": "OK",
+          "complete": true,
+          "packet": {
+            "proposition": "Tarot originated in Europe centuries before the 18th century, rendering ancient Egyptian origin claims unsubstantiated.",
+            "declared_falsifier": "A documented manuscript transmission chain linking an Egyptian Tarot to European Tarot.",
+            "evidence_refs": [
+              "R1",
+              "R2",
+              "R3"
+            ],
+            "confidence": 1.0
+          }
+        }
+      ],
+      "tokens": 786,
+      "secs": 50.8,
+      "admission": 0
+    },
+    {
+      "r": 4,
+      "k": 5,
+      "valid": true,
+      "G_config": true,
+      "G_evaluable": true,
+      "G_gov": true,
+      "N_P": 5,
+      "N_E": 5,
+      "N_earned": 4,
+      "earned_keys": [
+        "tarot originated in europe centuries before any connection to ancient egypt could be established making the 1781 claim of egyptian origin unsupported",
+        "tarot originated in europe centuries before the 1781 document attributing it to ancient egypt and no manuscript transmission chain links egypt to europe",
+        "tarot originated in europe not egypt as evidenced by the existence of tarot decks in europe centuries earlier than the 1781 claim of egyptian origin and the lack of any documented manuscript transmission chain linking egyptian tarot to european tarot",
+        "the egyptian origin of tarot is false"
+      ],
+      "distinct_props": 5,
+      "review_ambiguous": 0,
+      "decisive": 5,
+      "hal": [
+        {
+          "g": 0,
+          "verdict": "SURVIVED",
+          "tok": 94,
+          "secs": 5.1
+        },
+        {
+          "g": 1,
+          "verdict": "SURVIVED",
+          "tok": 86,
+          "secs": 4.6
+        },
+        {
+          "g": 2,
+          "verdict": "REFUTED",
+          "tok": 95,
+          "secs": 4.9
+        },
+        {
+          "g": 3,
+          "verdict": "SURVIVED",
+          "tok": 88,
+          "secs": 4.6
+        },
+        {
+          "g": 4,
+          "verdict": "SURVIVED",
+          "tok": 80,
+          "secs": 4.2
+        }
+      ],
+      "packets": [
+        {
+          "g": 0,
+          "seed": 1400,
+          "tok": 107,
+          "secs": 5.3,
+          "status": "OK",
+          "complete": true,
+          "packet": {
+            "proposition": "Tarot originated in Europe, not Egypt, as evidenced by the existence of Tarot decks in Europe centuries earlier than the 1781 claim of Egyptian origin and the lack of any documented manuscript transmission chain linking Egyptian Tarot to European Tarot.",
+            "declared_falsifier": "A documented manuscript transmission chain linking an ancient Egyptian Tarot to European Tarot, or an independently attested Egyptian Tarot deck predating European Tarot by several centuries.",
+            "evidence_refs": [],
+            "confidence": 0.0
+          }
+        },
+        {
+          "g": 1,
+          "seed": 1401,
+          "tok": 68,
+          "secs": 3.5,
+          "status": "OK",
+          "complete": true,
+          "packet": {
+            "proposition": "Tarot originated in Europe centuries before any connection to ancient Egypt could be established, making the 1781 claim of Egyptian origin unsupported.",
+            "declared_falsifier": "A documented manuscript transmission chain linking an ancient Egyptian Tarot to European Tarot.",
+            "evidence_refs": [],
+            "confidence": 0.95
+          }
+        },
+        {
+          "g": 2,
+          "seed": 1402,
+          "tok": 74,
+          "secs": 3.7,
+          "status": "OK",
+          "complete": true,
+          "packet": {
+            "proposition": "Tarot originated in Europe rather than ancient Egypt, as no documented manuscript transmission chain links any Egyptian Tarot to European Tarot, and European attestation predates Egyptian claims.",
+            "declared_falsifier": "A documented manuscript transmission chain linking an Egyptian Tarot to European Tarot.",
+            "evidence_refs": [
+              "R3"
+            ],
+            "confidence": 0.5
+          }
+        },
+        {
+          "g": 3,
+          "seed": 1403,
+          "tok": 46,
+          "secs": 2.4,
+          "status": "OK",
+          "complete": true,
+          "packet": {
+            "proposition": "The Egyptian origin of Tarot is false.",
+            "declared_falsifier": "A documented manuscript transmission chain linking any Egyptian Tarot to European Tarot",
+            "evidence_refs": [],
+            "confidence": 1.0
+          }
+        },
+        {
+          "g": 4,
+          "seed": 1404,
+          "tok": 68,
+          "secs": 3.5,
+          "status": "OK",
+          "complete": true,
+          "packet": {
+            "proposition": "Tarot originated in Europe centuries before the 1781 document attributing it to ancient Egypt, and no manuscript transmission chain links Egypt to Europe.",
+            "declared_falsifier": "A documented manuscript transmission chain connecting any Egyptian Tarot to European Tarot.",
+            "evidence_refs": [],
+            "confidence": 1.0
+          }
+        }
+      ],
+      "tokens": 806,
+      "secs": 41.8,
+      "admission": 0
+    }
+  ]
+}

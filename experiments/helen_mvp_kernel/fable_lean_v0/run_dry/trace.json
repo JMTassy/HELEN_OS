@@ -1,0 +1,288 @@
+{
+  "controller": "FABLE_LEAN_V0",
+  "mode": "DRY_RUN",
+  "constitution": [
+    "FREE COGNITION",
+    "NO AUTHORITY MINTING",
+    "TYPE SPECULATION",
+    "STRICT OUTPUT CONTRACT",
+    "NO DIRECT STATE EFFECT"
+  ],
+  "task": "Make Authority(T(x)) <= Authority(x) executable as one seam.",
+  "task_hash": "sha256:2dcba0d2d269753b",
+  "separation": "SEPARATE FROM SCALE_V1 \u2014 no benchmark contamination",
+  "spawn_receipts": [
+    {
+      "type": "SPAWN_RECEIPT",
+      "role": "A_ARCHITECT",
+      "decision": "SPAWN",
+      "trigger": "mandatory",
+      "expected_information_gain": 0.9,
+      "budget_tokens": 700,
+      "scope": "sha256:2dcba0d2d269753b",
+      "evidence": "scout"
+    },
+    {
+      "type": "SPAWN_RECEIPT",
+      "role": "B_FALSIFIER",
+      "decision": "SPAWN",
+      "trigger": "mandatory",
+      "expected_information_gain": 0.9,
+      "budget_tokens": 700,
+      "scope": "sha256:2dcba0d2d269753b",
+      "evidence": "scout"
+    },
+    {
+      "type": "SPAWN_RECEIPT",
+      "role": "C_BUILDER",
+      "decision": "SPAWN",
+      "trigger": "BuildableCandidate",
+      "expected_information_gain": 0.6,
+      "budget_tokens": 500,
+      "scope": "sha256:2dcba0d2d269753b",
+      "evidence": {
+        "buildable": true,
+        "empirical_testable": false,
+        "promotion_or_risk": true
+      }
+    },
+    {
+      "type": "SPAWN_RECEIPT",
+      "role": "E_ADVERSARY",
+      "decision": "SPAWN",
+      "trigger": "PromotionProximity OR AuthoritySurface OR HighImpactFailureMode",
+      "expected_information_gain": 0.7,
+      "budget_tokens": 500,
+      "scope": "sha256:2dcba0d2d269753b",
+      "evidence": {
+        "buildable": true,
+        "empirical_testable": false,
+        "promotion_or_risk": true
+      }
+    }
+  ],
+  "skip_receipts": [
+    {
+      "type": "SKIP_RECEIPT",
+      "role": "D_EXPERIMENTER",
+      "decision": "SKIP",
+      "reason": "trigger not satisfied: EmpiricalClaim AND Testable",
+      "evidence": {
+        "buildable": true,
+        "empirical_testable": false,
+        "promotion_or_risk": true
+      }
+    }
+  ],
+  "packets": {
+    "A_ARCHITECT": {
+      "ID": "A_ARCHITECT",
+      "STATUS": "COMPLETE",
+      "CLAIM_CLASS": "PROPOSAL",
+      "FINDINGS": [
+        "candidate decomposes into a checkable seam",
+        "an interface boundary is implied"
+      ],
+      "NOVEL": [
+        "the amplification law is expressible as one executable seam"
+      ],
+      "ROOTS": [
+        "input:frozen"
+      ],
+      "FALSIFIERS": [
+        "no seam separates authority from content"
+      ],
+      "RISKS": [
+        "abstraction may hide a real coupling"
+      ],
+      "NEXT_TEST": "build the minimal seam + one bypass mutant",
+      "signals": {
+        "buildable": true,
+        "empirical_testable": false,
+        "promotion_or_risk": false
+      },
+      "authority": false,
+      "ledger_effect": "none",
+      "COMPLETE": true
+    },
+    "B_FALSIFIER": {
+      "ID": "B_FALSIFIER",
+      "STATUS": "COMPLETE",
+      "CLAIM_CLASS": "INFERRED",
+      "FINDINGS": [
+        "the claim has an authority surface that could be laundered"
+      ],
+      "NOVEL": [
+        "a summary step is where authority could silently inflate"
+      ],
+      "ROOTS": [
+        "input:frozen"
+      ],
+      "FALSIFIERS": [
+        "show a transform that raises authority with a valid witness"
+      ],
+      "RISKS": [
+        "HIGH: authority-laundering via consolidation"
+      ],
+      "NEXT_TEST": "attempt an illegitimate promotion and locate the stopping boundary",
+      "signals": {
+        "buildable": false,
+        "empirical_testable": false,
+        "promotion_or_risk": true
+      },
+      "authority": false,
+      "ledger_effect": "none",
+      "COMPLETE": true
+    },
+    "C_BUILDER": {
+      "ID": "C_BUILDER",
+      "STATUS": "COMPLETE",
+      "CLAIM_CLASS": "PROPOSAL",
+      "FINDINGS": [
+        "minimal seam is ~1 module + kill-suite"
+      ],
+      "NOVEL": [
+        "Capability-minting gate reused from vertical_slice pattern"
+      ],
+      "ROOTS": [
+        "input:frozen"
+      ],
+      "FALSIFIERS": [
+        "seam not load-bearing if bypass mutant survives"
+      ],
+      "RISKS": [
+        "HMAC-modeled, not OS-isolated"
+      ],
+      "NEXT_TEST": "one bypass mutant must die",
+      "signals": {},
+      "authority": false,
+      "ledger_effect": "none",
+      "COMPLETE": true
+    },
+    "E_ADVERSARY": {
+      "ID": "E_ADVERSARY",
+      "STATUS": "COMPLETE",
+      "CLAIM_CLASS": "INFERRED",
+      "FINDINGS": [
+        "consensus could be mistaken for corroboration"
+      ],
+      "NOVEL": [
+        "fan-out of one root across 5 agents fakes independence"
+      ],
+      "ROOTS": [
+        "input:frozen"
+      ],
+      "FALSIFIERS": [
+        "independent-root count > 1 defeats the attack"
+      ],
+      "RISKS": [
+        "HIGH: pseudo-corroboration"
+      ],
+      "NEXT_TEST": "dedup to independent roots before any HAL trust",
+      "signals": {},
+      "authority": false,
+      "ledger_effect": "none",
+      "COMPLETE": true
+    }
+  },
+  "gate": {
+    "aggregate_signals": {
+      "buildable": true,
+      "empirical_testable": false,
+      "promotion_or_risk": true
+    },
+    "need": {
+      "C_BUILDER": true,
+      "D_EXPERIMENTER": false,
+      "E_ADVERSARY": true
+    }
+  },
+  "candidate": {
+    "INTERESTING_purple": [
+      "the amplification law is expressible as one executable seam",
+      "a summary step is where authority could silently inflate",
+      "Capability-minting gate reused from vertical_slice pattern",
+      "fan-out of one root across 5 agents fakes independence"
+    ],
+    "SUPPORTED_green_candidate": [
+      "the amplification law is expressible as one executable seam",
+      "a summary step is where authority could silently inflate",
+      "Capability-minting gate reused from vertical_slice pattern",
+      "fan-out of one root across 5 agents fakes independence"
+    ],
+    "distinct": [
+      {
+        "proposition": "the amplification law is expressible as one executable seam",
+        "reproduced_by": [
+          "A_ARCHITECT"
+        ],
+        "independent_root_count": 1,
+        "pseudo_corroboration": false
+      },
+      {
+        "proposition": "a summary step is where authority could silently inflate",
+        "reproduced_by": [
+          "B_FALSIFIER"
+        ],
+        "independent_root_count": 1,
+        "pseudo_corroboration": false
+      },
+      {
+        "proposition": "Capability-minting gate reused from vertical_slice pattern",
+        "reproduced_by": [
+          "C_BUILDER"
+        ],
+        "independent_root_count": 1,
+        "pseudo_corroboration": false
+      },
+      {
+        "proposition": "fan-out of one root across 5 agents fakes independence",
+        "reproduced_by": [
+          "E_ADVERSARY"
+        ],
+        "independent_root_count": 1,
+        "pseudo_corroboration": false
+      }
+    ],
+    "hal_trials": [
+      {
+        "proposition": "the amplification law is expressible as one executable seam",
+        "verdict": "SURVIVED",
+        "hal": "STUB_DRY_RUN"
+      },
+      {
+        "proposition": "a summary step is where authority could silently inflate",
+        "verdict": "SURVIVED",
+        "hal": "STUB_DRY_RUN"
+      },
+      {
+        "proposition": "Capability-minting gate reused from vertical_slice pattern",
+        "verdict": "SURVIVED",
+        "hal": "STUB_DRY_RUN"
+      },
+      {
+        "proposition": "fan-out of one root across 5 agents fakes independence",
+        "verdict": "SURVIVED",
+        "hal": "STUB_DRY_RUN"
+      }
+    ],
+    "seam": "INSTITUTIONAL SEAM \u2014 STOP. No Gamma_A. authority=false. HAL_SURVIVED != TRUE != ADMITTED."
+  },
+  "terminal": {
+    "type": "FABLE_LEAN_V0_TERMINAL",
+    "A_ARCHITECT": "COMPLETE",
+    "B_FALSIFIER": "COMPLETE",
+    "C_BUILDER": "COMPLETE",
+    "D_EXPERIMENTER": "SKIPPED",
+    "E_ADVERSARY": "COMPLETE",
+    "SWARM_COMPLETE": "YES",
+    "DISCRIMINATION": "ALLOWED",
+    "EARNED_CHIDDUSH": 4,
+    "AUTHORITY": false,
+    "CANON": false,
+    "LEDGER_EFFECT": "none",
+    "INSTITUTIONAL_ADMISSION": "NOT_PERFORMED",
+    "COMMIT": "none",
+    "PUSH": "none"
+  }
+}

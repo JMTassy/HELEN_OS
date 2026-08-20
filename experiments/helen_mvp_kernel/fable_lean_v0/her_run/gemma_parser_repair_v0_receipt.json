@@ -1,0 +1,28 @@
+{
+  "receipt": "GEMMA12B_HAL_PARSER_REPAIR_V0",
+  "MODEL_ID": "gemma4-12b:latest",
+  "PRIMARY_10_PASS": "10/10",
+  "NEGATIVE_CONTROLS_PASS": "ALL",
+  "PARSE_RATE": 1.0,
+  "MALFORMED_REJECTED": true,
+  "DUPLICATE_KEYS_REJECTED": true,
+  "MULTI_OBJECT_REJECTED": true,
+  "MISSING_FIELD_REJECTED": true,
+  "PROSE_REJECTED": true,
+  "PROMPT_HASH": "006c1e79c5e681cf",
+  "PARSER_HASH": "843157b6eb6535b5",
+  "GENERATION_CONFIG": {
+    "think": false,
+    "format": "json",
+    "temperature": 0,
+    "num_predict": 400
+  },
+  "RAW_OUTPUT_HASH": "b7e502768fffcf41",
+  "SEMANTIC_FIELDS_RELAXED": false,
+  "VERDICT_INFERRED_FROM_PROSE": false,
+  "RESULT": "PARSER_REPAIRED",
+  "SCOPE_NOTE": "integration/serialization/parsing repaired ONLY. Discrimination NOT measured. 10/10 Parsed \u22ac 10/10 CorrectlyDiscriminated.",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none"
+}

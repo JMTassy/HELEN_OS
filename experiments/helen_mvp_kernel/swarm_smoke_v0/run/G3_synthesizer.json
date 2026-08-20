@@ -1,0 +1,17 @@
+{
+  "goblin": "G3_synthesizer",
+  "status": "OK",
+  "complete": true,
+  "packet": {
+    "proposition": "Tarot originated in ancient Egypt and was transmitted to Europe via manuscript chains.",
+    "declared_falsifier": "R2: Tarot is independently attested in Europe centuries earlier.",
+    "evidence_refs": [
+      "R1",
+      "R2",
+      "R3"
+    ],
+    "confidence": 0.95
+  },
+  "raw_head": "{\"proposition\":\"Tarot originated in ancient Egypt and was transmitted to Europe via manuscript chains.\", \"declared_falsifier\":\"R2: Tarot is independently attested in Europe centuries earlier.\", \"evide",
+  "packet_hash": "sha256:e66bac4996e2123812114ae5c9c452a48481535d27f53975c5cb0c243f688ffe"
+}

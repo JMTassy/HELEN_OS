@@ -1,0 +1,72 @@
+[
+  {
+    "family": "attribution_to_lineage",
+    "raw": "```json\n{\"VERDICT\":\"REFUTED\",\"REASON_CODE\":\"attribution -> lineage\",\"INVALID_MORPHISM\":\"attribution -> lineage\",\"EVIDENCE\":\"[R1] only attributes the origin via a document, which does not establish historical fact; [R2] provides a conflicting independent attestation of European origin.\",\"CONFIDENCE\":\"HIGH\"}\n```",
+    "parse_ok": true,
+    "verdict": "REFUTED",
+    "latency": 6.9
+  },
+  {
+    "family": "similarity_to_lineage",
+    "raw": "```json\n{\"VERDICT\":\"REFUTED\",\"REASON_CODE\":\"Unlicensed inference from similarity to lineage\",\"INVALID_MORPHISM\":\"similarity -> lineage\",\"EVIDENCE\":\"R1 and R2 establish independent occurrences of motifs; they do not establish a causal or ancestral link.\",\"CONFIDENCE\":\"HIGH\"}\n```",
+    "parse_ok": true,
+    "verdict": "REFUTED",
+    "latency": 5.3
+  },
+  {
+    "family": "sequence_to_causation",
+    "raw": "```json\n{\"VERDICT\":\"REFUTED\",\"REASON_CODE\":\"Temporal precedence does not imply causation\",\"INVALID_MORPHISM\":\"before -> caused\",\"EVIDENCE\":\"R1 only establishes chronological order, not causal mechanism\",\"CONFIDENCE\":\"HIGH\"}\n```",
+    "parse_ok": true,
+    "verdict": "REFUTED",
+    "latency": 4.4
+  },
+  {
+    "family": "repetition_to_independence",
+    "raw": "```json\n{\"VERDICT\":\"REFUTED\",\"REASON_CODE\":\"circular_dependency\",\"INVALID_MORPHISM\":\"repetition -> independence\",\"EVIDENCE\":\"R1 states that twenty writers repeat a claim tracing back to a single 1850 compilation, which indicates a shared lineage rather than independent verification.\",\"CONFIDENCE\":\"HIGH\"}\n```",
+    "parse_ok": true,
+    "verdict": "REFUTED",
+    "latency": 5.8
+  },
+  {
+    "family": "later_attestation_to_earlier_existence",
+    "raw": "```json\n{\"VERDICT\":\"REFUTED\",\"REASON_CODE\":\"Unlicensed inference from description to fact\",\"INVALID_MORPHISM\":\"Says(R1, P) -> P\",\"EVIDENCE\":\"R1 only states that a text describes the ritual as ancient; it does not provide empirical evidence that the ritual actually existed in antiquity.\",\"\"CONFIDENCE\":\"HIGH\"}\n```",
+    "parse_ok": false,
+    "verdict": "",
+    "latency": 6.8
+  },
+  {
+    "family": "authority_to_fact",
+    "raw": "```json\n{\"VERDICT\":\"REFUTED\",\"REASON_CODE\":\"Authority fallacy\",\"INVALID_MORPHISM\":\"Says(source,P) -> P\",\"EVIDENCE\":\"Source R1 states an expert asserts P, but the rule specifies that Says(source,P) does not imply P.\",\"CONFIDENCE\":\"HIGH\"}\n```",
+    "parse_ok": true,
+    "verdict": "REFUTED",
+    "latency": 6.6
+  },
+  {
+    "family": "correlation_to_mechanism",
+    "raw": "```json\n{\"VERDICT\":\"REFUTED\",\"REASON_CODE\":\"Correlation does not imply causation\",\"INVALID_MORPHISM\":\"correlation -> causation\",\"EVIDENCE\":\"R1 shows a correlation of 0.9, but no causal mechanism is established.\",\"CONFIDENCE\":\"HIGH\"}\n```",
+    "parse_ok": true,
+    "verdict": "REFUTED",
+    "latency": 6.6
+  },
+  {
+    "family": "citation_composition",
+    "raw": "```json\n{\"VERDICT\":\"REFUTED\",\"REASON_CODE\":\"Unlicensed inference from citation to truth\",\"INVALID_MORPHISM\":\"citation -> truth\",\"EVIDENCE\":\"[R1] shows a citation link, [R2] shows an assertion by B, but citation does not imply truth of the asserted content.\",\"CONFIDENCE\":\"HIGH\"}\n```",
+    "parse_ok": true,
+    "verdict": "REFUTED",
+    "latency": 6.9
+  },
+  {
+    "family": "documented_transmission",
+    "raw": "```json\n{\"VERDICT\":\"REFUTED\",\"REASON_CODE\":\"Unlicensed inference from documentation to lineage\",\"INVALID_MORPHISM\":\"material/documentary records -> lineage\",\"EVIDENCE\":\"R1 establishes a chain of records and manuscripts, but does not prove the actual descent of the work itself, as records can be forged or misattributed.\",\"\"CONFIDENCE\":\"HIGH\"}\n```",
+    "parse_ok": false,
+    "verdict": "",
+    "latency": 6.6
+  },
+  {
+    "family": "independent_roots",
+    "raw": "```json\n{\"VERDICT\":\"REFUTED\",\"REASON_CODE\":\"Unlicensed inference from corroboration to independence\",\"INVALID_MORPHISM\":\"corroboration -> independence\",\"EVIDENCE\":\"R1 states sources corroborate the claim, but does not establish that the corroboration is 'independent' in a logical sense, only that evidence bases are non-shared.\",\"CONFIDENCE\":\"HIGH\"}\n```",
+    "parse_ok": true,
+    "verdict": "REFUTED",
+    "latency": 7.3
+  }
+]

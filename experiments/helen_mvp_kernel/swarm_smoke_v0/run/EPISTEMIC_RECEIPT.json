@@ -1,0 +1,11 @@
+{
+  "receipt": "EPISTEMIC_RECEIPT",
+  "result": "EVALUABLE",
+  "hal_verdicts": {
+    "G1_proposer": "REFUTED",
+    "G2_skeptic": "SURVIVED",
+    "G3_synthesizer": "REFUTED"
+  },
+  "boundary": "HAL_SURVIVED \u21cf TRUE \u21cf independent corroboration \u21cf admission",
+  "note": "NOT_EVALUABLE \u2260 0 \u2014 a truncated/incomplete run is not scored as a comparison"
+}
