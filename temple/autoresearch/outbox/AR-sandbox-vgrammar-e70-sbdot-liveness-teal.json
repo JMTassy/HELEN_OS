@@ -1,0 +1,51 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sandbox-vgrammar-e70-sbdot-liveness-teal",
+  "target_surface": "sandbox_visual_grammar",
+  "epoch": "E70",
+  "parent_epoch": "E69",
+  "source_refs": [
+    "apps/helen-surface/cockpit_v4.html:38",
+    "apps/helen-surface/cockpit_v4.html:39",
+    "apps/helen-surface/cockpit_v4.html:35",
+    "apps/helen-surface/cockpit_v4.html:157-158",
+    "apps/helen-surface/cockpit_v4.html:216"
+  ],
+  "finding_type": "semantic_collision_sb_dot_liveness_vs_sa_admitted",
+  "summary": "cockpit_v4.html L38: .sb-dot{background:var(--grn);animation:blink 2s step-end infinite} — the always-blinking green heartbeat dot at L157 signals SYSTEM LIVENESS (cockpit is alive/connected), not governance admission. This is a SA one-meaning violation: --grn = SA-ADMITTED (governance object approved/shipped), but .sb-dot uses --grn for a temporal heartbeat pulse indicating the UI is running. Context: the dot appears adjacent to 'AUTH' label (L158) and 'authority: false' text (L216) — it has never reflected auth state; it blinks green unconditionally. E63 established --teal:#2dd4bf for liveness in index.html (live-cluster); E69 proposed --teal for .si-state.live in cockpit_v4.html. .sb-dot is a third instance of the same pattern: green blinking = liveness, not admission. Reassigning .sb-dot to --teal completes the liveness-token sweep for cockpit_v4.html. Secondary finding: .sb-v.ok{color:var(--grn)} (L35) is a dead CSS rule — no element in cockpit_v4.html receives class 'sb-v' and 'ok' simultaneously (search confirmed 0 hits in HTML).",
+  "evidence": [
+    "cockpit_v4.html:38: .sb-dot{background:var(--grn);animation:blink 2s step-end infinite} — green = heartbeat/liveness",
+    "cockpit_v4.html:39: @keyframes blink — pulse cycle; opacity 1→0.3→1 every 2s; unconditional",
+    "cockpit_v4.html:157: <span class='sb-dot'></span> — appears next to AUTH label; no class conditionally toggled by JS",
+    "cockpit_v4.html:158: <span class='sb-k'>AUTH</span> — label only; dot is visual companion, not auth pass/fail signal",
+    "cockpit_v4.html:216: 'authority: false' — surface is demo/non-authorized; green dot does not reflect this state",
+    "cockpit_v4.html:35: .sb-v.ok{color:var(--grn)} — defined but dead; grep confirmed 0 HTML elements have both classes sb-v and ok",
+    "E63 AR packet: --teal:#2dd4bf = liveness for index.html live-cluster (PROPOSED, pending operator)",
+    "E69 AR packet: --teal proposed for .si-state.live in cockpit_v4.html (PENDING operator)",
+    "cockpit_v4.html:17: --teal not yet in :root (E69 pending); E70 is contingent on E69 acceptance"
+  ],
+  "hypothesis": "If .sb-dot background is reassigned from --grn to --teal (once E69 introduces --teal into cockpit_v4 :root), the green SA-ADMITTED signal is reserved for governance-admitted objects. The pulsing liveness heartbeat becomes teal, consistent with E63/E69 precedent. SA one-meaning rule restored for --grn across all three collision sites in cockpit_v4.html (E69: si-state.live; E70: sb-dot).",
+  "proposed_tweak": "1) No new :root token needed — E69 already proposes --teal:#2dd4bf; if E69 is applied, use it here. 2) Change L38: .sb-dot{background:var(--teal);animation:blink 2s step-end infinite}. 3) Dead-rule cleanup (low-risk, operator discretion): remove .sb-v.ok{color:var(--grn)} at L35 — no element uses it. Reversible: restore L38 background to var(--grn). E70 is CONTINGENT on E69 — requires --teal to be in :root first. authority=false, canon=false, ledger_effect=none. Operator must apply.",
+  "metric": "After operator applies: grep 'sb-dot' cockpit_v4.html -> background:var(--teal). Blinking heartbeat dot in browser renders #2dd4bf (teal/cyan-green). No --grn use in cockpit_v4.html carries liveness semantics (both si-state.live and sb-dot now teal). --grn remains only for: .si-state.shipped (L64), .le-st.ok (L92, admitted ledger entries), .vr-v.pass (L97, gate verdicts), .replay-row .ok (L106, chain integrity PASS), cmd-dirty CLEAN inline (L555). Dead-rule removal: .sb-v.ok absent from CSS.",
+  "keep_rule": "KEEP if E69 is accepted (--teal introduced) and operator confirms teal heartbeat is perceptually distinct from --cy:#00e5ff. REJECT if E69 is rejected (--teal not introduced). HOLD_FOR_OPERATOR: E70 is strictly contingent on E69 acceptance — cannot apply independently.",
+  "next": "If KEPT: audit remaining --grn uses in cockpit_v4.html for SA alignment: .le-st.ok (L92, ledger OK), .vr-v.pass (L97, gate verdict PASS), .replay-row .ok (L106, replay PASS), cmd-dirty CLEAN inline (L515/555). Determine if 'gate/system PASS' is correctly SA-ADMITTED or should be differentiated. E71 target: are PASS verdicts and ADMITTED objects meaningfully different under SA doctrine?",
+  "risk_flags": [
+    "E70 contingent on E69: if operator rejects E69 (--teal not introduced), E70 is moot",
+    "Teal-cyan proximity risk inherited from E69: --teal:#2dd4bf vs --cy:#00e5ff",
+    "Dead-rule removal (.sb-v.ok) is optional — no functional change, cosmetic only"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW — contingent on E69 acceptance",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-20T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (sb-dot:L38 --grn confirmed; blink always-on confirmed; no JS toggling sb-dot color confirmed; AUTH label L158 confirmed; authority:false L216 confirmed; .sb-v.ok dead-rule confirmed 0 HTML hits; --teal not in :root L17 area confirmed; E63/E69 --teal precedent confirmed in AR outbox)",
+    "epoch": "E70",
+    "parent_epoch": "E69",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
