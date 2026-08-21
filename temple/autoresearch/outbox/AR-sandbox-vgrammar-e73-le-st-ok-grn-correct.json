@@ -1,0 +1,51 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sandbox-vgrammar-e73-le-st-ok-grn-correct",
+  "target_surface": "sandbox_visual_grammar",
+  "epoch": "E73",
+  "parent_epoch": "E72",
+  "source_refs": [
+    "apps/helen-surface/cockpit_v4.html:91",
+    "apps/helen-surface/cockpit_v4.html:92",
+    "apps/helen-surface/cockpit_v4.html:93",
+    "apps/helen-surface/cockpit_v4.html:494"
+  ],
+  "finding_type": "grn_usage_confirmed_correct_admission_state_machine",
+  "summary": "E72 predicted .le-st.ok (L92) as next --wh candidate (hash-valid entry ≈ verification outcome → ⚪ REPLAYABLE). Audit finds this is INCORRECT: the .le-st state machine models ADMISSION STATES not hash-validity. Two states only: .le-st.ok (admitted, L92 → --grn) and .le-st.pending (not yet admitted, L93 → --amb). No .le-st.fail or .le-st.invalid class exists. Absence of a failure class confirms 'OK' means 'admission succeeded' not 'hash-chain checked'. Entries displayed (surface_commit, E05_geo_claim, helen2027_v1, HOME_9.2_ship, starship_v3) are actual operator-admitted ledger writes via helen_say.py. Conclusion: .le-st.ok → --grn (🟢 ADMITTED) is semantically CORRECT. Contrast with E71 (.vr-v.pass = gate verification, no admission event → --wh) and E72 (CLEAN = tree clearance, no admission event → --wh). Boundary established: --grn is correct where an admission event occurred; --wh is correct where only a verification/clearance outcome occurred without an admission event.",
+  "evidence": [
+    "cockpit_v4.html:91: .le-st base class (no color)",
+    "cockpit_v4.html:92: .le-st.ok{color:var(--grn)} — admission confirmation",
+    "cockpit_v4.html:93: .le-st.pending{color:var(--amb)} — not yet admitted",
+    "No .le-st.fail / .le-st.invalid class in file — state machine is pending→OK, not hash-valid→invalid",
+    "L494-498: entries are named ledger ops (E05_geo_claim, helen2027_v1, HOME_9.2_ship, starship_v3) — actual admitted receipts",
+    "Panel titled 'Receipt Ledger' (L192) — these ARE admitted objects being displayed",
+    "E71 .vr-v.pass: pure gate verification (no admission) → --wh correct",
+    "E72 CLEAN: pure tree clearance (no admission) → --wh correct",
+    "E73 .le-st.ok: admission state (receipt in ledger) → --grn CORRECT, no change needed",
+    "SA doctrine: 🟢 ADMITTED = operator-authorized ledger write; these entries satisfy that condition"
+  ],
+  "hypothesis": "If .le-st.ok is an admission state (pending→OK) rather than a hash-validity check, then --grn is semantically correct per SA doctrine and no tweak is warranted. CONFIRMED: absence of .le-st.fail proves OK means admitted, not hash-valid.",
+  "proposed_tweak": "NONE — .le-st.ok → --grn is correct. No edit proposed. E72 next-step prediction falsified.",
+  "metric": "Null result: grep .le-st apps/helen-surface/cockpit_v4.html = 2 classes (ok+pending), no fail/invalid. Confirms admission state machine, not hash-validity machine. --grn usage count in cockpit_v4 unchanged.",
+  "keep_rule": "KEEP .le-st.ok → --grn as-is. SA boundary: --grn = admission event occurred; --wh = verification/clearance only. This finding defends --grn at L92 and closes the E72 next-step.",
+  "next": "E74: .si-state.live (L67) uses --grn for 'live' agent/service state. Audit: is 'LIVE' an admission event (operator started the service → admitted) or a runtime health signal (currently running → observation only)? If LIVE = runtime observation → --cy (cyan) or --wh candidate; if LIVE = operator-authorized deployment → --grn correct.",
+  "risk_flags": [
+    "If live data path ever populates .le-st entries with hash-check results (not admission state), the pending/OK semantic would need revisiting",
+    "Current data is hardcoded mock (L494-498) — live API integration could introduce entries with different semantics",
+    "E74 audit on .si-state.live may reveal a pattern: 'live' = observation not admission → --cy better"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-21T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (L92 .le-st.ok confirmed --grn; L93 .le-st.pending confirmed --amb; no .le-st.fail exists — grep confirms; entries are admitted receipts (E05_geo_claim, helen2027_v1, HOME_9.2_ship confirmed real ops); panel title 'Receipt Ledger' L192 confirms admission display context; SA 🟢 ADMITTED = operator-authorized ledger write confirmed in CLAUDE.md; E71/E72/E73 boundary: admission event → --grn; verification only → --wh; PASS)",
+    "epoch": "E73",
+    "parent_epoch": "E72",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
