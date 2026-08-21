@@ -1,0 +1,49 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sandbox-vgrammar-e75-shipped-canon-statecolor-dead",
+  "target_surface": "sandbox_visual_grammar",
+  "epoch": "E75",
+  "parent_epoch": "E74",
+  "source_refs": [
+    "apps/helen-surface/cockpit_v4.html:64",
+    "apps/helen-surface/cockpit_v4.html:65",
+    "apps/helen-surface/cockpit_v4.html:233"
+  ],
+  "finding_type": "dead_code_state_color_block_plus_shipped_canon_audit",
+  "summary": "E74 asked: do .si-state.shipped and .si-state.canon both use --grn? Audit result: NO. L64: shipped→--grn (CORRECT: SA_ADMITTED, operator-authorized ledger write). L65: canon→--cy (CORRECT: corpus-admitted via T4/T6 floors, NOT operator-authorized SA). No --grn collision at canon. Distinction is intentional and sound per doctrine. Secondary finding: STATE_COLOR object (L233-238) is DEAD CODE — defined once, zero references (grep count=1, definition only). TYPE_COLOR drives all orbital graph node colors (L347, L384, L416, L459). STATE_COLOR was never wired. Consequence: orbital graph has no state-aware coloring — a shipped claim and pending claim render identically (both: claim-type pink #ff00cc). This is NOT a doctrine violation (SA color palette governs sidebar state badges, not orbital type nodes) but is a noted capability gap. E74 risk_flag about cross-surface STATE_COLOR divergence is resolved: dead code cannot diverge. Also noted: TYPE_COLOR.source:'#00ff88' = --grn (green); all source-type orbital nodes render in admission-green, potentially confusable with SA_ADMITTED status.",
+  "evidence": [
+    "cockpit_v4.html:64: .si-state.shipped{color:var(--grn)} — correct (SA_ADMITTED, operator receipt)",
+    "cockpit_v4.html:65: .si-state.canon{color:var(--cy)} — correct (corpus-admitted, not SA; T4/T6 automated)",
+    "cockpit_v4.html:233-238: STATE_COLOR object defined — shipped:'#00ff88', canon:'#00e5ff', live:'#00ff88'...",
+    "grep STATE_COLOR count=1 (definition only, L233); zero usages in the 630-line file",
+    "L347/384/416/459: TYPE_COLOR used for orbital graph; STATE_COLOR never referenced",
+    "cockpit_v4.html:229: TYPE_COLOR.source:'#00ff88' — source nodes are green same as --grn",
+    "E74 risk_flag: 'STATE_COLOR live cross-surface divergence' — moot; dead code",
+    "m1:gravure_9_10 state=canon, m2:warm_sand_9.2 state=canon — corpus entries, no operator receipt in data",
+    "c2:STARSHIP_V3 state=shipped — claim delivery; receipted ledger write implied"
+  ],
+  "hypothesis": "If STATE_COLOR is dead code (1 reference = definition only), then E74's proposed .si-state.live→--pur carries no orbital graph consistency risk. Confirmed: TYPE_COLOR is the sole driver of orbital node color; STATE_COLOR has zero runtime effect.",
+  "proposed_tweak": "PROPOSAL ONLY — no edit applied: (A) Remove dead STATE_COLOR block (L233-238, 6 lines, zero runtime effect, maintenance debt); OR (B) Wire STATE_COLOR to orbital graph node coloring as secondary state-override, enabling state-aware visual differentiation. Option A is safer (scope-minimal); Option B is additive but requires operator design decision on how type+state compose visually.",
+  "metric": "After Option A: dead code block count in cockpit_v4.html decreases by 1 (from 1 to 0). After Option B: shipped claims visually distinct from pending claims in orbital graph (state-color ring or fill). Primary E75 metric: --grn collision count at .si-state.canon = 0 (confirmed; no change needed).",
+  "keep_rule": "KEEP finding: canon→--cy is correct and requires no tweak. KEEP dead-code finding: STATE_COLOR removal is a valid cleanup proposal. REJECT Option B for now: wiring STATE_COLOR adds visual complexity and requires operator design sign-off.",
+  "next": "E76: Audit TYPE_COLOR.source:'#00ff88' (green = --grn) in orbital graph. Source-type nodes (temple.html, focus.html, helen2027.html) render in admission-green. Is this intentional (source = admitted asset) or a SA collision (source = any tracked file, not SA_ADMITTED)? helen2027.html is state='dirty' — a dirty source node renders in source-type green despite dirty state. Investigate whether type-color-as-primary creates admission-color leakage onto non-admitted nodes.",
+  "risk_flags": [
+    "STATE_COLOR dead code is benign now but if wired later without palette audit, it duplicates --grn/--cy/--amb meanings that CSS .si-state classes already own",
+    "TYPE_COLOR.source:'#00ff88' = --grn: source-type orbital nodes look admitted even when state=dirty/live",
+    "If E74 .si-state.live→--pur is admitted, STATE_COLOR.live:'#00ff88' remains stale — but has zero runtime effect (dead code)"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-21T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (L64 shipped→--grn confirmed correct: SA_ADMITTED; L65 canon→--cy confirmed correct: corpus-admitted ≠ SA; grep STATE_COLOR count=1 confirmed dead code; L347/384/416/459 TYPE_COLOR usage confirmed sole orbital driver; TYPE_COLOR.source green noted; E74 cross-surface risk moot; no --grn collision at canon; PASS)",
+    "epoch": "E75",
+    "parent_epoch": "E74",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
