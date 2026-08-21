@@ -1,0 +1,50 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sandbox-vgrammar-e72-tree-clean-wh",
+  "target_surface": "sandbox_visual_grammar",
+  "epoch": "E72",
+  "parent_epoch": "E71",
+  "source_refs": [
+    "apps/helen-surface/cockpit_v4.html:515",
+    "apps/helen-surface/cockpit_v4.html:555",
+    "apps/helen-surface/cockpit_v4.html:210",
+    "apps/helen-surface/cockpit_v4.html:21"
+  ],
+  "finding_type": "semantic_collision_tree_clean_vs_sa_admitted",
+  "summary": "cockpit_v4.html L515: inline style color:${dirty?'var(--red)':'var(--grn)'} and L555: .style.color = d.dirty ? 'var(--red)' : 'var(--grn)' both assign --grn to CLEAN tree state. CLEAN = no uncommitted sovereign mutations in working tree = system-health/clearance indicator. SA doctrine: --grn = 🟢 ADMITTED (operator-authorized governance object written to ledger). A clean git working tree is a verification outcome — all pending mutations have been either committed or absent — not a governance admission. SA palette: ⚪ REPLAYABLE = verified/cleared = white (--wh). Consistent with E71 proposal (gate PASS, replay OK → --wh). --wh:rgba(255,255,255,.88) at L21 has 0 usages across all surfaces (confirmed: grep var(--wh) apps/helen-surface/ = 0 hits) — free assignment slot. Reassigning CLEAN → --wh restores --grn to 🟢 ADMITTED-only at these two inline locations.",
+  "evidence": [
+    "cockpit_v4.html:515: inline style color:${dirty?'var(--red)':'var(--grn)'} — CLEAN uses --grn",
+    "cockpit_v4.html:555: .style.color = d.dirty ? 'var(--red)' : 'var(--grn)' — CLEAN uses --grn",
+    "cockpit_v4.html:210: <span id='cmd-dirty'> — receives JS-set color at L555",
+    "cockpit_v4.html:21: --wh:rgba(255,255,255,.88) defined in :root — 0 usages across all surfaces",
+    "grep var(--wh) apps/helen-surface/ = 0 hits — token free, no collision risk",
+    "SA doctrine CLAUDE.md: 🟢 admitted = operator-authorized ledger write; ⚪ replayable = verified/cleared",
+    "E71 precedent: GATE_PASS + REPLAY_OK → --wh (same ⚪ REPLAYABLE mapping); CLEAN continues pattern",
+    "DIRTY → --red (🔴 breach) confirmed correct; CLEAN antonym = verified/cleared = ⚪ not 🟢",
+    "Remaining --grn usages in cockpit_v4 after E72: .si-state.shipped (L64, correct); .le-st.ok (L92, E73 candidate); .sb-dot (L38, E70 teal proposal); .si-state.live (L67, E69 teal proposal); .sb-v.ok (L35, dead rule)"
+  ],
+  "hypothesis": "If CLEAN state (L515, L555) is reassigned from --grn to --wh (⚪ REPLAYABLE/white), tree-clean = verified/no-pending-mutations becomes visually distinct from 🟢 ADMITTED governance objects. SA one-meaning rule restored for --grn at these two inline locations. Consistent with E71 pattern (gate PASS → --wh): all 'system cleared' verdicts share ⚪ token.",
+  "proposed_tweak": "1) L515: change 'var(--grn)' to 'var(--wh)' in ternary: style=\"color:${dirty?'var(--red)':'var(--wh)'}\" 2) L555: change 'var(--grn)' to 'var(--wh)': .style.color = d.dirty ? 'var(--red)' : 'var(--wh)'. No new token needed. --wh already in :root at L21. Reversible: restore to var(--grn). authority=false, canon=false, ledger_effect=none. Operator must apply. Independent of E69/E70/E71 (no --teal dependency).",
+  "metric": "After operator applies: grep 'var(--grn)' cockpit_v4.html L515 = 0 hits. grep 'var(--wh)' cockpit_v4.html = 2 hits (L515, L555). DIRTY still renders --red; CLEAN renders rgba(255,255,255,.88) off-white. Contrast --wh on #0a0a0f cockpit bg ~11.5:1 (WCAG AA pass). --grn usage count in cockpit_v4 reduced from 9 → 7 (excluding dead L35 .sb-v.ok).",
+  "keep_rule": "KEEP if SA ⚪ REPLAYABLE correctly models 'tree clean = verified, no pending mutations' AND off-white is perceptually distinct from --red (breach) and --cy (neutral). REJECT if operator wants CLEAN to signal positive health (admission-analogue) rather than clearance. HOLD_FOR_OPERATOR if tree-clean vs admission distinction is intentionally collapsed on this surface.",
+  "next": "E73: .le-st.ok (L92) uses --grn for ledger entry OK = hash-valid entry. Hash-valid = structural integrity check = closer to ⚪ REPLAYABLE than 🟢 ADMITTED. Audit whether any ledger entry shown in cockpit_v4 is actually operator-admitted or all are hash-validity markers only.",
+  "risk_flags": [
+    "Inline style requires JS template literal change (L515) and DOM assignment change (L555) — both same semantic target, two edit sites",
+    "If E71 (.vr-v.pass → --wh) is rejected, E72 CLEAN → --wh loses its pattern anchor but remains valid independently",
+    "Contrast: --wh rgba(255,255,255,.88) on #0a0a0f = ~11.5:1 contrast ratio (WCAG AA threshold 4.5:1) — acceptable"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-21T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (L515 dirty?--grn confirmed; L555 dirty?--grn confirmed; --wh L21 defined; grep var(--wh) apps/helen-surface/ = 0 hits confirmed; SA ⚪ REPLAYABLE = verified/cleared confirmed from CLAUDE.md; contrast ~11.5:1 > WCAG AA; E71 precedent for --wh = PASS/cleared pattern confirmed; DIRTY→--red antonym pattern confirmed)",
+    "epoch": "E72",
+    "parent_epoch": "E71",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
