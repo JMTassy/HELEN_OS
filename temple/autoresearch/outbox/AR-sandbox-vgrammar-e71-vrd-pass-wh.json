@@ -1,0 +1,52 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sandbox-vgrammar-e71-vrd-pass-wh",
+  "target_surface": "sandbox_visual_grammar",
+  "epoch": "E71",
+  "parent_epoch": "E70",
+  "source_refs": [
+    "apps/helen-surface/cockpit_v4.html:97",
+    "apps/helen-surface/cockpit_v4.html:106",
+    "apps/helen-surface/cockpit_v4.html:21",
+    "apps/helen-surface/cockpit_v4.html:502-503",
+    "apps/helen-surface/cockpit_v4.html:520-522"
+  ],
+  "finding_type": "semantic_collision_gate_pass_vs_sa_admitted",
+  "summary": "cockpit_v4.html L97: .vr-v.pass{color:var(--grn)} and L106: .replay-row .ok{color:var(--grn)} — both use --grn for gate/integrity PASS verdicts. SA doctrine: --grn = 🟢 ADMITTED (governance object operator-approved, ledger-written). Gate verdicts (autoresearch_e12 PASS, wul_p1_validator PASS, L502-503) are clearance outcomes — preconditions for admission, not admission itself. Replay integrity checks (Continuity 1.000000, Divergence NONE, Chain integrity PASS, L520-522) are verification outcomes, not governance admissions. SA palette defines ⚪ REPLAYABLE = verified/cleared, mapped to white. --wh:rgba(255,255,255,.88) is defined at L21 and has ZERO usages in cockpit_v4.html — free assignment slot. Assigning GATE_PASS and REPLAY_OK to --wh (⚪ REPLAYABLE) reserves --grn strictly for governance-admitted/shipped objects, completing the one-meaning restoration started in E68-E70.",
+  "evidence": [
+    "cockpit_v4.html:97: .vr-v.pass{color:var(--grn)} — gate verdict PASS = --grn",
+    "cockpit_v4.html:106: .replay-row .ok{color:var(--grn)} — replay integrity OK = --grn",
+    "cockpit_v4.html:502: autoresearch_e12 PASS — .vr-v.pass; gate cleared, not ledger-admitted",
+    "cockpit_v4.html:503: wul_p1_validator PASS — .vr-v.pass; gate cleared, not ledger-admitted",
+    "cockpit_v4.html:520: Continuity: 1.000000 OK — .replay-row .ok; chain metric, not admission",
+    "cockpit_v4.html:521: Divergence: NONE — .replay-row .ok; replay check, not admission",
+    "cockpit_v4.html:522: Chain integrity: PASS — .replay-row .ok; integrity verdict, not admission",
+    "cockpit_v4.html:21: --wh:rgba(255,255,255,.88) -- defined in :root; grep var(--wh) = 0 hits in file; free slot",
+    "SA doctrine CLAUDE.md: ⚪ replayable = verified + replayable; white = ⚪; closer to PASS than 🟢 ADMITTED",
+    "grep count: var(--wh) in apps/helen-surface/ = 0 hits — token unused across all surfaces; no collision risk"
+  ],
+  "hypothesis": "If .vr-v.pass and .replay-row .ok are reassigned from --grn to --wh (⚪ REPLAYABLE/white), gate and replay PASS verdicts become visually distinct from governance-admitted/shipped objects. --grn = 🟢 ADMITTED only; --wh = ⚪ verified/cleared. SA one-meaning rule restored for --grn without introducing a new :root token (--wh already defined).",
+  "proposed_tweak": "1) L97: .vr-v.pass{color:var(--wh)} (change from var(--grn)). 2) L106: .replay-row .ok{color:var(--wh)} (change from var(--grn)). No new token needed. --wh already in :root at L21 = rgba(255,255,255,.88). Reversible: restore to var(--grn). authority=false, canon=false, ledger_effect=none. Operator must apply. Independent of E69/E70 contingency (does not require --teal in :root).",
+  "metric": "After operator applies: grep '.vr-v.pass' cockpit_v4.html -> color:var(--wh). grep '.replay-row .ok' -> color:var(--wh). --grn remaining uses in cockpit_v4.html (post E69+E70+E71): .sb-v.ok (dead, ~0 live elements), .si-state.shipped (L64, correct SA-ADMITTED), .le-st.ok (L92, ledger entry OK — see NOTE), cmd-dirty CLEAN inline (L515/555, E72 candidate). Gate verdicts render rgba(255,255,255,.88) = off-white, perceptually distinct from #00ff88 green. NOTE: .le-st.ok is borderline -- ledger entry OK = hash-valid = closer to ⚪ REPLAYABLE than 🟢 ADMITTED; flagged for E73.",
+  "keep_rule": "KEEP if SA ⚪ REPLAYABLE correctly models 'gate cleared / integrity verified' state AND off-white (#fff alpha-88) is perceptually readable against cockpit dark background (#0a0a0f). REJECT if PASS and ADMITTED are deliberately collapsed under one color in this surface. HOLD_FOR_OPERATOR if --wh contrast against cockpit background is insufficient (test: rgba(255,255,255,.88) on #0a0a0f = contrast ~11.5:1, passes WCAG AA).",
+  "next": "E72: cmd-dirty CLEAN (L515/555) uses --grn inline for tree-clean state. 'CLEAN' = no uncommitted sovereign mutations = system-health indicator, not governance admission. Candidate: --cy (observed/informational) or --wh. Audit .le-st.ok (L92) in E73: ledger entry OK = hash-valid entry — may be ⚪ REPLAYABLE rather than 🟢 ADMITTED.",
+  "risk_flags": [
+    "Perceptual: --wh rgba(255,255,255,.88) is near-white; ensure readability on dark cockpit background (calculated contrast ~11.5:1 vs #0a0a0f — acceptable)",
+    "Semantic: ⚪ REPLAYABLE conflates 'can be replayed' with 'gate PASS' — SA doctrine distinguishes these; operator to decide if PASS warrants its own color or maps to ⚪",
+    "E71 is independent of E69/E70 (no --teal dependency); can be applied regardless of E69 acceptance"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-21T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (vr-v.pass L97 --grn confirmed; replay-row .ok L106 --grn confirmed; verdict rows L502-503 confirmed gate-not-admission; replay rows L520-522 confirmed integrity-not-admission; --wh L21 defined; grep var(--wh) = 0 hits in file confirmed; SA ⚪ REPLAYABLE mapping confirmed from CLAUDE.md palette; contrast calc #fff/.88 on #0a0a0f ~11.5:1 > WCAG AA 4.5:1)",
+    "epoch": "E71",
+    "parent_epoch": "E70",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
