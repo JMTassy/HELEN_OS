@@ -1,0 +1,51 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sandbox-vgrammar-e74-silive-grn-pur",
+  "target_surface": "sandbox_visual_grammar",
+  "epoch": "E74",
+  "parent_epoch": "E73",
+  "source_refs": [
+    "apps/helen-surface/cockpit_v4.html:67",
+    "apps/helen-surface/cockpit_v4.html:71",
+    "apps/helen-surface/cockpit_v4.html:247",
+    "apps/helen-surface/cockpit_v4.html:248"
+  ],
+  "finding_type": "grn_semantic_collision_live_vs_active_operational_states",
+  "summary": "E73 flagged .si-state.live (L67) → --grn for audit: is 'LIVE' an admission event or runtime observation? Audit confirms semantic collision. Two operational-state classes exist: (1) .si-state.live → --grn (L67), applied to source surfaces temple.html/focus.html (L247-248) meaning 'currently serving'; (2) .si-state.active → --pur (L71), applied to skills/memories meaning 'currently in use'. Both are runtime observations (not admission events), yet they use different colors. Per E73 boundary: --grn = admission event occurred (operator-authorized ledger write). Temple.html/focus.html being 'live' means they are currently running HTML surfaces — a runtime health signal, not a ledger write. No --teal variable exists in :root (E69 --teal proposal never admitted). Closest existing color for an operational/active state is --pur (already used by .si-state.active for the same semantic). Proposed tweak: .si-state.live → --pur, aligning with .si-state.active and vacating --grn for admission-only use. Contrast: .si-state.shipped → --grn remains correct (claim STARSHIP_V3 was admitted to ledger, per L241).",
+  "evidence": [
+    "cockpit_v4.html:67: .si-state.live{color:var(--grn)} — current (under review)",
+    "cockpit_v4.html:71: .si-state.active{color:var(--pur)} — same semantic: operational/runtime",
+    "cockpit_v4.html:247: temple.html state:'live' — runtime health, not admission",
+    "cockpit_v4.html:248: focus.html state:'live' — runtime health, not admission",
+    "cockpit_v4.html:241: STARSHIP_V3 state:'shipped' → --grn correct (claim delivery = admission)",
+    ":root (L9-23): no --teal variable — E69 teal proposal never admitted to palette",
+    "E73 boundary: --grn = admission event; --wh = verification/clearance only",
+    ".si-state.live and .si-state.active are both runtime states → should share color token",
+    "grep: .si-state.live appears only at L67 (definition) and L247-248 (data) — isolated change",
+    "SA doctrine: 🟢 ADMITTED ≠ 🔵 OBSERVED; live service = observed state"
+  ],
+  "hypothesis": "If .si-state.live is a runtime observation (currently serving) rather than an admission event, then --grn is incorrect and --pur (matching .si-state.active) is the correct token. CONFIRMED: temple.html/focus.html are HTML surfaces with no ledger writes in their entry data; no admission receipt; 'live' = health signal only.",
+  "proposed_tweak": "PROPOSAL ONLY — no edit applied: change .si-state.live{color:var(--pur)} at L67. Rationale: --pur already means 'operational/active state' (.si-state.active). No palette change needed. Vacates --grn for admission-only use. Minimal: 1 CSS line, 0 data changes.",
+  "metric": "After tweak: count of --grn uses tied to non-admission semantics in .si-state block = 0 (currently 1: .live). Count of runtime-state classes using --pur = 2 (.active + .live). SA color-meaning collision count decreases by 1.",
+  "keep_rule": "KEEP proposal: --grn = admission events only; operational/runtime states use --pur or --cy; .si-state.live → --pur aligns with .si-state.active and resolves SA collision.",
+  "next": "E75: Audit .si-state.shipped (L64, STARSHIP_V3) vs .si-state.canon (L65, gravure_9_10/warm_sand) — both approach admission but via different paths. 'shipped' = claim delivered (ledger write); 'canon' = memory admitted to corpus. Are both → --grn correct, or does canon have a different admission pathway that warrants --cy (current) vs --grn (proposed)?",
+  "risk_flags": [
+    "If 'live' is ever redefined to mean 'operator-deployed with receipt' rather than 'currently running', --pur would need revisiting",
+    "No --teal in palette — E69 liveness-teal proposal still requires palette addition if pursued separately",
+    "TYPE_COLOR map (L234): live:'#00ff88' is a separate hardcoded color for orbital node dots, NOT the same as .si-state.live; node dot color would need a separate change if operator agrees"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-21T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (L67 .si-state.live confirmed --grn; L71 .si-state.active confirmed --pur; L247-248 data confirms live=runtime-health not admission; :root grep confirms no --teal variable; TYPE_COLOR L234 live:'#00ff88' confirmed but noted as separate node-dot path; E73 boundary rule applied: --grn=admission only; STARSHIP_V3 shipped → --grn confirmed correct L241; temple.html/focus.html no admission receipt in data → --grn incorrect; --pur available, no palette change needed; 1 CSS line change, 0 data changes; PASS)",
+    "epoch": "E74",
+    "parent_epoch": "E73",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
