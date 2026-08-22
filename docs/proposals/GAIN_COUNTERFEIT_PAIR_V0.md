@@ -293,6 +293,48 @@ Garden law:
     Garden's precise function: convert symbolic excess into
     experimentally discriminable structure.
 
+## Formal-analogy counterfeits (garden-law candidate, 2026-08-23)
+
+A seductive analogy is a counterfeit whose *equations* match locally while its
+*physics* differs. The transducer 𝒯_G applies with a specialized law:
+
+    Formal Analogy ⊬ Constitutive Equivalence ⊬ Physical Realizability
+    recursive form:  A → C(A) → D(A,C)
+      A    = seductive analogy (same algebraic form)
+      C(A) = physically distinct object sharing A's equations locally
+      D    = experiment that separates them
+
+Worked instance (illustration only — ALL content REPORTED/speculative, NOT
+endorsed; authority propagation forbidden):
+
+    A    = negative-index GEM analogy (ε_g<0, μ_g<0 ⇒ n<0 copied from EM metamaterials)
+    C(A) = an actual passive negative-mass gravitational medium
+    D    = {dynamical stability of the lattice, source law / T_μν admissibility,
+            energy conditions, wave response, measurable gravitational scattering}
+
+Typed non-collapse (each a distinct object, no inference between them without a
+bridge theorem):
+
+    M_inertial^eff < 0  ≠  M_gravitational < 0  ≠  ρ_eff < 0  ≠  T_μν exotic
+    🌿 m_eff<0 (POSSIBILITY) ⊬ 🔵 m_g<0 (OBSERVED) — the missing morphism is the experiment
+    analogue spacetime ≠ actual gravitational spacetime
+    same algebraic sign pattern ⊬ same constitutive physics
+
+Speculative microscopic models (e.g. electron/boson-hole positron ontology) are
+typed `Origin=GARDEN, C0·E0·W0·A0`, not deleted and not promoted:
+
+    H ⊬ established_ontology ⊬ mechanism;  demand Π(H) = discriminating predictions.
+    If Π(H) separates nothing from the standard account: H ~_obs standard
+    ⇒ OBSERVATIONALLY_UNDERDETERMINED, not "wrong".
+
+Epistemic hygiene split (avoid the "theory = unproven guess" equivocation):
+
+    gravity observed ≠ GR universally complete ≠ negative mass observed
+
+Garden verdict form for such objects: not "real", not "laughable", but
+**"a mathematically fertile analogy whose physical bridge remains unestablished"**
+— and the bridge-gap D itself becomes the research object.
+
 ## Master definition (sharpened)
 
     HELEN = an active, cost-aware reduction of
