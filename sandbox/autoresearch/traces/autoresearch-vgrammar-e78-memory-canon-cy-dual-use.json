@@ -1,0 +1,49 @@
+{
+  "epoch": "E78",
+  "parent_epoch": "E77",
+  "target": "sandbox_visual_grammar",
+  "source_refs": [
+    "apps/helen-surface/cockpit_v4.html:14 (--cy:#00e5ff root token)",
+    "apps/helen-surface/cockpit_v4.html:65 (.si-state.canon{color:var(--cy)})",
+    "apps/helen-surface/cockpit_v4.html:227 (TYPE_COLOR.memory:'#00e5ff')",
+    "apps/helen-surface/cockpit_v4.html:233 (STATE_COLOR.canon:'#00e5ff')",
+    "docs/proposals/HELEN_SOURCE_ATLAS_V1.md:85 (memory=blue-voxel/cyan canonical)"
+  ],
+  "finding_type": "semantic_dual_use_cy_memory_type_vs_canon_state",
+  "summary": "STATE_COLOR.canon='#00e5ff' (=--cy) and TYPE_COLOR.memory='#00e5ff' (=--cy) are identical. For nodes m1 and m2 (type=memory, state=canon), both the si-dot (TYPE channel) and si-state label (STATE channel) render --cy (#00e5ff). The viewer cannot distinguish 'this node stores memory' (TYPE) from 'this node is in canon state' (STATE). Source Atlas explicitly establishes memory=blue-voxel/cyan as canonical environment color, making TYPE.memory=--cy CORRECT and FIXED. Therefore, STATE_COLOR.canon=--cy is the dual-use violation. Root cause identified: STATE.canon has no governance color anchor — it uses --cy by default rather than the 🟡 SEALED (gold/amber) governance semantic it represents.",
+  "evidence": [
+    "cockpit_v4.html:14: --cy:#00e5ff (root token)",
+    "cockpit_v4.html:65: .si-state.canon{color:var(--cy)} = #00e5ff",
+    "cockpit_v4.html:227: TYPE_COLOR.memory='#00e5ff' = --cy — CORRECT per Source Atlas",
+    "cockpit_v4.html:233: STATE_COLOR.canon='#00e5ff' = --cy — DUAL USE violation",
+    "HELEN_SOURCE_ATLAS_V1.md:85: 'memory blue-voxel/cyan' — TYPE.memory=--cy is CANONICAL",
+    "CLAUDE.md governance palette: 🟡 sealed → gold/amber semantics, not cyan",
+    "Python collision script: 7/14 nodes collapse currently; m1 and m2 are memory+canon pairs",
+    "#ffd700 (gold): NOT in any existing TYPE_COLOR or STATE_COLOR value — safe to introduce",
+    "After STATE_COLOR.canon→#ffd700: 5/14 collisions (m1, m2 resolve; s2, s3, t3, sk1, sk2 remain)"
+  ],
+  "hypothesis": "STATE_COLOR.canon=--cy violates Source Atlas 'one meaning per color' invariant. TYPE.memory=--cy is fixed (Source Atlas canonical). STATE.canon should align with 🟡 SEALED governance semantics (gold proximity). Tweak: STATE_COLOR.canon '#00e5ff'→'#ffd700' (gold). Expected: m1 and m2 no longer collapse; --cy becomes single-meaning (memory TYPE only). 7→5 collisions.",
+  "proposed_tweak": "PROPOSAL ONLY — no edit applied: STATE_COLOR.canon: '#00e5ff' → '#ffd700' (gold). Rationale: (1) #ffd700 is not in any existing TYPE_COLOR or STATE_CSS value — confirmed by Python scan; (2) gold aligns with 🟡 SEALED governance semantics in Source Atlas; (3) 'canon' = an item sealed as a canonical reference, closer semantically to SEALED than to any type-identity hue; (4) single-line change, effect at L233 (STATE_COLOR), propagates to L459 (.si-state.canon rendering). Reversible: revert one line. Cross-surface check: STATE_COLOR.canon is used only in cockpit_v4.html (no cross-surface scope detected).",
+  "metric": "Python collision script on updated STATE_COLOR → 7→5 collapse nodes. m1 si-dot(#00e5ff) ≠ si-state.canon(#ffd700) — distinct. m2 same. --cy no longer dual-use: TYPE.memory=--cy unique in combined type+state palette.",
+  "keep_rule": "KEEP finding: --cy dual-use between TYPE.memory and STATE.canon is confirmed. Source Atlas memory=cyan is fixed anchor; STATE.canon must yield. #ffd700 (gold) is safe introduction: not in any palette value, semantically aligned with 🟡 SEALED. HOLD edit for operator sign-off — WULMOJI rule: promotion to canon requires explicit admission receipt.",
+  "next": "E79: source+live collapse — TYPE.source=STATE.live=--grn (#00ff88); also STATE.shipped=--grn. Three values share --grn. E76 proposed dim-white for TYPE.source; if applied, s2+s3 collapse resolves. Confirm whether E76 tweak has been admitted or rejected before proposing E79 fix.",
+  "risk_flags": [
+    "#ffd700 vs --amb (#ffaa00): gold vs amber on dark bg — visually distinct (gold=lighter, more yellow; amber=more orange); perceptual distance check recommended",
+    "STATE.canon=gold is a new semantic introduction — no prior precedent in cockpit; operator must validate 🟡 alignment",
+    "m1.label='gravure_9_10' and m2.label='warm_sand_9.2' are operator-rated memories — misrepresented state is high-visibility; fix is urgent"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-22T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (TYPE.memory=#00e5ff confirmed L227; STATE.canon=#00e5ff confirmed L65+L233; Source Atlas memory=cyan canonical confirmed L85; #ffd700 absent from all 14 palette values confirmed by Python; collision script 7→5 after fix confirmed; no cross-surface scope; PASS)",
+    "epoch": "E78",
+    "parent_epoch": "E77",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "packet_type": "AUTORESEARCH_PACKET_V1",
+  "epoch": "E78",
+  "target": "sandbox_visual_grammar",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "finding": "STATE_COLOR.canon='#00e5ff'=--cy duplicates TYPE_COLOR.memory='#00e5ff'=--cy. Source Atlas fixes memory=cyan. STATE.canon must yield. Gold #ffd700 (🟡 sealed alignment) resolves m1+m2 collapse (7→5 nodes).",
+  "tweak": "STATE_COLOR.canon: '#00e5ff' → '#ffd700' — proposal only, one line, reversible",
+  "metric": "collision script 7→5; --cy single-meaning after fix",
+  "next_epoch": "E79",
+  "next_target": "source+live collapse (s2, s3): TYPE.source=STATE.live=--grn",
+  "status": "HOLD_FOR_OPERATOR"
+}
