@@ -1,0 +1,46 @@
+{
+  "epoch": "E76",
+  "parent_epoch": "E75",
+  "target": "sandbox_visual_grammar",
+  "source_refs": [
+    "apps/helen-surface/cockpit_v4.html:229",
+    "apps/helen-surface/cockpit_v4.html:347",
+    "apps/helen-surface/cockpit_v4.html:459"
+  ],
+  "finding_type": "admission_color_leakage_source_type",
+  "summary": "TYPE_COLOR.source='#00ff88' (= --grn, admission-green) is applied to all source-type orbital nodes regardless of state. Three source nodes exist: s1 (helen2027.html, state=dirty), s2 (temple.html, state=live), s3 (focus.html, state=live). None is SA_ADMITTED. Yet both orbital canvas (L347) and stream sidebar si-dot (L459) render them in --grn via TYPE_COLOR. Result: dirty and live source files visually read as 'admitted' in two render paths simultaneously. The si-state label text correctly shows .si-state.dirty→red and .si-state.live→--grn, but the si-dot and orbital node (type-color) override with --grn regardless. Compound signal: orbit node = green (ADMITTED), state text = 'dirty' (RED) — contradictory. Proposed tweak: TYPE_COLOR.source → rgba(255,255,255,.65) (dim-white / observed-neutral), distinct from admission-green and all existing type colors (claim=--mg, memory=--cy, task=--amb, skill=--pur).",
+  "evidence": [
+    "cockpit_v4.html:229: TYPE_COLOR.source:'#00ff88' = --grn (admission-green per SA doctrine)",
+    "GNODES s1 state='dirty', s2 state='live', s3 state='live' — zero SA_ADMITTED source nodes",
+    "cockpit_v4.html:347: col=TYPE_COLOR[n.type] — orbital canvas, no state override",
+    "cockpit_v4.html:459: background:${TYPE_COLOR[n.type]} — stream si-dot, no state override",
+    "cockpit_v4.html:66: .si-state.dirty{color:var(--red)} — state text correctly red for s1",
+    "cockpit_v4.html:67: .si-state.live{color:var(--grn)} — SEPARATE collision: live→--grn (E74 proposed →--pur, unresolved)",
+    "Available palette: --cy(memory, taken), --pur(skill, taken), --amb(task, taken), --mg(claim, taken), --wh=rgba(255,255,255,.88)",
+    "Distinct neutral available: rgba(255,255,255,.65) (dim-white, below --wh opacity, unused by any type)"
+  ],
+  "hypothesis": "TYPE_COLOR.source='#00ff88' creates admission-green leakage on non-admitted source nodes in orbital canvas and stream si-dot. A state=dirty source node signals ADMITTED (green dot/orbital) while simultaneously signaling DIRTY (red label text), creating contradictory governance semantics in one rendered row.",
+  "proposed_tweak": "PROPOSAL ONLY — no edit applied: TYPE_COLOR.source: '#00ff88' → rgba(255,255,255,.65). Rationale: source files are observed/tracked objects (🔵), not SA_ADMITTED (🟢). Dim-white preserves visual distinctness from all 4 other type colors and carries no admission semantics. Scope: 3 lines of effect (L347, L384, L459) via a single constant change. Reversible: revert one line.",
+  "metric": "After tweak: grep count of '#00ff88' in TYPE_COLOR block decreases from 1 to 0. Orbital graph: source-type nodes render in dim-white, not --grn. Stream sidebar: si-dot for source nodes is dim-white, not --grn. Contradiction score for s1 (dirty source): 0 (was: orbital=green + label=red = 2 opposing signals).",
+  "keep_rule": "KEEP finding: TYPE_COLOR.source=--grn is an admission-color collision. Source files are observed/tracked assets; --grn is reserved for SA_ADMITTED. Proposed dim-white (rgba(255,255,255,.65)) resolves collision without semantic ambiguity. REJECT immediate edit: operator sign-off required for palette change to canonical surface.",
+  "next": "E77: Audit TYPE_COLOR.skill='#bb88ff' (= --pur). E71 noted .si-state.active→--pur as precedent; E74 proposed .si-state.live→--pur. If skill-type and live-state both resolve to --pur, a live skill node will have si-dot (type=--pur) and si-state.active (--pur) both green — no contradiction, but is skill-type --pur semantically correct per Source Atlas (--pur = active/autonomy tier)?",
+  "risk_flags": [
+    "TYPE_COLOR.source=--grn is cockpit_v4.html only (no cross-surface divergence)",
+    "E74 .si-state.live→--pur (unresolved) interacts: s2/s3 (source, live) would have dim-white dot + --pur label if both E76+E74 admitted",
+    "rgba with alpha in a canvas fillStyle may require hex conversion; check L347 ctx.fillStyle compatibility before admitting"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-22T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (TYPE_COLOR.source='#00ff88'=--grn confirmed L229; GNODES s1/s2/s3 all non-SA_ADMITTED confirmed; orbital L347 and si-dot L459 use TYPE_COLOR only, no state override, confirmed; .si-state.dirty=red and TYPE_COLOR.source=green confirmed contradictory on s1; dim-white proposal distinct from all 4 other type colors confirmed; no cross-surface scope confirmed; PASS)",
+    "epoch": "E76",
+    "parent_epoch": "E75",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
