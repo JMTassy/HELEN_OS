@@ -70,6 +70,33 @@ only) · C reciprocal diversity · D coverage-not-selection (N_Q>N_G ∧
 I_Q^improve ≤ I_G^improve — Qwen expands search space, doesn't improve
 selection; upstream-generator use, not a seat) · E negative heterogeneity.
 
+## SWARM_TOPOLOGY_PROBE result (2026-08-23) — L2/L3 witnessed numerically
+
+Falsifier for "MoE = prompting experts multiplexed on Gemma". GEMMA_ONLY, 6
+competence-matched routing packets, frozen mechanical utility U = # distinct
+consequential-discriminator classes (embedding dedup, no LLM judge).
+Receipt: ~/helensh/state/swarm_probe/receipt.json.
+
+    Δ_persona = MV(skeptic|expansive) − MV(G2|G1)   [CLEAN 2-vs-2 test]
+              = −0.33, CI95(−2.17, 1.0)  → NOT_ESTABLISHED
+    Δ_swarm   = +14.33, CI95(12.17, 15.67) → ESTABLISHED (raw) BUT budget-confounded
+    per-call yield: resample 4.50 vs swarm 4.71 classes/call — ratio 1.05 (FLAT)
+
+**Reading:** at matched budget, persona structure did NOT beat plain resampling.
+The swarm's large raw advantage is the SECOND-SAMPLE effect (4 calls vs 2), not
+topology — per-call yield is flat, so the +14.3 scales ~linearly with call count.
+So "MoE = prompting experts on Gemma" is **WEAKENED**: on this evidence the value
+the garden extracts is **inference budget (independent samples), not prompting
+topology**. This is L2/L3 with a number: `PersonaStructure ⊬ value-beyond-budget`,
+`RepresentationalDiversity ⊬ DecisionValue`.
+
+Governor consequence: the cheap lever is N independent Gemma samples, not
+elaborate persona orchestration — same yield, less prompt-engineering surface.
+Caveat: U counts distinctness, not depth; a swarm producing *deeper* discriminators
+at equal count is untested (needs a quality-judge V0.1). Three role-mythologies
+have now fallen to receipts this session: Qwen≠JESTER (probes 1–2), and
+persona-topology ≠ advantage-over-budget (swarm probe).
+
 ## Current receipt
 
     JESTER_OPERATION_CLASS     = PRESERVED
