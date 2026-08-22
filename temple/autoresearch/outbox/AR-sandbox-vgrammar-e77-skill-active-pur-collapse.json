@@ -1,0 +1,16 @@
+{
+  "packet_type": "AUTORESEARCH_TRACE_V1",
+  "epoch": "E77",
+  "target": "sandbox_visual_grammar",
+  "finding": "TYPE_COLOR.skill='#bb88ff'=--pur = .si-state.active=--pur: TYPE/STATE color collapse on sk1+sk2. Systemic: 7/14 nodes, 4 pairs collapse.",
+  "proposed_tweak": "TYPE_COLOR.skill '#bb88ff' → '#d4aaff'; proposal-only, one constant, reversible",
+  "metric": "7→5 collapse nodes after tweak; sk1/sk2 si-dot ≠ si-state color",
+  "keep_rule": "KEEP — collapse confirmed; broader palette partitioning HOLD_FOR_OPERATOR",
+  "next_epoch": "E78",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "authority_language": "PROPOSAL ONLY — no edit applied — operator review required"
+}

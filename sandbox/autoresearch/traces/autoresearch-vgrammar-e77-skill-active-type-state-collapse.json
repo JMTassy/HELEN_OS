@@ -1,0 +1,48 @@
+{
+  "epoch": "E77",
+  "parent_epoch": "E76",
+  "target": "sandbox_visual_grammar",
+  "source_refs": [
+    "apps/helen-surface/cockpit_v4.html:20",
+    "apps/helen-surface/cockpit_v4.html:71",
+    "apps/helen-surface/cockpit_v4.html:231",
+    "apps/helen-surface/cockpit_v4.html:252-253",
+    "apps/helen-surface/cockpit_v4.html:459"
+  ],
+  "finding_type": "type_state_color_collapse_skill_active",
+  "summary": "TYPE_COLOR.skill='#bb88ff' (= --pur) is identical to .si-state.active CSS color (var(--pur) = #bb88ff). For nodes sk1 and sk2 (type=skill, state=active), both the si-dot (TYPE channel) and si-state label (STATE channel) resolve to --pur #bb88ff. The viewer cannot distinguish 'this node is a skill' (TYPE) from 'this node is active' (STATE) — both channels carry identical signal. This is a TYPE/STATE color collapse. Scope is sk1+sk2 only. Secondary finding: the collapse is SYSTEMIC — verified via exhaustive node/state collision map: 7/14 nodes across 4 pairs collapse (skill+active, memory+canon, source+live, task+waiting). Root cause: TYPE_COLOR and .si-state share the same 5-hue palette (--pur, --cy, --grn, --amb, --mg) without partitioning between type-identity and lifecycle-state channels.",
+  "evidence": [
+    "cockpit_v4.html:20: --pur:#bb88ff",
+    "cockpit_v4.html:71: .si-state.active{color:var(--pur)} = #bb88ff",
+    "cockpit_v4.html:231: TYPE_COLOR.skill='#bb88ff' = --pur — IDENTICAL to si-state.active",
+    "sk1 (skill, active): si-dot=#bb88ff, si-state.active=#bb88ff → COLLAPSE",
+    "sk2 (skill, active): si-dot=#bb88ff, si-state.active=#bb88ff → COLLAPSE",
+    "Collision map (14 nodes, 7 collapse): m1+m2 (memory+canon: --cy), s2+s3 (source+live: --grn), t3 (task+waiting: --amb), sk1+sk2 (skill+active: --pur)",
+    "Non-collapsing pairs: claim+pending (--mg vs --amb), claim+shipped (--mg vs --grn), memory+active (--cy vs --pur), source+dirty (--grn vs --red), task+todo (--amb vs --cy-dim), task+blocked (--amb vs --red)"
+  ],
+  "hypothesis": "TYPE_COLOR.skill=--pur = .si-state.active=--pur creates TYPE/STATE signal collapse on skill+active nodes. Single-constant tweak TYPE_COLOR.skill → #d4aaff (lavender, not in any STATE_CSS value) resolves sk1/sk2 collapse without semantic side effects. The broader systemic issue (4 pair collisions) requires operator-level palette partitioning.",
+  "proposed_tweak": "PROPOSAL ONLY — no edit applied: TYPE_COLOR.skill: '#bb88ff' → '#d4aaff' (lavender). Rationale: #d4aaff is visually in the purple family (preserving 'skills = purple-adjacent' visual language) but is distinct from --pur (#bb88ff) so TYPE and STATE channels become independently legible on sk1/sk2. Verified: #d4aaff is not used in any STATE_CSS value (pending=#ffaa00, shipped=#00ff88, canon=#00e5ff, dirty=#ff3355, live=#00ff88, todo=rgba(0,229,255,.5), blocked=#ff3355, waiting=#ffaa00, active=#bb88ff). Scope: 1 constant line change; effect at L231 (TYPE_COLOR), propagates to L347 (orbital canvas), L384 (selected-node title), L459 (si-dot). Reversible: revert one line.",
+  "metric": "After tweak: python3 collision script → 7 collapse nodes reduce to 5 (sk1+sk2 no longer collapse; m1+m2+s2+s3+t3 remain pending further operator decisions). Observable: sk1 si-dot (#d4aaff) ≠ si-state.active (#bb88ff) — distinct. sk2 same. TYPE and STATE channels independently legible for skill nodes.",
+  "keep_rule": "KEEP finding: TYPE/STATE collapse confirmed on sk1/sk2, systemic across 7/14 nodes and 4 color pairs. Skill+active collapse is the E77 scope; #d4aaff proposal is minimal and reversible. HOLD broader palette partitioning for operator review — systemic fix requires multi-pair decision. REJECT immediate edit: operator sign-off required.",
+  "next": "E78: audit root cause — TYPE_COLOR and .si-state share unpartitioned 5-hue palette; 4 collision pairs (memory+canon=--cy, source+live=--grn, task+waiting=--amb, skill+active=--pur) remain after E77. Propose TYPE_COLOR reserved hue set disjoint from STATE hue set.",
+  "risk_flags": [
+    "#d4aaff (lavender) may be too similar to --pur on low-contrast displays — perceptual distance check recommended",
+    "source+live collapse (s2, s3: --grn/--grn) overlaps E76 source finding — compounding; admitted E76 tweak (source→dim-white) would also resolve s2/s3",
+    "memory+canon collapse (m1, m2: --cy/--cy): canon is an admitted state — this collapse misrepresents memory TYPE as canon-state to the viewer",
+    "Systemic fix requires palette partitioning at operator level; piecemeal tweaks (E76 source, E77 skill) leave 3 pairs open"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-22T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (TYPE_COLOR.skill='#bb88ff'=--pur confirmed L231; .si-state.active=var(--pur)=same hex confirmed L71; sk1/sk2 type=skill state=active confirmed L252-253; collision map run Python3: 7/14 nodes collapse across 4 pairs confirmed; #d4aaff not in STATE_CSS values confirmed; no cross-surface scope; PASS)",
+    "epoch": "E77",
+    "parent_epoch": "E76",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
