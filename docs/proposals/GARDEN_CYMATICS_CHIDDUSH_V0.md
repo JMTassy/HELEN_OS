@@ -1,7 +1,7 @@
 <!-- authority=false · claim=NO_CLAIM · a reading, not a ruling -->
 <!-- CHIDDUSH_ARCHIVE output · 2026-08-22 · NON_SOVEREIGN · untracked (NO_COMMIT / NO_PUSH until operator verb) -->
 
-# GARDEN_CYMATICS — CHIDDUSH V0.7
+# GARDEN_CYMATICS — CHIDDUSH V0.11
 
 Cymatics as a GARDEN generative grammar: **invisible dynamics are allowed
 to become visible form.** The artifact is not a sculpted mesh; it is a
@@ -32,6 +32,15 @@ trace of forces.
 | S | Upstream chiddush: ⊗_ℂ composition law + licensed compression (CHIDDUSH-tagged relay, same day) | `REPORTED` — coherent; note the relay itself flags the mod-2π winding loss in its own compositor |
 | S | Fragment #9: imaginary exponents confined to the unit circle (`2^{bi}·2^{−bi}=1`) | `FORMAL_PROOF`-class, standard |
 | S | Upstream chiddush: bounded-motion primitive (CHIDDUSH-tagged relay, same day) | `REPORTED` — verified: `a^{x+iy}=aˣ·e^{iy·ln a}`, single-valued for a>0 |
+| S | Fragment #10: where on the unit circle — the b↦θ map, Briggs teaser | `FORMAL_PROOF`-class setup, accurate |
+| S | Upstream chiddush: phase law θ=b·ln a, base as phase-rate (CHIDDUSH-tagged relay, same day) | `REPORTED` — verified: `2^i` at `ln 2 ≈ 0.6931` rad; ω_a = ln a standard |
+| S | Fragment #11 (T17): Briggs's 54 successive square roots → local linearity | Accurate history (*Arithmetica Logarithmica*); `2^x = 1+(ln 2)x+O(x²)` standard |
+| S | Upstream chiddush: LOCAL_LINEARIZATION + licensed approximation (CHIDDUSH-tagged, same day) | `REPORTED` — verified coherent; the (F̂,Ω,ε) discipline already has an executed receipt: the F5 bead (see §V0.9) |
+| S | Fragment #12: Briggs zoom-in/solve/zoom-out worked example (2^0.587) | Method accurate; **numerics partly ASR-garbled and recomputed at capture**: linearized estimate 1.5019 ✓ (fragment "1.50019"), true value `2^0.587 ≈ 1.5022` (fragment's "1.5002" is a garble). The 1.5019→1.5022 gap is the linearization error surviving the ×1000 lift — the fragment demonstrates the error-transport law it inspired |
+| S | Upstream chiddush: LOCAL_SOLVE_LIFT + error transport (CHIDDUSH-tagged, same day) | `REPORTED` — verified coherent |
+| S | Upstream correction: `C_λ ≠ S_λ⁻¹`, semigroup dependence, explicit T_ε, F6/F7 ladder sketch | `REPORTED` — verified (`C_n(a+ε)=aⁿ+n·aⁿ⁻¹ε+O(ε²)`); **applied in-place to §V0.10** |
+| S | Fragment #13: the limit `(1+x·ln2/n)ⁿ → 2ˣ`, base change to `e = 2^{1/ln 2}` | `FORMAL_PROOF`-class, standard (classical definition of exp) |
+| S | Upstream chiddush: limit layer — local ≠ finite composition ≠ limit object (same day) | `REPORTED` — verified coherent |
 
 ## Core pipeline
 
@@ -356,6 +365,167 @@ Garden motion doctrine:
 
 Boundary as ever: `UnitCircleMotion ⊬ model of time/consciousness`;
 `MathematicalDynamics → CreativeMotionPrimitive ⊬ MetaphysicalTruth`.
+
+## V0.8 — The phase law (base as phase-rate)
+
+V0.7 said imaginary coordinates rotate; V0.8 says **how fast**:
+
+    a^{bi} = cos(b·ln a) + i·sin(b·ln a)
+    θ = b·ln a (mod 2π) · ω_a = ln a
+    2^i sits at ln 2 ≈ 0.6931 rad — b=1 is not one radian
+
+The base is an **angular velocity**. That upgrades Garden from "phase
+exists" to a lawful oscillator bank:
+
+    Ψ_j(t) = A_j(t)·e^{i·ω_j·t}
+
+Different bases → different phase rates on the same unit circle —
+interference, recurrence and synchronization now emerge from dynamics,
+not from hand-authored animation curves. (The V0 ω-sweep bead
+approximated this with mode crossfades; the oscillator bank is its
+lawful successor — folds into Seed D.)
+
+**Winding, closed-form:** the lifted phase is simply the unreduced
+product — `θ̃ = b·ln a`, `θ = θ̃ mod 2π`, k = completed turns of θ̃. The
+infinite family of logarithms is not sloppiness; it is the fiber of the
+many-to-one projection `ℝ → S¹, θ̃ ↦ e^{iθ̃}`. The projection may
+identify states; the lifted representation remembers why they were
+different.
+
+    Cycle locally. Remember globally.
+
+## V0.9 — Local linearization (the Briggs layer)
+
+Briggs zoomed (54 successive square roots) until the curve became a
+line: `2^x = 1 + (ln 2)·x + O(x²)`. The abstraction:
+
+    GlobalNonlinearity ⊬ LocalNonlinearity
+    ZOOM(F, x₀, ε) → LocalModel(F, x₀)     — Δy ≈ J·Δx
+
+**The licensed-approximation triple.** The danger is promotion: observing
+local linearity and asserting a global law. HELEN's form:
+
+    (F̂, Ω, ε) — approximation + licensed domain + error bound
+    travel together, always.
+    LocalApproximation ⊬ GlobalLaw.
+    A locally excellent model must carry the boundary beyond which
+    it stops being licensed.
+
+**Receipt already on disk (capture note):** the F5 bead is this triple,
+enforced — preregistered δ-ladder (the Briggs zoom run upward), F5a
+domain gate before any observation, ε-budgets derived from machine
+epsilon, and `DERIVATIVE_CLAIM_ADMISSIBLE = false`: the finite-difference
+family was forbidden to self-promote into a global derivative. Scope
+provenance for approximations is not a proposal; it is how the morning's
+science was run.
+
+**Same generator, two geometries** (Briggs meets Euler):
+
+    a^{Δx}  ≈ 1 + (ln a)·Δx      — real direction: growth
+    a^{iΔb} ≈ 1 + i(ln a)·Δb     — imaginary direction: rotation
+
+One local coefficient, `ln a`, generates both — the slope Briggs
+measured is the angular velocity of V0.8. Direction of motion selects
+the geometry; the generator is shared.
+
+Garden operation `LOCAL_LINEARIZATION`: global field → select region →
+zoom… → local tangent model → measure error → **zoom out with scope
+retained**. For a corpus view: the decade is a nonlinear toroidal
+trajectory; a small neighborhood reveals local direction, velocity,
+deformation — licensed only there.
+
+    🔭 zoom → 🧬 simplify → 📐 measure → 🛡 retain scope
+    Global complexity. Local simplicity.
+    Never erase the scale at which the simplification is valid.
+
+## V0.10 — LOCAL_SOLVE_LIFT (round trip with scope intact)
+
+V0.9 zoomed in; V0.10 completes the loop:
+
+    GLOBAL → LOCALIZE → SIMPLIFY → COMPUTE → LIFT BACK
+    X --S_λ--> X_local --F̂--> Y_local --S_λ⁻¹--> Y
+
+**Corrected at V0.11 (upstream, load-bearing): `C_λ ≠ S_λ⁻¹`.** The
+return path is a **composition law**, not an inverse scale map — for the
+exponential, `S_n(x) = x/n` but `C_n(y) = yⁿ` (Briggs's trick rides the
+semigroup law `e^{x+y} = eˣe^y`; it is NOT a general localization
+schema). The full receipt object is
+
+    𝓛 = (x, S, Ω_loc, F̂, C, ε_loc, T_ε, Ω_global)
+
+New named failure mode: computing locally and forgetting the
+**reconstruction law** — `LocalResult → GlobalClaim` without C is
+invalid. And the reconstruction is nonlinear, so error transport has an
+explicit first-order form:
+
+    C_n(a+ε) = aⁿ + n·aⁿ⁻¹·ε + O(ε²)
+    ε_global ≈ ‖DC_λ‖ · ε_local + higher order
+
+— transport the *sensitivity of the reconstruction*, not just an error
+score.
+
+**Tiny lawful step, composed many times.** Briggs exploits
+`F(x) = [F(x/n)]ⁿ`. The HELEN form keeps the composition law
+load-bearing:
+
+    LocalValidity + LawfulComposition ⇒ GlobalValidityCandidate
+    (never LocalValidity ⇒ GlobalValidity — concordant with the
+    Hopf local-to-global correction: composition conditions are
+    where global claims live or die)
+
+**Error transport.** `ε_local ⊬ ε_global`: after lifting by n
+compositions, `ε_global = T_error(ε_local, n)`. Witness quality must
+survive composition, not merely exist locally. Receipt on disk: F5's
+thresholds were set decades above the *transported* roundoff floor
+(`eps64·s/δ` through the difference quotient) — error transport enforced
+prospectively. And the fragment itself witnessed the law: its linearized
+1.5019 vs the true 1.5022 is exactly `T_error(O(x²), 1000)` made visible.
+
+UI behavior for the corpus view: **zooming in changes the model; zooming
+out restores the scope.** Never mere magnification.
+
+    Simplify locally. Compose lawfully. Restore scope on the way back.
+
+## V0.11 — The limit layer (Briggs closes into e)
+
+The arc completes: force every increment local, compose lawfully, then
+take the limit —
+
+    aˣ = lim_{n→∞} (1 + x·ln a / n)ⁿ
+    base change x = z/ln 2 → e = 2^{1/ln 2} = 2.71828…
+    e^z = lim_{n→∞} (1 + z/n)ⁿ     (a classical definition of exp)
+
+**Three levels that must never be conflated:**
+
+    🔬 local approximation      1 + x/n
+    ↻  finite composition       (1 + x/n)ⁿ
+    ∞  limit object             lim_{n→∞} (1 + x/n)ⁿ
+
+    FiniteApproximation ⊬ LimitIdentity
+
+An exact global law *may* emerge as the controlled limit of increasingly
+accurate local laws — but the passage to the limit is its own operation
+with its own witness. HELEN transport list grows accordingly: local
+model + composition rule + error law + **limit operation**. And the
+promotion guard:
+
+    Do not promote the finite approximation into the limit object
+    without the convergence witness.
+
+(Also disciplined in the fragment itself: 0.693 is not ln 2; the exact
+statement needs the exact slope. Rounded constants make estimators, not
+identities.)
+
+**Ladder sketch (gated, not canon):** the correction relay proposes a
+natural experimental continuation of the morning's science —
+F5 = local operator identification (receipted) → F6 = local composition
+stability → F7 = controlled local-to-global transport. Carried here as
+architecture-candidate only; each rung would need its own frozen prereg,
+capability, and falsifiers. `NEEDS_OPERATOR`, kernel-side design first.
+
+    Localize. Linearize. Compose. Control error. Take the limit.
+    Never return from the local regime without bringing back
+    the map of how you got there.
 
 ## Boundary
 
