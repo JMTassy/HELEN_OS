@@ -13,11 +13,21 @@ action made falsifiable.**
 
 | Layer | Item | Status |
 |---|---|---|
-| S | YouTube Hopf explainer (Weinstein/Rogan-adjacent framing) | `NOT_IN_SESSION` — two partial transcript fragments relayed |
+| S | YouTube Hopf explainer (Weinstein/Rogan-adjacent framing; viz credited to Niles Johnson, OSU) | `NOT_IN_SESSION` — three partial transcript fragments relayed |
 | S | Upstream chiddush analysis #1 (operator relay, 2026-08-22) | `REPORTED` |
 | S | Upstream correction analysis #2 (operator relay, 2026-08-22, verb "apply") | `REPORTED` |
 | G | Hopf structure (Hopf 1931); triviality/section facts | Verified by MATH lens + relay #2 concordant (`derived`) |
 | H | RENDERER_INVARIANCE_FALSIFIER_V0 | **EXECUTED** this session — receipt in `~/helensh/state/receipts/` |
+
+**Source-concordance note (2026-08-22, fragment #3):** the relayed transcript
+itself states "none of the circles intersect" and "each circle links to every
+other circle exactly once." This corroborates, from the inspiring source,
+the two structural facts this doc leans on: (a) universal linking (lk=+1 for
+all fiber pairs) — the basis on which linking-as-selective-relatedness is
+classified **falsified**; (b) fiber disjointness — the geometric face of the
+quotient partition `E/G_render` (orbits are disjoint equivalence classes).
+Status unchanged: the fragment is `REPORTED` (source not on disk); the facts
+remain independently `derived` via the MATH lens. Concordance ≠ witness.
 
 ## V0.1 corrections (each falsifies part of V0)
 
