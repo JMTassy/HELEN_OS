@@ -1,0 +1,285 @@
+{
+ "('MONO', (True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True))": [
+  [
+   "PRICE_MONOTONE_SIZE",
+   "{}",
+   "HOLD (demoted: permutation null p=0.491 \u2014 indistinguishable from chance at n=8 small groups)"
+  ],
+  [
+   "PRICE_MONOTONE_SIZE",
+   "{\"base_price\": 100, \"step_increment\": 50, \"threshold_inches\": 24}",
+   "HOLD (demoted: permutation null p=0.491 \u2014 indistinguishable from chance at n=8 small groups)"
+  ],
+  [
+   "PRICE_MONOTONE_SIZE",
+   "{\"base_price\": 150, \"step_increment\": 0, \"threshold_inches\": 20}",
+   "HOLD (demoted: permutation null p=0.491 \u2014 indistinguishable from chance at n=8 small groups)"
+  ],
+  [
+   "PRICE_MONOTONE_SIZE",
+   "{\"base_price\": 150, \"step_increment\": 0, \"threshold_inches\": 30}",
+   "HOLD (demoted: permutation null p=0.491 \u2014 indistinguishable from chance at n=8 small groups)"
+  ],
+  [
+   "PRICE_MONOTONE_SIZE",
+   "{\"base_price\": 100, \"step_increment\": 0, \"threshold_inches\": 24}",
+   "HOLD (demoted: permutation null p=0.491 \u2014 indistinguishable from chance at n=8 small groups)"
+  ],
+  [
+   "PRICE_MONOTONE_SIZE",
+   "{\"base_price\": 150, \"size_floor_inches\": 20, \"step_increment\": 50}",
+   "HOLD (demoted: permutation null p=0.491 \u2014 indistinguishable from chance at n=8 small groups)"
+  ],
+  [
+   "PRICE_MONOTONE_SIZE",
+   "{\"base_price\": 150, \"step_increment\": 0, \"threshold_inches\": 36}",
+   "HOLD (demoted: permutation null p=0.491 \u2014 indistinguishable from chance at n=8 small groups)"
+  ],
+  [
+   "PRICE_MONOTONE_SIZE",
+   "{\"base_price\": 150, \"premium_above_threshold\": 50, \"size_threshold\": 36}",
+   "HOLD (demoted: permutation null p=0.491 \u2014 indistinguishable from chance at n=8 small groups)"
+  ],
+  [
+   "PRICE_MONOTONE_SIZE",
+   "{}",
+   "UNCHECKABLE_IN_H (6-template metadata DSL only)"
+  ],
+  [
+   "PRICE_MONOTONE_SIZE",
+   "{\"base_price\": 100, \"step_increment\": 50, \"threshold_inches\": 24}",
+   "UNCHECKABLE_IN_H (6-template metadata DSL only)"
+  ]
+ ],
+ "('FAM', 'ART BORDERS', (True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True))": [
+  [
+   "FAMILY_POINTS",
+   "{\"family\": \"ART BORDERS\", \"points\": [1, 12, 18, 24]}",
+   "SUPPORTED_IN_H (6-template metadata DSL only)"
+  ]
+ ],
+ "('RNG', (True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True))": [
+  [
+   "PRICE_PER_UNIT_RANGE",
+   "{}",
+   "DEGENERATE (empty params -> always-PASS; excluded; harness repair queued)"
+  ]
+ ],
+ "('FAM', 'NEWSPAPER BORDERS', (True, True, True, True, True, True, True, True, True, True))": [
+  [
+   "FAMILY_POINTS",
+   "{\"family\": \"NEWSPAPER BORDERS\", \"points\": [6, 18]}",
+   "HOLD_IN_H (6-template metadata DSL only)"
+  ]
+ ],
+ "('RNG', (True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, False, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True))": [
+  [
+   "PRICE_PER_UNIT_RANGE",
+   "{\"max\": 15.0, \"min\": 2.5, \"unit\": \"INCHES\"}",
+   "SUPPORTED_vs_control (0.974 n=39; random equal-log-width bands beat it 2.1% of 5000 trials)"
+  ]
+ ],
+ "('RNG', (True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, False, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, False, True, True, True, True, True, False, True, True, True, True, True, True, True, True, True, True, False, False, True, True, True, True, True, True, True, True, True, True, True, True, False, False, False, False, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, False, False, True, True, True, True, True, True, True, True, True, True, False, False, True, True, True, True, False, False, True, True, True, True, False, False, True, True, True, True, True, True, True, True, True, True, False, False, False, False, True, True, True, True, True, True, True))": [
+  [
+   "PRICE_PER_UNIT_RANGE",
+   "{\"max\": 5, \"min\": 2, \"unit\": \"INCHES\"}",
+   "HOLD_IN_H (6-template metadata DSL only)"
+  ]
+ ],
+ "('RNG', (True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, False, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, False, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, False, False, True, True, True, True, True, True, True, True, True, True, True, True, False, False, False, False, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, False, False, True, True, True, True, True, True, True, True, True, True, False, False, True, True, True, True, False, False, True, True, True, True, False, False, True, True, True, True, True, True, True, True, True, True, False, False, False, False, True, True, True, True, True, True, True))": [
+  [
+   "PRICE_PER_UNIT_RANGE",
+   "{\"max\": 5.8, \"min\": 2.5, \"unit\": \"INCHES\"}",
+   "SUPPORTED_vs_control (0.974 n=39; random equal-log-width bands beat it 2.1% of 5000 trials)"
+  ]
+ ],
+ "('FAM', 'FLORENTINE BORDERS', (True, True, True, True, True, True, True, True, True, True, True, False, True, True, False, False, False, True, False, True, True, False, True, True, True))": [
+  [
+   "FAMILY_POINTS",
+   "{\"family\": \"FLORENTINE BORDERS\", \"points\": [6, 8, 12, 14, 24]}",
+   "REFUTED_IN_H (6-template metadata DSL only)"
+  ]
+ ],
+ "('FAM', 'NEWSPAPER BORDERS', (True, True, True, True, True, False, False, False, False, False))": [
+  [
+   "FAMILY_POINTS",
+   "{\"family\": \"NEWSPAPER BORDERS\", \"points\": [6]}",
+   "REFUTED_IN_H (6-template metadata DSL only)"
+  ]
+ ],
+ "('FAM', 'ART BORDERS', (False, True, False, True, False, False, True, True, True, False, False, True, True, True, True, True, True, True, True, True, True, True, True, True, True))": [
+  [
+   "FAMILY_POINTS",
+   "{\"family\": \"ART BORDERS\", \"points\": [1, 18, 24]}",
+   "REFUTED_IN_H (6-template metadata DSL only)"
+  ]
+ ],
+ "('FAM', 'FLORENTINE BORDERS', (True, True, True, True, True, True, True, True, True, True, True, False, True, False, True, True, True, True, True, False, True, True, False, False, False))": [
+  [
+   "FAMILY_POINTS",
+   "{\"family\": \"FLORENTINE BORDERS\", \"points\": [6, 8, 12, 18]}",
+   "REFUTED_IN_H (6-template metadata DSL only)"
+  ]
+ ],
+ "('RNG', (False, False, False, True, False, True, False, False, True, True, True, False, False, True, True, True, True, True, True, True, True, True, False, True, True, True, False, False, False, False, False, False, True, True, True, True, True, True, True, True, True, True, True, False, True, True, True, True, True, False, True, True, False, False, True, True, True, True, True, True, False, False, True, True, True, True, True, True, True, True, True, True, True, True, False, False, False, False, True, True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, True, True, True, True, False, False, False, False, False, False, True, True, True, True, False, False, True, True, True, True, True, True, True, True, True, True, False, False, True, True, True, True, False, False, True, True, True, True, False, False, True, True, True, True, True, True, False, False, True, True, False, False, False, False, True, True, True, True, False, False, False))": [
+  [
+   "PRICE_PER_UNIT_RANGE",
+   "{\"max\": 5.0, \"min\": 3.3, \"unit\": \"INCHES\"}",
+   "REFUTED_IN_H (6-template metadata DSL only)"
+  ]
+ ],
+ "('FAM', 'ART BORDERS', (True, True, True, True, True, True, True, True, False, True, True, False, True, False, False, True, False, False, True, False, False, False, True, True, False))": [
+  [
+   "FAMILY_POINTS",
+   "{\"family\": \"ART BORDERS\", \"points\": [12, 18]}",
+   "REFUTED_IN_H (6-template metadata DSL only)"
+  ]
+ ],
+ "('LAD', (False, False, False, False, False, False, False, False, False, False, True, False, False, True, False, True, True, False, True, True, False, True, False, True, False, False, True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, True, False, False, False, False, False, False, True, True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, True, False, False, False, False, False, True, False, False, True, False, False, True, False, False, False, False, False, True, True, False, False, False, False, False, False))": [
+  [
+   "SIZE_LADDER",
+   "{\"sizes\": [24, 36, 48, 60, 72]}",
+   "REFUTED_IN_H (6-template metadata DSL only)"
+  ]
+ ],
+ "('RNG', (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, True, False, False, False, False, False, False, True, True, True, True, True, True, True, True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, True, True, True, True, True, True, False, False, False, False, False, False, False, False, False, False, True, True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, True, True, True, True, False, False, False, False, False, False, True, True, True, True, False, False, False, False, False, False, False, False, True, True, False, False, False, False, True, True, False, False, False, False, True, True, True, True, False, False, True, True, False, False, True, True, False, False, True, True, False, False, False, False, False, False, False, False, False, False, False))": [
+  [
+   "PRICE_PER_UNIT_RANGE",
+   "{\"max\": 4.2, \"min\": 3.5, \"unit\": \"INCHES\"}",
+   "REFUTED_IN_H (6-template metadata DSL only)"
+  ]
+ ],
+ "('RNG', (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, True, True, True, False, False, True, True, True, True, True, True, False, False, False, False, False, False, False, False, True, True, True, True, True, True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, True, True, True, True, True, True, False, False, True, True, False, False, False, False, True, True, False, False, False, False, False, False, False, False, False, False, True, True, False, False, False, False, False, False, False, False, False, False, True, True, True, True, False, False, False))": [
+  [
+   "PRICE_PER_UNIT_RANGE",
+   "{\"max\": 7, \"min\": 5, \"unit\": \"INCHES\"}",
+   "REFUTED_IN_H (6-template metadata DSL only)"
+  ]
+ ],
+ "('RNG', (True, True, True, False, True, False, True, True, False, False, False, True, True, False, False, False, False, False, False, False, False, False, True, False, False, False, False, True, True, True, True, True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, True, True, True, True, True, True, False, False, False, True, True, False, False, True, True, False, False, False, False, False, False, False, False, False, False, True, True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))": [
+  [
+   "PRICE_PER_UNIT_RANGE",
+   "{\"max\": 2.8, \"min\": 2.3, \"unit\": \"INCHES\"}",
+   "REFUTED_IN_H (6-template metadata DSL only)"
+  ]
+ ],
+ "('FAM', 'FLORENTINE BORDERS', (True, True, True, True, True, True, True, True, True, True, True, False, True, True, True, True, True, True, True, True, True, True, True, False, False))": [
+  [
+   "FAMILY_POINTS",
+   "{\"family\": \"FLORENTINE BORDERS\", \"points\": [6, 8, 12, 18, 24]}",
+   "REFUTED_IN_H (6-template metadata DSL only)"
+  ]
+ ],
+ "('FREE', '{}')": [
+  [
+   "FREEFORM",
+   "{}",
+   "UNCHECKABLE_IN_H (6-template metadata DSL only)"
+  ]
+ ],
+ "('LEN', (True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, False, True, True, True, True, True, True, True, True, True, True, False, False, True, True, True, True, True, True, True, True, True, True, True, True, False, False, False, False, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, False, False, True, True, True, True, True, True, True, True, True, True, False, False, True, True, True, True, False, False, True, True, True, True, False, False, True, True, True, True, True, True, True, True, True, True, False, False, False, False, True, True, True, True, False, False, True, False, False, False, False))": [
+  [
+   "LENGTH_QUANTA",
+   "{\"lengths\": [24, 30, 36, 40, 48, 50, 54, 60, 72]}",
+   "REFUTED_IN_H (6-template metadata DSL only)"
+  ]
+ ],
+ "('FAM', 'FLORENTINE BORDERS', (True, True, True, True, True, True, True, True, True, True, True, False, True, False, False, False, False, True, False, False, True, False, False, False, False))": [
+  [
+   "FAMILY_POINTS",
+   "{\"family\": \"FLORENTINE BORDERS\", \"points\": [6, 8, 12]}",
+   "REFUTED_IN_H (6-template metadata DSL only)"
+  ]
+ ],
+ "('FREE', '{\"observation\": \"PHASE_INFLUENCE\"}')": [
+  [
+   "FREEFORM",
+   "{\"observation\": \"PHASE_INFLUENCE\"}",
+   "UNCHECKABLE_IN_H (6-template metadata DSL only)"
+  ]
+ ],
+ "('PAIR', (True, True, True, True))": [
+  [
+   "PHASE_PAIR_EQUAL_PRICE",
+   "{\"phase_a\": \"OPEN\", \"phase_b\": \"TINT\"}",
+   "HOLD (4/4 equal on full set; heldout contained 0 matched pairs)"
+  ]
+ ],
+ "('LEN', (False, False, False, False, False, False, False, False, False, False, True, False, False, True, False, True, True, False, True, True, False, True, False, True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, False, False, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, False, False, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, False, False, True, True, True, True, True, True, True, True, True, True, False, False, True, True, True, True, True, True, False, False, False, False, False, False, False))": [
+  [
+   "LENGTH_QUANTA",
+   "{\"lengths\": [20, 30, 36, 50, 54]}",
+   "REFUTED_IN_H (6-template metadata DSL only)"
+  ]
+ ],
+ "('FAM', 'COLLINS BORDERS', (True, True, True, True, True, True, True, True, True, True, True, True, True, True))": [
+  [
+   "FAMILY_POINTS",
+   "{\"family\": \"COLLINS BORDERS\", \"points\": [8, 12, 18, 24]}",
+   "UNCHECKABLE_IN_H (6-template metadata DSL only)"
+  ]
+ ],
+ "('FREE', '{\"statement\": \"Price floor for non-Newspaper/non-small items is 150c regardless of length or points.\"}')": [
+  [
+   "FREEFORM",
+   "{\"statement\": \"Price floor for non-Newspaper/non-small items is 150c regardless of length or points.\"}",
+   "UNCHECKABLE_IN_H (6-template metadata DSL only)"
+  ]
+ ],
+ "('LEN', (True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, False, False, False, False, False, False, False, False, False, False, False, False, True, True, True, True, True, True, True, True, True, True, True, True, False, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, False, False, True, True, True, True, True, True, True, True, True, True, False, False, True, True, True, True, True, True, False, False, False, False, False, False, False))": [
+  [
+   "LENGTH_QUANTA",
+   "{\"lengths\": [20, 30, 36, 40, 50, 54, 60, 72]}",
+   "REFUTED_IN_H (6-template metadata DSL only)"
+  ]
+ ],
+ "('FAM', '', (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))": [
+  [
+   "FAMILY_POINTS",
+   "{}",
+   "REFUTED_IN_H (6-template metadata DSL only)"
+  ]
+ ],
+ "('FREE', '{\"phase\": \"OPEN\", \"premium\": 50}')": [
+  [
+   "PHASE_MODIFIER",
+   "{\"phase\": \"OPEN\", \"premium\": 50}",
+   "UNCHECKABLE_IN_H (6-template metadata DSL only)"
+  ]
+ ],
+ "('FAM', 'ART BORDERS', (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, True, False, False, False, False))": [
+  [
+   "FAMILY_POINTS",
+   "{\"family\": \"ART BORDERS\", \"points\": [1, 3, 4, 5, 7, 10]}",
+   "REFUTED_IN_H (6-template metadata DSL only)"
+  ]
+ ],
+ "('FREE', '{\"statement\": \"Price is primarily driven by length and family tier rather than point size or phase.\"}')": [
+  [
+   "FREEFORM",
+   "{\"statement\": \"Price is primarily driven by length and family tier rather than point size or phase.\"}",
+   "UNCHECKABLE_IN_H (6-template metadata DSL only)"
+  ]
+ ],
+ "('LAD', (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))": [
+  [
+   "SIZE_LADDER",
+   "{}",
+   "REFUTED_IN_H (6-template metadata DSL only)"
+  ]
+ ],
+ "('LAD', (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, True, False, False, False, False, False, False, False))": [
+  [
+   "SIZE_LADDER",
+   "{\"sizes\": [20, 30, 36, 50, 54, 60, 72]}",
+   "REFUTED_IN_H (6-template metadata DSL only)"
+  ]
+ ],
+ "('LEN', (True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, False, False, False, False, False, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, False, True, True, True, True, True, True, True, True, True, True, False, False, True, True, True, True, True, True, True, True, True, True, True, True, False, False, False, False, False, False, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, False, False, True, True, False, False, True, True, True, True, True, True, True, True, True, True, False, False, True, True, True, True, False, False, True, True, True, True, False, False, True, True, True, True, True, True, True, True, True, True, False, False, False, False, True, True, True, True, False, False, False, False, False, False, False))": [
+  [
+   "LENGTH_QUANTA",
+   "{\"lengths\": [24, 30, 36, 50, 54, 60, 72]}",
+   "REFUTED_IN_H (6-template metadata DSL only)"
+  ]
+ ]
+}

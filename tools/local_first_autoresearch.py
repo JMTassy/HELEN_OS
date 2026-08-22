@@ -50,7 +50,7 @@ def local_wulmath_validate(r: dict) -> bool:
 
 # Config (edit or pass via args)
 GEMMA_MODEL = "gemma4-12b:latest"  # disk-true tag (was phantom "gemma4:12b")
-QWEN_MODEL = "qwen3.5:9b"          # disk-true tag (was phantom "qwen2.5:14b"); 9b fits 18GB swap law
+QWEN_MODEL = "qwen3.5:4b"          # disk-true tag; 9b absent from disk, 4b confirmed available
 LOCAL_TIMEOUT = 300                # >=300s: qwen3.5 cold-load exceeded the old 180s
 OLLAMA_URL = "http://localhost:11434/api/generate"
 
@@ -90,8 +90,8 @@ def call_ollama(model: str, prompt: str, timeout: int = LOCAL_TIMEOUT,
     }
     if system:
         body["system"] = system
-    if "qwen" in model.lower():
-        body["think"] = False  # qwen3.x thinking mode silently eats the token budget
+    if "qwen" in model.lower() or "gemma" in model.lower():
+        body["think"] = False  # thinking mode eats token budget before output
     req = urllib.request.Request(
         OLLAMA_URL, data=json.dumps(body).encode(), headers={"Content-Type": "application/json"}
     )
@@ -111,6 +111,9 @@ def call_ollama(model: str, prompt: str, timeout: int = LOCAL_TIMEOUT,
     except json.JSONDecodeError:
         return {"status": FAILED_INVALID_JSON, "text": "", "raw": raw[:2000]}
     text = strip_control(text).strip()
+    # Strip gemma4 CoT channel blocks before any downstream parsing
+    text = re.sub(r'<\|channel>.*?<channel\|>', '', text, flags=re.DOTALL).strip()
+    text = re.sub(r'<think>.*?</think>', '', text, flags=re.DOTALL).strip()
     if not text:
         return {"status": FAILED_EMPTY_RESPONSE, "text": "", "raw": raw[:2000]}
     return {"status": "OK", "text": text, "raw": raw[:2000]}
@@ -127,14 +130,24 @@ def gemma_propose(topic: str, n: int = 20) -> dict:
     if organ.exists():
         system = organ.read_text()
     prompt = f"""Topic: {topic}
-Produce exactly {n} raw, divergent, exploratory ideas.
-Each idea on its own line, starting with "- ".
-No verdicts. No tasks. No claims. Pure possibility.
-Ideas:"""
-    res = call_ollama(GEMMA_MODEL, prompt, system=system)
+Produce exactly {n} raw, divergent, exploratory proposals on this topic.
+Output ONLY a JSON array of {n} objects as specified in your instructions.
+No preamble. No postamble. Start with "[" and end with "]"."""
+    res = call_ollama(GEMMA_MODEL, prompt, system=system, num_predict=1800)
     if res["status"] != "OK":
         return {"status": res["status"], "ideas": []}
-    ideas = [line.strip("- ").strip() for line in res["text"].splitlines() if line.strip().startswith("-")]
+    # Parse JSON array output per system prompt contract
+    text = res["text"].strip()
+    # Find the JSON array boundaries robustly
+    start = text.find("[")
+    end = text.rfind("]")
+    if start == -1 or end == -1 or end <= start:
+        return {"status": FAILED_EMPTY_RESPONSE, "ideas": []}
+    try:
+        proposals = json.loads(text[start:end + 1])
+    except json.JSONDecodeError:
+        return {"status": FAILED_INVALID_JSON, "ideas": []}
+    ideas = [p.get("idea", "").strip() for p in proposals if isinstance(p, dict) and p.get("idea")]
     if not ideas:
         return {"status": FAILED_EMPTY_RESPONSE, "ideas": []}
     return {"status": "OK", "ideas": ideas[:n]}

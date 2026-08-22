@@ -1,0 +1,48 @@
+{
+ "K_mem": {
+  "heldout_hits": 0,
+  "n": 40,
+  "note": "deduped dataset -> memorizer predicts 0 unseen rows"
+ },
+ "monotonicity": {
+  "heldout_support": 1.0,
+  "n_groups": 8,
+  "permutation_p": 0.4908,
+  "trials": 5000,
+  "verdict": "NOT better than chance"
+ },
+ "price_band": {
+  "obs_support": 0.974,
+  "n": 39,
+  "p_random_band_geq": 0.021,
+  "verdict": "SUPPORTED vs random bands"
+ },
+ "discriminate": {
+  "monotone_threshold_variants": [
+   20,
+   24,
+   30,
+   36
+  ],
+  "discriminating_observation": "specimens with lengths bracketing 20-36in within one family x point ladder",
+  "lengths_present": [
+   12,
+   18,
+   20,
+   24,
+   30,
+   36,
+   40,
+   46,
+   48,
+   50,
+   54,
+   60,
+   66,
+   72
+  ],
+  "phase_pairs_full_set": 4,
+  "phase_pairs_equal": 4,
+  "next_data": "pair-stratified resplit puts >=2 matched OPEN/TINT pairs in heldout; visual ORB needed for structural grammar"
+ }
+}

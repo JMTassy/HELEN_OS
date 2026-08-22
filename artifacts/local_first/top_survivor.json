@@ -1,14 +1,10 @@
 {
   "schema": "CHIDDUSH_RECEIPT_V0",
-  "chiddush_id": "CHID-20260703-040300-4cc15986",
-  "invariant": "Sandbox agent adapter as a literal frictionless membrane for latent space\u001b[5D\u001b[K 26-packet outbox as a high-frequency pulse for real-time heuristic update\u001b[6D\u001b[K CHIDDUSH compresso",
+  "chiddush_id": "CHID-M3K9P2R6T8W5",
+  "invariant": "Color palettes must be strictly limited to three tones (Primary, Neutral, Accent) for editorial consistency.",
   "source_refs": [
-    "gemma_proposals"
+    "minimal.gallery"
   ],
-  "category_hints": [],
-  "confidence": "medium",
   "authority": false,
-  "claim": "NO_CLAIM",
-  "notes": "Compressed from HELEN Mac Local lateral garden. Not yet collapsed.",
-  "metabolism_stage": "\ud83d\udd0d CHIDDUSH (Compression)"
+  "claim": "NO_CLAIM"
 }

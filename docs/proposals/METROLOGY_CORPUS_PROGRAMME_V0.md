@@ -129,6 +129,51 @@ episode where a legitimate epistemic promotion occurred with no new
 admitted evidence. Falsify T1 / T2 / GA / EDI; everything else must
 reduce or produce a genuine ⊥.
 
+## PRE-REGISTRATION — 1851 Great Exhibition catalogue (registered 2026-08-13, BEFORE extraction)
+
+Corpus fetched to ~/helen_kernel/chiddush_intake/exhibition_1851/:
+three OCR text layers (officialdescrip00goog sha 229eab62…,
+officialdescrip05goog sha aa0f4b7b…, officialdescrip3grea sha
+b7996c2a…). Identity verified: Class XVII "Paper, Printing, and
+Bookbinding" present in the class table of vol 05goog (l.76831,
+OCR-mangled). NO content extraction performed before this
+registration.
+
+Predicted laundering signature L̂_1851:
+- p_P HIGH — exhibition prose = promotional/descriptive claims by
+  exhibitors; expect Generable/Exhibited ⇏ HistoricallyUsed-at-scale
+  laundering, jury-report modality drops.
+- p_S MEDIUM — class/jurisdiction scoping of exhibits (approved for
+  display ⇏ approved for use).
+- p_M MEDIUM — instrument/measurement claims by makers without
+  independent calibration witnesses.
+- p_comp LOW — catalogue entries are mostly atomic; little
+  transformation chaining inside the corpus itself.
+- p_A LOW, p_R LOW.
+
+Role per operator ruling: OUT-OF-DISTRIBUTION VALIDATION of whatever
+survives the ATF indub runs — not undirected expansion. Standing
+guards: Exhibited(x,1851) ⇒ Witnessed(x,1851);
+¬Exhibited ⇏ ¬Capable; Generable ⇏ HistoricallyObserved.
+Blind extraction next; compare observed signature vs this prediction
+AFTER.
+
+RENAME (audit round 2, adopted): the 1851 role is a
+**HISTORICAL_NONPROMOTION_CHALLENGE**, not "OOD validation" — 49
+years and a domain gulf separate it from ATF 1900, so transfer
+success licenses RepresentationalCoverage only (never
+HistoricallyUsed), and transfer failure does not refute the ATF
+grammar (temporal+institutional+domain shift confound). A near-1900
+independent typographic corpus is the proper transfer stage; 1851 is
+deliberately adversarial. Catalogue roots ≠ Jury-Report roots
+(R_catalogue vs R_jury — two documentary families, never one).
+Per-specimen output is a four-variable matrix, kept separate:
+O(p) observed · G(p) generable · R(p) reconstructed · H(p,K)
+historical use attested. The load-bearing cell is (O,G,R,H) =
+(0,1,1,0) — GENERABLE/UNOBSERVED — where a generative system is most
+tempted to promote "could have been made" into "was made." HELEN's
+pass condition is refusing that cell's promotion, every time.
+
 ## ATF experiment, corrected and locked (2026-08-13)
 
 Identity note for the record: ATF in this programme = **American Type
