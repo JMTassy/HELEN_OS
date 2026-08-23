@@ -1,0 +1,110 @@
+{
+  "spec": "WUL_CORE_V1",
+  "authority": false,
+  "canon": false,
+  "authority_delta": 0,
+  "gamma_delta": 0,
+  "model_calls": 0,
+  "components": {
+    "Σ_actor": {
+      "🃏": "GOBLIN",
+      "🛡": "HAL",
+      "👑": "MAYOR",
+      "🧠": "HER"
+    },
+    "Σ_op": {
+      "🧪": "DISCRIMINATE",
+      "🔥": "TEST",
+      "🔀": "TRANSFORM",
+      "🔬": "OBSERVE",
+      "⚖": "GOVERN"
+    },
+    "Σ_state": {
+      "🌿": "POSSIBILITY",
+      "🟣": "CANDIDATE",
+      "🔵": "OBSERVATION",
+      "🟡": "WARRANT",
+      "🟢": "ADMITTED",
+      "⚪": "REPLAYABLE",
+      "⚫": "DEAD"
+    },
+    "state_rank": {
+      "POSSIBILITY": 0,
+      "CANDIDATE": 1,
+      "OBSERVATION": 2,
+      "WARRANT": 3,
+      "ADMITTED": 4,
+      "REPLAYABLE": 5
+    }
+  },
+  "laws_conformance": [
+    {
+      "test": "round_trip  P_W(C(T))=T",
+      "pass": true,
+      "detail": "🃏07·🧪·🌿·#O19·ΔA0"
+    },
+    {
+      "test": "compiler_deterministic",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "test": "N idempotent  N(N(w))=N(w)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "test": "normal round  C(P_W(w))=N(w)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "test": "P ↛ T  (rendered WUL does NOT parse back)",
+      "pass": true,
+      "detail": "╔═ 🌈 ═╗ \u001b[36m🃏07·🧪·🌿·#O19·ΔA0\u001b…"
+    },
+    {
+      "test": "illtyped 🌿→⚪ rejected (STATIC_TYPE_ERROR)",
+      "pass": true,
+      "detail": "missing=proposal,test_receipt,evidence,admission,receipt"
+    },
+    {
+      "test": "welltyped protocol accepted",
+      "pass": true,
+      "detail": "required=proposal,test_receipt,evidence,admission,receipt"
+    },
+    {
+      "test": "Eq ∼_F ⇏ ∼_E  (1,1,0,·,·)",
+      "pass": true,
+      "detail": "Eq=(0, 1, 0, 1, 1)"
+    },
+    {
+      "test": "Eq ∼_E ⇏ ∼_Γ  (·,1,1,0,·)",
+      "pass": true,
+      "detail": "Eq=(0, 1, 1, 0, 1)"
+    },
+    {
+      "test": "namespace ψ^wul ↛ ψ^phys rejected",
+      "pass": true,
+      "detail": "NAMESPACE_ERROR:ψ^wul ↛ ψ^phys"
+    },
+    {
+      "test": "same-namespace cast allowed",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "SOUND": true,
+  "notation_fix": "Δ ⊢ e:τ (typing context) · Γ = constitutional boundary (distinct symbols)",
+  "MAX_ADMISSIBLE_STATEMENT": "WUL_CORE_V1 canonical WUL round-trips (P_W∘C=id) and normalizes idempotently; presentation is lossy and NON-invertible (P↛T); ill-typed governed shortcuts are static type errors; equivalence is a {0,1,U}^5 signature preserving ∼_F⇏∼_E⇏∼_Γ; cross-namespace casts are rejected.",
+  "GAPS_still_open": [
+    "type lattice 𝒯 partial",
+    "witness schema informal",
+    "Eq U-algebra = status label (not yet Kleene)",
+    "grammar/escaping not frozen",
+    "path types (capability topology) not yet in 𝒯"
+  ],
+  "commit_status": "NO_COMMIT",
+  "push_status": "NO_PUSH",
+  "next_verb": "HUMAN_REVIEW"
+}

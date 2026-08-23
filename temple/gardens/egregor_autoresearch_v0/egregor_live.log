@@ -1,0 +1,20 @@
+════════════════════════════════════════════════════════════════
+  EGREGOR_AUTORESEARCH_V0 · budget 570s · 2 obstructions · ΔA=0
+════════════════════════════════════════════════════════════════
+  r1 QWEN_BRIDGE    [70.1s] 🕳️_Γ#1 → nov3 fal4 lev3 · Topological mapping δ*: raw → notarized 
+  r1 QWEN_FALSIFIER [104.2s] 🕳️_Γ#1 → nov0 fal0 lev0 · 
+  r1 GEMMA_ANALOGY  [126.1s] 🕳️_Γ#1 → nov4 fal5 lev3 · A topological homeomorphism between a bi
+  r1 QWEN_BRIDGE    [240.2s] 🕳️_E#1 → nov3 fal4 lev4 · δ*: ∃e ∈ E : (e ≡ e_root ∧ e ⊆ X) : X → 
+  r1 QWEN_FALSIFIER [269.8s] 🕳️_E#1 → nov5 fal5 lev5 · δ* : notarized ↝ verified_notarized (cla
+  r1 GEMMA_ANALOGY  [289.3s] 🕳️_E#1 → nov4 fal5 lev3 · Epigenetic Landscape Stochasticity $\rig
+  r2 QWEN_BRIDGE    [332.4s] 🕳️_Γ#1 → nov0 fal0 lev0 · 
+  r2 QWEN_FALSIFIER [372.9s] 🕳️_Γ#1 → nov0 fal0 lev0 · 
+  r2 GEMMA_ANALOGY  [398.9s] 🕳️_Γ#1 → nov4 fal5 lev3 · $\delta^*$: Quorum-based Byzantine Fault
+  r2 QWEN_BRIDGE    [454.8s] 🕳️_E#1 → nov3 fal4 lev3 · δ*: `ev(∅) ⇏ evidence_root(ev≠NONE) ⊗ no
+  r2 QWEN_FALSIFIER [501.8s] 🕳️_E#1 → nov3 fal4 lev2 · δ*: A local isomorphism mapping `notariz
+  r2 GEMMA_ANALOGY  [523.2s] 🕳️_E#1 → nov4 fal0 lev3 · A bio-synthetic epigenetic marker acting
+  r3 QWEN_BRIDGE    [580.1s] 🕳️_Γ#1 → nov5 fal5 lev0 · δ*: A topological verification path that
+────────────────────────────────────────────────────────────────
+  reduced 13 raw (0 model-errors, shown honestly) → 10 distinct bridges
+  NEPTION: all bridges → 🌿/🟡 (proposals, not certificates) · ΔA=0 · NO_COMMIT
+  → EGREGOR_REDUCED.json

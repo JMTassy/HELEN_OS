@@ -1,0 +1,85 @@
+{
+  "experiment": "HELEN_PERCEPTUAL_NONINTERFERENCE_V0",
+  "authority": false,
+  "canon": false,
+  "authority_delta": 0,
+  "gamma_delta": 0,
+  "model_calls": 0,
+  "theorem": "Π_i:H→V_i ∧ ∂H_{t+1}/∂V_t=0  (renderers cannot write governed state)",
+  "renderer_contract": {
+    "authority": 0,
+    "state_write": false,
+    "claim": false,
+    "governance_write": false,
+    "receipt_mint": false
+  },
+  "renderers": [
+    "color",
+    "spatial",
+    "text",
+    "speech",
+    "face",
+    "(A2F=face, backend NOT_INSTALLED)"
+  ],
+  "HARD_INVARIANTS": {
+    "STATE_HASH_before": "bcf9384587b7219b",
+    "STATE_HASH_after": "bcf9384587b7219b",
+    "state_invariant": true,
+    "authority_invariant": true,
+    "ledger_invariant": true
+  },
+  "renderer_contract_respected(no H mutation)": true,
+  "metamorphic_family": {
+    "M1_change_face": {
+      "ΔPresentation≠0": true,
+      "ΔH=0": true
+    },
+    "M2_expression_gain": {
+      "ΔPresentation≠0": true,
+      "ΔH=0": true
+    },
+    "M3_change_character": {
+      "ΔPresentation≠0": true,
+      "ΔH=0": true
+    },
+    "M4_disable_a2f": {
+      "ΔPresentation≠0": true,
+      "ΔH=0": true
+    },
+    "M5_corrupt_output": {
+      "ΔPresentation≠0": true,
+      "ΔH=0": true
+    }
+  },
+  "all_metamorphic_ΔH=0": true,
+  "Ψ_fusion": {
+    "brow←policy": "analytical_intensity",
+    "mouth←inferred": "lipsync(soft)",
+    "channel_dominance_correct": true,
+    "note": "S=FALSIFICATION(analytical) vs soft prosody(gentle) — policy owns brow/gaze, audio owns lips"
+  },
+  "embodiment_equivalence_[V]_H": {
+    "distinct_views": [
+      "color",
+      "spatial",
+      "text",
+      "speech",
+      "face"
+    ],
+    "one_source_class": true
+  },
+  "graceful_degradation(face FAIL ⇒ H valid)": true,
+  "backflow_blocked(V↛H)": true,
+  "human_feedback_allowed_via_governed_channel(H→V→Human→O)": true,
+  "expression≠emotion(no emotion labels in policy)": true,
+  "SOUND": true,
+  "MAX_ADMISSIBLE_STATEMENT": "HELEN's perceptual plane is a family of non-sovereign renderers of ONE governed state; across a 5-case metamorphic family (incl. disable & corrupt A2F) presentation varies while STATE/AUTHORITY/LEDGER hashes are invariant; renderer backflow is blocked while human-observation feedback remains on the ordinary governed evidence path. Actual A2F mesh render NOT_EXECUTED (backend not installed).",
+  "EXPLICIT_NON_CLAIMS": [
+    "no mesh/blendshape rendered (no NVIDIA backend)",
+    "expression policy = presentation semantics, NOT emotion/warrant/truth",
+    "F is the renderer's reading of audio prosody, not evidence about H"
+  ],
+  "commit_status": "NO_COMMIT",
+  "push_status": "NO_PUSH",
+  "next_verb": "HUMAN_REVIEW"
+}

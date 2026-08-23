@@ -1,0 +1,24 @@
+{
+  "backend": "ollama",
+  "pinned_model": "hf.co/huihui-ai/Huihui-Qwen3.8-27B-abliterated-GGUF:Q2_K",
+  "runtime_model": "hf.co/huihui-ai/Huihui-Qwen3.8-27B-abliterated-GGUF:Q2_K",
+  "model_match": true,
+  "raw_payload_bytes": 569,
+  "goblin_payload_bytes": 569,
+  "qwen_sha256": "8145af2a...d2c1",
+  "goblin_sha256": "8145af2a...d2c1",
+  "byte_identity": true,
+  "semantic_middleboxes": 0,
+  "authority": 0,
+  "QWEN_ABSENCE": "PASS",
+  "MODEL_DRIFT": "PASS",
+  "BYTE_MUTATION": "PASS",
+  "FALLBACK_REJECTION": "PASS",
+  "VERDICT": "PROVENANCE_ACCEPTED",
+  "details": {
+    "absence": "QWEN_RUNTIME_UNAVAILABLE: URLError: <urlopen error [Errno 61",
+    "drift": "unknown-model rejected: QWEN_RUNTIME_UNAVAILABLE: HTTPError: HTT"
+  },
+  "commit_status": "NO_COMMIT",
+  "push_status": "NO_PUSH"
+}

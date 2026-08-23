@@ -1,0 +1,35 @@
+{
+  "experiment": "PERCEPTUAL_NONINTERFERENCE_FALSIFIER_V0",
+  "authority": false,
+  "canon": false,
+  "authority_delta": 0,
+  "gamma_delta": 0,
+  "model_calls": 0,
+  "frozen_law": "𝒢 ∘ Π_i = 𝒢  (discrete noninterference; 𝒢=(A,W,L,Γ,Adm))",
+  "G_hash_baseline": "f8eba695dd0c40dc",
+  "NEGATIVE_control": {
+    "n_perceptual_variations": 6,
+    "distinct_presentations": 6,
+    "perceptual_variation_ΔF≠0": true,
+    "gov_hashes_all_equal": true,
+    "counterexample": null
+  },
+  "POSITIVE_control": {
+    "gamma_transition": "ADMITTED",
+    "g_gamma_hash": "f8c696a9b5fa0128",
+    "test_not_blind(g_Γ≠g_0)": true,
+    "rejected_unwitnessed_no_move": true
+  },
+  "A2E_inference_not_evidence": true,
+  "fiber_interpretation": {
+    "vertical(perceptual, same fiber p⁻¹(H))": "𝒢 fixed",
+    "horizontal(Γ, new fiber)": "𝒢 moves",
+    "law": "vertical motion cannot manufacture horizontal motion"
+  },
+  "FALSIFIER_RESULT": "NONINTERFERENCE_HOLDS",
+  "SOUND": true,
+  "MAX_ADMISSIBLE_STATEMENT": "Across 6 maximally-varied perceptual configs (incl. renderer failure, corruption, and an explicit backflow attempt) the protected projection 𝒢 is byte-invariant; a single witnessed Γ transition DOES move 𝒢 (test not blind) while a forged one does not. Perceptual variation cannot manufacture governed motion. No mesh rendered (A2F backend NOT_INSTALLED).",
+  "commit_status": "NO_COMMIT",
+  "push_status": "NO_PUSH",
+  "next_verb": "HUMAN_REVIEW"
+}
