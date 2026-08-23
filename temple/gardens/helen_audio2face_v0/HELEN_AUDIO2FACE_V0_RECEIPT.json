@@ -1,0 +1,62 @@
+{
+  "experiment": "HELEN_AUDIO2FACE_EMBODIMENT_V0",
+  "authority": false,
+  "canon": false,
+  "authority_delta": 0,
+  "gamma_delta": 0,
+  "model_calls": 0,
+  "a2f_render": "NOT_EXECUTED",
+  "law": "H → V ∧ V ↛ H  (render may reveal governed state; render may never mint it)",
+  "checks": {
+    "AUDIO_SOURCE_FROZEN": true,
+    "TRANSCRIPT_HASHED": true,
+    "A2F_MODEL_ID_RECORDED": "N/A (backend not installed)",
+    "A2F_OUTPUT_OBSERVED": "NOT_EXECUTED",
+    "LIPSYNC_OUTPUT": "NOT_EXECUTED",
+    "FACIAL_ANIMATION_OUTPUT": "NOT_EXECUTED",
+    "policy_deterministic(H→V is a function)": true,
+    "ΔFace≠0": true,
+    "ΔH=0": true,
+    "A2F_BACKFLOW_TO_HELEN": false,
+    "backflow_blocked": true,
+    "E_A2F ≠ E_institutional": true,
+    "Face ↛ TypedState (no inverse)": true,
+    "SEMANTIC_DELTA": 0,
+    "AUTHORITY_DELTA": 0,
+    "LEDGER_EFFECT": "none"
+  },
+  "multi_projection": {
+    "one_governed_state": "FALSIFICATION",
+    "projections": {
+      "color_wulmath": "🔥 (FALSIFICATION → derived color)",
+      "spatial_ui": "narrow-gaze node (stub)",
+      "facial_embodiment": "focused_adversarial"
+    },
+    "every_back_arrow_blocked": true
+  },
+  "licenses_separate_artifacts": {
+    "audio2face_sdk": "MIT",
+    "training_framework": "Apache-2.0",
+    "maya_plugin": "MIT",
+    "unreal_plugin": "MIT",
+    "pretrained_a2f_models": "NVIDIA-Open-Model",
+    "audio2emotion_models": "custom(use-with-A2F-only)",
+    "sample_training_data": "custom(eval-only)",
+    "nim_service": "NVIDIA-Software-License-Agreement"
+  },
+  "MAX_ADMISSIBLE_STATEMENT": "The control-plane embodiment invariant holds: face is a deterministic one-way projection of typed state; perturbing the render leaves governed state identical (ΔFace≠0 ∧ ΔH=0); A2F emotion cannot flow back; no inverse parser exists. The ACTUAL A2F mesh render is NOT_EXECUTED (not installed).",
+  "EXPLICIT_NON_CLAIMS": [
+    "no facial mesh/blendshape was rendered (no NVIDIA backend installed)",
+    "facial emotion is render-control, NOT HELEN emotion/warrant/truth",
+    "NOT a claim that HELEN 'feels'; expression policy ≠ institutional state"
+  ],
+  "maturity_ladder": [
+    "SDK → local HELEN face",
+    "custom character",
+    "Unreal/MetaHuman",
+    "NIM scale"
+  ],
+  "commit_status": "NO_COMMIT",
+  "push_status": "NO_PUSH",
+  "next_verb": "HUMAN_REVIEW"
+}

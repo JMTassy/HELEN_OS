@@ -1,0 +1,148 @@
+{
+  "epoch": "GOBLIN_BLOOM_30MIN_V0",
+  "authority": false,
+  "canon": false,
+  "authority_delta": 0,
+  "claim": "NO_CLAIM",
+  "prereg_sha256": "f5f9225649fe64588f6a0eba04735e41b299f5c45ff624d8a37dddca69bf08b5",
+  "duration_s": 1782.5,
+  "rounds": 11,
+  "model_errors": 0,
+  "delta_S": {
+    "ΔN": 52,
+    "ΔQ": 37,
+    "Δd_D": 17,
+    "Δd_I": 2,
+    "Δd_M": 0,
+    "ΔR": 0
+  },
+  "dupes_pct": 28.8,
+  "n_falsifiers": 5,
+  "n_obstructions": 5,
+  "key_inequality_holds": true,
+  "verdict": "V2",
+  "stop_reason": "WALL_BUDGET",
+  "top_falsifiers": [
+    {
+      "goblin": "QWEN_REMOVAL",
+      "kind": "REMOVAL",
+      "claim": "REMOVING it changes no later decision, instrument, or reachability.",
+      "counterexample": "A single admissible path δ:X_U→X_T with Verify(δ,w)=1 ∧ δ∈Dom(Γ) remains identical under ∼_R, ∼_F, ∼_E, and ∼_Γ.",
+      "witness": "ΔA=0; CHIDDUSH is diachronic, so removal fails the law if it changes nothing.",
+      "novelty": 5,
+      "falsifiability": 5,
+      "leverage": 5,
+      "_n": 2
+    },
+    {
+      "goblin": "QWEN_PROVENANCE",
+      "kind": "REMOVAL",
+      "claim": "The candidate claims a `notarized` transition without producing the `W_mayor` root, treating `raw` as if it were `already` notarized",
+      "counterexample": "`raw` state `X` where `Verify(δ, w)=0` but `δ` was admitted into `X_T` via a path that skipped the `W_mayor` boundary",
+      "witness": "`W_mayor` is required because `ΔA=0` demands the *production* of the root, not just its *reference*; ΔA=0 holds because the bridge is a *removal* of the shortcut, not an addition of authority",
+      "novelty": 4,
+      "falsifiability": 5,
+      "leverage": 4,
+      "_n": 1
+    },
+    {
+      "goblin": "QWEN_REMOVAL",
+      "kind": "REMOVAL",
+      "claim": "The distinction 'typed-obstruction 🕳️' is a diachronic obstruction: its retention is non-earned (ΔA=0), and its removal is falsifiable by the diachronic law.",
+      "counterexample": "Removing 'typed-obstruction 🕳️' leaves the admissible paths and the boundary Γ unchanged. The path δ:X_U→X_T is still admissible under Verify(δ,w)=1. The 'typed-obstruction' is a null-ΔA marker that does not earn authority.",
+      "witness": "ΔA=0; The diachronic law fails because the retained distinction 'typed-obstruction 🕳️' is diachronically redundant—its later decision-relevant reuse is non-redundant only if it obstructs, but obstruction is a null-authority marker. If removing it changes no reachability, it is a pure obstruction.",
+      "novelty": 4,
+      "falsifiability": 4,
+      "leverage": 4,
+      "_n": 1
+    },
+    {
+      "goblin": "QWEN_REMOVAL",
+      "kind": "REMOVAL",
+      "claim": "REMOVING 'typed-obstruction 🕳️' changes nothing in later reachability or instrument structure; it fails the diachronic law.",
+      "counterexample": "A path where ∼_F ⇏ ∼_E is preserved under δ:X_U→X_T with δ∈Dom(Γ), but the obstruction marker 🕳️ is absent; yet the Verify(δ,w)=1 ∧ δ∈Dom(Γ) check passes identically. The \"typed\" boundary does not gate later reuse; it is a static witness, not a dynamic authority sink.",
+      "witness": "ΔA=0 holds because the obstruction is a *type-level* constraint, not an *authority-level* constraint. Removing it preserves the admissible path space X and the typed equivalences ∼_R∼_F∼_E∼_Γ. The witness is the equivalence class itself under ∼_E, not the specific marker.",
+      "novelty": 4,
+      "falsifiability": 4,
+      "leverage": 3,
+      "_n": 1
+    },
+    {
+      "goblin": "QWEN_REMOVAL",
+      "kind": "REMOVAL",
+      "claim": "Removal preserves all later reachability, authority, and decision-relevance; the retained distinction is diachronically redundant.",
+      "counterexample": "A strict removal of the token 🕳️ yields an identical state-space X_U, identical admissible paths, and identical Verify(δ,w)=1 outcomes, yet the instrument remains structurally isomorphic.",
+      "witness": "ΔA=0 holds because the obstruction is a null-homolog; it fails the diachronic law by not earning a non-redundant decision-relevance in later reuse.",
+      "novelty": 3,
+      "falsifiability": 4,
+      "leverage": 2,
+      "_n": 1
+    }
+  ],
+  "top_obstructions": [
+    {
+      "goblin": "GEMMA_OBSTRUCTION",
+      "kind": "OBSTRUCTION",
+      "claim": "The \"topological_bridge\" status in the raw-to-notarized transition creates a phantom path for authority that is structurally severed by the absence of a \"constitutional_bridge\". Since ∆A=0, the transformation lacks the necessary typed equivalence to bridge the boundary Γ, making the transition a non-admissible leap rather than a valid mapping.",
+      "counterexample": "A signature verified by W_mayor that preserves topological connectivity but fails to map to a valid state in X_T because the constitutional boundary Γ remains unbridged.",
+      "witness": "W_mayor is insufficient because it verifies the witness but cannot validate the constitutional bridge; hence ∆A=0 holds as no non-redundant decision-relevant reuse justifies the path.",
+      "novelty": 5,
+      "falsifiability": 4,
+      "leverage": 5,
+      "_n": 1
+    },
+    {
+      "goblin": "GEMMA_OBSTRUCTION",
+      "kind": "OBSTRUCTION",
+      "claim": "The absence of `evidence_root(ev≠NONE)` creates a structural bifurcation where a state $X$ is computationally valid but constitutionally inadmissible. Because the `type` is `MISSING_EVIDENCE`, the transition $\\delta$ fails the `Verify(δ,w)=1` check, creating a \"Dead Zone\" where logic proceeds but authority $\\Delta A$ remains 0.",
+      "counterexample": "A self-consistent proof of identity that lacks a cryptographic root of trust; it is logically \"true\" but legally \"void.\"",
+      "witness": "$\\Delta A=0$ holds because no non-redundant decision-relevant reuse of the `MISSING_EVIDENCE` status can occur without a prior valid $\\delta$ path.",
+      "novelty": 4,
+      "falsifiability": 3,
+      "leverage": 5,
+      "_n": 1
+    },
+    {
+      "goblin": "QWEN_PROVENANCE",
+      "kind": "OBSTRUCTION",
+      "claim": "The bridge asserts a verified state of `notarized` (implying a root exists) without producing the root `ev≠NONE`, creating a provenance gap.",
+      "counterexample": "A state machine transitioning to `notarized` with `evidence_root(ev=NONE)` remains in the state, violating the boundary Γ.",
+      "witness": "ΔA=0 holds because the transition is diachronic; the authority is earned only by the later non-redundant decision-relevant reuse of the root.",
+      "novelty": 3,
+      "falsifiability": 4,
+      "leverage": 4,
+      "_n": 1
+    },
+    {
+      "goblin": "GEMMA_ANALOGY",
+      "kind": "OBSTRUCTION",
+      "claim": "The structural integrity of a license is not invariant under diachronic CHIDDUSH; specifically, a \"Declared\" status is a temporal projection that fails to account for the \"Derived\" debt of previous non-redundant decisions.",
+      "counterexample": "A software license that remains valid (Declared) while the underlying hardware architecture (Derived) undergoes a non-redundant structural shift that invalidates the original safety invariants.",
+      "witness": "A formal mapping of the diachronic chain of decisions to the current state space; ΔA=0 holds because the transition is currently unverified as an admissible path in Dom(Γ).",
+      "novelty": 4,
+      "falsifiability": 4,
+      "leverage": 3,
+      "_n": 1
+    },
+    {
+      "goblin": "QWEN_REMOVAL",
+      "kind": "OBSTRUCTION",
+      "claim": "Removing \"typed-obstruction 🕳️\" fails the diachronic law; it is a structural placeholder, not a decision-relevant reuse. The \"obstruction\" is not an active constraint but a slot for the later collision (the typed obstruction that *blocks* the untyped path).",
+      "counterexample": "Concrete case: In the HELEN space, the *typed* obstruction is what *prevents* the untyped path from being admitted. If we remove the obstruction, we admit the untyped path, which then fails the diachronic law because it was not *earned* by a later non-redundant decision-relevant reuse.",
+      "witness": "ΔA=0 holds because the *obstruction* is the *witness* of the *rejection*—it is the thing that *prevented* the untyped path from being admitted, and it is the *typed* obstruction that *blocks* the untyped path.",
+      "novelty": 3,
+      "falsifiability": 4,
+      "leverage": 3,
+      "_n": 1
+    }
+  ],
+  "neption_gate": "all output COMPOST/🟣 · newborn ⇒ V4 forbidden · 💎 requires later independent reuse",
+  "receipt": {
+    "claims_admitted": 0,
+    "external_actions": 0,
+    "governed_state_mutations": 0,
+    "commit_status": "NO_COMMIT",
+    "push_status": "NO_PUSH",
+    "next_verb": "SCORE_VS_PREREG"
+  }
+}

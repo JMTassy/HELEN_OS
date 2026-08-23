@@ -1,0 +1,45 @@
+{
+  "experiment": "CAPABILITY_HOMOTOPY_V0",
+  "authority": false,
+  "canon": false,
+  "authority_delta": 0,
+  "gamma_delta": 0,
+  "model_calls": 0,
+  "N_paths": 11,
+  "quotients": {
+    "|P/∼_F|": 3,
+    "|P/∼_E|": 4,
+    "|P/∼_Γ|": 4,
+    "|P/∼_R|": 5
+  },
+  "consolidation_rho": 3.67,
+  "laws": {
+    "∼_F ⇏ ∼_E": true,
+    "∼_E ⇏ ∼_Γ": true,
+    "∼_R collapses (A1≡A2 fully)": true,
+    "topological ⇏ Γ-reachability": true,
+    "more paths ⇏ more capabilities": true
+  },
+  "SOUND": true,
+  "typed_obstructions": [
+    {
+      "id": "🕳️_Γ#1",
+      "from": "raw",
+      "to": "notarized",
+      "type": "AUTHORITY_BOUNDARY",
+      "required_witness": "W_mayor",
+      "topological_bridge": true,
+      "constitutional_bridge": false
+    },
+    {
+      "id": "🕳️_E#1",
+      "to": "notarized",
+      "type": "MISSING_EVIDENCE",
+      "required": "evidence_root(ev≠NONE)"
+    }
+  ],
+  "MAX_ADMISSIBLE_STATEMENT": "On this synthetic path-space the four typed equivalences are genuinely distinct: ∼_F(3) coarser than ∼_E(4) coarser than the split needed for ∼_Γ(4); a forbidden shortcut is topologically reachable but Γ-unreachable; 11 paths collapse to 3 functional classes (ρ=3.67). Capability Topology is computational substance here, not metaphor.",
+  "commit_status": "NO_COMMIT",
+  "push_status": "NO_PUSH",
+  "next_verb": "HUMAN_REVIEW"
+}
