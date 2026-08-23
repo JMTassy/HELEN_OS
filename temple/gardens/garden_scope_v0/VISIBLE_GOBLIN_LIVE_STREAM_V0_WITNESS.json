@@ -1,0 +1,17 @@
+{
+  "bead": "VISIBLE_GOBLIN_LIVE_STREAM_V0",
+  "GEMMA_MODEL": "hf.co/unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q3_K_XL",
+  "QWEN_MODEL": "hf.co/huihui-ai/Huihui-Qwen3.8-27B-abliterated-GGUF:Q2_K",
+  "EPOCHS": 3,
+  "GEMMA_EVENTS": 6,
+  "QWEN_EVENTS": 18,
+  "TOTAL_EVENTS": 25,
+  "SILENT_TRANSITIONS": 0,
+  "CLI_TRACE_MATCH": true,
+  "BROWSER_TRACE_MATCH": true,
+  "OBSERVER_CATCHUP": true,
+  "AUTHORITY": false,
+  "CANON": false,
+  "LEDGER_EFFECT": "none",
+  "VERDICT": "OBSERVABILITY_COMPLETE"
+}

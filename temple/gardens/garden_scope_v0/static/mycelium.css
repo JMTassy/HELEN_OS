@@ -1,0 +1,20 @@
+/* MYCELIUM view — aesthetic ∈ Θ. All semantic color lives in mycelium.js as a
+   pure function of node.sigma. CSS here only styles the fixed overlays. */
+html,body{margin:0;height:100%;background:#02040a;overflow:hidden;
+  font-family:"SFMono-Regular",Menlo,Consolas,monospace;color:#bff5da}
+#field{position:fixed;inset:0;width:100vw;height:100vh;display:block}
+.overlay{position:fixed;z-index:5;text-shadow:0 0 8px rgba(120,255,190,.25)}
+.dim{color:#4c8a6a}
+#titlebar{top:10px;left:16px;font-size:13px;color:#8affce;letter-spacing:.5px}
+#footer{bottom:8px;left:0;width:100%;text-align:center;font-size:10px;color:#3f6f57;letter-spacing:1px}
+#hud{top:40px;right:16px;width:210px;border:1px solid #1f5a3e;border-radius:4px;
+  background:rgba(3,10,7,.72);padding:8px 10px;font-size:11.5px;line-height:1.5}
+#hud .hud-h{color:#8affce;font-weight:700;margin-bottom:4px;letter-spacing:.5px}
+#hud .hud-zero{color:#5a7d6c}
+#hud b{color:#c08bff;float:right}
+#hud .hud-zero b{color:#4c8a6a}
+#hud hr{border:0;border-top:1px solid #12331f;margin:6px 0}
+#rain{bottom:26px;left:16px;width:44%;font-size:11px;line-height:1.45;color:#6fce9e;opacity:.9}
+#rain .r{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#rain .her{color:#4fd3c4}#rain .hal{color:#ff9d3c}#rain .gate{color:#8affce}
+#rain .v-RENAMING_ONLY{color:#8a5a5a}#rain .v-EVIDENCE_NEEDED{color:#ffd23c}#rain .v-SURVIVES{color:#c08bff}

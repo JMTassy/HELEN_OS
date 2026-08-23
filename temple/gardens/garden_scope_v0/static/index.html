@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HELEN // GARDEN SCOPE</title>
+<link rel="stylesheet" href="/static/garden.css">
+</head>
+<body>
+<div class="crt">
+  <div class="scanlines"></div>
+  <header id="hud">
+    <span class="brand">HELEN // ORACLE TOWN // GARDEN SCOPE</span>
+    <span id="stateline" class="dim">booting…</span>
+    <span class="law">color = projection(typed_state) · ΔA=0 · NO_CLAIM</span>
+  </header>
+
+  <main class="grid">
+    <section class="panel" id="rain-panel">
+      <h2>▟ LIVE RAIN <span class="dim" id="rain-count"></span></h2>
+      <div class="scroll" id="rain"></div>
+    </section>
+
+    <section class="panel" id="lineage-panel">
+      <h2>⑃ LINEAGE <span class="dim">spawn → adversarial verdict</span></h2>
+      <div class="scroll" id="lineage"></div>
+    </section>
+
+    <section class="panel" id="pop-panel">
+      <h2>🟣 POPULATION <span class="dim">(alive below Φ)</span></h2>
+      <div class="scroll" id="population"></div>
+    </section>
+
+    <section class="panel" id="grave-panel">
+      <h2>☠ GRAVEYARD <span class="dim" id="grave-count"></span></h2>
+      <div class="scroll" id="graveyard"></div>
+    </section>
+  </main>
+
+  <footer id="legend">
+    <span class="chip her">HER spawn</span>
+    <span class="chip hal">HAL spawn</span>
+    <span class="chip typed">SURVIVES → typed</span>
+    <span class="chip hold">EVIDENCE_NEEDED</span>
+    <span class="chip dead">RENAMING_ONLY → compost</span>
+    <span class="dim">Φ membrane: only SURVIVES crosses. terminal-browser = microscope, not mutator.</span>
+  </footer>
+</div>
+<script src="/static/garden.js"></script>
+</body>
+</html>

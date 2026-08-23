@@ -1,0 +1,34 @@
+{
+  "schema": "FALSIFIER_MEMORY_V0",
+  "authority": false,
+  "canon": false,
+  "open_obligations": [
+    {
+      "obligation": "0 CHIDDUSH survived the hard counterfeit gate",
+      "source": "HARD_CHIDDUSH_GATE_RECEIPT.json",
+      "status": "UNRESOLVED",
+      "blocks": "GENESIS seeding until a real survivor exists"
+    }
+  ],
+  "unresolved_candidates": [
+    {
+      "name": "Non-idempotent Ring of Idempotents",
+      "verdict": "EVIDENCE_NEEDED",
+      "fitness": 0.2,
+      "status": "HOLD"
+    },
+    {
+      "name": "Non-comutable Fraction",
+      "verdict": "EVIDENCE_NEEDED",
+      "fitness": 0.2,
+      "status": "HOLD"
+    },
+    {
+      "name": "Prime-Resonance Quilt",
+      "verdict": "EVIDENCE_NEEDED",
+      "fitness": 0.2,
+      "status": "HOLD"
+    }
+  ],
+  "law": "Compress(M) must preserve OpenObligations(M) · Falsifier_t ∈ M_{t+n} until resolved"
+}

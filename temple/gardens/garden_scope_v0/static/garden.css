@@ -1,0 +1,46 @@
+/* GARDEN SCOPE — vintage AI observatory skin. Aesthetic ∈ Θ (presentation only).
+   Every color below is bound in garden.js to a typed event field; CSS just names
+   the palette. No color here asserts semantics on its own. */
+:root{
+  --bg:#050a06; --phos:#39ff9e; --phos-dim:#1f7a52; --grid:#0c1a10;
+  --her:#4fd3c4; --hal:#ff9d3c; --typed:#c08bff; --hold:#ffd23c; --dead:#6b4a4a;
+  --ink:#bff5da; --dim:#4c8a6a;
+  --mono:"SFMono-Regular",Menlo,"Cascadia Mono",Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:var(--mono);font-size:13px}
+.crt{position:relative;height:100vh;display:flex;flex-direction:column;padding:10px;
+  background:radial-gradient(ellipse at center,#07110a 0%,#030705 100%)}
+.scanlines{pointer-events:none;position:absolute;inset:0;z-index:9;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,0) 0 2px,rgba(0,0,0,.25) 2px 3px);
+  mix-blend-mode:multiply;opacity:.5}
+.dim{color:var(--dim)} .law{color:var(--typed);opacity:.85}
+header#hud{display:flex;gap:18px;align-items:baseline;flex-wrap:wrap;
+  border:1px solid var(--phos-dim);padding:6px 10px;border-radius:3px;
+  text-shadow:0 0 6px rgba(57,255,158,.35)}
+.brand{color:var(--phos);font-weight:700;letter-spacing:.5px}
+.grid{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:10px;margin:10px 0;min-height:0}
+.panel{border:1px solid var(--phos-dim);border-radius:3px;display:flex;flex-direction:column;min-height:0;
+  background:linear-gradient(180deg,rgba(20,40,28,.25),rgba(5,12,8,.4))}
+.panel h2{margin:0;padding:6px 10px;font-size:12px;color:var(--phos);letter-spacing:.5px;
+  border-bottom:1px solid var(--grid);text-shadow:0 0 6px rgba(57,255,158,.3);display:flex;gap:8px;align-items:baseline}
+.scroll{overflow:auto;padding:6px 10px;flex:1;min-height:0}
+.scroll::-webkit-scrollbar{width:8px}.scroll::-webkit-scrollbar-thumb{background:var(--phos-dim);border-radius:4px}
+.row{padding:2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;animation:flick .12s ease-out}
+@keyframes flick{from{opacity:0;transform:translateX(-4px)}to{opacity:1;transform:none}}
+.seq{color:var(--dim);margin-right:8px}
+.tag{display:inline-block;min-width:78px;font-weight:700}
+.her .tag,.tag.her{color:var(--her)} .hal .tag,.tag.hal{color:var(--hal)}
+.tag.gate{color:var(--phos)}
+.v-SURVIVES{color:var(--typed);font-weight:700} .v-EVIDENCE_NEEDED{color:var(--hold)}
+.v-RENAMING_ONLY{color:var(--dead)}
+.bar{color:var(--phos-dim);margin-left:6px}
+.name{color:var(--ink)}
+.lin{padding:4px 0;border-bottom:1px dashed var(--grid)}
+.lin .arrow{color:var(--dim)}
+.empty{color:var(--dim);font-style:italic;padding:10px 0}
+footer#legend{display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+  border-top:1px solid var(--grid);padding-top:6px;font-size:11px}
+.chip{padding:1px 7px;border-radius:10px;border:1px solid currentColor}
+.chip.her{color:var(--her)}.chip.hal{color:var(--hal)}.chip.typed{color:var(--typed)}
+.chip.hold{color:var(--hold)}.chip.dead{color:var(--dead)}

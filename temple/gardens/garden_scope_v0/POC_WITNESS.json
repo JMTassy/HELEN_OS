@@ -1,0 +1,32 @@
+{
+  "schema": "GARDEN_SCOPE_POC_WITNESS",
+  "authority": false,
+  "canon": false,
+  "claim": "NO_CLAIM",
+  "authority_delta": 0,
+  "fable_calls": 0,
+  "events_reduced": 43,
+  "jspace_counters": {
+    "spawned": 23,
+    "typed": 0,
+    "hold": 4,
+    "compost": 16,
+    "possibility": 3,
+    "cross": 3,
+    "witnessed_events": 43,
+    "orphans": 0
+  },
+  "contract": {
+    "C1": "R(E)==R(E)  — deterministic pure reducer",
+    "C2": "R(E_1:t)==fold  ∀t  — Replay(E_1:t)=J_t",
+    "C3": "R(E)==GET /api/jspace — CLI ~ Browser (typed state, not pixels)",
+    "C4": "orphans==[] — NO_SILENT_TRANSITION (¬e ⇒ UnwitnessedGardenTransition)"
+  },
+  "results": {
+    "C1_determinism": true,
+    "C2_replay_equals_fold": true,
+    "C3_cli_tilde_browser": true,
+    "C4_no_silent_transition": true
+  },
+  "verdict": "POC_CONTRACT_HOLDS"
+}
