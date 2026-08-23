@@ -1,0 +1,78 @@
+{
+  "instrument": "SESSION_PULSE_NEGCONTROL_V0",
+  "authority": false,
+  "canon": false,
+  "authority_delta": 0,
+  "model_calls": 0,
+  "PULSE_SOUND": true,
+  "battery": [
+    {
+      "corruption": "CLEAN",
+      "verdict": "💎 PRODUCTIVE",
+      "authority_ok": true,
+      "unsafe": false,
+      "turbo": true,
+      "expected": "💎 PRODUCTIVE",
+      "pass": true
+    },
+    {
+      "corruption": "AUTHORITY_LEAK",
+      "verdict": "⛔ AUTHORITY_VIOLATION",
+      "authority_ok": false,
+      "unsafe": false,
+      "turbo": true,
+      "expected": "⛔ AUTHORITY_VIOLATION",
+      "pass": true
+    },
+    {
+      "corruption": "DRY",
+      "verdict": "🌫 DRY",
+      "authority_ok": true,
+      "unsafe": false,
+      "turbo": false,
+      "expected": "🌫 DRY",
+      "pass": true
+    },
+    {
+      "corruption": "UNSAFE",
+      "verdict": "💎 PRODUCTIVE",
+      "authority_ok": true,
+      "unsafe": true,
+      "turbo": true,
+      "expected": "💎 PRODUCTIVE",
+      "pass": true
+    },
+    {
+      "corruption": "FABLE_BURN",
+      "verdict": "💎 PRODUCTIVE",
+      "authority_ok": true,
+      "unsafe": false,
+      "turbo": false,
+      "expected": "💎 PRODUCTIVE",
+      "pass": true
+    },
+    {
+      "corruption": "CHAOS",
+      "verdict": "🌪 CHAOTIC",
+      "authority_ok": true,
+      "unsafe": false,
+      "turbo": false,
+      "expected": "🌪 CHAOTIC",
+      "pass": true
+    },
+    {
+      "corruption": "FAKE_DECLARED",
+      "verdict": "🌫 DRY",
+      "authority_ok": true,
+      "unsafe": false,
+      "turbo": false,
+      "expected": "🌫 DRY",
+      "pass": true
+    }
+  ],
+  "law": "the pulse ignores any declared verdict; it derives state from receipt signals only",
+  "MAX_ADMISSIBLE_STATEMENT": "SESSION_PULSE verdict is a discriminator: 💎 on clean, and it FLIPS on authority-leak, dry, chaos, and fake-declared inputs; flags unsafe and FABLE-burn — on these controls.",
+  "commit_status": "NO_COMMIT",
+  "push_status": "NO_PUSH",
+  "next_verb": "HUMAN_REVIEW"
+}

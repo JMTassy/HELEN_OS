@@ -1,0 +1,65 @@
+{
+  "experiment": "TURBO_CLAIM_ADMISSION_POC_V0",
+  "authority": false,
+  "canon": false,
+  "claim": "NO_CLAIM",
+  "authority_delta": 0,
+  "model_calls": 0,
+  "fixtures_note": "ILLUSTRATIVE, hand-authored to the stated admission semantics; NOT extracted from the corpus PDFs",
+  "obligation_class": "May this candidate claim be promoted hypothesis/doctrine -> invariant? (does it carry the REQUIRED admission evidence?)",
+  "compiled_distinction_x_star": "evidence PRESENCE != evidence SUFFICIENCY",
+  "D1_presence_only": {
+    "agreement": 0.5,
+    "false_accepts": 7,
+    "false_rejects": 0,
+    "n": 14
+  },
+  "D2_compiled_sufficiency": {
+    "agreement": 1.0,
+    "false_accepts": 0,
+    "false_rejects": 0,
+    "n": 14
+  },
+  "recompilation_event": "D1 has 7 FALSE ACCEPTS (admits blockable claims) -> below floor/unsafe; falsification forced D1->D2 (presence->sufficiency); D2 false_accepts=0",
+  "D1_adoptable": false,
+  "D2_adoptable": true,
+  "cost": {
+    "C_cognition": 100,
+    "C_D_total": 3,
+    "baseline_cost": 1400,
+    "compiled_cost": 42,
+    "C_avoided": 1358
+  },
+  "model_call_avoidance": {
+    "resolved_by_D2": 14,
+    "reopened_cognition": 0,
+    "R_avoided": 1.0,
+    "calls_avoided": 14
+  },
+  "drift_scenario_contract_v2": {
+    "new_required_field": "independent_witness",
+    "still_valid": 0,
+    "held_and_reopened": 14,
+    "cost_after_drift": 1400,
+    "R_avoided_after_drift": 0.0,
+    "note": "stale contract -> HOLD -> reopen cognition; CompiledOnce !=> ValidForever"
+  },
+  "pass_criteria": {
+    "quality_floor_met_(D2>=q_min)": true,
+    "zero_false_accepts_(D2)": true,
+    "cheaper_(C_D_total<C_cog)": true,
+    "R_avoided_positive": true,
+    "authority_delta_zero": true
+  },
+  "POC_PASS": true,
+  "MAX_ADMISSIBLE_STATEMENT": "On this frozen illustrative fixture set, a validated compiled instrument (D2) replaces cognition on the admission-evidence obligation at agreement>=q_min with ZERO false-accepts, cutting cost 1400->42 (R_avoided=1.0), ΔA=0; and correctly HOLDs+reopens under schema drift.",
+  "EXPLICIT_NON_CLAIMS": [
+    "NOT a claim about the real corpus / real admission pipeline",
+    "D2 quality measured IN-DOMAIN on its own validation set (not proven globally)",
+    "CANDIDATE != ADMITTED != INVARIANT; gate decides evidence-sufficiency only"
+  ],
+  "commit_status": "NO_COMMIT",
+  "push_status": "NO_PUSH",
+  "next_verb": "HUMAN_REVIEW",
+  "report_hash": "626c6b30ce24ebdfdbff58aacc29f404791b61ce1288d42ca8582f3f24c55f06"
+}

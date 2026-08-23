@@ -1,0 +1,71 @@
+{
+  "experiment": "MYCELIUM_COVALIDITY_V0",
+  "authority": false,
+  "canon": false,
+  "authority_delta": 0,
+  "gamma_delta": 0,
+  "model_calls": 0,
+  "metadata_identical_D1_D2": true,
+  "validity_boundaries_differ": true,
+  "counterfeit_equivalent_under_metadata": true,
+  "law": "Valid(D1,κ) ∧ Valid(D2,κ) ⇏ Valid(D1⊕D2,κ)  — joint requires a co-validity witness ⋈",
+  "BASELINE_marginal_gate": {
+    "false_accepts": [
+      [
+        2,
+        2
+      ]
+    ],
+    "n_false_accepts": 1,
+    "holds": [],
+    "correct_admits": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        1
+      ]
+    ]
+  },
+  "MUTATED_covalidity_gate": {
+    "false_accepts": [],
+    "n_false_accepts": 0,
+    "holds": [
+      [
+        2,
+        2
+      ]
+    ],
+    "correct_admits": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        1
+      ]
+    ],
+    "note": "unwitnessed composition cell (2,2) HELD -> reopen/compile, not admitted"
+  },
+  "joint_exceeds_marginal_witnessed": true,
+  "diagonal_counterfeit_caught": true,
+  "MAX_ADMISSIBLE_STATEMENT": "On this grid, two individually-valid, metadata-identical discriminators compose to a FALSE ACCEPT at the unwitnessed interaction cell (2,2); a co-validity witness ⋈ blocks it (HOLD) while preserving the genuinely co-validated admits.",
+  "EXPLICIT_NON_CLAIMS": [
+    "synthetic grid; not a claim about real retained instruments",
+    "⋈ demonstrated for a 2-set; k-set co-validity is the same relation generalized"
+  ],
+  "commit_status": "NO_COMMIT",
+  "push_status": "NO_PUSH",
+  "next_verb": "HUMAN_REVIEW"
+}
