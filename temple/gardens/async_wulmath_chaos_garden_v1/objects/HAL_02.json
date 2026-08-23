@@ -1,0 +1,12 @@
+{
+  "stream": "HAL",
+  "epoch": 2,
+  "domain": "algebraic",
+  "name": "Transitive-Symmetric Relation-Idempotent of a Non-Transitive-Symmetric Relation",
+  "formal_seed": "(R ⇒ (R ⇒ R)) ⇒ R ⇒ R",
+  "strange": "The projection is idempotent but does not satisfy the natural projection property; it is a 'subspace'-like projection that is not a subspace.",
+  "renaming": "The transitive and symmetric operators are not independent, but inverting them creates a new operator.",
+  "raw": "NAME: Transitive-Symmetric Relation-Idempotent of a Non-Transitive-Symmetric Relation\nGENESIS: Invert the 'transitive' closure operator on the 'symmetric' closure operator, then collapse the resulting 3-ary tensor into a self-referential 2-ary projector via literalized arrow-reversal.\nFORMAL_SEED: (R ⇒ (R ⇒ R)) ⇒ R ⇒ R\nSTRANGE_PROPERTY: The projection is idempotent but does not satisfy the natural projection property; it is a 'subspace'-like projection that is not a subspace.\nNEAREST_KNOWN_RELATIVE: Projection Operator\nWHY_NOT_JUST_RENAMING: The transitive and symmetric operators are not independent, but inverting them creates a new operator.\nCOUNTERFEIT: Idempotent Operator\nBREAK_IT: Fails on a 3-cycle (1 ⇒ 2, 2 ⇒ 3, 3 ⇒ 1)\nNEXT_MUTATION: Take the dual of the operator.",
+  "wall_s": 44.0,
+  "tokens": 216
+}

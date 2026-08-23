@@ -1,0 +1,41 @@
+{
+  "schema": "NEPTION_CORPUS_COVERAGE_V0",
+  "authority": false, "canon": false, "layer": "TEMPLE", "authority_delta": 0,
+  "search_scope": "Google Drive · query: fullText contains 'NEPTION'",
+  "scope_caveat": "covers files whose title/body contains the literal string 'NEPTION'. Files that are NEPTION-relevant but do NOT contain that string are OUT OF SCOPE and undiscovered here. ENUMERATION_COMPLETE is relative to THIS query only.",
+  "pages_enumerated": 2,
+  "enumeration_complete": false,
+  "enumeration_complete_correction": "DOWNGRADED true→false: a fullText query is a TERM-INDEXED SLICE, not a folder enumeration. Query-pagination exhausted ≠ corpus enumerated. Proper folder-membership census (direct children of 'Neption 2.0', paginated to next_page_token=null) NOT yet run.",
+  "incompleteness_reason": "fullText:'NEPTION' ≠ folder enumeration; folder-membership census pending",
+  "files_discovered": 98,
+  "files_discovered_basis": "manual tally of 2 enumerated result pages (page1=5, page2=93)",
+  "mime_breakdown_approx": {
+    "google_doc": 41, "application/pdf": 41, "video/mp4": 8,
+    "google_spreadsheet": 4, "application/json": 1, "google_folder": 1,
+    "note": "approximate hand-tally; not jq-verified (raw JSON not persisted to disk)"
+  },
+  "corpus_structure": {
+    "neption_core_deck_library": "folder 'Neption 2.0' (1IOZVN7...) — ~35 PDFs: business plan campus, Monaco, Qatar, real estate, ferries, logistics, holding, NEMO/NEMOc, deck, presentations",
+    "neption_ia_meeting_docs": "Board 08-21, Réunion partenaires 08-05, session de travail 08-07, partage site-V2/teaser/Floride 08-11, Alban & partenaires 07-29, Revue système 07-24",
+    "adjacent_mentions_out_of_core": "CONTEXT_JMT_ADMIN daily docs, HELEN session packets, registries (NODE/EDGE/TASK/DECISION), Natalia weeklies, BOT_ROSTER, Copernilabs call — mention NEPTION but are not NEPTION-core"
+  },
+  "files_read": 1,
+  "files_read_detail": "NEPTION IA — Board 2026-08-21 (12680 chars) → neption_corpus_tranche1.txt",
+  "total_chars_read": 12680,
+  "files_skipped": 97,
+  "unreadable_files_note": "~8 mp4 recordings are not text-extractable; ~41 PDFs are readable via read_file_content but NOT yet read (READ_COMPLETE=false ≠ ENUMERATION_COMPLETE=true)",
+  "raw_keywords": "NOT_COMPUTED (corpus) · tranche1 only",
+  "semantic_clusters": "NOT_COMPUTED",
+  "distinct_concepts": "UNKNOWN (corpus) — refuses fabrication",
+  "provenance_roots": "UNKNOWN",
+  "top_n_requested": 1000,
+  "top_n_available": "UNKNOWN",
+  "top_n_status": "NOT_LICENSED_FOR_GLOBAL_RANKING (extraction + semantic collapse + provenance collapse not run)",
+  "corrected_prior_slip": {
+    "was": "🔵 'the NEPTION corpus is a handful of board/meeting docs' (asserted as observation)",
+    "now": "🌿→🔵 REFUTED: enumeration shows ~98 discovered files incl. a ~35-PDF Neption 2.0 deck library. The 'handful' hypothesis was false.",
+    "law": "one rich tranche ⇏ bounded corpus; N_discovered ≤ N_accessible; ENUMERATION_COMPLETE ≠ READ_COMPLETE"
+  },
+  "pipeline_lock": "Coverage ≺ Extraction ≺ SemanticCollapse ≺ ProvenanceCollapse ≺ Graph ≺ Ranking. Ranking_1000 forbidden until READ + collapse yield TOP_N_AVAILABLE.",
+  "status": "CANDIDATE_ONLY · authority=false · not canon · STOP before extraction"
+}

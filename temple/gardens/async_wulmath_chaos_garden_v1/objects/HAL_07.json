@@ -1,0 +1,12 @@
+{
+  "stream": "HAL",
+  "epoch": 7,
+  "domain": "dynamical-systems",
+  "name": "Non-convex Shadow Projection (P) GENESIS: Collapse the shadow map to a single point. FORMAL_SEED: $\\sigma(A) \\circ \\sigma(A^{-1}) = 1$ STRANGE_PROPERTY: Convex sets can cast concave shadows. NEAREST_KNOWN_RELATIVE: Inverses / Inverses WHY_NOT_JUST_RENAMING: Inverses require a strict algebraic lattice. COUNTERFEIT: Inverses. BREAK_IT: $P \\circ P^{-1} \\neq 1$. NEXT_MUTATION: Invert $P$. END",
+  "formal_seed": "",
+  "strange": "",
+  "renaming": "",
+  "raw": "NAME: Non-convex Shadow Projection (P) GENESIS: Collapse the shadow map to a single point. FORMAL_SEED: $\\sigma(A) \\circ \\sigma(A^{-1}) = 1$ STRANGE_PROPERTY: Convex sets can cast concave shadows. NEAREST_KNOWN_RELATIVE: Inverses / Inverses WHY_NOT_JUST_RENAMING: Inverses require a strict algebraic lattice. COUNTERFEIT: Inverses. BREAK_IT: $P \\circ P^{-1} \\neq 1$. NEXT_MUTATION: Invert $P$. END",
+  "wall_s": 63.0,
+  "tokens": 127
+}

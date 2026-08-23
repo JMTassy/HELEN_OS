@@ -1,0 +1,37 @@
+{
+  "schema": "HELEN_TOPOLOGY_V0_QUOTIENT_V2",
+  "authority": false,
+  "canon": false,
+  "claim": "NO_CLAIM",
+  "authority_delta": 0,
+  "fable_calls": 0,
+  "results": {
+    "F0_equivalence_relation_exact": true,
+    "F0b_tolerance_predicate_breaks_transitivity": true,
+    "F3_representative_invariance_repr": true,
+    "F3_launder_correctly_fails_welldefined": true,
+    "F2_math_closure_DEFINITIONAL": true,
+    "F2_policy_closure_is_separate_and_can_fail": true,
+    "GAMMA_lawful_neq_authorized": true,
+    "counterfeit_separated_by_pi": true,
+    "F4_path_confluence_over_domain": true
+  },
+  "notes": {
+    "F0": "exact predicates ⇒ equivalence relation; ANY tolerance predicate breaks transitivity",
+    "F3": "repr-dependent mutation is NOT quotient-well-defined → excluded from 𝒜_lawful (caught)",
+    "F2": "math closure over ~-respecting maps is definitional; POLICY closure is the real, falsifiable property",
+    "GAMMA": "a well-defined class-changing transition exists but ∉ Γ → lawful ≠ authorized (no laundering)",
+    "counterfeit": "Obs(Hg)=Obs(Hc) ∧ π(Hg)≠π(Hc) → 𝒫 separates surface-identical counterfeit",
+    "F4": "m̄_f = m̄_g tested over a domain of representatives, not a single H"
+  },
+  "theorem_status": "CANDIDATE",
+  "terminology": "quotient algebra, not topology (no declared metric/continuity yet)",
+  "honesty": [
+    "math composition closure is DEFINITIONAL, not architectural",
+    "well-definedness is the real test; repr-dependent mutations correctly fail it",
+    "equivalence relation holds ONLY for exact predicates; tolerance breaks transitivity",
+    "𝒫 completeness still UNKNOWN — counterfeit separation only tests DEFINED invariants",
+    "abstract model; not a proof the running HELEN's 𝓜 equals this model"
+  ],
+  "law": "π∘m=m̄∘π · 𝒜_repr⊂𝒜_lawful · lawful≠authorized · surface identity ⇏ constitutional identity"
+}

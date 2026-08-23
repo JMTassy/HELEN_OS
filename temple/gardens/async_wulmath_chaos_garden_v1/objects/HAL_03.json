@@ -1,0 +1,12 @@
+{
+  "stream": "HAL",
+  "epoch": 3,
+  "domain": "geometric/topological",
+  "name": "Unpointed 2-Cell",
+  "formal_seed": "A subset of A¹ where d(A)=0, d²(A)=0, but A is non-empty (and d:A→Z₂).",
+  "strange": "Topology admits an empty boundary for a non-empty set with no vertices.",
+  "renaming": "A cycle is a cycle in the limit; this is a cycle in the limit's shadow (the limit is invisible).",
+  "raw": "NAME: Unpointed 2-Cell\nGENESIS: Erase the 0-simplices from a triangulation; keep the arrows (1-cells) between deleted points.\nFORMAL_SEED: A subset of A¹ where d(A)=0, d²(A)=0, but A is non-empty (and d:A→Z₂).\nSTRANGE_PROPERTY: Topology admits an empty boundary for a non-empty set with no vertices.\nNEAREST_KNOWN_RELATIVE: 1-Cycle / 1-Chain\nWHY_NOT_JUST_RENAMING: A cycle is a cycle in the limit; this is a cycle in the limit's shadow (the limit is invisible).\nCOUNTERFEIT: Cycle Space\nBREAK_IT: A standard cycle is a chain with d=0; this is a subspace with d_A=0.\nNEXT_MUTATION: Apply dual.",
+  "wall_s": 52.0,
+  "tokens": 189
+}

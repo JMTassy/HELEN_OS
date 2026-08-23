@@ -1,0 +1,95 @@
+{
+  "schema": "HELEN_VIDEO_V0_HARNESS",
+  "canonical": {
+    "TRAJECTORY_ID": "gamma_lawful_T5",
+    "PROTECTED_PREDICATES": [
+      "P_I(identity)",
+      "P_K(kernel)"
+    ],
+    "N_STATES": 5,
+    "L1_CONTROL": "EXECUTED",
+    "L2_RENDER": "NOT_EXECUTED",
+    "L3_VERIFIER": "NOT_EXECUTED",
+    "LOCAL_REPAIR": "NOT_EXECUTED",
+    "R2_MINUS_R1": "NOT_RUN",
+    "POSITIVE_PATH": {
+      "invariant_preservation": "PASS",
+      "escape_intervals": []
+    },
+    "NEGATIVE_PATH": {
+      "injected_escape": [
+        3
+      ],
+      "escape_detected": "YES",
+      "detected_intervals": [
+        3
+      ]
+    },
+    "TRAJECTORY_HASH": "56297175d6749ca3",
+    "CONFIG_HASH": "fea761c551107973",
+    "H0_STATUS": "NOT_REJECTED",
+    "H0_EPISTEMIC_GUARD": "failure to reject H0 ≠ confirmation of H0; V0 observes ONLY declared control predicates",
+    "MAX_ADMISSIBLE_POSITIVE_STATEMENT": "for the executed trajectories/seeds/config and declared P, no L1 quotient escape was observed",
+    "NEGATIVE_CONTROL_RESULT": "known L1 escape → L1 detector activation",
+    "AUTHORITY": false,
+    "CANON": false,
+    "RECEIPT_HASH": "35822119bf2d2c61"
+  },
+  "authority": false,
+  "canon": false,
+  "claim": "NO_CLAIM",
+  "status": "CANDIDATE",
+  "authority_delta": 0,
+  "fable_calls": 0,
+  "spec_S": {
+    "I0": "canonical_id",
+    "T": 5,
+    "fps": 24,
+    "resolution": "512x512",
+    "compute_budget": "unset",
+    "V_theta": null,
+    "verifier": null
+  },
+  "layers": {
+    "L1_control": {
+      "L1_lawful_motion_inside_class": true,
+      "L1_drift_detected": true,
+      "L2_render_layer_honestly_blocked": true,
+      "L3_verify_layer_honestly_blocked": true
+    },
+    "L1_detail_lawful": {
+      "class_conserved": true,
+      "motion_present": true,
+      "identity_drift_frames": []
+    },
+    "L1_detail_drift": {
+      "class_conserved": false,
+      "motion_present": true,
+      "identity_drift_frames": [
+        3
+      ]
+    },
+    "L2_render": "NOT_RUN (V_θ=None — no video prior installed)",
+    "L3_verify": "NOT_RUN (𝒱=None — no independent verifier)"
+  },
+  "J_vector": {
+    "J_control": 1.0,
+    "J_identity": "UNKNOWN",
+    "J_temporal": "UNKNOWN",
+    "J_perceptual": "UNKNOWN",
+    "C_regen": "UNKNOWN",
+    "C_total": "UNKNOWN"
+  },
+  "experiment": {
+    "R0_independent_image": "NOT_RUN",
+    "R1_video_native_prior": "NOT_RUN",
+    "R2_helen_control_repair": "NOT_RUN",
+    "R2_minus_R1": "NOT_RUN",
+    "reason": "no video prior V_θ present",
+    "H0_R2_not_better_than_R1": "NOT_REJECTED (experiment not run)"
+  },
+  "ssr_loop": "GENERATE→WITNESS→DISCRIMINATE→LOCALIZE→REPAIR→REVERIFY  (𝒻 defective-intervals = UNKNOWN: 𝒱=None)",
+  "verdict": "CONTROL_TESTABLE_RENDER_BLOCKED",
+  "law": "consistent avatar = motion inside admissible class · x_t=π_face(𝓗_t) · L1≠L2≠L3 (never identified) · R2>R1 is an EXPERIMENT not a claim · no pixel rendered",
+  "caveat": "generator slot empty; a real run needs an open video prior + independent verifier + (if a real identity) consent; no clip was produced or claimed"
+}

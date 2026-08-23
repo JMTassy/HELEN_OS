@@ -1,0 +1,157 @@
+{
+  "schema": "HARD_CHIDDUSH_GATE_RECEIPT",
+  "authority": false,
+  "canon": false,
+  "claim": "NO_CLAIM",
+  "authority_delta": 0,
+  "fable_calls": 0,
+  "objects_tested": 20,
+  "survives": 0,
+  "renaming_only_compost": 16,
+  "evidence_needed": 4,
+  "errors": 0,
+  "hard_chiddush_count": 0,
+  "note": "hard gate replaces the self-reported 20; SURVIVES = HAL could not collapse g into a boring counterfeit + a discriminator exists.",
+  "S0_top3": [
+    {
+      "name": "Non-idempotent Ring of Idempotents",
+      "fitness": 0.2,
+      "verdict": "EVIDENCE_NEEDED",
+      "discriminator": ""
+    },
+    {
+      "name": "Non-comutable Fraction",
+      "fitness": 0.2,
+      "verdict": "EVIDENCE_NEEDED",
+      "discriminator": ""
+    },
+    {
+      "name": "Prime-Resonance Quilt",
+      "fitness": 0.2,
+      "verdict": "EVIDENCE_NEEDED",
+      "discriminator": ""
+    }
+  ],
+  "all_verdicts": [
+    {
+      "name": "Non-idempotent Ring of Idempotents",
+      "stream": "HAL",
+      "verdict": "EVIDENCE_NEEDED",
+      "fitness": 0.2
+    },
+    {
+      "name": "Transitive-Symmetric Relation-Idempotent of a Non-Transitive-Symmetric Relation",
+      "stream": "HAL",
+      "verdict": "RENAMING_ONLY",
+      "fitness": 0.0
+    },
+    {
+      "name": "Unpointed 2-Cell",
+      "stream": "HAL",
+      "verdict": "RENAMING_ONLY",
+      "fitness": 0.0
+    },
+    {
+      "name": "Anti-Gradient Operator GENESIS: Invert the arrow of the divergence map from tensor to covector. FORMAL_SEED: D^{flat}(M) → M* via [v] ↦ (ω) := -∑ (∇_i f) δ^i STRANGE_PROPERTY: The vector field v vanishing does not imply its image is zero; the differential 1-form is a coboundary with the sign of a divergence. NEAREST_KNOWN_RELATIVE: De Rham complex of 1-forms WHY_NOT_JUST_RENAMING: The operator now squares to zero instead of zero (a true differential d=d) COUNTERFEIT: Classical Divergence theorem BREAK_IT: The composition is not identity but minus a homotopy NEXT_MUTATION: Take the exterior derivative of this new 1-form",
+      "stream": "HAL",
+      "verdict": "RENAMING_ONLY",
+      "fitness": 0.0
+    },
+    {
+      "name": "Discrete-Spectral Cycle $\\rho$",
+      "stream": "HAL",
+      "verdict": "RENAMING_ONLY",
+      "fitness": 0.0
+    },
+    {
+      "name": "Non-comutable Fraction",
+      "stream": "HAL",
+      "verdict": "EVIDENCE_NEEDED",
+      "fitness": 0.2
+    },
+    {
+      "name": "Non-convex Shadow Projection (P) GENESIS: Collapse the shadow map to a single point. FORMAL_SEED: $\\sigma(A) \\circ \\sigma(A^{-1}) = 1$ STRANGE_PROPERTY: Convex sets can cast concave shadows. NEAREST_KNOWN_RELATIVE: Inverses / Inverses WHY_NOT_JUST_RENAMING: Inverses require a strict algebraic lattice. COUNTERFEIT: Inverses. BREAK_IT: $P \\circ P^{-1} \\neq 1$. NEXT_MUTATION: Invert $P$. END",
+      "stream": "HAL",
+      "verdict": "RENAMING_ONLY",
+      "fitness": 0.0
+    },
+    {
+      "name": "Channel-Cut Fracture",
+      "stream": "HAL",
+      "verdict": "RENAMING_ONLY",
+      "fitness": 0.0
+    },
+    {
+      "name": "Non-Idempotent Ring of I",
+      "stream": "HAL",
+      "verdict": "RENAMING_ONLY",
+      "fitness": 0.0
+    },
+    {
+      "name": "Luminous Non-Writing Bit",
+      "stream": "HAL",
+      "verdict": "RENAMING_ONLY",
+      "fitness": 0.0
+    },
+    {
+      "name": "Symplectic Ghost-Ring",
+      "stream": "HER",
+      "verdict": "RENAMING_ONLY",
+      "fitness": 0.0
+    },
+    {
+      "name": "Parity-Sieve Monoid",
+      "stream": "HER",
+      "verdict": "RENAMING_ONLY",
+      "fitness": 0.0
+    },
+    {
+      "name": "Anamorphic Foliation-Web",
+      "stream": "HER",
+      "verdict": "RENAMING_ONLY",
+      "fitness": 0.0
+    },
+    {
+      "name": "Isotropic Torsion-Lace",
+      "stream": "HER",
+      "verdict": "RENAMING_ONLY",
+      "fitness": 0.0
+    },
+    {
+      "name": "Non-Euclidean Proof-Liquid",
+      "stream": "HER",
+      "verdict": "RENAMING_ONLY",
+      "fitness": 0.0
+    },
+    {
+      "name": "Prime-Resonance Quilt",
+      "stream": "HER",
+      "verdict": "EVIDENCE_NEEDED",
+      "fitness": 0.2
+    },
+    {
+      "name": "Recurrent Attractor-Silt",
+      "stream": "HER",
+      "verdict": "RENAMING_ONLY",
+      "fitness": 0.0
+    },
+    {
+      "name": "Entropy-Stuttering Fractal-Sieve",
+      "stream": "HER",
+      "verdict": "RENAMING_ONLY",
+      "fitness": 0.0
+    },
+    {
+      "name": "Chrono-Topological Scallop",
+      "stream": "HER",
+      "verdict": "RENAMING_ONLY",
+      "fitness": 0.0
+    },
+    {
+      "name": "Slapstick Calabi-Yau manifold",
+      "stream": "HER",
+      "verdict": "EVIDENCE_NEEDED",
+      "fitness": 0.2
+    }
+  ]
+}

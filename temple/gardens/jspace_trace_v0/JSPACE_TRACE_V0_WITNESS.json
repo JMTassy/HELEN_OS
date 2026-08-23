@@ -1,0 +1,22 @@
+{
+  "schema": "JSPACE_TRACE_V0_WITNESS",
+  "authority": false,
+  "canon": false,
+  "claim": "NO_CLAIM",
+  "authority_delta": 0,
+  "fable_calls": 0,
+  "tests": {
+    "1_verbosity_invariant_topology": true,
+    "2_paraphrase_quotients": true,
+    "3_no_kill_no_skull": true,
+    "4_collision_visible": true,
+    "5_no_discriminator_no_bloom": true,
+    "6_proposed_observation_rejected": true,
+    "7_replay_byte_equivalent": true,
+    "8_replay_without_models": true,
+    "9_payload_authority_ignored": true,
+    "10_fable_zero": true
+  },
+  "verdict": "HONEST_10_OF_10",
+  "law": "VisualEvent⇐TypedEvent · T1=T2⇒R(T1)=R(T2) · BLOOM=detector-only · ΔA=0"
+}

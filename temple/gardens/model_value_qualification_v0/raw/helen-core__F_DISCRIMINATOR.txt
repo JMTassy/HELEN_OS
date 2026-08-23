@@ -1,0 +1,1 @@
+{"experiment": "Identify and test for a unique, non-shared error or specific detail present in only one of the sources; its presence confirms H1 (independent evidence), while its absence across all sources supports H2 (shared upstream source)."}

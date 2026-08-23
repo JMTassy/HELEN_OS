@@ -1,0 +1,21 @@
+{
+  "epoch": 3,
+  "mutation": "SEPARATOR_COUNTERFEIT",
+  "target_q": "Can 'history-indexed authority' be reproduced by an ordinary static capability graph?",
+  "counterfeit_world": "",
+  "discriminator": "",
+  "potential_distinction": "",
+  "redundancy": "",
+  "authority_delta": 0,
+  "wall_s": 300.2,
+  "parsed": false,
+  "usage": {
+    "completion_tokens": 1500,
+    "prompt_tokens": 908,
+    "total_tokens": 2408,
+    "prompt_tokens_details": {
+      "cached_tokens": 361
+    }
+  },
+  "raw": "EPOCH_ID: 3/20\nSEARCH_INTENT: Test whether history-indexed authority is observable beyond an ordinary static capability graph under identical present inputs.\nMUTATION: SEPARATOR_COUNTERFEIT\nCOUNTERFEIT"
+}

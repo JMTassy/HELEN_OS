@@ -1,0 +1,12 @@
+{
+  "stream": "HER",
+  "epoch": 2,
+  "domain": "algebraic",
+  "name": "Parity-Sieve Monoid",
+  "formal_seed": "$a \\cdot b = c \\iff \\text{weight}(a) + \\text{weight}(b) \\equiv \\text{weight}(c) \\pmod 2$",
+  "strange": "Multiplication preserves the topology of the word-length but annihilates the identity-path.",
+  "renaming": "It lacks a scalar field; it is a pure combinatoric structure where \"zero\" is a set of paths, not a value.",
+  "raw": "NAME: Parity-Sieve Monoid\nGENESIS: Quotienting a free monoid by the parity of its generators' weights.\nFORMAL_SEED: $a \\cdot b = c \\iff \\text{weight}(a) + \\text{weight}(b) \\equiv \\text{weight}(c) \\pmod 2$\nSTRANGE_PROPERTY: Multiplication preserves the topology of the word-length but annihilates the identity-path.\nNEAREST_KNOWN_RELATIVE: $\\mathbb{Z}_2$-graded algebra\nWHY_NOT_JUST_RENAMING: It lacks a scalar field; it is a pure combinatoric structure where \"zero\" is a set of paths, not a value.\nCOUNTERFEIT: Group Ring $\\mathbb{Z}[\\mathbb{Z}_2]$\nBREAK_IT: Attempting to define a unique inverse for a non-zero weight element.\nNEXT_MUTATION: Tensor-gluing via weight-mismatch.\nEND",
+  "wall_s": 364.5,
+  "tokens": 209
+}

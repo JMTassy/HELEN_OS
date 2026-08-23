@@ -1,0 +1,12 @@
+{
+  "stream": "HER",
+  "epoch": 8,
+  "domain": "information-theory",
+  "name": "Entropy-Stuttering Fractal-Sieve",
+  "formal_seed": "$H(X_{n+1}) = \\inf_{\\phi \\in \\text{Aut}(X_n)} \\{ H(\\phi(X_n)) \\otimes \\delta(\\nabla H) \\}$",
+  "strange": "Information density is locally infinite but globally vanishes through self-canceling noise",
+  "renaming": "It treats the measure of uncertainty as a topological boundary rather than a scalar value",
+  "raw": "NAME: Entropy-Stuttering Fractal-Sieve\nGENESIS: Iterative quotienting of a Shannon-measure space by its own local uncertainty fluctuations\nFORMAL_SEED: $H(X_{n+1}) = \\inf_{\\phi \\in \\text{Aut}(X_n)} \\{ H(\\phi(X_n)) \\otimes \\delta(\\nabla H) \\}$\nSTRANGE_PROPERTY: Information density is locally infinite but globally vanishes through self-canceling noise\nNEAREST_KNOWN_RELATIVE: Cantor Dust\nWHY_NOT_JUST_RENAMING: It treats the measure of uncertainty as a topological boundary rather than a scalar value\nCOUNTERFEIT: Bernoulli Process\nBREAK_IT: Collapse of the measure to a constant zero-signal\nNEXT_MUTATION: Dualize into a Signal-Memory manifold\nEND",
+  "wall_s": 39.4,
+  "tokens": 176
+}

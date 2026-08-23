@@ -1,0 +1,12 @@
+{
+  "stream": "HAL",
+  "epoch": 10,
+  "domain": "😂 absurd-but-formal (compile a joke)",
+  "name": "Luminous Non-Writing Bit",
+  "formal_seed": "$\\emptyset \\xrightarrow{id} \\emptyset$",
+  "strange": "A set with an element that is not in the set",
+  "renaming": "Non-idempotent identity",
+  "raw": "NAME: Luminous Non-Writing Bit\nGENESIS: Inverting the primitive (writing implies reading) and literalizing the metaphor (the 'hole' is the ink)\nFORMAL_SEED: $\\emptyset \\xrightarrow{id} \\emptyset$\nSTRANGE_PROPERTY: A set with an element that is not in the set\nNEAREST_KNOWN_RELATIVE: The empty set\nWHY_NOT_JUST_RENAMING: Non-idempotent identity\nCOUNTERFEIT: The null set\nBREAK_IT: It cannot be written\nNEXT_MUTATION: Apply $\\neg$",
+  "wall_s": 95.1,
+  "tokens": 124
+}

@@ -1,0 +1,12 @@
+{
+  "stream": "HER",
+  "epoch": 7,
+  "domain": "dynamical-systems",
+  "name": "Recurrent Attractor-Silt",
+  "formal_seed": "$\\mathcal{X} / \\bigcap_{n \\in \\mathbb{N}} \\text{Inv}(f^n)$",
+  "strange": "The dimension of the space collapses to zero at the points of highest dynamical complexity.",
+  "renaming": "It is a topological space where the points are the histories of the instability itself.",
+  "raw": "NAME: Recurrent Attractor-Silt\nGENESIS: Quotienting a phase space by the orbits of its own non-wandering sets.\nFORMAL_SEED: $\\mathcal{X} / \\bigcap_{n \\in \\mathbb{N}} \\text{Inv}(f^n)$\nSTRANGE_PROPERTY: The dimension of the space collapses to zero at the points of highest dynamical complexity.\nNEAREST_KNOWN_RELATIVE: Strange Attractor\nWHY_NOT_JUST_RENAMING: It is a topological space where the points are the histories of the instability itself.\nCOUNTERFEIT: Limit Set\nBREAK_IT: When the map $f$ is injective.\nNEXT_MUTATION: Iterative Delamination",
+  "wall_s": 30.2,
+  "tokens": 155
+}

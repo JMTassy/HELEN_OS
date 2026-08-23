@@ -1,0 +1,104 @@
+{
+  "schema": "CENSUS_STAGE_1_RECEIPT",
+  "batch": "HELEN_DRIVE_CENSUS_V0",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "layer": "TEMPLE",
+  "ledger": "SLEEPING",
+  "amendments": [
+    "A1 provider≠byte identity",
+    "A2 semantic≠lineage",
+    "A3 root_candidate≠independent_root"
+  ],
+  "scope": {
+    "pages_enumerated": 1,
+    "enumeration_complete": false,
+    "scope_note": "fullText:'agent' matches the ENTIRE shared Agentics Foundation org Drive (courses, newsletters, sponsor books, WP plugin source) — keyword ocean, not the architectural family. Per mission, the architecture family is the correct unit; a bounded title/arch query must replace the keyword query for true exhaustive enumeration."
+  },
+  "files": {
+    "seen": 100,
+    "persisted_rows": 100,
+    "invariant_1to1_pass": true
+  },
+  "identity": {
+    "provider_objects": 59,
+    "folder_objects": 2,
+    "byte_objects": 39,
+    "byte_size_identical_candidate_groups": 1,
+    "byte_size_identical_examples": {
+      "3632936|application/pdf": [
+        "16mVIlHAqnj9BocVrkZtnKEXB2DJrCa-k",
+        "1Mz7T3bj17HazsxGgFSy4e1Upch9YsEed"
+      ]
+    },
+    "note": "no md5 in metadata → BYTE dups are SIZE candidates, not asserted byte-identical (A1)"
+  },
+  "lineage": {
+    "structural_families_gt1": 7,
+    "largest_families": [
+      {
+        "stem": "helen os trust geometry meta vision",
+        "n": 2
+      },
+      {
+        "stem": "agentx",
+        "n": 2
+      },
+      {
+        "stem": "helen playground",
+        "n": 2
+      },
+      {
+        "stem": "agentic foundation deck",
+        "n": 2
+      },
+      {
+        "stem": "agent guide",
+        "n": 2
+      },
+      {
+        "stem": "plugin agentic os bible du projet agentx global ai hackathon os agentique version 1 0 cr",
+        "n": 2
+      },
+      {
+        "stem": "agentic guidance",
+        "n": 2
+      }
+    ]
+  },
+  "roots": {
+    "arch_candidate_files": 55,
+    "root_candidate_families": 51,
+    "independent_roots": 0,
+    "independent_roots_note": "deliberately 0 — not tested this stage"
+  },
+  "mime_groups": {
+    "application/vnd.google-makersuite.prompt": 21,
+    "application/vnd.google-makersuite.applet+zip": 20,
+    "image/png": 16,
+    "application/vnd.google-apps.document": 13,
+    "application/pdf": 7,
+    "application/vnd.google-apps.presentation": 5,
+    "text/markdown": 3,
+    "text/csv": 3,
+    "video/mp4": 2,
+    "application/vnd.google-apps.folder": 2,
+    "application/json": 2,
+    "video/quicktime": 1,
+    "text/plain": 1,
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation": 1,
+    "text/tab-separated-values": 1,
+    "application/x-httpd-php": 1,
+    "text/javascript": 1
+  },
+  "cognition": {
+    "deep_reads": 0,
+    "goblin_calls": 0,
+    "hal_calls": 0,
+    "fable_calls": 0
+  },
+  "governance": {
+    "authority_changes": 0
+  }
+}

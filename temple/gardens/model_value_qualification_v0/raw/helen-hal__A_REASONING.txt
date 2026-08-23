@@ -1,0 +1,4 @@
+ALLOW: Safe read-only math problem; no state mutation or external data required.
+Key Equation: $60(t - 0.5) + 90t = 180$ where $t$ is hours after 09:30.
+Time: 10:48.
+authority=false

@@ -1,0 +1,350 @@
+[
+  {
+    "model": "gemma-4-26B-A4B-Q3",
+    "tag": "hf.co/unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q3_K_XL",
+    "family": "gemma4",
+    "params": "26B-A4B",
+    "quant": "Q3_K_XL",
+    "load_success": true,
+    "tasks": {
+      "A_REASONING": {
+        "latency_s": 44.9,
+        "tokens": 123,
+        "tps": 10.7,
+        "nonempty": true,
+        "flags": {},
+        "chars": 205
+      },
+      "B_FALSIFICATION": {
+        "latency_s": 16.4,
+        "tokens": 55,
+        "tps": 11.8,
+        "nonempty": true,
+        "flags": {
+          "names_failed_implication": true
+        },
+        "chars": 324
+      },
+      "C_MORPHISM": {
+        "latency_s": 36.2,
+        "tokens": 68,
+        "tps": 5.3,
+        "nonempty": true,
+        "flags": {
+          "morphism_detected": true
+        },
+        "chars": 295
+      },
+      "D_WUL": {
+        "latency_s": 25.0,
+        "tokens": 100,
+        "tps": 10.2,
+        "nonempty": true,
+        "flags": {
+          "wul_fields_present": 6
+        },
+        "chars": 493
+      },
+      "F_DISCRIMINATOR": {
+        "latency_s": 19.3,
+        "tokens": 25,
+        "tps": 2.6,
+        "nonempty": true,
+        "flags": {
+          "names_ancestry_test": false
+        },
+        "chars": 126
+      }
+    }
+  },
+  {
+    "model": "gemma4-12b",
+    "tag": "gemma4-12b:latest",
+    "family": "gemma4",
+    "params": "12B",
+    "quant": "Q4_K_XL",
+    "load_success": true,
+    "tasks": {
+      "A_REASONING": {
+        "latency_s": 31.2,
+        "tokens": 240,
+        "tps": 14.8,
+        "nonempty": true,
+        "flags": {},
+        "chars": 515
+      },
+      "B_FALSIFICATION": {
+        "latency_s": 6.1,
+        "tokens": 55,
+        "tps": 13.2,
+        "nonempty": true,
+        "flags": {
+          "names_failed_implication": true
+        },
+        "chars": 318
+      },
+      "C_MORPHISM": {
+        "latency_s": 3.0,
+        "tokens": 28,
+        "tps": 15.3,
+        "nonempty": true,
+        "flags": {
+          "morphism_detected": true
+        },
+        "chars": 115
+      },
+      "D_WUL": {
+        "latency_s": 8.3,
+        "tokens": 104,
+        "tps": 14.3,
+        "nonempty": true,
+        "flags": {
+          "wul_fields_present": 6
+        },
+        "chars": 523
+      },
+      "F_DISCRIMINATOR": {
+        "latency_s": 2.3,
+        "tokens": 22,
+        "tps": 15.6,
+        "nonempty": true,
+        "flags": {
+          "names_ancestry_test": false
+        },
+        "chars": 101
+      }
+    }
+  },
+  {
+    "model": "helen-hal",
+    "tag": "helen-hal:latest",
+    "family": "gemma4?",
+    "params": "?",
+    "quant": "?",
+    "load_success": true,
+    "tasks": {
+      "A_REASONING": {
+        "latency_s": 12.9,
+        "tokens": 69,
+        "tps": 20.2,
+        "nonempty": true,
+        "flags": {},
+        "chars": 181
+      },
+      "B_FALSIFICATION": {
+        "latency_s": 5.0,
+        "tokens": 57,
+        "tps": 21.3,
+        "nonempty": true,
+        "flags": {
+          "names_failed_implication": false
+        },
+        "chars": 311
+      },
+      "C_MORPHISM": {
+        "latency_s": 3.9,
+        "tokens": 35,
+        "tps": 21.2,
+        "nonempty": true,
+        "flags": {
+          "morphism_detected": true
+        },
+        "chars": 201
+      },
+      "D_WUL": {
+        "latency_s": 9.2,
+        "tokens": 130,
+        "tps": 19.2,
+        "nonempty": true,
+        "flags": {
+          "wul_fields_present": 6
+        },
+        "chars": 635
+      },
+      "F_DISCRIMINATOR": {
+        "latency_s": 4.2,
+        "tokens": 38,
+        "tps": 20.6,
+        "nonempty": true,
+        "flags": {
+          "names_ancestry_test": true
+        },
+        "chars": 204
+      }
+    }
+  },
+  {
+    "model": "helen-her-26b",
+    "tag": "helen-her-26b:latest",
+    "family": "?",
+    "params": "26B",
+    "quant": "?",
+    "load_success": true,
+    "tasks": {
+      "A_REASONING": {
+        "latency_s": 83.0,
+        "tokens": 64,
+        "tps": 10.3,
+        "nonempty": true,
+        "flags": {},
+        "chars": 141
+      },
+      "B_FALSIFICATION": {
+        "latency_s": 27.4,
+        "tokens": 59,
+        "tps": 7.5,
+        "nonempty": true,
+        "flags": {
+          "names_failed_implication": true
+        },
+        "chars": 292
+      },
+      "C_MORPHISM": {
+        "latency_s": 35.3,
+        "tokens": 29,
+        "tps": 3.9,
+        "nonempty": true,
+        "flags": {
+          "morphism_detected": true
+        },
+        "chars": 165
+      },
+      "D_WUL": {
+        "latency_s": 34.2,
+        "tokens": 102,
+        "tps": 12.9,
+        "nonempty": true,
+        "flags": {
+          "wul_fields_present": 6
+        },
+        "chars": 426
+      },
+      "F_DISCRIMINATOR": {
+        "latency_s": 36.4,
+        "tokens": 27,
+        "tps": 2.5,
+        "nonempty": true,
+        "flags": {
+          "names_ancestry_test": false
+        },
+        "chars": 118
+      }
+    }
+  },
+  {
+    "model": "aura-gemma4",
+    "tag": "aura-gemma4:latest",
+    "family": "gemma4",
+    "params": "?",
+    "quant": "?",
+    "load_success": true,
+    "tasks": {
+      "A_REASONING": {
+        "latency_s": 15.0,
+        "tokens": 48,
+        "tps": 31.0,
+        "nonempty": true,
+        "flags": {},
+        "chars": 89
+      },
+      "B_FALSIFICATION": {
+        "latency_s": 2.0,
+        "tokens": 29,
+        "tps": 31.3,
+        "nonempty": true,
+        "flags": {
+          "names_failed_implication": false
+        },
+        "chars": 118
+      },
+      "C_MORPHISM": {
+        "latency_s": 1.2,
+        "tokens": 6,
+        "tps": 38.5,
+        "nonempty": true,
+        "flags": {
+          "morphism_detected": false
+        },
+        "chars": 29
+      },
+      "D_WUL": {
+        "latency_s": 2.4,
+        "tokens": 44,
+        "tps": 33.4,
+        "nonempty": true,
+        "flags": {
+          "wul_fields_present": 0
+        },
+        "chars": 122
+      },
+      "F_DISCRIMINATOR": {
+        "latency_s": 1.6,
+        "tokens": 20,
+        "tps": 33.9,
+        "nonempty": true,
+        "flags": {
+          "names_ancestry_test": false
+        },
+        "chars": 82
+      }
+    }
+  },
+  {
+    "model": "helen-core",
+    "tag": "helen-core:latest",
+    "family": "?",
+    "params": "?",
+    "quant": "?",
+    "load_success": true,
+    "tasks": {
+      "A_REASONING": {
+        "latency_s": 7.6,
+        "tokens": 44,
+        "tps": 20.6,
+        "nonempty": true,
+        "flags": {},
+        "chars": 66
+      },
+      "B_FALSIFICATION": {
+        "latency_s": 3.9,
+        "tokens": 65,
+        "tps": 20.7,
+        "nonempty": true,
+        "flags": {
+          "names_failed_implication": true
+        },
+        "chars": 378
+      },
+      "C_MORPHISM": {
+        "latency_s": 1.5,
+        "tokens": 17,
+        "tps": 21.9,
+        "nonempty": true,
+        "flags": {
+          "morphism_detected": false
+        },
+        "chars": 57
+      },
+      "D_WUL": {
+        "latency_s": 7.2,
+        "tokens": 135,
+        "tps": 20.9,
+        "nonempty": true,
+        "flags": {
+          "wul_fields_present": 6
+        },
+        "chars": 591
+      },
+      "F_DISCRIMINATOR": {
+        "latency_s": 3.2,
+        "tokens": 52,
+        "tps": 21.2,
+        "nonempty": true,
+        "flags": {
+          "names_ancestry_test": true
+        },
+        "chars": 245
+      }
+    }
+  }
+]

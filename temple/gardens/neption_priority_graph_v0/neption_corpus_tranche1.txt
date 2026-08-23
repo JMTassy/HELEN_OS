@@ -1,0 +1,46 @@
+SOURCE: NEPTION IA — Board 2026-08-21 (Gemini notes + résumé + étapes + détails)
+PROVENANCE_ROOT: board_2026_08_21
+NOTE: transcript small-talk section dropped (mechanical preprocessing).
+
+Stratégie de déploiement à Monaco et optimisation technologique via intelligence artificielle pour valoriser les projets technologiques souverains.
+Stratégie de développement monégasque. Le projet privilégie des fonds dédiés à l'écologie et à l'intelligence artificielle pour créer un hub maritime méditerranéen. Les infrastructures incluent des centres de données souverains pour combler les manques terrestres.
+Optimisation de la communication. La création de supports vidéo par intelligence artificielle est privilégiée pour marquer les interlocuteurs lors des présentations. Cette approche offre une qualité visuelle élevée à des coûts réduits par rapport aux standards.
+Industrialisation des flux techniques. L'industrialisation des processus de production vidéo renforce l'attractivité des offres technologiques. Un système d'hébergement sera mis en place pour garantir la mobilité des démonstrations et faciliter les présentations commerciales.
+
+Préparer réunion Monaco. Préparer une liste de points clés et de messages à transmettre aux autorités monégasques. Structurer cette présentation transversale en amont des rencontres.
+Organiser rendez-vous scientifique. Programmer une rencontre avec le Centre Scientifique de Monaco. Accompagner Eric Villalonga avec les experts en Sargasses.
+Communiquer dates rencontres avec le gouvernement monégasque prévus entre fin août et septembre.
+Rédiger brief data center. Fournir un résumé sur les mini centres de données à Eric Villalonga.
+Concevoir clip vidéo de présentation comme outil de suivi pour marquer les interlocuteurs.
+Créer Storyboard Miami. Concevoir un storyboard et un dossier synthétique pour le projet de dépollution à Miami pour les partenaires américains.
+Préparer Dossiers Monaco. Finaliser les supports de présentation et le dossier synthétique pour les réunions monégasques.
+Développer Clip SOMI. Développer un clip vidéo professionnel pour améliorer l'image de marque du projet Neption SOMI.
+Installer Hébergeur. Mettre en place une solution d'hébergement dédiée pour les contenus multimédias de Neption.
+Rechercher hébergeur. Identifier un fournisseur de stockage pour les contenus produits avec des coûts maîtrisés.
+Contacter Mika. Discuter des solutions de déploiement privé pour les maquettes.
+
+Objectifs de la réunion et contexte monégasque. Préparation des rencontres d'Eric Villalonga avec les autorités monégasques. Fournir les arguments stratégiques et les supports pour présenter les activités de MGE et Neption aux représentants officiels.
+Stratégie pour les fonds monégasques. Deux fonds distincts : le fond bleu, axé sur l'intelligence artificielle et la partie marine, et le fond vert, dédié à l'écologie et aux énergies renouvelables. Les ministres de tutelle et le ministre d'État seront les interlocuteurs clés pour valider l'alignement avec la vision à long terme de la Principauté de Monaco.
+Synergie entre MGE et Neption. La relation entre MGE et Neption est symbiotique, le programme de Neption étant intégré au portage de MGE. Le projet vise des infrastructures maritimes, des îles artificielles accueillant des data centers souverains, de l'intelligence artificielle, des générateurs sous-marins et des solutions domotiques, répondant au manque d'espace terrestre à Monaco.
+Thématiques transversales. La présentation lie l'écologie, l'énergie, l'intelligence artificielle via l'OS Hélène et la gestion des déchets. Inclure le retraitement des déchets et la mobilité, avec l'IA comme fil conducteur technologique.
+Gestion des déchets et partenariats scientifiques. Expertise en recyclage via Monaco Recycling, liée au groupe Esclavo. Optimisation du traitement des algues Sargasses pour produire du biogaz et du fertilisant, nécessitant une collaboration avec le Centre scientifique de Monaco.
+Positionnement international et hub maritime. Démontrer que ces technologies répondent à des besoins réels non satisfaits, positionnant Monaco comme un hub maritime méditerranéen majeur. Discussions en cours avec Abu Dhabi, Oman et Dubaï pour confirmer la viabilité internationale.
+Exemple de Bilbao. La ville de Bilbao a octroyé 15 millions de subventions pour rapatrier une société, illustrant la concurrence internationale pour attirer des entreprises technologiques.
+Propositions de valeur pour la Principauté. Trois axes stratégiques : l'extension fonctionnelle du territoire, la création d'un hub de connectivité méditerranéen et un nouveau modèle économique générateur de richesse.
+Calendrier des rendez-vous. La rentrée gouvernementale monégasque permet de fixer les dates entre fin août et septembre.
+Support de communication. Un clip vidéo d'environ une minute présentant une vision globale serait un atout majeur, plus efficace qu'un rapport écrit.
+Réseau et influence. Mobiliser le cercle d'influence think tank et les partenaires actuels comme Publicist pour soutenir le déploiement.
+Modèle économique de l'agence. Les projets inférieurs à 50 000 euros sont moins prioritaires pour maximiser les marges et la rentabilité.
+Besoin d'informations techniques. Un document de synthèse technique sur les petits data centers pour répondre aux questions lors des rendez-vous.
+Développements au Maroc et à Miami. Projets au Maroc, contact avec le président du fonds souverain prévu en octobre novembre, et à Miami, projet Sargasses, drones sous-marins, IA Hélène. Préparer un storyboard et un clip vidéo pour Patricia à Miami.
+Actualités en Bretagne et Corse. Rendez-vous avec un sénateur en Bretagne concernant le traitement des algues vertes, 4000 tonnes par mois. Le comité de Publicist se réunit le 31 août pour une demande de subvention d'un million d'euros.
+Concept Hélène Med. Une unité de télémédecine autonome utilisant l'IA Hélène, fonctionnant sans connexion Wi-Fi grâce à un système solaire, pour les déserts médicaux.
+Projet pilote à Calvi. Un projet pilote à l'antenne médicale de Calvi, en partenariat avec des pharmacies pour la gestion des traitements, pour désengorger les services médicaux.
+Financement par des fondations. Le projet de santé publique pourrait attirer des fonds de grandes fondations pour son éthique et son impact social.
+Projets Finlande. Une opportunité de 500 000 euros en Finlande avec des investisseurs family office.
+Présentation de Nexomède. Trois territoires clés pour le développement à court, moyen et long terme, incluant la branche médicale Nexomède : dossier médical structuré, validation par les médecins et dispensation en pharmacie.
+Démonstration de la production vidéo par l'IA Hélène. Une première version de vidéo générée par l'IA Hélène, progression en compréhension, montage et transitions. Consommation de crédits mais bibliothèque réutilisable de scènes et de personnages pour limiter les coûts futurs.
+Analyse de la qualité et stratégie tarifaire. Haute qualité et fluidité de l'animation. Des productions similaires coûteraient 40 000 à 50 000 euros. Objectif de tarifs compétitifs environ 30 pour cent inférieurs aux standards du marché.
+Évolution de l'IA Hélène. Défi technique d'intégrer une typographie constante pour la marque NEPTION dans les scènes générées. Enrichir Hélène avec du contenu quotidien.
+Industrialisation du flux de production. Plusieurs ordinateurs fonctionnant en continu, flux de travail collaboratif basé sur le brainstorming de storyboards. Standard de production combinant vidéos héros et sites web, industrialisé pour un coût compétitif pour les grands comptes.
+Besoin d'hébergement pour les maquettes. Un hébergeur pour stocker et présenter les maquettes sans dépendre d'un ordinateur local. Contacter Mika pour un espace d'hébergement sécurisé pour les prospects.

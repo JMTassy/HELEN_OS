@@ -1,0 +1,6 @@
+CLAIM: Monaco is a validated commercial partnership ready to sign.
+EVIDENCE_ROOTS: Two meetings with contact, enthusiasm for demonstrator, press article mention.
+RELATION: Interest/Visibility $\neq$ Commitment/Contract.
+MISSING_WARRANT: Signed LOI, Term Sheet, or executed contract.
+DISCRIMINATOR: Enthusiasm (Sentiment) vs. Signature (Legal Fact).
+BOUNDARY: Unknown status; currently a high-potential lead, not a partnership.

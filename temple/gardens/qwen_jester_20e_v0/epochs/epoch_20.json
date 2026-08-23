@@ -1,0 +1,14 @@
+{
+  "epoch": 20,
+  "mutation": "",
+  "target_q": "Can a discriminator succeed by measuring a correlated side effect, not the target distinction?",
+  "counterfeit_world": "",
+  "discriminator": "",
+  "potential_distinction": "",
+  "redundancy": "",
+  "authority_delta": 0,
+  "wall_s": 0.0,
+  "parsed": false,
+  "usage": {},
+  "raw": "__ERROR__ HTTP Error 500: Internal Server Error"
+}

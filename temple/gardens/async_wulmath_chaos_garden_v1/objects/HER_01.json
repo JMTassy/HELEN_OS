@@ -1,0 +1,12 @@
+{
+  "stream": "HER",
+  "epoch": 1,
+  "domain": "algebraic",
+  "name": "Symplectic Ghost-Ring",
+  "formal_seed": "$R[x] / \\langle f(x) \\cdot g(x) \\mid \\omega(f,g) = 0 \\rangle$",
+  "strange": "Every non-zero element is simultaneously a zero-divisor and a unit within localized sectors of its own spectrum.",
+  "renaming": "It preserves a phantom dimension where the product of two non-zero elements can be zero without the elements being nilpotent.",
+  "raw": "NAME: Symplectic Ghost-Ring\nGENESIS: Quotienting a polynomial ring by the kernel of a non-degenerate, non-associative bilinear form that vanishes on all odd-degree monomials.\nFORMAL_SEED: $R[x] / \\langle f(x) \\cdot g(x) \\mid \\omega(f,g) = 0 \\rangle$\nSTRANGE_PROPERTY: Every non-zero element is simultaneously a zero-divisor and a unit within localized sectors of its own spectrum.\nNEAREST_KNOWN_RELATIVE: Exterior Algebra\nWHY_NOT_JUST_RENAMING: It preserves a phantom dimension where the product of two non-zero elements can be zero without the elements being nilpotent.\nCOUNTERFEIT: Grassmann Algebra\nBREAK_IT: Assign a metric that forces the symplectic form to become symmetric.\nNEXT_MUTATION: Topological (glue a sheaf of non-Hausdorff spaces onto the spectrum)\nEND",
+  "wall_s": 140.8,
+  "tokens": 200
+}

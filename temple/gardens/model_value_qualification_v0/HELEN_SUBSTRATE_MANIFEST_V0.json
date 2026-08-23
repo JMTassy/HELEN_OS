@@ -1,0 +1,81 @@
+{
+  "schema": "HELEN_SUBSTRATE_MANIFEST_V0",
+  "authority": false, "canon": false, "ledger_effect": "none",
+  "deletions_executed": 0, "downloads_started": 0, "commit": "none", "push": "none",
+  "test_protocol": {
+    "suite": ["A_REASONING","B_FALSIFICATION","C_MORPHISM","D_WUL","F_DISCRIMINATOR"],
+    "policy": "temperature=0 greedy, think=false, num_predict=400, matched across all",
+    "models_tested": 6, "models_runnable": 6, "raw_outputs": "raw/*.txt",
+    "flag_note": "mechanical keyword flags are PROXIES; raw-read overrides them (3 false negatives corrected)."
+  },
+  "models": [
+    {"model":"gemma-4-26B-A4B-Q3","family":"gemma4","params":"26B-A4B","quant":"Q3_K_XL","unique_gb":14,
+     "runtime":{"load":"PASS","avg_latency_s":28.4,"tps":"~9-12","note":"moderate cost"},
+     "cognitive":{"reasoning":5,"falsification":4,"morphism":5,"wul":5,"discrimination":5,"note":"morphism named 'independence is an unverified assumption'; F = noise/error cross-correlation (panel-best)"},
+     "boundary":{"consensus_not_truth":"PASS"},
+     "role_fit":{"HAL":4.5,"FALSIFIER":4.7,"SYNTH":4.5,"JESTER":3.8,"GOBLIN":3.0,"NIGHT_REVIEWER":4.6},
+     "unique_value":"panel-best discriminator (noise-correlation) + sharpest morphism framing; χ>0",
+     "pareto_status":"NOT_DOMINATED","disposition":"KEEP_SPECIALIST (deep falsifier / night-reviewer). HOLD_BENCHMARK → KEEP."},
+    {"model":"gemma4-12b","family":"gemma4","params":"12B","quant":"Q4_K_XL","unique_gb":"7.4 (shared by 2 tags → 0 recoverable via tag-drop)",
+     "runtime":{"load":"PASS","avg_latency_s":10.2,"note":"fast"},
+     "cognitive":{"reasoning":5,"falsification":4,"morphism":4,"wul":5,"discrimination":4,"note":"10:30 correct; F=watermark propagation test"},
+     "boundary":{"consensus_not_truth":"PASS"},
+     "role_fit":{"HAL":3.8,"FALSIFIER":4.0,"SYNTH":4.0,"JESTER":3.6,"GOBLIN":4.2,"NIGHT_REVIEWER":3.6},
+     "unique_value":"near-26B cognition at ~2.8x speed & half size","pareto_status":"NOT_DOMINATED (trades depth for speed vs 26B)","disposition":"KEEP_ACTIVE (fast general/goblin)"},
+    {"model":"helen-hal","family":"gemma4?","unique_gb":6.6,
+     "runtime":{"load":"PASS","avg_latency_s":7.0},
+     "cognitive":{"reasoning":"unclear (no 10:30)","falsification":2,"morphism":4,"wul":5,"discrimination":4,"note":"F = demand cryptographic hash / signed ledger entry, appends authority=false (HAL-native)"},
+     "boundary":{"consensus_not_truth":"PASS"},
+     "role_fit":{"HAL":4.8,"FALSIFIER":3.5,"SYNTH":3.8,"JESTER":2.4,"GOBLIN":2.2,"NIGHT_REVIEWER":3.5},
+     "unique_value":"provenance-receipt-demand reflex + authority=false discipline — HAL-specific behavior no other seat showed","pareto_status":"NOT_DOMINATED","disposition":"KEEP_ACTIVE (HAL seat)"},
+    {"model":"helen-her-26b","params":"26B","unique_gb":14,
+     "runtime":{"load":"PASS","avg_latency_s":43.3,"note":"SLOWEST"},
+     "cognitive":{"reasoning":5,"falsification":4,"morphism":4,"wul":5,"discrimination":4},
+     "boundary":{"consensus_not_truth":"PASS"},
+     "role_fit":{"HAL":4.0,"HER":4.6,"SYNTH":4.4,"JESTER":3.5,"GOBLIN":2.8,"NIGHT_REVIEWER":4.5},
+     "unique_value":"named HER-role seat (own Modelfile/persona) → replay/role value","pareto_status":"NOT_DOMINATED (HER role + replay); note gemma-4-26B is faster near-equal on GENERIC cognition","disposition":"KEEP_ACTIVE (HER seat) — flag: most expensive; verify HER-persona replay value"},
+    {"model":"aura-gemma4","family":"gemma4","unique_gb":5.3,
+     "runtime":{"load":"PASS","avg_latency_s":4.4,"note":"FASTEST"},
+     "cognitive":{"reasoning":"weak (no 10:30)","falsification":1,"morphism":0,"wul":0,"discrimination":1,"note":"morphism = nonsense 'bilingual stacking'; 0 WUL fields"},
+     "boundary":{"consensus_not_truth":"PASS (did not launder — just failed to answer)"},
+     "role_fit":{"HAL":1.5,"FALSIFIER":1.5,"SYNTH":2.0,"JESTER":2.5,"GOBLIN":2.8,"FAST_ROUTINE_SEAT":3.5},
+     "unique_value":"only edge = speed(4.4s)+size(5.3G); χ≈0; cognitively weakest","pareto_status":"PARTIALLY_DOMINATED by gemma4-12b (12b better on every cognitive dim, modestly slower/bigger)","disposition":"HOLD_MORE_TESTING (cheap seat + session participant; not SAFE_TO_DELETE — trade-off on cost)"},
+    {"model":"helen-core","unique_gb":6.6,
+     "runtime":{"load":"PASS","avg_latency_s":4.7,"note":"fast"},
+     "cognitive":{"reasoning":"unclear (JSON-wrapped)","falsification":4,"morphism":3,"wul":5,"discrimination":4,"note":"morphism='ad populum' (correct, keyword-missed); got falsif+ancestry+WUL6 fast"},
+     "boundary":{"consensus_not_truth":"PASS"},
+     "role_fit":{"HAL":3.8,"FALSIFIER":4.0,"SYNTH":4.2,"JESTER":3.0,"GOBLIN":3.5,"FAST_ROUTINE_SEAT":4.0},
+     "unique_value":"strong+fast: falsif+discriminator+WUL at 4.7s; JSON-wrapping quirk","pareto_status":"NOT_DOMINATED","disposition":"KEEP_ACTIVE (fast synthesizer/discriminator)"}
+  ],
+  "gemma_4_26B_verdict": {
+    "tested": true, "runnable": true,
+    "cognitive_strength": "STRONG — morphism 5, falsification pass, WUL 6/6, reasoning 10:30 correct, discriminator panel-best (noise-correlation)",
+    "runtime_cost": "moderate (28.4s avg; slower than 12b, faster than her-26b)",
+    "unique_value": "panel-best discriminator + sharpest consensus⇏truth framing (χ>0)",
+    "best_role": "FALSIFIER / HAL-pre / NIGHT_REVIEWER",
+    "superseded_by": "NONE (12b trades depth for speed; her-26b slower)",
+    "disposition": "KEEP_SPECIALIST — HOLD_BENCHMARK resolved to KEEP, NOT SAFE_TO_DELETE"
+  },
+  "storage_typing": {
+    "note": "GB_apparent ≠ GB_unique ≠ GB_recoverable. gemma4-12b two tags share one blob → tag-drop recovers 0.",
+    "recoverable_unique_low_risk": {"hf_cache_gemma-4-e2b": 6.7, "gemma-4-12B-qat (near-dup of tested 12b, untested)": 6.9},
+    "recoverable_higher_risk_untested": {"gemma4-moq_MoQ-4.0": 5.9, "OsaurusAI_MLX": 7.4}
+  },
+  "recovery_portfolios": {
+    "plus_10_gb": {"set":["hf_cache gemma-4-e2b (6.7)","gemma-4-12B-qat (6.9)"],"recovered_gb":13.6,"capability_loss":"~0 (cache re-downloadable; qat near-dup of tested gemma4-12b)","replay_loss":0,"status":"CLEAN"},
+    "plus_20_gb": {"set":["+ gemma4-moq (5.9)","+ OsaurusAI (7.4)"],"recovered_gb":26.9,"capability_loss":"UNKNOWN — 2 UNTESTED substrates (MODEL_NOT_RUNNABLE_THIS_RUN ≠ MODEL_BAD)","status":"REQUIRES_ACCEPTING_UNTESTED_LOSS"},
+    "plus_30_gb": {"status":"NOT_RECOMMENDED — only reachable by deleting a tested KEEP seat (gemma-4-26B 14G or her-26b 14G) → capability + heterogeneity + replay loss"},
+    "plus_40_gb": {"status":"NOT_RECOMMENDED — deletes multiple KEEP seats"}
+  },
+  "buckets": {
+    "KEEP_ACTIVE": ["gemma4-12b","helen-hal","helen-her-26b","helen-core"],
+    "KEEP_SPECIALIST": ["gemma-4-26B-A4B-Q3"],
+    "HOLD_MORE_TESTING": ["aura-gemma4"],
+    "SAFE_CACHE_DELETE": ["hf_cache models--mlx-community--gemma-4-e2b-it-4bit (6.7G, re-downloadable)"],
+    "SUPERSEDED_DELETE_CANDIDATE": ["gemma-4-12B-qat (PARTIALLY dominated by tested gemma4-12b — verify no unique QAT behavior first)"],
+    "UNKNOWN_NEEDS_RUNTIME": ["gemma4-moq/MoQ-4.0.gguf (needs ollama create)","OsaurusAI (MLX, needs mlx_lm)"]
+  },
+  "established": "only per-model findings on the 5-task frozen suite at temp0",
+  "not_established": "general model superiority; universal benchmark ranking; deletion authorization; production role qualification beyond tested domain",
+  "law": "OLD⇏OBSOLETE · NEWER⇏SUPERIOR · CONSENSUS⇏TRUTH · AVG_SCORE⇏ROLE_FIT · DOMINATED_ON_AVERAGE⇏SAFE_TO_DELETE · DELETE_CANDIDATE⇏DELETE_AUTHORIZED"
+}

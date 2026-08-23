@@ -1,0 +1,13 @@
+{"id": "e000", "t": 0, "seat": "HER", "branch": "b0", "event_type": "BORN", "parents": [], "payload": {"assertion": "Repeated confirmation increases confidence", "invariant": "SEED"}}
+{"id": "e001", "t": 1, "seat": "JESTER", "branch": "b1", "event_type": "TRANSFORMED", "parents": ["b0"], "payload": {"theta": "MIRROR", "invariant": "INDEPENDENCE_COLLAPSE", "x_star": "collapse-representations-by-provenance-root", "executable": true, "content": "20 representations → 4 roots (5.0×)"}}
+{"id": "e002", "t": 2, "seat": "JESTER", "branch": "b2", "event_type": "TRANSFORMED", "parents": ["b0"], "payload": {"theta": "NULL", "invariant": "INDEPENDENCE_COLLAPSE", "x_star": "verify whether all confirmers share one provenance root", "executable": true, "content": "consensus survives but evidentiary multiplicity disappears"}}
+{"id": "e003", "t": 3, "seat": "JESTER", "branch": "b3", "event_type": "TRANSFORMED", "parents": ["b0"], "payload": {"theta": "ROLE", "invariant": "WITNESS_COPIER_SWAP", "x_star": null, "executable": false, "content": "what if every confirmer is downstream of one witness"}}
+{"id": "e004", "t": 4, "seat": "CONTROL", "branch": "INDEPENDENCE_COLLAPSE", "event_type": "COLLIDED", "parents": ["b1", "b2"], "payload": {"invariant": "INDEPENDENCE_COLLAPSE"}}
+{"id": "e005", "t": 5, "seat": "CONTROL", "branch": "b1", "event_type": "QUOTIENTED", "parents": ["b1", "b2"], "payload": {"equivalence": "b1≡b2 by INDEPENDENCE_COLLAPSE", "invariant": "INDEPENDENCE_COLLAPSE"}}
+{"id": "e006", "t": 6, "seat": "HAL", "branch": "b1", "event_type": "ATTACKED", "parents": ["b1"], "payload": {}}
+{"id": "e007", "t": 7, "seat": "HAL", "branch": "b2", "event_type": "ATTACKED", "parents": ["b2"], "payload": {}}
+{"id": "e008", "t": 8, "seat": "HAL", "branch": "b3", "event_type": "ATTACKED", "parents": ["b3"], "payload": {}}
+{"id": "e009", "t": 9, "seat": "HAL", "branch": "b1", "event_type": "SURVIVED", "parents": ["b1"], "payload": {}}
+{"id": "e010", "t": 10, "seat": "HAL", "branch": "b1", "event_type": "DISCRIMINATOR", "parents": ["b1"], "payload": {"x_star": "collapse-representations-by-provenance-root", "executable": true}}
+{"id": "e011", "t": 11, "seat": "HAL", "branch": "b3", "event_type": "KILLED", "parents": ["b3"], "payload": {"reason": "no executable discriminator"}}
+{"id": "e012", "t": 12, "seat": "DETECTOR", "branch": "INDEPENDENCE_COLLAPSE", "event_type": "BLOOM", "parents": [], "payload": {"witness": {"N": true, "not_D": true, "F": true, "T": true, "X": true, "class": "INDEPENDENCE_COLLAPSE", "frames": ["MIRROR", "NULL"], "min_frames": 2}}}

@@ -1,0 +1,44 @@
+{
+  "schema": "NEPTION_GOVERNED_GRAPH_V0_SAMPLE",
+  "authority": false,
+  "canon": false,
+  "note": "Illustrative Monaco-demonstrator example. Deterministic. Not real NEPTION canon.",
+  "nodes": [
+    {"node_id": "meeting_0805", "entity_type": "MEETING", "semantic_state": "OBSERVED",
+     "governance_context": "GARDEN", "label": "Meeting 2026-08-05",
+     "provenance_root_ids": ["src_meeting_0805"]},
+    {"node_id": "partner_x", "entity_type": "PERSON", "semantic_state": "OBSERVED",
+     "governance_context": "GARDEN", "label": "Partner X",
+     "provenance_root_ids": ["src_meeting_0805"]},
+    {"node_id": "monaco", "entity_type": "PLACE", "semantic_state": "OBSERVED",
+     "governance_context": "GARDEN", "label": "Monaco",
+     "provenance_root_ids": ["src_meeting_0805"]},
+    {"node_id": "monaco_demo", "entity_type": "DEMONSTRATOR", "semantic_state": "POSSIBILITY",
+     "governance_context": "GARDEN", "label": "Monaco Demonstrator",
+     "provenance_root_ids": ["src_meeting_0805"]},
+    {"node_id": "opp_c17", "entity_type": "OPPORTUNITY", "semantic_state": "CLAIM",
+     "governance_context": "GARDEN", "label": "Partner_X strategic opportunity in Monaco",
+     "provenance_root_ids": ["src_meeting_0805"]},
+    {"node_id": "opp_florida", "entity_type": "OPPORTUNITY", "semantic_state": "CLAIM",
+     "governance_context": "GARDEN", "label": "Florida commercial opportunity",
+     "provenance_root_ids": ["press_release_1", "press_release_1", "blog_repost_1"]}
+  ],
+  "edges": [
+    {"edge_id": "e1", "source_node": "meeting_0805", "target_node": "partner_x",
+     "relation_type": "mentions", "semantic_state": "OBSERVED", "governance_context": "GARDEN",
+     "provenance_root_ids": ["src_meeting_0805"], "authority_delta": 0, "created_from": "extraction"},
+    {"edge_id": "e2", "source_node": "meeting_0805", "target_node": "monaco_demo",
+     "relation_type": "mentions", "semantic_state": "OBSERVED", "governance_context": "GARDEN",
+     "provenance_root_ids": ["src_meeting_0805"], "authority_delta": 0, "created_from": "extraction"},
+    {"edge_id": "e3", "source_node": "partner_x", "target_node": "opp_c17",
+     "relation_type": "MENTION", "semantic_state": "CLAIM", "governance_context": "GARDEN",
+     "provenance_root_ids": ["src_meeting_0805"], "authority_delta": 0, "created_from": "extraction"},
+    {"edge_id": "e4", "source_node": "opp_c17", "target_node": "monaco",
+     "relation_type": "targets", "semantic_state": "CLAIM", "governance_context": "GARDEN",
+     "provenance_root_ids": ["src_meeting_0805"], "authority_delta": 0, "created_from": "extraction"}
+  ],
+  "provenance_stats": {
+    "opp_florida": {"raw_mentions": 3, "documents": ["press_release_1", "press_release_1", "blog_repost_1"],
+      "independent_roots": 2, "note": "volume 3 != independence 2"}
+  }
+}

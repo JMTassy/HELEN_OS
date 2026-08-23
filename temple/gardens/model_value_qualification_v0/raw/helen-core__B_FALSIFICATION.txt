@@ -1,0 +1,1 @@
+A 200 OK response indicates only that the server received and processed the request successfully, not that the funds were transferred or the transaction was authorized. Consequently, the specific implication that a successful HTTP status code guarantees a completed financial transaction is false when the backend logic fails to update the ledger despite receiving the API call.

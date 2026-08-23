@@ -1,0 +1,12 @@
+{
+  "stream": "HAL",
+  "epoch": 9,
+  "domain": "completely free",
+  "name": "Non-Idempotent Ring of I",
+  "formal_seed": "0=1",
+  "strange": "0=1",
+  "renaming": "I",
+  "raw": "NAME: Non-Idempotent Ring of I\nGENESIS: I\nFORMAL_SEED: 0=1\nSTRANGE_PROPERTY: 0=1\nNEAREST_KNOWN_RELATIVE: Non-idempotent\nWHY_NOT_JUST_RENAMING: I\nCOUNTERFEIT: Non-idempotent Ring of I\nBREAK_IT: I\nNEXT_MUTATION: Non-idempotent Ring of I",
+  "wall_s": 98.9,
+  "tokens": 89
+}

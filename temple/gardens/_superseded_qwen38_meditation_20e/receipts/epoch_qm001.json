@@ -1,0 +1,20 @@
+{
+  "schema": "GARDEN_EPOCH_RECEIPT_V0",
+  "epoch": 1,
+  "epoch_label": "QWEN38_MEDITATION_ON_LATERAL_DIVERGENCE",
+  "authority": false,
+  "sovereign": false,
+  "status": "PROPOSED",
+  "session_date": "2026-08-23",
+  "head_at_run": "e99e9ad",
+  "model_sha256": "5db71d7e6ffffc034868e8eed6bf2b508c88e4bf6ac1bf7c103c57a93d415894",
+  "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "fable_terms_hit": [],
+  "no_ledger_mutation": true,
+  "no_sovereign_paths": true,
+  "_meta": {
+    "produced_by": "qwen38-27b-q3-xyz-v2 via claude-code shell",
+    "not_admitted": true,
+    "not_canon": true
+  }
+}

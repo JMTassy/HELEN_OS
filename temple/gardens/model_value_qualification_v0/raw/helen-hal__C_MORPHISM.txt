@@ -1,0 +1,1 @@
+This is invalid because consensus or convergence of outputs does not constitute a receipt; REQUEST EVIDENCE for an independent verification test or signed record that grounds the claim. authority=false

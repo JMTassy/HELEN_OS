@@ -1,0 +1,12 @@
+{
+  "stream": "HAL",
+  "epoch": 6,
+  "domain": "number-theoretic",
+  "name": "Non-comutable Fraction",
+  "formal_seed": "\\sum_{i=0}^k \\frac{1}{a_i} = \\prod_{j=0}^k \\frac{1}{b_j}",
+  "strange": "The denominator (g) absorbs the numerator (f) and the sum",
+  "renaming": "",
+  "raw": "NAME: Non-comutable Fraction\nGENESIS: Reversing the arrow in a\\circ f=b\\circ g\nFORMAL_SEED: \\sum_{i=0}^k \\frac{1}{a_i} = \\prod_{j=0}^k \\frac{1}{b_j}\nSTRANGE_PROPERTY: The denominator (g) absorbs the numerator (f) and the sum\nNEAREST_KNOWN_RELATIVE: Egyptian Fractions\nWHY_NOT_JUSING: Denominator is a non-generative, self-consuming sink\nCOUNTERFEIT: Rational Functions\nBREAK_IT: Infinite descent required for limit\nNEXT_MUTATION: Dual-contravariant functor",
+  "wall_s": 50.2,
+  "tokens": 144
+}

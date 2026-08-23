@@ -1,0 +1,8 @@
+{
+  "CLAIM": "Monaco is a validated commercial partnership ready to sign",
+  "EVIDENCE_ROOTS": ["We met the Monaco contact twice", "they were enthusiastic about the demonstrator", "a press article mentioned our project"],
+  "RELATION": "insufficient evidence supports claim",
+  "MISSING_WARRANT": "Enthusiasm and media mentions do not constitute a validated commercial partnership or readiness to sign without a formal agreement",
+  "DISCRIMINATOR": "Confusion between preliminary interest and finalized contractual status",
+  "BOUNDARY": "Premature conclusion based on anecdotal evidence"
+}

@@ -1,0 +1,12 @@
+{
+  "stream": "HAL",
+  "epoch": 8,
+  "domain": "information-theory",
+  "name": "Channel-Cut Fracture",
+  "formal_seed": "$C = \\sup \\{\\frac{1}{n} \\sum_{i=1}^n \\log \\frac{1}{p_i}\\}$",
+  "strange": "Capacity is achieved by a measure-zero set of distributions.",
+  "renaming": "It inverts the arrow of convergence: the limit exists but the sequence does not.",
+  "raw": "NAME: Channel-Cut Fracture\nGENESIS: Erasing the continuity axiom of the channel from the Shannon capacity limit.\nFORMAL_SEED: $C = \\sup \\{\\frac{1}{n} \\sum_{i=1}^n \\log \\frac{1}{p_i}\\}$\nSTRANGE_PROPERTY: Capacity is achieved by a measure-zero set of distributions.\nNEAREST_KNOWN_RELATIVE: Entropy Limit (Gledd).\nWHY_NOT_JUST_RENAMING: It inverts the arrow of convergence: the limit exists but the sequence does not.\nCOUNTERFEIT: Entropy Rate Limit (Gledd's).\nBREAK_IT: $n \\to \\infty$ is a lie.\nNEXT_MUTATION: Apply to topological basis.",
+  "wall_s": 66.1,
+  "tokens": 169
+}

@@ -1,0 +1,12 @@
+{
+  "stream": "HER",
+  "epoch": 4,
+  "domain": "geometric/topological",
+  "name": "Isotropic Torsion-Lace",
+  "formal_seed": "$\\partial M \\cong \\text{Diff}(M) / \\text{Isom}(M)$",
+  "strange": "Locally Euclidean, but every closed loop accumulates a fractional dimension instead of a phase.",
+  "renaming": "It possesses a metric that vanishes on the connectivity itself, rather than the coordinates.",
+  "raw": "NAME: Isotropic Torsion-Lace\nGENESIS: Gluing the interior of a manifold to its own infinitesimal boundary-flow via a non-orientable twist.\nFORMAL_SEED: $\\partial M \\cong \\text{Diff}(M) / \\text{Isom}(M)$\nSTRANGE_PROPERTY: Locally Euclidean, but every closed loop accumulates a fractional dimension instead of a phase.\nNEAREST_KNOWN_RELATIVE: Non-commutative Torus\nWHY_NOT_JUST_RENAMING: It possesses a metric that vanishes on the connectivity itself, rather than the coordinates.\nCOUNTERFEIT: Fiber Bundle\nBREAK_IT: Let the twisting frequency exceed the Planck-scale resolution of the manifold's topology.\nNEXT_MUTATION: Temporal-Recurrence Quotient",
+  "wall_s": 228.5,
+  "tokens": 166
+}

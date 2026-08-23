@@ -1,0 +1,48 @@
+{
+  "schema": "NEPTION_GOVERNED_GRAPH_V0",
+  "authority": false,
+  "canon": false,
+  "layer": "TEMPLE",
+  "model": "N_NEPTION = (V, E, tau, pi, G, rho, Lambda)",
+  "axes_orthogonal": ["entity_type", "semantic_state", "governance_context"],
+  "node": {
+    "node_id": "string",
+    "entity_type": ["PERSON", "ORGANIZATION", "PLACE", "PROJECT", "OPPORTUNITY",
+      "PARTNERSHIP", "DEMONSTRATOR", "CAPABILITY", "MEDIA_ASSET", "MEETING", "SOURCE"],
+    "semantic_state": ["RAW", "POSSIBILITY", "CLAIM", "OBSERVED", "HOLD", "ADMITTED", "RECEIPT"],
+    "governance_context": ["GARDEN", "TEST", "BOARD", "CANON", "QUARANTINE"],
+    "label": "string",
+    "provenance_root_ids": ["string"]
+  },
+  "edge": {
+    "edge_id": "string",
+    "source_node": "node_id",
+    "target_node": "node_id",
+    "relation_type": ["MENTION", "RELATIONSHIP", "PARTNERSHIP", "works_with",
+      "proposes", "mentions", "targets", "supported_by", "contradicted_by", "depends_on"],
+    "semantic_state": "one of semantic_state",
+    "governance_context": "one of governance_context",
+    "rule_version": "string",
+    "provenance_root_ids": ["string"],
+    "receipt_ids": ["string"],
+    "parent_edge_id": "string|null",
+    "authority_delta": "int (MUST be 0 in V0)",
+    "created_from": "string (extraction|test|review|... never presentation)"
+  },
+  "hard_laws": [
+    "P -/-> T  (presentation never mutates typed state)",
+    "entity_type _|_ semantic_state (orthogonal)",
+    "graph_enrichment -/-> institutional_mutation",
+    "MENTION -/-> RELATIONSHIP -/-> PARTNERSHIP (no silent escalation)",
+    "raw_document_count != semantic_proposition_count",
+    "provenance_independence != epistemic_independence",
+    "NO EDGE MAY PROMOTE ITSELF",
+    "ordinary_mutation -/-> governance_mutation -/-> constitutional_mutation",
+    "record_integrity != semantic_truth",
+    "AUTHORITY_DELTA = 0"
+  ],
+  "gate_verdicts": ["ALLOW", "HOLD", "DENY"],
+  "deny_is_receipted": true,
+  "receipt": "rho_n = H(rho_{n-1} || canon(event))  — integrity of record, NOT truth of proposition",
+  "v0_constraint": "no path to CANON; NEPTION Graph V0 = inspectable governed candidate space, NOT institutional truth"
+}

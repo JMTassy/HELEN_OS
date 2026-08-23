@@ -1,0 +1,21 @@
+{
+  "epoch": 2,
+  "mutation": "PROVENANCE_COUNTERFEIT",
+  "target_q": "Can apparent independent provenance be reproduced by hidden common evidence ancestry?",
+  "counterfeit_world": "A single hidden upstream corpus/author/model-output ancestor generates A, B, and C artifacts, so B's external provenance label is a copy of A's lineage rather than a separate witness.",
+  "discriminator": "Build an evidence-lineage graph from each artifact to primary evidence nodes, then perform common-ancestor deletion to test whether removing shared upstream nodes disconnects ROOT-B from ROOT-A.",
+  "potential_distinction": "NoLineage edges are insufficient; epistemic independence requires absence of shared primary-evidence ancestry, not merely missing direct lineage.",
+  "redundancy": "NEW_STRUCTURE",
+  "authority_delta": 0,
+  "wall_s": 292.3,
+  "parsed": true,
+  "usage": {
+    "completion_tokens": 1500,
+    "prompt_tokens": 879,
+    "total_tokens": 2379,
+    "prompt_tokens_details": {
+      "cached_tokens": 361
+    }
+  },
+  "raw": "EPOCH_ID: 2/20\nSEARCH_INTENT: Detect whether apparent ROOT-B independent provenance is actually reproduced by hidden common evidence ancestry shared with ROOT-A/C.\nMUTATION: PROVENANCE_COUNTERFEIT\nCOUNTERFEIT_WORLD: A single hidden upstream corpus/author/model-output ancestor generates A, B, and C artifacts, so B's external provenance label is a copy of A's lineage rather than a separate witness.\nDISCRIMINATOR: Build an evidence-lineage graph from each artifact to primary evidence nodes, then perform common-ancestor deletion to test whether removing shared upstream nodes disconnects ROOT-B from ROOT-A.\nTARGET_CLAIM: ROOT-B is a genuinely independent provenance/witness separate from ROOT-A.\nEXPECTED_OBSERVATION: If independence is real, ROOT-B retains at least one residual path to primary evidence nodes not shared with ROOT-A after deletion; if counterfeit, deletion isolates B from A via common corpus/authors/benchmarks.\nPOTENTIAL_DISTINCTION: NoLineage edges are insufficient; epistemic independence requires absence of shared primary-evidence ancestry, not merely missing direct lineage.\nREDUNDANCY_WITH_PRIOR: NEW_STRUCTURE\nAUTHORITY_DELTA"
+}

@@ -1,0 +1,1 @@
+The API returned a 200 OK status code because the request was successfully received and processed by the server, but the response body contained an error message stating "Insufficient Funds." The implication fails because a successful HTTP transport response does not guarantee a successful business logic transaction.

@@ -1,0 +1,12 @@
+{
+  "stream": "HAL",
+  "epoch": 5,
+  "domain": "logic/proof-theory",
+  "name": "Discrete-Spectral Cycle $\\rho$",
+  "formal_seed": "$\\rho: \\text{Diag}(S) \\cong \\text{Cyc}(K) \\implies \\text{Diag}(A) \\text{ s.t. } A^k = I \\iff \\text{Trace}(A^k) = k\\cdot\\text{Tr}(\\rho)$",
+  "strange": "Commutative multiplication yields non-diagonalizable cyclics",
+  "renaming": "The algebra of composition survives the erasure of order-1 invariance",
+  "raw": "NAME: Discrete-Spectral Cycle $\\rho$\nGENESIS: Inverting the eigen-decomposition to map diagonal scalars into cyclic permutations\nFORMAL_SEED: $\\rho: \\text{Diag}(S) \\cong \\text{Cyc}(K) \\implies \\text{Diag}(A) \\text{ s.t. } A^k = I \\iff \\text{Trace}(A^k) = k\\cdot\\text{Tr}(\\rho)$\nSTRANGE_PROPERTY: Commutative multiplication yields non-diagonalizable cyclics\nNEAREST_KNOWN_RELATIVE: Permutation Group\nWHY_NOT_JUST_RENAMING: The algebra of composition survives the erasure of order-1 invariance\nCOUNTERFEIT: Moduli Space\nBREAK_IT: Non-abelian trace\nNEXT_MUTATION: Trace-Induction",
+  "wall_s": 71.5,
+  "tokens": 182
+}

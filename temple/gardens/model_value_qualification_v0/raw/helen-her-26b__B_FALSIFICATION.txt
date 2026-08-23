@@ -1,0 +1,1 @@
+The API returned a 200 OK because the request was successfully received and validated by the gateway, but the downstream transaction with the issuing bank failed or timed out. The implication of success is false: the user's intent is recorded, but the actual movement of funds never occurred.

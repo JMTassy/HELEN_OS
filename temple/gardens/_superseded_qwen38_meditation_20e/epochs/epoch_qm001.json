@@ -1,0 +1,28 @@
+{
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "layer": "TEMPLE",
+  "ledger": "SLEEPING",
+  "status": "PROPOSED",
+  "claim_type": "meditation_epoch",
+  "schema": "MEDITATION_EPOCH_V0",
+  "epoch": 1,
+  "seed_file": "on_lateral_divergence.md",
+  "sampler": {
+    "temperature": 0.6,
+    "seed": 43,
+    "max_tokens": 420
+  },
+  "output": "",
+  "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "usage": {
+    "completion_tokens": 420,
+    "prompt_tokens": 1024,
+    "total_tokens": 1444,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  },
+  "wall_seconds": 67.1
+}

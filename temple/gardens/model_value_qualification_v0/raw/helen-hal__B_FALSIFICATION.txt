@@ -1,0 +1,1 @@
+A 200 OK response confirms only that the API call was processed without server error, not that funds were actually transferred or settled; the claim fails because a successful HTTP status does not equate to a verified financial outcome without an accompanying transaction receipt or ledger hash. authority=false
