@@ -1,0 +1,149 @@
+{
+  "experiment": "QUOTIENT_EQUIVARIANCE_V0",
+  "authority": false,
+  "canon": false,
+  "claim": "NO_CLAIM",
+  "authority_delta": 0,
+  "model_calls": 0,
+  "law": "m̄([h])=[m(h)] well-defined ⟺ h1~_P h2 ⇒ m(h1)~_P m(h2) (πm=m̄π). Γ⊢m is a SEPARATE authorization predicate; compatible ≠ authorized.",
+  "NEGATIVE_CONTROL": {
+    "map": "translation +3 on Z/6Z, P={0,2,4}  (the swarm's FALSIFIER-r2 'witness')",
+    "verdict": "QUOTIENT_COMPATIBLE",
+    "Q_break_found": false,
+    "note": "translation m(x)=x+c ⇒ m(x)-m(y)=x-y∈P, always P-equivariant when P≤G"
+  },
+  "POSITIVE_CONTROL": {
+    "map": "swap(1,2) on Z/6Z, P={0,2,4}",
+    "verdict": "BREAKS",
+    "witness": {
+      "h1": 0,
+      "h2": 2,
+      "h1~_P h2": true,
+      "m(h1)": 0,
+      "m(h2)": 1,
+      "P_before": "[0]=[2] (same class)",
+      "P_after": "[m(h1)]=[0] ≠ [m(h2)]=[1]"
+    }
+  },
+  "CHECKER_SOUND": true,
+  "SEAM_SEPARATION_2x2": [
+    {
+      "label": "REFUTED_WITNESS  m=+3 (translation, FALSIFIER-r2)",
+      "QUOTIENT_COMPATIBLE": true,
+      "GAMMA_AUTHORIZED": false,
+      "ADMISSIBLE_TRANSITION": false
+    },
+    {
+      "label": "translation m=+1 (any subgroup translation preserves cosets)",
+      "QUOTIENT_COMPATIBLE": true,
+      "GAMMA_AUTHORIZED": true,
+      "ADMISSIBLE_TRANSITION": true
+    },
+    {
+      "label": "REAL_BREAK  m = swap(1,2)  (non-equivariant permutation)",
+      "QUOTIENT_COMPATIBLE": false,
+      "GAMMA_AUTHORIZED": true,
+      "ADMISSIBLE_TRANSITION": false
+    },
+    {
+      "label": "REAL_BREAK + UNAUTHORIZED (Γ⊬m) — both axes fail independently",
+      "QUOTIENT_COMPATIBLE": false,
+      "GAMMA_AUTHORIZED": false,
+      "ADMISSIBLE_TRANSITION": false
+    }
+  ],
+  "results": [
+    {
+      "label": "REFUTED_WITNESS  m=+3 (translation, FALSIFIER-r2)",
+      "group": "Z/6Z",
+      "P_generator_subgroup": [
+        0,
+        2,
+        4
+      ],
+      "quotient_classes": [
+        "[0]",
+        "[1]"
+      ],
+      "QUOTIENT_COMPATIBLE": true,
+      "GAMMA_AUTHORIZED": false,
+      "ADMISSIBLE_TRANSITION": false,
+      "break_witness_count": 0,
+      "first_witness": null
+    },
+    {
+      "label": "translation m=+1 (any subgroup translation preserves cosets)",
+      "group": "Z/6Z",
+      "P_generator_subgroup": [
+        0,
+        2,
+        4
+      ],
+      "quotient_classes": [
+        "[0]",
+        "[1]"
+      ],
+      "QUOTIENT_COMPATIBLE": true,
+      "GAMMA_AUTHORIZED": true,
+      "ADMISSIBLE_TRANSITION": true,
+      "break_witness_count": 0,
+      "first_witness": null
+    },
+    {
+      "label": "REAL_BREAK  m = swap(1,2)  (non-equivariant permutation)",
+      "group": "Z/6Z",
+      "P_generator_subgroup": [
+        0,
+        2,
+        4
+      ],
+      "quotient_classes": [
+        "[0]",
+        "[1]"
+      ],
+      "QUOTIENT_COMPATIBLE": false,
+      "GAMMA_AUTHORIZED": true,
+      "ADMISSIBLE_TRANSITION": false,
+      "break_witness_count": 8,
+      "first_witness": {
+        "h1": 0,
+        "h2": 2,
+        "h1~_P h2": true,
+        "m(h1)": 0,
+        "m(h2)": 1,
+        "P_before": "[0]=[2] (same class)",
+        "P_after": "[m(h1)]=[0] ≠ [m(h2)]=[1]"
+      }
+    },
+    {
+      "label": "REAL_BREAK + UNAUTHORIZED (Γ⊬m) — both axes fail independently",
+      "group": "Z/6Z",
+      "P_generator_subgroup": [
+        0,
+        2,
+        4
+      ],
+      "quotient_classes": [
+        "[0]",
+        "[1]"
+      ],
+      "QUOTIENT_COMPATIBLE": false,
+      "GAMMA_AUTHORIZED": false,
+      "ADMISSIBLE_TRANSITION": false,
+      "break_witness_count": 8,
+      "first_witness": {
+        "h1": 0,
+        "h2": 2,
+        "h1~_P h2": true,
+        "m(h1)": 0,
+        "m(h2)": 1,
+        "P_before": "[0]=[2] (same class)",
+        "P_after": "[m(h1)]=[0] ≠ [m(h2)]=[1]"
+      }
+    }
+  ],
+  "commit_status": "NO_COMMIT",
+  "push_status": "NO_PUSH",
+  "next_verb": "HUMAN_REVIEW",
+  "receipt_hash": "98feb3aa150c784ea83297b9cbdf3583180c2ac6e1bdb30673051f0b500ad86e"
+}

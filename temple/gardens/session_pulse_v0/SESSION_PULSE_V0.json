@@ -1,0 +1,38 @@
+{
+  "instrument": "SESSION_PULSE_V0",
+  "authority": false,
+  "canon": false,
+  "authority_delta": 0,
+  "derived_from_receipts": {
+    "compiled_instruments": 4,
+    "falsifiers": 4,
+    "observations": 26,
+    "model_calls": 0,
+    "authority_delta": 0,
+    "false_accepts_final": 0,
+    "cost_avoided": 1358,
+    "killed": 5
+  },
+  "declared_bookkeeping": {
+    "brain_distinctions": 7,
+    "dedup": 1,
+    "omega_start": 7,
+    "omega_end": 2,
+    "minutes": null
+  },
+  "delta_omega": -5,
+  "verdict": "💎 PRODUCTIVE",
+  "turbo_signature": true,
+  "bloom_candidate": true,
+  "invariants": {
+    "productivity_orthogonal_to_semantic": true,
+    "admitted_zero": true,
+    "authority_delta_zero": true
+  },
+  "law": "Derived ≻ Declared: verdict uses receipt-derived signals only; declared counts flagged.",
+  "MAX_ADMISSIBLE_STATEMENT": "PRODUCTIVE = mechanical projection of (🔥>0 ∧ (⚙>0 ∨ ΔΩ<0) ∧ ΔA=0); it is NOT a truth claim.",
+  "ecg_line": "🌈  🧠+7  🔥4  ⚙️4  🔵26  ☠️5  ♻️1  🟠Ω7→2  🧠☎️0  💰↓1358  👑=0  ║ 💎",
+  "commit_status": "NO_COMMIT",
+  "push_status": "NO_PUSH",
+  "next_verb": "HUMAN_REVIEW"
+}

@@ -1,0 +1,170 @@
+{
+  "experiment": "QWEN_GOBLIN_CHIDDUSH_SWARM_V0",
+  "authority": false,
+  "canon": false,
+  "claim": "NO_CLAIM",
+  "authority_delta": 0,
+  "duration_s": 596.4,
+  "rounds": 2,
+  "raw_candidates": 10,
+  "deduped_candidates": 10,
+  "consensus_note": "N_agents↑ ⇏ N_evidence↑ — clusters counted once",
+  "top10": [
+    {
+      "seat": "SWARM",
+      "chiddush": "P: ∃ ε > 0 such that for any partition Π of A, ||Σ|| ≡ ε·∏||Δ||, where ||·|| is a capacity norm. A composite state fails if and only if the *interaction* between the distinct failures creates a non-zero residual.",
+      "why_new": "Existing doctrine treats authority as a monoid acting on H; it misses the *measure* of the coupling space (the \"gaps\" between the agents).",
+      "falsifier": "N=2 agents. A_1 fails at a mode. A_2 fails at an orthogonal mode. Σ = 0. Yet the combined system fails at the diagonal.",
+      "consequence": "Authority becomes a tensor. Σ becomes a matrix with off-diagonal coupling terms.",
+      "novelty": 5,
+      "falsifiability": 5,
+      "leverage": 4,
+      "evidence": "SPECULATIVE",
+      "_consensus": 1,
+      "_score": 14
+    },
+    {
+      "seat": "FALSIFIER",
+      "chiddush": "Let H be a group, P the normal subgroup {e, a, a^2}, and m the left-translation by a^3. m(H1)≁_P m(H2) despite H1~_P H2.",
+      "why_new": "Existing doctrine assumes m̄ is well-defined (m(H1)~m(H2)) but does not explicitly state the commutator condition [m, π_P]=0.",
+      "falsifier": "Construct H=Z/6Z, P={0,2,4}. m(1)=3, m(3)=1. 1~3 (both in P-orbit), but 3≁1 under P-action.",
+      "consequence": "A_lawful must be restricted to the centralizer of m̄, or P must be replaced by the kernel of [m, π].",
+      "novelty": 4,
+      "falsifiability": 5,
+      "leverage": 4,
+      "evidence": "DERIVED",
+      "_consensus": 1,
+      "_score": 13
+    },
+    {
+      "seat": "ALGEBRA",
+      "chiddush": "A_lawful is not a monoid, but a category (or a pre-additive category) where the objects are the equivalence classes H/~_P, and the arrows are the elements of A_lawful. This implies a composition law: $a \\circ b$ for $a,b \\in A_lawful$, with identities $id_H$ for each class $H$, and composition is associative.",
+      "why_new": "\"monoid\" only implies a single binary operation (multiplication), not a composition of distinct transformations with non-trivial source/target classes.",
+      "falsifier": "If $a, b \\in A_lawful$ such that $a \\circ b$ is not in $A_lawful$, the monoid description is insufficient and a category/quasitopos is required.",
+      "consequence": "Allows defining \"kernel\" and \"image\" of transformations, enabling the discovery of missing algebraic structure (congruences, generators) in the transformation algebra.",
+      "novelty": 4,
+      "falsifiability": 4,
+      "leverage": 4,
+      "evidence": "SPECULATIVE",
+      "_consensus": 1,
+      "_score": 12
+    },
+    {
+      "seat": "WEIRD",
+      "chiddush": "Let $\\mathcal{C}$ be the category of provenance roots. A \"color\" $c$ is a functor $C \\to C$ acting as a projection. The \"idempotence\" constraint is $c \\circ c = id$. This implies $c$ is an idempotent natural transformation, requiring $\\mathcal{C}$ to be a category of idempotent algebras (or an $\\mathcal{I}$-monad), distinguishing between the algebra's \"state\" and its \"lawful action\".",
+      "why_new": "HELEN treats provenance as a scalar union (idempotent flag), ignoring the categorical tensor product and non-trivial naturality of the \"color\" map.",
+      "falsifier": "Construct a 2-object category with a non-trivial automorphism. The \"union\" fails to be idempotent under composition.",
+      "consequence": "\"Color\" is not a boolean filter but a categorical retraction, upgrading provenance from a scalar set to a categorical monad.",
+      "novelty": 4,
+      "falsifiability": 4,
+      "leverage": 4,
+      "evidence": "DERIVED",
+      "_consensus": 1,
+      "_score": 12
+    },
+    {
+      "seat": "ALGEBRA",
+      "chiddush": "Let M be the monoid of transformations on H. Let ~ be the equivalence relation on H. Define the congruence relation ≡ on M as: (m1, m2) ∈ ≡ iff ∀h1, h2: h1 ~ h2 ⇒ m1(h1) ~ m2(h2). This is a congruence on the monoid (M, ⋅). The kernel of the projection π: M → M/~ is ker(π) = {m ∈ M | m ≡ id}. This is not the monoid kernel; it is the congruence class of the identity.",
+      "why_new": "The monoid structure is the operation; the congruence is the relation making the operation well-defined. They are distinct algebraic objects.",
+      "falsifier": "If the congruence ≡ is trivial (only diagonal pairs), then the monoid is already a quotient. But if M is a non-abelian group, the congruence relation is a proper subset of M×M.",
+      "consequence": "The quotient algebra inherits its structure from the congruence, not just the monoid.",
+      "novelty": 4,
+      "falsifiability": 4,
+      "leverage": 4,
+      "evidence": "SPECULATIVE",
+      "_consensus": 1,
+      "_score": 12
+    },
+    {
+      "seat": "RECEIPT",
+      "chiddush": "A receipt is a morphism $r: O_{tool} \\to E_{evidence}$. The current system treats $\\Gamma$ as a pair $(t, o)$ with $o \\in O_{tool}$. The candidate is that $\\Gamma$ must be a 2-fold witness: $(t, o, \\delta)$ where $\\delta$ is a measurable displacement in $A_{lawful}$. Without $\\delta$, the receipt is a \"pass-through\" (no-consequence), violating Law: $cognition \\Leftrightarrow authority$.",
+      "why_new": "The current architecture defines receipts as output-based ($o \\in O_{tool}$). It does not define the *measure* of the displacement $\\delta$ in the state space. The distinction between \"a tool ran\" and \"the system changed\" is not yet formalized.",
+      "falsifier": "A tool $t$ returns $o$ that is identical to the previous state. $\\delta = 0$. The receipt $r$ is valid (the tool ran), but the system was not mutated. Authority is gained by a no-op transition.",
+      "consequence": "Receipts must be augmented with $\\delta$-measures. This forces every tool to define its state-space action, not just its output.",
+      "novelty": 4,
+      "falsifiability": 0,
+      "leverage": 0,
+      "evidence": "SPECULATIVE",
+      "_consensus": 1,
+      "_score": 4
+    },
+    {
+      "seat": "WUL",
+      "chiddush": "`Packet ≅ (Cap_A ↛ Cap_B) ⊗ Proof` where `Cap` is the quotient algebra of discriminators. This implies `Packet = Γ(Cap_A → Cap_B)` where the arrow is a *contravariant* homomorphism of the type system, not a value mapping.",
+      "why_new": "Current doctrine assumes `value` transfer; it does not enforce that the *shape* of the discriminator space must be preserved (isomorphic) in the receiving context, leaving room for \"interpretation\" drift.",
+      "falsifier": "Two agents with identical capabilities but different internal state representations (one uses `int` for money, one uses `decimal`) exchange a packet. If the packet is a *value* (prose/JSON), the receiving agent must *guess* the type. If the packet is a *witnessed isomorphism*, the mismatch is a structural error, not a semantic one.",
+      "consequence": "Agent-to-agent communication becomes a *type-check* (structural match) rather than a *semantic-parsing* (prose parsing). This reduces the \"ambiguity\" of the receiver's state update by eliminating the need for \"interpretation\" (which is a form of authority/ΔA drift).",
+      "novelty": 4,
+      "falsifiability": 0,
+      "leverage": 0,
+      "evidence": "SPECULATIVE",
+      "_consensus": 1,
+      "_score": 4
+    },
+    {
+      "seat": "FALSIFIER",
+      "chiddush": "`The action monoid A_lawful acting on the quotient [H]/~ is a *free* algebra; its topological realization (or continuity) requires a separate axiom not yet present.`",
+      "why_new": "The law is `cognition ⇏ authority`. It says *if* you have authority, you *can* act. It does *not* say the action is *continuous* or *measurable* in any topological sense. The \"quotient algebra\" is a set-theoretic construction, not a topological one.",
+      "falsifier": "`The \"capability topology\" section says \"space of discriminators\". This is a topology on the *input* space (tools), not on the *output* space (evidence). The action of `A_lawful` on `[H]` is a *monoid* action, not a *topological* action. The quotient is a set, not a space.`",
+      "consequence": "The \"capability topology\" is a red herring",
+      "novelty": 0,
+      "falsifiability": 0,
+      "leverage": 0,
+      "evidence": "SPECULATIVE",
+      "_consensus": 1,
+      "_score": 0
+    },
+    {
+      "seat": "CAPABILITY",
+      "chiddush": "The capability graph induces a poset $C$ where $c_i \\leq c_j$ if $c_j$ contains $c_i$'s observation. The dual order (informational dependency) is $c_i \\geq c_j$. The critical distinction is that $c_i$ and $c_j$ are *incomparable* if their information acquisition is non-commuting (e.g., $A \\otimes B \\neq B \\otimes A$ in the poset of tensor products). This creates a *lattice* of *informational equivalence classes* (the poset is a *lattice* but the *poset* is not a *lattice*).",
+      "why_new": "The current architecture assumes a *monoid* of information acquisition (evidence combines by union of roots). This CHIDDUSH proposes a *poset* of discriminators, which is a *lattice* but the *poset* is not a *",
+      "falsifier": "",
+      "consequence": "",
+      "novelty": 0,
+      "falsifiability": 0,
+      "leverage": 0,
+      "evidence": "SPECULATIVE",
+      "_consensus": 1,
+      "_score": 0
+    },
+    {
+      "seat": "VNEXT",
+      "chiddush": "Let $G$ be the gain of an experiment $e$ on belief state $\\Pi$. The objective is $J(e) = \\text{Cov}(\\log G(e), \\log \\Pi)$. This is *negative* mutual information (Fisher Information) — specifically, the *covariance* of the log-gain with the log-prior. Maximizing this selects experiments that *polarize* the prior, not just *inform* it.",
+      "why_new": "",
+      "falsifier": "A prior with a highly peaked, narrow Gaussian $\\mathcal{N}(0, \\epsilon^2)$ over a single binary parameter. An experiment with $G \\approx 1$ will have $J \\approx 0$ because the log-gain is unbounded. Wait, if $\\mathcal{N}$ is a Gaussian, the covariance is ill-defined.",
+      "consequence": "The \"D+",
+      "novelty": 0,
+      "falsifiability": 0,
+      "leverage": 0,
+      "evidence": "SPECULATIVE",
+      "_consensus": 1,
+      "_score": 0
+    }
+  ],
+  "killed_ideas": [
+    "`The action monoid A_lawful acting on the quotient [H]/~ is a *free* algebra; its topologi",
+    "The capability graph induces a poset $C$ where $c_i \\leq c_j$ if $c_j$ contains $c_i$'s ob",
+    "Let $G$ be the gain of an experiment $e$ on belief state $\\Pi$. The objective is $J(e) = \\"
+  ],
+  "unresolved": [
+    "P: ∃ ε > 0 such that for any partition Π of A, ||Σ|| ≡ ε·∏||Δ||, where ||·|| is a capacity",
+    "A_lawful is not a monoid, but a category (or a pre-additive category) where the objects ar",
+    "Let M be the monoid of transformations on H. Let ~ be the equivalence relation on H. Defin"
+  ],
+  "one_best_experiment": {
+    "seat": "SWARM",
+    "chiddush": "P: ∃ ε > 0 such that for any partition Π of A, ||Σ|| ≡ ε·∏||Δ||, where ||·|| is a capacity norm. A composite state fails if and only if the *interaction* between the distinct failures creates a non-zero residual.",
+    "falsifier": "N=2 agents. A_1 fails at a mode. A_2 fails at an orthogonal mode. Σ = 0. Yet the combined system fails at the diagonal.",
+    "evidence": "SPECULATIVE",
+    "falsifiability": 5,
+    "leverage": 4
+  },
+  "receipt": {
+    "claims_admitted": 0,
+    "external_actions": 0,
+    "governed_state_mutations": 0,
+    "commit_status": "NO_COMMIT",
+    "push_status": "NO_PUSH",
+    "next_verb": "HUMAN_REVIEW"
+  }
+}
