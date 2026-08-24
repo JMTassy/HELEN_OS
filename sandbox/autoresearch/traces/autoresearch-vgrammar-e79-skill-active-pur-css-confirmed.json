@@ -1,0 +1,67 @@
+{
+  "epoch": "E79",
+  "parent_epoch": "E78",
+  "target": "sandbox_visual_grammar",
+  "source_refs": [
+    "apps/helen-surface/cockpit_v4.html:20 (--pur:#bb88ff root token)",
+    "apps/helen-surface/cockpit_v4.html:71 (.si-state.active{color:var(--pur)})",
+    "apps/helen-surface/cockpit_v4.html:231 (TYPE_COLOR.skill:'#bb88ff')",
+    "apps/helen-surface/cockpit_v4.html:62-71 (full si-state CSS block)"
+  ],
+  "finding_type": "semantic_dual_use_pur_skill_type_vs_active_state",
+  "summary": "TYPE_COLOR.skill='#bb88ff' (=--pur) and CSS .si-state.active{color:var(--pur)} (=#bb88ff) are identical. E77 identified this as a JS STATE_COLOR collision; E79 confirms the collision is at the CSS rendering layer (.si-state.active). For sk1 (type=skill, state=active), si-dot renders --pur and si-state.active renders var(--pur) — indistinguishable. Viewer cannot tell 'this node is a skill' (TYPE identity) from 'this node is in active state' (STATE status). Fix domain: CSS .si-state.active, not JS STATE_COLOR (which has no active→active CSS binding). Proposed: .si-state.active → #9966cc (dim-purple, distinct from --pur).",
+  "evidence": [
+    "cockpit_v4.html:20: --pur:#bb88ff (root CSS token)",
+    "cockpit_v4.html:71: .si-state.active{color:var(--pur)} = #bb88ff",
+    "cockpit_v4.html:231: TYPE_COLOR.skill='#bb88ff' = --pur",
+    "collision script (corrected, using CSS classes): 5/12 nodes collide",
+    "sk1: type=skill(#bb88ff) == CSS state=active(var(--pur)=#bb88ff) — CONFIRMED",
+    "#9966cc (dim-purple): absent from all TYPE_COLOR values — confirmed by Python scan",
+    "#9966cc: absent from all CSS_STATE values — confirmed",
+    "After .si-state.active→#9966cc: 4/12 collisions (sk1 resolved; m1,m2,s2,s3 remain)"
+  ],
+  "full_collision_map": {
+    "current_5_of_12": [
+      "m1: memory(#00e5ff) == canon(#00e5ff) — E78",
+      "m2: memory(#00e5ff) == canon(#00e5ff) — E78",
+      "s2: source(#00ff88) == live(#00ff88) — E76",
+      "s3: source(#00ff88) == live(#00ff88) — E76",
+      "sk1: skill(#bb88ff) == active(#bb88ff) — E77/E79"
+    ],
+    "after_e79_fix_4_of_12": [
+      "m1: memory(#00e5ff) == canon(#00e5ff) — awaits E78 fix",
+      "m2: memory(#00e5ff) == canon(#00e5ff) — awaits E78 fix",
+      "s2: source(#00ff88) == live(#00ff88) — awaits E76 fix",
+      "s3: source(#00ff88) == live(#00ff88) — awaits E76 fix"
+    ]
+  },
+  "state_to_state_same_color": {
+    "#ffaa00": ["pending", "waiting"],
+    "#00ff88": ["shipped", "live"],
+    "#ff3355": ["dirty", "blocked"]
+  },
+  "hypothesis": "CSS .si-state.active=var(--pur)=#bb88ff collides with TYPE_COLOR.skill=#bb88ff at sk1. TYPE.skill (saturated --pur) must remain fixed as type-identity anchor. STATE.active (dim-purple #9966cc) is semantically lower-authority (runtime status), so dimming is directionally correct. Expected: sk1 si-dot(#bb88ff) ≠ si-state.active(#9966cc). Cross-channel 5→4 collisions.",
+  "proposed_tweak": "PROPOSAL ONLY — no edit applied: CSS line 71: .si-state.active{color:var(--pur)} → .si-state.active{color:#9966cc}. Rationale: (1) #9966cc absent from TYPE_COLOR and CSS_STATE — confirmed; (2) dim-purple preserves purple family while separating TYPE.skill saturated vs STATE.active dim; (3) semantics: TYPE is identity (full saturation), STATE is status (dim = derivative); (4) single CSS line, reversible; (5) no cross-surface scope — .si-state.active appears only in cockpit_v4.html.",
+  "metric": "Collision count: 5→4 after fix. sk1 si-dot(#bb88ff) vs si-state.active(#9966cc) — distinct on black bg. --pur becomes single-meaning: TYPE.skill identity only.",
+  "keep_rule": "KEEP finding: TYPE.skill=--pur and CSS .si-state.active=var(--pur) confirmed dual-use collision at CSS layer. #9966cc safe introduction — not in any palette value, semantically dimmed. HOLD edit for operator sign-off.",
+  "next": "E80: apply E76+E77/E79+E78 as compound fix set — three single-line changes resolve 5→0 cross-channel collisions. Requires operator admission for each epoch before compound application.",
+  "risk_flags": [
+    "#9966cc vs --pur (#bb88ff): delta ~20% brightness on dark bg — perceptual distance check recommended",
+    "STATE.active dim-purple: no prior precedent; operator must validate dim-as-derivative reading",
+    "STATE-to-STATE same-color (shipped=live=grn, dirty=blocked=red) is separate unaddressed problem"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "scanned_at": "2026-08-24T00:00:00Z",
+  "provenance": {
+    "proposer": "FABLE (FABLE-MAYOR mode)",
+    "gate": "FABLE_MIN_GATE — PASS (TYPE.skill=#bb88ff confirmed L231; CSS .si-state.active=var(--pur)=#bb88ff confirmed L71; #9966cc absent from all palette values confirmed by Python; collision 5→4 after fix confirmed; no cross-surface scope; PASS)",
+    "epoch": "E79",
+    "parent_epoch": "E78",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}

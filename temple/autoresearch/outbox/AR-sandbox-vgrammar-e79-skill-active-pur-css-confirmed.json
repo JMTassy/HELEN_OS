@@ -1,0 +1,15 @@
+{
+  "packet_type": "AUTORESEARCH_PACKET_V1",
+  "epoch": "E79",
+  "target": "sandbox_visual_grammar",
+  "authority": false,
+  "reducer_required": true,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "finding": "TYPE.skill=--pur (#bb88ff) == CSS .si-state.active=var(--pur) at sk1. CSS layer collision confirmed (L71). 5/12 nodes collide in current state. Proposed: .si-state.active → #9966cc (dim-purple). Fix: 5→4 collisions.",
+  "proposed_tweak": "cockpit_v4.html L71: .si-state.active{color:var(--pur)} → .si-state.active{color:#9966cc}",
+  "metric": "sk1 si-dot(#bb88ff) ≠ si-state.active(#9966cc) after fix. Collision 5→4.",
+  "next_epoch": "E80",
+  "trace_ref": "sandbox/autoresearch/traces/autoresearch-vgrammar-e79-skill-active-pur-css-confirmed.json",
+  "scanned_at": "2026-08-24T00:00:00Z"
+}
