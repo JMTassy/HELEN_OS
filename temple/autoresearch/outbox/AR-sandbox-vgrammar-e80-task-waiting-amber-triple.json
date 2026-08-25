@@ -1,0 +1,16 @@
+{
+  "packet_type": "AUTORESEARCH_PACKET_V1",
+  "epoch": "E80",
+  "target": "sandbox_visual_grammar",
+  "authority": false,
+  "reducer_required": true,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "finding": "TYPE_COLOR.task=#ffaa00 == STATE_COLOR.waiting=#ffaa00 == CSS .si-state.waiting{var(--amb)=#ffaa00}. Triple-use of amber confirmed. Node t3 (task/waiting): dot-color == label-color. Structural collision at JS map (L235) and CSS (L70). Also latent: task/pending would collide (pending also --amb, L63). Current live collision: 1 node (t3).",
+  "proposed_tweak": "cockpit_v4.html L70: .si-state.waiting{color:var(--amb)} → .si-state.waiting{color:#ff8800}; L236: STATE_COLOR.waiting:'#ffaa00' → '#ff8800'. Warm orange (#ff8800) vs amber (#ffaa00): visually distinct at small dot scale.",
+  "metric": "t3 si-dot(#ffaa00) ≠ si-state.waiting text(#ff8800) after fix. Visual: amber dot + orange label on t3. Collision 4→3.",
+  "next_epoch": "E81",
+  "next_target": "source/live green collision (s2, s3 — TYPE.source=#00ff88 == STATE.live=#00ff88; possibly intentional per Source Atlas)",
+  "trace_ref": "scratchpad/autoresearch-vgrammar-e80-task-waiting-amber.json",
+  "scanned_at": "2026-08-25T00:00:00Z"
+}
