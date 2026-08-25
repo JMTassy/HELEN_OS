@@ -1,0 +1,39 @@
+{
+  "packet_type": "AUTORESEARCH_PACKET_V1",
+  "epoch": "E81",
+  "parent_epoch": "E80",
+  "target": "sandbox_visual_grammar",
+  "authority": false,
+  "reducer_required": true,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "source_refs": [
+    "apps/helen-surface/cockpit_v4.html:67",
+    "apps/helen-surface/cockpit_v4.html:229",
+    "apps/helen-surface/cockpit_v4.html:347",
+    "apps/helen-surface/cockpit_v4.html:353",
+    "apps/helen-surface/cockpit_v4.html:384",
+    "apps/helen-surface/cockpit_v4.html:387",
+    "apps/helen-surface/cockpit_v4.html:459"
+  ],
+  "finding_type": "compound_triple_green_source_live",
+  "summary": "Nodes s2 (temple.html, source/live) and s3 (focus.html, source/live) emit THREE independent --grn signals simultaneously: (1) orbital canvas dot via TYPE_COLOR.source='#00ff88' at L347, (2) stream sidebar si-dot via TYPE_COLOR.source at L459, (3) si-state.live text via .si-state.live{color:var(--grn)} at L67. Three green signals on non-admitted objects = strongest false-admission reading in the graph. E76 (TYPE_COLOR.source) and E74 (.si-state.live) each address one layer; only their joint application eliminates all three. Additional finding: E76's proposed rgba(255,255,255,.65) for TYPE_COLOR.source is partially risky at L387 (pull-ring transform: col.replace(')',',${alpha})') would produce invalid CSS 'rgba(255,255,255,.65,0.08)' for selected source nodes). Hex alternative '#aaaaaa' avoids this — no ')' in hex, transform no-ops safely, pull-rings render at full gray.",
+  "evidence": [
+    "cockpit_v4.html:229: TYPE_COLOR.source='#00ff88' = --grn (admission-green per SA doctrine)",
+    "cockpit_v4.html:67: .si-state.live{color:var(--grn)} — state label also --grn on live nodes",
+    "GNODES s2 state='live', s3 state='live' — zero SA_ADMITTED source nodes in current data",
+    "cockpit_v4.html:347: col=TYPE_COLOR[n.type] → orbital canvas green dot for s2/s3",
+    "cockpit_v4.html:459: background:${TYPE_COLOR[n.type]} → sidebar si-dot green for s2/s3",
+    "L387 transform: col.replace(')',`,${alpha}`) — first ')' replacement: rgba(x,x,x,.65) → rgba(x,x,x,.65,0.08) — INVALID CSS; only triggered for selected source node",
+    "Hex '#aaaaaa' is safe: no ')' in string → L353 and L387 transforms are no-ops; globalAlpha (L355) handles dimming",
+    "After E74(L67→--pur) + E76-hex(L229→'#aaaaaa'): s2/s3 → gray dot + purple label = observed-runtime signal, zero green"
+  ],
+  "hypothesis": "If TYPE_COLOR.source is changed from '#00ff88' to '#aaaaaa' (hex gray) AND .si-state.live is changed from var(--grn) to var(--pur), then s2/s3 nodes emit zero admission-green signals, resolving the compound triple collision. Gray dot (observed) + purple label (runtime-active) is semantically consistent with SA doctrine: source files are tracked assets, not admitted governance objects.",
+  "proposed_tweak": "PROPOSAL ONLY — no edit applied. TWO-LINE JOINT PATCH: (1) cockpit_v4.html L229: source: '#00ff88' → '#aaaaaa'. Rationale: hex avoids rgba risk at L387; gray = 'observed/tracked', carries no admission semantics. (2) cockpit_v4.html L67: .si-state.live{color:var(--grn)} → .si-state.live{color:var(--pur)}. Rationale: live = runtime-operational, aligns with --pur='active/operational tier' established by .si-state.active. These are the same edits as E76+E74 proposals combined, with E76's rgba replaced by hex.",
+  "metric": "After patch: grep '#00ff88' in TYPE_COLOR block returns 0 lines (was: 1). grep 'si-state.live.*grn' returns 0 (was: 1). Visual: s2/s3 orbital dots render gray (#aaaaaa), sidebar si-dots gray, state label 'live' purple. Compound collision 3→0 on s2/s3. L387 pull-ring renders correctly for selected source node (gray rings, not invalid CSS). Expected collision total: 3→2 (s2/s3 compound resolved; sk1/sk2 skill/active --pur collision remains as epoch E79).",
+  "keep_rule": "KEEP: compound triple-green on non-admitted source nodes is the strongest SA doctrine violation in the current graph. Joint E74+E76-hex patch eliminates all three signals in two lines. REJECT rgba for TYPE_COLOR.source: L387 transform risk confirmed. Use hex '#aaaaaa' instead.",
+  "next_epoch": "E82",
+  "next_target": "sk1/sk2 TYPE_COLOR.skill=--pur == .si-state.active=--pur residual collision (E79 proposed #9966cc for TYPE_COLOR.skill; verify node count and check if E74's --pur reassignment for .si-state.live creates a new purple overload on live-skill nodes)",
+  "trace_ref": "temple/autoresearch/outbox/AR-sandbox-vgrammar-e81-source-live-compound-green.json",
+  "scanned_at": "2026-08-25T00:00:00Z"
+}
