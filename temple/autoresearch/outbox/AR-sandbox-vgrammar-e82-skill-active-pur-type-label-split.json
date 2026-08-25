@@ -1,0 +1,36 @@
+{
+  "packet_type": "AUTORESEARCH_PACKET_V1",
+  "epoch": "E82",
+  "parent_epoch": "E81",
+  "target": "sandbox_visual_grammar",
+  "authority": false,
+  "reducer_required": true,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "source_refs": [
+    "apps/helen-surface/cockpit_v4.html:20",
+    "apps/helen-surface/cockpit_v4.html:67",
+    "apps/helen-surface/cockpit_v4.html:71",
+    "apps/helen-surface/cockpit_v4.html:229",
+    "apps/helen-surface/cockpit_v4.html:234"
+  ],
+  "finding_type": "sk1_sk2_type_dot_vs_state_label_pur_collision",
+  "summary": "sk1 (skill/active) and sk2 (skill/active) show TYPE_COLOR.skill='#bb88ff'=--pur for the dot AND .si-state.active=var(--pur)=#bb88ff for the label — identical color on both elements. E79 proposed TYPE_COLOR.skill→#9966cc to split dot from label. Secondary question (E81 open): does E74 (.si-state.live→--pur) create a new live-active label collision? CONFIRMED ACCEPTABLE: live and active both map to --pur label, but text ('LIVE' vs 'ACTIVE') differentiates and SA doctrine groups both in operational tier. The dot color separates types: source→#aaaaaa (gray, E76-hex), skill→#9966cc (medium purple, E79). Applying E79 reduces collision count 2→1 (one doctrine-aligned live-active label convergence remains, not a breach).",
+  "evidence": [
+    "cockpit_v4.html:20: --pur:#bb88ff",
+    "cockpit_v4.html:229: skill:'#bb88ff' in TYPE_COLOR — dot = --pur",
+    "cockpit_v4.html:71: .si-state.active{color:var(--pur)} — label = --pur",
+    "sk1+sk2: both type='skill', state='active' → dot=#bb88ff, label=#bb88ff — SAME color, no visual separation",
+    "E74 check: .si-state.live→--pur (L67) + .si-state.active=--pur (L71) → both label=#bb88ff. ACCEPTABLE: same operational tier, text labels differ ('LIVE'/'ACTIVE'), dot colors differ (gray vs #9966cc)",
+    "No skill+live nodes in current GNODES (sk1/sk2 state='active') — live-active compound risk is structural, not manifest",
+    "E79 proposed #9966cc: darker medium-purple, no ')' in hex (L387 transform safe), visually distinct from --pur=#bb88ff"
+  ],
+  "hypothesis": "If TYPE_COLOR.skill is changed from '#bb88ff' to '#9966cc' (E79), then sk1/sk2 dot (#9966cc medium-purple) vs label (--pur=#bb88ff bright-purple) are visually distinct. The live-active label convergence (both --pur) is doctrine-aligned and does NOT constitute a breach: SA doctrine places 'live' and 'active' in the same operational tier; text content differentiates them. Collision count: 2→1.",
+  "proposed_tweak": "PROPOSAL ONLY — no edit applied. ONE-LINE PATCH: cockpit_v4.html L229: skill: '#bb88ff' → '#9966cc'. This is E79's proposal, now confirmed safe after E82 live-active analysis. Prerequisite: E74 (L67 live→--pur) and E76-hex (L229 source→#aaaaaa) should be applied jointly as part of the compound patch. Final state after all three: TYPE_COLOR={claim:'#ff00cc',memory:'#00e5ff',source:'#aaaaaa',task:'#ffaa00',skill:'#9966cc'}.",
+  "metric": "After E79 patch: grep '#bb88ff' in TYPE_COLOR block returns 0 (was: 1). TYPE_COLOR.skill is '#9966cc'. sk1/sk2 orbital dot color=#9966cc (not --pur). .si-state.active label remains --pur. Visual diff: skill dot (medium purple) ≠ active label (bright purple) → type and state are distinguishable by hue intensity. Collision 2→1. Remaining: live-active label convergence (doctrine-acceptable).",
+  "keep_rule": "KEEP E79 (#9966cc for TYPE_COLOR.skill). LIVE-ACTIVE LABEL CONVERGENCE: ACCEPTABLE — not a breach, no fix needed. After full joint patch (E74+E76-hex+E79): collision total 7→1 (one doctrine-aligned convergence). Recommend joint three-patch proposal to operator for single-admission decision.",
+  "next_epoch": "E83",
+  "next_target": "Verify joint patch correctness: simulate full STATE_COLOR block after E74+E76-hex+E79 — check no remaining --grn on non-admitted nodes, no duplicate hex values that create new collisions, and confirm --pur is not overloaded beyond two-label live-active convergence.",
+  "trace_ref": "temple/autoresearch/outbox/AR-sandbox-vgrammar-e82-skill-active-pur-type-label-split.json",
+  "scanned_at": "2026-08-25T00:00:00Z"
+}
