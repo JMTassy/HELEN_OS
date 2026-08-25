@@ -1,0 +1,36 @@
+{
+  "packet_type": "AUTORESEARCH_PACKET_V1",
+  "epoch": "E83",
+  "parent_epoch": "E82",
+  "target": "sandbox_visual_grammar",
+  "authority": false,
+  "reducer_required": true,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "source_refs": [
+    "apps/helen-surface/cockpit_v4.html:35",
+    "apps/helen-surface/cockpit_v4.html:38",
+    "apps/helen-surface/cockpit_v4.html:67",
+    "apps/helen-surface/cockpit_v4.html:226",
+    "apps/helen-surface/cockpit_v4.html:233"
+  ],
+  "finding_type": "joint_patch_simulation_safe",
+  "summary": "E83: simulated full state after joint patch E74+E76-hex+E79. Result: TYPE_COLOR reaches 0 collisions (5 types, 5 unique hex). No cross-domain (TYPE×STATE) collision introduced. --pur not overloaded beyond doctrine-acceptable live-active convergence (two labels, text differentiates, E82). --grn remaining on non-admitted nodes (sb-v.ok L35, sb-dot L38, vr-v.pass L97, tree CLEAN L515/555) are pre-existing E70-E72 findings — NOT introduced or worsened by joint patch. Joint patch is SAFE to propose as a compound admission.",
+  "evidence": [
+    "TYPE_COLOR post-patch: claim=#ff00cc, memory=#00e5ff, source=#aaaaaa, task=#ffaa00, skill=#9966cc — all unique, 0 collisions",
+    "STATE_COLOR post-patch: live=#bb88ff (E74), active=#bb88ff — doctrine-acceptable convergence (E82 confirmed)",
+    "#9966cc (skill post-E79) vs all STATE_COLOR values: no match",
+    "#aaaaaa (source post-E76-hex) vs all STATE_COLOR values: no match",
+    "Cross-domain check: TYPE_COLOR × STATE_COLOR hex intersection after patch = {} (empty) ✓",
+    "--grn remaining non-admitted: L35 sb-v.ok, L38 sb-dot, L97 vr-v.pass, L515/L555 tree CLEAN — all pre-existing E70-E72 scope",
+    "STATE_COLOR is dead code (0 JS usages, E75 confirmed) — simulation focused on CSS rules and TYPE_COLOR usage at L347/L384/L416/L459"
+  ],
+  "hypothesis": "If E74+E76-hex+E79 are applied jointly, then TYPE_COLOR has 0 internal collisions and 0 cross-domain TYPE×STATE collisions. The only remaining --pur convergence is live+active labels (doctrine-acceptable). No new --grn misuse introduced. Joint patch is safe for single compound admission proposal.",
+  "proposed_tweak": "PROPOSAL ONLY — no edit applied. THREE-LINE COMPOUND PATCH: (1) cockpit_v4.html L67: .si-state.live{color:var(--grn)} → var(--pur); (2) cockpit_v4.html L228: source:'#00ff88' → '#aaaaaa'; (3) cockpit_v4.html L231: skill:'#bb88ff' → '#9966cc'. Apply atomically or in E74→E76-hex→E79 order.",
+  "metric": "Post-patch grep: TYPE_COLOR hex values = {#ff00cc,#00e5ff,#aaaaaa,#ffaa00,#9966cc} — 5 distinct values for 5 types. grep '#00ff88' in TYPE_COLOR block = 0 matches. grep '#bb88ff' in TYPE_COLOR block = 0 matches. grep '#9966cc' in any STATE_COLOR entry = 0 matches. Collision count: TYPE_COLOR 0, remaining pre-patch --grn sites 4 (unchanged from E70-E72, outside patch scope).",
+  "keep_rule": "KEEP: joint patch E74+E76-hex+E79 is SAFE. Propose compound admission to operator. Post-patch TYPE_COLOR collision = 0. --pur not overloaded. No new --grn misuse. Pre-existing E70-E72 findings (sb-v.ok, sb-dot, vr-v.pass, tree CLEAN) remain open as natural E84+ frontier.",
+  "next_epoch": "E84",
+  "next_target": "Compound --grn fix: sb-v.ok → --teal, sb-dot → --teal (E70 deferred), vr-v.pass → --wh (E71), tree CLEAN → --wh (E72) — 4 sites, one compound patch.",
+  "trace_ref": "temple/autoresearch/outbox/AR-sandbox-vgrammar-e83-joint-patch-verify.json",
+  "scanned_at": "2026-08-25T00:00:00Z"
+}
