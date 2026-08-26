@@ -1,0 +1,40 @@
+{
+  "packet_type": "AUTORESEARCH_PACKET_V1",
+  "epoch": "E84",
+  "parent_epoch": "E83",
+  "target": "sandbox_visual_grammar",
+  "authority": false,
+  "reducer_required": true,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "source_refs": [
+    "apps/helen-surface/cockpit_v4.html:35",
+    "apps/helen-surface/cockpit_v4.html:97",
+    "apps/helen-surface/cockpit_v4.html:106",
+    "apps/helen-surface/cockpit_v4.html:515",
+    "apps/helen-surface/cockpit_v4.html:555"
+  ],
+  "finding_type": "compound_wh_fix_independent",
+  "summary": "E84: 4 independent --grn misuse sites confirmed (vr-v.pass L97, replay-row .ok L106, tree CLEAN L515/L555). Proposal: replace with --wh (all independent of E69 --teal). Plus: sb-v.ok L35 is dead CSS (0 HTML elements use it per grep) — safe to remove. sb-dot L38 remains CONTINGENT on E69 --teal token (not yet in :root). Post-patch var(--grn) count: 9 → 4 (L38 sb-dot, L64 shipped, L67 live-E74-target, L92 le-st.ok). L64 and L92 are doctrine-correct. L67 tracked under E74+E76-hex+E79 compound patch. L38 blocked on E69.",
+  "evidence": [
+    "Current var(--grn) count: 9 (grep confirmed)",
+    "L35 sb-v.ok: dead CSS — grep 'sb-v ok|sb-v.*ok' in HTML body = 0 element usages",
+    "L38 sb-dot: liveness dot — CONTINGENT on E69 --teal token (not in :root as of E84)",
+    "L64 si-state.shipped: LEGITIMATE — shipped = admitted, --grn doctrine-correct",
+    "L67 si-state.live: E74 target (→ --pur) — tracked in E74+E76-hex+E79 compound patch",
+    "L92 le-st.ok: LEGITIMATE — ledger status ok (E73 confirmed doctrine-correct)",
+    "L97 vr-v.pass: non-admitted verdict pass — --grn MISUSE, --wh is correct",
+    "L106 replay-row .ok: replay integrity label — --grn MISUSE, --wh is correct",
+    "L515 tree CLEAN: git-dirty indicator — --grn MISUSE, --wh is correct (CLEAN ≠ ADMITTED)",
+    "L555 cmd-dirty: same tree-CLEAN pattern via JS — --grn MISUSE, --wh is correct",
+    "--wh:#rgba(255,255,255,.88) already in :root L21 — no new token needed for E84"
+  ],
+  "hypothesis": "If --grn is replaced with --wh at L97/L106/L515/L555 and dead CSS L35 is removed, then non-admitted --grn misuse drops from 4 to 1 (only sb-dot L38 blocked on E69 --teal). Legitimate --grn sites (L64 shipped, L92 le-st.ok) are unaffected. E74 target (L67) tracked separately.",
+  "proposed_tweak": "PROPOSAL ONLY — no edit applied. COMPOUND PATCH (4 lines changed, 1 removed): (1) REMOVE L35: .sb-v.ok{color:var(--grn)} — dead CSS, 0 elements use this class combination. (2) L97: .vr-v.pass{color:var(--wh)} — verdict pass is not an admitted state. (3) L106: .replay-row .ok{color:var(--wh)} — replay integrity label, not an admitted state. (4) L515: color:${dirty?'var(--red)':'var(--wh)'} — tree CLEAN ≠ ADMITTED. (5) L555: d.dirty ? 'var(--red)' : 'var(--wh)' — same tree-CLEAN fix via JS. No new :root token required. Independent of E69/E70 --teal contingency. Reversible: restore var(--grn) at all 4 lines, restore L35 rule. Operator must apply and perceptual-check --wh readability on dark background.",
+  "metric": "Post-patch: grep 'var(--grn)' in cockpit_v4.html = 4 lines (L38 sb-dot, L64 shipped, L67 live, L92 le-st.ok). grep 'var(--wh)' = adds L97, L106, L515 (new); L555 via JS. L35 removed entirely. Misuse count: 4 → 1 (sb-dot only, E69-blocked). Legitimate count: 2 (shipped, le-st.ok) unchanged. E74-tracked: 1 (live). Perceptual: --wh rgba(255,255,255,.88) on --bg #000 passes WCAG AA contrast.",
+  "keep_rule": "KEEP: --wh correctly signals non-governance pass/ok/CLEAN states. --grn reserved for admitted objects (shipped, le-st.ok). Dead CSS removal (L35) is zero-risk. After operator applies E84, only sb-dot (E69/E70 blocked) and live→pur (E74 compound) remain open.",
+  "next_epoch": "E85",
+  "next_target": "sb-dot --teal contingency resolution: operator decides whether to admit E69 --teal token to :root or declare sb-dot --grn as doctrine-acceptable liveness signal (case closed). Two paths, one decision.",
+  "trace_ref": "temple/autoresearch/outbox/AR-sandbox-vgrammar-e84-compound-wh-fix.json",
+  "scanned_at": "2026-08-26T00:00:00Z"
+}
