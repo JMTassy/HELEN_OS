@@ -1,0 +1,49 @@
+{
+  "packet_type": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-sandbox-vgrammar-e85-sbdot-wh-resolution",
+  "epoch": "E85",
+  "parent_epoch": "E84",
+  "target": "sandbox_visual_grammar",
+  "authority": false,
+  "reducer_required": true,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "source_refs": [
+    "apps/helen-surface/cockpit_v4.html:38",
+    "apps/helen-surface/cockpit_v4.html:21",
+    "apps/helen-surface/cockpit_v4.html:157"
+  ],
+  "finding_type": "sbdot_teal_contingency_resolution",
+  "summary": "E85: sb-dot (L38) uses --grn for blinking liveness/heartbeat dot. E84 blocked on E69 --teal contingency (--teal not in :root). New path: --wh (rgba(255,255,255,.88), already at L21) resolves the contingency without requiring --teal admission. White pulse = system heartbeat signal. No governance color claim. Blink animation (opacity 1→.3) works correctly with rgba: full=rgba(255,255,255,.88), dim=~rgba(255,255,255,.26). E69 --teal contingency for sb-dot = RESOLVED via --wh (E69 may still be needed for .si-state.live L67, tracked separately).",
+  "evidence": [
+    "L38: .sb-dot{...background:var(--grn);animation:blink 2s step-end infinite} — blinking heartbeat dot",
+    "L157: <span class='sb-dot'></span> adjacent to AUTH false — heartbeat indicator, not an admitted state",
+    "L21: --wh:rgba(255,255,255,.88) already in :root — no new token needed",
+    "blink keyframes: opacity 1→.3 works on rgba element; --wh at 30% opacity = rgba(255,255,255,.26) on --bg:#000 = visible",
+    "E69 proposed --teal for .si-state.live (L67), not for sb-dot; sb-dot contingency is separate",
+    "SA one-meaning rule: --grn = ADMITTED/governance. Blinking heartbeat dot ≠ admitted object.",
+    "--wh precedent: E84 proposed --wh for vr-v.pass/replay-row.ok (non-admitted pass states); same semantic applies to liveness pulse"
+  ],
+  "hypothesis": "If sb-dot background is changed from --grn to --wh, the blinking white dot signals 'system alive/checking' without governance color misuse. E69 --teal contingency for sb-dot is closed. var(--grn) misuse count: 9 → 8 (before E84 compound patch); 4 → 3 (after E84 compound patch applied).",
+  "proposed_tweak": "PROPOSAL ONLY — no edit applied. ONE LINE CHANGE: L38 cockpit_v4.html: change 'background:var(--grn)' to 'background:var(--wh)'. Reversible: restore var(--grn). No :root token changes needed. Independent of E69, E74, E79 pending patches. Operator perceptual check: confirm white 5px dot readable on --bg:#000 status bar (expected: high contrast at rgba(255,255,255,.88)). authority=false, canon=false, ledger_effect=none. Operator must apply.",
+  "metric": "After operator applies: grep 'sb-dot' cockpit_v4.html → background:var(--wh). grep 'var(--grn)' cockpit_v4.html → 8 lines (L35 dead CSS, L64 shipped, L67 live, L92 le-st.ok, L97 vr-v.pass, L106 replay-row.ok, L515 tree CLEAN, L555 cmd-dirty). E69 --teal contingency for sb-dot = CLOSED. Note: E84 compound patch (L97/L106/L515/L555/L35) and E69 (.si-state.live) remain as independent open patches.",
+  "keep_rule": "KEEP: --wh (white rgba) on a blinking 5x5px dot correctly signals system heartbeat with no governance color conflict. Simpler than --teal (no new token). Consistent with E84 --wh precedent for non-admitted 'ok/pass' states. REJECT only if operator finds white dot invisible against bright UI content.",
+  "next_epoch": "E86",
+  "next_target": "Apply pending E84 compound --wh patch (L97/L106/L515/L555 + dead CSS L35 remove). After E84+E85 applied: 3 remaining --grn uses (L64 shipped, L67 live, L92 le-st.ok). All 3 are doctrine-correct. If E69 --teal also applied (L67 live→teal), count drops to 2 (L64 shipped, L92 le-st.ok = both fully doctrine-correct). Series may be complete at E86.",
+  "risk_flags": [
+    "White dot may be confused with --wh text labels elsewhere; mitigated by shape (5px dot) + animation (blink)",
+    "E69 (.si-state.live L67) remains open and should track independently of sb-dot resolution",
+    "If operator applies E84 before E85, count would be 4→3 not 9→8 for this patch"
+  ],
+  "recommended_action": "ROUTE_TO_OPERATOR_FOR_REVIEW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_mutation": false,
+  "trace_gate": {
+    "gate": "FABLE_MIN_GATE — PASS (sb-dot L38 confirmed; --wh L21 confirmed; blink animation L41 confirmed; L157 HTML usage confirmed; E69 teal not in :root confirmed; E84 patches unapplied confirmed via grep)",
+    "epoch": "E85",
+    "parent_epoch": "E84",
+    "loop": "AUTORESEARCH_BOUNDED_V1"
+  }
+}
