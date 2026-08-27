@@ -1,0 +1,37 @@
+{
+  "autoresearch_packet_version": "AR-1",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "epoch": "E86",
+  "target": "sandbox_visual_grammar",
+  "file": "apps/helen-surface/cockpit_v4.html",
+  "summary": "E86: Verification pass on E84+E85 compound patch readiness. Current: 9 var(--grn) sites (grep confirmed). --wh token at L21 (:root, rgba(255,255,255,.88)) declared but unused (grep -c var(--wh)=0 in CSS/JS). E84 targets (remove L35-dead, L97/L106/L515/L555 →--wh) + E85 target (L38 sb-dot →--wh) remain unapplied. Post-patch projection: --grn drops 9→3 (all doctrine-correct: L64-shipped, L67-live-E74-tracked, L92-le-st.ok). Misuse sites: 6→0. L67 live remains open under E74+E76 compound. Series endpoint visible at E86 operator-apply.",
+  "hypothesis": "If E84+E85 compound patch applied by operator (6 ops: remove L35, L38/L97/L106/L515/L555 →--wh), then --grn misuse = 0 and all 3 remaining --grn sites are doctrine-correct admitted states.",
+  "current_state": {
+    "var_grn_count": 9,
+    "var_wh_count_in_use": 0,
+    "var_wh_declared_in_root": true,
+    "var_wh_root_value": "rgba(255,255,255,.88)",
+    "misuse_sites_6": [
+      "L35 .sb-v.ok dead CSS — remove",
+      "L38 .sb-dot heartbeat — --wh (E85 proposal)",
+      "L97 .vr-v.pass verdict — --wh (E84 proposal)",
+      "L106 .replay-row .ok — --wh (E84 proposal)",
+      "L515 tree CLEAN inline — --wh (E84 proposal)",
+      "L555 cmd-dirty JS — --wh (E84 proposal)"
+    ],
+    "doctrine_correct_3": [
+      "L64 .si-state.shipped — admitted, --grn correct",
+      "L67 .si-state.live — E74/E76 open (teal path)",
+      "L92 .le-st.ok — ledger admitted, --grn correct"
+    ]
+  },
+  "proposed_tweak": "PROPOSAL ONLY — no edit applied. Combined E84+E85 (6 ops): (1) REMOVE L35. (2) L38 background:var(--grn)→var(--wh). (3) L97 .vr-v.pass color→var(--wh). (4) L106 .replay-row .ok color→var(--wh). (5) L515 ternary 'var(--grn)'→'var(--wh)'. (6) L555 JS assignment 'var(--grn)'→'var(--wh)'. Reversible. No :root changes.",
+  "metric": "After patch: grep -c 'var(--grn)' cockpit_v4.html = 3 (L64,L67,L92). grep -c 'var(--wh)' = 5 (L38,L97,L106,L515,L555). Misuse: 6→0.",
+  "keep_rule": "KEEP: --wh canonical for non-admitted ok/pass/clean/heartbeat. --grn reserved strictly for admitted states. Dead CSS (L35) zero-risk removal.",
+  "next_iteration": "E87: After operator applies E84+E85 compound — verify counts (--grn=3, --wh=5), perceptual audit white-on-black contrast, then decide E74/E69 for L67 live.",
+  "git_stage": "no",
+  "git_commit": "no"
+}
