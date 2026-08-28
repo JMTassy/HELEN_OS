@@ -1,0 +1,42 @@
+{
+  "autoresearch_packet_version": "AR-1",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "epoch": "E88",
+  "target": "sandbox_visual_grammar",
+  "file": "apps/helen-surface/cockpit_v4.html",
+  "summary": "E88: Pre-operator-apply count verification. All 8 sites from E87 compound patch confirmed present in current file. Pre-patch: var(--grn)=9, var(--wh)=0. Post-patch projection: var(--grn)=2 (L64 shipped, L92 le-st.ok), var(--wh)=6. Arithmetic: 9 - 1(remove L35) - 6(swap L38/L67/L97/L106/L515/L555) = 2. L234 STATE_COLOR live uses '#00ff88' hex (not var(--grn)) — correctly excluded from var-grep count. All 8 op targets verified against grep output. No missed sites in cockpit_v4.html scope. Series endpoint: if operator applies E87 patch and grep -c 'var(--grn)' = 2, target is doctrine-clean.",
+  "hypothesis": "If E87 8-op compound patch is applied by operator, then grep -c 'var(--grn)' cockpit_v4.html = 2 and grep -c 'var(--wh)' = 6, closing the sandbox_visual_grammar --grn misuse series.",
+  "evidence": {
+    "pre_patch_var_grn": 9,
+    "pre_patch_var_wh": 0,
+    "ops_verified": [
+      "L35: .sb-v.ok{color:var(--grn)} — CONFIRMED PRESENT (dead CSS remove)",
+      "L38: .sb-dot background:var(--grn) — CONFIRMED PRESENT",
+      "L67: .si-state.live{color:var(--grn)} — CONFIRMED PRESENT",
+      "L97: .vr-v.pass{color:var(--grn)} — CONFIRMED PRESENT",
+      "L106: .replay-row .ok{color:var(--grn)} — CONFIRMED PRESENT",
+      "L234: STATE_COLOR live:'#00ff88' — CONFIRMED PRESENT (hex, not var)",
+      "L515: ternary 'var(--grn)' — CONFIRMED PRESENT",
+      "L555: JS 'var(--grn)' — CONFIRMED PRESENT"
+    ],
+    "doctrine_correct_remaining": [
+      "L64: .si-state.shipped{color:var(--grn)} — shipped = admitted (keep)",
+      "L92: .le-st.ok{color:var(--grn)} — ledger status admitted (keep)"
+    ],
+    "post_patch_projection": {
+      "var_grn": 2,
+      "var_wh": 6,
+      "arithmetic": "9 - 1(remove) - 6(swap) = 2"
+    },
+    "scope_note": "Other surface files (temple.html, home_v1.html, goblin/*.html) use #00ff88 but are outside cockpit_v4.html scope of this series"
+  },
+  "proposed_tweak": "PROPOSAL ONLY — no edit applied. Operator applies E87 8-op compound: (1) remove L35 dead CSS, (2-8) swap 6 var(--grn) → var(--wh) + L234 hex swap. Fully reversible.",
+  "metric": "After operator applies patch: grep -c 'var(--grn)' apps/helen-surface/cockpit_v4.html = 2. grep -c 'var(--wh)' = 6. Series closes if both match.",
+  "keep_rule": "KEEP: E88 pre-apply verification complete. 8-op patch is arithmetic-correct and all sites confirmed present. Operator-apply is the only remaining step.",
+  "next_iteration": "E89: Operator applies E87 compound patch. Post-apply grep confirms --grn=2 --wh=6. If confirmed, sandbox_visual_grammar series is endpoint-reached.",
+  "git_stage": "no",
+  "git_commit": "no"
+}
