@@ -1,0 +1,38 @@
+{
+  "autoresearch_packet_version": "AR-1",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "epoch": "E87",
+  "target": "sandbox_visual_grammar",
+  "file": "apps/helen-surface/cockpit_v4.html",
+  "summary": "E87: Perceptual audit + L67 reclassification. E84+E85 patch still not applied (--wh=0 uses confirmed). Contrast audit: --wh 16.0:1, --grn 15.7:1 on #000 — both pass WCAG AA; --wh swap is perceptually safe. New finding: L67 .si-state.live misclassified in E86 as 'doctrine-correct.' Semantic audit: live applies to source nodes (temple.html, focus.html) = active-running, not ledger-admitted. Analogous to si-state.active (--pur). Green is NOT correct for 'live.' E86 count was wrong: misuse=7 (not 6), doctrine-correct=2 (not 3). Additional scope: L234 JS STATE_COLOR live:'#00ff88' also needs patch. Revised compound: 8 ops. Post-patch: --grn=2 (L64 shipped, L92 le-st.ok), --wh=6.",
+  "hypothesis": "If L67 .si-state.live is 'active-running source' not 'admitted,' then --grn is misuse there; E86 doctrine-correct count of 3 is off-by-one.",
+  "evidence": {
+    "var_wh_uses": 0,
+    "var_grn_uses": 9,
+    "contrast_wh_on_black": "16.0:1 (WCAG AA pass)",
+    "contrast_grn_on_black": "15.7:1 (WCAG AA pass)",
+    "L67_semantic": "si-state.live applied to source nodes: temple.html, focus.html — currently-running surface, not ledger-admitted",
+    "L234_js_also_affected": "STATE_COLOR live:'#00ff88' in JS object at L234 — same misuse",
+    "si_state_active_uses_pur": true,
+    "live_active_equivalence": "both = running/connected, neither = admitted"
+  },
+  "e86_correction": {
+    "e86_misuse_count": 6,
+    "e87_misuse_count": 7,
+    "e86_doctrine_correct": 3,
+    "e87_doctrine_correct": 2,
+    "new_misuse_sites": [
+      "L67 .si-state.live — active source ≠ admitted → --wh",
+      "L234 JS STATE_COLOR live:'#00ff88' → replace with --wh hex or token"
+    ]
+  },
+  "proposed_tweak": "PROPOSAL ONLY — no edit applied. Revised compound E84+E85+E87 (8 ops): (1) REMOVE L35 .sb-v.ok dead CSS. (2) L38 .sb-dot background:var(--grn)→var(--wh). (3) L67 .si-state.live color:var(--grn)→var(--wh). (4) L97 .vr-v.pass color→var(--wh). (5) L106 .replay-row .ok color→var(--wh). (6) L234 STATE_COLOR live:'#00ff88'→'rgba(255,255,255,.88)'. (7) L515 ternary 'var(--grn)'→'var(--wh)'. (8) L555 JS assignment 'var(--grn)'→'var(--wh)'. Reversible. No :root token changes.",
+  "metric": "After 8-op patch: grep -c 'var(--grn)' cockpit_v4.html = 2 (L64 shipped, L92 le-st.ok). grep -c 'var(--wh)' = 6. Misuse: 9→0. --grn strictly ADMITTED only.",
+  "keep_rule": "KEEP: E87 reclassification. live ≠ admitted. --grn = admitted states only (2 sites). --wh = all non-governance ok/pass/live/clean/heartbeat signals (6 sites post-patch). Perceptual swap safe: 16.0:1 vs 15.7:1.",
+  "next_iteration": "E88: Operator applies 8-op compound patch (E84+E85+E87). Verify --grn=2, --wh=6. Final perceptual confirmation pass. Series endpoint reached if counts match.",
+  "git_stage": "no",
+  "git_commit": "no"
+}
