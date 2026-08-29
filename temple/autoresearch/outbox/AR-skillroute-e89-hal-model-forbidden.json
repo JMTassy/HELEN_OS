@@ -1,0 +1,30 @@
+{
+  "autoresearch_packet_version": "AR-1",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "epoch": "E89",
+  "target": "skill_routing",
+  "file": "tools/hal_driver.py",
+  "summary": "E89: HAL model routing violation. tools/hal_driver.py L17 and tools/run_hal_epoch.py L14 both set HAL_MODEL_DEFAULT = 'deepseek-r1:14b'. MODEL_ROUTING_V1.md §7 explicitly forbids this: 'HAL routed to a generative reasoning model (e.g., deepseek-r1) → Violates §1 (governance role) → Reviewer tries to reason around the rules.' Spec §3 mandates HAL → mistral:latest (small, fast, rule-following). The current wiring uses the exact example cited in the forbidden table. 3 line changes required; fully reversible.",
+  "hypothesis": "If HAL_MODEL_DEFAULT is 'deepseek-r1:14b' (reasoning model), then HAL review outputs violate MODEL_ROUTING_V1.md §7 and HAL may reason around governance rules rather than apply them strictly.",
+  "evidence": {
+    "violation_sites": [
+      "tools/hal_driver.py:5   HAL_MODEL   = deepseek-r1:14b   (comment line)",
+      "tools/hal_driver.py:17  HAL_MODEL_DEFAULT  = 'deepseek-r1:14b'  (runtime default)",
+      "tools/run_hal_epoch.py:14  HAL_MODEL   = deepseek-r1:14b  (comment line)"
+    ],
+    "spec_mandate": "MODEL_ROUTING_V1.md §3 table: HAL (reviewer) | AUTHORITY | strict gate | mistral:latest | small, fast, rule-following",
+    "forbidden_entry": "MODEL_ROUTING_V1.md §7: 'HAL routed to a generative reasoning model (e.g., deepseek-r1) → Violates §1 (governance role) → Reviewer tries to reason around the rules'",
+    "spec_rationale": "MODEL_ROUTING_V1.md §1+§3: 'The reviewer should be small, fast, directive. A larger more creative model produces worse HAL outputs because it tries to reason its way around the rules instead of just applying them.'",
+    "prior_skillroute_series": "Separate series (E10-E56) examined NLU/Rule2b routing logic; this is a distinct model-assignment violation",
+    "reversibility": "2 default-constant edits (hal_driver.py L17, run_hal_epoch.py L14); rollback is same 2-line revert"
+  },
+  "proposed_tweak": "PROPOSAL ONLY — no edit applied. Swap HAL_MODEL_DEFAULT from 'deepseek-r1:14b' to 'mistral:latest' in tools/hal_driver.py L17 and tools/run_hal_epoch.py L14. Operator may also update comment lines L5/L14 for clarity. Fully reversible via revert.",
+  "metric": "After operator applies: grep shows HAL_MODEL_DEFAULT = 'mistral:latest' in both files. No 'deepseek' in HAL model path. MODEL_ROUTING_V1.md §3+§7 compliance restored.",
+  "keep_rule": "KEEP: deepseek-r1:14b is explicitly named as a forbidden HAL model in the spec. No counter-evidence needed — violation is textual/architectural, not empirical.",
+  "next_iteration": "E90: Operator applies swap. Verify grep confirms mistral in both files. Observe if HAL review packets show tighter rule-application vs prior deepseek outputs (behavioral delta if epoch logs exist).",
+  "git_stage": "no",
+  "git_commit": "no"
+}
