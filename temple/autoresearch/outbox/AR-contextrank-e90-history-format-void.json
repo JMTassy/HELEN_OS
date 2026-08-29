@@ -1,0 +1,25 @@
+{
+  "epoch": "E90",
+  "target": "context_ranking",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "git_stage": "no",
+  "git_commit": "no",
+  "final": "HOLD_FOR_OPERATOR",
+  "summary": "E90: context_ranking — memory.get_history() returns unbounded NDJSON fact entries (schema: event_id/key/value/status/actor/timestamp). These are injected into LLM context via helen.py:53-57 concatenated with the system message. adapters.py:21-26 extracts h.get('metadata',{}).get('role') and h.get('content','') from each history item. Memory fact entries have neither 'metadata' nor 'content' keys, so ALL history items resolve to role='user', content='' — empty user messages. History occupies context slots but carries zero semantic content. Secondary: memory.py:75 uses datetime.utcnow() — mu_DETERMINISM violation per CLAUDE.md.",
+  "hypothesis": "If memory.get_history() returns structurally incompatible entries (no 'metadata'/'content' keys), then all injected history becomes empty user messages, wasting context tokens and providing zero conversational continuity to the LLM.",
+  "evidence": {
+    "memory_py_L116": "get_history() returns List of {event_id, key, value, status, actor, timestamp} — no 'metadata' or 'content' keys",
+    "helen_py_L53_57": "history = self.memory.get_history(); context = [system_msg] + history",
+    "adapters_py_L21_26": "role = h.get('metadata',{}).get('role') → None → 'user'; content = h.get('content','') → ''",
+    "result": "Every memory fact entry injects as {'role': 'user', 'content': ''} — semantically void",
+    "search_facts_unused": "search_facts(query) with ORDER BY timestamp DESC exists but is never called in context assembly",
+    "utcnow_violation": "memory.py:75 datetime.utcnow() — mu_DETERMINISM violation"
+  },
+  "proposed_tweak": "PROPOSAL ONLY — no edit applied. Add get_context_messages(n=20) to MemoryKernel: returns last N entries as [{'metadata':{'role':'user'},'content':f\"{e['key']}: {e['value']}\"}]. Replace helen.py:53 history=self.memory.get_history() with history=self.memory.get_context_messages(n=20). Fix memory.py:75 datetime.utcnow() → datetime.now(timezone.utc). All three changes are 1-line each and fully reversible.",
+  "metric": "After operator applies: adapter receives non-empty content strings for history items. len(history) <= 20 on every speak() call. No datetime.utcnow() in memory.py.",
+  "keep_rule": "KEEP: format mismatch is structural and falsifiable (grep confirms no 'content' key in memory fact schema). No counter-evidence possible — empty string injection is deterministic.",
+  "next_epoch": "E91: operator applies get_context_messages(n=20) + utcnow fix; verify non-empty history content reaches adapter in test run."
+}
