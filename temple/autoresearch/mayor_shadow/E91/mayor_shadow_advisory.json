@@ -1,0 +1,112 @@
+{
+  "schema": "MAYOR_SHADOW_ADVISORY_V0",
+  "cycle": 91,
+  "subject": "E91 prompt_compression packet + FABLE_LOOP_V2 activation",
+  "inputs": {
+    "her_insight": "temple/autoresearch/mayor_shadow/E91/her_insight.json",
+    "hal_critique": "temple/autoresearch/mayor_shadow/E91/hal_critique.json",
+    "packet": "temple/autoresearch/outbox/AR-promptcomp-e91-unbounded-history-window.json",
+    "loop_proposal": "temple/autoresearch/FABLE_LOOP_V2.md",
+    "guard_state": "scripts/outbox_guard.py: packets=116 decided=31 unconsumed=85 ceiling=30 FAIL"
+  },
+  "consensus": {
+    "state": "CONDITIONAL",
+    "agree": [
+      "get_history() is unbounded and no adapter layer truncates (HER potential_claims[0..1], HAL C-001)",
+      "outbox-guard has been red on main for 30 consecutive trace pushes (HER potential_claims[3], HAL C-003)",
+      "the loop needs carry-forward, a target cap, and a consumption gate (HER content, HAL recommendation=refine)",
+      "one window, not two: apply it in get_context_messages(), leave get_history() intact (HER counter_perspectives[1], HAL OBJ-002)"
+    ],
+    "disagree": [
+      {
+        "point": "sequencing",
+        "her": "patch E90+E91 first, then activate V2, then COMMIT: on",
+        "hal": "drain the outbox to 30 or below first; nothing outbox-touching merges green until then (OBJ-005, severity block)",
+        "shadow_reading": "HAL's ordering is the CI's ordering. The gate already exists and already fails; MAYOR does not need to rule on preference, only to read the check."
+      }
+    ]
+  },
+  "ranked": [
+    {
+      "claim_id": "C-003",
+      "shadow_rank": 10,
+      "why": "receipted by 30 Actions runs; blocks everything below it"
+    },
+    {
+      "claim_id": "C-001",
+      "shadow_rank": 9,
+      "why": "reproducible by grep in a fresh checkout; two-line fix; composes with E90"
+    },
+    {
+      "claim_id": "C-005",
+      "shadow_rank": 8,
+      "why": "explains the 38-packet pile-up; git log over apps/helen-surface since E60 returns 0 commits against 8 cited cockpit_v4.html lines"
+    },
+    {
+      "claim_id": "C-002",
+      "shadow_rank": 6,
+      "why": "measured, but on backup files and only material after E90 lands"
+    },
+    {
+      "claim_id": "C-004",
+      "shadow_rank": 4,
+      "why": "specified, never run; one dry run in a fresh checkout would settle it"
+    }
+  ],
+  "objections": [
+    {
+      "claim_id": "C-004",
+      "objection": "V2 has no execution receipt. One run with the guard red and one with it green are required before the schedule is switched."
+    },
+    {
+      "claim_id": "C-005",
+      "objection": "RESOLVED this cycle: the 'no commit touching the CSS' half was a count over packet files; the git query was run (0 commits on apps/helen-surface since 2026-08-18) and the claim now carries it."
+    }
+  ],
+  "proposed_operator_decisions": {
+    "note": "Vocabulary is operator_pen.DECISIONS = acted | rejected | deferred. MAYOR-SHADOW proposes; only JM writes consumption_log.ndjson.",
+    "sequence": [
+      {
+        "step": 1,
+        "action": "drain",
+        "detail": "Mark deferred, one note 'superseded by FABLE_LOOP_V2 target freeze', the unconsumed packets in these prefixes: sandbox (38), initrank (8), context (4), ctxrank (2), ctx (1), halctx (1), init (1), summ (3), sumweights (3). That is 61 decisions; unconsumed falls from 85 to 24, under the ceiling of 30.",
+        "keeps_live": "promptcomp (8), contextrank (6), skillroute (6), skill (1), three hash-named packets = 24",
+        "tool": "python3 temple/autoresearch/operator_pen.py --mark <id> --decision deferred --note '...'"
+      },
+      {
+        "step": 2,
+        "action": "apply",
+        "detail": "One patch, one branch: get_context_messages(n=20) in MemoryKernel; helen.py:53 uses it; memory.py:75 datetime.now(timezone.utc). Scoped test: seed 50 entries, call speak() on the stub adapter, assert len(context) == 21 and every history content is non-empty. Then mark AR-contextrank-e90 and AR-promptcomp-e91 acted with the merge SHA as the note.",
+        "resolves": ["C-001", "C-002", "OBJ-002", "OBJ-004"]
+      },
+      {
+        "step": 3,
+        "action": "dry-run V2",
+        "detail": "Run the FABLE_LOOP_V2 prompt once by hand in a fresh checkout with COMMIT: off. Expect a triage epoch if the guard is still red, or CARRIED: E91 if it is green. Apply OBJ-003's fallback (count-only freeze when source_refs is absent) to the prompt before this run.",
+        "resolves": ["C-004", "OBJ-003"]
+      },
+      {
+        "step": 4,
+        "action": "switch schedule",
+        "detail": "Paste V2 into the stored scheduled prompt. Leave COMMIT: off for the first two scheduled runs; flip to on once a scheduled run has shown CARRIED and a green guard.",
+        "resolves": ["OBJ-001"]
+      }
+    ],
+    "on_this_branch": {
+      "branch": "autoresearch/e91-prompt-compression",
+      "proposal": "deferred until step 1 completes; then merge (outbox-guard turns green once unconsumed is at or below 30 on the merged tree)",
+      "why_not_acted_now": "the branch carries one more packet into a red outbox; merging it now keeps main red"
+    }
+  },
+  "advisory": true,
+  "note": "MAYOR-SHADOW ranks and sequences only. No verdicts. No receipts. Advisory input for JM. HER proposed, HAL critiqued (refine, WARN on the finding, BLOCK on the sequencing), consensus is conditional on drain-first. JM admits. Ledger sleeps.",
+  "actor": "MAYOR_SHADOW",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "claim_status": "NO_CLAIM",
+  "final": "HOLD_FOR_OPERATOR",
+  "created_at": "2026-09-03T12:39:23.019017+00:00"
+}

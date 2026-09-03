@@ -1,0 +1,29 @@
+{
+  "schema_name": "HER_INSIGHTS_V1",
+  "schema_version": "1.0.0",
+  "insight_id": "her_e91_prompt_compression_window",
+  "generated_at": "2026-09-03T12:39:23.019017+00:00",
+  "task_id": "AR-promptcomp-e91-unbounded-history-window",
+  "insight_type": "proposal",
+  "content": "HER position (proposer). Three moves, in this order. (1) Apply E90 and E91 as one patch: MemoryKernel gains get_context_messages(n=20) that formats the last 20 fact entries as role/content messages, helen.py:53 calls it, memory.py:75 moves to datetime.now(timezone.utc). One window, not two. (2) Replace the stored scheduled prompt with FABLE_LOOP_V2 so each run carries the previous NEXT forward, freezes a target after three unapplied epochs, and refuses to write a packet while scripts/outbox_guard.py is red. (3) Turn COMMIT: on so every kept finding lands as a branch the operator can merge or close. The loop has produced 91 epochs of proposals and applied none. The binding constraint is not discovery. It is the absence of an apply path.",
+  "confidence": "reasoned",
+  "related_concepts": [
+    "prompt_compression",
+    "context_ranking (E90)",
+    "consumption organ (outbox_triage / operator_pen)",
+    "NO RECEIPT = NO CLAIM",
+    "termination is sacred"
+  ],
+  "potential_claims": [
+    "get_history() is read in full on every speak() and no layer between the file and the LLM call bounds it",
+    "adapters.py contains zero truncation sites",
+    "a tail-20 window removes about 45 percent of bytes on the 36-entry epoch-5 memory file",
+    "outbox-guard has concluded failure on 30 consecutive trace pushes to main (E60 to E90)",
+    "loop V1 has never continued a previous epoch's NEXT"
+  ],
+  "counter_perspectives": [
+    "the live memory.ndjson holds one entry, so the measured saving is on backup files, not on a running session",
+    "a window on get_history() touches the replay path; the safer window lives in a new method, leaving get_history() untouched",
+    "activating V2 with the guard red means the next several runs are triage-only, which looks like the loop stopping"
+  ]
+}

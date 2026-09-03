@@ -1,0 +1,104 @@
+{
+  "schema_name": "HAL_CRITIQUE_V1",
+  "schema_version": "1.0.0",
+  "critique_id": "hal_e91_prompt_compression_window",
+  "generated_at": "2026-09-03T12:39:23.019017+00:00",
+  "responding_to_insight": "her_e91_prompt_compression_window",
+  "extracted_claims": [
+    {
+      "claim_id": "C-001",
+      "claim_text": "get_history() reads the whole NDJSON file on every speak() and nothing between memory.py:116 and the adapter's messages list bounds it.",
+      "claim_type": "factual",
+      "evidence_required": [
+        "memory.py:116-124 has no parameter and no slice",
+        "helen.py:53-57 prepends the full list",
+        "grep truncat|max_tokens|num_ctx|history[-N:] over adapters.py returns 0 hits"
+      ],
+      "blockers": [],
+      "admissibility_status": "conditionally_admissible"
+    },
+    {
+      "claim_id": "C-002",
+      "claim_text": "A tail-20 window cuts the injected payload by about 45 percent on a 36-entry memory file.",
+      "claim_type": "consequence",
+      "evidence_required": [
+        "measured: memory_epoch5.ndjson 21636 bytes full, 11816 bytes tail-20",
+        "measured: memory.ndjson.BACKUP_legacy 31160 bytes full, 16919 bytes tail-20"
+      ],
+      "blockers": [
+        "the live memory.ndjson has 1 entry (170 bytes); the saving is demonstrated on backup files, not on a running session",
+        "under the E90 schema mismatch every entry currently reaches the LLM as an empty message, so today's byte waste is near zero and the saving only materialises after E90 is applied"
+      ],
+      "admissibility_status": "conditionally_admissible"
+    },
+    {
+      "claim_id": "C-003",
+      "claim_text": "The outbox-guard workflow has concluded failure on 30 consecutive trace(autoresearch) pushes to main, E60 through E90.",
+      "claim_type": "governance",
+      "evidence_required": [
+        "GitHub Actions run list for outbox-guard.yml on main, runs 59 through 89, every conclusion = failure",
+        "local scripts/outbox_guard.py: unconsumed=84 (85 with E91) against ceiling 30"
+      ],
+      "blockers": [],
+      "admissibility_status": "conditionally_admissible"
+    },
+    {
+      "claim_id": "C-004",
+      "claim_text": "FABLE_LOOP_V2 will stop packet production while the guard is red and will carry each epoch's NEXT into the following run.",
+      "claim_type": "capability",
+      "evidence_required": [
+        "one V2 run executed in a fresh checkout with the guard red, ending in a triage epoch and no new outbox file",
+        "one V2 run executed with the guard green, showing CARRIED: E<n> in its final block"
+      ],
+      "blockers": [
+        "V2 has not been dry-run; its behaviour is specified, not observed"
+      ],
+      "admissibility_status": "requires_evidence"
+    },
+    {
+      "claim_id": "C-005",
+      "claim_text": "The binding constraint on the loop is the absence of an apply path, not the quality of discovery.",
+      "claim_type": "architectural",
+      "evidence_required": [
+        "116 packets, 31 decided, 0 applied patches traceable to a packet",
+        "measured: git log --since=2026-08-18 -- apps/helen-surface returns 0 commits, while AR-sandbox-vgrammar-e84 and -e85 list source_refs at apps/helen-surface/cockpit_v4.html lines 21, 35, 38, 97, 106, 157, 515, 555"
+      ],
+      "blockers": [],
+      "admissibility_status": "conditionally_admissible"
+    }
+  ],
+  "objections": [
+    {
+      "objection_id": "OBJ-001",
+      "objection_text": "E91 wrote a new packet into an outbox that was already 54 over the ceiling. The packet documents the graveyard and deepens it in the same act. V2's consumption gate would have refused this write.",
+      "severity": "warn",
+      "resolution_path": "Accept as the last V1-shaped packet; under V2 this becomes a triage epoch. No further packets until unconsumed is at or below 30."
+    },
+    {
+      "objection_id": "OBJ-002",
+      "objection_text": "Two windows are proposed for the same data: E90's get_context_messages(n=20) and E91's get_history(n=20). Applying both double-windows nothing but leaves two knobs for one behaviour.",
+      "severity": "warn",
+      "resolution_path": "Apply the window inside get_context_messages() only. Leave get_history() untouched so the replay/reconstruction contract in its docstring stays exact."
+    },
+    {
+      "objection_id": "OBJ-003",
+      "objection_text": "V2's TARGET CAP tests 'no commit touching its source_refs', but E90 and older packets carry no source_refs field. The rule is not computable for them.",
+      "severity": "warn",
+      "resolution_path": "Add a fallback: when source_refs is absent, count epochs only, and freeze at three consecutive packets for the target."
+    },
+    {
+      "objection_id": "OBJ-004",
+      "objection_text": "The 45 percent figure is honest but measured on backup files. A reader will quote it as a live saving.",
+      "severity": "info",
+      "resolution_path": "Report it as 'on a 36-entry file' and add the scoped test from the packet (50 seeded entries, assert len(context) == 21) as the acceptance metric."
+    },
+    {
+      "objection_id": "OBJ-005",
+      "objection_text": "Nothing outbox-touching can merge green until the guard passes. HER's ordering (patch first, then V2, then COMMIT) has the CI gate against it: any branch that adds a packet inherits the red check.",
+      "severity": "block",
+      "resolution_path": "Drain first. The operator pen must bring unconsumed to 30 or below before any autoresearch branch can be merged with a green outbox-guard."
+    }
+  ],
+  "recommendation": "refine",
+  "reasoning": "The findings hold: C-001 and C-003 are reproducible from disk and from the Actions log, and nothing in the diff crosses a sovereign path. What does not hold is HER's sequencing. OBJ-005 is a block because the CI gate, not a preference, decides it: the outbox-guard check is red on main and on this branch, so patch-first cannot merge green. Refine the proposal to drain-first, collapse the two windows into one (OBJ-002), and make the target cap computable (OBJ-003). With those three changes HAL would move to proceed. Verdict on the underlying E91 finding: WARN, not BLOCK; required fixes are on the plan, not on the evidence."
+}
