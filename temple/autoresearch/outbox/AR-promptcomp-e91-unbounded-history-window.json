@@ -1,0 +1,46 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-promptcomp-e91-unbounded-history-window",
+  "epoch": "E91",
+  "target": "prompt_compression",
+  "carried_from": "E90 (context_ranking) — NEXT executed: adapter truncation audit",
+  "finding_type": "proposal",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "claim_status": "NO_CLAIM",
+  "final": "HOLD_FOR_OPERATOR",
+  "scanned_at": "2026-09-03",
+  "source_refs": [
+    "helen_os_scaffold/helen_os/memory.py:116-124",
+    "helen_os_scaffold/helen_os/helen.py:53-57",
+    "helen_os_scaffold/helen_os/adapters.py:17-26",
+    "helen_os_scaffold/memory/memory_epoch5.ndjson",
+    "temple/autoresearch/outbox/AR-contextrank-e90-history-format-void.json"
+  ],
+  "summary": "E91: prompt_compression — MemoryKernel.get_history() reads the entire append-only NDJSON on every speak() and helen.py:57 prepends all of it to the LLM context. No window, no cap, and the adapter layer applies no truncation either (E90 NEXT audited: 0 truncation sites in adapters.py — the only slices are prompt_hash[:8] and a stub-mode print). Token payload therefore grows linearly with session length. Today the entries arrive as empty user messages (E90 schema mismatch), so the waste is N void message slots; once E90's get_context_messages() lands, the same unbounded read becomes N full fact bodies. A tail window composes with E90 and is needed either way.",
+  "hypothesis": "If get_history() gains a tail-window parameter (n=20) and helen.py:53 passes it, expect the injected history to be bounded at 20 entries regardless of file length, with roughly a 45% byte reduction on the 36-entry epoch-5 memory file and no loss of the replay path (n=None keeps the full read).",
+  "evidence": [
+    "memory.py:116-124 get_history() has no parameters; iterates every line of self.ndjson_path; returns full list",
+    "helen.py:53 history = self.memory.get_history(); helen.py:57 context = [system_msg] + history",
+    "adapters.py grep for truncat|max_tokens|num_ctx|history[-N:] = 0 hits; only prompt_hash[:8] (L84) and stub print prompt[:80] (L88)",
+    "OllamaAdapter.generate() and OpenAIAdapter.generate() forward every history item as a message; no window",
+    "memory/memory_epoch5.ndjson: 36 entries, 21636 raw bytes, tail-20 = 11816 bytes (45.4% smaller)",
+    "memory/memory.ndjson.BACKUP_legacy: 36 entries, 31160 raw bytes, tail-20 = 16919 bytes (45.7% smaller)",
+    "memory/memory.ndjson (live checkout): 1 entry, 170 bytes — growth is append-only per MemoryKernel docstring",
+    "get_history() docstring says 'for replay/reconstruction' — full read is the replay contract; context assembly reuses it without a window"
+  ],
+  "metric": "Measured this run: 0 truncation sites in adapters.py; 0 limit params on get_history(); tail-20 window = 45.4% byte reduction on memory_epoch5.ndjson (11816 / 21636). Command: python3 -c 'json.loads per line; sum(len(json.dumps(r))) full vs rows[-20:]'.",
+  "proposed_tweak": "PROPOSAL ONLY — no edit applied. memory.py: def get_history(self, n: Optional[int] = None) -> List[Dict]: ... return history[-n:] if n else history. helen.py:53: history = self.memory.get_history(n=20). Two lines, default n=None preserves the replay/reconstruction contract, fully reversible. Composes with E90's get_context_messages(n=20) — if E90 lands first, apply the window there instead and leave get_history() untouched.",
+  "recommended_action": "Operator decides: apply the two-line window as one patch with E90's format fix (both touch memory.py and helen.py:53), or defer both. Verify with a scoped test: seed memory.ndjson with 50 entries, call speak() against the stub adapter, assert len(context) == 21.",
+  "risk_flags": [
+    "get_history() is also the replay/reconstruction path — window must be opt-in (n=None default) or replay silently loses entries",
+    "memory.py:75 datetime.utcnow() mu_DETERMINISM violation still open (flagged E90)",
+    "outbox guard is over ceiling (unconsumed=84 > 30) — this packet raises it to 85; see FABLE_LOOP_V2.md commit gate",
+    "GitHub Actions outbox-guard.yml has concluded failure on every trace(autoresearch) push to main from E60 (2026-08-18) through E90 (2026-08-29): 30 consecutive red runs; the loop kept producing through a red gate"
+  ],
+  "rule": "KEEP — structural and falsifiable: grep shows no window anywhere between file read and LLM call. Reject only if an operator points to an upstream cap this audit missed.",
+  "next": "E92: operator applies E90+E91 as one patch; run scoped test (50 seeded entries → len(context)==21); measure bytes sent to adapter before/after. If not applied by E93, FREEZE prompt_compression per loop V2 target cap."
+}
