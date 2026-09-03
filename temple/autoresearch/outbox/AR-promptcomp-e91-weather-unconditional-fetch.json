@@ -1,0 +1,27 @@
+{
+  "packet_type": "AUTORESEARCH_OBSERVATION_V1",
+  "epoch": "E91",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "target": "prompt_compression",
+  "surface": "prompt_compression",
+  "file": "helen_os_scaffold/helen_os/helen.py",
+  "lines": [48, 56, 80, 81, 121, 125],
+  "hypothesis": "If WeatherService.get_weather() is gated by keyword relevance on user_message (frozenset of ~9 weather terms), then non-weather speak() calls avoid a live wttr.in network call (0.1s–10s timeout=10) and drop ~10 tokens of irrelevant context from the system prompt; >95% of production queries are unaffected.",
+  "evidence": {
+    "network_call_unconditional": "helen.py:48 — WeatherService.get_weather(self.location) on every speak() call",
+    "timeout": "weather.py:13 — requests.get(url, timeout=10)",
+    "token_savings": "~10 tokens per non-weather call (weather_mock byte count 44 / 4 = 11 tokens)",
+    "system_prompt_total_approx": "450 tokens (1800 bytes)",
+    "output_block_polluted": "helen.py:80–81 — [WEATHER_CONTEXT] block injected unconditionally into formatted_output",
+    "second_call_site": "helen.py:121 — identical unconditional fetch in plan_and_execute()",
+    "no_prior_art": "scan of AR-promptcomp-e* packets confirms no prior weather-gate proposal"
+  },
+  "proposed_patch": "helen.py:46 — add: _WEATHER_KW = frozenset({'weather','rain','temperature','wind','forecast','hot','cold','sunny','climat'}); _needs_weather = any(kw in user_message.lower() for kw in _WEATHER_KW); replace L48: weather = WeatherService.get_weather(self.location) if _needs_weather else {'display':'N/A','condition_emoji':'','condition':''}; suppress [WEATHER_CONTEXT] block in formatted_output when not _needs_weather. Identical gate at L121.",
+  "reversibility": "one-line toggle; OPERATOR_APPLY only",
+  "metric": "mock requests.get call-count in unit test: keyword-free message → 0 calls; 'what is the weather?' → 1 call; make test green",
+  "rule": "KEEP if call-count test passes and make test green; REJECT if any test uses weather output on a non-weather message",
+  "next": "E92 — operator-apply gate + test; then re-rank surface_ranker for prompt_compression evidence_quality bump"
+}
