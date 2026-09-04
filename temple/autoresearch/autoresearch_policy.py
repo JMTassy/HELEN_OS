@@ -203,6 +203,9 @@ def validate_packet(packet: dict[str, Any]) -> tuple[bool, list[str]]:
         if phrase in text_to_scan:
             errors.append(f"network action detected: {phrase!r}")
 
+    # Optional terminal-classification fields: absent is legal, malformed is not
+    errors += validate_terminal_fields(packet)
+
     return (len(errors) == 0), errors
 
 
@@ -224,6 +227,99 @@ def check_forbidden_paths(changed_files: list[str]) -> list[str]:
                 violations.append(f"FORBIDDEN: {path!r} matches prefix {prefix!r}")
                 break
     return violations
+
+
+# ---------------------------------------------------------------------------
+# terminal classification + child policy  (PROPOSAL · authority=false)
+#
+#   NO CHILD EPOCH WITHOUT A NEW DISCRIMINATOR.
+#   Verification(parent) -> Receipt(parent), never -> ChildPacket.
+#
+#   DEAD                -> STOP
+#   QUOTIENTED          -> STOP
+#   IMPLEMENTATION_GAP  -> WORK            (implementation, not autoresearch)
+#   RETAINED_CANDIDATE  -> VERIFY_OPERATOR (may spawn only with explicit new
+#                                           discriminator AND falsifier)
+#   NEW_FRONTIER        -> MAY_SPAWN       (the only ordinary spawning class)
+# ---------------------------------------------------------------------------
+
+TERMINAL_CLASSES = frozenset({
+    "DEAD",
+    "QUOTIENTED",
+    "IMPLEMENTATION_GAP",
+    "RETAINED_CANDIDATE",
+    "NEW_FRONTIER",
+})
+
+SPAWN_POLICY = {
+    "DEAD": "STOP",
+    "QUOTIENTED": "STOP",
+    "IMPLEMENTATION_GAP": "WORK",
+    "RETAINED_CANDIDATE": "VERIFY_OPERATOR",
+    "NEW_FRONTIER": "MAY_SPAWN",
+}
+
+SPAWNING_CLASSES = frozenset({"NEW_FRONTIER", "RETAINED_CANDIDATE"})
+
+
+def spawn_policy(terminal_class: str | None) -> str:
+    """What a packet of this class may do next. Unknown or missing class -> STOP."""
+    return SPAWN_POLICY.get(str(terminal_class), "STOP")
+
+
+def validate_terminal_fields(packet: dict[str, Any]) -> list[str]:
+    """Type/value checks for the optional terminal fields. Absent fields are legal
+    (legacy packets); present fields must be well-formed. Fails closed on values."""
+    errors: list[str] = []
+    tc = packet.get("terminal_class")
+    if tc is not None and tc not in TERMINAL_CLASSES:
+        errors.append(f"terminal_class must be one of {sorted(TERMINAL_CLASSES)}, got {tc!r}")
+    d = packet.get("discriminators")
+    if d is not None and (not isinstance(d, list) or not all(isinstance(x, str) and x.strip() for x in d)):
+        errors.append("discriminators must be a list of non-empty strings")
+    f = packet.get("falsifier")
+    if f is not None and not ((isinstance(f, str) and f.strip()) or (isinstance(f, dict) and f)):
+        errors.append("falsifier must be a non-empty string or dict")
+    return errors
+
+
+def validate_child(child: dict[str, Any], parent: dict[str, Any]) -> tuple[bool, list[str]]:
+    """spawn(c) => new_discriminator(c) AND falsifier(c) AND parent(c); else REJECT_CHILD.
+
+    Pure. Returns (ok, errors). Every error is prefixed REJECT_CHILD.
+    """
+    errors: list[str] = []
+    errors += [f"REJECT_CHILD: child {e}" for e in validate_terminal_fields(child)]
+    errors += [f"REJECT_CHILD: parent {e}" for e in validate_terminal_fields(parent)]
+
+    # parent(c): the child must name its parent, and it must be this parent
+    pe, pid = child.get("parent_epoch"), child.get("parent_id")
+    names_parent = (pe is not None and pe == parent.get("epoch")) or (pid is not None and pid == parent.get("packet_id"))
+    if not names_parent:
+        errors.append("REJECT_CHILD: child does not name this parent (parent_epoch or parent_id)")
+
+    # the parent's class must permit spawning
+    pc = parent.get("terminal_class")
+    if pc is None:
+        errors.append("REJECT_CHILD: parent has no terminal_class")
+    elif pc not in SPAWNING_CLASSES:
+        errors.append(f"REJECT_CHILD: parent class {pc} -> {spawn_policy(pc)}; it does not spawn research children")
+
+    # new_discriminator(c): D_c \ Closure(D_p) must be non-empty
+    cd = child.get("discriminators")
+    if not isinstance(cd, list) or not cd:
+        errors.append("REJECT_CHILD: child declares no discriminators")
+    else:
+        new = set(cd) - set(parent.get("discriminators") or [])
+        if not new:
+            errors.append("REJECT_CHILD: no new discriminator — verification attaches a receipt to the parent, not a child packet")
+
+    # falsifier(c)
+    f = child.get("falsifier")
+    if not ((isinstance(f, str) and f.strip()) or (isinstance(f, dict) and f)):
+        errors.append("REJECT_CHILD: child declares no falsifier")
+
+    return (len(errors) == 0), errors
 
 
 # ---------------------------------------------------------------------------
