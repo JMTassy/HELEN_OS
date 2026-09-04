@@ -49,12 +49,15 @@ ACCESS_LOG_PATH = KNOWLEDGE_DIR / "access_log.ndjson"
 SKIP_DIRS = {"node_modules", ".git", ".venv", "__pycache__", "worktrees"}
 SUPPORTED_EXTS = {".md", ".txt", ".pdf", ".py", ".json", ".ndjson"}
 
-# Source epistemic priority — controls retrieval ranking weight per corpus
-SOURCE_WEIGHT = {
-    "plugins": 1.0,
-    "apple_notes": 0.8,
-    "helen_os": 0.9,
-}
+# Source epistemic priority lives on KnowledgeSource.weight (sources.py) —
+# single registry, no silent top-tier fallback for unregistered sources (E38).
+UNKNOWN_SOURCE_WEIGHT = 0.5
+
+
+def _source_weight(source_id: str) -> float:
+    from helen_os.knowledge.sources import SOURCES
+    src = SOURCES.get(source_id)
+    return src.weight if src is not None else UNKNOWN_SOURCE_WEIGHT
 
 # Tag extraction pattern: #word or #wordWord or #word_word
 TAG_RE = re.compile(r'#([A-Za-z][A-Za-z0-9_]{2,})')
@@ -339,7 +342,7 @@ class KnowledgeEngine:
             if tags:
                 tag_bonus = sum(0.5 for t in tags if t.lower() in [ut.lower() for ut in unit.tags])
             # Source epistemic weight
-            source_w = SOURCE_WEIGHT.get(unit.source_id, 1.0)
+            source_w = _source_weight(unit.source_id)
             score = (word_hits + phrase_bonus + tag_bonus) * source_w
             if score > 0:
                 scored.append((score, unit))

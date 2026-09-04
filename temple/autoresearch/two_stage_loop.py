@@ -86,48 +86,63 @@ ANTI_LOOP_THRESHOLD = 2
 # Experiment templates per surface
 # ---------------------------------------------------------------------------
 
+# Templates re-anchored 2026-08-11 from the E34–E42 discovery trail.
+# Each template now cites a real file path and a metric measurable with
+# existing tools — replacing the founding-era phantom targets flagged in
+# E35 (context_ranking) and E37 (init_ranking_weights).
 _EXPERIMENT_TEMPLATES: dict[str, dict] = {
     "init_ranking_weights": {
-        "hypothesis": "Adjusting init ranking weights improves salience of non-sovereign surfaces without altering kernel truth.",
-        "tweak": "Increase weight of 'context_ranking' by 0.05 in init_ranking_weights config.",
-        "metric": "baseline: current salience score; success_threshold: salience increases ≥0.03 on next observe cycle",
-        "rule": "KEEP if salience improves and no sovereign diff; DISCARD if ranking diverges or dirty_paths increase",
-        "next": "MEASURE baseline → apply tweak → re-observe → compare",
+        # E37: old tweak referenced a nonexistent per-surface config.
+        "hypothesis": "Raising init_ranking_weights E from 6→7 (score 18.0→21.0) restores it above context_ranking (19.2) as cold-start winner; the E11 no-cold-start-self-selection guard must be re-confirmed first.",
+        "tweak": "In surface_ranker._DEFAULT_PARAMS raise init_ranking_weights evidence_quality 6→7; REQUIRED: re-confirm the E11 guard rationale before applying.",
+        "metric": "baseline: rank({}).selected == 'context_ranking' at 19.2; success_threshold: selection changes only with an explicit E11 guard waiver",
+        "rule": "KEEP if selection change is intended and E11 guard re-confirmed; DISCARD if cold-start self-selection returns",
+        "next": "Re-read E11 rationale → decide guard waiver → apply or close",
     },
     "context_ranking": {
-        "hypothesis": "Tightening context ranking reduces authority-shaped output in non-sovereign layers.",
-        "tweak": "Add MAYBE_CANDIDATE prefix to routed proposals in context_ranking output.",
-        "metric": "baseline: count authority-shaped verbs in last 3 outputs; success_threshold: ≤2 authority verbs",
-        "rule": "KEEP if authority verb count drops; DISCARD if operator-facing outputs degrade",
-        "next": "MEASURE baseline → apply prefix tweak → re-run scan → count authority verbs",
+        # E35: no context_ranking output module exists; metric re-anchored to
+        # authority_language_linter + the loop's own trace file.
+        "hypothesis": "Reducing authority-shaped language in loop report HYPOTHESIS+TWEAK fields improves non-sovereign clarity.",
+        "tweak": "Rewrite any trace HYPOTHESIS or TWEAK field that triggers an authority_language_linter soft_warning to observational framing.",
+        "metric": "baseline: tools/validators/authority_language_linter.py --stdin over last 3 two_stage_loop_trace.jsonl HYPOTHESIS+TWEAK strings, total soft_warnings; success_threshold: 0 soft_warnings",
+        "rule": "KEEP if soft_warning count drops to 0 and text passes linter; DISCARD if rewrite introduces vague terms",
+        "next": "MEASURE baseline soft_warnings on trace entries → rewrite → re-run linter → compare",
     },
     "sandbox_visual_grammar": {
-        "hypothesis": "One visual grammar rule change measurably reduces sovereign-color false positives.",
-        "tweak": "Remove 🟢 from non-admitted sandbox renders; replace with 🔵 OBSERVED.",
-        "metric": "baseline: count misused 🟢 in last 10 sandbox renders; success_threshold: 0 misuse",
-        "rule": "KEEP if misuse drops to 0; DISCARD if visual regression reported",
-        "next": "MEASURE baseline misuse → apply grammar rule → re-render → count",
+        # E39–E42: emoji-misuse frontier exhausted; surface audit closed 11/11.
+        # Remaining finding: liveness-green residual in two warm-light files.
+        "hypothesis": "Moving presence badges off var(--ok) completes the E41 liveness-off-green migration; green stays reserved for admitted/verdict states.",
+        "tweak": "focus.html L41-42 + helen2027.html L45-46: presence badge var(--ok) → var(--helen), rgba(22,163,74,…) border → rgba(14,165,233,…); --ok stays defined.",
+        "metric": "baseline: 4 presence-badge var(--ok) declarations across the two files; success_threshold: 0, with --ok still reserved for genuine ok states",
+        "rule": "KEEP if liveness renders off-green with no visual regression; DISCARD if regression reported",
+        "next": "Apply 4 CSS declarations → re-grep → codify decoration/governance hex table in HELEN_SOURCE_ATLAS_V1",
     },
     "prompt_compression": {
-        "hypothesis": "Compressing the CORE_PROMPT header reduces token overhead without losing invariant coverage.",
-        "tweak": "Remove one redundant 'Read the supplied...' clause from CORE_PROMPT header.",
-        "metric": "baseline: token count of CORE_PROMPT; success_threshold: ≥10% reduction, 0 invariant loss",
-        "rule": "KEEP if token count drops and all invariants remain detectable; DISCARD if any invariant is dropped",
-        "next": "MEASURE baseline token count → apply compression → verify invariant coverage → compare",
+        # E36: admitted-skill lesson computed but never fed back — the
+        # {feedback} slot carries rejection signal only.
+        "hypothesis": "Appending the admitted-skill lesson to feedback_lines restores admission signal to the next cycle's {feedback} slot.",
+        "tweak": "self_improve_loop_v1.py: after lesson = f\"Admitted skill …\" add feedback_lines.append(lesson); update the line-275 comment to 'Cycle lessons (admissions + gate failures)'.",
+        "metric": "baseline: 0 'Admitted skill' lines in feedback_lines after an admitted cycle; success_threshold: 1 per admitted skill",
+        "rule": "KEEP if admitted and rejected cycles both feed back; DISCARD if the feedback slot bloats or duplicates",
+        "next": "Apply one-line append → run self_improve loop tests → inspect feedback_lines symmetry",
     },
     "skill_routing": {
-        "hypothesis": "Routing proposals through a single classifier reduces false ADMIT signals.",
-        "tweak": "Add one-line PROPOSAL_GATE check before skill_routing emits any ADMIT candidate.",
-        "metric": "baseline: count ADMIT signals in last 5 routing outputs; success_threshold: 0 false ADMITs",
-        "rule": "KEEP if false ADMIT count drops; DISCARD if valid routing is blocked",
-        "next": "MEASURE false ADMITs baseline → add gate → re-route test set → compare",
+        # E34: OK_QUARANTINED missing from failure_to_class, silently
+        # defaults to TRANSFORM; correct class is VALIDATE.
+        "hypothesis": "Mapping OK_QUARANTINED→VALIDATE stops quarantined clusters from defaulting to the wrong TRANSFORM class.",
+        "tweak": "skill_discovery_v1.py failure_to_class: add \"OK_QUARANTINED\": \"VALIDATE\" after the ERR_THRESHOLD_NOT_MET entry.",
+        "metric": "baseline: analyze_capability_gap(OK_QUARANTINED cluster)['class'] == 'TRANSFORM'; success_threshold: == 'VALIDATE'",
+        "rule": "KEEP if quarantined clusters classify VALIDATE and no other class shifts; DISCARD if routing tests break",
+        "next": "Apply one-line mapping → re-run live probe → run autonomy tests",
     },
     "summarization_weights": {
-        "hypothesis": "Reweighting summarization toward evidence-density improves recall of receipt references.",
-        "tweak": "Increase receipt_reference weight by 0.1 in summarization_weights.",
-        "metric": "baseline: receipt references in last 3 summaries; success_threshold: ≥1 receipt per summary",
-        "rule": "KEEP if receipt density improves; DISCARD if summary length increases >20%",
-        "next": "MEASURE receipt density baseline → adjust weight → re-summarize → compare",
+        # E38: register_source() has no coupling to SOURCE_WEIGHT — dynamic
+        # sources silently get fallback 1.0, outranking helen_os (0.9).
+        "hypothesis": "Coupling register_source() to an explicit per-source weight removes the silent 1.0 fallback that outranks helen_os (0.9).",
+        "tweak": "Add weight field to KnowledgeSource (plugins=1.0, helen_os=0.9, apple_notes=0.8); engine.py reads SOURCES[id].weight with unknown-source fallback 0.5.",
+        "metric": "baseline: dynamically-registered source weight resolves to 1.0 fallback; success_threshold: explicit weight required, unknown → 0.5",
+        "rule": "KEEP if the two registries stay coupled and existing rankings hold; DISCARD if helen_os ranking shifts unexpectedly",
+        "next": "Apply dataclass field + engine lookup → run knowledge tests → verify ranking order stable",
     },
 }
 
