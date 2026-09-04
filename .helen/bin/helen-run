@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# HELEN V0 seam runner.
+# task manifest → preflight → readonly worker → normalize → verify → HOLD_FOR_OPERATOR
+# Fail closed at every stage.
+set -euo pipefail
+
+TASK="${1:?usage: helen-run <task.yaml>}"
+HELEN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+REPO_ROOT="$(dirname "$HELEN_DIR")"
+TASK_ID="$(basename "$TASK" .yaml)"
+RUN_ID="${TASK_ID}-$(date -u +%Y%m%dT%H%M%SZ)"
+RUN_DIR="$HELEN_DIR/runs/$RUN_ID"
+mkdir -p "$RUN_DIR"
+
+echo "── M1 preflight"
+if ! python3 "$HELEN_DIR/bin/preflight.py" --task "$TASK" > "$RUN_DIR/preflight.json"; then
+  code=$?
+  cat "$RUN_DIR/preflight.json"
+  echo "NO_RECEIPT"
+  [ "$code" = 2 ] && echo "HOLD_FOR_OPERATOR" || echo "REJECTED_AT_PREFLIGHT"
+  exit "$code"
+fi
+echo "   PROCEED"
+
+echo "── M4 worker: readonly_observer (raw, unsealed)"
+python3 "$HELEN_DIR/providers/readonly_observer.py" --task "$TASK" \
+  > "$RUN_DIR/readonly_observer.raw.json"
+
+echo "── M5/M6 normalize → sealed packet"
+python3 "$HELEN_DIR/bin/normalize.py" \
+  --provider deterministic --role readonly_observation --task-id "$TASK_ID" \
+  --input "$RUN_DIR/readonly_observer.raw.json" \
+  > "$RUN_DIR/readonly_observer.packet.json"
+
+echo "── M6 verify seal"
+python3 "$HELEN_DIR/bin/verify_packet.py" "$RUN_DIR/readonly_observer.packet.json"
+
+echo "── M8 operator packet"
+python3 "$HELEN_DIR/bin/operator_packet.py" "$RUN_DIR"
+
+echo ""
+echo "NO_RECEIPT"
+echo "HOLD_FOR_OPERATOR"
+echo "Run directory: $RUN_DIR"

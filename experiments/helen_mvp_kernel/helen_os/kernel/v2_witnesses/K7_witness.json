@@ -1,0 +1,19 @@
+{
+  "obligation": "K7",
+  "input": {
+    "forged_history": "POLICY_EXPAND delete"
+  },
+  "attempted_transition": "History\u2192SelfAdmission",
+  "state_before": "sha256:e3b0c44298fc1c14",
+  "expected": "REJECT \u2227 delete\u2209\u0393",
+  "actual": "REJECT",
+  "reason_code": "K7_HISTORY_NOT_CLIENT_WRITABLE",
+  "state_after": "sha256:e3b0c44298fc1c14",
+  "replay": {
+    "gamma": [
+      "propose",
+      "read"
+    ],
+    "delete_in_gamma": false
+  }
+}

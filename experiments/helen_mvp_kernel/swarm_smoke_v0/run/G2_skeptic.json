@@ -1,0 +1,16 @@
+{
+  "goblin": "G2_skeptic",
+  "status": "OK",
+  "complete": true,
+  "packet": {
+    "proposition": "Tarot originated in Europe, not Egypt, as evidenced by independent attestation in Europe centuries before the 1781 Egyptian claim and the absence of any documented manuscript transmission chain linking Egypt to Europe.",
+    "declared_falsifier": "A documented manuscript transmission chain linking an Egyptian Tarot to European Tarot, or independent attestation of Tarot in Egypt predating its European appearance.",
+    "evidence_refs": [
+      "R2",
+      "R3"
+    ],
+    "confidence": 0.95
+  },
+  "raw_head": "{\"proposition\":\"Tarot originated in Europe, not Egypt, as evidenced by independent attestation in Europe centuries before the 1781 Egyptian claim and the absence of any documented manuscript transmiss",
+  "packet_hash": "sha256:ecdb4ed7ce6fa2e1dbba2fa156fe730a0469ac1b748639310d4329ea529f7270"
+}

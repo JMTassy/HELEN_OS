@@ -1,0 +1,7 @@
+{
+  "model": "hf.co/unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q3_K_XL",
+  "thinking": true,
+  "temperature": 0.85,
+  "top_p": 0.95,
+  "context": 32768
+}

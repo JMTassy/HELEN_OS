@@ -1,0 +1,33 @@
+{
+  "schema": "AUTORESEARCH_PACKET_V1",
+  "packet_id": "AR-HER-30EPOCH-FUSED-20260720",
+  "source_refs": [
+    "temple/autoresearch/trace_only_autoresearch_loop.py",
+    "temple/autoresearch/HER_30EPOCH_DECISION.json"
+  ],
+  "finding_type": "doctrine_compression",
+  "summary": "After 30 trace-only epochs (3 runs), the two strongest verified invariants are: No test \u2192 no gate; No replay \u2192 no admission. Location form never verified.",
+  "evidence": {
+    "epochs_run": 30,
+    "runs": 3,
+    "dominant_verified": [
+      "No test \u2192 no gate.",
+      "No replay \u2192 no admission."
+    ],
+    "never_verified": "No location \u2192 no doctrine.",
+    "behavior": "stable cycle between the two membrane laws"
+  },
+  "risk_flags": [
+    "convergence_not_reached",
+    "location_form_unverified"
+  ],
+  "recommended_action": "FUSE_AND_TRIAGE",
+  "fused_invariant": "No test \u2192 no gate; no replay \u2192 no admission. DREAMT is proposal-only until both a runnable test and a replayable receipt bind it at a jurisdiction boundary.",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "generated_by": "HER via trace_only_autoresearch_loop + HER_30EPOCH_DECISION",
+  "timestamp": "2026-07-20T13:20:08.612901+00:00"
+}

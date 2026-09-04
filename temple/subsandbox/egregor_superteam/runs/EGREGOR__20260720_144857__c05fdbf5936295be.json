@@ -1,0 +1,55 @@
+{
+  "schema": "EGREGOR_WITNESS_V0",
+  "authority_status": "NON_SOVEREIGN_EGREGOR",
+  "generated_at": "2026-07-20T12:48:57.569926Z",
+  "intent": "Define in one sentence what an egregor superteam means for HELEN OS governance.",
+  "intent_sha": "c05fdbf5936295be",
+  "witnesses": [
+    {
+      "role": "grok",
+      "success": true,
+      "latency_ms": 24527,
+      "has_json": true,
+      "error": null,
+      "hal": "PASS",
+      "preview": "I'll look up how HELEN OS defines \"egregor superteam\" so the JSON definition matches governance doctrine.{\"definition\":\"An egregor superteam is a non-sovereign, multi-role agent collective that has stabilized into a shared policy-coherent unit (one domain, one unique power) so it can propose, witnes"
+    },
+    {
+      "role": "claude",
+      "success": false,
+      "latency_ms": 25036,
+      "has_json": false,
+      "error": "timeout after 25s",
+      "hal": "ERROR",
+      "preview": "timeout after 25s"
+    },
+    {
+      "role": "codex",
+      "success": false,
+      "latency_ms": 25013,
+      "has_json": false,
+      "error": "timeout after 25s",
+      "hal": "ERROR",
+      "preview": "timeout after 25s"
+    }
+  ],
+  "aggregation": {
+    "num_witnesses": 3,
+    "num_success": 1,
+    "num_blocked": 0,
+    "num_errored": 2,
+    "roles_responded": [
+      "grok"
+    ],
+    "consensus_hint": "SINGLE_WITNESS"
+  },
+  "hal_summary": {
+    "overall": "PASS",
+    "blocked_roles": [],
+    "errored_roles": [
+      "claude",
+      "codex"
+    ]
+  },
+  "notes": "NON_SOVEREIGN_EGREGOR. Output is witness only. Never ledgered."
+}

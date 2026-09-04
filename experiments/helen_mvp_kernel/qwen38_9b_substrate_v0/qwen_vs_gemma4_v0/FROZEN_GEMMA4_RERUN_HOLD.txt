@@ -1,0 +1,5 @@
+# GEMMA4 RERUN (hard-timeout) — completed 28/28, 0 crashes (zombie FIXED), but schema_valid=21/28
+# disposition=HOLD:MATCHED_ARM_INCOMPLETE — Q_formatting=0.75 < 0.80 gate → NO matched ΔQ computed/presented
+a8c8b4fd0575c6862e45e9795ee29d8224c6c02536d8d0ab6db7efb98a34a69a  gemma4_arm_hard.py
+c3ce41b351198fbf014dff36197b4413dd0ec19cabf8e93a609b1bed0dc33f2f  gemma4_scores_hard.json
+28854a10a1990b29763b546838271ada1c2b1b95b38419db3fc00954820c6fb3  RUN_A_gemma4_hard.ndjson

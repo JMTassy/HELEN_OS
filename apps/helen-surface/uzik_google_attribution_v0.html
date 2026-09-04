@@ -1,0 +1,144 @@
+<!doctype html>
+<!-- UZIK×GOOGLE ATTRIBUTION — HELEN dendro variant · NON_SOVEREIGN · authority=false · claim=NO_CLAIM
+     ILLUSTRATIVE structure only (public attribution methodology) — NOT real UZIK client data.
+     Chiddush: Google Ads/GA4/YouTube = ONE epistemic root. N_repr ≠ N_epi.  📚 ↛ 🕯
+     Visualization ⇏ Relationship ⇏ Warrant ⇏ Canon. -->
+<html lang="en"><head><meta charset="utf-8"><title>UZIK×GOOGLE — ATTRIBUTION PROVENANCE</title>
+<style>
+ :root{--bg:#000;--phos:#6fb8ff;--g1:#c8641e;--g2:#2f7d3a;--ink:#8fd0ff}
+ *{box-sizing:border-box} html,body{margin:0;background:#000;color:#8fd0ff;
+   font-family:"Courier New",ui-monospace,monospace;letter-spacing:.05em}
+ .frame{max-width:1060px;margin:14px auto;border:2px solid #1d3550;border-radius:12px;
+   background:radial-gradient(120% 120% at 50% 38%,#02060d,#000 72%);padding:10px 12px 6px}
+ header{border:1px solid #244;padding:8px 10px;display:flex;justify-content:space-between;
+   flex-wrap:wrap;gap:6px;text-transform:uppercase;font-size:13px;text-shadow:0 0 6px #21507e}
+ .sub{font-size:11px;color:#5f9fd0;margin-top:2px}
+ .banner{color:#ff9e3b;font-weight:bold}
+ .metric b{color:#2fe08a} .warn{color:#ff9e3b}
+ .stage{position:relative;height:600px;margin-top:8px;overflow:hidden;border:1px solid #10233a}
+ svg{position:absolute;inset:0;width:100%;height:100%}
+ .grid line{stroke-width:1;opacity:.45}
+ .edge{fill:none;stroke:var(--phos);stroke-width:1.4;filter:drop-shadow(0 0 3px var(--phos));opacity:.9}
+ .edge.cand{stroke-dasharray:4 4;opacity:.6}
+ text.lbl{font-size:9.5px;fill:#9fd0f5;text-shadow:0 0 4px #061}
+ .node{filter:drop-shadow(0 0 5px currentColor)}
+ .controls{display:flex;gap:8px;align-items:center;padding:8px 4px;font-size:12px;flex-wrap:wrap}
+ button{background:#04121f;color:#8fd0ff;border:1px solid #245;border-radius:6px;padding:5px 10px;
+   font-family:inherit;letter-spacing:.08em;cursor:pointer;text-transform:uppercase}
+ button.on{background:#0d2c48;border-color:#4aa3ff;color:#cde9ff}
+ .legend{display:flex;gap:12px;flex-wrap:wrap;font-size:10px;color:#79b7e6;padding:4px;text-transform:uppercase}
+ .legend b{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px;vertical-align:middle}
+ .foot{font-size:10px;color:#3f6f96;padding:5px;text-align:center;line-height:1.5}
+</style></head>
+<body>
+<div class="frame">
+ <header>
+   <div>UZIK × GOOGLE — ATTRIBUTION PROVENANCE V0
+     <div class="sub metric">N_repr=<b id="nr"></b> representations &nbsp;·&nbsp; N_epi=<b id="ne"></b> independent roots
+       &nbsp;·&nbsp; <span class="warn">Google-lineage collapsed 3→1</span></div>
+     <div class="sub">Ξ commit 89e6363 · policy sha256:2d022e5a · illustrative — not client data</div>
+   </div>
+   <div style="text-align:right">
+     <span class="banner">🔵 OBSERVED — VERY PRELIMINARY</span>
+     <div class="sub">claim of record → 🟠 HOLD (single-vendor)</div>
+     <div class="sub">authority=false · viz ⇏ relationship ⇏ warrant ⇏ canon</div>
+   </div>
+ </header>
+ <div class="controls">LAYOUT:
+   <button data-l="vertical" class="on">▚ VERTICAL</button>
+   <button data-l="cladogram">▸ CLADOGRAM</button>
+   <button data-l="radial">✷ RADIAL</button>
+   <span style="color:#3f6f96">— same governed graph, 3 projections · ∂Π_I/∂layout = 0</span>
+ </div>
+ <div class="stage">
+   <svg id="grid" class="grid" viewBox="0 0 1000 600" preserveAspectRatio="none"></svg>
+   <svg id="tree" viewBox="0 0 1000 600"></svg>
+ </div>
+ <div class="legend">
+   <span><b style="background:#3ba7ff"></b>observed source</span>
+   <span><b style="background:#b06bff"></b>attribution claim</span>
+   <span><b style="background:#ff9e3b"></b>hold (single-vendor)</span>
+   <span><b style="background:#2fe08a"></b>admitted (independent)</span>
+   <span><b style="background:#ff4d4d"></b>missing / rejected root</span>
+   <span style="color:#3f6f96">— dashed = candidate/derivative · ⊘ = missing root · same colour-root = one lineage</span>
+ </div>
+ <div class="foot">
+   HONEST READING: 5 platform representations, but Google Ads · GA4 · YouTube share ONE measurement lineage →
+   independent roots = 3 (Google-family · client CRM · 3rd-party panel). "6 sources agree" ⇒ 2 truly independent.
+   The claim of record sits 🟠 HOLD until an independent root corroborates. 📚 ↛ 🕯 · colour = proof-gated state, not verdict.
+ </div>
+</div>
+<script>
+const COL={OBSERVED:"#3ba7ff",CLAIM:"#b06bff",HOLD:"#ff9e3b",ADMITTED:"#2fe08a",REJECT:"#ff4d4d"};
+// ── ONE governed UZIK×Google attribution graph (fixed, labelled). rootGroup collapses lineage. ──
+const T={label:"CLAIM: Campaign X → Y conv / Z ROAS",status:"HOLD",children:[
+  {label:"platform-reported",status:"CLAIM",cand:true,children:[
+    {label:"Google measurement",status:"OBSERVED",children:[
+      {label:"Google Ads",status:"OBSERVED",root:"R_G",cand:true,children:[]},
+      {label:"GA4",status:"OBSERVED",root:"R_G",cand:true,children:[]},
+      {label:"YouTube Analytics",status:"OBSERVED",root:"R_G",cand:true,children:[]},
+    ]},
+  ]},
+  {label:"independently corroborated",status:"ADMITTED",children:[
+    {label:"Client CRM sales",status:"OBSERVED",root:"R_CRM",children:[]},
+    {label:"3rd-party panel",status:"OBSERVED",root:"R_panel",children:[]},
+    {label:"orig. media plan (not on file)",status:"REJECT",missing:true,children:[]},
+  ]},
+]};
+// leaf order + metrics
+let leaves=[]; (function idx(n){ if(!n.children.length){n.li=leaves.length;leaves.push(n);} else n.children.forEach(idx);})(T);
+const realLeaves=leaves.filter(l=>!l.missing);
+const L=leaves.length;
+document.getElementById("nr").textContent=realLeaves.length;
+document.getElementById("ne").textContent=new Set(realLeaves.map(l=>l.root)).size;
+function depthOf(n){return n.children.length?1+Math.max(...n.children.map(depthOf)):0;} const D=depthOf(T);
+
+function place(layout){const W=1000,H=600,cx=500,cy=300;
+ (function set(n,dep){ n.children.forEach(c=>set(c,dep+1));
+   const s=n.children.length?(n.children[0]._s+n.children[n.children.length-1]._s)/2:n.li/(L-1); n._s=s;
+   if(layout==="vertical"){n.x=110+s*(W-260);n.y=55+(dep/D)*(H-150);}
+   else if(layout==="cladogram"){n.x=70+(dep/D)*(W-260);n.y=45+s*(H-90);}
+   else {const a=s*2*Math.PI-Math.PI/2,r=42+(dep/D)*230;n.x=cx+r*Math.cos(a);n.y=cy+r*Math.sin(a);}
+ })(T,0);}
+function edge(p,c,l){ if(l==="radial")return `M${p.x},${p.y} L${c.x},${c.y}`;
+ if(l==="vertical")return `M${p.x},${p.y} L${p.x},${c.y} L${c.x},${c.y}`;
+ return `M${p.x},${p.y} L${c.x},${p.y} L${c.x},${c.y}`;}
+
+function draw(layout){place(layout);
+ const svg=document.getElementById("tree");svg.innerHTML="";const NS="http://www.w3.org/2000/svg";
+ (function w(n){n.children.forEach(c=>{const e=document.createElementNS(NS,"path");
+   e.setAttribute("d",edge(n,c,layout));e.setAttribute("class","edge"+(c.cand||c.missing?" cand":""));svg.appendChild(e);w(c);});})(T);
+ (function w(n){
+   if(n.missing){ // hollow red ⊘ = missing root
+     const c=document.createElementNS(NS,"circle");c.setAttribute("cx",n.x);c.setAttribute("cy",n.y);
+     c.setAttribute("r",5);c.setAttribute("fill","none");c.setAttribute("stroke",COL.REJECT);c.setAttribute("stroke-width",1.6);
+     c.setAttribute("class","node");c.style.color=COL.REJECT;svg.appendChild(c);
+     const ln=document.createElementNS(NS,"line");ln.setAttribute("x1",n.x-4);ln.setAttribute("y1",n.y-4);
+     ln.setAttribute("x2",n.x+4);ln.setAttribute("y2",n.y+4);ln.setAttribute("stroke",COL.REJECT);svg.appendChild(ln);
+   } else {
+     const c=document.createElementNS(NS,"circle");c.setAttribute("cx",n.x);c.setAttribute("cy",n.y);
+     c.setAttribute("r",n.children.length?3.4:4.6);c.setAttribute("fill",n.children.length?"#02060d":COL[n.status]);
+     c.setAttribute("stroke",COL[n.status]);c.setAttribute("stroke-width",1.7);c.setAttribute("class","node");
+     c.style.color=COL[n.status];svg.appendChild(c);
+   }
+   const t=document.createElementNS(NS,"text");t.setAttribute("class","lbl");
+   const off=layout==="radial"?(n.x<500?-4:6):8; t.setAttribute("x",n.x+ (n.children.length?6:off));
+   t.setAttribute("y",n.y+(n.children.length?-5:3));
+   if(layout==="radial"&&n.x<500)t.setAttribute("text-anchor","end");
+   t.textContent=n.label;svg.appendChild(t);
+   n.children.forEach(w);
+ })(T);
+}
+(function grid(){const svg=document.getElementById("grid"),NS="http://www.w3.org/2000/svg";
+ const box=[[60,55],[940,55],[940,560],[60,560]],inn=[[300,195],[700,195],[700,440],[300,440]];
+ const line=(a,b,c)=>{const l=document.createElementNS(NS,"line");l.setAttribute("x1",a[0]);l.setAttribute("y1",a[1]);
+   l.setAttribute("x2",b[0]);l.setAttribute("y2",b[1]);l.setAttribute("stroke",c);svg.appendChild(l);};
+ for(let i=0;i<4;i++){line(box[i],box[(i+1)%4],"#c8641e");line(inn[i],inn[(i+1)%4],"#2f7d3a");line(box[i],inn[i],"#c8641e");}
+ for(let i=1;i<8;i++){const t=i/8;line([60+880*t,560],[300+400*t,440],"#c8641e");}
+})();
+let cur="vertical";draw(cur);
+document.querySelectorAll("button[data-l]").forEach(b=>b.onclick=()=>{
+ document.querySelectorAll("button[data-l]").forEach(x=>x.classList.remove("on"));
+ b.classList.add("on");cur=b.dataset.l;draw(cur);});
+</script>
+</body></html>

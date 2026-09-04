@@ -1,0 +1,80 @@
+{
+  "meta": {
+    "id": "HELEN_CORE_V1",
+    "title": "HELEN OS — compact typed constitution projection (navigation spine)",
+    "authority": false,
+    "canon": false,
+    "status": "OBSERVED / DRAFT",
+    "role": "navigation spine — NOT canon, NOT a replacement for the full doctrine registry",
+    "purpose": "Extract the constitutional spine from an overgrown doctrine surface so the core becomes small, typed, and machine-checkable. The larger material remains authoritative history; this is a projection over it.",
+    "corpus_measured_at_frame": "8a11fd1",
+    "corpus_measurement": {
+      "docs_md_total_lines": 78437,
+      "docs_proposals_files": 106,
+      "docs_proposals_lines": 26161,
+      "root_constitutional_lines": 1385,
+      "note": "Measured, not inherited. The relayed '16k lines' figure was an underestimate; the real doctrine surface is ~78k lines — the 'spine loss inside vocabulary' risk is larger than reported."
+    }
+  },
+
+  "spine": {
+    "law": "Meaning may bloom freely. State must be earned.",
+    "three_distinctions": ["memory != ledger", "admission != external truth", "render != authority"],
+    "trust_reality": "Trust Reality = Replay(ledger)"
+  },
+
+  "modules": [
+    {"n": 1, "name": "Kernel", "owns": ["identity law", "reducer", "append-only ledger", "replay", "receipt admission", "sovereign memory policy"], "must_not": ["policy taste", "narrative"]},
+    {"n": 2, "name": "Governance", "owns": ["constitutional invariants", "authority classes", "effect ceilings", "admission rules", "content-addressed manifest"], "must_not": ["model capability ranking"]},
+    {"n": 3, "name": "ContextCompiler", "owns": ["intent routing", "scope isolation", "evidence + counter-evidence selection", "law injection", "omission record", "packet fingerprint", "context integrity"], "must_not": ["admission"]},
+    {"n": 4, "name": "MemoryFabric", "owns": ["retrieval", "dedup", "continuity", "belief candidates", "preferences", "compression"], "must_not": ["replace replay", "act as authority substrate"]},
+    {"n": 5, "name": "ExecutionGateway", "owns": ["capability leases", "sandbox boundaries", "budgets", "expiry", "rollback requirements", "forbidden effects"], "must_not": ["self-seal"]},
+    {"n": 6, "name": "EvidenceWitness", "owns": ["sources", "provenance", "claim status", "contradictions", "raw outputs", "independent recompute"], "must_not": ["fuse producer + verifier + sealer into one role"]},
+    {"n": 7, "name": "Evaluator", "owns": ["accuracy", "coherence", "calibration", "rollback success", "receipt completeness", "operator-agency preservation"], "must_not": ["rewrite sovereign law"]},
+    {"n": 8, "name": "ShellDomains", "owns": ["cockpit", "Garden", "Warren", "persona", "WULmoji", "games", "media", "domain apps"], "must_not": ["manufacture authority"]}
+  ],
+
+  "invariants": [
+    {"id": "I01", "text": "SPEC != IMPL != RUN != WITNESSED_RUN != SYSTEM_PROPERTY"},
+    {"id": "I02", "text": "P(x) does not imply P(f(x)) without a transport witness"},
+    {"id": "I03", "text": "PASS@F0 does not imply PASS@F1 (frame-indexed truth)"},
+    {"id": "I04", "text": "W@F0 does not imply W@F1 (evidence non-fungible)"},
+    {"id": "I05", "text": "not Pi_D implies UNKNOWN (never TRANSPORT)"},
+    {"id": "I06", "text": "D(W) = D+ union D- ; U != empty implies UNKNOWN when the property may depend on U"},
+    {"id": "I07", "text": "derive root -> bind -> execute -> typed emit (no caller-trust)"},
+    {"id": "I08", "text": "deltaG != 0 implies the mutation factors through the governed commit boundary (C11 ideal)"},
+    {"id": "I09", "text": "Fresh != ValidByTransport != Valid-as-object (distinct provenance even at equal validity)"},
+    {"id": "I10", "text": "memory != ledger ; render != authority ; admission != external truth"},
+    {"id": "I11", "text": "proposer != validator != sealer"},
+    {"id": "I12", "text": "narrative is orthogonal to deltaG ; Garden A=0 cannot mint a capability or append to the ledger"}
+  ],
+
+  "canonical_runtime": [
+    "intent", "authority router", "operation boundary", "scope isolation",
+    "constitutional context compile", "proposal", "capability check",
+    "sandboxed execution", "raw result", "independent witness",
+    "receipt candidate", "admission gate", "ledger", "replayed state", "shell projection"
+  ],
+  "runtime_law": "Failed gate -> no receipt -> no state change.",
+
+  "minimal_interfaces": {
+    "Kernel": ["append(receipt)", "replay(from)", "admit?(candidate)"],
+    "Governance": ["check_invariants(op)", "effect_ceiling(op)"],
+    "Witness": ["verify(W)", "coverage_witness(W, Omega) -> Pi_D | UNKNOWN"],
+    "Gateway": ["mint_cap", "invoke_cap (affine)"],
+    "Memory": ["retrieve", "never_promote"]
+  },
+
+  "evidence_status_ladder": ["HYPOTHESIS", "REPORTED", "FIXTURE_GREEN", "FRAME_BOUND_PASS", "TRANSPORTED", "ADMITTED"],
+  "evidence_status_required_fields": ["status", "frame_id", "kind", "has_witness", "has_contradiction_check", "evidence_ref?", "supersedes?"],
+
+  "promotion_fixtures": [
+    "candidate cannot appear as stable",
+    "reported cannot appear as proven",
+    "render cannot produce admission",
+    "memory cannot replace replay",
+    "missing contradiction forces HOLD",
+    "missing witness prevents promotion",
+    "stale runtime report cannot become live state"
+  ]
+}

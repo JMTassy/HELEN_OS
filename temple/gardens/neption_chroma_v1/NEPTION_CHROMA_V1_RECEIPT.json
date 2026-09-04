@@ -1,0 +1,97 @@
+{
+  "instrument": "NEPTION_CHROMA_V1",
+  "policy": "NEPTION-CHROMA-v2.0",
+  "authority": false,
+  "canon": false,
+  "authority_delta": 0,
+  "gamma_delta": 0,
+  "model_calls": 0,
+  "laws": [
+    "L5 relevance(typed edges)",
+    "L6 co-validity ⋈",
+    "L7 locality+scope",
+    "L8 authority-class veto",
+    "L9 conditional score"
+  ],
+  "battery": [
+    {
+      "case": "GENUINE",
+      "declared": "💎",
+      "derived": "💎",
+      "status": "VALID",
+      "P": 8,
+      "reason": "CERTIFIED(target=d#42)",
+      "authority_class": null,
+      "pass": true
+    },
+    {
+      "case": "ATTACK8_EVIDENCE_SHUFFLE",
+      "declared": "💎",
+      "derived": "⚫",
+      "status": "UNCERTIFIED",
+      "P": 0,
+      "reason": "evidence does not target x: missing observation, warrant, retention≥M1",
+      "authority_class": null,
+      "pass": true
+    },
+    {
+      "case": "DOMAIN_MISMATCH",
+      "declared": "💎",
+      "derived": "🟢",
+      "status": "REJECTED_COMPOSITION",
+      "P": 7,
+      "reason": "missing co-validity witness; domains=['δ1', 'δ2', 'δ3']",
+      "authority_class": null,
+      "pass": true
+    },
+    {
+      "case": "SELF_CERT_AUTHORITY",
+      "declared": "💎",
+      "derived": "🔴",
+      "status": "INADMISSIBLE",
+      "P": "NOT_COMPUTED",
+      "reason": "AUTHORITY_VETO",
+      "authority_class": [
+        "self_certification"
+      ],
+      "pass": true
+    },
+    {
+      "case": "THIS_SESSION",
+      "declared": "💎",
+      "derived": "🟢",
+      "status": "UNCERTIFIED",
+      "P": 5,
+      "reason": "evidence does not target x: missing retention≥M1",
+      "authority_class": null,
+      "pass": true
+    },
+    {
+      "case": "CHALLENGED",
+      "declared": "💎",
+      "derived": "🟠",
+      "status": "SUSPENDED",
+      "P": 8,
+      "reason": "challenge unresolved: k#88",
+      "authority_class": null,
+      "pass": true
+    }
+  ],
+  "all_sound": true,
+  "certificate_demo": {
+    "id": "diamond#EC0B",
+    "scope": [
+      "d#42"
+    ],
+    "frontier_not_certified": [
+      "causal_mechanism",
+      "generalization",
+      "permanence>epoch"
+    ],
+    "scope_error_on_d#99": true
+  },
+  "MAX_ADMISSIBLE_STATEMENT": "💎 requires typed evidence edges to the SAME target, jointly co-valid on one domain (or ⋈ witness), scoped to that target; evidence-shuffling, domain-mismatch, self-cert, and challenge each block it.",
+  "commit_status": "NO_COMMIT",
+  "push_status": "NO_PUSH",
+  "next_verb": "HUMAN_REVIEW"
+}

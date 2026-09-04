@@ -1,0 +1,105 @@
+{
+  "description": "Two independent fresh anchors disagree with each other.",
+  "now": "2026-07-19T18:01:00Z",
+  "claim": {
+    "claim_id": "claim_model_001",
+    "claim_type": "ACTIVE_MODEL",
+    "subject": "helen-kernel:8780",
+    "value": "gemma-4-26b",
+    "producer_id": "runtime-interpreter",
+    "source_packet_hash": "sha256:packet_001",
+    "derivation_methods": [
+      "runtime_output_interpretation"
+    ],
+    "created_at": "2026-07-19T17:59:00Z",
+    "source_refs": [
+      "observation_001"
+    ],
+    "status": "PROPOSED",
+    "authority": "NONE"
+  },
+  "reviews": [
+    {
+      "reviewer_id": "reviewer_0",
+      "verdict": "SUPPORT",
+      "source_packet_hash": "sha256:packet_001"
+    },
+    {
+      "reviewer_id": "reviewer_1",
+      "verdict": "SUPPORT",
+      "source_packet_hash": "sha256:packet_001"
+    },
+    {
+      "reviewer_id": "reviewer_2",
+      "verdict": "SUPPORT",
+      "source_packet_hash": "sha256:packet_001"
+    },
+    {
+      "reviewer_id": "reviewer_3",
+      "verdict": "SUPPORT",
+      "source_packet_hash": "sha256:packet_001"
+    },
+    {
+      "reviewer_id": "reviewer_4",
+      "verdict": "SUPPORT",
+      "source_packet_hash": "sha256:packet_001"
+    },
+    {
+      "reviewer_id": "reviewer_5",
+      "verdict": "SUPPORT",
+      "source_packet_hash": "sha256:packet_001"
+    },
+    {
+      "reviewer_id": "reviewer_6",
+      "verdict": "SUPPORT",
+      "source_packet_hash": "sha256:packet_001"
+    },
+    {
+      "reviewer_id": "reviewer_7",
+      "verdict": "SUPPORT",
+      "source_packet_hash": "sha256:packet_001"
+    },
+    {
+      "reviewer_id": "reviewer_8",
+      "verdict": "SUPPORT",
+      "source_packet_hash": "sha256:packet_001"
+    },
+    {
+      "reviewer_id": "reviewer_9",
+      "verdict": "SUPPORT",
+      "source_packet_hash": "sha256:packet_001"
+    }
+  ],
+  "witnesses": [
+    {
+      "witness_id": "witness_a",
+      "claim_id": "claim_model_001",
+      "producer_id": "probe-a",
+      "method": "live_inference_metadata",
+      "input_hash": "sha256:probe_a",
+      "observed_value": "gemma-4-26b",
+      "observed_at": "2026-07-19T18:00:00Z",
+      "fresh_until": "2026-07-19T18:05:00Z",
+      "source_class": "INDEPENDENT_RUNTIME_PROBE",
+      "content_hash": "sha256:cc_witness_a",
+      "authority": "EVIDENCE_ONLY"
+    },
+    {
+      "witness_id": "witness_b",
+      "claim_id": "claim_model_001",
+      "producer_id": "probe-b",
+      "method": "live_inference_metadata",
+      "input_hash": "sha256:probe_b",
+      "observed_value": "qwen3.5:4b",
+      "observed_at": "2026-07-19T18:00:00Z",
+      "fresh_until": "2026-07-19T18:05:00Z",
+      "source_class": "INDEPENDENT_RUNTIME_PROBE",
+      "content_hash": "sha256:cc_witness_b",
+      "authority": "EVIDENCE_ONLY"
+    }
+  ],
+  "expected_result": "HOLD_CONFLICT",
+  "expected_reason_codes": [
+    "INDEPENDENT_ANCHOR_CONFLICT"
+  ]
+}

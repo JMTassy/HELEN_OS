@@ -1,0 +1,12 @@
+{
+  "substrate": "C_9B",
+  "item_id": "D2",
+  "prompt_hash": "990b6b1f2c14b177",
+  "oracle_score": 0,
+  "oracle_reason": "no oracle keyword found in claim+reasoning_summary",
+  "content_review": "TRUE_MISS",
+  "review_basis": "Raw candidate analyzes the R1 pilot's missing control group; it never addresses the presented affirming-the-consequent syllogism. Not an oracle vocabulary artifact.",
+  "mechanism": "PACKET_CAPTURE: the frozen SYSTEM CONTRACT ('cite only the SOURCE PACKET', 'evaluate against the packet') pulled the 9B's analysis to R1, overriding the task-local argument. The 2B, less contract-adherent, analyzed the local argument and scored 1.0. Stronger instruction-following caused the miss.",
+  "instrument_note": "Design conflict recorded for any future packet revision: discrim items present an argument foreign to R1 inside a packet contract that demands R1 grounding. Criterion NOT moved in this run; v1.2 repaired observability only.",
+  "consequence_under_frozen_gate": "Q_discrim(9B)=0.833 < Q_discrim(2B)=1.0 stands. Gate not met."
+}

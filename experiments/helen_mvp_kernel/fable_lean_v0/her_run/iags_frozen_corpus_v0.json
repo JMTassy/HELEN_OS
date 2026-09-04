@@ -1,0 +1,43 @@
+{
+  "artifact": "FrozenCorpus",
+  "items": {
+    "ABULAFIA": {
+      "desc": "Abulafia — prophetic/letter-combination Kabbalah",
+      "era": "13th c.",
+      "status_dispute": "none major"
+    },
+    "BAHIR": {
+      "desc": "Sefer HaBahir — early sefirotic treatise",
+      "era": "12th c.",
+      "status_dispute": "none major"
+    },
+    "ETZCHAIM": {
+      "desc": "Vital, Etz Chaim — records Luria's teachings explicitly",
+      "era": "16th c.",
+      "status_dispute": "none major"
+    },
+    "HEKHALOT": {
+      "desc": "Hekhalot/Merkavah ascent literature",
+      "era": "late antiquity",
+      "status_dispute": "experiential-vs-literary; dating disputed"
+    },
+    "PARDES": {
+      "desc": "Cordovero, Pardes Rimonim — systematic normalization",
+      "era": "16th c.",
+      "status_dispute": "none major"
+    },
+    "YETZIRAH": {
+      "desc": "Sefer Yetzirah — 10 sefirot + 22 letters",
+      "era": "uncertain",
+      "status_dispute": "date & attribution highly uncertain"
+    },
+    "ZOHAR": {
+      "desc": "Zohar — mystical Torah commentary",
+      "era": "late-13th/early-14th c.",
+      "status_dispute": "pseudepigraphic; assoc. Moses de León; traditionally Shimon bar Yoḥai"
+    }
+  },
+  "note": "Secondary descriptions, not primary texts. Nothing WITNESSED. Historical statuses disputed where noted.",
+  "source_status": "REPORTED / NOT_IN_SESSION",
+  "version": "V0"
+}

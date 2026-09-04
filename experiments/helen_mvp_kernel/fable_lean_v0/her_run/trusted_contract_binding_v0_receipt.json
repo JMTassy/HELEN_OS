@@ -1,0 +1,46 @@
+{
+  "receipt": "TRUSTED_CONTRACT_BINDING_V0",
+  "principle": "The claimant may reference the rule; it may not define the rule that judges it",
+  "resolves_outward": [
+    "TrustedContract(task_id)",
+    "VerifiedAuthorityGrant(grant_id)",
+    "TrustedPolicy(policy_id)"
+  ],
+  "supersession": "append (roadmap): prior admission preserved in lineage; needs may_supersede grant",
+  "mutants": {
+    "M+ valid admission FOLDS": true,
+    "M3 weaker witnesses vs TRUSTED contract \u2192 REJECT": true,
+    "M4 admit with no valid grant \u2192 REJECT": true,
+    "M5 receipt rebound to other task \u2192 REJECT": true,
+    "M6 forged supersession (bad tag) \u2192 prior preserved": true,
+    "M7 valid append-supersession: lineage 2, old preserved": true
+  },
+  "all_pass": true,
+  "HONEST_BOUNDARY": "in-process stores/keys = modeled; full unforgeability = process boundary",
+  "CONTROL_PLANE_EARNED": "YES reference-outward (bounded: keyless callers + no store-write)",
+  "SelfPassed": true,
+  "PeerAdversaryValidated": "SEAM_ATTACKED",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "receipt_sha16": "7dea4b6721aa58a4",
+  "fresh_adversary": {
+    "keyless_forges_admitted": "NONE",
+    "confirmed": [
+      "A3 embedded contract is DEAD (reducer reads TRUSTED_CONTRACTS, never receipt) ",
+      "A2a/A2b forge real grant_id without key rejected",
+      "M5 rebound-task tag breaks",
+      "M6 forged supersession \u2192 prior preserved",
+      "A5a no may_supersede rejected",
+      "A5b non-current supersede rejected",
+      "A5c append-only (prior kept)",
+      "A6 grant-scope escape rejected"
+    ],
+    "NEW_GAP_A4": "witness_label \u22ac witness_existence \u2014 witness_refs are self-asserted STRINGS; reducer checks only the SET of labels, not whether the witnessed facts are real. A key-holder can name the required labels with empty artifact_hashes and be ADMITTED. The contract governs WHICH labels appear, not WHETHER evidence exists. So the receipt still defines whether its own evidence exists.",
+    "A7_modeled_boundary": "same-process mutation of TRUSTED stores authorizes any forge \u2014 needs process boundary"
+  },
+  "residual_gaps_ladder": [
+    "(1) WITNESS-RESOLUTION OUTWARD: each required witness label resolves to a real separately-tagged witness receipt whose artifact_hashes \u2286 admission (closes label\u2192existence, symmetric to how reference-outward closed contract\u2192embedding)",
+    "(2) PROCESS BOUNDARY: stores + grant keys outside candidate address space (kernel_obligations_v2) for full unforgeability"
+  ]
+}

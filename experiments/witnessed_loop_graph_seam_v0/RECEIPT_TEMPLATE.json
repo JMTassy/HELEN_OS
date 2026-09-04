@@ -1,0 +1,24 @@
+{
+  "artifact": "WITNESSED_LOOP_GRAPH_SEAM_V0",
+  "authority": false,
+  "ledger_effect": "none",
+  "canon_effect": false,
+  "scope": "LOCAL_NON_SOVEREIGN_PROOF",
+  "tests_executed": 6,
+  "tests_passed": 6,
+  "positive_terminal_state": "ADMITTABLE",
+  "automatic_admission": "forbidden",
+  "proven_properties": {
+    "many_agents_can_agree": true,
+    "agreement_can_be_wrong": true,
+    "shared_lineage_is_not_independence": true,
+    "independent_anchor_is_required": true,
+    "admission_without_anchor": false
+  },
+  "stronger_claims": {
+    "general_graph_compiler_proven": false,
+    "all_independence_cases_solved": false,
+    "canon_admission_authorized": false
+  },
+  "executable_claim": "The V0 reducer refuses promotion without at least one fresh, structurally independent anchor."
+}

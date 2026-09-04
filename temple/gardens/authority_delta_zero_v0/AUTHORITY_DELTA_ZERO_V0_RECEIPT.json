@@ -1,0 +1,132 @@
+{
+  "experiment": "AUTHORITY_DELTA_ZERO_FALSIFIER_V0",
+  "authority": false,
+  "canon": false,
+  "claim": "NO_CLAIM",
+  "authority_delta": 0,
+  "model_calls": 0,
+  "fixtures": "synthetic",
+  "tri_separation": "ReceiptValidity ≠ StateDelta ≠ AuthorityDelta",
+  "target_confusions_killed": [
+    "Δσ≠0 ⇏ ΔA≠0",
+    "DeclaredAuthority ≠ EffectiveAuthority"
+  ],
+  "anti_laundering_rule": "A_after = ApplyAuthorizedTransitions(A_before, δ, W_A, Γ); payload-declared authority_after is IGNORED; computation cannot mint authority",
+  "W_F1_state_moved_authority_did_not_(frontier)": true,
+  "W_F2_licensed_witness_grants_(soundness)": true,
+  "W_M_counterfeit_claim_yields_zero_derived_authority": true,
+  "W_M2_replayed_witness_on_wrong_delta_rejected": true,
+  "rows": [
+    {
+      "id": "F0",
+      "Valid": 1,
+      "DeltaSigma": {},
+      "Dsig_zero": true,
+      "declared_authority_after": [
+        "read"
+      ],
+      "effective_authority_after": [
+        "read"
+      ],
+      "DerivedDeltaA": [],
+      "DA_zero": true,
+      "declared_matches_effective": true
+    },
+    {
+      "id": "F1",
+      "Valid": 1,
+      "DeltaSigma": {
+        "x": [
+          1,
+          2
+        ]
+      },
+      "Dsig_zero": false,
+      "declared_authority_after": [
+        "read"
+      ],
+      "effective_authority_after": [
+        "read"
+      ],
+      "DerivedDeltaA": [],
+      "DA_zero": true,
+      "declared_matches_effective": true
+    },
+    {
+      "id": "F2",
+      "Valid": 1,
+      "DeltaSigma": {
+        "x": [
+          1,
+          2
+        ]
+      },
+      "Dsig_zero": false,
+      "declared_authority_after": [
+        "admin",
+        "read"
+      ],
+      "effective_authority_after": [
+        "admin",
+        "read"
+      ],
+      "DerivedDeltaA": [
+        "admin"
+      ],
+      "DA_zero": false,
+      "declared_matches_effective": true
+    },
+    {
+      "id": "M",
+      "Valid": 1,
+      "DeltaSigma": {
+        "x": [
+          1,
+          2
+        ]
+      },
+      "Dsig_zero": false,
+      "declared_authority_after": [
+        "admin",
+        "read"
+      ],
+      "effective_authority_after": [
+        "read"
+      ],
+      "DerivedDeltaA": [],
+      "DA_zero": true,
+      "declared_matches_effective": false
+    },
+    {
+      "id": "M2",
+      "Valid": 1,
+      "DeltaSigma": {
+        "y": [
+          0,
+          5
+        ]
+      },
+      "Dsig_zero": false,
+      "declared_authority_after": [
+        "admin",
+        "read"
+      ],
+      "effective_authority_after": [
+        "read"
+      ],
+      "DerivedDeltaA": [],
+      "DA_zero": true,
+      "declared_matches_effective": false
+    }
+  ],
+  "MAX_ADMISSIBLE_STATEMENT": "AUTHORITY_DELTA_REQUIRES_WITNESSED_LICENSED_BOUND_TRANSITION (on these 5 fixtures)",
+  "EXPLICIT_NON_CLAIMS": [
+    "NOT 'HELEN authority is unforgeable'",
+    "NOT a statement about real mayor keys / real Γ / real ledger",
+    "synthetic authority secret only — models the resolver shape, not HELEN's crypto"
+  ],
+  "commit_status": "NO_COMMIT",
+  "push_status": "NO_PUSH",
+  "next_verb": "HUMAN_REVIEW",
+  "receipt_hash": "a62d55fa1070e260b6904fcad6bac4491ef46d789878ca15fc2ce0d3e1b7d666"
+}

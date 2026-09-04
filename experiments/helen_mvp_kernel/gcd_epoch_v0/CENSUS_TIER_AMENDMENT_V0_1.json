@@ -1,0 +1,22 @@
+{
+  "amendment": "CENSUS_TIER_AMENDMENT_V0_1",
+  "applies_to_census_hash": "a7d93dc013fb95fd",
+  "correction_source": "operator relay 2026-08-17: PreventedByConstruction != DetectedAfterViolation; do not collapse DETECTED into SafeWriter",
+  "tier_model": {
+    "PREVENTED": "writer cannot bypass R_E by construction",
+    "CONTAINED": "writer CAN bypass, but product cannot pass seal/replay",
+    "ESCAPES": "writer can bypass AND product remains consumable"
+  },
+  "reclassification": {
+    "ReducerE.apply": "SAFE (Delegates=1, ReceiptVerified=1 via gamma_E, NoDirectMutation=1 w.r.t. accepted state)",
+    "EpistemicState.__init__": "GENESIS_DECLARED (prereg act bound in B_E; not a runtime writer)",
+    "direct _h/_seal/__dict__ assignment class": "CONTAINED \u2014 NOT prevented. Python cannot prevent attribute assignment; mutant-1 routes a-d witness bypass-then-detection. Seal/replay = separate defense layer, not topology closure.",
+    "ReducerE(state) binding param": "CONTAINED for forged inputs (seal at apply(), replay)"
+  },
+  "honest_downgrade": "prior 'SURVIVED_CENSUS / no effective writer' claim is RE-BOUNDED: earned = 'no ESCAPES-class writer found in sigma'; NOT earned = 'bypass absence' (language-level direct mutation exists and is only contained). WriterCoverage_sigma(SafeWriter strict) = 1/1 over runtime non-genesis writers; bypass_absence remains UNEARNED at language level by design of Python.",
+  "scope_sigma": {
+    "gcd_kill_mediation.py": "ef698d900ad8dbab",
+    "complete_epistemic_mediation_v0.py": "1f703caebbf9e23a"
+  },
+  "authority": false
+}

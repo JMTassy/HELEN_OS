@@ -1,0 +1,55 @@
+{
+  "schema": "EGREGOR_WITNESS_V0",
+  "authority_status": "NON_SOVEREIGN_EGREGOR",
+  "generated_at": "2026-07-20T12:45:23.861772Z",
+  "intent": "Propose 2-3 concrete next steps for wiring subscription CLIs as an egregor witness layer on top of local Gemma4 in HELEN OS. Output as JSON array of strings.",
+  "intent_sha": "114819eaf3c8e56c",
+  "witnesses": [
+    {
+      "role": "grok",
+      "success": false,
+      "latency_ms": 31646,
+      "has_json": true,
+      "error": null,
+      "hal": "BLOCK",
+      "preview": "I'll check existing Gemma / egregor / CLI witness wiring in the SOT so the next steps are concrete and repo-accurate.[\"Pin local Gemma4 as the sole proposer in docs/spec/MODEL_ROUTING_V1.md (role=HAL_LOCAL, model=gemma4-12b:latest, authority=false) and extend tools/hal_driver.py to emit a hashed NDW"
+    },
+    {
+      "role": "claude",
+      "success": false,
+      "latency_ms": 40043,
+      "has_json": false,
+      "error": "timeout after 40s",
+      "hal": "ERROR",
+      "preview": "timeout after 40s"
+    },
+    {
+      "role": "codex",
+      "success": false,
+      "latency_ms": 9325,
+      "has_json": false,
+      "error": "Reading additional input from stdin...\nOpenAI Codex v0.122.0 (research preview)\n--------\nworkdir: /Users/jean-marietassy/Documents/GitHub/helen_os_v1\nmodel: gpt-5.2-codex\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: high\nreasoning summaries: none\nsession id: 019f7f8f-22ba-7051-b16c-183dd115303e\n--------\nuser\nOutput EXACTLY and ONLY valid minified JSON. Nothing else. JSON object or array.\n\nPropose 2-3 concrete next steps for wiring subscription CLIs as an egregor witness layer on top of local Gemma4 in HELEN OS. Output as JSON array of strings.\nERROR: {\"type\":\"error\",\"status\":400,\"error\":{\"type\":\"invalid_request_error\",\"message\":\"The 'gpt-5.2-codex' model is not supported when using Codex with a ChatGPT account.\"}}\nERROR: {\"type\":\"error\",\"status\":400,\"error\":{\"type\":\"invalid_request_error\",\"message\":\"The 'gpt-5.2-codex' model is not supported when using Codex with a ChatGPT account.\"}}",
+      "hal": "ERROR",
+      "preview": "Reading additional input from stdin...\nOpenAI Codex v0.122.0 (research preview)\n--------\nworkdir: /Users/jean-marietassy/Documents/GitHub/helen_os_v1\nmodel: gpt-5.2-codex\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: high\nreasoning summaries: none\nsession id: 019f7f8f-22ba-70"
+    }
+  ],
+  "aggregation": {
+    "num_witnesses": 3,
+    "num_success": 0,
+    "num_blocked": 1,
+    "num_errored": 2,
+    "roles_responded": [],
+    "consensus_hint": "NO_WITNESS"
+  },
+  "hal_summary": {
+    "overall": "BLOCK",
+    "blocked_roles": [
+      "grok"
+    ],
+    "errored_roles": [
+      "claude",
+      "codex"
+    ]
+  },
+  "notes": "NON_SOVEREIGN_EGREGOR. Output is witness only. Never ledgered."
+}

@@ -1,0 +1,11 @@
+{
+  "goblin_id": "GOB-EDU-004",
+  "role": "RECEIPT_GOBLIN",
+  "raw_output": "",
+  "parse_error": true,
+  "model": "aura-gemma4:latest",
+  "timestamp": "2026-07-20T15:07:13.423552+00:00",
+  "authority": false,
+  "sovereign": false,
+  "ledger_effect": "none"
+}

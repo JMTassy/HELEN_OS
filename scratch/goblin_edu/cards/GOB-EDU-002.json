@@ -1,0 +1,11 @@
+{
+  "goblin_id": "GOB-EDU-002",
+  "role": "UZIK_GOBLIN",
+  "raw_output": "```json\n{\n  \"goblin_id\": \"UZIK_GHOST",
+  "parse_error": true,
+  "model": "aura-gemma4:latest",
+  "timestamp": "2026-07-20T15:06:30.058780+00:00",
+  "authority": false,
+  "sovereign": false,
+  "ledger_effect": "none"
+}

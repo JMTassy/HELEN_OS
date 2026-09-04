@@ -1,0 +1,25 @@
+# HELEN permission law V0. capability ≠ permission.
+workers:
+  readonly_observer:
+    repository_access: read_only_pinned_commit
+    mutation: forbidden
+    authority: none
+  # Future workers inherit deny-by-default:
+  default:
+    repository_access: none
+    mutation: forbidden
+    authority: none
+protected_paths:
+  - GOVERNANCE/KERNEL*
+  - GOVERNANCE/CONSTITUTION*
+  - town/ledger_v1.ndjson
+  - .helen/schemas/*
+  - .helen/bin/*
+  - .helen/policies/*
+builder:
+  worktree_required: true
+  main_checkout: forbidden
+  commit_to_main: forbidden
+operator:
+  admission_verbs: [ADMIT, HOLD, REJECT, REVISION_REQUESTED]
+  seal_required_for_canon: true

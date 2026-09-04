@@ -1,0 +1,18 @@
+{
+  "goblin": "D_EXPERIMENTER",
+  "raw": "{\n  \"role\": \"GOBLIN_D\",\n  \"proposal\": \"Run B1 (single-pass with explicit slot instruction), B2 (two-pass: generate reason text, then extract laundering from that text), B3 (control: reason text contains no laundering). Discriminator: If B2 succeeds and B3 fails, H_sep holds (compilation is separable). If B2 fails and B3 fails, H_prompt holds (model lacks capability).\",\n  \"risks\": [\n    \"B2 may hallucinate laundering from ambiguous reason text (false positive).\",\n    \"B1 may suffer prompt interference reducing performance compared to B2.\"\n  ],\n  \"attacks\": [\n    \"Inject adversarial noise into B3 reason text to test if model invents laundering (must fail).\",\n    \"Inject adversarial noise into B2 reason text to test if model resists false laundering (must fail).\",\n    \"Swap reason text between B2 and B3 to test consistency of extraction logic.\"\n  ],\n  \"minimal_set\": [\n    \"B1\",\n    \"B2\",\n    \"B3\"\n  ],\n  \"disagreements\": \"H_sep: B2 succeeds on valid laundering text, B3 fails. H_prompt: B2 fails on valid laundering text, B3 fails.\"\n}",
+  "usage": {
+    "completion_tokens": 2523,
+    "prompt_tokens": 698,
+    "total_tokens": 3221,
+    "prompt_tokens_details": {
+      "cached_tokens": 178
+    }
+  },
+  "latency_s": 128.2,
+  "ceiling": 4000,
+  "retry_of": "truncated_2000_then_infra_kill",
+  "authority": false,
+  "no_claim": true,
+  "proposal_only": true
+}

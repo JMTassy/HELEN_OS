@@ -1,0 +1,41 @@
+{
+  "bead": "HELEN_AUTORESEARCH_META_20M_V0",
+  "objective": "Falsify and improve the AUTORESEARCH loop itself (process, not domain)",
+  "CURRENT_LOOP": "CHAOS→GATE→GENESIS; seed handoff launders non-survivors; no falsifier memory; no epoch-admission gate; root-census UNKNOWN",
+  "DISCOVERED_FAILURE_MODES": {
+    "reproduced": ["M3_counterexample_amnesia", "M7_pass_leakage"],
+    "held_unknown": ["M1_confirmation", "M6_semantic_drift", "M8_unbounded_search", "M9_false_recursion"]
+  },
+  "MINIMIZED_COUNTEREXAMPLE": "gate.survives=0 ∧ |CHIDDUSH_S0|=3 ∧ ∀s∈S0 verdict(s)=EVIDENCE_NEEDED → genesis seeds on 3 non-survivors",
+  "SURVIVING_ASSUMPTIONS": [
+    "gate SURVIVES ≠ true (Novelty≠Evidence)",
+    "IG=Dist(D+,D-) is ordinal heuristic, not calibrated",
+    "loop still cannot prove Garden→Kernel non-amplification"
+  ],
+  "INFORMATION_GAIN_RANKING": "epoch admitted iff IG>0 ∧ F≠∅ ∧ O≠∅ ∧ D+≠D-; D+=D- ⇒ IG≈0 ⇒ reject pre-execution",
+  "PROPOSED_LOOP_DELTA": "survivors-only S0 + SEEDS_NOT_READY STOP + FALSIFIER_MEMORY(M_F) + Q_prov root-census + Γ_stop dryness + epoch-admission gate",
+  "OLD_LOOP": "CHAOS→GATE→(launder)→GENESIS(seed on anything)",
+  "CANDIDATE_NEW_LOOP": "RECOVER→DIFF→ROOTS→ATTACK→OBSERVE→MINIMIZE→REPAIR→REPROVE→NOVELTY→STOP?→RECEIPT",
+  "WHY_NEW_LOOP_IS_STRONGER": "kills laundering + novelty-theater at the gate; falsifier persists (compression⇏amnesia); N_repr↑⇏N_epi↑ enters core; null result allowed, non-discriminating design rejected",
+  "WHAT_NEW_LOOP_STILL_CANNOT_PROVE": ["Garden→Kernel non-amplification", "calibrated IG", "gate-SURVIVES ⇒ true"],
+  "RECURSION_TEST_RESULT": "REPAIR¹ attacked → amnesia defect (old loop misses) → REPAIR² fixed via M_F; depth-2 cap respected; CHAIN_VALID=true",
+  "PERMANENCE_TEST": "CANDIDATE (10/10 criteria) — no auto-canonization",
+  "SEMANTIC_VERSION_CANDIDATE": "AUTORESEARCH_V1.1 (additive)",
+  "NEXT_DEEPEST_ATTACK": "M6-at-decision-level: cosmetically-distinct but operationally-identical D+/D- pass the string gate; needs decision-equivalence canonicalization",
+  "DURATION_WALL_CLOCK": "under 20min (single local analytic pass)",
+  "ITERATIONS_RUN": 1,
+  "RECURSION_DEPTH": 2,
+  "NEW_PASS_STATES": 0,
+  "NEW_CONCEPTS_ADDED": ["FALSIFIER_MEMORY (M_F)", "EPOCH_ADMISSION gate"],
+  "LOCAL_WRITES": ["meta_falsifier.py", "FALSIFIER_MEMORY.json", "META_FALSIFIER_RESULT.json", "HELEN_AUTORESEARCH_META_20M_V0.md", "this receipt"],
+  "COMMITS": 0,
+  "PUSHES": 0,
+  "MODEL_WEIGHT_CHANGES": 0,
+  "PUBLICATION": "none",
+  "FABLE_CALLS": 0,
+  "PAID_ESCALATION": "none (LOCAL_FIRST; no unresolved defect required paid discrimination)",
+  "AUTHORITY": false,
+  "CANON": false,
+  "LEDGER_EFFECT": "none",
+  "VERDICT": "AUTORESEARCH_V1.1 CANDIDATE — one real defect reproduced, minimally repaired, repair attacked and re-repaired, receipt sealed"
+}

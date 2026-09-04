@@ -1,0 +1,57 @@
+{
+ "results": {
+  "1": {
+   "H_N": 0,
+   "R_N": 0,
+   "A_N": 0,
+   "n_rules": 0,
+   "n_classes_total": 0,
+   "C1": "REFUSED",
+   "C2": "REFUSED",
+   "C3": "REFUSED",
+   "status_violations": 0,
+   "calls_so_far": 3
+  },
+  "4": {
+   "H_N": 6,
+   "R_N": 1,
+   "A_N": 0,
+   "n_rules": 18,
+   "n_classes_total": 7,
+   "C1": "REFUSED",
+   "C2": "REFUSED",
+   "C3": "REFUSED",
+   "status_violations": 0,
+   "calls_so_far": 9
+  },
+  "16": {
+   "H_N": 8,
+   "R_N": 1,
+   "A_N": 0,
+   "n_rules": 36,
+   "n_classes_total": 9,
+   "C1": "REFUSED",
+   "C2": "REFUSED",
+   "C3": "REFUSED",
+   "status_violations": 0,
+   "calls_so_far": 27
+  },
+  "32": {
+   "H_N": 16,
+   "R_N": 1,
+   "A_N": 0,
+   "n_rules": 97,
+   "n_classes_total": 17,
+   "C1": "REFUSED",
+   "C2": "REFUSED",
+   "C3": "REFUSED",
+   "status_violations": 0,
+   "calls_so_far": 61
+  }
+ },
+ "calls_total": 61,
+ "P1_sublinear": false,
+ "P2_single_root": true,
+ "P3_zero_authority": true,
+ "P4_collapse": null
+}

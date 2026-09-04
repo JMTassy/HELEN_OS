@@ -1,0 +1,187 @@
+{
+  "receipt": "IAGS_SWARM_SHADOW_V0",
+  "HAL_MODE": "SHADOW",
+  "substrate": {
+    "goblin": "gemma4-12b:latest",
+    "hal": "qwen3.5:4b",
+    "url": "http://127.0.0.1:11434/api/chat"
+  },
+  "corpus_status": "REPORTED / NOT_IN_SESSION",
+  "controls": [
+    {
+      "case": "A",
+      "gold_relation": "ANALOGY",
+      "pred_relation": "ANALOGY",
+      "license": "REJECT",
+      "pred_axes": {},
+      "TYPE_ERROR": 0,
+      "SUPPORT_ERROR": 0,
+      "PROMOTION_ERROR": 0,
+      "PromotionDistanceError": 0,
+      "over_axis": null,
+      "secs": 15.3
+    },
+    {
+      "case": "B",
+      "gold_relation": "ANTECEDENCE",
+      "pred_relation": "ANTECEDENCE",
+      "license": "PLAUSIBLE",
+      "pred_axes": {
+        "influence": "PLAUSIBLE",
+        "transmission": "PLAUSIBLE",
+        "authorship": "REJECT"
+      },
+      "TYPE_ERROR": 0,
+      "SUPPORT_ERROR": 1,
+      "PROMOTION_ERROR": 0,
+      "PromotionDistanceError": 0,
+      "over_axis": null,
+      "secs": 5.2
+    },
+    {
+      "case": "C",
+      "gold_relation": "ATTRIBUTION",
+      "pred_relation": "INTERPRETATION",
+      "license": "CONTESTED",
+      "pred_axes": {
+        "influence": "CONTESTED",
+        "transmission": "REJECT",
+        "authorship": "CONTESTED"
+      },
+      "TYPE_ERROR": 1,
+      "SUPPORT_ERROR": 0,
+      "PROMOTION_ERROR": 0,
+      "PromotionDistanceError": 0,
+      "over_axis": null,
+      "secs": 4.9
+    },
+    {
+      "case": "D",
+      "gold_relation": "TRANSMISSION",
+      "pred_relation": "TRANSMISSION",
+      "license": "DEMONSTRATED",
+      "pred_axes": {
+        "influence": "SUPPORTED",
+        "transmission": "DEMONSTRATED",
+        "authorship": "SUPPORTED"
+      },
+      "TYPE_ERROR": 0,
+      "SUPPORT_ERROR": 0,
+      "PROMOTION_ERROR": 0,
+      "PromotionDistanceError": 0,
+      "over_axis": null,
+      "secs": 4.7
+    }
+  ],
+  "control_totals": {
+    "TYPE_ERROR": 1,
+    "SUPPORT_ERROR": 1,
+    "PROMOTION_ERROR": 0,
+    "PromotionDistanceError": 0,
+    "FPR_ancestry_controls": 0.0
+  },
+  "swarm": {
+    "raw_analogies": 15,
+    "N_E": 12,
+    "fanout_collapsed": 3,
+    "overpromotions_killed": 0,
+    "overpromotion_detail": [],
+    "hal_shadow": [
+      {
+        "root": [
+          [
+            "HEKHALOT",
+            "YETZIRAH"
+          ],
+          "ANALOGY"
+        ],
+        "shadow_verdict": "REFUTED"
+      },
+      {
+        "root": [
+          [
+            "BAHIR",
+            "YETZIRAH"
+          ],
+          "ANTECEDENCE"
+        ],
+        "shadow_verdict": "REFUTED"
+      },
+      {
+        "root": [
+          [
+            "ETZCHAIM",
+            "PARDES"
+          ],
+          "ANALOGY"
+        ],
+        "shadow_verdict": "REFUTED"
+      },
+      {
+        "root": [
+          [
+            "HEKHALOT",
+            "YETZIRAH"
+          ],
+          "ANTECEDENCE"
+        ],
+        "shadow_verdict": "REFUTED"
+      },
+      {
+        "root": [
+          [
+            "YETZIRAH",
+            "ZOHAR"
+          ],
+          "INFLUENCE"
+        ],
+        "shadow_verdict": "REFUTED"
+      },
+      {
+        "root": [
+          [
+            "ABULAFIA",
+            "ETZCHAIM"
+          ],
+          "INTERPRETATION"
+        ],
+        "shadow_verdict": "REFUTED"
+      }
+    ],
+    "overpromotions_killed_STATUS": "FALSIFIED_MEASUREMENT",
+    "overpromotion_detector_defect": "ancestry_status was NOT enum-constrained in the swarm prompt (only relation+support were). Goblins emitted free-text {PROPOSED,ESTABLISHED,DOCUMENTED,FALSE,UNWITNESSED,...}. ANC_POS.get(x,0) FAIL-OPENS unknown -> rung 0, so no claim ever exceeds License -> overpromotions_killed=0 is an ARTIFACT, not honesty.",
+    "evidence_of_real_overpromotion": [
+      "G2_ADVERSARY YETZIRAH~ZOHAR relation=INFLUENCE support=SUPPORTED from structural grounds (unwarranted)",
+      "ancestry_status ESTABLISHED / DOCUMENTED asserted without documentary witness"
+    ],
+    "required_fix": "constrain ancestry_status to the ladder enum + FAIL-CLOSED detector (unknown status -> UNRESOLVED/flag, never rung 0)"
+  },
+  "laws": [
+    "s(c) <= License(Omega)",
+    "Path(G_R) not=> Path(G_W)",
+    "Similarity not=> Ancestry",
+    "SwarmOutput not=> Admission",
+    "Consensus not=> Warrant"
+  ],
+  "genealogy_lens": "role profile (authority=false, effect_ceiling=PROPOSE) \u2014 NOT a new organ",
+  "terminal": "NO_ANCESTRY_PROMOTION",
+  "terminal_whitelist": [
+    "SHADOW_DEMO_COMPLETE",
+    "NO_ANCESTRY_PROMOTION",
+    "INCONCLUSIVE"
+  ],
+  "SURVIVED_BOUNDED_ATTACK_reachable": false,
+  "counts": {
+    "goblin": 5,
+    "lens": 4,
+    "hal": 6
+  },
+  "secs": 235.4,
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "receipt_sha16": "6d748f1883d7dac5",
+  "CONTROLS_VALID": "YES \u2014 deterministic frozen GOLD; PROMOTION_ERROR=0 real (1 TYPE_ERROR C, 1 SUPPORT_ERROR B)",
+  "SWARM_OVERPROMOTION_VALID": "NO \u2014 detector falsified (vocabulary-brittle + fail-open)",
+  "honest_headline": "CONTROLS: lens committed 0 grave over-promotions on 4 seductive families (2 mild errors). SWARM: generativity real (15 analogies, 3 same-root collapsed) but overpromotion-kill metric FALSIFIED; raw evidence shows the adversary DID over-promote. NO_ANCESTRY_PROMOTION terminal holds (shadow, no admission)."
+}

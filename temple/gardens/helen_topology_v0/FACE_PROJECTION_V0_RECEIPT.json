@@ -1,0 +1,24 @@
+{
+  "schema": "FACE_PROJECTION_V0",
+  "authority": false,
+  "canon": false,
+  "claim": "NO_CLAIM",
+  "authority_delta": 0,
+  "fable_calls": 0,
+  "scope": "governance algebra only — NOT a face generator / identity-replication tool",
+  "results": {
+    "set_emotion_admitted": true,
+    "face_shadow_class_conserved": true,
+    "face_actually_changed": true,
+    "identity_launder_rejected": true,
+    "identity_launder_no_state_change": true,
+    "witness_flagged_unsupported_mutation": true,
+    "same_face_projection": true,
+    "counterfeit_separated_by_pi": true,
+    "receipt_deterministic": true,
+    "receipt_binds_all_five_hashes": true
+  },
+  "verdict": "SHADOW_NOT_OBJECT",
+  "law": "x_t=π_face(𝓗_t) · face mutation ∈ 𝒜_repr (m̄=id) · identity op ⇒ REJECT · resemblance ⇏ constitutional identity · only Γ ADMIT reduces state",
+  "caveat": "abstract coordinates; a real embodiment layer needs independent identity verifiers + consent context before any generator is built"
+}

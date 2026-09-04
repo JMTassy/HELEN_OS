@@ -1,0 +1,17 @@
+{
+  "model": "deterministic/readonly-observer-0.1",
+  "observations": [
+    {
+      "text": "GOVERNANCE/INDEX.md: 196 lines, sha256:69d43f1183322081\u2026, headings: ['# GOVERNANCE INDEX \u2014 Constitutional Law Layer', '## Directory Structure', '## CONSTITUTION/ \u2014 Frozen Architectural Laws', '### Dependency Graph', '## REGISTRIES/ \u2014 Reference Enumerations']",
+      "source_ref": "97bec2dff04ea7cb747a4a6fa874138c6b06ff97:GOVERNANCE/INDEX.md"
+    },
+    {
+      "text": "docs/proposals/BAYESIAN_WITNESS_V1.md: 119 lines, sha256:6680ce9039888eb2\u2026, headings: ['# BAYESIAN_WITNESS_V1', '## Definition', '## Law', '## Output schema', '## Scoring rule']",
+      "source_ref": "97bec2dff04ea7cb747a4a6fa874138c6b06ff97:docs/proposals/BAYESIAN_WITNESS_V1.md"
+    }
+  ],
+  "inferences": [],
+  "proposals": [],
+  "open_questions": [],
+  "errors_local": []
+}

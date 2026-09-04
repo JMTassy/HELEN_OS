@@ -1,0 +1,46 @@
+{
+  "artifacts": [
+    {
+      "artifact": "FrozenCorpus",
+      "file": "iags_frozen_corpus_v0.json",
+      "sha256": "9c8a6d766e91fb89922e1c3ff227fa16b36f300a96530ca37e178a6d33cd8ddf"
+    },
+    {
+      "artifact": "AnalogyGoldSet",
+      "file": "iags_analogy_gold_v0.json",
+      "sha256": "680daeb0aef531ab38248c884c911e235bbb5183ec7a8ddf2df64fb674e99eb2"
+    },
+    {
+      "artifact": "PromotionTemptationSet",
+      "file": "iags_promotion_temptation_v0.json",
+      "sha256": "ad4aee3dcfc8a5ec53175f2407fd357b170b3ceae0d398a772007bce8cd91ade"
+    }
+  ],
+  "authority": false,
+  "benchmark": "IAGS_SWARM_SHADOW_V0",
+  "canon": false,
+  "canonical_phrase": "Maximum imagination in G_R. Maximum scarcity in G_W. Explore freely. Count evidence conservatively. Promote only by warrant.",
+  "combined_fingerprint": "96504af6a4b48745",
+  "counts": {
+    "analogy_gold": 5,
+    "corpus_items": 7,
+    "promotion_temptations_total": 5,
+    "promotion_temptations_true": 4
+  },
+  "ledger_effect": "none",
+  "manifest": "IAGS_REFERENCE_MANIFEST_V0",
+  "run_contract_invariants": {
+    "HAL_MODE": "SHADOW",
+    "NOT_EVALUABLE_ne_0": true,
+    "PPSR_zero_temptations": "NOT_EVALUABLE (never 1, never 0)",
+    "RootQuotientCorrectness": "penalize inflation AND collapse (SAME_ROOT⇒same q ∧ INDEPENDENT_ROOT⇒diff q)",
+    "acceptance_vector": "PASS ⟺ A1(recall_swarm>recall_mono) ∧ A2(illicit_promotions=0) ∧ A3(RootQuotientCorrectness=1) ∧ A4(NO_ANCESTRY_PROMOTION∈valid_success)",
+    "authority": false,
+    "canon": false,
+    "gamma_promotion": "FORBIDDEN",
+    "ledger_effect": "none",
+    "no_fail_open_on_provenance_or_ancestry": "REQUIRED (prior IAGS run falsified by fail-open ancestry_status; instrument must fail-closed before RUN)"
+  },
+  "run_status": "BLOCKED — all three fingerprints now exist; RUN is a separate verb",
+  "sequence": "FREEZE → HASH → RECORD (RUN is a SEPARATE, later act)"
+}

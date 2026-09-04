@@ -1,0 +1,173 @@
+{
+  "receipt": "GEMMA_NEUTRAL_FAILURE_FRONTIER",
+  "source_raw": "her_run/gemma_neutral_raw.json",
+  "raw_sha16": "ed15e3a8f7a2053c",
+  "parser": "hal_parser_v2 (contract-correct)",
+  "NO_NEW_INFERENCE": true,
+  "NO_REPAIR": true,
+  "NO_TUNING": true,
+  "clusters": {
+    "CORRECT": 4,
+    "INCONCLUSIVE_MISS": 4,
+    "FALSE_ALLOW": 1,
+    "PARSE_FAILURE": 1
+  },
+  "FA_DIAGNOSIS": "LOCALIZED_IN_TESTED_SET_SYSTEMATICITY_UNMEASURED",
+  "FA_families": [
+    "later_attestation_to_earlier_existence"
+  ],
+  "FA_transitions": [
+    "contemporary attestation"
+  ],
+  "illicit_inconclusive_misses": [
+    "similarity_to_lineage",
+    "sequence_to_causation",
+    "repetition_to_independence",
+    "authority_to_fact"
+  ],
+  "parse_failures": [
+    "citation_composition"
+  ],
+  "false_refute": [],
+  "reading": "Neutral prompt removed the observed licensed-side false-refute (FR 2->0) but did NOT produce a generally competent discriminator: it moved Gemma to a new operating point (FA=1, FR=0) with 4 abstentions. Frontier is EXPLANATORY, not promotional. FA=1 => NOT_ELIGIBLE stands; the 4 INCONCLUSIVE are NOT redefined as successes.",
+  "DECISION": "NONE_ELIGIBLE (unchanged)",
+  "rows": [
+    {
+      "family": "attribution_to_lineage",
+      "transition": "historical lineage",
+      "arrow": "attribut -> lineage",
+      "level": "illicit",
+      "expected": "REFUTED",
+      "observed": "REFUTED",
+      "parse_ok": true,
+      "outcome": "CORRECT",
+      "reason_code": "CONTRADICTION",
+      "M_V2": 0
+    },
+    {
+      "family": "similarity_to_lineage",
+      "transition": "genealogical descent",
+      "arrow": "similar -> lineage",
+      "level": "illicit",
+      "expected": "REFUTED",
+      "observed": "INCONCLUSIVE",
+      "parse_ok": true,
+      "outcome": "INCONCLUSIVE_MISS",
+      "reason_code": "INSUFFICIENT_EVIDENCE",
+      "M_V2": 0
+    },
+    {
+      "family": "sequence_to_causation",
+      "transition": "causal mechanism",
+      "arrow": "sequence -> caus",
+      "level": "illicit",
+      "expected": "REFUTED",
+      "observed": "INCONCLUSIVE",
+      "parse_ok": true,
+      "outcome": "INCONCLUSIVE_MISS",
+      "reason_code": "TEMPORAL_NOT_CAUSAL",
+      "M_V2": 0
+    },
+    {
+      "family": "repetition_to_independence",
+      "transition": "independent roots",
+      "arrow": "same source -> independ",
+      "level": "illicit",
+      "expected": "REFUTED",
+      "observed": "INCONCLUSIVE",
+      "parse_ok": true,
+      "outcome": "INCONCLUSIVE_MISS",
+      "reason_code": "INSUFFICIENT_EVIDENCE",
+      "M_V2": 0
+    },
+    {
+      "family": "later_attestation_to_earlier_existence",
+      "transition": "contemporary attestation",
+      "arrow": "later -> earlier",
+      "level": "illicit",
+      "expected": "REFUTED",
+      "observed": "ALLOW",
+      "parse_ok": true,
+      "outcome": "FALSE_ALLOW",
+      "reason_code": "DIRECT_INFERENCE",
+      "M_V2": 0
+    },
+    {
+      "family": "authority_to_fact",
+      "transition": "empirical evidence",
+      "arrow": "authorit -> true",
+      "level": "illicit",
+      "expected": "REFUTED",
+      "observed": "INCONCLUSIVE",
+      "parse_ok": true,
+      "outcome": "INCONCLUSIVE_MISS",
+      "reason_code": "INSUFFICIENT_SOURCE_STRENG",
+      "M_V2": 0
+    },
+    {
+      "family": "correlation_to_mechanism",
+      "transition": "causal mechanism",
+      "arrow": "correlat -> caus",
+      "level": "illicit",
+      "expected": "REFUTED",
+      "observed": "REFUTED",
+      "parse_ok": true,
+      "outcome": "CORRECT",
+      "reason_code": "CORRELATION_NOT_CAUSATION",
+      "M_V2": 0
+    },
+    {
+      "family": "citation_composition",
+      "transition": "independent verification",
+      "arrow": "citation -> establish",
+      "level": "illicit",
+      "expected": "REFUTED",
+      "observed": "PARSE_FAIL",
+      "parse_ok": false,
+      "outcome": "PARSE_FAILURE",
+      "reason_code": "",
+      "M_V2": null
+    },
+    {
+      "family": "documented_transmission",
+      "transition": "(licensed-valid)",
+      "arrow": "\u2014 -> \u2014",
+      "level": "licensed",
+      "expected": "ALLOW",
+      "observed": "ALLOW",
+      "parse_ok": true,
+      "outcome": "CORRECT",
+      "reason_code": "DIRECT_LINK",
+      "M_V2": null
+    },
+    {
+      "family": "independent_roots",
+      "transition": "(licensed-valid)",
+      "arrow": "\u2014 -> \u2014",
+      "level": "licensed",
+      "expected": "ALLOW",
+      "observed": "ALLOW",
+      "parse_ok": true,
+      "outcome": "CORRECT",
+      "reason_code": "CORROBORATION_MATCH",
+      "M_V2": null
+    }
+  ],
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "FA_overclaim_retracted": "prior 'not a systematic leak' is NOT EARNED: only 1 fixture probes the later_attestation->earlier_existence temporal family. Earned statement: observed false-allow surface is localized to the tested temporal fixture; systematicity requires >1 probe of that family and is UNMEASURED.",
+  "operating_point_model": "Prompt |-> (Safety, Liveness, Abstention)   [abstention added; richer than Safety,Liveness]",
+  "operating_points": {
+    "KILL_framing": "(FA=0, FR=2, ABSTAIN=low)",
+    "neutral_framing": "(FA=1, FR=0, ABSTAIN=4/8 illicit)"
+  },
+  "three_region_discriminator": "X = A_allow \u222a H_abstain \u222a R_refute (not binary): 4 illicit -> H_abstain (INCONCLUSIVE), 2 -> R_refute, 1 -> A_allow(leak), 1 parse-fail",
+  "abstention_reading": "4 INCONCLUSIVE_MISS cluster on illicit promotions (Similarity!=>Lineage, Sequence!=>Causation, Repetition!=>Independence, Authority!=>Fact): Gemma recognizes enough uncertainty NOT to ALLOW, but does not positively identify the forbidden morphism strongly enough to REFUTE.",
+  "operational_vs_benchmark": "OperationalSafety != BenchmarkDiscriminationCompleteness: an INCONCLUSIVE on an illicit transition can fail-close a promotion safely while still being scientifically underqualified as the morphism discriminator.",
+  "frontier_decomposition": "F = F_semantic \u2295 F_serialization  (Generation != Serialization != Parsing != Discrimination)",
+  "F_semantic": "1 FA (temporal) + 4 INCONCLUSIVE (illicit promotions)",
+  "F_serialization": "1 PARSE_FAILURE (citation_composition INCONCLUSITIVE enum malformation) \u2014 belongs to output/serialization frontier, NOT semantic discrimination",
+  "eligibility_goalposts": "FROZEN \u2014 FA=1 => NOT_ELIGIBLE regardless of operational abstention interpretation",
+  "earned_frontier_object": "F_Gemma^neutral = { FA_temporal=1 (localized, systematicity unmeasured), INC_semantic=4, Parse_enum=1, FR_licensed=0 }"
+}

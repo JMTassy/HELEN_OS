@@ -1,0 +1,27 @@
+{
+  "campaign_id": "SWARM_SMOKE_V0",
+  "task_hash": "b381c245078b1376",
+  "corpus_manifest_hash": "f80317dbe451e971fe040cd1b0ceca25eece211e33244c87cc449995db653492",
+  "preflight_sha256": "a8b817d28c1bb5dddd6285dd8ffec3a88af548e58f58bc566b4d2e5810f6dff8",
+  "G1_sha256": "9d3e94472145705d83b6c98b0b5ebed49368b6bd0f5dbd61b557c3086db4da82",
+  "G2_sha256": "0b8ccddb57b43f71f160c99b539d5fe8268d89395f1dc17d59967b5e50af1e59",
+  "G3_sha256": "5b9e49423d3b9039946ea4b13c74f94df70f98c510845ac1962e0bdf8918bfe6",
+  "completeness": {
+    "G1": {
+      "complete": 1,
+      "reasons": [],
+      "claim_count": 3
+    },
+    "G2": {
+      "complete": 1,
+      "reasons": [],
+      "claim_count": 3
+    },
+    "G3": {
+      "complete": 1,
+      "reasons": [],
+      "claim_count": 3
+    }
+  },
+  "swarm_complete": true
+}

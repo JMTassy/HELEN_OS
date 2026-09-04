@@ -1,0 +1,70 @@
+
+===== GOBLIN[history] (102.1s) =====
+PROPOSITION: The inventory reflects the transition from Victorian ornamentalism to industrialized commercial printing.
+Standardization of type specimens illustrates the commodification of aesthetics for mass production.
+Marine motifs signify the imperialist expansion and naval victories of the late Spanish-American War era.
+The pricing structures reveal a maturing market defined by linear measurement and manufacturing efficiency.
+Typography serves as a tactile archive of turn-of-the-century maritime identity and decorative commerce.
+
+===== GOBLIN[geography] (77.2s) =====
+PROPOSITION: The corpus maps a commodification of maritime geography into standardized typographic units.
+Ornamental motifs function as souvenir aesthetics, distilling the Pacific theater into decorative commerce.
+The transition from "naval glyphs" to "fonts" reflects an industrial flattening of geographic specificity.
+Border units act as boundaries between functional text and the exoticized imagery of colonial expansion.
+Imperial geography is domesticated through the repetitive production of cast-metal maritime souvenirs.
+
+===== GOBLIN[language] (115.2s) =====
+PROPOSITION: The text functions as a technical taxonomy of industrial aesthetics, utilizing specialized nomenclature to categorize decorative motifs.
+Lexical choices like "running foot," "register," and "fonts" establish a commercialized vernacular for typographic architecture.
+ The juxtaposition of organic forms (daisy, shell) with rigid geometry (zigzag, gauge) illustrates a systematized vocabulary of ornamentation.
+ Historical markers such as "Manila Bay 1898" ground the decorative syntax in specific geopolitical narratives of maritime power.
+ Syntactic density prioritizes exhaustive classification over narrative flow, mirroring the modularity of the physical objects described.
+
+===== GOBLIN[material] (45.2s) =====
+PROPOSITION: The corpus functions as a commodified taxonomy of ornamental geometry, reducing aesthetic motifs to standardized industrial units of measurement.
+By assigning fixed prices to "running feet," the text transforms cultural symbols into liquid assets within a machinery of mass production.
+The transition from organic forms (daisies, shells) to ballistic imagery (battleships, tridents) reflects a militarized branding of decorative space.
+"Made to register" implies a mechanical precision where artistic fluidity is subsumed by the rigid requirements of lithographic synchronization.
+The Dewey Ornaments represent the transmutation of historical memory into portable, saleable typography for the consumption of early 20th-century commerce.
+
+===== GOBLIN[symbol] (58.2s) =====
+PROPOSITION: The desk book functions as a commercialized taxonomy of aesthetics, transforming cultural motifs into measurable units of commerce.
+Ornamental forms like the "Greek key" and "quatrefoil" act as semiotic ghosts of antiquity repurposed for industrial reproduction.
+The shift from "type specimens" to "naval glyphs" signifies the commodification of historical memory into modular graphic debris.
+Mathematical pricing ($1.00-$3.50/ft) strips symbols of their unique provenance, reducing identity to a linear measurement of length.
+The transition from organic imagery (daisies, shells) to industrialized "halftone-dot" gradients reflects the mechanization of visual perception.
+
+===== GOBLIN[counterexample] (85.6s) =====
+PROPOSITION: The corpus describes a standardized system of commercialized ornamental typography and maritime motifs.
+Counterexample: Custom-commissioned foundry lettering not listed in the ATF Desk Book.
+Counterexample: Hand-drawn illustrations or lithographed borders lacking cast-metal uniformity.
+Counterexample: Typographic characters sold by piece rather than by the running foot.
+Counterexample: Nautical ornaments from the Manila Bay series that are not sold as fonts.
+
+===== GOBLIN[anachronism] (68.2s) =====
+PROPOSITION: The inclusion of "Battleships" within a maritime motif commemorates the Spanish-American War's conclusion.
+The categorization of naval glyphs as "fonts" reflects an early industrial standardization of decorative motifs.
+The pricing of cast-metal borders by the running foot highlights late 19th-century manufacturing scales.
+Terminology like "OPEN/TINT phase pairs" prefigures modern printing techniques within a turn-of-the-century catalog.
+The branding of maritime aesthetics as specific commercial products illustrates the commodification of nationalist imagery.
+
+===== GOBLIN[economics] (93.3s) =====
+PROPOSITION: Standardized unit pricing reflects a transition from bespoke craftsmanship to industrial commodity production.
+The differentiation between corner and edge units indicates specialized manufacturing costs for structural variety.
+Price elasticity is modeled on physical dimensions (running foot), isolating size as the primary variable.
+Inventory diversity in the Dewey Ornaments suggests market segmentation through thematic niche branding.
+Phase pairs "made to register" signify technical advancements reducing production waste through high-fidelity reproducibility.
+
+===== GOBLIN[topology] (22.2s) =====
+PROPOSITION: The corpus maps a topography of commercialized ornamentation where geometry serves as a navigable landscape of decorative utility.
+Linearity is fractured by the distinction between edge and corner units, establishing a spatial hierarchy of margins.
+Type specimens function as topographical markers of style, organizing aesthetic motifs into structured geographic zones of sale.
+The Dewey Ornaments perform an archival topography, flattening historical naval geography into a serialized taxonomy of maritime symbols.
+Typography becomes a terrain of measurement, where the "running foot" quantifies the distance between decorative boundaries and commercial value.
+
+===== GOBLIN[era] (32.9s) =====
+PROPOSITION: The corpus reflects the late Victorian and early Edwardian transition toward industrialized commercial aesthetics.
+Standardization of typography through "Type Specimens" signifies the rise of mass-produced graphic design.
+Victorian ornamentalism persists in motifs like quatrefoil rosettes and Greek keys, balanced by nascent Modernist geometry.
+The inclusion of Manila Bay 1898 imagery anchors the commerce in late-imperialist naval nationalism.
+Materiality shifts from artisanal craftsmanship to standardized cast-metal units sold by linear measurement.

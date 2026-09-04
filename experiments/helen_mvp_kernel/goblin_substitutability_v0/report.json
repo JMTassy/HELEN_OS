@@ -1,0 +1,22 @@
+{
+  "policy_hash": "sha256:f4514e42154bdd53",
+  "Q": {
+    "C_NULL": 0.0,
+    "GEMMA(gemma4-12b)": 0.8333333333333334,
+    "QWEN(qwen3.5:4b)": 1.0
+  },
+  "delta_pp": 16.666666666666664,
+  "kills": [
+    12,
+    12
+  ],
+  "survivors": [],
+  "positive_controls": [
+    3,
+    3
+  ],
+  "removal_ok": true,
+  "E1_utility": true,
+  "E_constitutional": true,
+  "disposition": "PASS"
+}

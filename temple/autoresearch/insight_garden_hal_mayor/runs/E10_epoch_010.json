@@ -1,0 +1,22 @@
+{
+  "schema": "HAL_MAYOR_JESTER_GARDEN_EPOCH_V0",
+  "epoch": "E10",
+  "insight_id": "epoch_010",
+  "insight_label": "COMMAND_QUEST",
+  "hal": {
+    "status": "ERROR",
+    "output": "Command '['python3', 'tools/run_hal_epoch.py', '--epoch', 'E10', '--task', 'INSIGHT GARDEN under HAL supervision. Item: "
+  },
+  "mayor": {
+    "decision": "DEFER",
+    "score": 4,
+    "hal": "ERROR",
+    "authority": false,
+    "garden_only": true
+  },
+  "jester_comment": "JESTER: 'iff any' \u2014 the tiniest condition just became a whole secret society.",
+  "timestamp": "2026-07-20T14:01:26.441547+00:00",
+  "authority": false,
+  "garden_only": true,
+  "receipt_granted": false
+}

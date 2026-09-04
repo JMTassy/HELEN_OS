@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Rose decision record",
+  "description": "One line of decisions/decision_ledger.jsonl. Append-only; the only mechanism that creates APPROVED_BY_ROSE.",
+  "type": "object",
+  "required": ["decision_id", "date", "subject", "outcome", "scope", "rationale", "authorized_by"],
+  "properties": {
+    "decision_id": {"type": "string", "pattern": "^R-[0-9]{3}$"},
+    "date": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+    "subject": {"type": "string", "minLength": 3},
+    "outcome": {"enum": ["GO", "HOLD", "REVISE", "REJECT", "RESEARCH"]},
+    "scope": {"type": "string", "minLength": 3},
+    "rationale": {"type": "string", "minLength": 3},
+    "authorized_by": {"type": "string", "description": "must explicitly indicate Rose"},
+    "supersedes": {"type": "string", "pattern": "^R-[0-9]{3}$"}
+  },
+  "additionalProperties": true
+}

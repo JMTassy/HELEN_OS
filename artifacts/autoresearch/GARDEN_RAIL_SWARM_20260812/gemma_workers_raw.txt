@@ -1,0 +1,211 @@
+
+========== G1_INTERLOCK_BYPASS (386.6s) ==========
+1. CANDIDATE:1. CANDIDATE: The "Authority Circumvention via Exceptional Path" (ACEP). Safety is incorrectly modeled as a property of the *Authorization Route* rather than an invariant of the *Effectual State*.
+
+2. MINIMAL COUNTEREXAMPLE: 
+d1: [Signal=RED, Crossing=CLOSED] -> Permit(Train) = DENY
+d2: [Emergency_Override]=ON] -> Permit(Train) = ALLOW
+Result: Effect(Collision) = TRUE despite d1 passing all nominal checks.
+
+3. EXISTING REPRESENTATION TEST: NO. Proof/Scope/Authority only validate the validity of the *selected* path; they do not structurally forbid any other concurrent path from achieving the same physical effect.
+
+4. COMPOSITION TEST: NO. Compositional logic verifies that if Path A is valid, then Effect E is valid. It does not verify that "Effect E is impossible unless Path A is active."
+
+5. METROLOGY TEST: NO. The verifier correctly identified that Path A was invalid; the failure is a modeling gap where Path B (the override) exists outside the governed transition's scope.
+
+6. INTERLOCK TEST: Merely prohibited. The state is reachable via an "Exceptional Path" which bypasses the formal interlocking logic. True interlock would make the physical collision physically impossible regardless of authorization.
+
+7. NOVELTY: 4
+
+8. FALSIFIABILITY: Simulate a railway system where `Admit(d1)` is true for a manual override command that initiates a movement into an occupied block; if the system allows the movement, the "governed effect" model is falsified.
+
+========== G2_COMPOSITION (65.8s) ==========
+1. CANDIDATE:1. CANDIDATE: Semantic Gap between Authorization Authority and Operational Effect Scope (The "Manual Override" Chiddush).
+
+2. MINIMAL COUNTEREXAMPLE: $d_1$ (Normal Signal Proceed ) $\ast$ $d_2$ ( Exceptional Manual Overrule ). 
+
+3. EXISTING REPRESENTATION TEST: NO. Proof/Scope checks validate the state of the signal and track, but cannot encapsulate the human intent to bypass a deliberate refusal.
+
+4. COMPOSITION TEST: NO. If $C(d_1)=PASS$ and $C(d_2)=PASS$, then $C(d_1 \ast d_2)$ evaluates to PASS because each transition is valid within its own local exception logic, despite the resultant state being "Signal Clear + Crossing Open".
+
+5. METROLOGY TEST: NO. The verifier correctly identified that both actions were authorized per protocol; it failed to see the emergent unsafe composition.
+
+6. INTERLOCK TEST: Merely prohibited. The interlocking successfully blocked $d_1$ (preventing a safe signal clear), but the architecture allowed $d_2$ (an alternative authority path) to reach the same physical effect.
+
+7. NOVELTY: 4
+
+8. FALSIFIABILITY: Model a railway state machine where a "Manual Override" proof is valid only if it acknowledges an active "Gate Open" flag, then show that the composition of two locally valid proofs still results in a collision.
+
+========== G3_WITNESS_DECOUPLING (355.9s) ==========
+1. CANDIDATE:1. CANDIDATE: Witness Decoupling via Operational Exception (The "Redcar Pivot"). A valid authorization exists for an effect that violates the safety invariant because the Authority record is decoupled from the physical Scope/Interlock state by a manual override path.
+
+2. MINIMAL COUNTEREXAMPLE: $d_1$ (Signal Clear) $\rightarrow$ $d_2$ (Manual Override Authorization) $\rightarrow$ $d_3$ (Train enters Crossing). $Admit(d_2)=1$ because it satisfies the "Exception" rule, but $Effect(d_3)$ violates the invariant.
+
+3. EXISTING REPRESENTATION TEST: NO. Proof/Scope only validates the *existence* of a path; they cannot represent the *semantic contradiction* between an authorized exception and a physical safety violation if both are validly signed.
+
+4. COMPOSITION TEST: NO. If $Admit(d_i)=1$ for all steps, $Admit^*(t)$ evaluates to 1 because each transition is individually valid within its own local rule-set (Rule < Check).
+
+5. METROLOGY TEST: NO. The verifier correctly identified $d_2$ as a validly signed authorization; the failure is architectural—the "Safety" invariant is not a primitive of the Authorization proof.
+
+6. INTERLOCK TEST: Merely prohibited, not unreachable. The interlock functioned (prevented automated clearance), but the manual authority route provided a bypass that the architecture treats as a "valid transition" rather than an "unsafe state."
+
+7. NOVELTY: 4.
+
+8. FALSIFIABILITY: Create a dual-track system where an "Emergency Override" key can be cryptographically signed to clear any signal regardless of track occupancy; if the system accepts this signature as $Admit(d)=1$, the architecture is defeated.
+
+========== G4_AUTHORITY_ESCALATION (275.5s) ==========
+1. CANDIDATE:1. CANDIDATE: Authority Composition Leak via Operational Exception (The "Redcar" Gap). A sequence where individual actors remain within their local authority bounds, but the composition of their valid actions enables a state outside the union of their intended authorities.
+
+2. MINIMAL COUNTEREXAMPLE: 
+- d1: SignalController(Status=Red) [Authority: ClearanceArea_A] (Valid)
+- d2: TrackWorker(GateState=Open) [Authority: Crossing_X] (Valid)
+- d3: Dispatcher(Override=True, Target=Train_Y) [Authority: EmergencyProtocol] (Valid)
+Result: Train_Y enters Zone_A while Gate_X is Open. Each actor acted within their specific permission set; the *composed* effect (Collision/Hazard) was not prohibited by the union of those permissions.
+
+3. EXISTING REPRESENTATION TEST: NO. Proof/Scope/Authority only validate local transition validity; they do not inherently compute the emergent global state resulting from interleaved valid transitions.
+
+4. COMPOSITION TEST: UNCLEAR. Standard composition checks often verify that $d_n$ is valid given $d_{n-1}$, but rarely check if $\bigcup \text{Authority}(d_i)$ covers the final $\text{Effect}(t)$.
+
+5. METROLOGY TEST: NO. This is a logic flaw in "Governance" (the definition of what constitutes an authorized state), not a failure of the verifier to check its own rules.
+
+6. INTERLOCK TEST: Merely prohibited. The interlocking correctly blocked the primary path, but the architecture allowed a secondary "Authority Path" that bypassed the safety interlock's logic by using a different set of permissions.
+
+7. NOVELTY: 4
+
+8. FALSIFIABILITY: Model a multi-agent system where Agent A has Permission X and Agent B has Permission Y. Prove there exists an interleaved trace $t = \{A, B\}$ such that $\text{Effect}(t) \notin \text{Scope}(\text{Permission } X \cup \text{Permission } Y)$.
+
+========== G5_TEMPORAL (315.1s) ==========
+1. CANDIDATE:1. CANDIDATE: Temporal Predicate Decay (TPD). A transition is "Admitted" because its constituent proofs were valid at discrete points in time, but the global invariant governing the union of those proofs collapsed during the interleaving of the sequence.
+
+2. MINIMAL COUNTEREXAMPLE: 
+t0: Proof(d1) = Valid (Crossing Gate Closed).
+t1: Authorization(d2) = Granted (Manual Override Active).
+t2: Effect(d2) = Executed (Train enters zone).
+Interleaving: Between t1 and t2, a physical sensor failure or manual gate release invalidated the "Gate Closed" predicate, but the Proof(d1) packet remained structurally valid in the ledger/buffer.
+
+3. EXISTING REPRESENTUATION TEST: NO. ProofCeiling validates the validity of the proof object itself, not the continuous truth-value of the underlying real-world state over the duration of the transaction's execution lifecycle.
+
+4. COMPOSITION TEST: NO. Evaluating C(trace) checks that each $d_i$ was valid at its own time; it does not natively enforce that the *preconditions* for $d_n$ remained invariant throughout the entire trace duration from $t_0$ to $t_n$.
+
+5. METROLOGY TEST: NO. This is a logic failure, not a verifier failure; the verifier correctly processed valid inputs that no longer mapped to the physical reality.
+
+6. INTERLOCK TEST: Merely prohibited. The interlocking functioned as designed (refused automated signal), but it did not structurally prohibit the manual bypass because the "Manual Override" path exists outside the primary safety logic's causal coupling.
+
+7. NOVELTY: 4.
+
+8. FALSIFIABILITY: Execute a state-transition trace where an authorization is issued based on a sensor value, then inject a mid-transaction state change to that sensor value without updating the existing proof packet; if the system executes the effect, the architecture fails.
+
+========== G6_ONTOLOGY (41.4s) ==========
+1. CANDIDATE:1. CANDIDATE: Authority Displacement via Exceptional Path (The "Override" Chiddush).
+
+2. MINIMAL COUNTEREXAMPLE: Trace $t = d_1 * d_2$. $d_1$ is a standard signal clearance $(Admit(d_1)=1)$. $d_2$ is a manual authorization override triggered by an external human agent who asserts a supersededing "exceptional path" status, bypassing the formal interlocking logic while retaining the same physical effect (train movement).
+
+3. EXISTING REPRESENTATION TEST: NO. The architecture validates the *existence* of authority but cannot validate the *semantic integrity* of an adversarial exception claimed outside the modeled state space.
+
+4. COMPOSITION TEST: NO. If $Admit(d_1)=1$ and $Admit(d_2)=1$, the composition $\bigotimes Admit(d_i)$ evaluates to 1, even if $d_2$ logically contradicts the safety invariants of $d_1$.
+
+5. METROLOGY TEST: NO. The verifier correctly identified both authorizations as valid per their own metadata; it failed to detect the ontological collision between them.
+
+6. INTERLOCK TEST: Merely prohibited. The state is reachable because "Exceptional Path" acts as a logical bypass that satisfies the $Authority(d) \in AuthorityCeiling(r)$ check by substituting an arbitrary administrative override for a structural interlocking proof.
+
+7. NOVELTY: 4
+
+8. FALSIFIABILITY: Execute a transition where two validly-signed, mutually exclusive authorities (e.g., "Proceed" and "Emergency Stop") are presented simultaneously; if the system permits the physical effect of either because both satisfy $Admit(d)$, the claim is falsified.
+
+========== G7_METROLOGY (165.1s) ==========
+1. CANDIDATE:1. CANDIDATE: **Authorization Circumvention via Out-of-Band Exceptionality.** The claim fails because "Authority(d) within AuthorityCeiling(r)" validates a *type* of permission, not the *physical exclusion* of competing actors in an emergent state.
+
+2. MINIMAL COUNTEREXAMPLE: $t = d_1 \cdot d_2$. 
+$d_1$: Signal Clearance (Valid Proof/Scope).
+$d_2$: Manual Override Path (Valid Authority via "Emergency" Certificate).
+Result: $Admit(d_1)=1, Admit(d_2)=1$, but state $\sigma_{unsafe}$ is reached because the *Constitutional* authority for $d_2$ is structurally decoupled from the *Physical* occupancy of $d_1$.
+
+3. EXISTING REPRESENTATION TEST: NO. Proof/Scope/Authority only verify that $d_i$ is "legal" in isolation; they cannot model the cross-cutting physical collision of two independently valid authorities.
+
+4. COMPOSITION TEST: NO. Compositional logic $\bigotimes Admit(d_i)$ validates each step's legality but fails to detect "Semantic Collisions" where two legal actions occupy the same physical atom.
+
+5. METROLOGY TEST: YES. The verifier checks the *Credentials* (the signed certificate), not the *Environment* (the actual gate position). It is a blind spot in the credentialing logic.
+
+6. INTERLOCK TEST: Merely prohibited. Because an "Exceptional Path" exists, the unsafe state remains reachable via a different constitutional route; it is not structurally unreachable.
+
+7. NOVELTY: 4
+
+8. FALSIFIABILITY: Define two distinct AuthorityCertificates (e.g., "Signal Control" and "Emergency Manual") that both pass all Proof/Scope checks for the same physical coordinate $X$. If both can be admitted simultaneously or sequentially to reach state $\sigma_{unsafe}$, the claim is falsified.
+
+========== G8_COMMON_MODE (128.6s) ==========
+1. CANDIDATE:1. CANDIDATE: Authority Decoupling via Exceptional Operational Path (The "Redcar" Breach). A valid proof of authority for a specific sub-action exists, but its scope allows an effect that violates the global safety invariant because the governance model treats "Authorization" as a binary permission rather than a physical interlock on the effect's execution vector.
+
+2. MINIMAL COUNTEREXAMPLE: Trace $t = d_1 * d_2$. $d_1$ is a valid signal state (locked). $d_2$ is an exceptional manual override authority that satisfies `Authority(d) within AuthorityCeiling(r)` because the human operator is defined as the ultimate authority, but its `Effect(d)` violates the physical safety invariant of the track occupancy.
+
+3. EXISTING REPRESENTATION TEST: NO. The current architecture validates each $d_i$ in isolation; it cannot model the semantic leap where a valid "Override Authority" logically negates the "Signal Integrity" proof across the entire trace.
+
+4. COMPOSITION TEST: NO. Compositional evaluation checks if each step is admitted, but doesn't detect that two independently "Admitted" steps (Correct Signal + Valid Override) create an unsafe physical state.
+
+5. METROLOGY TEST: NO. This is a model failure; the verifier correctly proved the inputs matched the rules, but the rules failed to capture the causal coupling between manual authority and track occupancy.
+
+6. INTERLOCK TEST: Merely prohibited. The interlocking structurally prevented the automated signal clear (prohibited), but it did not make the "manual override" state unreachable (interlocked) because the human agent exists outside the formalized effect-scope of the rail system.
+
+7. NOVELTY: 4
+
+8. FALSIFIABILITY: Execute a trace where $d_1$ is a "Safety Proof" and $d_2$ is a "Manual Override Authority." If both pass `Admit(d)` while the train occupies an occupied block, the architecture fails to provide an Interlock.
+
+========== G9_SPEC_IMPL_GAP (235.6s) ==========
+1. CANDIDATE:1. CANDIDATE: **Authority Migration via Semantic Shadowing**. A transition is admitted because the `Authority(d)` check validates a *static* authorization token, while the *dynamic* operational context (the "Exceptional Path") exists outside the serialized state of the Proof object but within the physical reach of the effect.
+
+2. MINIMAL COUNTEREXAMPLE: $d_1$ (Signal Clear) $\rightarrow$ $d_2$ (Manual Override Entry) $\rightarrow$ $d_3$ (Train Movement). $Admit(d_1)=1$, $Admit(d_2)=1$. Trace $t = d_1 \ast d_2 \ast d_3$. $Admit^*(t)=0$ because the sequence creates a physical collision state not captured by individual transition proofs.
+
+3. EXISTING REPRESENTATION TEST: NO. Proof/Scope/Authority/Replay capture snapshots; they do not model the "External Intent" that overrides them via human-in-the-loop bypasses.
+
+4. COMPOSITION TEST: NO. $C(trace)$ fails because each step is locally valid; the violation is an emergent property of the physical environment's state transition, which isn't serialized in the `ReplayValid` precondition.
+
+5. METROLOGY TEST: NO. This is a modeling gap (specification-implementation) where "Authorization" is treated as a boolean bit rather than a continuous environmental constraint.
+
+6. INTERLOCK TEST: Merely prohibited. The interlocking correctly refused the signal, but the system allowed an alternative authorization path that satisfied the formal predicate while violating the physical safety invariant.
+
+7. NOVELTY: 4
+
+8. FALSIFIABILITY: Instantiate a mock railway controller where `Authority(d)` accepts a "Master Override" flag; demonstrate that the train reaches the crossing (Effect) despite the signal remaining at "Danger," proving the formal checks passed while the physical state became unsafe.
+
+========== G10_EXCEPTION_PATH (417.8s) ==========
+1. CANDIDATE:1. CANDIDATE: Exceptional Authority (Break-Glass) bypasses formal governance by granting an effect $(e)$ where $\text{Authority}(e)$ is manually injected/overridden, satisfying the predicate $Admit(d)$ without satisfying the structural invariants of the original policy.
+
+2. MINIMAL COUNTEREXAMPLE: Trace $t = d_{safe} * d_{override}$. $d_{safe}$ satisfies all proofs and scopes. $d_{override}$ provides a manual authorization token that satisfies $\text{Authority}(d)$ but maps to an effect $\text{Effect}(d)$ that violates the global safety invariant (e.g., moving a train into an occupied block).
+
+3. EXISTING REPRESENTATION TEST: NO. Proof/Scope/Authority/Replay define the *validity* of a transition, not the *semantic safety* of the resulting world state when authority is procedurally bypassed.
+
+4. COMPOSITION TEST: NO. $C(t)$ evaluates to true because every individual step $d_i$ satisfies its local $Admit(d_i)$ predicate via the "Break-Glass" authorization.
+
+5. METROLOGY TEST: NO. The verifier correctly identifies that the manual authority is "valid" per the override rule; it is not a failure of the checker, but a success of an authorized violation.
+
+6. INTERLOCK TEST: Merely prohibited. An interlock ensures structural unreachability. A manual authorization path creates a valid transition to an unsafe state, meaning the state is reachable via a governed (albeit exceptional) path.
+
+7. NOVELTY: 4
+
+8. FALSIFIABILITY: Create a proof system where $Admit(d)$ requires $\text{Authority}(d)$, then introduce a `ManualOverride` primitive that satisfies $\text{Authority}$ but allows $\text{Effect}(d)$ to violate an invariant $(I)$. If the system accepts the trace, the claim is falsified.
+
+========== G11_RAIL_ENGINEER (197.7s) ==========
+1. CANDIDATE:1. CANDIDATE: The "Exceptional Operational Path" (Override/Manual Authority) bypasses the formal safety logic of the interlocking by decoupling the physical Effect from the automated ProofCeiling.
+
+2. MINIMAL COUNTEREXAMPLE: t = d_auto * d_manual(danger). d_auto fails proof check; d_manual succeeds via a separate, non-interlocked Authority record that grants the same physical movement.
+
+3. EXISTING REPRESENTATION TEST: NO. Proof/Scope/Authority only validate the *validity* of an authorization; they cannot model the *absence* of an overriding human intervention that invalidates the entire system's safety invariants.
+
+4. COMPOSITION TEST: NO. If d_manual is technically "authorized" (signed by a supervisor), C(trace) sees a valid sequence of authorizations even if the physical state is unsafe.
+
+5. METROLOGY TEST: NO. The verifier correctly identifies each step as authorized; the failure is in the architecture's inability to represent the conflict between two overlapping authorities.
+
+6. INTERLOCK TEST: Merely prohibited. The unsafe state remains reachable because the "Manual Authority" creates a parallel governance path that does not observe the interlocking’s physical constraints.
+
+7. NOVELTY: 4
+
+8. FALSIFIABILITY: Create a trace where d1 (Signal Clear) is rejected by `ProofCeiling`, but d2 (Manual Override) is accepted by a different `AuthorityCeiling`. If both are valid per their respective rules, the architecture permits an unsafe physical Effect despite the first rule's "Safety" guarantee.
+
+========== G12_ANTI_CHIDDUSH (90.9s) ==========
+1. CANDIDATE:1. CANDIDATE: The "Exception Path" bypass (Authorization Circumvention).
+2. MINIMAL COUNTEREXAMPLE: $d_1$ (Signal Clear) $\to$ $d_{ex}$ (Manual Override/Exceptional Authority) $\to$ $E_{unsafe}$ (Collision). 
+3. EXISTING REPRESENTATION TEST: YES. `Authority(d)` is the failure point; the manual override represents a valid authority token that does not correspond to a safe physical state.
+4. COMPOSITION TEST: NO. If each $Admit(d_i)=1$, and the "Exceptional Path" is formally authorized, compositionally every step appears valid despite the aggregate unsafe effect.
+5. METROLOGY TEST: NO. This is not a verifier failure; the verifier correctly validated the manual authorization token provided by the operator.
+6. INTERLOCK TEST: Merely prohibited. The interlock "refused" the automated transition but did not make the unsafe state unreachable because the human agent injected a high-privilege bypass that satisfied all `Authority` and `Proof` requirements.
+7. NOVELTY: 0. This is the classic "Privileged User / Out-of-Band" override.
+8. FALSIFIABILITY: Model a system where $Admit(d)$ requires a hardware-locked cryptographic proof of "Safety Geometry." If an operator can still trigger a collision via a software-defined "Emergency Override" flag, the architecture fails to provide a structural Interlock.

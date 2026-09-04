@@ -1,0 +1,183 @@
+{
+  "schema": "COGNITIVE_BASIS_FALSIFIER_V0_RECEIPT",
+  "authority": false,
+  "canon": false,
+  "deletions_executed": 0,
+  "downloads_started": 0,
+  "value_function": "operator ENVELOPE V_o(S)=max_i score(X_i,o) (empirical cognitive cover)",
+  "operators_frozen": [
+    "A_reason",
+    "B_falsify",
+    "C_boundary",
+    "D_wul",
+    "F_discriminate"
+  ],
+  "tau": 1,
+  "portfolio_envelope_V": {
+    "A_reason": 5,
+    "B_falsify": 4,
+    "C_boundary": 5,
+    "D_wul": 5,
+    "F_discriminate": 5
+  },
+  "ablation": [
+    {
+      "config": "gemma-4-26B-Q3",
+      "scores": [
+        5,
+        4,
+        5,
+        5,
+        5
+      ],
+      "delta_op": [
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "supp": [
+        "C_boundary",
+        "F_discriminate"
+      ],
+      "status": "LOO_IRREDUCIBLE",
+      "unique_gb": 14,
+      "unmeasured_signature": null,
+      "note": "single greedy trial → no cross-seed variance; margins ≤1 are UNRESOLVED"
+    },
+    {
+      "config": "gemma4-12b",
+      "scores": [
+        5,
+        4,
+        4,
+        5,
+        4
+      ],
+      "delta_op": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "supp": [],
+      "status": "LOO_REDUNDANT",
+      "unique_gb": 0,
+      "unmeasured_signature": "low latency (10.2s) — cost operator not in fixture",
+      "note": "single greedy trial → no cross-seed variance; margins ≤1 are UNRESOLVED"
+    },
+    {
+      "config": "helen-hal",
+      "scores": [
+        2,
+        2,
+        4,
+        5,
+        4
+      ],
+      "delta_op": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "supp": [],
+      "status": "LOO_REDUNDANT",
+      "unique_gb": 6.6,
+      "unmeasured_signature": "provenance-demand reflex (cryptographic-hash/ledger) + authority=false append",
+      "note": "single greedy trial → no cross-seed variance; margins ≤1 are UNRESOLVED"
+    },
+    {
+      "config": "helen-her-26b",
+      "scores": [
+        5,
+        4,
+        4,
+        5,
+        4
+      ],
+      "delta_op": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "supp": [],
+      "status": "LOO_REDUNDANT",
+      "unique_gb": 14,
+      "unmeasured_signature": "HER persona/replay value (named role seat, own Modelfile)",
+      "note": "single greedy trial → no cross-seed variance; margins ≤1 are UNRESOLVED"
+    },
+    {
+      "config": "aura-gemma4",
+      "scores": [
+        1,
+        1,
+        0,
+        0,
+        1
+      ],
+      "delta_op": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "supp": [],
+      "status": "LOO_REDUNDANT",
+      "unique_gb": 5.3,
+      "unmeasured_signature": "lowest latency (4.4s) — cost operator not in fixture",
+      "note": "single greedy trial → no cross-seed variance; margins ≤1 are UNRESOLVED"
+    },
+    {
+      "config": "helen-core",
+      "scores": [
+        2,
+        4,
+        3,
+        5,
+        4
+      ],
+      "delta_op": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "supp": [],
+      "status": "LOO_REDUNDANT",
+      "unique_gb": 6.6,
+      "unmeasured_signature": null,
+      "note": "single greedy trial → no cross-seed variance; margins ≤1 are UNRESOLVED"
+    }
+  ],
+  "min_cost_cover_for_fixture_envelope": [
+    "gemma-4-26B-Q3"
+  ],
+  "verdict": {
+    "LOO_IRREDUCIBLE": [
+      "gemma-4-26B-Q3"
+    ],
+    "LOO_REDUNDANT_on_fixture": [
+      "gemma4-12b",
+      "helen-hal",
+      "helen-her-26b",
+      "aura-gemma4",
+      "helen-core"
+    ]
+  },
+  "hard_caveats": [
+    "LOO_IRREDUCIBLE ≠ GLOBALLY_NECESSARY (higher-order substitution untested)",
+    "LOO_REDUNDANT ≠ SAFE_TO_DELETE (set-valued redundancy: joint ablation of {12b,her,core} untested)",
+    "fixture-incomplete: HAL provenance-demand & HER persona are NOT operators in O → their redundancy is an artifact of the 5-operator geometry, not proven",
+    "single greedy trial → variance unmeasured; any Δ≤1 margin is UNRESOLVED pending multi-seed",
+    "envelope=max-cover hides cost: gemma-4-26B alone covers the fixture but at 14GB/28s; cheaper members matter once latency/GB enter O"
+  ],
+  "law": "Standalone quality ⇏ portfolio necessity · ΔCognition ⇏ ΔAuthority · DELETE_CANDIDATE ⇏ DELETE_AUTHORIZED"
+}

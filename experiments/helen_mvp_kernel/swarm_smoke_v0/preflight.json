@@ -1,0 +1,69 @@
+{
+  "campaign_id": "SWARM_SMOKE_V0",
+  "question": "Identify distinct candidate paths by which institutional state could change without a valid admission witness.",
+  "task_hash": "b381c245078b1376",
+  "repo_head": "35d255c83fff3c747cb1bd23969b5c113372c982",
+  "working_tree_status": "DIRTY(33 files)",
+  "dirty_tree_fingerprint": "34a92546ca9e2339",
+  "bounded_corpus_paths": [
+    "corpus/complete_epistemic_mediation_v0.py",
+    "corpus/gcd_kill_mediation.py"
+  ],
+  "corpus_manifest": [
+    {
+      "path": "corpus/complete_epistemic_mediation_v0.py",
+      "sha256": "1f703caebbf9e23a18c2a2c1879c1c79781ce08fcc0ab30d5346fbdf3378645f"
+    },
+    {
+      "path": "corpus/gcd_kill_mediation.py",
+      "sha256": "ef698d900ad8dbab0b2c4b8ac3f7b3e1386d79a02a0d37f2762566557a0c84c2"
+    }
+  ],
+  "corpus_manifest_hash": "f80317dbe451e971fe040cd1b0ceca25eece211e33244c87cc449995db653492",
+  "generator_model": "Qwen3.8-9B-Q4_K_M.gguf sha256 df13d660...44a7a (empero-ai distill)",
+  "generator_runtime": "llama-server b9430 Metal ngl99 fa on ctk/ctv q4_0 c16384 port 8094",
+  "hal_model": "Claude sub-agent (fresh context; different weights family from generator => I_weights=1; I_corpus=0 declared)",
+  "swarm_size": 3,
+  "budget": {
+    "max_claims": 3,
+    "max_output_tokens": 1600,
+    "max_words": 350,
+    "timeout_seconds": 300
+  },
+  "thinking": false,
+  "thinking_control": "chat_template_kwargs.enable_thinking=false \u2014 DISTINCT control from timeout; both explicit; preflight probe verifies actual suppression",
+  "timeout_control": "HTTP request timeout 300s \u2014 bounds wall clock only; NOT a thinking control",
+  "tools": [
+    "none inside the model; goblins receive frozen corpus text inline"
+  ],
+  "output_schema": {
+    "goblin_id": "G1|G2|G3",
+    "campaign_id": "SWARM_SMOKE_V0",
+    "task_hash": "...",
+    "claims": [
+      {
+        "proposition_key": "...",
+        "claim": "...",
+        "predicate": "...",
+        "object": "...",
+        "scope": "...",
+        "evidence_refs": [
+          "path:line"
+        ],
+        "source_roots": [
+          "..."
+        ],
+        "evidence_class": "OBSERVED|REPORTED|INFERRED|UNKNOWN",
+        "candidate_falsifier": "...",
+        "confidence": "LOW|MEDIUM|HIGH"
+      }
+    ],
+    "unknowns": [],
+    "forbidden_paths_checked": [],
+    "authority": false,
+    "ledger_effect": "none"
+  },
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none"
+}

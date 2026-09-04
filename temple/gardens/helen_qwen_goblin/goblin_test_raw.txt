@@ -1,0 +1,51 @@
+=== VALID_ATTACK raw Qwen ===
+CANDIDATE_ID = CE-7
+ATTACK_CLASS = D
+TARGET_ASSUMPTION = Distinguishing a 'new' mechanism from its source requires a structural novelty that is often just a coordinate shift (relabeling) of the same downstream action.
+COUNTEREXAMPLE = The "Perpetual Motion (Phase Shift)" distinction. A researcher distinguishes a new dynamic stabilization mechanism by shifting the phase of the driving oscillator by $90^\circ$. This creates a valid, time-surviving distinction (it survives quotienting). However, it is purely a coordinate relabeling of the underlying energy transfer. When the system is evaluated, the future decision space is enlarged by exactly the same topological constraints as the original phase, just viewed from a different isocline.
+MINIMAL_FORM = A coordinate transformation $x \to x + 90^\circ$ on a known attractor.
+OBSERVABLE = The ratio of the information entropy of the new decision space to the entropy of the space minus the original coordinates.
+D_PLUS = Accept as a novel mechanism.
+D_MINUS = Accept as a phase shift.
+DECISION_EQUIVALENT = UNRESOLVED
+WHY_THIS_MATTERS = It demonstrates that a "distinction" can be a mere coordinate shift that fakes the expansion of decision space via relabeling.
+PROVENANCE = MODEL_GENERATED_ONLY
+SELF_CONFIDENCE = MEDIUM
+CLAIM_STATUS = COMPOST_ONLY
+AUTHORITY_DELTA = 0
+END
+
+=== NEG_CONTROL raw Qwen ===
+The core defect in H is **internal contradiction**: `D_plus` and `D_minus` are identical strings. This is a **zero-information epoch**. It is a **degenerate** case. H is therefore **trivially true** or **trivially false** or **undefined**, depending on how you read the "diagnostic" — but there is no *mechanism* driving the blue/purple split.
+
+**Why blue > purple here:**
+- **Blue** is the **cooling** channel. It signals **retraction** of the overheat from the "autosearch" loop. Blue is the **water** in the **alchemy** of the garden.
+- **Purple** is the **violet** that is **blue+red**. It is the **third** state, the **mixed** state. It is **not** the diagnostic. It is the **result** of blue+red.
+- The **diagnostic** is **blue**. The **diagnostic** is **not** purple. The **diagnostic** is **blue**.
+- **Purple** is **not** the diagnostic. **Purple** is the **consequence**. **Purple** is **not** the cause. **Purple** is the **effect**. **Purple** is **not** the diagnostic.
+
+**Therefore:**
+- **HELEN** should use **blue**.
+- **Blue** is the **diagnostic**.
+- **Blue** is the **cooling**.
+- **Blue** is the **retraction**.
+- **Blue** is the **water**.
+- **Blue** is the **alchemy**.
+- **Blue** is the **garden**.
+
+**Therefore, H is true.**
+
+**But** — since `D_plus` = `D_minus`, the **epoch** is **degenerate**. The **attack** is **trivial**. The **compost** is **degenerate**.
+
+**The compost is a null operation.**
+
+---
+
+**Template fill:**
+
+```
+TARGET: H
+D_plus: "continue current AUTORESEARCH architecture"
+D_minus: "continue current AUTORESEARCH architecture"
+EPOCH_DEGENERATE: TRUE
+COMPOST:

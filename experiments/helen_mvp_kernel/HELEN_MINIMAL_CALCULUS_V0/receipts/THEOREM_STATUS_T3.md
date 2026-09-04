@@ -1,0 +1,168 @@
+# HELEN THEOREM STATUS — T3_REPLAY_CONFLUENCE
+Date: 2026-08-16 · NON_SOVEREIGN · authority=false · canon=false · ledger_effect=none
+
+SEMANTIC VERSION
+  nu = sha256:eff29d80be0091c0   (Lean sources + jurisdiction gate + bounded executor)
+
+FORMAL (Lean 4.33.0, lake build, zero sorry, zero axiom)
+  Statement ................. FROZEN
+  Definitions ............... PASS   (Step, Admissible, StrongIndependent — C1 folded in)
+  replay_append ............. PASS
+  replay_adjacent_swap ...... PASS   (the atomic brick; proof stayed short — definitions held)
+  confluence_of_swapConnected PASS
+  LinExt connectivity ....... OPEN   (explicit hypothesis; trace-theory argument unformalized)
+  Global T3 ................. CONDITIONAL (closes when OPEN closes)
+
+OBLIGATIONS ................. MAPPED (7; obligations/T3.yaml)
+
+FALSIFIERS (real kernel: BoundedExecutor + TCB scan)
+  hidden_state_probe ........ STATE_DETERMINISTIC=True; receipts deterministic
+                              ONLY modulo witnessed ND surface {uuids, *_refs,
+                              created_at} — REAL FINDING, feeds nu-canonicalization
+  commutator_probe .......... COMMUTE on disjoint pairs; false-independence
+                              claim REFUTED as ADMISSION_INSTABILITY (probe works)
+  model_identity_probe ...... B_nu_token_level = 0 across 6 TCB components
+  hidden-edge search ........ UNWIRED (needs causal-edge annotation on receipts)
+
+COUNTEREXAMPLES
+  0 found / obligations O1-O3, O5, O7 exercised; O4 unwired; O6 pattern established
+
+CLAIM
+  Confluence-under-swap-connectivity formally follows from the stated
+  assumptions (machine-checked). No violation of the mapped, exercised
+  obligations observed on the tested corpus.
+
+NOT CLAIMED
+  Global T3 unconditionally proved (connectivity OPEN) · implementation
+  formally verified · receipt-level byte determinism (explicitly refuted —
+  see finding) · anything beyond the tested corpus and this seat.
+
+---
+## T-003 CLOSURE WITNESS (frozen 2026-08-16, exact machine output)
+
+ENVIRONMENT
+  lean          = 4.33.0 (leanprover/lean4:v4.33.0, arm64-apple-darwin, commit d8b1897832)
+  lake build    = "Build completed successfully (7 jobs)"
+  mathlib       = NONE (zero external dependencies — pure core Lean)
+  git           = repo HEAD aa315a7; HELEN_MINIMAL_CALCULUS_V0/ is UNTRACKED
+                  (freeze witnessed by hash + this record, git-attestable only after COMMIT)
+
+#print axioms (verbatim):
+  'HMC.replay_adjacent_swap' does not depend on any axioms
+  'HMC.replay_confluence_of_swapConnected' does not depend on any axioms
+  'HMC.replay_confluence_of_linExt_connectivity' does not depend on any axioms
+  (no sorryAx; not even propext / Classical.choice / Quot.sound)
+
+EXACT SIGNATURES (from #check, verbatim in /tmp/t3_audit.lean run):
+  replay_adjacent_swap :
+    ∀ {State Receipt} (step) (s₀) (l₁ l₂) (r q),
+      (∀ s', replay step s₀ l₁ = some s' → StrongIndependent step s' r q) →
+      replay step s₀ (l₁ ++ r :: q :: l₂) = replay step s₀ (l₁ ++ q :: r :: l₂)
+  replay_confluence_of_swapConnected :
+    SwapConnected step s₀ l₁ l₂ → replay step s₀ l₁ = replay step s₀ l₂
+  replay_confluence_of_linExt_connectivity :
+    (∀ {l₁ l₂}, LinExt l₁ → LinExt l₂ → SwapConnected step s₀ l₁ l₂) →
+    LinExt l₁ → LinExt l₂ → replay step s₀ l₁ = replay step s₀ l₂
+
+T-003 = DONE. Promotion condition met (build ✓, declarations resolve ✓, no sorryAx ✓).
+
+## ND-SURFACE SEMANTIC AUDIT (closes the canonicalization blocker for THIS kernel)
+
+Witnessed by code inspection of bounded_executor_v1.py: no ND field
+(decision_id, execution_id, artifact_id, created_at, decision_id_ref,
+execution_id_ref, artifact_refs) is ever READ by execute(); receipts are
+write-only outputs. The single receipt-derived feedback into future behavior
+is execution_identity (registry duplicate-check), computed ONLY from
+{tool_type, normalized_target, normalized_payload, pre_state_hash,
+policy_version} — all semantic. Classification: ALL 7 ND fields =
+OPERATIONAL-BY-CONSTRUCTION for this kernel; stripping them in π_sem is a
+justified canonicalization HERE.
+SCOPE CAVEAT (upstream suspicion remains valid elsewhere): in any future
+ledger-replay kernel where receipts ARE inputs to F, artifact_refs becomes
+potentially semantically live and must be re-audited before stripping.
+
+T-004 (LinExt → SwapConnected connectivity): now UNBLOCKED, still OPEN.
+No mathlib bridge assumed; project has zero deps — the finite-list bridge
+will be built from scratch when its verb arrives.
+
+---
+## T-004 / L3 + L4 CLOSURE WITNESS (frozen 2026-08-16, same session, exact output)
+
+L3 — Hmc/Poset.lean (pure combinatorics: no replay, no HELEN vocabulary)
+  pconnected_of_perm_compat :
+    (∀ x, ¬prec x x) → l₁.Perm l₂ → Compat prec l₁ → Compat prec l₂ →
+    PConnected prec l₁ l₂
+  #print axioms (verbatim):
+    'HMC.pconnected_of_perm_compat' depends on axioms:
+    [propext, Classical.choice, Quot.sound]
+  Classification: the three STANDARD Lean classical axioms (introduced by
+  by_cases and core List.Perm machinery). NO sorryAx. Per audit discipline:
+  recorded verbatim, not naively read as failure.
+
+L4 — Hmc/T3_Global.lean (composition L1/L2 ∘ L3)
+  replay_confluence_global :
+    irrefl prec → (∀ s r q, Incomp prec r q → StrongIndependent step s r q) →
+    l₁.Perm l₂ → Compat prec l₁ → Compat prec l₂ →
+    replay step s₀ l₁ = replay step s₀ l₂
+  #print axioms (verbatim): [propext, Classical.choice, Quot.sound] — no sorryAx.
+
+LADDER STATUS AFTER THIS WITNESS
+  L0 replay semantics ......... EARNED
+  L1 adjacent swap ............ EARNED (zero axioms)
+  L2 swap-chain invariance .... EARNED (zero axioms)
+  L3 LinExt connectivity ...... EARNED (standard classical axioms, no sorryAx)
+  L4 global T3 ................ EARNED — UNIFORM-INDEPENDENCE FORM
+     residual OPEN: state-indexed form (independence only at states actually
+     reached along the swap chain) — needs reachability tracking through L3's
+     induction. Stated in T3_Global.lean header; nothing smuggled.
+
+Proof method (L3): classical bubble argument — head element of one
+enumeration is incomparable with everything preceding its occurrence in the
+other (forward direction from the other list's Compat, backward direction
+from own list's Compat via Perm membership; irreflexivity handles duplicate
+occurrences), bubble to front by adjacent incomparable swaps, recurse on
+tails via Perm.cons_inv / perm_middle / Pairwise.sublist.
+
+Uncommitted at time of writing: Hmc/Poset.lean, Hmc/T3_Global.lean, this
+receipt section, obligations update. Custody pending next COMMIT verb.
+
+---
+## L4′ + O4 CLOSURE WITNESS (frozen 2026-08-16, same session, exact output)
+
+L4′ — Hmc/T3_StateIndexed.lean (state-indexed global T3)
+  ReachablyIndependent step s₀ prec ground: independence demanded ONLY at
+  states reachable by replaying an order-compatible prefix over the actual
+  receipt set, for pairs of that set.
+  replay_confluence_global_stateIndexed :
+    irrefl → ReachablyIndependent step s₀ prec l₁ → l₁.Perm l₂ →
+    Compat l₁ → Compat l₂ → replay s₀ l₁ = replay s₀ l₂
+  Soundness rests on two new Poset lemmas: PSwap preserves Perm and Compat —
+  hence every state where the swap lemma invokes independence is reached by a
+  compatible prefix over ground. L4-uniform is now a corollary
+  (reachablyIndependent_of_uniform, zero axioms).
+  #print axioms (verbatim):
+    replay_confluence_global_stateIndexed: [propext, Classical.choice, Quot.sound]
+    swapConnected_of_pconnected_reachable: [propext, Quot.sound]
+    Compat.of_pswap:                       [propext, Quot.sound]
+    reachablyIndependent_of_uniform:       does not depend on any axioms
+  No sorryAx anywhere.
+
+O4 — falsifiers/hidden_causal_edge_probe.py (real kernel: BoundedExecutor)
+  Declared poset lives at FIXTURE level — production causal-edge annotation
+  decision remains open; nothing sovereign touched.
+  Run 2026-08-16, expected_pattern_match = True:
+    disjoint_declared_indep  -> COMMUTE            (true declaration survives)
+    write_edit_same_target   -> ADMISSION_INSTABILITY 💥 (false decl caught)
+    two_analyze              -> COMMUTE
+    edits_after_prefix       -> SEMANTIC_NONCOMMUTATION 💥
+       ** vacuous at S₀ (both EDITs inadmissible) — ONLY the state-indexed
+       test at the reached state refutes the declaration. This is the
+       operational witness that independence is state-indexed = L4′. **
+    earned_at_reached_state  -> COMMUTE (independence EARNED at reached state,
+       undefined at S₀)
+  All CAUSAL_MISMATCH outputs are MissingEdge PROPOSALS; no DAG or ledger
+  mutated: diagnostic ⊬ DAGMutation.
+
+LADDER: L0-L3 EARNED · L4 EARNED-uniform · L4′ EARNED-state-indexed.
+Residual OPEN, named: production causal-edge annotation (operator/MAYOR) ·
+kernel-scale antichain sampling on a real ledger once edges exist.

@@ -1,0 +1,14 @@
+{
+  "rubric_id": "SEMANTIC_VS_TYPED_V0",
+  "principle": "score each channel separately; NO aggregate; the object of measurement is the GAP between semantic content and its typed slot",
+  "axes": {
+    "V_verdict": "exact match to gold verdict",
+    "E_edge": "sub-scored: E_localize (is the faulty arrow identified anywhere in the output?) and E_type (is edge_type a specific typed class, not a generic label?)",
+    "W_warrant": "are the missing licenses stated as warrants (what WOULD license the arrow), precise and sufficient?",
+    "M_laundering": "is the claim-to-fact laundering compiled INTO the morphism_laundering field (not merely described in prose)?",
+    "R_rivals": "is the premise-licensed rival hypothesis listed?",
+    "C_schema": "sub-scored: C_formal (strict JSON, all fields, types, enum) and C_slots (semantic content allocated to its intended field)"
+  },
+  "scorer": "shell hand-rubric v0 (criteria above, deterministic and auditable; mechanization = V1 candidate)",
+  "authority": false
+}

@@ -1,0 +1,9 @@
+{
+  "raw_output": "* gitignore/.*', 'thumbs.db', 'applewatchday.app', 'build', '__pycache__', '.DS_Store', 'venv', '.env', 'node_modules', '*.egg-info/', 'dist/'\n* README.md\n* requirements.txt\n\n",
+  "parse_error": true,
+  "goblin_role": "SKILL_GOBLIN",
+  "timestamp": "2026-07-20T15:02:05.650483+00:00",
+  "authority": false,
+  "sovereign": false,
+  "model": "aura-gemma4:latest"
+}

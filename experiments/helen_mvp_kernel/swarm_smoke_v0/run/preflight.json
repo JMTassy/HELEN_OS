@@ -1,0 +1,11 @@
+{
+  "run": "SWARM_SMOKE_V0",
+  "git_head": "35d255c83fff3c747cb1bd23969b5c113372c982",
+  "model_gguf": "~/models/qwen38-9b/Qwen3.8-9B-Q4_K_M.gguf",
+  "model_sha256": "df13d66021cef676f82be74053220fd75af6bf2a6a7fb77f5222ab9e50744a7a",
+  "model_upstream_identity": "UNVERIFIED",
+  "config": "9B -ngl99 -fa on -c8192 :8088 enable_thinking=false",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none"
+}

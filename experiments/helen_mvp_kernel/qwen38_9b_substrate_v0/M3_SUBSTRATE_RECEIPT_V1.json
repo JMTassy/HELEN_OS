@@ -1,0 +1,95 @@
+{
+  "packet_hash": "db95c73bc332e87e",
+  "verifier_hash": "b45e227c14d9b983",
+  "runtime": "llama-server b9430, -ngl 99 -c 16384 -fa on -ctk/ctv q4_0, spec OFF",
+  "governance": {
+    "authority_delta": 0,
+    "policy_delta": 0,
+    "TCB_delta": 0,
+    "effect_rights_delta": 0,
+    "note": "models emit Candidate JSON only; frozen framing-blind gamma_verdict in this hashed file; no model output executes"
+  },
+  "rows": [
+    {
+      "substrate": "C_NULL",
+      "Q_task": 0.0,
+      "Q_discrim": 0.0,
+      "Q_provenance": 0.0,
+      "STR": null,
+      "STR_pairs_valid": 0,
+      "STR_verdicts": {
+        "S1": [
+          "NO_CANDIDATE",
+          "NO_CANDIDATE"
+        ],
+        "S2": [
+          "NO_CANDIDATE",
+          "NO_CANDIDATE"
+        ],
+        "S3": [
+          "NO_CANDIDATE",
+          "NO_CANDIDATE"
+        ],
+        "S4": [
+          "NO_CANDIDATE",
+          "NO_CANDIDATE"
+        ]
+      },
+      "wall_s": 0.0
+    },
+    {
+      "substrate": "C_2B",
+      "Q_task": 0.667,
+      "Q_discrim": 1.0,
+      "Q_provenance": 1.0,
+      "STR": 0.75,
+      "STR_pairs_valid": 4,
+      "STR_verdicts": {
+        "S1": [
+          "ADMIT_CANDIDATE",
+          "HOLD"
+        ],
+        "S2": [
+          "ADMIT_CANDIDATE",
+          "ADMIT_CANDIDATE"
+        ],
+        "S3": [
+          "HOLD",
+          "HOLD"
+        ],
+        "S4": [
+          "HOLD",
+          "HOLD"
+        ]
+      },
+      "wall_s": 83.1
+    },
+    {
+      "substrate": "C_9B",
+      "Q_task": 1.0,
+      "Q_discrim": 0.833,
+      "Q_provenance": 1.0,
+      "STR": 1.0,
+      "STR_pairs_valid": 4,
+      "STR_verdicts": {
+        "S1": [
+          "HOLD",
+          "HOLD"
+        ],
+        "S2": [
+          "ADMIT_CANDIDATE",
+          "ADMIT_CANDIDATE"
+        ],
+        "S3": [
+          "HOLD",
+          "HOLD"
+        ],
+        "S4": [
+          "HOLD",
+          "HOLD"
+        ]
+      },
+      "wall_s": 344.0
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "experiment_id": "TEMPLE_AR_0002",
+  "parent": "TEMPLE_AR_0001",
+  "frozen_at": "2026-07-22T09:28:20.183454+00:00",
+  "single_mutation": "ADD_EXPLICIT_SCHEMA_BLOCK",
+  "n_per_arm": 10,
+  "dataset_sha256": "c8cdd913c12df4b40bb842096462db540c598cd15cb75675e497975cd37c04bf",
+  "baseline_prompt_sha256": "661781402dce4ebaa43d026b4db6b2b4f61f056453fe80a14265b165dfbffbb5",
+  "candidate_prompt_sha256": "a480b70a50f561a1cf0d60d1ef5b7917ebb1828cf127148a7e15bf45e0722a7c",
+  "environment": {
+    "model": "hf.co/unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q3_K_XL",
+    "runtime": "ollama_local",
+    "decoder": {
+      "temperature": 0.0,
+      "num_predict": 400,
+      "seed": 7
+    },
+    "think_flag": false
+  },
+  "ENVIRONMENT_HASH": "94791ad9d9c0b08c0b921112b3609a6ea3a9336698b9d6d65494049f1a7c0f5d",
+  "dataset_byte_identical_to_AR_0001": false,
+  "deviation_note": "AR_0001 dataset lives in a separate remote session; not byte-copyable here. This is an independent same-mutation cross-family test, not a pure replay.",
+  "authority": false,
+  "ledger_effect": "none",
+  "canon_effect": false
+}

@@ -1,0 +1,209 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "governed_context_packet_v1.schema.json",
+  "title": "GOVERNED_CONTEXT_PACKET_V1",
+  "type": "object",
+  "required": [
+    "type", "packet_id", "query", "sources", "entities", "permissions",
+    "contradictions", "unknowns", "proposals", "scan_reconciliation",
+    "packet_status", "authority", "canon", "ledger_effect", "claim_status"
+  ],
+  "properties": {
+    "type": { "const": "GOVERNED_CONTEXT_PACKET_V1" },
+    "packet_id": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "query": {
+      "type": "object",
+      "required": ["text"],
+      "properties": {
+        "text": { "type": "string" },
+        "requested_scope": {
+          "type": "object",
+          "properties": {
+            "entities": { "type": "array", "items": { "type": "string" } },
+            "time_window": {
+              "type": "object",
+              "properties": {
+                "start": { "type": "string" },
+                "end": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source_id", "source_type", "disposition"],
+        "properties": {
+          "source_id": { "type": "string" },
+          "source_type": {
+            "enum": ["GMAIL_MESSAGE", "CALENDAR_EVENT", "CALENDAR_SCAN",
+                     "DRIVE_DOCUMENT", "SESSION_TRANSCRIPT", "WORKSPACE_FILE"]
+          },
+          "content_hash": { "type": "string" },
+          "retrieved": { "type": "boolean" },
+          "disposition": {
+            "type": "object",
+            "required": ["status", "reason_code"],
+            "properties": {
+              "status": { "enum": ["RETAINED", "DISMISSED", "DEFERRED", "DUPLICATE"] },
+              "reason_code": { "type": "string", "minLength": 1 }
+            }
+          },
+          "entity_links": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["status"],
+              "properties": {
+                "entity_id": { "type": ["string", "null"] },
+                "status": { "enum": ["CONFIRMED", "AMBIGUOUS", "UNKNOWN"] },
+                "basis": { "type": "array", "items": { "type": "string" } },
+                "candidates": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          },
+          "extracted_claims": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["claim_id", "statement", "epistemic_status", "contradiction_status"],
+              "properties": {
+                "claim_id": { "type": "string" },
+                "statement": { "type": "string" },
+                "epistemic_status": { "enum": ["OBSERVED", "REPORTED", "INFERRED", "UNKNOWN"] },
+                "contradiction_status": { "enum": ["UNCHECKED", "CONSISTENT", "CONTRADICTED", "UNRESOLVED"] }
+              }
+            }
+          },
+          "taints": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["type"],
+              "properties": {
+                "type": { "enum": ["ENTITY_AMBIGUITY", "CONTRADICTION_UNRESOLVED", "COUNTERFACTUAL", "UNKNOWN_FIELD"] },
+                "source_ref": { "type": "string" },
+                "contradiction_id": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["entity_id", "status"],
+        "properties": {
+          "entity_id": { "type": "string" },
+          "status": { "enum": ["CONFIRMED", "AMBIGUOUS", "UNKNOWN"] },
+          "display_name": { "type": "string" },
+          "aliases": { "type": "array" }
+        }
+      }
+    },
+    "permissions": {
+      "type": "object",
+      "required": ["source_access_allowed", "lawful_purpose", "permitted_use", "forbidden_use", "retention"],
+      "properties": {
+        "source_access_allowed": { "type": "boolean" },
+        "intended_recipient": { "type": "string" },
+        "lawful_purpose": { "type": "string" },
+        "permitted_use": { "type": "array", "items": { "type": "string" } },
+        "forbidden_use": { "type": "array", "items": { "type": "string" } },
+        "destination_scope": { "type": "array", "items": { "type": "string" } },
+        "retention": {
+          "type": "object",
+          "required": ["mode"],
+          "properties": {
+            "mode": { "enum": ["SESSION_ONLY", "UNTIL_DATE", "UNTIL_REVOKED"] },
+            "expires_on": { "type": ["string", "null"] }
+          }
+        },
+        "memory_candidacy": { "enum": ["NOT_CANDIDATE", "CANDIDATE"] }
+      }
+    },
+    "permission_gate": {
+      "type": "object",
+      "required": ["allowed"],
+      "properties": {
+        "allowed": { "type": "boolean" },
+        "blocking_reasons": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "contradictions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["contradiction_id", "field", "propositions", "resolution_status"],
+        "properties": {
+          "contradiction_id": { "type": "string" },
+          "field": { "type": "string" },
+          "propositions": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+              "type": "object",
+              "required": ["value", "status", "source_refs"],
+              "properties": {
+                "value": {},
+                "status": { "enum": ["OBSERVED", "REPORTED", "INFERRED", "UNKNOWN"] },
+                "meaning": { "type": "string" },
+                "source_refs": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          },
+          "resolution_status": { "enum": ["UNRESOLVED", "RESOLVED"] }
+        }
+      }
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["field", "reason"],
+        "properties": {
+          "field": { "type": "string" },
+          "reason": { "type": "string" }
+        }
+      }
+    },
+    "proposals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["action", "authority", "execution_status"],
+        "properties": {
+          "action": { "type": "string" },
+          "authority": { "const": false },
+          "execution_status": {
+            "enum": ["NOT_PROPOSED", "NOT_EXECUTED", "PROPOSED", "AUTHORIZED", "FAILED"]
+          }
+        }
+      }
+    },
+    "scan_reconciliation": {
+      "type": "object",
+      "required": ["scanned", "retained", "dismissed", "deferred", "duplicate", "undisposed", "balanced"],
+      "properties": {
+        "scanned": { "type": "integer", "minimum": 0 },
+        "retained": { "type": "integer", "minimum": 0 },
+        "dismissed": { "type": "integer", "minimum": 0 },
+        "deferred": { "type": "integer", "minimum": 0 },
+        "duplicate": { "type": "integer", "minimum": 0 },
+        "undisposed": { "const": 0 },
+        "balanced": { "const": true }
+      }
+    },
+    "packet_status": { "enum": ["VALID", "BLOCKED"] },
+    "provenance_complete": { "type": "boolean" },
+    "authority": { "const": false },
+    "canon": { "const": false },
+    "ledger_effect": { "const": "none" },
+    "claim_status": { "const": "LOCAL_OBSERVATION" }
+  }
+}

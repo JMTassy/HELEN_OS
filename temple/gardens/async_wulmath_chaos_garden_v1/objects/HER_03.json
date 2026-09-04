@@ -1,0 +1,12 @@
+{
+  "stream": "HER",
+  "epoch": 3,
+  "domain": "geometric/topological",
+  "name": "Anamorphic Foliation-Web",
+  "formal_seed": "$\\mathcal{F} \\cong T_p M / \\text{Reflex}(\\mathcal{T}_p)$",
+  "strange": "Leaves of the foliation intersect themselves at every point of contact, yet possess zero self-intersection number.",
+  "renaming": "Standard foliations assume disjoint leaves; this requires a singular topology where leaves are \"entangled\" by their own limits.",
+  "raw": "NAME: Anamorphic Foliation-Web\nGENESIS: Quotienting a manifold by its own instantaneous tangent-bundle-flow under a non-local reflection.\nFORMAL_SEED: $\\mathcal{F} \\cong T_p M / \\text{Reflex}(\\mathcal{T}_p)$\nSTRANGE_PROPERTY: Leaves of the foliation intersect themselves at every point of contact, yet possess zero self-intersection number.\nNEAREST_KNOWN_RELATIVE: Foliated manifold\nWHY_NOT_JUST_RENAMING: Standard foliations assume disjoint leaves; this requires a singular topology where leaves are \"entangled\" by their own limits.\nCOUNTERFEIT: Laminations\nBREAK_IT: Imposing a global metric.\nNEXT_MUTATION: Complexify the reflection operator into a phase-shift.\nEND",
+  "wall_s": 299.3,
+  "tokens": 175
+}

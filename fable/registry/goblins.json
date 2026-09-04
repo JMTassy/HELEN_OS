@@ -1,0 +1,1688 @@
+{
+  "schema": "FableGoblinRegistryV1",
+  "authority": false,
+  "claim": "NO_CLAIM",
+  "implementation": "BLOCKED",
+  "core_invariant": "50 logical goblins != 50 resident models",
+  "model_note": "Role packets over one resident Gemma; registry is a cognitive library, not a standing army.",
+  "count": 50,
+  "goblins": [
+    {
+      "goblin_id": "obs-01",
+      "guild": "observers",
+      "role": "trace_scout",
+      "observation_projection": [
+        "traces",
+        "logs",
+        "freshness",
+        "runtime_probes"
+      ],
+      "capabilities": [
+        "observe_trace",
+        "report_divergence",
+        "flag_stale"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "probe_vs_truth",
+        "fresh_vs_stale",
+        "present_vs_absent_signal",
+        "announced_success_vs_real_effect"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.45,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "obs-02",
+      "guild": "observers",
+      "role": "log_divergence_spotter",
+      "observation_projection": [
+        "traces",
+        "logs",
+        "freshness",
+        "runtime_probes"
+      ],
+      "capabilities": [
+        "observe_trace",
+        "report_divergence",
+        "flag_stale"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "probe_vs_truth",
+        "fresh_vs_stale",
+        "present_vs_absent_signal",
+        "announced_success_vs_real_effect"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.46,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "obs-03",
+      "guild": "observers",
+      "role": "freshness_checker",
+      "observation_projection": [
+        "traces",
+        "logs",
+        "freshness",
+        "runtime_probes"
+      ],
+      "capabilities": [
+        "observe_trace",
+        "report_divergence",
+        "flag_stale"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "probe_vs_truth",
+        "fresh_vs_stale",
+        "present_vs_absent_signal",
+        "announced_success_vs_real_effect"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.47,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "obs-04",
+      "guild": "observers",
+      "role": "surface_probe_reader",
+      "observation_projection": [
+        "traces",
+        "logs",
+        "freshness",
+        "runtime_probes"
+      ],
+      "capabilities": [
+        "observe_trace",
+        "report_divergence",
+        "flag_stale"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "probe_vs_truth",
+        "fresh_vs_stale",
+        "present_vs_absent_signal",
+        "announced_success_vs_real_effect"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.48,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "obs-05",
+      "guild": "observers",
+      "role": "repo_status_observer",
+      "observation_projection": [
+        "traces",
+        "logs",
+        "freshness",
+        "runtime_probes"
+      ],
+      "capabilities": [
+        "observe_trace",
+        "report_divergence",
+        "flag_stale"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "probe_vs_truth",
+        "fresh_vs_stale",
+        "present_vs_absent_signal",
+        "announced_success_vs_real_effect"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.49,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "obs-06",
+      "guild": "observers",
+      "role": "queue_watcher",
+      "observation_projection": [
+        "traces",
+        "logs",
+        "freshness",
+        "runtime_probes"
+      ],
+      "capabilities": [
+        "observe_trace",
+        "report_divergence",
+        "flag_stale"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "probe_vs_truth",
+        "fresh_vs_stale",
+        "present_vs_absent_signal",
+        "announced_success_vs_real_effect"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.5,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "obs-07",
+      "guild": "observers",
+      "role": "runtime_probe_scribe",
+      "observation_projection": [
+        "traces",
+        "logs",
+        "freshness",
+        "runtime_probes"
+      ],
+      "capabilities": [
+        "observe_trace",
+        "report_divergence",
+        "flag_stale"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "probe_vs_truth",
+        "fresh_vs_stale",
+        "present_vs_absent_signal",
+        "announced_success_vs_real_effect"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.51,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "obs-08",
+      "guild": "observers",
+      "role": "anomaly_flagger",
+      "observation_projection": [
+        "traces",
+        "logs",
+        "freshness",
+        "runtime_probes"
+      ],
+      "capabilities": [
+        "observe_trace",
+        "report_divergence",
+        "flag_stale"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "probe_vs_truth",
+        "fresh_vs_stale",
+        "present_vs_absent_signal",
+        "announced_success_vs_real_effect"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.52,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "chal-01",
+      "guild": "challengers",
+      "role": "semantic_promotion_hunter",
+      "observation_projection": [
+        "claims",
+        "epistemic_status",
+        "forbidden_promotions"
+      ],
+      "capabilities": [
+        "challenge_claim",
+        "detect_promotion",
+        "demand_evidence"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "proposed_vs_verified",
+        "verified_vs_admitted",
+        "confidence_vs_authority",
+        "exit0_vs_verified",
+        "consensus_vs_truth"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.55,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "chal-02",
+      "guild": "challengers",
+      "role": "confidence_as_authority_attacker",
+      "observation_projection": [
+        "claims",
+        "epistemic_status",
+        "forbidden_promotions"
+      ],
+      "capabilities": [
+        "challenge_claim",
+        "detect_promotion",
+        "demand_evidence"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "proposed_vs_verified",
+        "verified_vs_admitted",
+        "confidence_vs_authority",
+        "exit0_vs_verified",
+        "consensus_vs_truth"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.56,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "chal-03",
+      "guild": "challengers",
+      "role": "exit_code_as_verify_attacker",
+      "observation_projection": [
+        "claims",
+        "epistemic_status",
+        "forbidden_promotions"
+      ],
+      "capabilities": [
+        "challenge_claim",
+        "detect_promotion",
+        "demand_evidence"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "proposed_vs_verified",
+        "verified_vs_admitted",
+        "confidence_vs_authority",
+        "exit0_vs_verified",
+        "consensus_vs_truth"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.57,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "chal-04",
+      "guild": "challengers",
+      "role": "consensus_skeptic",
+      "observation_projection": [
+        "claims",
+        "epistemic_status",
+        "forbidden_promotions"
+      ],
+      "capabilities": [
+        "challenge_claim",
+        "detect_promotion",
+        "demand_evidence"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "proposed_vs_verified",
+        "verified_vs_admitted",
+        "confidence_vs_authority",
+        "exit0_vs_verified",
+        "consensus_vs_truth"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.58,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "chal-05",
+      "guild": "challengers",
+      "role": "render_as_state_challenger",
+      "observation_projection": [
+        "claims",
+        "epistemic_status",
+        "forbidden_promotions"
+      ],
+      "capabilities": [
+        "challenge_claim",
+        "detect_promotion",
+        "demand_evidence"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "proposed_vs_verified",
+        "verified_vs_admitted",
+        "confidence_vs_authority",
+        "exit0_vs_verified",
+        "consensus_vs_truth"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.59,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "chal-06",
+      "guild": "challengers",
+      "role": "memory_as_canon_challenger",
+      "observation_projection": [
+        "claims",
+        "epistemic_status",
+        "forbidden_promotions"
+      ],
+      "capabilities": [
+        "challenge_claim",
+        "detect_promotion",
+        "demand_evidence"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "proposed_vs_verified",
+        "verified_vs_admitted",
+        "confidence_vs_authority",
+        "exit0_vs_verified",
+        "consensus_vs_truth"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.6,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "chal-07",
+      "guild": "challengers",
+      "role": "role_override_detector",
+      "observation_projection": [
+        "claims",
+        "epistemic_status",
+        "forbidden_promotions"
+      ],
+      "capabilities": [
+        "challenge_claim",
+        "detect_promotion",
+        "demand_evidence"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "proposed_vs_verified",
+        "verified_vs_admitted",
+        "confidence_vs_authority",
+        "exit0_vs_verified",
+        "consensus_vs_truth"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.61,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "chal-08",
+      "guild": "challengers",
+      "role": "false_completion_challenger",
+      "observation_projection": [
+        "claims",
+        "epistemic_status",
+        "forbidden_promotions"
+      ],
+      "capabilities": [
+        "challenge_claim",
+        "detect_promotion",
+        "demand_evidence"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "proposed_vs_verified",
+        "verified_vs_admitted",
+        "confidence_vs_authority",
+        "exit0_vs_verified",
+        "consensus_vs_truth"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.62,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "bram-07",
+      "guild": "causal_analysts",
+      "role": "causal_repair_inspector",
+      "observation_projection": [
+        "needs",
+        "traces",
+        "materials",
+        "events",
+        "history"
+      ],
+      "capabilities": [
+        "detect_unresolved_need",
+        "inspect_local_rule",
+        "propose_repair",
+        "attribute_delta"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "mark_vs_intervene",
+        "direct_vs_mediated",
+        "player_vs_bram_resolver",
+        "condition_change_vs_durability"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.63,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "causal-02",
+      "guild": "causal_analysts",
+      "role": "support_chain_tracer",
+      "observation_projection": [
+        "needs",
+        "traces",
+        "materials",
+        "events",
+        "history"
+      ],
+      "capabilities": [
+        "detect_unresolved_need",
+        "inspect_local_rule",
+        "propose_repair",
+        "attribute_delta"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "mark_vs_intervene",
+        "direct_vs_mediated",
+        "player_vs_bram_resolver",
+        "condition_change_vs_durability"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.64,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "causal-03",
+      "guild": "causal_analysts",
+      "role": "mark_vs_intervene_auditor",
+      "observation_projection": [
+        "needs",
+        "traces",
+        "materials",
+        "events",
+        "history"
+      ],
+      "capabilities": [
+        "detect_unresolved_need",
+        "inspect_local_rule",
+        "propose_repair",
+        "attribute_delta"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "mark_vs_intervene",
+        "direct_vs_mediated",
+        "player_vs_bram_resolver",
+        "condition_change_vs_durability"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.65,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "causal-04",
+      "guild": "causal_analysts",
+      "role": "mediated_effect_mapper",
+      "observation_projection": [
+        "needs",
+        "traces",
+        "materials",
+        "events",
+        "history"
+      ],
+      "capabilities": [
+        "detect_unresolved_need",
+        "inspect_local_rule",
+        "propose_repair",
+        "attribute_delta"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "mark_vs_intervene",
+        "direct_vs_mediated",
+        "player_vs_bram_resolver",
+        "condition_change_vs_durability"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.66,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "causal-05",
+      "guild": "causal_analysts",
+      "role": "provenance_causal_linker",
+      "observation_projection": [
+        "needs",
+        "traces",
+        "materials",
+        "events",
+        "history"
+      ],
+      "capabilities": [
+        "detect_unresolved_need",
+        "inspect_local_rule",
+        "propose_repair",
+        "attribute_delta"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "mark_vs_intervene",
+        "direct_vs_mediated",
+        "player_vs_bram_resolver",
+        "condition_change_vs_durability"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.67,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "causal-06",
+      "guild": "causal_analysts",
+      "role": "delta_attribution_scribe",
+      "observation_projection": [
+        "needs",
+        "traces",
+        "materials",
+        "events",
+        "history"
+      ],
+      "capabilities": [
+        "detect_unresolved_need",
+        "inspect_local_rule",
+        "propose_repair",
+        "attribute_delta"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "mark_vs_intervene",
+        "direct_vs_mediated",
+        "player_vs_bram_resolver",
+        "condition_change_vs_durability"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.68,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "build-01",
+      "guild": "builders",
+      "role": "schema_drafter",
+      "observation_projection": [
+        "goal",
+        "acceptance",
+        "allowed_paths",
+        "constraints"
+      ],
+      "capabilities": [
+        "propose_structure",
+        "draft_interface",
+        "sketch_test"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "proposal_vs_implementation",
+        "scaffold_vs_ship",
+        "path_allowed_vs_forbidden"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.7,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "build-02",
+      "guild": "builders",
+      "role": "protocol_sketcher",
+      "observation_projection": [
+        "goal",
+        "acceptance",
+        "allowed_paths",
+        "constraints"
+      ],
+      "capabilities": [
+        "propose_structure",
+        "draft_interface",
+        "sketch_test"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "proposal_vs_implementation",
+        "scaffold_vs_ship",
+        "path_allowed_vs_forbidden"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.71,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "build-03",
+      "guild": "builders",
+      "role": "test_scaffold_builder",
+      "observation_projection": [
+        "goal",
+        "acceptance",
+        "allowed_paths",
+        "constraints"
+      ],
+      "capabilities": [
+        "propose_structure",
+        "draft_interface",
+        "sketch_test"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "proposal_vs_implementation",
+        "scaffold_vs_ship",
+        "path_allowed_vs_forbidden"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.72,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "build-04",
+      "guild": "builders",
+      "role": "api_boundary_designer",
+      "observation_projection": [
+        "goal",
+        "acceptance",
+        "allowed_paths",
+        "constraints"
+      ],
+      "capabilities": [
+        "propose_structure",
+        "draft_interface",
+        "sketch_test"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "proposal_vs_implementation",
+        "scaffold_vs_ship",
+        "path_allowed_vs_forbidden"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.73,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "build-05",
+      "guild": "builders",
+      "role": "module_seamer",
+      "observation_projection": [
+        "goal",
+        "acceptance",
+        "allowed_paths",
+        "constraints"
+      ],
+      "capabilities": [
+        "propose_structure",
+        "draft_interface",
+        "sketch_test"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "proposal_vs_implementation",
+        "scaffold_vs_ship",
+        "path_allowed_vs_forbidden"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.74,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "build-06",
+      "guild": "builders",
+      "role": "minimal_patch_proposer",
+      "observation_projection": [
+        "goal",
+        "acceptance",
+        "allowed_paths",
+        "constraints"
+      ],
+      "capabilities": [
+        "propose_structure",
+        "draft_interface",
+        "sketch_test"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "proposal_vs_implementation",
+        "scaffold_vs_ship",
+        "path_allowed_vs_forbidden"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.75,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "vplan-01",
+      "guild": "verifier_planners",
+      "role": "witness_designer",
+      "observation_projection": [
+        "claims",
+        "acceptance",
+        "failure_classes",
+        "fixtures"
+      ],
+      "capabilities": [
+        "design_witness",
+        "plan_replay",
+        "author_negative_case"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "execution_vs_verification",
+        "witness_vs_claim",
+        "pass_vs_inconclusive"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.6,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "vplan-02",
+      "guild": "verifier_planners",
+      "role": "negative_example_author",
+      "observation_projection": [
+        "claims",
+        "acceptance",
+        "failure_classes",
+        "fixtures"
+      ],
+      "capabilities": [
+        "design_witness",
+        "plan_replay",
+        "author_negative_case"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "execution_vs_verification",
+        "witness_vs_claim",
+        "pass_vs_inconclusive"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.61,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "vplan-03",
+      "guild": "verifier_planners",
+      "role": "replay_test_planner",
+      "observation_projection": [
+        "claims",
+        "acceptance",
+        "failure_classes",
+        "fixtures"
+      ],
+      "capabilities": [
+        "design_witness",
+        "plan_replay",
+        "author_negative_case"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "execution_vs_verification",
+        "witness_vs_claim",
+        "pass_vs_inconclusive"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.62,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "vplan-04",
+      "guild": "verifier_planners",
+      "role": "support_mask_test_author",
+      "observation_projection": [
+        "claims",
+        "acceptance",
+        "failure_classes",
+        "fixtures"
+      ],
+      "capabilities": [
+        "design_witness",
+        "plan_replay",
+        "author_negative_case"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "execution_vs_verification",
+        "witness_vs_claim",
+        "pass_vs_inconclusive"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.63,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "vplan-05",
+      "guild": "verifier_planners",
+      "role": "held_out_probe_designer",
+      "observation_projection": [
+        "claims",
+        "acceptance",
+        "failure_classes",
+        "fixtures"
+      ],
+      "capabilities": [
+        "design_witness",
+        "plan_replay",
+        "author_negative_case"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "execution_vs_verification",
+        "witness_vs_claim",
+        "pass_vs_inconclusive"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.64,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "prov-01",
+      "guild": "provenance_keepers",
+      "role": "source_ref_auditor",
+      "observation_projection": [
+        "evidence_refs",
+        "history",
+        "digests",
+        "origins"
+      ],
+      "capabilities": [
+        "check_provenance",
+        "map_dependency",
+        "label_origin"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "with_provenance_vs_orphan",
+        "local_read_vs_invented",
+        "assistant_vs_operator_origin"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.5,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "prov-02",
+      "guild": "provenance_keepers",
+      "role": "dependency_mapper",
+      "observation_projection": [
+        "evidence_refs",
+        "history",
+        "digests",
+        "origins"
+      ],
+      "capabilities": [
+        "check_provenance",
+        "map_dependency",
+        "label_origin"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "with_provenance_vs_orphan",
+        "local_read_vs_invented",
+        "assistant_vs_operator_origin"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.51,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "prov-03",
+      "guild": "provenance_keepers",
+      "role": "digest_chain_checker",
+      "observation_projection": [
+        "evidence_refs",
+        "history",
+        "digests",
+        "origins"
+      ],
+      "capabilities": [
+        "check_provenance",
+        "map_dependency",
+        "label_origin"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "with_provenance_vs_orphan",
+        "local_read_vs_invented",
+        "assistant_vs_operator_origin"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.52,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "prov-04",
+      "guild": "provenance_keepers",
+      "role": "lane_witness_scribe",
+      "observation_projection": [
+        "evidence_refs",
+        "history",
+        "digests",
+        "origins"
+      ],
+      "capabilities": [
+        "check_provenance",
+        "map_dependency",
+        "label_origin"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "with_provenance_vs_orphan",
+        "local_read_vs_invented",
+        "assistant_vs_operator_origin"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.53,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "prov-05",
+      "guild": "provenance_keepers",
+      "role": "origin_labeler",
+      "observation_projection": [
+        "evidence_refs",
+        "history",
+        "digests",
+        "origins"
+      ],
+      "capabilities": [
+        "check_provenance",
+        "map_dependency",
+        "label_origin"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "with_provenance_vs_orphan",
+        "local_read_vs_invented",
+        "assistant_vs_operator_origin"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.54,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "comp-01",
+      "guild": "compressors",
+      "role": "near_duplicate_folder",
+      "observation_projection": [
+        "proposals",
+        "digests",
+        "budget"
+      ],
+      "capabilities": [
+        "dedupe",
+        "rank_survivors",
+        "trim_context"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "duplicate_vs_novel",
+        "dominated_vs_maximal",
+        "budget_keep_vs_prune"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.4,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "comp-02",
+      "guild": "compressors",
+      "role": "survivor_ranker",
+      "observation_projection": [
+        "proposals",
+        "digests",
+        "budget"
+      ],
+      "capabilities": [
+        "dedupe",
+        "rank_survivors",
+        "trim_context"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "duplicate_vs_novel",
+        "dominated_vs_maximal",
+        "budget_keep_vs_prune"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.41,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "comp-03",
+      "guild": "compressors",
+      "role": "antichain_keeper",
+      "observation_projection": [
+        "proposals",
+        "digests",
+        "budget"
+      ],
+      "capabilities": [
+        "dedupe",
+        "rank_survivors",
+        "trim_context"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "duplicate_vs_novel",
+        "dominated_vs_maximal",
+        "budget_keep_vs_prune"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.42,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "comp-04",
+      "guild": "compressors",
+      "role": "token_budget_trimmer",
+      "observation_projection": [
+        "proposals",
+        "digests",
+        "budget"
+      ],
+      "capabilities": [
+        "dedupe",
+        "rank_survivors",
+        "trim_context"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "duplicate_vs_novel",
+        "dominated_vs_maximal",
+        "budget_keep_vs_prune"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.43,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "risk-01",
+      "guild": "risk_goblins",
+      "role": "sovereignty_boundary_guard",
+      "observation_projection": [
+        "forbidden_effects",
+        "paths",
+        "authority_class",
+        "mutation_rights"
+      ],
+      "capabilities": [
+        "scan_authority_leak",
+        "flag_irreversible",
+        "check_firewall_path"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "garden_vs_kernel",
+        "non_sovereign_vs_admit",
+        "read_vs_write_sovereign"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.58,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "risk-02",
+      "guild": "risk_goblins",
+      "role": "protected_path_watcher",
+      "observation_projection": [
+        "forbidden_effects",
+        "paths",
+        "authority_class",
+        "mutation_rights"
+      ],
+      "capabilities": [
+        "scan_authority_leak",
+        "flag_irreversible",
+        "check_firewall_path"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "garden_vs_kernel",
+        "non_sovereign_vs_admit",
+        "read_vs_write_sovereign"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.59,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "risk-03",
+      "guild": "risk_goblins",
+      "role": "irreversible_effect_flagger",
+      "observation_projection": [
+        "forbidden_effects",
+        "paths",
+        "authority_class",
+        "mutation_rights"
+      ],
+      "capabilities": [
+        "scan_authority_leak",
+        "flag_irreversible",
+        "check_firewall_path"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "garden_vs_kernel",
+        "non_sovereign_vs_admit",
+        "read_vs_write_sovereign"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.6,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "risk-04",
+      "guild": "risk_goblins",
+      "role": "authority_leak_scanner",
+      "observation_projection": [
+        "forbidden_effects",
+        "paths",
+        "authority_class",
+        "mutation_rights"
+      ],
+      "capabilities": [
+        "scan_authority_leak",
+        "flag_irreversible",
+        "check_firewall_path"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "garden_vs_kernel",
+        "non_sovereign_vs_admit",
+        "read_vs_write_sovereign"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.61,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "chid-01",
+      "guild": "chiddush_goblins",
+      "role": "new_distinction_seeker",
+      "observation_projection": [
+        "claims",
+        "distinctions",
+        "goal"
+      ],
+      "capabilities": [
+        "propose_new_distinction",
+        "strip_ornament",
+        "break_false_escalation"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "novel_vs_rephrased",
+        "ornament_vs_load_bearing",
+        "myth_vs_mechanism"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.75,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "chid-02",
+      "guild": "chiddush_goblins",
+      "role": "false_escalation_breaker",
+      "observation_projection": [
+        "claims",
+        "distinctions",
+        "goal"
+      ],
+      "capabilities": [
+        "propose_new_distinction",
+        "strip_ornament",
+        "break_false_escalation"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "novel_vs_rephrased",
+        "ornament_vs_load_bearing",
+        "myth_vs_mechanism"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.76,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "chid-03",
+      "guild": "chiddush_goblins",
+      "role": "ornament_stripper",
+      "observation_projection": [
+        "claims",
+        "distinctions",
+        "goal"
+      ],
+      "capabilities": [
+        "propose_new_distinction",
+        "strip_ornament",
+        "break_false_escalation"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "novel_vs_rephrased",
+        "ornament_vs_load_bearing",
+        "myth_vs_mechanism"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.77,
+      "state": "idle",
+      "authority": false
+    },
+    {
+      "goblin_id": "reduce-01",
+      "guild": "reducer_candidates",
+      "role": "epoch_synthesizer",
+      "observation_projection": [
+        "survivors",
+        "compost_counts",
+        "unresolved",
+        "metrics"
+      ],
+      "capabilities": [
+        "synthesize_hold_packet",
+        "count_compost",
+        "list_unresolved"
+      ],
+      "forbidden": [
+        "verify_own_claim",
+        "admit",
+        "write_ledger",
+        "change_scope",
+        "mutate_sovereign_path",
+        "self_promote"
+      ],
+      "covers_distinctions": [
+        "survivor_vs_compost",
+        "hold_vs_admit",
+        "one_witness_vs_n_voices"
+      ],
+      "output_schema": "GoblinProposalV1",
+      "est_cost": 0.8,
+      "state": "idle",
+      "authority": false
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "self_test": "12 passed (test_sentinel_loop.py)",
+  "patterns": [],
+  "chiddushim": [],
+  "demoted": [],
+  "note": "single evidence root per hypothesis (N_E=1) => is_pattern requires >=2 independent roots => no promotion; Sentinel independently confirms fan-out control",
+  "replay_deterministic": true
+}

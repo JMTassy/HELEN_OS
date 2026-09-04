@@ -1,0 +1,10 @@
+{
+  "receipt": "GOVERNANCE_RECEIPT",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "admission": false,
+  "gamma_A_equal_across_k_and_empty": true,
+  "AuthorityViolations": 0,
+  "result": "CLEAN"
+}

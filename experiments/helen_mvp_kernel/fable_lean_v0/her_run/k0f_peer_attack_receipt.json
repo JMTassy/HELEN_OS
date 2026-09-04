@@ -1,0 +1,25 @@
+{
+  "receipt": "K0f_PEER_ATTACK_RECEIPT",
+  "validator": "fresh peer-review sub-agent (proposer!=validator)",
+  "target": "k0f_expected_head.py (UNMODIFIED)",
+  "harness": "independent /tmp harness, real public API",
+  "attacks": {
+    "A1_stale_head_after_concurrent": "REJECT/STALE_HEAD \u0394\u03c3=0 \u0394H=0 \u0394hist=0",
+    "A2_TOCTOU_commit_rereads": "REJECT/STALE_HEAD (verify_time_head != commit head; non-degenerate window)",
+    "A3_duplicate_commit_race": "REJECT/STALE_HEAD (no double-apply)",
+    "A4_stale_reject_history_append": "REJECT; history bytewise identical",
+    "A5_stale_reject_receipt_append": "REJECT; receipt count 1==1"
+  },
+  "probes": {
+    "fresh_head_admits": "ADMIT/HEAD_MATCH (head-specific, not blanket)",
+    "no_partial_mutation": "compare precedes any state/history/head write (src lines 40-42 before 43-46)",
+    "edge_expectedHead_None_empty_int_list_dict": "all REJECT, zero mutation, no crash-through",
+    "1000_consecutive_stale": "zero drift",
+    "naive_control_genuinely_corrupts": "head+state+history all grow -> teeth real"
+  },
+  "VERDICT": "K0f_SURVIVED_DEFINED_ATTACK_SET",
+  "bypass_found": false,
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none"
+}

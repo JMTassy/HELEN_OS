@@ -1,0 +1,226 @@
+{
+ "SC1": {
+  "epistemic_class": "CONDITIONAL",
+  "supported_part": "Theorem 4 proves estimator E is unbiased under the conditions that samples are i.i.d. and the variance is finite.",
+  "unsupported_part": "The claim omits the necessary conditions (i.i.d. samples and finite variance) that are required for the theorem to hold.",
+  "independent_roots": 1,
+  "missing_witness": "The claim must explicitly include the conditions that samples are i.i.d. and the variance is finite.",
+  "abstain": false
+ },
+ "SC2": {
+  "epistemic_class": "REFUTED",
+  "supported_part": "Lemma 2 shows the optimizer converges when gradients are bounded by G",
+  "unsupported_part": "the claim that convergence holds in all cases (unconditional)",
+  "independent_roots": 1,
+  "missing_witness": "a proof or statement establishing that gradient boundedness is not required for convergence, or a counterexample showing divergence when gradients are unbounded",
+  "abstain": false
+ },
+ "SC3": {
+  "epistemic_class": "CONDITIONAL",
+  "supported_part": "Proposition 9 is proven for every integer n >= 3",
+  "unsupported_part": "The cases n=1 and n=2 are listed as open; the claim asserts it holds for all positive integers including these cases",
+  "independent_roots": 1,
+  "missing_witness": "A proof or disproof for the cases n=1 and n=2",
+  "abstain": false
+ },
+ "PR1": {
+  "epistemic_class": "REFUTED",
+  "supported_part": "Ten blog summaries cite a single PDF report",
+  "unsupported_part": "The claim asserts these are 'ten independent sources,' but all ten derive from the same PDF report, making them dependent, not independent",
+  "independent_roots": 1,
+  "missing_witness": "Ten genuinely independent sources (each with distinct provenance, not all citing the same PDF)",
+  "abstain": false
+ },
+ "PR2": {
+  "epistemic_class": "REFUTED",
+  "supported_part": "",
+  "unsupported_part": "The claim asserts 'multiple mutually corroborating sources' but only a single source (R1) is provided. The citation chain described (A\u2192B\u2192C\u2192D\u2192PDF memo) is a single line of dependency, not multiple independent corroborating sources.",
+  "independent_roots": 0,
+  "missing_witness": "Multiple independent sources that directly corroborate the finding, each with independent provenance.",
+  "abstain": true
+ },
+ "PR3": {
+  "epistemic_class": "REFUTED",
+  "supported_part": "The evidence base is diverse: ten texts use different wording, were written by different authors with different tools, and cite one another; an anonymous digest is also cited.",
+  "unsupported_part": "The evidence base is independent \u2014 the sources explicitly state that archival tracing shows every text ultimately derives from one leaked memo, directly contradicting the claim of independence.",
+  "independent_roots": 1,
+  "missing_witness": "Evidence showing the texts originated from independent sources rather than a single leaked memo",
+  "abstain": false
+ },
+ "PR4": {
+  "epistemic_class": "EARNED",
+  "supported_part": "Two independent observations support the effect",
+  "unsupported_part": "",
+  "independent_roots": 2,
+  "missing_witness": "",
+  "abstain": false
+ },
+ "BR1": {
+  "epistemic_class": "OPEN",
+  "supported_part": "Both City P and City Q contain Roman coins (professionally excavated)",
+  "unsupported_part": "Cities P and Q traded with each other",
+  "independent_roots": 2,
+  "missing_witness": "Evidence of direct exchange between P and Q (e.g., coins of P found in Q, coins of Q found in P, or other trade artifacts linking the two cities)",
+  "abstain": false
+ },
+ "BR2": {
+  "epistemic_class": "OPEN",
+  "supported_part": "The drug binds receptor Z in vitro (R1) and treated patients show improvement (R2).",
+  "unsupported_part": "The causal link that receptor binding *causes* the clinical improvement is not established by the sources.",
+  "independent_roots": 2,
+  "missing_witness": "A mechanistic study demonstrating that receptor binding is necessary and sufficient for the clinical effect (e.g., a study showing that blocking the receptor abolishes the improvement, or a dose-response relationship between binding and effect).",
+  "abstain": true
+ },
+ "BR3": {
+  "epistemic_class": "CONDITIONAL",
+  "supported_part": "Theorem A is formally proven, experiment B is reproducibly observed, and a commentary states that A probably explains B.",
+  "unsupported_part": "The claim asserts the explanation is 'established,' but the sources only support 'probably explains.'",
+  "independent_roots": 3,
+  "missing_witness": "A definitive statement (e.g., peer-reviewed consensus, formal proof of explanatory link, or a stronger assertion than 'probably') that the explanation is established.",
+  "abstain": true
+ },
+ "TE1": {
+  "epistemic_class": "REFUTED",
+  "supported_part": "The committee decided in March 2019 and the study was first published in 2022.",
+  "unsupported_part": "The claim that the 2019 decision was based on the study's evidence.",
+  "independent_roots": 2,
+  "missing_witness": "A source establishing whether the study existed or was available to the committee in 2019.",
+  "abstain": false
+ },
+ "TE2": {
+  "epistemic_class": "REFUTED",
+  "supported_part": "The memo is dated January 2019.",
+  "unsupported_part": "The claim that it is 'established' that the information was known in 2019 \u2014 R1 explicitly states its provenance before 2023 cannot be verified.",
+  "independent_roots": 1,
+  "missing_witness": "Verified provenance or archival record from 2019\u20132022 confirming the memo's existence and circulation prior to 2023.",
+  "abstain": true
+ },
+ "MO1": {
+  "epistemic_class": "REFUTED",
+  "supported_part": "Factor X may contribute to outcome Y in some populations",
+  "unsupported_part": "X explains Y (definitive causal claim with universal scope)",
+  "independent_roots": 1,
+  "missing_witness": "Evidence showing X is a necessary or sufficient cause of Y across all relevant populations",
+  "abstain": true
+ },
+ "MO2": {
+  "epistemic_class": "CONDITIONAL",
+  "supported_part": "Preliminary results in a small sample suggest an association",
+  "unsupported_part": "The effect has been demonstrated",
+  "independent_roots": 1,
+  "missing_witness": "A larger, well-powered study with causal inference methods",
+  "abstain": true
+ },
+ "ME1": {
+  "epistemic_class": "REFUTED",
+  "supported_part": "A correlation exists between chocolate consumption and Nobel prizes across 40 countries (r=0.79)",
+  "unsupported_part": "The causal direction that chocolate consumption improves scientific achievement",
+  "independent_roots": 1,
+  "missing_witness": "A controlled longitudinal study or randomized intervention showing that increased chocolate consumption leads to improved scientific output, controlling for confounding variables like national wealth, education levels, and research funding",
+  "abstain": true
+ },
+ "ME2": {
+  "epistemic_class": "REFUTED",
+  "supported_part": "Metric A rises six months before metric B in every observed cycle, and a plausible physiological story links them.",
+  "unsupported_part": "The causal pathway from A to B is established.",
+  "independent_roots": 1,
+  "missing_witness": "A controlled experiment or intervention study showing that manipulating A changes B, ruling out confounding factors.",
+  "abstain": true
+ },
+ "HH1": {
+  "epistemic_class": "EARNED",
+  "supported_part": "The matrix is Toeplitz because K_jk = K(c^-j - c^-k) = K(c^-(j-k)) depends only on the index difference (j-k), which is the defining property of a Toeplitz matrix.",
+  "unsupported_part": "",
+  "independent_roots": 1,
+  "missing_witness": "",
+  "abstain": false
+ },
+ "HH2": {
+  "epistemic_class": "CONDITIONAL",
+  "supported_part": "The transition is flagged as anomalous with high confidence (score 0.97) by a trained anomaly detector.",
+  "unsupported_part": "The transition is certified to be erroneous \u2014 the source provides a probabilistic anomaly score, not a formal certification of error.",
+  "independent_roots": 1,
+  "missing_witness": "A formal certification or ground-truth verification confirming the transition is erroneous.",
+  "abstain": false
+ },
+ "HH3": {
+  "epistemic_class": "OPEN",
+  "supported_part": "Every adversarial perturbation has norm at least delta (R1)",
+  "unsupported_part": "The detector will detect every perturbation \u2014 the sources provide no information about a detector, its detection threshold, or any link between perturbation norm and detection capability",
+  "independent_roots": 1,
+  "missing_witness": "A source establishing that any perturbation with norm >= delta is guaranteed to be detected by the detector (e.g., a detection theorem or system specification)",
+  "abstain": true
+ },
+ "HH4": {
+  "epistemic_class": "REFUTED",
+  "supported_part": "The sequence a_n contains a subsequence tending to +infinity",
+  "unsupported_part": "Therefore a_n tends to +infinity",
+  "independent_roots": 1,
+  "missing_witness": "A counterexample such as a_n = (-1)^n * n, which has a subsequence tending to +infinity but the full sequence does not converge to +infinity",
+  "abstain": true
+ },
+ "HH5": {
+  "epistemic_class": "REFUTED",
+  "supported_part": "A spectrogram marginal of signal u is computed with a Gaussian window (R1).",
+  "unsupported_part": "The claim that this marginal equals |u-hat|^2 (the true spectrum). The time-marginal of a windowed spectrogram yields \u222b|u(t)w(t)|^2 dt, which is not equal to the true power spectrum |\u00fb(\u03c9)|^2.",
+  "independent_roots": 1,
+  "missing_witness": "The mathematical relationship between a spectrogram marginal and the true spectrum: the marginal of a spectrogram with window w is \u222b|u(t)w(t)|^2 dt, which differs from |\u00fb(\u03c9)|^2 unless w is a delta function (no windowing).",
+  "abstain": false
+ },
+ "HH6": {
+  "epistemic_class": "CONDITIONAL",
+  "supported_part": "An autoresearch loop generated 51 pre-claims from one corpus in one run.",
+  "unsupported_part": "The claim asserts these are 'independent findings,' but the source only states 'pre-claims from one corpus in one run' \u2014 independence is not established.",
+  "independent_roots": 1,
+  "missing_witness": "Evidence that the 51 pre-claims are independent (e.g., they derive from distinct sources, methods, or reasoning paths rather than a single corpus).",
+  "abstain": true
+ },
+ "HH7": {
+  "epistemic_class": "OPEN",
+  "supported_part": "The Corpus Hermeticum is genuinely ancient; tarot cards genuinely existed in fifteenth-century Italy.",
+  "unsupported_part": "The claim that tarot derives from Hermetic Egypt is not addressed by either source.",
+  "independent_roots": 0,
+  "missing_witness": "Evidence establishing a historical or conceptual link between Hermetic Egypt and tarot (e.g., a documented transmission path, shared imagery, or textual derivation).",
+  "abstain": true
+ },
+ "HH8": {
+  "epistemic_class": "EARNED",
+  "supported_part": "The expert attribution (Fields Medalist) has definitively proven the claim, as confirmed by the complete evidence packet in the source.",
+  "unsupported_part": "",
+  "independent_roots": 1,
+  "missing_witness": "",
+  "abstain": false
+ },
+ "HH9": {
+  "epistemic_class": "REFUTED",
+  "supported_part": "Two ledger receipts have no declared causal edge between them (R1)",
+  "unsupported_part": "Applying them in either order yields the same state \u2014 this commutativity claim is not established by the sources; absence of a declared causal edge does not logically entail commutativity of application",
+  "independent_roots": 1,
+  "missing_witness": "A formal proof or specification demonstrating that the two receipts commute under all applicable conditions, or a counterexample showing non-commutativity",
+  "abstain": true
+ },
+ "VA1": {
+  "epistemic_class": "EARNED",
+  "supported_part": "The lab measured the melting point at 962 C using a calibrated furnace, documented in the report.",
+  "unsupported_part": "",
+  "independent_roots": 1,
+  "missing_witness": "",
+  "abstain": false
+ },
+ "VA2": {
+  "epistemic_class": "EARNED",
+  "supported_part": "Theorem 7 establishes P for full-rank matrices",
+  "unsupported_part": "",
+  "independent_roots": 1,
+  "missing_witness": "",
+  "abstain": false
+ },
+ "VA3": {
+  "epistemic_class": "EARNED",
+  "supported_part": "Two independent sources support effect E",
+  "unsupported_part": "",
+  "independent_roots": 2,
+  "missing_witness": "",
+  "abstain": false
+ }
+}

@@ -1,0 +1,69 @@
+{
+  "experiment": "RECEIPT_DELTA_ZERO_FALSIFIER_V0",
+  "authority": false,
+  "canon": false,
+  "claim": "NO_CLAIM",
+  "authority_delta": 0,
+  "model_calls": 0,
+  "fixtures": "synthetic",
+  "target_confusion_killed": "ReceiptValid(r) ⇏ Δσ(r)≠0",
+  "separations_witnessed": "receipt_validity ≠ state_transition ≠ authority_transition",
+  "W1_valid_receipt_zero_state_delta": true,
+  "W2_valid_receipt_real_state_delta_(soundness)": true,
+  "W3_liar_mutant_caught_by_derivation": true,
+  "noop_double_zero_Δσ0_and_ΔA0": true,
+  "rows": [
+    {
+      "receipt": "r0",
+      "Valid": 1,
+      "claimed_delta": null,
+      "DerivedDelta": {},
+      "DeltaSigma_zero": true,
+      "DeltaA": 0,
+      "claim_matches_derivation": true
+    },
+    {
+      "receipt": "r1",
+      "Valid": 1,
+      "claimed_delta": {
+        "x": [
+          1,
+          2
+        ]
+      },
+      "DerivedDelta": {
+        "x": [
+          1,
+          2
+        ]
+      },
+      "DeltaSigma_zero": false,
+      "DeltaA": 0,
+      "claim_matches_derivation": true
+    },
+    {
+      "receipt": "M",
+      "Valid": 1,
+      "claimed_delta": {
+        "x": [
+          1,
+          2
+        ]
+      },
+      "DerivedDelta": {},
+      "DeltaSigma_zero": true,
+      "DeltaA": 0,
+      "claim_matches_derivation": false
+    }
+  ],
+  "MAX_ADMISSIBLE_STATEMENT": "VALID_RECEIPT_WITH_ZERO_STATE_DELTA_WITNESSED (on these 3 fixtures)",
+  "EXPLICIT_NON_CLAIMS": [
+    "NOT 'receipts are non-causal'",
+    "NOT 'all HELEN receipts are safe'",
+    "NOT a statement about the real ledger or real receipt schema"
+  ],
+  "commit_status": "NO_COMMIT",
+  "push_status": "NO_PUSH",
+  "next_verb": "HUMAN_REVIEW",
+  "receipt_hash": "1ac45f1ba5974e4dec636e556a857064eebf4f0df897bba354dd918a1563874b"
+}

@@ -1,0 +1,1 @@
+Test for temporal/spatial correlation of noise patterns: if H1, errors are stochastic; if H2, errors are synchronized.

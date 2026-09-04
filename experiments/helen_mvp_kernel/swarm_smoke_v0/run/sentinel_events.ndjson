@@ -1,0 +1,10 @@
+{"t": 0, "event": "PREFLIGHT", "run": "SWARM_SMOKE_V0", "git_head": "35d255c83fff3c747cb1bd23969b5c113372c982", "model_gguf": "~/models/qwen38-9b/Qwen3.8-9B-Q4_K_M.gguf", "model_sha256": "df13d66021cef676f82be74053220fd75af6bf2a6a7fb77f5222ab9e50744a7a", "model_upstream_identity": "UNVERIFIED", "config": "9B -ngl99 -fa on -c8192 :8088 enable_thinking=false", "authority": false, "canon": false, "ledger_effect": "none"}
+{"t": 1, "event": "CORPUS_FROZEN", "hash": "sha256:99cce9cd1644dbabc7d9de6e7e91410abd676a8e59ceaad7c116f78e441e63ad", "n": 3}
+{"t": 2, "event": "GOBLIN_FROZEN", "goblin": "G1_proposer", "complete": true, "packet_hash": "sha256:ab5814a09b22edbdee42b0b6425d13ef053ab49a40569a07f8eaa04d2857995c", "status": "OK", "completion_tokens": 42}
+{"t": 3, "event": "GOBLIN_FROZEN", "goblin": "G2_skeptic", "complete": true, "packet_hash": "sha256:ecdb4ed7ce6fa2e1dbba2fa156fe730a0469ac1b748639310d4329ea529f7270", "status": "OK", "completion_tokens": 102}
+{"t": 4, "event": "GOBLIN_FROZEN", "goblin": "G3_synthesizer", "complete": true, "packet_hash": "sha256:e66bac4996e2123812114ae5c9c452a48481535d27f53975c5cb0c243f688ffe", "status": "OK", "completion_tokens": 63}
+{"t": 5, "event": "SWARM_OUTPUT_COMPLETE", "disposition": "COMPLETE"}
+{"t": 6, "event": "HAL_TRIAL", "goblin": "G1_proposer", "verdict": "REFUTED", "packet_hash": "sha256:ab5814a09b22edbdee42b0b6425d13ef053ab49a40569a07f8eaa04d2857995c"}
+{"t": 7, "event": "HAL_TRIAL", "goblin": "G2_skeptic", "verdict": "SURVIVED", "packet_hash": "sha256:ecdb4ed7ce6fa2e1dbba2fa156fe730a0469ac1b748639310d4329ea529f7270"}
+{"t": 8, "event": "HAL_TRIAL", "goblin": "G3_synthesizer", "verdict": "REFUTED", "packet_hash": "sha256:e66bac4996e2123812114ae5c9c452a48481535d27f53975c5cb0c243f688ffe"}
+{"t": 9, "event": "PROMOTION_CANDIDATE", "goblin": "G2_skeptic", "note": "HAL_SURVIVED \u21d2 candidate for later discrimination; NOT admitted (\u0393_C \u21cf \u0393_A)"}

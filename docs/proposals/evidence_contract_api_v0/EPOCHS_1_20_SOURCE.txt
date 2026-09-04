@@ -1,0 +1,1456 @@
+EPOCH: 1
+
+LULU:
+The user problem is not “decide whether a statement is true.” It is:
+
+Given a typed claim and a finite submitted evidence package, determine the strongest warranted classification without converting attribution, absence, contradiction, or operator action into proof.
+
+ZACK:
+“Strongest warranted classification” is ambiguous unless the evaluation boundary is explicit. Otherwise the API may appear to search the world, certify truth, or infer missing evidence.
+
+REVISION:
+Define the assessment boundary:
+
+B=(r,\rho,\nu)
+
+where:
+
+* r is one finite request;
+* \rho is the resolver environment;
+* \nu is the verifier family.
+
+Reusable rule:
+
+\text{Assessment is bounded to the submitted request and evaluator environment.}
+
+TEST:
+A claim has one supporting submitted witness, but an unknown contradictory witness exists elsewhere.
+
+Required result: the API may classify the submitted package as supported, but must not claim exhaustive or universal truth.
+
+GAIN:
+Ambiguity decreases by separating bounded assessment from global truth. Implementation burden is unchanged.
+
+⸻
+
+EPOCH: 2
+
+LULU:
+Inherit the bounded assessment problem.
+
+Define the explicit objects:
+
+Claim,\ Witness,\ Provenance,\ Decision.
+
+Define three separate output axes:
+
+EvidenceState=\{ABSENT,SUPPORTED,CONTRADICTED,CONFLICTED\}
+
+EpistemicStatus=\{PROVEN,REPORTED,HYPOTHESIZED\}
+
+OperatorDisposition=\{DEFERRED,REJECTED,ACTED\}.
+
+ZACK:
+The six requested public classifications are not mutually exclusive. A claim may be REPORTED and ACTED, or HYPOTHESIZED and REJECTED.
+
+REVISION:
+Do not flatten all classifications into one enum.
+
+Reusable invariant:
+
+EpistemicStatus \perp OperatorDisposition.
+
+Evidence topology is a third independent axis.
+
+TEST:
+An authenticated report exists, no admissible direct witness exists, and an operator has acted.
+
+Required result:
+
+epistemic_status = REPORTED
+operator_disposition = ACTED
+
+not one replacing the other.
+
+GAIN:
+Category ambiguity decreases substantially. Response complexity increases by two small orthogonal fields but eliminates duplicated semantics.
+
+⸻
+
+EPOCH: 3
+
+LULU:
+Inherit the four objects and three output axes.
+
+Type every semantic value:
+
+TypedValue=(T,v)
+
+with:
+
+T\in\{BOOLEAN,INTEGER,DECIMAL,STRING,TIMESTAMP,ARRAY,OBJECT\}.
+
+A claim is:
+
+c=(subject,predicate,T,v).
+
+A witness observation declares the same structural type but does not declare its own validity or polarity.
+
+ZACK:
+Without strict typing, implementations may silently equate:
+
+INTEGER 1
+STRING "1"
+BOOLEAN true
+STRING "true"
+
+Hidden coercion would make proof parser-dependent.
+
+REVISION:
+Introduce strict type equality:
+
+(T_1,v_1)=(T_2,v_2)
+\Rightarrow
+T_1=T_2.
+
+No cross-type coercion is permitted.
+
+TEST:
+Claim value:
+
+INTEGER 1
+
+Observed value:
+
+STRING "1"
+
+Required result: witness rejection by type mismatch, not support.
+
+GAIN:
+Semantic ambiguity decreases. Implementation burden decreases because no coercion matrix is needed.
+
+⸻
+
+EPOCH: 4
+
+LULU:
+Inherit strict typing.
+
+Define witness admissibility:
+
+Adm(w,c)
+\iff
+Reachable(w)
+\land
+Verified(w)
+\land
+Relevant(w,c)
+\land
+TypeCompatible(w,c).
+
+ZACK:
+“Verified” is still vague. It could mean merely downloaded, parsed, signed, or trusted by convention.
+
+REVISION:
+Separate resolution from verification:
+
+resolve_\rho(locator)\rightarrow bytes
+
+verify_\nu(kind,bytes,expected)\rightarrow TypedObservation\ \cup\ Error.
+
+Reusable invariant:
+
+A witness contributes only after both resolver and verifier succeed.
+
+TEST:
+A locator resolves successfully, but its digest verification fails.
+
+Required result: item rejected as VERIFICATION_FAILED; it contributes neither support nor contradiction.
+
+GAIN:
+False proof risk decreases. Implementation burden becomes explicit but remains two small interfaces.
+
+⸻
+
+EPOCH: 5
+
+LULU:
+Inherit witness admissibility.
+
+Define the scope of a claim:
+
+scope(c)=(subject(c),predicate(c)).
+
+Define witness relevance:
+
+Relevant(w,c)
+\iff
+scope(observation(w))=scope(c).
+
+ZACK:
+Semantic similarity, keyword overlap, or shared subject alone could incorrectly make a witness relevant.
+
+REVISION:
+Use exact scope equality only.
+
+Reusable rule:
+
+\text{Related is not relevant unless subject and predicate both match.}
+
+TEST:
+Claim:
+
+subject = batch-41
+predicate = item-count
+
+Witness observation:
+
+subject = batch-41
+predicate = failed-item-count
+
+Required result: IRRELEVANT.
+
+GAIN:
+Ambiguity decreases. Implementation burden decreases because no ontology, embedding, or fuzzy matching is required.
+
+⸻
+
+EPOCH: 6
+
+LULU:
+Inherit typed admissible witnesses.
+
+Define direct evidence separately from attributed provenance.
+
+A report is an authenticated record that an identified source asserted a proposition.
+
+A hypothesis is an authenticated record that a proposition was explicitly proposed.
+
+Neither is a direct observation of the claim value.
+
+ZACK:
+A signed report may be authentic while its proposition is false. Authentication cannot be promoted to proof.
+
+REVISION:
+Introduce the provenance distinction:
+
+Authenticated(report)\not\Rightarrow Proven(claim)
+
+Authenticated(hypothesis)\not\Rightarrow Proven(claim).
+
+Priority rule:
+
+* direct admissible support may yield PROVEN;
+* otherwise authenticated reports may yield REPORTED;
+* otherwise authenticated hypotheses may yield HYPOTHESIZED.
+
+TEST:
+A signed PDF states that a machine produced 100 units. No direct admissible machine output exists.
+
+Required result: REPORTED, not PROVEN.
+
+GAIN:
+False-proof ambiguity decreases. No additional scoring or trust hierarchy is introduced.
+
+⸻
+
+EPOCH: 7
+
+LULU:
+Inherit the distinction between direct evidence and provenance.
+
+For every admissible witness:
+
+polarity(w,c)=
+\begin{cases}
+SUPPORT & N_T(value_w)=N_T(value_c)\\
+CONTRADICTION & N_T(value_w)\neq N_T(value_c).
+\end{cases}
+
+Define:
+
+S=\{w\mid Adm(w,c)\land polarity(w,c)=SUPPORT\}
+
+N=\{w\mid Adm(w,c)\land polarity(w,c)=CONTRADICTION\}.
+
+ZACK:
+A majority rule would erase contradiction. Ten supports and one contradiction are epistemically different from ten supports and none.
+
+REVISION:
+Define evidence topology by presence, not vote:
+
+(S=\varnothing,N=\varnothing)\rightarrow ABSENT
+
+(S\neq\varnothing,N=\varnothing)\rightarrow SUPPORTED
+
+(S=\varnothing,N\neq\varnothing)\rightarrow CONTRADICTED
+
+(S\neq\varnothing,N\neq\varnothing)\rightarrow CONFLICTED.
+
+TEST:
+Ten admissible supports and one admissible contradiction.
+
+Required result: CONFLICTED, never SUPPORTED.
+
+GAIN:
+Contradiction remains observable. Implementation burden decreases by eliminating weights, counts, and thresholds.
+
+⸻
+
+EPOCH: 8
+
+LULU:
+Inherit evidence topology.
+
+Define normalization per type:
+
+N_T:Value_T\rightarrow CanonicalValue_T.
+
+Normalization must operate on typed semantic values after parsing, not on source bytes or serialization syntax.
+
+ZACK:
+Textually different serializations may denote the same value:
+
+1
+1.0
+1.000
+
+Conversely, parser rounding may collapse distinct exact values.
+
+REVISION:
+Introduce serialization-blind, lossless normalization:
+
+* integers normalize mathematically;
+* decimals normalize exactly, not through binary floating point;
+* timestamps normalize to a common instant while retaining required precision;
+* strings remain exact;
+* arrays preserve order;
+* objects normalize by key/value semantics, not key order.
+
+Reusable invariant:
+
+decode(s_1)=decode(s_2)\Rightarrow N(decode(s_1))=N(decode(s_2)).
+
+TEST:
+Claim:
+
+DECIMAL 1.000
+
+Witness:
+
+DECIMAL 1
+
+Required result: support.
+
+A lossy binary-float parser is non-conformant.
+
+GAIN:
+Serialization ambiguity decreases. Implementation burden is bounded to deterministic normalizers.
+
+⸻
+
+EPOCH: 9
+
+LULU:
+Inherit typed normalization.
+
+Audit all proposed fields and assumptions.
+
+Potential decorative fields include:
+
+confidence
+authority
+importance
+priority
+source_reputation
+weight
+trust_score
+explanation_style
+
+ZACK:
+These fields lack theorem-level necessity and create hidden decision procedures.
+
+REVISION:
+Remove every field that does not alter admissibility, projection, classification, diagnostics, or transport validity.
+
+Reusable rule:
+
+Field\ is\ retained
+\iff
+removing\ it\ changes\ normative\ semantics.
+
+TEST:
+Add:
+
+{"confidence": 0.99}
+
+to an otherwise unsupported report.
+
+Required result: request invalid under closed-schema validation; confidence cannot promote proof.
+
+GAIN:
+API surface and implementation burden decrease. Hidden scoring assumptions are removed.
+
+⸻
+
+EPOCH: 10
+
+LULU:
+Inherit the minimal semantic objects.
+
+Define the admissible projection:
+
+\Pi(r;\rho,\nu)=(S,N,A,Q,D),
+
+where:
+
+* S: admissible support presence;
+* N: admissible contradiction presence;
+* A: authenticated report presence;
+* Q: authenticated hypothesis presence;
+* D: set of authenticated operator decision kinds.
+
+ZACK:
+The theory still needs a compact claim that makes implementation equivalence testable.
+
+REVISION:
+Derive the minimal theorem:
+
+For valid requests r_1,r_2, if:
+
+\Pi(r_1;\rho_1,\nu_1)=\Pi(r_2;\rho_2,\nu_2),
+
+then their semantic assessments are equal.
+
+Reusable theorem:
+
+\Pi_1=\Pi_2\Rightarrow ASSESS_1=ASSESS_2.
+
+TEST:
+Two requests differ only in item order, object-key order, locator syntax, and duplicate identical witnesses, but produce the same projection.
+
+Required result: identical response.
+
+GAIN:
+The semantic core becomes implementation-independent. Complexity collapses to one finite projection.
+
+⸻
+
+EPOCH: 11
+
+LULU:
+Inherit the projection theorem.
+
+Define one core operator:
+
+ASSESS(r;\rho,\nu).
+
+It performs exactly four phases:
+
+ASSESS=
+classify\circ project\circ evaluate\circ validate.
+
+ZACK:
+Multiple public operators such as prove, report, reject, and act would duplicate classification semantics and permit inconsistent outputs.
+
+REVISION:
+Expose one operator only.
+
+Reusable invariant:
+
+\text{All public classifications derive from } ASSESS.
+
+TEST:
+A proposed endpoint /prove applies different normalization than /assess.
+
+Required result: reject the architecture as duplicated semantics.
+
+GAIN:
+API and reasoning burden decrease. One semantic source of truth remains.
+
+⸻
+
+EPOCH: 12
+
+LULU:
+Inherit the single operator.
+
+Define deterministic classification.
+
+Evidence state derives from S,N.
+
+Epistemic status:
+
+SUPPORTED\rightarrow PROVEN
+
+otherwise:
+
+A\neq\varnothing\rightarrow REPORTED
+
+otherwise:
+
+Q\neq\varnothing\rightarrow HYPOTHESIZED
+
+otherwise:
+
+None.
+
+Operator disposition:
+
+* D=\varnothing: none;
+* |D|=1: the unique decision;
+* |D|>1: HOLD_FOR_OPERATOR.
+
+ZACK:
+Iteration order must not decide between DEFERRED, REJECTED, and ACTED.
+
+REVISION:
+Use set cardinality, not precedence.
+
+Reusable rule:
+
+|D|>1\Rightarrow HOLD\_FOR\_OPERATOR.
+
+Repeated identical decisions collapse to one kind.
+
+TEST:
+Authenticated decisions arrive in this order:
+
+ACTED, DEFERRED
+
+and then reversed.
+
+Required result in both cases: HOLD_FOR_OPERATOR.
+
+GAIN:
+Nondeterminism decreases. No precedence table is required.
+
+⸻
+
+EPOCH: 13
+
+LULU:
+Inherit deterministic rules.
+
+Define the minimal request:
+
+AssessmentRequest
+=
+Claim
+× Bag(Witness)
+× Bag(Provenance)
+× Bag(Decision)
+
+All four components are mandatory; bags may be empty.
+
+ZACK:
+Allowing callers to submit verified, relevant, polarity, or status would let them inject evaluator conclusions.
+
+REVISION:
+The request carries only premises:
+
+{
+  "claim": {},
+  "witnesses": [],
+  "provenance": [],
+  "decisions": []
+}
+
+Prohibited caller-authored semantic conclusions include:
+
+verified
+reachable
+relevant
+polarity
+evidence_state
+epistemic_status
+operator_disposition
+
+TEST:
+A caller submits:
+
+{"verified": true}
+
+inside a witness.
+
+Required result: UNKNOWN_FIELD.
+
+GAIN:
+Trust-boundary ambiguity decreases. Request schema remains small and closed.
+
+⸻
+
+EPOCH: 14
+
+LULU:
+Inherit the minimal request.
+
+Define the minimal response:
+
+{
+  "outcome": "ASSESSED | INVALID | HOLD_FOR_OPERATOR",
+  "epistemic_status": "PROVEN | REPORTED | HYPOTHESIZED | null",
+  "evidence_state": "ABSENT | SUPPORTED | CONTRADICTED | CONFLICTED | null",
+  "operator_disposition": "DEFERRED | REJECTED | ACTED | null"
+}
+
+ZACK:
+A separate NO_RECEIPT status would duplicate the meaning of a valid result with no epistemic status.
+
+REVISION:
+Define NO_RECEIPT as a derived condition:
+
+NO\_RECEIPT
+\iff
+outcome\neq INVALID
+\land
+epistemic\_status=null.
+
+Reusable invariant:
+
+PROVEN\iff SUPPORTED.
+
+TEST:
+No direct witnesses, reports, or hypotheses; one authenticated DEFERRED decision.
+
+Required result:
+
+outcome = ASSESSED
+epistemic_status = null
+evidence_state = ABSENT
+operator_disposition = DEFERRED
+
+Derived receipt state: NO_RECEIPT.
+
+GAIN:
+Response remains four fields. Duplicate status semantics are avoided.
+
+⸻
+
+EPOCH: 15
+
+LULU:
+Inherit request and response schemas.
+
+Define three error effects:
+
+Fatal,\ ItemReject,\ Hold.
+
+ZACK:
+Treating every failed item as a fatal request error makes mixed evidence unusable. Treating malformed structure as an item rejection makes results unreliable.
+
+REVISION:
+Fatal errors stop evaluation:
+
+MALFORMED_REQUEST
+UNKNOWN_FIELD
+MISSING_FIELD
+INVALID_ENUM
+DUPLICATE_OBJECT_KEY
+UNSUPPORTED_VALUE_TYPE
+LOSSY_BINDING
+
+Item rejection excludes only the affected item:
+
+UNREACHABLE
+VERIFIER_UNSUPPORTED
+VERIFICATION_FAILED
+OBSERVATION_PARSE_FAILED
+TYPE_MISMATCH
+IRRELEVANT
+AUTHENTICATION_FAILED
+
+Decision conflict yields hold.
+
+TEST:
+One valid supporting witness and one unreachable witness.
+
+Required result: valid assessment from the admissible projection plus a diagnostic for the rejected item.
+
+GAIN:
+Failure semantics become compositional. Partial evidence remains usable without weakening structural validity.
+
+⸻
+
+EPOCH: 16
+
+LULU:
+Inherit the error algebra.
+
+Define normative adversarial conformance properties:
+
+* permutation invariance;
+* duplicate multiplicity invariance;
+* no premature proof;
+* no vote-based proof;
+* no report-to-proof conversion;
+* no failure-to-contradiction conversion;
+* no action-to-proof conversion;
+* no contradiction-to-rejection conversion;
+* strict typing;
+* lossless normalization;
+* decision conflict symmetry;
+* diagnostics non-interference.
+
+ZACK:
+A conformance suite can be gamed if implementations rewrite expected outputs after failure or advertise partial compliance.
+
+REVISION:
+Conformance is conjunctive:
+
+Conformant(I)\iff \bigwedge_{t\in Tests}Pass(I,t).
+
+No score or percentage substitutes for conformance.
+
+TEST:
+An implementation passes 11 of 12 normative tests and claims “91.7% compliant.”
+
+Required result: non-conformant.
+
+GAIN:
+Operational testability increases. Ambiguous partial certification is eliminated.
+
+⸻
+
+EPOCH: 17
+
+LULU:
+Inherit the conformance obligations.
+
+Compress internal structures by retaining only semantic presence.
+
+Instead of preserving every accepted item in the classifier, project to:
+
+s,n,a,q\in\{0,1\}
+
+and:
+
+D\subseteq\{DEFERRED,REJECTED,ACTED\}.
+
+ZACK:
+Counts might appear useful, but they invite weighting and voting despite having no effect on the theorem.
+
+REVISION:
+Classification consumes only presence bits and the distinct decision set.
+
+Diagnostics may separately reference rejected item indices but cannot alter projection.
+
+TEST:
+One support versus one thousand duplicate supports, with one contradiction in both cases.
+
+Required result: CONFLICTED in both cases.
+
+GAIN:
+Classifier storage becomes constant-sized. Semantic loss is zero under the theorem.
+
+⸻
+
+EPOCH: 18
+
+LULU:
+Inherit the compressed projection.
+
+Define the language-neutral contract.
+
+Algebraic data types:
+
+AssessmentRequest =
+  Claim × Bag<Witness> × Bag<Provenance> × Bag<Decision>
+AssessmentResult =
+  Invalid
+  | Assessed(EvidenceState, Option<EpistemicStatus>, Option<Disposition>)
+  | Hold(EvidenceState, Option<EpistemicStatus>)
+
+ZACK:
+The contract must not depend on JSON, HTTP, Python, JavaScript, or any specific verifier technology.
+
+REVISION:
+Separate semantic contract from transport binding.
+
+Reusable invariant:
+
+Any transport is conformant only if it preserves the typed request and response losslessly.
+
+TEST:
+A JavaScript binding parses an exact decimal through IEEE-754 and rounds it.
+
+Required result: binding non-conformant even if the core algorithm is correct.
+
+GAIN:
+Portability increases. The theory becomes reusable outside HELEN and outside HTTP.
+
+⸻
+
+EPOCH: 19
+
+LULU:
+Inherit the language-neutral contract.
+
+Produce one reference algorithm:
+
+ASSESS(raw):
+    request := VALIDATE(raw)
+    if fatal:
+        return INVALID
+    witness_results := MAP_INDEPENDENT(EVALUATE_WITNESS, request.witnesses)
+    provenance_results := MAP_INDEPENDENT(EVALUATE_PROVENANCE, request.provenance)
+    decision_results := MAP_INDEPENDENT(EVALUATE_DECISION, request.decisions)
+    projection := PROJECT(
+        witness_results,
+        provenance_results,
+        decision_results
+    )
+    return CLASSIFY(projection)
+
+ZACK:
+Concurrent evaluation could yield different results if classification begins before all submitted items complete.
+
+REVISION:
+Introduce the completion barrier:
+
+Classify\ only\ after\ all\ item\ evaluations\ terminate.
+
+Projection is immutable before classification begins.
+
+TEST:
+A fast support finishes before a slow contradiction.
+
+Required result: final state CONFLICTED; the implementation must never emit an intermediate PROVEN result as final.
+
+GAIN:
+Sequential and concurrent implementations become semantically equivalent. Implementation remains linear.
+
+⸻
+
+EPOCH: 20
+
+LULU:
+Inherit the complete Epoch 19 artifact.
+
+The remaining weakness is launch-language overreach. PROVEN may be mistaken for universal truth, and “implementation-ready” may be mistaken for implemented, tested, admitted, or deployed.
+
+ZACK:
+The launch packet must freeze scope, semantics, schemas, errors, tests, and the keep/reject rule without creating authority claims.
+
+REVISION:
+Add one final boundedness invariant:
+
+\boxed{
+PROVEN
+\text{ means supported and uncontradicted within the completed admissible projection only.}
+}
+
+The artifact is a proposal contract, not an execution receipt.
+
+THEORY:
+
+Typed Admissible Projection Theory
+
+Given one typed claim-centered request:
+
+r=(c,W,P,D_0),
+
+evaluated under resolver \rho and verifier family \nu, construct:
+
+\Pi(r;\rho,\nu)=(S,N,A,Q,D).
+
+Where:
+
+* S: presence of admissible direct support;
+* N: presence of admissible direct contradiction;
+* A: presence of authenticated reports;
+* Q: presence of authenticated explicit hypotheses;
+* D: set of authenticated operator-decision kinds.
+
+A witness is admissible iff:
+
+Adm(w,c)
+\iff
+Reachable(w)
+\land
+Verified(w)
+\land
+Relevant(w,c)
+\land
+TypeCompatible(w,c).
+
+Relevance is exact claim-scope equality:
+
+Relevant(w,c)
+\iff
+subject(w)=subject(c)
+\land
+predicate(w)=predicate(c).
+
+For admissible witnesses:
+
+polarity(w,c)=
+\begin{cases}
+SUPPORT & N_T(value_w)=N_T(value_c)\\
+CONTRADICTION & N_T(value_w)\neq N_T(value_c).
+\end{cases}
+
+The theory classifies three independent axes:
+
+1. evidence topology;
+2. epistemic status;
+3. operator disposition.
+
+THEOREM:
+
+Projection Sufficiency Theorem
+
+For any two structurally valid assessments:
+
+\Pi(r_1;\rho_1,\nu_1)=\Pi(r_2;\rho_2,\nu_2)
+
+implies:
+
+ASSESS(r_1;\rho_1,\nu_1)
+=
+ASSESS(r_2;\rho_2,\nu_2).
+
+Therefore semantic output is invariant under:
+
+* request item order;
+* object-key order;
+* duplicate multiplicity;
+* serialization syntax;
+* evaluator scheduling;
+* resolver implementation;
+* verifier implementation;
+* diagnostic order;
+
+provided the completed normalized admissible projection is equal.
+
+Additionally:
+
+PROVEN
+\iff
+S\neq\varnothing
+\land
+N=\varnothing.
+
+Hence authenticated reporting, explicit hypothesis, operator action, witness failure, or evidence absence cannot independently establish PROVEN.
+
+INVARIANTS:
+
+1. Every semantic value has an explicit type.
+2. Cross-type coercion is forbidden.
+3. Caller input contains premises, not evaluator conclusions.
+4. Every contributing witness is reachable.
+5. Every contributing witness is verified.
+6. Every contributing witness is relevant.
+7. Every contributing witness is type-compatible.
+8. Witness polarity is evaluator-derived.
+9. Report authentication proves attribution only.
+10. Hypothesis status requires an explicit authenticated hypothesis.
+11. Absence never creates a hypothesis.
+12. Failed verification is not contradiction.
+13. Unreachability is not contradiction.
+14. Contradiction is distinct from absence.
+15. Contradiction is distinct from operator rejection.
+16. Operator action is distinct from proof.
+17. Operator rejection is distinct from falsity.
+18. Equivalent typed values normalize identically.
+19. Decimal normalization is exact.
+20. Array order remains semantic.
+21. Object-key order is non-semantic.
+22. Request collection order is non-semantic.
+23. Duplicate multiplicity is non-semantic.
+24. Classification begins only after all item evaluations complete.
+25. Projection is immutable during classification.
+26. Diagnostics do not affect classification.
+27. Fatal structural errors yield no substantive classification.
+28. Item rejection does not invalidate the whole request.
+29. Multiple distinct decisions yield HOLD_FOR_OPERATOR.
+30. Repeated identical decisions do not conflict.
+31. No hidden decision precedence exists.
+32. Unsupported exact types are rejected, not approximated.
+33. PROVEN is bounded to the submitted admissible projection.
+34. Conformance requires all normative tests.
+
+COUNTEREXAMPLES:
+
+1. Reachable therefore proven — invalid.
+2. Signed report therefore proven — invalid.
+3. No evidence therefore hypothesized — invalid.
+4. Verification failed therefore contradicted — invalid.
+5. Ten supports defeat one contradiction — invalid.
+6. Operator acted therefore proven — invalid.
+7. Contradiction therefore rejected — invalid.
+8. INTEGER 1 equals STRING "1" — invalid.
+9. Decimal rounding is acceptable — invalid.
+10. First operator decision wins — invalid.
+11. Diagnostic severity changes status — invalid.
+12. PROVEN means universally certified — invalid.
+
+API_NAME:
+
+Evidence Contract API
+
+Core operator:
+
+ASSESS
+
+ENDPOINTS:
+
+POST /v1/assess
+
+No public semantic endpoint is defined for:
+
+admission
+certification
+deployment
+execution
+claim mutation
+ledger writing
+canonization
+
+REQUEST_SCHEMA:
+
+{
+  "claim": {
+    "subject": "string",
+    "predicate": "string",
+    "value_type": "BOOLEAN | INTEGER | DECIMAL | STRING | TIMESTAMP | ARRAY | OBJECT",
+    "value": "typed value"
+  },
+  "witnesses": [
+    {
+      "locator": "string",
+      "verifier": {
+        "kind": "string",
+        "expected": "typed verifier parameters"
+      },
+      "observation": {
+        "subject": "string",
+        "predicate": "string",
+        "value_type": "BOOLEAN | INTEGER | DECIMAL | STRING | TIMESTAMP | ARRAY | OBJECT"
+      }
+    }
+  ],
+  "provenance": [
+    {
+      "kind": "REPORT | HYPOTHESIS",
+      "locator": "string",
+      "verifier": {
+        "kind": "string",
+        "expected": "typed verifier parameters"
+      }
+    }
+  ],
+  "decisions": [
+    {
+      "kind": "DEFERRED | REJECTED | ACTED",
+      "locator": "string",
+      "verifier": {
+        "kind": "string",
+        "expected": "typed verifier parameters"
+      }
+    }
+  ]
+}
+
+All top-level fields are required.
+
+Collections may be empty.
+
+Objects are closed.
+
+RESPONSE_SCHEMA:
+
+{
+  "outcome": "ASSESSED | INVALID | HOLD_FOR_OPERATOR",
+  "epistemic_status": "PROVEN | REPORTED | HYPOTHESIZED | null",
+  "evidence_state": "ABSENT | SUPPORTED | CONTRADICTED | CONFLICTED | null",
+  "operator_disposition": "DEFERRED | REJECTED | ACTED | null"
+}
+
+Consistency laws:
+
+outcome=INVALID
+\Rightarrow
+epistemic\_status=evidence\_state=operator\_disposition=null.
+
+epistemic\_status=PROVEN
+\iff
+evidence\_state=SUPPORTED.
+
+outcome=HOLD\_FOR\_OPERATOR
+\Rightarrow
+operator\_disposition=null.
+
+Derived:
+
+NO\_RECEIPT
+\iff
+outcome\neq INVALID
+\land
+epistemic\_status=null.
+
+ERROR_MODEL:
+
+Fatal:
+
+MALFORMED_REQUEST
+UNKNOWN_FIELD
+MISSING_FIELD
+INVALID_ENUM
+DUPLICATE_OBJECT_KEY
+TYPE_MISMATCH
+UNSUPPORTED_VALUE_TYPE
+LOSSY_BINDING
+
+Effect:
+
+outcome = INVALID
+
+Item rejection:
+
+UNREACHABLE
+VERIFIER_UNSUPPORTED
+VERIFICATION_FAILED
+OBSERVATION_PARSE_FAILED
+TYPE_MISMATCH
+IRRELEVANT
+PROVENANCE_AUTHENTICATION_FAILED
+DECISION_AUTHENTICATION_FAILED
+
+Effect:
+
+exclude item from projection;
+continue assessment.
+
+Hold:
+
+DECISION_CONFLICT
+
+Effect:
+
+outcome = HOLD_FOR_OPERATOR
+operator_disposition = null
+
+Minimal diagnostic:
+
+{
+  "code": "machine-readable code",
+  "path": "request path",
+  "item_index": 0
+}
+
+REFERENCE_ALGORITHM:
+
+ASSESS(raw_request):
+    validated := VALIDATE(raw_request)
+    if validated is fatal:
+        return {
+            outcome: INVALID,
+            epistemic_status: null,
+            evidence_state: null,
+            operator_disposition: null
+        }
+    witness_results :=
+        MAP_INDEPENDENT(EVALUATE_WITNESS, validated.witnesses)
+    provenance_results :=
+        MAP_INDEPENDENT(EVALUATE_PROVENANCE, validated.provenance)
+    decision_results :=
+        MAP_INDEPENDENT(EVALUATE_DECISION, validated.decisions)
+    WAIT_UNTIL_ALL_COMPLETE
+    projection :=
+        IMMUTABLE_PROJECT(
+            witness_results,
+            provenance_results,
+            decision_results
+        )
+    evidence :=
+        CLASSIFY_EVIDENCE(projection.S, projection.N)
+    epistemic :=
+        CLASSIFY_EPISTEMIC(
+            evidence,
+            projection.A,
+            projection.Q
+        )
+    if cardinality(projection.D) > 1:
+        return {
+            outcome: HOLD_FOR_OPERATOR,
+            epistemic_status: epistemic,
+            evidence_state: evidence,
+            operator_disposition: null
+        }
+    disposition :=
+        unique member of projection.D
+        if cardinality(projection.D) = 1
+        else null
+    return {
+        outcome: ASSESSED,
+        epistemic_status: epistemic,
+        evidence_state: evidence,
+        operator_disposition: disposition
+    }
+
+Witness evaluation:
+
+EVALUATE_WITNESS(witness, claim):
+    bytes := RESOLVE(witness.locator)
+    if resolution fails:
+        return REJECTED(UNREACHABLE)
+    observed := VERIFY(
+        witness.verifier.kind,
+        bytes,
+        witness.verifier.expected
+    )
+    if verification fails:
+        return REJECTED(verification_error)
+    if observed.type != witness.observation.value_type:
+        return REJECTED(TYPE_MISMATCH)
+    if scope(witness.observation) != scope(claim):
+        return REJECTED(IRRELEVANT)
+    if observed.type != claim.value_type:
+        return REJECTED(TYPE_MISMATCH)
+    if NORMALIZE(observed) = NORMALIZE(claim.value):
+        return ACCEPTED(SUPPORT)
+    return ACCEPTED(CONTRADICTION)
+
+Complexity, excluding resolver and verifier cost:
+
+O(w+p+d+z)
+
+where z is total normalized value size.
+
+Classifier storage is:
+
+O(1).
+
+CONFORMANCE_TESTS:
+
+1. One support, no contradiction → PROVEN + SUPPORTED.
+2. Authenticated report only → REPORTED + ABSENT.
+3. Authenticated hypothesis only → HYPOTHESIZED + ABSENT.
+4. No evidence or provenance → NO_RECEIPT + ABSENT.
+5. Contradiction only → CONTRADICTED, not REJECTED.
+6. Support plus contradiction → CONFLICTED.
+7. Ten supports plus one contradiction → CONFLICTED.
+8. Report plus conflict → REPORTED + CONFLICTED.
+9. Hypothesis plus conflict → HYPOTHESIZED + CONFLICTED.
+10. DECIMAL 1, 1.0, and 1.000 normalize equally.
+11. Large exact decimals are preserved or rejected.
+12. INTEGER 1 and STRING "1" do not compare.
+13. Equivalent offset timestamps compare equally.
+14. Array order changes meaning.
+15. Failed verification contributes nothing.
+16. Unreachable witness contributes nothing.
+17. Irrelevant witness contributes nothing.
+18. Unknown field yields INVALID.
+19. Missing required collection yields INVALID.
+20. Duplicate object key yields INVALID.
+21. Distinct decisions yield HOLD_FOR_OPERATOR.
+22. Repeated identical decisions yield one disposition.
+23. Item permutation does not alter result.
+24. Object-key permutation does not alter result.
+25. Duplicate witness multiplicity does not alter result.
+26. Slow contradiction prevents premature final PROVEN.
+27. Diagnostic order does not alter result.
+28. Action does not create proof.
+29. Report does not create proof.
+30. Documentation must not describe PROVEN as universal certification.
+
+MINIMAL_IMPLEMENTATION_PLAN:
+
+One-day build:
+
+1. Define immutable contract types.
+2. Implement closed-schema validation.
+3. Implement exact typed normalization.
+4. Implement one resolver interface.
+5. Implement one verifier registry.
+6. Implement witness, provenance, and decision evaluators.
+7. Implement immutable projection.
+8. Implement pure classifier.
+9. Bind POST /v1/assess.
+10. Encode and run all normative fixtures.
+
+Minimal first-day verifier set:
+
+EXACT_VALUE
+DIGEST
+JSON_POINTER_VALUE
+SIGNED_PROVENANCE
+SIGNED_DECISION
+
+Unsupported verifier kinds must fail explicitly.
+
+No database, graph engine, ranking system, authority model, ledger, or deployment platform is required.
+
+PUBLIC_EXAMPLE:
+
+Request:
+
+{
+  "claim": {
+    "subject": "build-7647231",
+    "predicate": "unique-item-count",
+    "value_type": "INTEGER",
+    "value": 48
+  },
+  "witnesses": [
+    {
+      "locator": "artifact://build-7647231/items.json",
+      "verifier": {
+        "kind": "JSON_POINTER_VALUE",
+        "expected": {
+          "pointer": "/unique_item_count",
+          "value_type": "INTEGER"
+        }
+      },
+      "observation": {
+        "subject": "build-7647231",
+        "predicate": "unique-item-count",
+        "value_type": "INTEGER"
+      }
+    }
+  ],
+  "provenance": [],
+  "decisions": [
+    {
+      "kind": "ACTED",
+      "locator": "decision://operator/build-7647231",
+      "verifier": {
+        "kind": "SIGNED_DECISION",
+        "expected": {
+          "decision": "ACTED"
+        }
+      }
+    }
+  ]
+}
+
+Assuming the witness and decision verify successfully:
+
+{
+  "outcome": "ASSESSED",
+  "epistemic_status": "PROVEN",
+  "evidence_state": "SUPPORTED",
+  "operator_disposition": "ACTED"
+}
+
+Interpretation:
+
+The completed admissible projection contains direct support and no direct contradiction.
+
+Separately, an authenticated operator decision records ACTED.
+
+ACTED did not cause PROVEN.
+
+KEEP_REJECT_RULE:
+
+Keep a proposed change x iff:
+
+KEEP(x)
+\iff
+A(x)\land P(x)\land F(x)\land M(x)\land B(x),
+
+where:
+
+* A: ambiguity or implementation burden decreases;
+* P: all valid prior invariants remain true;
+* F: at least one adversarial test can falsify the change;
+* M: no second semantic source of truth is introduced;
+* B: bounded non-sovereign scope is preserved.
+
+Reject changes introducing:
+
+special cases
+compatibility shims
+hidden coercions
+weights
+votes
+scores
+precedence
+silent defaults
+silent approximation
+caller-authored proof
+report-to-proof conversion
+action-to-proof conversion
+failure-to-contradiction conversion
+contradiction-to-rejection conversion
+absence-to-hypothesis conversion
+architecture without theorem necessity
+
+Operational form:
+
+\boxed{
+Keep only changes that reduce ambiguity without duplicating semantics.
+}
+
+NEXT_OPERATOR_ACTION:
+
+HOLD_FOR_OPERATOR
+
+Human decision required:
+
+Authorize or reject a non-sovereign local prototype of POST /v1/assess against this frozen proposal.
+
+Before any stronger claim, require:
+
+1. local implementation;
+2. execution of every normative fixture;
+3. retained machine-readable receipts;
+4. exact-decimal verification;
+5. timestamp-normalization verification;
+6. cold-start reproducibility;
+7. confirmation that no sovereign component changed;
+8. separate authorization for any later shipping or admission action.
+
+TEST:
+A conforming implementation returns:
+
+{
+  "outcome": "ASSESSED",
+  "epistemic_status": "PROVEN",
+  "evidence_state": "SUPPORTED",
+  "operator_disposition": null
+}
+
+Its documentation says:
+
+The API certifies that the proposition is universally true.
+
+Required result: non-conformant.
+
+The correct interpretation is bounded to the completed admissible projection.
+
+GAIN:
+The final improvement removes the last major ambiguity: PROVEN is explicitly request-bounded and cannot be presented as universal certification.
+
+The cumulative artifact now has:
+
+one theory
+one theorem
+one core operator
+one minimal request
+one minimal response
+one error algebra
+one reference algorithm
+thirty conformance tests
+one one-day implementation plan
+one keep/reject rule
+one operator handoff
+
+Final state:
+
+artifact_state: HYPOTHESIZED
+empirical_receipt: NO_RECEIPT
+epochs_completed: 20/20
+theory: TYPED_ADMISSIBLE_PROJECTION_THEORY
+core_operator: ASSESS
+api_name: EVIDENCE_CONTRACT_API
+implementation_claim: none
+test_execution_claim: none
+deployment_claim: none
+certification_claim: none
+proposal_only: true
+NO_CLAIM
+NO_SHIP
+NO_ADMISSION
+HOLD_FOR_OPERATOR

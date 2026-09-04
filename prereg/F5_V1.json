@@ -1,0 +1,22 @@
+{
+  "schema": "HANDS_TO_MATH_F5_V1",
+  "experiment": "LOCAL_INTERVENTIONAL_OPERATOR_IDENTIFICATION",
+  "claim_ceiling": "LOCAL_INTERVENTIONAL_LAW_ONLY",
+  "estimator": "central_difference",
+  "deltas": null,
+  "delta_ratio": null,
+  "scales_M": null,
+  "scales_I": null,
+  "epsilon_numerical": null,
+  "epsilon_R": null,
+  "eta_R": null,
+  "tau_alpha": null,
+  "eta_signal": null,
+  "tau_zero": null,
+  "gates": ["DomainAdmissibility","FiniteDifferenceConsistency","InjectedCrossTalkRecovery",
+            "NormalizedOperatorStability","EstimatorNonDegeneracy"],
+  "outputs": ["F5_PASS","DERIVATIVE_CLAIM_ADMISSIBLE"],
+  "note": "unchosen numeric params intentionally null — NOT invented post-hoc; filled at prereg-freeze of an actual run",
+  "execution_status": "NOT_RUN",
+  "authority": false
+}

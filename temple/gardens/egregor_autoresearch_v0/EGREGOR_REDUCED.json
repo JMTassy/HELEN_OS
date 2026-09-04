@@ -1,0 +1,120 @@
+{
+  "experiment": "EGREGOR_AUTORESEARCH_V0",
+  "authority": false,
+  "canon": false,
+  "authority_delta": 0,
+  "gamma_delta": 0,
+  "claim": "NO_CLAIM",
+  "duration_s": 580.2,
+  "rounds": 3,
+  "raw_candidates": 13,
+  "model_errors": 0,
+  "deduped": 10,
+  "top_bridges": [
+    {
+      "goblin": "QWEN_FALSIFIER",
+      "obstruction": "🕳️_E#1",
+      "bridge": "δ* : notarized ↝ verified_notarized (claiming the evidence exists without producing the root hash)",
+      "witness": "W_root_hash",
+      "falsifier": "H: ev_root = 0x00000000 (null pointer)",
+      "novelty": 5,
+      "falsifiability": 5,
+      "leverage": 5,
+      "_n": 1,
+      "_score": 15
+    },
+    {
+      "goblin": "GEMMA_ANALOGY",
+      "obstruction": "🕳️_Γ#1",
+      "bridge": "A topological homeomorphism between a biological \"Self-Recognition\" signal and a cryptographic \"Identity-Proof\" signature, where the $\\delta^*$ transformation is the mapping of somatic epigenetic markers onto a public key hash.",
+      "witness": "W_mayor (A biological \"ancestral\" sequence verified against a public registry of genomic hashes).",
+      "falsifier": "Provide a synthetic genome that matches a registered identity but fails a real-time pulsatile metabolic check.",
+      "novelty": 4,
+      "falsifiability": 5,
+      "leverage": 3,
+      "_n": 1,
+      "_score": 12
+    },
+    {
+      "goblin": "GEMMA_ANALOGY",
+      "obstruction": "🕳️_E#1",
+      "bridge": "Epigenetic Landscape Stochasticity $\\rightarrow$ Notarized Lineage (The transition $\\delta$ maps the irreversible chemical marking of a histone tail to the notary's seal of provenance.)",
+      "witness": "A high-fidelity CRISPR-mediated histonome-sequencing trace proving the \"root\" state prior to specific differentiation.",
+      "falsifier": "A lineage trace showing a divergent phenotypic outcome from an identical ancestral histoneome marker.",
+      "novelty": 4,
+      "falsifiability": 5,
+      "leverage": 3,
+      "_n": 1,
+      "_score": 12
+    },
+    {
+      "goblin": "GEMMA_ANALOGY",
+      "obstruction": "🕳️_Γ#1",
+      "bridge": "$\\delta^*$: Quorum-based Byzantine Fault Tolerance (BFT) consensus on a distributed ledger where \"notarization\" is the finality of a block commit.",
+      "witness": "$W_{mayor}$ (A threshold signature comprising $> 2/3$ of validator stake)",
+      "falsifier": "A single partition event where $2/3+1$ nodes remain unreachable, preventing the $\\delta^*$ transition.",
+      "novelty": 4,
+      "falsifiability": 5,
+      "leverage": 3,
+      "_n": 1,
+      "_score": 12
+    },
+    {
+      "goblin": "QWEN_BRIDGE",
+      "obstruction": "🕳️_E#1",
+      "bridge": "δ*: ∃e ∈ E : (e ≡ e_root ∧ e ⊆ X) : X → X_notarized",
+      "witness": "W ≅ (e_root ⊆ X) ∧ (X ⊆ X_trusted)",
+      "falsifier": "Witness W produces e_root ≅ NONE again, or e_root ⊆ X fails.",
+      "novelty": 3,
+      "falsifiability": 4,
+      "leverage": 4,
+      "_n": 1,
+      "_score": 11
+    },
+    {
+      "goblin": "QWEN_BRIDGE",
+      "obstruction": "🕳️_Γ#1",
+      "bridge": "Topological mapping δ*: raw → notarized preserving structural invariants under ∼_F",
+      "witness": "W_mayor",
+      "falsifier": "Falsify by W_mayor rejecting δ* at raw input, or structural invariant violation under ∼_F",
+      "novelty": 3,
+      "falsifiability": 4,
+      "leverage": 3,
+      "_n": 1,
+      "_score": 10
+    },
+    {
+      "goblin": "QWEN_BRIDGE",
+      "obstruction": "🕳️_E#1",
+      "bridge": "δ*: `ev(∅) ⇏ evidence_root(ev≠NONE) ⊗ notarization_hash(ΔA=0)`",
+      "witness": "`W: Verify(δ, w)=1`",
+      "falsifier": "`falsify(δ) ⇔ ev(∅) ∨ evidence_root(ev=NONE)`",
+      "novelty": 3,
+      "falsifiability": 4,
+      "leverage": 3,
+      "_n": 1,
+      "_score": 10
+    },
+    {
+      "goblin": "QWEN_BRIDGE",
+      "obstruction": "🕳️_Γ#1",
+      "bridge": "δ*: A topological verification path that decomposes the crossing into a typed equivalence chain (∼_F → ∼_E → ∼_Γ), establishing a canonical form for the \"notarized\" state without collapsing the distinction between the raw state and the trusted state. This bridge asserts that the *transformation* (raw to notarized) is possible and admissible, but does not yet hold the *authority* of the act.",
+      "witness": "W_mayor (The specific authority capable of certifying that δ* has been verified against the constitutional boundary Γ).",
+      "falsifier": "A simple proof that the \"notarized\" state is indistinguishable from the \"raw\" state under the equivalence relation ∼_F (falsifying the need for a boundary crossing), OR a proof that the \"raw\" state is already in X_trusted (falsifying the need for a boundary at all).",
+      "novelty": 5,
+      "falsifiability": 5,
+      "leverage": 0,
+      "_n": 1,
+      "_score": 10
+    }
+  ],
+  "neption_gate": "each bridge is a PROPOSAL: observation=0, warrant=0, retention=0 → NEPTION derives 🌿/🟡, never 💎. The swarm invented candidate discriminators; it did not certify any.",
+  "receipt": {
+    "claims_admitted": 0,
+    "external_actions": 0,
+    "governed_state_mutations": 0,
+    "commit_status": "NO_COMMIT",
+    "push_status": "NO_PUSH",
+    "next_verb": "HUMAN_REVIEW"
+  }
+}

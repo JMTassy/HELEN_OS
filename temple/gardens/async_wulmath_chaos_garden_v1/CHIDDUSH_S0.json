@@ -1,0 +1,38 @@
+[
+  {
+    "id": "S_0",
+    "q": "What theorem/object does «Non-idempotent Ring of Idempotents» make available that its counterfeit «» cannot?",
+    "g": "R ≅ {e} with (e, f) ↦ e + f - ef",
+    "c": "",
+    "lineage": [
+      "Non-idempotent Ring of Idempotents"
+    ],
+    "origin": "HAL",
+    "discriminator": "",
+    "fitness": 0.2
+  },
+  {
+    "id": "S_1",
+    "q": "What theorem/object does «Non-comutable Fraction» make available that its counterfeit «» cannot?",
+    "g": "\\sum_{i=0}^k \\frac{1}{a_i} = \\prod_{j=0}^k \\frac{1}{b_j}",
+    "c": "",
+    "lineage": [
+      "Non-comutable Fraction"
+    ],
+    "origin": "HAL",
+    "discriminator": "",
+    "fitness": 0.2
+  },
+  {
+    "id": "S_2",
+    "q": "What theorem/object does «Prime-Resonance Quilt» make available that its counterfeit «» cannot?",
+    "g": "$\\mathbb{Z} / \\langle p^k \\mid \\text{gcd}(p, k) > 1 \\rangle$",
+    "c": "",
+    "lineage": [
+      "Prime-Resonance Quilt"
+    ],
+    "origin": "HER",
+    "discriminator": "",
+    "fitness": 0.2
+  }
+]

@@ -1,0 +1,36 @@
+FABLE_LEAN_V0 — FROZEN DERIVED METRICS (independent re-derivation from raw savings_report.json)
+authority=false · canon=false · ledger_effect=none · NON-SOVEREIGN
+source report sha256 874aac4acef895ddad9f677ce0aa181c29dfba5a818072d2fb69dae12657e101
+
+(1) SEPARATION OPPORTUNITY COUNT
+    N_sep_opportunities = #{skipped roles eligible for MEASUREMENT_ONLY} = 0
+    => N_sep_opportunities = 0 MECHANICALLY explains SEPARATION_GATE = VACUOUS_PASS
+       (invariant not contradicted, but zero positive experimental pressure).
+
+(2) CEILING-HIT CLASSIFICATION  C_i = 1[ObservedTokens_i == Budget_i]  (derived, not inherited)
+    task role  tokens  budget  C_i
+    T1   A         361     700 0
+    T1   B         496     700 0
+    T1   C         256     500 0
+    T1   D         500     500 1
+    T1   E         333     500 0
+    T2   A         700     700 1
+    T2   B         700     700 1
+    T2   C         500     500 1
+    T2   D         500     500 1
+    T2   E         500     500 1
+    T3   A         700     700 1
+    T3   B         700     700 1
+    T3   C         500     500 1
+    T3   D         500     500 1
+    T3   E         500     500 1
+    task-level:
+      T1 = PARTIAL_CEILING   (C_T1 = 1)
+      T2 = FULL_CEILING   (C_T2 = 1)
+      T3 = FULL_CEILING   (C_T3 = 1)
+    => C_T2 = C_T3 = 1 (FULL_CEILING); T1 = PARTIAL_CEILING (role D only).
+    Censored natural length is unidentified: N_natural_i in [Budget_i, +inf).
+
+BOUNDARIES (unchanged, restated): dCost=0 ⇏ dQuality=0 · dQuality>0 ⇏ dEfficiency>0 ·
+Efficiency requires a PREREGISTERED JOINT cost+quality criterion (neither established).
+EARNED STATEMENT (this frozen 3-task sample): SpawnRate=100% ∧ dCost=0. Nothing stronger earned.

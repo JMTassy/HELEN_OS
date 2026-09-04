@@ -1,0 +1,4 @@
+{"ctx":2048,"status":"FAIL","detail":"Metal OOM at ngl32 and ngl16; see smoke_2k.json"}
+{"ctx":4096,"status":"NOT_RUN","detail":"gate: 2K unstable"}
+{"ctx":8192,"status":"NOT_RUN","detail":"gate: 2K unstable"}
+{"stable_context_bound_observed":null,"note":"no stable context observed at any tested configuration"}

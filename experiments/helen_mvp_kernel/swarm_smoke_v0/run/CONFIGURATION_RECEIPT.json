@@ -1,0 +1,17 @@
+{
+  "receipt": "CONFIGURATION_RECEIPT",
+  "run": "SWARM_SMOKE_V0",
+  "git_head": "35d255c83fff3c747cb1bd23969b5c113372c982",
+  "corpus_hash": "sha256:99cce9cd1644dbabc7d9de6e7e91410abd676a8e59ceaad7c116f78e441e63ad",
+  "packet_hashes": {
+    "G1_proposer": "sha256:ab5814a09b22edbdee42b0b6425d13ef053ab49a40569a07f8eaa04d2857995c",
+    "G2_skeptic": "sha256:ecdb4ed7ce6fa2e1dbba2fa156fe730a0469ac1b748639310d4329ea529f7270",
+    "G3_synthesizer": "sha256:e66bac4996e2123812114ae5c9c452a48481535d27f53975c5cb0c243f688ffe"
+  },
+  "goblins_complete": {
+    "G1_proposer": true,
+    "G2_skeptic": true,
+    "G3_synthesizer": true
+  },
+  "disposition": "CLEAN"
+}

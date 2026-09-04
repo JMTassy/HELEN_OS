@@ -1,0 +1,4 @@
+{"rung": "baseline_8k_f16kv", "pp_tps": 236.8, "tg_tps": 17.6, "rss_gb": 5.95, "mem_free_pct": "28", "n_prompt": 384, "ok": true}
+{"rung": "kvq4_16k", "pp_tps": 213.3, "tg_tps": 20.1, "rss_gb": 5.84, "mem_free_pct": "30", "n_prompt": 384, "ok": true}
+{"rung": "kvq4_32k", "pp_tps": 209.2, "tg_tps": 20.2, "rss_gb": 5.98, "mem_free_pct": "30", "n_prompt": 384, "ok": true}
+{"rung": "kvq4_64k", "pp_tps": 235.0, "tg_tps": 20.5, "rss_gb": 6.26, "mem_free_pct": "26", "n_prompt": 384, "ok": true}

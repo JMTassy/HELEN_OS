@@ -1,0 +1,22 @@
+{
+  "schema": "HAL_MAYOR_JESTER_GARDEN_EPOCH_V0",
+  "epoch": "E06",
+  "insight_id": "epoch_006",
+  "insight_label": "CLI_COMMAND_SET_BASE",
+  "hal": {
+    "status": "ERROR",
+    "output": "Command '['python3', 'tools/run_hal_epoch.py', '--epoch', 'E06', '--task', 'INSIGHT GARDEN (HAL supervision). Item: CLI_COMMAND_SET_BASE. Base command"
+  },
+  "mayor": {
+    "decision": "DEFER",
+    "score": 4,
+    "hal": "ERROR",
+    "authority": false,
+    "garden_only": true
+  },
+  "jester_comment": "JESTER: The duo is very serious. The garden receipt is over here wearing a party hat made of leaves.",
+  "timestamp": "2026-07-20T13:53:28.095119+00:00",
+  "authority": false,
+  "garden_only": true,
+  "receipt_granted": false
+}

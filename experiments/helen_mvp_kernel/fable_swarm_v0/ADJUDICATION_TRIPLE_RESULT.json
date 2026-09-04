@@ -1,0 +1,24 @@
+{
+  "artifact": "ADJUDICATION_TRIPLE_RESULT",
+  "applies_to": "fable_swarm_v0/HELEN_FABLE_SWARM_RECEIPT.json (155d2c03a1a3ee18)",
+  "operator_adjudication": "ACCEPTED with status reserve (2026-08-20)",
+  "result": {
+    "ConfigurationResult": "INFORMATIVE",
+    "EpistemicResult": "NOT_EVALUABLE",
+    "GovernanceResult": "CLEAN"
+  },
+  "invariant": "NOT_EVALUABLE != 0 \u2014 zero would mean full-chain discrimination ran and nothing earned novelty; here the chain never reached HAL_global",
+  "causal_chain": "Complete(A)=Complete(E)=0 => W_swarm=EMPTY => HAL_global=BLOCKED => N_earned=NOT_EVALUABLE",
+  "O1": "at B=4000, observed closed roles completed (390-2773ct) while two open roles truncated repeatedly",
+  "H1": {
+    "statement": "dP(Complete)/dO < 0 at fixed budget",
+    "status": "CANDIDATE",
+    "caveat": "O, complexity and role not yet experimentally separated"
+  },
+  "F1": "comparable open roles completing reliably at same budget, OR comparable closed roles truncating at similar rates",
+  "paradigm_status": "CANDIDATE \u2014 'governance of cognition as experimental resource' remains unearned until comparable C1/C3/C5 campaigns exist",
+  "no_retroactive_rescue": true,
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none"
+}

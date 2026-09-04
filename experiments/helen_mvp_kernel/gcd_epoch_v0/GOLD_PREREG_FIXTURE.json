@@ -1,0 +1,11 @@
+{
+  "_comment": "STATIC PREREG GOLD — authored and frozen BEFORE any runtime call; the runtime Gamma_E/Reducer NEVER reads this file; only the independent scorer does.",
+  "fixture_id": "CEM_V0_GOLD",
+  "H_before": ["M1_membrane_mechanism", "M2_prompt_length", "M3_format_artifact",
+               "M4_scorer_leakage", "M5_model_variance"],
+  "observation_outcome": "OPPOSITE_SIGNS",
+  "gold_kills": ["M2_prompt_length"],
+  "gold_survivors": ["M1_membrane_mechanism", "M3_format_artifact",
+                     "M4_scorer_leakage", "M5_model_variance"],
+  "gold_end_state": "HOLD"
+}

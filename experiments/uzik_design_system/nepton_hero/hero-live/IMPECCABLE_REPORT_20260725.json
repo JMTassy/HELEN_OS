@@ -1,0 +1,62 @@
+[
+  {
+    "antipattern": "clipped-overflow-container",
+    "name": "Positioned child clipped by overflow container",
+    "description": "A clipping container (overflow hidden or clip) wrapping an absolutely-positioned child cuts off tooltips, menus, and popovers that need to escape. Let the overflow be visible, or move the positioned layer out of the clip.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "/Users/jean-marietassy/Documents/GitHub/helen_os_v1/experiments/uzik_design_system/nepton_hero/hero-live/index.html",
+    "line": 0,
+    "snippet": "html clips a positioned child"
+  },
+  {
+    "antipattern": "clipped-overflow-container",
+    "name": "Positioned child clipped by overflow container",
+    "description": "A clipping container (overflow hidden or clip) wrapping an absolutely-positioned child cuts off tooltips, menus, and popovers that need to escape. Let the overflow be visible, or move the positioned layer out of the clip.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "/Users/jean-marietassy/Documents/GitHub/helen_os_v1/experiments/uzik_design_system/nepton_hero/hero-live/index.html",
+    "line": 0,
+    "snippet": "body clips a positioned child"
+  },
+  {
+    "antipattern": "clipped-overflow-container",
+    "name": "Positioned child clipped by overflow container",
+    "description": "A clipping container (overflow hidden or clip) wrapping an absolutely-positioned child cuts off tooltips, menus, and popovers that need to escape. Let the overflow be visible, or move the positioned layer out of the clip.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "/Users/jean-marietassy/Documents/GitHub/helen_os_v1/experiments/uzik_design_system/nepton_hero/hero-live/index.html",
+    "line": 0,
+    "snippet": "div clips a positioned child"
+  },
+  {
+    "antipattern": "clipped-overflow-container",
+    "name": "Positioned child clipped by overflow container",
+    "description": "A clipping container (overflow hidden or clip) wrapping an absolutely-positioned child cuts off tooltips, menus, and popovers that need to escape. Let the overflow be visible, or move the positioned layer out of the clip.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "/Users/jean-marietassy/Documents/GitHub/helen_os_v1/experiments/uzik_design_system/nepton_hero/hero-live/index.html",
+    "line": 0,
+    "snippet": "div clips a positioned child"
+  },
+  {
+    "antipattern": "radial-halo",
+    "name": "Radial-gradient background halo",
+    "description": "A chromatic radial-gradient wash — saturated at the center, fading to transparent — used as a decorative background glow on a dark page. Same tell as glowing shadows, drawn with a gradient instead of a shadow. Ground the surface with a solid or subtly shifted background instead.",
+    "severity": "warning",
+    "category": "slop",
+    "file": "/Users/jean-marietassy/Documents/GitHub/helen_os_v1/experiments/uzik_design_system/nepton_hero/hero-live/index.html",
+    "line": 0,
+    "snippet": "radial-gradient halo (#ffca6e → transparent) on dark page"
+  },
+  {
+    "antipattern": "repeating-stripes-gradient",
+    "name": "Repeating-gradient stripes",
+    "description": "Repeating-gradient stripes used as surface decoration are a recurring generated-UI signature. Reach for a deliberate texture or leave the surface plain.",
+    "severity": "advisory",
+    "category": "slop",
+    "file": "/Users/jean-marietassy/Documents/GitHub/helen_os_v1/experiments/uzik_design_system/nepton_hero/hero-live/index.html",
+    "line": 0,
+    "snippet": "repeating-gradient decorative stripes"
+  }
+]

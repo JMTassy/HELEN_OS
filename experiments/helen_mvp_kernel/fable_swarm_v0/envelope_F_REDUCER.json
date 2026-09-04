@@ -1,0 +1,16 @@
+{
+  "goblin": "F_REDUCER",
+  "raw": "```json\n{\n  \"role\": \"GOBLIN_F\",\n  \"proposal\": \"SPLIT_COMPILER_V0\",\n  \"risks\": [\n    \"B2 may fail to extract laundering from frozen prose if the prose is not structured identically to the original generation\",\n    \"B3 control must match B2's output format exactly to avoid false negatives\"\n  ],\n  \"attacks\": [\n    \"B2 could hallucinate laundering if the frozen prose contains ambiguous phrasing\",\n    \"B3 could be gamed by inserting laundering-like text into control prose\"\n  ],\n  \"minimal_set\": [\n    \"B2: two-pass compile-from-frozen-prose (core mechanism)\",\n    \"B3: false-positive control prose (falsification check)\"\n  ],\n  \"disagreements\": []\n}\n```",
+  "usage": {
+    "completion_tokens": 390,
+    "prompt_tokens": 673,
+    "total_tokens": 1063,
+    "prompt_tokens_details": {
+      "cached_tokens": 156
+    }
+  },
+  "latency_s": 22.1,
+  "authority": false,
+  "no_claim": true,
+  "proposal_only": true
+}

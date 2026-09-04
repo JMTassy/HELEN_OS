@@ -1,0 +1,14 @@
+{
+  "schema": "WARREN_RECEIPT_V0",
+  "receipt_id": "WRN-1-2296",
+  "turn": 1,
+  "event": {
+    "type": "dream",
+    "content": "A new quest seed surfaces in the Terrarium.",
+    "turn": 1
+  },
+  "authority": false,
+  "claim": "NO_CLAIM",
+  "timestamp": "2026-07-18T12:45:57.056635+00:00",
+  "note": "Garden-only claimable action. Kernel untouched."
+}

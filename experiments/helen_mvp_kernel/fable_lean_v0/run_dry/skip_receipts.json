@@ -1,0 +1,13 @@
+[
+  {
+    "type": "SKIP_RECEIPT",
+    "role": "D_EXPERIMENTER",
+    "decision": "SKIP",
+    "reason": "trigger not satisfied: EmpiricalClaim AND Testable",
+    "evidence": {
+      "buildable": true,
+      "empirical_testable": false,
+      "promotion_or_risk": true
+    }
+  }
+]

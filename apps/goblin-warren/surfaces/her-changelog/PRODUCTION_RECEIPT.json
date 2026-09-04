@@ -1,0 +1,26 @@
+{
+  "schema": "HELEN_PRODUCTION_RECEIPT_V0",
+  "artifact": "her-changelog",
+  "produced_at": "2026-07-22T14:00:18.136329+00:00",
+  "projection_packet_ref": "session-2026-07-22 (operator-directed)",
+  "composition_sha256": "sha256:0e5445a5508f05f80ef0bbee6a129ef8bc568f3ae829f97357b5407f68cda214",
+  "asset_manifest": [
+    {
+      "path": "assets/her_changelog_vo.m4a",
+      "sha256": "sha256:153d1a7641aa9d734766cbd9627f514295255408849c6fbda5a7f265e9d72c83"
+    }
+  ],
+  "render_params": {
+    "quality": "high",
+    "resolution": "h264\n1080\n1080",
+    "duration_s": 35.95
+  },
+  "check_verdict": "PASS contrast 21/21 errors 0",
+  "output_mp4_sha256": "sha256:0b82f596bff35b569e79443743138d5e27177527ed432df33087e2cde8cea6eb",
+  "published": false,
+  "caption_or_transcript": "on-screen kinetic text (WCAG-checked)",
+  "note": "render receipt \u22ac claim admitted \u2014 a witness that a film was produced deterministically from declared inputs, not an admission of its content",
+  "authority": false,
+  "canon_effect": false,
+  "ledger_effect": "none"
+}

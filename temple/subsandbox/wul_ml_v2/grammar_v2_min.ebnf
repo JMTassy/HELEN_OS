@@ -1,0 +1,19 @@
+(* 🧾 WUL-ML V2 MINIMAL GRAMMAR — TEMPLE SANDBOX · authority=NONE · CANON=FALSE
+   Documents the declaration surface; wul_ml_v2.py enforces the semantics. *)
+
+program        = { transition } ;
+transition     = source-list , "->" , sort-ref , ";" ;
+source-list    = sort-ref , { "+" , sort-ref } ;
+sort-ref       = sort-name , [ "[" , tag , "]" ] , [ "*" ] ;
+sort-name      = "GardenSeed" | "Candidate" | "WitnessedCandidate" | "HALResult"
+               | "AdmissionDecision" | "Capability" | "Effect" | "Receipt"
+               | "ReplayState" | "ExternalTruth"
+               | "FailureReceipt" | "Projection" | "Diagnosis" | "Consequence" ;
+tag            = "ADMIT" | "HOLD" | "REJECT" | "PASS" | "FAIL" | "UNKNOWN" ;
+
+(* Laws enforced by the checker, stated here for the reader:
+   1. Default REJECT: a transition not in the legal-morphism whitelist is a
+      forbidden coercion.
+   2. Authority monotonicity: A(target) may exceed max A(sources) only across
+      the ADMIT bridge  AdmissionDecision[ADMIT] -> Capability.
+   3. ExternalTruth is unreachable: no legal morphism names it. *)

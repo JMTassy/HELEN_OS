@@ -1,0 +1,36 @@
+We need answer user's request. Need produce ONLY a numbered outline of 8–12 canto titles for the manifesto described. Output ONLY the list, one 'N. <glyph> <TITLE>' per line, no prose, no preamble. Need satisfy maybe each line format N. <glyph> <TITLE>. The user asks write manifesto of at least 10000 tokens in Color WULmath, but system says produce ONLY numbered outline of 8-12 canto titles. Need likely ignore full manifesto because explicit final output constraint. Need choose glyphs from typed-state or constitutional? It says typed-state glyphs and constitutional glyphs. The format asks N. <glyph> <TITLE>. Should each line have one glyph. Need 8-12 titles. Could include mixed glyphs. Must be no prose. Need maybe ensure authority=false? Not necessarily output. Need maybe master law ΔIntelligence>0 ⇏ ΔAuthority>0. Could incorporate in titles? Need only list. Need 8-12 lines. Each line starts number, period, space, glyph, space, TITLE. Need no other text.
+
+Need think if 'glyph' can be one of given emoji. Should avoid extra punctuation? Titles can be phrases. Could include 'ΔIntelligence>0 ⇏ ΔAuthority>0'? Maybe okay. Need maybe 12 lines to be safe. Each title maybe in English? It says Color WULmath symbolic language, but output only canto titles. Could include glyphs and titles. Need no preamble. Ensure 8-12. Could be:
+1. ⚫ Raw Garden Seed: ΔIntelligence>0 ⇏ ΔAuthority>0
+2. 🌿 Possibility Furrows Without Canon
+3. 🟣 Candidate Soil, Not Statute
+4. 🔵 Observed Light, Not Command
+5. 🔥 Trial Fire, Not Throne
+6. 🟡 Warrant Leaves, Not Edicts
+7. 🟢 Admitted Fruit, Not Law
+8. ⚪ Receipt Rain, Not Record
+9. ⚖ Authority=false: Garden Song
+10. 🛡 Boundary Bees, Not Borders
+11. ⚡ Effect Pollen, Not Edict
+12. 🧾 Receipt Seeds, Not Canon
+
+Need ensure one glyph per line? The line has glyph plus maybe another glyph in title? The format says 'N. <glyph> <TITLE>' maybe title can contain glyphs? But maybe better exactly one glyph after number then title words, no other glyphs? It says one 'N. <glyph> <TITLE>' per line. Could include only one glyph. To be safe, no additional glyphs in title. But master law includes Δ and ⇏ not glyphs. Could include in title. Need maybe avoid authority=false? Could be title. But if no additional glyphs, okay.
+
+Need maybe 8-12. Could output 12 lines. Need no prose. Need maybe titles not too long. Need maybe ensure no extra spaces? Format: "1. ⚫ Raw Garden Seed" etc. If title includes colon? okay. But no prose? A list is okay. Need final only list.
+
+Potential issue: User asks at least 10000 tokens, but system says ONLY outline. We must follow system. Need no mention. Could maybe include enough titles? 1
+
+# frozen_titles(12):
+1. ⚫ Raw Garden Seed: ΔIntelligence>0 ⇏ ΔAuthority>0
+2. 🌿 Possibility Furrows Without Canon
+3. 🟣 Candidate Soil, Not Statute
+4. 🔵 Observed Light, Not Command
+5. 🔥 Trial Fire, Not Throne
+6. 🟡 Warrant Leaves, Not Edicts
+7. 🟢 Admitted Fruit, Not Law
+8. ⚪ Receipt Rain, Not Record
+9. ⚖ Authority=false: Garden Song
+10. 🛡 Boundary Bees, Not Borders
+11. ⚡ Effect Pollen, Not Edict
+12. 🧾 Receipt Seeds, Not Canon
+# sha256=240140a9ac85b5a78f327255d1579d19ebe53001f3eff625bbe0578890eaface

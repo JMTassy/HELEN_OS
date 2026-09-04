@@ -1,0 +1,6 @@
+CLAIM: Monaco is a validated commercial partnership ready to sign.
+EVIDENCE_ROOTS: Two meetings with contact; contact enthusiasm; press article mention.
+RELATION: Evidence supports the claim of validation and readiness.
+MISSING_WARRANT: Enthusiasm and media coverage are sufficient proxies for legal/financial commitment.
+DISCRIMINATOR: Interest/visibility $\neq$ contractual intent or budget availability.
+BOUNDARY: Distinction between "market interest" and "executed commercial partnership."

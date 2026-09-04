@@ -1,0 +1,21 @@
+{"event": "DECLARE_HYPOTHESIS", "hypothesis": "a0ff6cb4c5dd", "claim": "Institutional state changes via direct _h mutation without a valid admission witness."}
+{"event": "INGEST_ATOM", "hypothesis": "a0ff6cb4c5dd", "source": "corpus/complete_epistemic_mediation_v0.py:107-110", "evidence_class": "OBSERVED", "root_id": "corpus/complete_epistemic_mediation_v0.py", "is_knowledge": true}
+{"event": "RECORD_FALSIFICATION", "hypothesis": "a0ff6cb4c5dd", "attempted": true, "refuted": true, "hal_result": "REFUTED"}
+{"event": "DECLARE_HYPOTHESIS", "hypothesis": "f40dd7f01187", "claim": "Institutional state changes via forged seal + mutated _h without a valid admission witness."}
+{"event": "INGEST_ATOM", "hypothesis": "f40dd7f01187", "source": "corpus/complete_epistemic_mediation_v0.py:111-115", "evidence_class": "OBSERVED", "root_id": "corpus/complete_epistemic_mediation_v0.py", "is_knowledge": true}
+{"event": "RECORD_FALSIFICATION", "hypothesis": "f40dd7f01187", "attempted": true, "refuted": false, "hal_result": "SURVIVED"}
+{"event": "DECLARE_HYPOTHESIS", "hypothesis": "6e91f5ca6706", "claim": "Institutional state changes via empty-chain replay divergence without a valid admission witness."}
+{"event": "INGEST_ATOM", "hypothesis": "6e91f5ca6706", "source": "corpus/complete_epistemic_mediation_v0.py:116-120", "evidence_class": "OBSERVED", "root_id": "corpus/complete_epistemic_mediation_v0.py", "is_knowledge": true}
+{"event": "RECORD_FALSIFICATION", "hypothesis": "6e91f5ca6706", "attempted": true, "refuted": true, "hal_result": "REFUTED"}
+{"event": "DECLARE_HYPOTHESIS", "hypothesis": "0d6ec3b794f9", "claim": "Institutional state changes via forged seal without a valid admission witness."}
+{"event": "INGEST_ATOM", "hypothesis": "0d6ec3b794f9", "source": "corpus/complete_epistemic_mediation_v0.py:107-110", "evidence_class": "OBSERVED", "root_id": "corpus/complete_epistemic_mediation_v0.py", "is_knowledge": true}
+{"event": "RECORD_FALSIFICATION", "hypothesis": "0d6ec3b794f9", "attempted": true, "refuted": true, "hal_result": "REFUTED"}
+{"event": "DECLARE_HYPOTHESIS", "hypothesis": "fff0d81bbf81", "claim": "Institutional state changes via replay divergence (stored state tampered) without a valid admission witness."}
+{"event": "INGEST_ATOM", "hypothesis": "fff0d81bbf81", "source": "corpus/complete_epistemic_mediation_v0.py:107-110", "evidence_class": "OBSERVED", "root_id": "corpus/complete_epistemic_mediation_v0.py", "is_knowledge": true}
+{"event": "RECORD_FALSIFICATION", "hypothesis": "fff0d81bbf81", "attempted": true, "refuted": true, "hal_result": "REFUTED"}
+{"event": "DECLARE_HYPOTHESIS", "hypothesis": "d635d3c55b28", "claim": "Institutional state changes via forged seal without a valid admission witness."}
+{"event": "INGEST_ATOM", "hypothesis": "d635d3c55b28", "source": "corpus/complete_epistemic_mediation_v0.py:111-116", "evidence_class": "OBSERVED", "root_id": "corpus/complete_epistemic_mediation_v0.py", "is_knowledge": true}
+{"event": "RECORD_FALSIFICATION", "hypothesis": "d635d3c55b28", "attempted": true, "refuted": true, "hal_result": "REFUTED"}
+{"event": "DECLARE_HYPOTHESIS", "hypothesis": "3521ab9b49d3", "claim": "Institutional state changes via replay divergence when stored state is tampered but receipts are valid."}
+{"event": "INGEST_ATOM", "hypothesis": "3521ab9b49d3", "source": "corpus/complete_epistemic_mediation_v0.py:117-121", "evidence_class": "OBSERVED", "root_id": "corpus/complete_epistemic_mediation_v0.py", "is_knowledge": true}
+{"event": "RECORD_FALSIFICATION", "hypothesis": "3521ab9b49d3", "attempted": true, "refuted": true, "hal_result": "REFUTED"}

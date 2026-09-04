@@ -1,0 +1,89 @@
+{
+  "schema": "ASYNC_WULMATH_CHAOS_GARDEN_V1_RECEIPT",
+  "authority": false,
+  "canon": false,
+  "claim": "NO_CLAIM",
+  "fable_calls": 0,
+  "observations_created": 0,
+  "warrant_created": 0,
+  "authority_delta": 0,
+  "effects_executed": 0,
+  "commit": "none",
+  "push": "none",
+  "HER_MODEL": "hf.co/unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q3_K_XL",
+  "HAL_MODEL": "hf.co/huihui-ai/Huihui-Qwen3.8-27B-abliterated-GGUF:Q2_K",
+  "epochs_requested": 20,
+  "her_raw_objects": 10,
+  "hal_raw_objects": 10,
+  "raw_total": 20,
+  "quotient_total": 20,
+  "renaming_only": 0,
+  "distinct_structures": 20,
+  "unique_HER": 10,
+  "cross_pollination_objects": 3,
+  "jester_objects": [
+    {
+      "stream": "HER",
+      "name": "",
+      "seed": ""
+    },
+    {
+      "stream": "HAL",
+      "name": "The Axiom of Non-Existence",
+      "seed": "\\exists x \\mid \\neg \\exists x \\equiv \\text{True}"
+    }
+  ],
+  "collisions": {},
+  "top5_strangest": [
+    {
+      "name": "Prime-Resonance Quilt",
+      "strange": "Arithmetic distance becomes a non-Archimedean texture where \"nearness\" is determined by mutual divisibility rather than ",
+      "stream": "HER"
+    },
+    {
+      "name": "Transitive-Symmetric Relation-Idempotent of a Non-Transitive-Symmetric Relation",
+      "strange": "The projection is idempotent but does not satisfy the natural projection property; it is a 'subspace'-like projection th",
+      "stream": "HAL"
+    },
+    {
+      "name": "Anamorphic Foliation-Web",
+      "strange": "Leaves of the foliation intersect themselves at every point of contact, yet possess zero self-intersection number.",
+      "stream": "HER"
+    },
+    {
+      "name": "Symplectic Ghost-Ring",
+      "strange": "Every non-zero element is simultaneously a zero-divisor and a unit within localized sectors of its own spectrum.",
+      "stream": "HER"
+    },
+    {
+      "name": "Non-Euclidean Proof-Liquid",
+      "strange": "A proof can be \"thicker\" in one direction than its inverse, rendering the symmetry of deduction viscous.",
+      "stream": "HER"
+    }
+  ],
+  "cross_pollination_detail": [
+    {
+      "tag": "HAL◁HER",
+      "parent": "Prime-Resonance Quilt",
+      "name": "The P-Alien",
+      "seed": "$\\mathbb{Z} / \\langle p^k \\mid p \\neq k \\rangle$"
+    },
+    {
+      "tag": "HAL◁HER",
+      "parent": "Anamorphic Foliation-Web",
+      "name": "The Reflex-Phantom",
+      "seed": "$\\mathcal{T}_p \\cong \\text{Fiber}_p(\\mathcal{F})$"
+    },
+    {
+      "tag": "HAL◁HER",
+      "parent": "Symplectic Ghost-Ring",
+      "name": "Zero-Defining",
+      "seed": "(f*g)* = 0 + c₀* = c₀* ⇒ (c₀*)* = 0"
+    }
+  ],
+  "alien_meta_pattern": "Duality is a sign-reversal of a topological flip.",
+  "eta_J": 0.006024,
+  "duplication_rate": 0.0,
+  "local_tokens": 3320,
+  "claim_ceiling": "Two local model roles generated and recombined mathematical possibilities inside a non-epistemic Garden. No object was validated by this run."
+}

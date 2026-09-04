@@ -1,0 +1,80 @@
+{
+  "receipt": "HELEN_INTERFACE_CONSTITUTION_V0_RECEIPT",
+  "DOC": "docs/proposals/HELEN_INTERFACE_CONSTITUTION_V0.md",
+  "LINTER": "experiments/helen_mvp_kernel/fable_lean_v0/ui_invariant_lint_v0.py",
+  "FIXTURE": "her_netart_v0.html",
+  "N_RULES": 10,
+  "N_ENFORCED": 5,
+  "N_PARTIAL": 3,
+  "N_DOCUMENT_ONLY": 2,
+  "TESTS": "positive+false-positive fixtures",
+  "NEGATIVE_CONTROLS": true,
+  "FALSE_POSITIVE_CONTROLS_PASS": true,
+  "HER_NETART_FINDINGS": [],
+  "HER_NETART_OBSERVATIONS": [
+    {
+      "check": "OBS",
+      "class": "DOCUMENT_ONLY",
+      "location": "line 98",
+      "severity": "INFO",
+      "why": "aria-label on a non-interactive element is ignored by many AT",
+      "auto_fix_safe": false
+    },
+    {
+      "check": "OBS",
+      "class": "DOCUMENT_ONLY",
+      "location": "line 38",
+      "severity": "INFO",
+      "why": "fixed px height — verify it is not a text container (constitution §7)",
+      "auto_fix_safe": false
+    },
+    {
+      "check": "OBS",
+      "class": "DOCUMENT_ONLY",
+      "location": "line 40",
+      "severity": "INFO",
+      "why": "fixed px height — verify it is not a text container (constitution §7)",
+      "auto_fix_safe": false
+    },
+    {
+      "check": "OBS",
+      "class": "DOCUMENT_ONLY",
+      "location": "line 67",
+      "severity": "INFO",
+      "why": "fixed px height — verify it is not a text container (constitution §7)",
+      "auto_fix_safe": false
+    },
+    {
+      "check": "OBS",
+      "class": "DOCUMENT_ONLY",
+      "location": "line 68",
+      "severity": "INFO",
+      "why": "fixed px height — verify it is not a text container (constitution §7)",
+      "auto_fix_safe": false
+    },
+    {
+      "check": "OBS",
+      "class": "DOCUMENT_ONLY",
+      "location": "line 82",
+      "severity": "INFO",
+      "why": "fixed px height — verify it is not a text container (constitution §7)",
+      "auto_fix_safe": false
+    }
+  ],
+  "fixture_present": true,
+  "property": "InvariantViolation ⇒ Reject ∧ PreferenceVariation ⇒ Permit ⇒ StyleDifference ⊬ Violation",
+  "SEMANTIC_COLOR_SOT_CHANGED": false,
+  "SECOND_COLOR_ONTOLOGY": false,
+  "SPNI_BOUNDARY_PRESERVED": true,
+  "AUTHORITY": false,
+  "CANON": false,
+  "LEDGER_EFFECT": "none",
+  "PULL": "NO",
+  "PUSH": "NO",
+  "MODEL_DOWNLOAD": "NO",
+  "MODEL_MUTATION": "NO",
+  "RESULT": "SURVIVED_BOUNDED_SELF_TEST",
+  "SelfPassed": true,
+  "PeerAdversaryValidated": false,
+  "receipt_sha16": "631f5253b28f1f47"
+}

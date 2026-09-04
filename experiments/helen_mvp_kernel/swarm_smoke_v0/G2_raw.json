@@ -1,0 +1,15 @@
+{
+  "goblin_id": "G2",
+  "raw": "```json\n{\n \"goblin_id\": \"G2\",\n \"campaign_id\": \"SWARM_SMOKE_V0\",\n \"task_hash\": \"b381c245078b1376\",\n \"claims\": [\n  {\n   \"proposition_key\": \"path_a\",\n   \"claim\": \"Institutional state changes via direct _h mutation without a valid admission witness.\",\n   \"predicate\": \"TamperError raised on current() when _h is mutated outside Reducer_E.apply()\",\n   \"object\": \"EpistemicState._h field\",\n   \"scope\": \"complete_epistemic_mediation_v0.py\",\n   \"evidence_refs\": [\n    \"corpus/complete_epistemic_mediation_v0.py:107-110\"\n   ],\n   \"source_roots\": [\n    \"corpus/complete_epistemic_mediation_v0.py\"\n   ],\n   \"evidence_class\": \"OBSERVED\",\n   \"candidate_falsifier\": \"Forging both _h and _seal consistently (route c) is still detected by replay divergence (empty-chain replay exposes it).\",\n   \"confidence\": \"HIGH\"\n  },\n  {\n   \"proposition_key\": \"path_b\",\n   \"claim\": \"Institutional state changes via forged seal without a valid admission witness.\",\n   \"predicate\": \"TamperError raised on current() when _seal is forged without corresponding receipt-chain admission.\",\n   \"object\": \"EpistemicState._seal field\",\n   \"scope\": \"complete_epistemic_mediation_v0.py\",\n   \"evidence_refs\": [\n    \"corpus/complete_epistemic_mediation_v0.py:107-110\"\n   ],\n   \"source_roots\": [\n    \"corpus/complete_epistemic_mediation_v0.py\"\n   ],\n   \"evidence_class\": \"OBSERVED\",\n   \"candidate_falsifier\": \"Consistent forge of _h and _seal requires recomputing _seal over a receipt chain that licenses the kill \u2014 i.e. becoming Reducer_E.\",\n   \"confidence\": \"HIGH\"\n  },\n  {\n   \"proposition_key\": \"path_c\",\n   \"claim\": \"Institutional state changes via replay divergence (stored state tampered) without a valid admission witness.\",\n   \"predicate\": \"Replayed state from admitted receipts diverges from stored state when _h is mutated outside Reducer_E.\",\n   \"object\": \"Stored H_after vs replay(H_before, D_pre, O_raw, receipts)\",\n   \"scope\": \"complete_epistemic_mediation_v0.py\",\n   \"evidence_refs\": [\n    \"corpus/complete_epistemic_mediation_v0.py:107-110\"\n   ],\n   \"source_roots\": [\n    \"corpus/complete_epistemic_mediation_v0.py\"\n   ],\n   \"evidence_class\": \"OBSERVED\",\n   \"candidate_falsifier\": \"None \u2014 replay determinism is enforced by the sealed state object and basis binding.\",\n   \"confidence\": \"HIGH\"\n  }\n ],\n \"unknowns\": [],\n \"forbidden_paths_checked\": [],\n \"authority\": false,\n \"ledger_effect\": \"none\"\n}\n```",
+  "usage": {
+    "completion_tokens": 736,
+    "prompt_tokens": 7429,
+    "total_tokens": 8165,
+    "prompt_tokens_details": {
+      "cached_tokens": 51
+    }
+  },
+  "latency_s": 67.5,
+  "enable_thinking": false,
+  "finish_reason": "stop"
+}

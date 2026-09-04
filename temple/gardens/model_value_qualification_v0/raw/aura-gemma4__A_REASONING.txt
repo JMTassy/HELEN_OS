@@ -1,0 +1,3 @@
+bend of seconds after hour one, all times here.
+
+60x + 90(y-0.5)+180 = 0; x=y; y=3; 9:30.

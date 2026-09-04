@@ -1,0 +1,11 @@
+{
+  "goblin_id": "GOB-EDU-003",
+  "role": "SKILL_GOBLIN",
+  "raw_output": "{\n  \"goblin_id\": \"apple-constuthan\",\n  \"role\": \"SKILL_GOBLIN\",\n  \"corpus_slice\": \"SOT + UZIK + HyperFrames + plugins + notes + PDFs + local drives, plus the whole 'EDU_SWARM_MANIFEST.json' thing.\",\n  \"files_referenced\": [\"oracle_town/skills/\"],\n  \"what_i_learned\": \"A lot of things are hidden like little tools and secret scripts that do work. They live in different places but can all be called together if they have a name",
+  "parse_error": true,
+  "model": "aura-gemma4:latest",
+  "timestamp": "2026-07-20T15:06:51.821872+00:00",
+  "authority": false,
+  "sovereign": false,
+  "ledger_effect": "none"
+}

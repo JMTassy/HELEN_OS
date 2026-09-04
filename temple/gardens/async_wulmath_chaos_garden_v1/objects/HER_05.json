@@ -1,0 +1,12 @@
+{
+  "stream": "HER",
+  "epoch": 5,
+  "domain": "logic/proof-theory",
+  "name": "Non-Euclidean Proof-Liquid",
+  "formal_seed": "$\\mathcal{P}_{i \\sim j} \\iff \\oint_{\\gamma: i \\to j} \\nabla \\text{Complexity} = 0$",
+  "strange": "A proof can be \"thicker\" in one direction than its inverse, rendering the symmetry of deduction viscous.",
+  "renaming": "It treats the path of derivation as a physical manifold where distance is measured in unexpectedness.",
+  "raw": "NAME: Non-Euclidean Proof-Liquid\nGENESIS: Quotienting the space of formal derivations by a metric of \"cognitive friction\" rather than logical equivalence.\nFORMAL_SEED: $\\mathcal{P}_{i \\sim j} \\iff \\oint_{\\gamma: i \\to j} \\nabla \\text{Complexity} = 0$\nSTRANGE_PROPERTY: A proof can be \"thicker\" in one direction than its inverse, rendering the symmetry of deduction viscous.\nNEAREST_KNOWN_RELATIVE: Heyting Algebra\nWHY_NOT_JUST_RENAMING: It treats the path of derivation as a physical manifold where distance is measured in unexpectedness.\nCOUNTERFEIT: A directed acyclic graph (DAG)\nBREAK_IT: Assigning a zero-friction path between a contradiction and a tautology.\nNEXT_MUTATION: Superfluidic Inference-Flux",
+  "wall_s": 51.1,
+  "tokens": 187
+}

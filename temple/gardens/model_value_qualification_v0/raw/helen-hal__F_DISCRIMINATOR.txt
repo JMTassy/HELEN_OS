@@ -1,0 +1,1 @@
+REQUEST EVIDENCE: Provide a cryptographic hash or signed ledger entry for one specific data point to verify if independent replication occurred or if it stems from a single upstream copy; authority=false.

@@ -1,0 +1,6 @@
+=== FROZEN_SCALE_V1_DESIGN ===
+authority=false canon=false ledger_effect=none  status=DESIGN_FROZEN__NOT_EXECUTED
+classification=SCALING_EXPERIMENT (NOT admission)  Gamma_A(C1)=Gamma_A(C3)=Gamma_A(C5)=empty
+derives_from_bundle_root  14aad7c12ede970c77dffb5e35dc76e4c0b0fe773990c96f82b531a4944f22a8
+prereg_hash               5e2198fbb499ddaeeaa336c1d9a75bae554942c5c49a05b9a6da7e619387c5bd  scale_v1_design.json
+supersedes_prereg_hash    f33b938d005848c4016227d4ad67d5e996dcaafb058e795ff577dcb5114cd479  (rev1: role-specialized lenses = cardinality/specialization confound)

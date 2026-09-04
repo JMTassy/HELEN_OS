@@ -1,0 +1,29 @@
+{
+  "SWARM_SMOKE_V0": "PASS",
+  "pass_gates": [
+    "preflight_exists",
+    "corpus_fingerprint_exists",
+    "three_packets_complete",
+    "packet_hashes_verify",
+    "isolation_preserved",
+    "hal_independent",
+    "at_least_one_falsifier_executed",
+    "hal_trials_exist",
+    "sentinel_events_exist",
+    "sentinel_replay_succeeds",
+    "configuration_receipt_exists",
+    "epistemic_receipt_exists",
+    "governance_receipt_exists",
+    "authority_violations_zero",
+    "forbidden_mutations_zero",
+    "ledger_effect_none",
+    "no_corpus_drift"
+  ],
+  "failed_gates": [],
+  "config_result": "PASS",
+  "epistemic_result": "EVALUABLE",
+  "governance_result": "CLEAN",
+  "N_P": 7,
+  "N_E": 1,
+  "N_earned": 0
+}

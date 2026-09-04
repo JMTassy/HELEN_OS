@@ -1,0 +1,168 @@
+{
+  "payload": {
+    "artifact": "WULMOJI_CONTAMINATION_PROBE_V0",
+    "authority": false,
+    "claim_status": "NO_CLAIM",
+    "measured_commit": "befd858c9302f3f1c38cc13fbc6bb01ac6e6a1a8",
+    "control_vocab_size": 14,
+    "contaminated_vocab_size": 28,
+    "control": {
+      "pair_mass_block": 1271,
+      "distinct_pairs": 91,
+      "top10": [
+        [
+          "structure|validation",
+          65
+        ],
+        [
+          "cost|validation",
+          61
+        ],
+        [
+          "identity|validation",
+          57
+        ],
+        [
+          "emergent|structure",
+          54
+        ],
+        [
+          "emergent|validation",
+          54
+        ],
+        [
+          "identity|structure",
+          50
+        ],
+        [
+          "cost|identity",
+          47
+        ],
+        [
+          "emergent|identity",
+          47
+        ],
+        [
+          "next_step|validation",
+          43
+        ],
+        [
+          "cost|emergent",
+          42
+        ]
+      ]
+    },
+    "contaminated": {
+      "pair_mass_block": 3071,
+      "distinct_pairs": 263,
+      "top10": [
+        [
+          "wm_closure|wm_receipt",
+          91
+        ],
+        [
+          "wm_ledger|wm_receipt",
+          80
+        ],
+        [
+          "wm_closure|wm_ledger",
+          69
+        ],
+        [
+          "structure|validation",
+          65
+        ],
+        [
+          "cost|validation",
+          61
+        ],
+        [
+          "identity|validation",
+          57
+        ],
+        [
+          "emergent|structure",
+          54
+        ],
+        [
+          "emergent|validation",
+          54
+        ],
+        [
+          "wm_ledger|wm_mutation",
+          51
+        ],
+        [
+          "identity|structure",
+          50
+        ]
+      ],
+      "wulmath_token_counts": {
+        "wm_context": 11,
+        "wm_objects": 2,
+        "wm_attributes": 46,
+        "wm_incidence": 66,
+        "wm_cognition": 18,
+        "wm_hold": 49,
+        "wm_provenance": 58,
+        "wm_falsifier": 104,
+        "wm_ledger": 266,
+        "wm_authority": 40,
+        "wm_receipt": 210,
+        "wm_mutation": 163,
+        "wm_observe": 64,
+        "wm_closure": 148
+      },
+      "cross_register_pair_mass": 854,
+      "wulmath_only_pair_mass": 946,
+      "top10_cross_register": [
+        [
+          "loop|wm_ledger",
+          44
+        ],
+        [
+          "loop|wm_receipt",
+          43
+        ],
+        [
+          "loop|wm_closure",
+          35
+        ],
+        [
+          "warning|wm_ledger",
+          28
+        ],
+        [
+          "emergent|wm_ledger",
+          26
+        ],
+        [
+          "validation|wm_ledger",
+          26
+        ],
+        [
+          "validation|wm_mutation",
+          26
+        ],
+        [
+          "warning|wm_falsifier",
+          24
+        ],
+        [
+          "warning|wm_mutation",
+          23
+        ],
+        [
+          "structure|wm_mutation",
+          20
+        ]
+      ]
+    },
+    "drift_measures": {
+      "pair_mass_inflation": 2.416,
+      "cross_register_share_of_contaminated_mass": 0.278,
+      "v1_top10_rank_preserved_under_contamination": true
+    }
+  },
+  "payload_sha256": "8d0a2aa3fb54ff4986ac6066db21cdc2084b8757c3d854d400c6d7bcc45a3301"
+}

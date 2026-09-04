@@ -1,0 +1,12 @@
+{
+  "stream": "HAL",
+  "epoch": 1,
+  "domain": "algebraic",
+  "name": "Non-idempotent Ring of Idempotents",
+  "formal_seed": "R ≅ {e} with (e, f) ↦ e + f - ef",
+  "strange": "The sum of idempotents fails to be idempotent",
+  "renaming": "",
+  "raw": "NAME: Non-idempotent Ring of Idempotents\nGENESIS: Algebraic closure of \"e² = e\" under (e, f) ↦ e + f - ef\nFORMAL_SEED: R ≅ {e} with (e, f) ↦ e + f - ef\nSTRANGE_PROPERTY: The sum of idempotents fails to be idempotent\nNEAREST_KNOWN_RELATIVE: Boolean Algebra\nWHY_NOT_JUMING_ONLY: The non-idempotency is structural\nCOUNTERFEIT: A Commutative Ring\nBREAK_IT: e + e ≠ e\nNEXT_MUTATION: Derive the Jacobian",
+  "wall_s": 50.8,
+  "tokens": 141
+}

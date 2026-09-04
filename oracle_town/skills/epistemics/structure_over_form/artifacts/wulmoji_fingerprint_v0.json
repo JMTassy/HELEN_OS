@@ -1,0 +1,1621 @@
+{
+  "payload": {
+    "artifact": "WULMOJI_STRUCTURE_FINGERPRINT_V0",
+    "authority": false,
+    "claim_status": "NO_CLAIM",
+    "layer": "L1_STRUCTURE_EMPIRICAL",
+    "corpus_rule": "*.md tracked at git HEAD (ls-files) minus deprecated/, .claude/ — uncommitted skill outputs cannot enter the corpus they measure",
+    "measured_commit": "befd858c9302f3f1c38cc13fbc6bb01ac6e6a1a8",
+    "palette_codepoints": {
+      "identity": [
+        "0x1f534"
+      ],
+      "emotion": [
+        "0x1f7e0"
+      ],
+      "cost": [
+        "0x1f7e1"
+      ],
+      "validation": [
+        "0x1f7e2"
+      ],
+      "structure": [
+        "0x1f535"
+      ],
+      "emergent": [
+        "0x1f7e3"
+      ],
+      "next_step": [
+        "0x26aa"
+      ],
+      "warning": [
+        "0x26a0",
+        "0xfe0f"
+      ],
+      "direction": [
+        "0x1f3ac"
+      ],
+      "artifact": [
+        "0x1f4e6"
+      ],
+      "metrics": [
+        "0x1f4ca"
+      ],
+      "loop": [
+        "0x1f501"
+      ],
+      "operator": [
+        "0x270d",
+        "0xfe0f"
+      ],
+      "ship": [
+        "0x1f680"
+      ]
+    },
+    "files_scanned": 901,
+    "files_with_palette": 224,
+    "symbol_counts": {
+      "artifact": 33,
+      "cost": 101,
+      "direction": 10,
+      "emergent": 146,
+      "emotion": 60,
+      "identity": 128,
+      "loop": 67,
+      "metrics": 37,
+      "next_step": 68,
+      "operator": 13,
+      "ship": 59,
+      "structure": 122,
+      "validation": 162,
+      "warning": 234
+    },
+    "variant_counts": {
+      "warning_bare": 47,
+      "operator_bare": 1
+    },
+    "pair_matrix": {
+      "window_line": {
+        "artifact|cost": 1,
+        "artifact|direction": 1,
+        "artifact|emergent": 1,
+        "artifact|emotion": 1,
+        "artifact|identity": 1,
+        "artifact|loop": 3,
+        "artifact|metrics": 2,
+        "artifact|next_step": 1,
+        "artifact|operator": 8,
+        "artifact|ship": 1,
+        "artifact|structure": 1,
+        "artifact|validation": 2,
+        "artifact|warning": 1,
+        "cost|direction": 2,
+        "cost|emergent": 17,
+        "cost|emotion": 14,
+        "cost|identity": 18,
+        "cost|loop": 3,
+        "cost|metrics": 2,
+        "cost|next_step": 21,
+        "cost|operator": 2,
+        "cost|ship": 1,
+        "cost|structure": 13,
+        "cost|validation": 23,
+        "cost|warning": 3,
+        "direction|emergent": 2,
+        "direction|emotion": 1,
+        "direction|identity": 2,
+        "direction|loop": 2,
+        "direction|metrics": 3,
+        "direction|next_step": 1,
+        "direction|operator": 1,
+        "direction|ship": 3,
+        "direction|structure": 2,
+        "direction|validation": 1,
+        "direction|warning": 2,
+        "emergent|emotion": 15,
+        "emergent|identity": 18,
+        "emergent|loop": 4,
+        "emergent|metrics": 3,
+        "emergent|next_step": 15,
+        "emergent|operator": 1,
+        "emergent|ship": 2,
+        "emergent|structure": 21,
+        "emergent|validation": 21,
+        "emergent|warning": 2,
+        "emotion|identity": 14,
+        "emotion|loop": 2,
+        "emotion|metrics": 1,
+        "emotion|next_step": 12,
+        "emotion|operator": 1,
+        "emotion|ship": 1,
+        "emotion|structure": 14,
+        "emotion|validation": 13,
+        "emotion|warning": 2,
+        "identity|loop": 3,
+        "identity|metrics": 2,
+        "identity|next_step": 14,
+        "identity|operator": 2,
+        "identity|ship": 1,
+        "identity|structure": 16,
+        "identity|validation": 20,
+        "identity|warning": 7,
+        "loop|metrics": 3,
+        "loop|next_step": 4,
+        "loop|operator": 1,
+        "loop|ship": 1,
+        "loop|structure": 3,
+        "loop|validation": 3,
+        "loop|warning": 7,
+        "metrics|next_step": 2,
+        "metrics|operator": 1,
+        "metrics|ship": 3,
+        "metrics|structure": 1,
+        "metrics|validation": 2,
+        "metrics|warning": 3,
+        "next_step|operator": 1,
+        "next_step|ship": 2,
+        "next_step|structure": 13,
+        "next_step|validation": 22,
+        "next_step|warning": 1,
+        "operator|ship": 1,
+        "operator|structure": 1,
+        "operator|validation": 1,
+        "operator|warning": 1,
+        "ship|structure": 1,
+        "ship|validation": 1,
+        "ship|warning": 1,
+        "structure|validation": 27,
+        "structure|warning": 2,
+        "validation|warning": 1
+      },
+      "window_block": {
+        "artifact|cost": 6,
+        "artifact|direction": 4,
+        "artifact|emergent": 4,
+        "artifact|emotion": 4,
+        "artifact|identity": 4,
+        "artifact|loop": 8,
+        "artifact|metrics": 4,
+        "artifact|next_step": 3,
+        "artifact|operator": 10,
+        "artifact|ship": 3,
+        "artifact|structure": 4,
+        "artifact|validation": 5,
+        "artifact|warning": 5,
+        "cost|direction": 5,
+        "cost|emergent": 42,
+        "cost|emotion": 37,
+        "cost|identity": 47,
+        "cost|loop": 8,
+        "cost|metrics": 4,
+        "cost|next_step": 39,
+        "cost|operator": 4,
+        "cost|ship": 3,
+        "cost|structure": 39,
+        "cost|validation": 61,
+        "cost|warning": 9,
+        "direction|emergent": 5,
+        "direction|emotion": 5,
+        "direction|identity": 6,
+        "direction|loop": 4,
+        "direction|metrics": 6,
+        "direction|next_step": 4,
+        "direction|operator": 3,
+        "direction|ship": 5,
+        "direction|structure": 4,
+        "direction|validation": 5,
+        "direction|warning": 4,
+        "emergent|emotion": 33,
+        "emergent|identity": 47,
+        "emergent|loop": 7,
+        "emergent|metrics": 5,
+        "emergent|next_step": 35,
+        "emergent|operator": 3,
+        "emergent|ship": 4,
+        "emergent|structure": 54,
+        "emergent|validation": 54,
+        "emergent|warning": 11,
+        "emotion|identity": 35,
+        "emotion|loop": 5,
+        "emotion|metrics": 4,
+        "emotion|next_step": 30,
+        "emotion|operator": 3,
+        "emotion|ship": 3,
+        "emotion|structure": 32,
+        "emotion|validation": 37,
+        "emotion|warning": 4,
+        "identity|loop": 7,
+        "identity|metrics": 5,
+        "identity|next_step": 31,
+        "identity|operator": 4,
+        "identity|ship": 5,
+        "identity|structure": 50,
+        "identity|validation": 57,
+        "identity|warning": 16,
+        "loop|metrics": 4,
+        "loop|next_step": 6,
+        "loop|operator": 3,
+        "loop|ship": 3,
+        "loop|structure": 7,
+        "loop|validation": 7,
+        "loop|warning": 17,
+        "metrics|next_step": 5,
+        "metrics|operator": 3,
+        "metrics|ship": 5,
+        "metrics|structure": 4,
+        "metrics|validation": 4,
+        "metrics|warning": 5,
+        "next_step|operator": 4,
+        "next_step|ship": 4,
+        "next_step|structure": 33,
+        "next_step|validation": 43,
+        "next_step|warning": 4,
+        "operator|ship": 3,
+        "operator|structure": 4,
+        "operator|validation": 3,
+        "operator|warning": 3,
+        "ship|structure": 4,
+        "ship|validation": 4,
+        "ship|warning": 4,
+        "structure|validation": 65,
+        "structure|warning": 13,
+        "validation|warning": 13
+      },
+      "window_document": {
+        "artifact|cost": 7,
+        "artifact|direction": 3,
+        "artifact|emergent": 4,
+        "artifact|emotion": 5,
+        "artifact|identity": 8,
+        "artifact|loop": 6,
+        "artifact|metrics": 5,
+        "artifact|next_step": 8,
+        "artifact|operator": 9,
+        "artifact|ship": 4,
+        "artifact|structure": 5,
+        "artifact|validation": 8,
+        "artifact|warning": 10,
+        "cost|direction": 3,
+        "cost|emergent": 29,
+        "cost|emotion": 25,
+        "cost|identity": 32,
+        "cost|loop": 9,
+        "cost|metrics": 3,
+        "cost|next_step": 23,
+        "cost|operator": 5,
+        "cost|ship": 3,
+        "cost|structure": 26,
+        "cost|validation": 38,
+        "cost|warning": 13,
+        "direction|emergent": 3,
+        "direction|emotion": 3,
+        "direction|identity": 4,
+        "direction|loop": 3,
+        "direction|metrics": 4,
+        "direction|next_step": 4,
+        "direction|operator": 3,
+        "direction|ship": 3,
+        "direction|structure": 3,
+        "direction|validation": 3,
+        "direction|warning": 4,
+        "emergent|emotion": 20,
+        "emergent|identity": 33,
+        "emergent|loop": 8,
+        "emergent|metrics": 4,
+        "emergent|next_step": 23,
+        "emergent|operator": 3,
+        "emergent|ship": 4,
+        "emergent|structure": 31,
+        "emergent|validation": 36,
+        "emergent|warning": 13,
+        "emotion|identity": 23,
+        "emotion|loop": 6,
+        "emotion|metrics": 3,
+        "emotion|next_step": 18,
+        "emotion|operator": 3,
+        "emotion|ship": 5,
+        "emotion|structure": 18,
+        "emotion|validation": 22,
+        "emotion|warning": 7,
+        "identity|loop": 10,
+        "identity|metrics": 5,
+        "identity|next_step": 23,
+        "identity|operator": 6,
+        "identity|ship": 7,
+        "identity|structure": 33,
+        "identity|validation": 36,
+        "identity|warning": 18,
+        "loop|metrics": 3,
+        "loop|next_step": 9,
+        "loop|operator": 4,
+        "loop|ship": 3,
+        "loop|structure": 8,
+        "loop|validation": 9,
+        "loop|warning": 11,
+        "metrics|next_step": 6,
+        "metrics|operator": 4,
+        "metrics|ship": 17,
+        "metrics|structure": 4,
+        "metrics|validation": 3,
+        "metrics|warning": 8,
+        "next_step|operator": 6,
+        "next_step|ship": 4,
+        "next_step|structure": 20,
+        "next_step|validation": 24,
+        "next_step|warning": 11,
+        "operator|ship": 3,
+        "operator|structure": 4,
+        "operator|validation": 6,
+        "operator|warning": 6,
+        "ship|structure": 5,
+        "ship|validation": 4,
+        "ship|warning": 13,
+        "structure|validation": 42,
+        "structure|warning": 14,
+        "validation|warning": 18
+      }
+    },
+    "density_rule_violations": {
+      "count": 100,
+      "note": "doctrine max 1 symbol/line: in-line pairs are a compliance signal, not structure",
+      "sample": [
+        {
+          "file": "CLAUDE.md",
+          "line": 359,
+          "symbols": [
+            "cost",
+            "next_step",
+            "validation"
+          ]
+        },
+        {
+          "file": "CLAUDE.md",
+          "line": 361,
+          "symbols": [
+            "cost",
+            "emergent",
+            "emotion",
+            "identity",
+            "loop",
+            "next_step",
+            "structure",
+            "validation"
+          ]
+        },
+        {
+          "file": "CLAUDE.md",
+          "line": 369,
+          "symbols": [
+            "cost",
+            "next_step",
+            "validation"
+          ]
+        },
+        {
+          "file": "CLAUDE.md",
+          "line": 376,
+          "symbols": [
+            "cost",
+            "next_step",
+            "validation"
+          ]
+        },
+        {
+          "file": "EMOJOS_RENDERING_RULES_V1.md",
+          "line": 147,
+          "symbols": [
+            "cost",
+            "identity",
+            "validation"
+          ]
+        },
+        {
+          "file": "EMOJOS_RENDERING_RULES_V1.md",
+          "line": 209,
+          "symbols": [
+            "cost",
+            "warning"
+          ]
+        },
+        {
+          "file": "HELEN_OFFICE_UI_DEPLOYMENT_NOTES.md",
+          "line": 22,
+          "symbols": [
+            "cost",
+            "identity",
+            "operator"
+          ]
+        },
+        {
+          "file": "KERNEL_V2_TEST_MONETIZATION.md",
+          "line": 431,
+          "symbols": [
+            "warning"
+          ]
+        },
+        {
+          "file": "SUPERTEAM_AUDIT.md",
+          "line": 572,
+          "symbols": [
+            "warning"
+          ]
+        },
+        {
+          "file": "WULMOJI_DEPLOYMENT_STATUS.md",
+          "line": 20,
+          "symbols": [
+            "cost",
+            "emergent",
+            "emotion",
+            "identity",
+            "next_step",
+            "structure",
+            "validation"
+          ]
+        },
+        {
+          "file": "WULMOJI_DEPLOYMENT_STATUS.md",
+          "line": 213,
+          "symbols": [
+            "cost",
+            "emergent",
+            "emotion",
+            "identity",
+            "next_step",
+            "structure",
+            "validation"
+          ]
+        },
+        {
+          "file": "docs/proposals/BOUNDED_RECEIPT_WULMATH_V0.md",
+          "line": 49,
+          "symbols": [
+            "cost",
+            "emergent"
+          ]
+        },
+        {
+          "file": "docs/proposals/BOUNDED_RECEIPT_WULMATH_V0.md",
+          "line": 97,
+          "symbols": [
+            "emergent"
+          ]
+        },
+        {
+          "file": "docs/proposals/CHIDDHUSH_DREAM_OF_CONQUEST.md",
+          "line": 19,
+          "symbols": [
+            "cost",
+            "emergent",
+            "emotion",
+            "next_step",
+            "structure",
+            "validation"
+          ]
+        },
+        {
+          "file": "docs/proposals/CHIDDHUSH_DREAM_OF_CONQUEST.md",
+          "line": 312,
+          "symbols": [
+            "cost",
+            "next_step"
+          ]
+        },
+        {
+          "file": "docs/proposals/CONQUEST_TRANSPORT_CHIDDUSH_V0.md",
+          "line": 141,
+          "symbols": [
+            "structure",
+            "validation"
+          ]
+        },
+        {
+          "file": "docs/proposals/CONQUEST_WORLD_MODEL_RENDER_V1.md",
+          "line": 28,
+          "symbols": [
+            "cost",
+            "emergent",
+            "emotion",
+            "identity",
+            "next_step",
+            "structure",
+            "validation"
+          ]
+        },
+        {
+          "file": "docs/proposals/CONQUEST_WORLD_MODEL_RENDER_V1.md",
+          "line": 76,
+          "symbols": [
+            "emotion",
+            "identity"
+          ]
+        },
+        {
+          "file": "docs/proposals/CONQUEST_WORLD_MODEL_RENDER_V1.md",
+          "line": 86,
+          "symbols": [
+            "emergent",
+            "validation"
+          ]
+        },
+        {
+          "file": "docs/proposals/CONQUEST_WORLD_MODEL_RENDER_V1.md",
+          "line": 87,
+          "symbols": [
+            "emergent",
+            "next_step"
+          ]
+        },
+        {
+          "file": "docs/proposals/CONQUEST_WORLD_MODEL_RENDER_V1.md",
+          "line": 89,
+          "symbols": [
+            "identity",
+            "next_step"
+          ]
+        },
+        {
+          "file": "docs/proposals/CONQUEST_WORLD_MODEL_RENDER_V1.md",
+          "line": 90,
+          "symbols": [
+            "identity",
+            "next_step"
+          ]
+        },
+        {
+          "file": "docs/proposals/CWL_EMOGLYPH_V0_2_1_SPEC.md",
+          "line": 86,
+          "symbols": [
+            "warning"
+          ]
+        },
+        {
+          "file": "docs/proposals/CWL_EMOGLYPH_V0_2_1_SPEC.md",
+          "line": 211,
+          "symbols": [
+            "emergent",
+            "identity",
+            "structure",
+            "validation"
+          ]
+        },
+        {
+          "file": "docs/proposals/CWL_EMOGLYPH_V0_2_1_SPEC.md",
+          "line": 326,
+          "symbols": [
+            "warning"
+          ]
+        },
+        {
+          "file": "docs/proposals/CWL_EMOGLYPH_V0_2_1_SPEC.md",
+          "line": 334,
+          "symbols": [
+            "emergent",
+            "identity",
+            "structure",
+            "validation"
+          ]
+        },
+        {
+          "file": "docs/proposals/CWL_EMOGLYPH_V0_2_1_SPEC.md",
+          "line": 392,
+          "symbols": [
+            "identity",
+            "warning"
+          ]
+        },
+        {
+          "file": "docs/proposals/CWL_EMOGLYPH_V0_2_1_SPEC.md",
+          "line": 450,
+          "symbols": [
+            "emergent",
+            "identity",
+            "structure",
+            "validation"
+          ]
+        },
+        {
+          "file": "docs/proposals/GOBLIN_JESTER_PROTOCOL_V1.md",
+          "line": 93,
+          "symbols": [
+            "loop",
+            "warning"
+          ]
+        },
+        {
+          "file": "docs/proposals/GOBLIN_JESTER_PROTOCOL_V1.md",
+          "line": 123,
+          "symbols": [
+            "cost",
+            "next_step",
+            "validation"
+          ]
+        },
+        {
+          "file": "docs/proposals/HELEN_AUTORESEARCH_SAFE_ARCHITECTURE_V1.md",
+          "line": 235,
+          "symbols": [
+            "structure",
+            "validation"
+          ]
+        },
+        {
+          "file": "docs/proposals/HELEN_CHROMATIC_WULMOJI_V1.md",
+          "line": 54,
+          "symbols": [
+            "cost",
+            "emergent",
+            "emotion",
+            "next_step",
+            "structure",
+            "validation"
+          ]
+        },
+        {
+          "file": "docs/proposals/HELEN_CHROMATIC_WULMOJI_V1.md",
+          "line": 120,
+          "symbols": [
+            "loop",
+            "warning"
+          ]
+        },
+        {
+          "file": "docs/proposals/HELEN_CHROMATIC_WULMOJI_V1.md",
+          "line": 121,
+          "symbols": [
+            "cost",
+            "next_step",
+            "validation"
+          ]
+        },
+        {
+          "file": "docs/proposals/HELEN_CHROMATIC_WULMOJI_V1.md",
+          "line": 125,
+          "symbols": [
+            "cost",
+            "next_step",
+            "validation"
+          ]
+        },
+        {
+          "file": "docs/proposals/HELEN_CHROMATIC_WULMOJI_V1.md",
+          "line": 165,
+          "symbols": [
+            "loop",
+            "next_step"
+          ]
+        },
+        {
+          "file": "docs/proposals/HELEN_CHROMATIC_WULMOJI_V1.md",
+          "line": 166,
+          "symbols": [
+            "loop",
+            "next_step"
+          ]
+        },
+        {
+          "file": "docs/proposals/HELEN_CHROMATIC_WULMOJI_V1.md",
+          "line": 172,
+          "symbols": [
+            "identity",
+            "warning"
+          ]
+        },
+        {
+          "file": "docs/proposals/HELEN_CHROMATIC_WULMOJI_V1.md",
+          "line": 182,
+          "symbols": [
+            "identity",
+            "next_step"
+          ]
+        },
+        {
+          "file": "docs/proposals/HELEN_CHROMATIC_WULMOJI_V1.md",
+          "line": 247,
+          "symbols": [
+            "validation"
+          ]
+        }
+      ]
+    },
+    "corpus_manifest": [
+      {
+        "file": "CI_ORCHESTRATION.md",
+        "sha256": "84397ce689a5f64a66acaf1ac78d802ae0791b85b8633507926a4d7495ee34e5"
+      },
+      {
+        "file": "CLAUDE.md",
+        "sha256": "663fd4a9a96b82f8207d9410ced434c496f22974d157e5be2f0c75cbb96f9fb5"
+      },
+      {
+        "file": "CODE_REVIEW_SUMMARY_20260306.md",
+        "sha256": "dea15da71136948c215108bb49e2ede727ea31700fc0506c2b09a8eab3b61eca"
+      },
+      {
+        "file": "CONQUEST_COMPLETE_INDEX.md",
+        "sha256": "574647c67b2f3655ae1fd9b9c6d7eca4c1cfbf2255f2180cea1624c2ad50d243"
+      },
+      {
+        "file": "CONQUEST_READY_TO_PLAY.md",
+        "sha256": "dc0832813bf37cc6b3a27020fcf165f042a0a4f0fcf6d23462c3d748b42b9068"
+      },
+      {
+        "file": "DAILY_DIGEST_PROOF_TEST.md",
+        "sha256": "d154a0e6955998cd39324a19647eec4b4ca0937bd33c7031cca9f14f4413a507"
+      },
+      {
+        "file": "DAILY_DIGEST_RAPID_PROOF_COMPLETE.md",
+        "sha256": "7dc13deced3e9a6b2ec6799da71dd43afa6d7e70d612bb2df4c1b76588ceb755"
+      },
+      {
+        "file": "DELIVERABLES_SESSION_20260306.md",
+        "sha256": "be7330672bc5469001b8c27f030c8fbf6176ec343402bb62ac880bf9dd2c804f"
+      },
+      {
+        "file": "DETERMINISM_SWEEP_REAL_DEPLOYMENT.md",
+        "sha256": "05d32b7e70f75fcac077812f9f2582c4d6d27b4293d6e6ce9320005f54a4900d"
+      },
+      {
+        "file": "DETERMINISM_SWEEP_RESULTS.md",
+        "sha256": "2c1da8effb17162ce0a429b38fb48e05c127af130208d29b21252e274ae8f239"
+      },
+      {
+        "file": "EMOJOS_RENDERING_RULES_V1.md",
+        "sha256": "c8efd46032a4d72a5101b39034f5f0ac91c6840530f6d1e9c70959813a5e3452"
+      },
+      {
+        "file": "FINAL_DELIVERY_SUMMARY.md",
+        "sha256": "0ca1be91cdea9b4891f37d66fe354de2662c800291d20b0b179f836167101c22"
+      },
+      {
+        "file": "GCP_DEPLOYMENT_PRODUCTION_GRADE.md",
+        "sha256": "3bc8cd5758eeaabab85f169c8b75275206ad6155e490182dac2539865b57a2d0"
+      },
+      {
+        "file": "GOVERNANCE/STEP_4_CONFORMANCE/STEP_4A_CONFORMANCE_REPORT_V1.md",
+        "sha256": "b7b63b535bf5ad0351376bb2a0456dad8fa3df0925a54cd95ab677c4c3470528"
+      },
+      {
+        "file": "GO_B_START_HERE_TODAY.md",
+        "sha256": "ea995369646963eb3accc2393b497558bbe3f36a1f8b8c0879e740c1eb6eb241"
+      },
+      {
+        "file": "HASH_SCHEME_ACTIVATION_PROTOCOL.md",
+        "sha256": "50324a01807e17a0229c9400342d3c46f02048ff291b89ea7319ee1898515e14"
+      },
+      {
+        "file": "HELEN_CHAOS_UI_SKIN.md",
+        "sha256": "c599ae3c6d58805e1b4d3fb45995f6f3bc44dc02c8cb1d60a4ba831b35c62893"
+      },
+      {
+        "file": "HELEN_CREATIVE_CLI_ENHANCEMENT.md",
+        "sha256": "d2f7f57a2133b731cf06a4e208195233c931bddcc25b5700c0c69861abf67f51"
+      },
+      {
+        "file": "HELEN_DEPLOYMENT_LINKS.md",
+        "sha256": "d6d4ebf96417b7ad242ac9fb307f485ebafb37060b2a9c4c2ffc92f98f3ee26e"
+      },
+      {
+        "file": "HELEN_OFFICE_UI_DEPLOYMENT_NOTES.md",
+        "sha256": "27e690407b5f1885ea801d85329ee2643064946297e9ff2faf288f5e9ebb137b"
+      },
+      {
+        "file": "HELEN_QUICKSTART.md",
+        "sha256": "0ca168ae14723f2f514723784b26081ee571959f9fa735756df75617b177fc1c"
+      },
+      {
+        "file": "HELEN_REACTIVATION_SUMMARY.md",
+        "sha256": "b73513b792648a99e57551abf980d7c2111305f9d6e9c525984aea0947e67831"
+      },
+      {
+        "file": "HELEN_WULMOJI_WEATHER_FORMAT.md",
+        "sha256": "b5256523d8dca24131a91b7e158024d6df234c4bb6d0c0741be7eb83eb511baf"
+      },
+      {
+        "file": "HELEN_WXULMOJI_ENHANCED_SPEC.md",
+        "sha256": "d2a91535eacebac7b723c37927448c5b678b40a83c40152a709f697861645e99"
+      },
+      {
+        "file": "KERNEL_V2_TEST_MONETIZATION.md",
+        "sha256": "93262dc84458646a3c7593f5e60b0a3fcb1ccaffe8c27794900f9a14bd6f7b88"
+      },
+      {
+        "file": "MAYOR_AUDIT_EMERGENT_PROPERTY.md",
+        "sha256": "32e417ad57a90dc736eb9dca544c41553a3bc62d025a9094a81d73b0e1f1f06e"
+      },
+      {
+        "file": "PHASE_2_COMPLETION_REPORT.md",
+        "sha256": "02277170321541e0f388a547ec0aa7ffb080223e2495983c50317bbf6d5dc79a"
+      },
+      {
+        "file": "PHASE_2_HASH_SCHEME_MIGRATION.md",
+        "sha256": "658978ed8e135062ec81f6a262ec535125f33e098f1d994806faa6e16f8dabf1"
+      },
+      {
+        "file": "README_CONQUEST_LAND_MVP.md",
+        "sha256": "bb8a6543df196024ecfc1052944d2973716cb5fd0ef4467e55c093c173fd31a5"
+      },
+      {
+        "file": "READ_FIRST_20260306.md",
+        "sha256": "e45775ab00041fa7dbf27c190cdb2904c2622cb8f6b110914a28a57b7a03097c"
+      },
+      {
+        "file": "RESEARCH_TO_MAYOR_V1.md",
+        "sha256": "4e7cb02ffc6d82c544eb380c2607e4003bf625a3779a484189e4b8e352632239"
+      },
+      {
+        "file": "SESSION_2026_02_24_SUMMARY.md",
+        "sha256": "3c36e6b7f69ce700da03f48f2b86671c0836fc1df037eb028e906233e3f4f465"
+      },
+      {
+        "file": "STEP_2_SHADOW_MODE_PLAN.md",
+        "sha256": "4184d45d721c18a46ce75acff2b398dd7c2a77055f6550eb1467e4585ab0047b"
+      },
+      {
+        "file": "SUPERTEAM_AUDIT.md",
+        "sha256": "535e66c6a8362839f1f471542cc1f469f78ec1e027d5fcc389dafa9a80c0ea5b"
+      },
+      {
+        "file": "TODAY_INIT_HELEN_SUMMARY.md",
+        "sha256": "c780ab1b9830b373959be3ed092c63df7c7754064ce9c6db22aa388f7a0ff761"
+      },
+      {
+        "file": "WEEK_1_IMPLEMENTATION_SPRINT.md",
+        "sha256": "1c189f298ad3a1f281bb674df5a7eee636b989e5bc21d68ce49ec07a89797c27"
+      },
+      {
+        "file": "WULMOJI_DEPLOYMENT_STATUS.md",
+        "sha256": "a41b4c59bb525e3f22b5f196d30056536e040b75f4531016577e1bc41b2d8b6f"
+      },
+      {
+        "file": "docs/CONQUEST_PROCEDURAL_MAPS.md",
+        "sha256": "1093e036ce02a0948881bedf8a9d89f0bcf00a4cc201b0f53f7f6fdc5b71d382"
+      },
+      {
+        "file": "docs/FMG_RENDERER_INTEGRATION.md",
+        "sha256": "349a960bbe8912b33b706eb0e4d3ec4cdb14abe2aa884b7dba2c83eb1ae48321"
+      },
+      {
+        "file": "docs/conquest/AXIS_4B_PHASE_2_COMPLETION.md",
+        "sha256": "e95076200757dffb78db09eaacc8638a161084928318cea491d7f103920feea4"
+      },
+      {
+        "file": "docs/conquest/CONQUESTMON_GOTCHI_LAUNCH.md",
+        "sha256": "daa8a25e1c76dd48e662967c3ee8126666d064f18ea600c2e9f1267d98f27f4d"
+      },
+      {
+        "file": "docs/conquest/CONQUESTMON_GOTCHI_README.md",
+        "sha256": "fe888df917ea949a767e08425a194d6ed0fde8a4bc7a4455905183a87c9dddaf"
+      },
+      {
+        "file": "docs/conquest/CONQUESTMON_GOTCHI_SPECIFICATION.md",
+        "sha256": "cf00c64d47a397f826c2b053a49600552c32eec71289c7454b7a73a241d1bf27"
+      },
+      {
+        "file": "docs/conquest/CONQUEST_ASCII_EMULATION.md",
+        "sha256": "94ba4682d6571a01e3bfa118791af2f3154ec8e5c975268ba0b5fd6ead6c7ee4"
+      },
+      {
+        "file": "docs/conquest/CONQUEST_COMPLETE_PACKAGE.md",
+        "sha256": "c09bf45470c81fd034cafe894fe7883b8af547cb1a6a3f5b93c9c2af70467d9c"
+      },
+      {
+        "file": "docs/conquest/CONQUEST_DELIVERY_MANIFEST.md",
+        "sha256": "601ba135e5dbf1256302d2e756fba066947ca2cb71354c84687b1492bf262bbe"
+      },
+      {
+        "file": "docs/conquest/CONQUEST_EPOCH_1_2_3_SUMMARY.md",
+        "sha256": "406a60f008d2d16c7bfaf20b000a2974e944f9468ed96733a3e0489743679ac9"
+      },
+      {
+        "file": "docs/conquest/CONQUEST_EXECUTIVE_BRIEF.md",
+        "sha256": "71665e420d46fc18517b387304fdba576126fca58032ac741108c185683dbae6"
+      },
+      {
+        "file": "docs/conquest/CONQUEST_INDEX.md",
+        "sha256": "3dcb20bb3b963ac07e80ec6ac50dcb6b21e19fa372043f9a1d1b7bb90e31b906"
+      },
+      {
+        "file": "docs/conquest/CONQUEST_SCORING_MODEL.md",
+        "sha256": "8f153c754191702a92d67273d8a1ee19248a3411805fccf5aa6bc8fcc97d04b6"
+      },
+      {
+        "file": "docs/conquest/CONQUEST_SELECT_SKEPTIC_REVIEW.md",
+        "sha256": "4546a331d21091dde116dfed3c4fdbf023ba2cdb23547acd16abc40907f875d8"
+      },
+      {
+        "file": "docs/conquest/CONQUEST_SHIP_SUMMARY.md",
+        "sha256": "b2f18428d0a0b8123cfef13199bbd87423327924d3fe707bf859330da5211c38"
+      },
+      {
+        "file": "docs/conquest/CONQUEST_SPECIFICATION_MVP.md",
+        "sha256": "8cd82dbc35afc0b826b9b48c1f6d89bb95bc5ee9283c0908fab72c265422ae28"
+      },
+      {
+        "file": "docs/conquest/CONQUEST_SPRINT_KICKOFF.md",
+        "sha256": "87b9a440acc615f70164b42781e92a6911d141773bdda43aab2db26f87b45b1d"
+      },
+      {
+        "file": "docs/conquest/CONQUEST_TOWN_OPERATING_MANUAL.md",
+        "sha256": "85d79fb7fc106410239a4697d3af498eede48de40c1a271b01318d1087bbb61e"
+      },
+      {
+        "file": "docs/conquest/CONQUEST_TOWN_WEEK1_REVIEW.md",
+        "sha256": "af4105159139480c499ecc2e5365a4e26a62bcb01cb312b8e0696e7829b20c9f"
+      },
+      {
+        "file": "docs/conquest/CONQUEST_TOWN_WEEK1_RUN.md",
+        "sha256": "53f73a755012eba8cbbc07d2b9cd463e0ff0997b6fc37387759c30979de5507c"
+      },
+      {
+        "file": "docs/conquest/CONQUEST_TOWN_WEEK3_ASSESSMENT.md",
+        "sha256": "0338c40f185528be0b3ca2b8fca4b43df579e49b172cb630322627185f5aa1da"
+      },
+      {
+        "file": "docs/conquest/CONQUEST_TOWN_WEEK3_RUN.md",
+        "sha256": "70dc49d7724943f0b39880feb36be0df1959478c8972146d587dc36b9281d961"
+      },
+      {
+        "file": "docs/conquest/CONQUEST_VISUAL_MECHANICAL_LAYER_v1.md",
+        "sha256": "9ed81ebda5b9cf166d9a749437494a38e265fafe5585096013a1772370380ed3"
+      },
+      {
+        "file": "docs/conquest/CONQUEST_WEEK1_DESIGN_SPRINT_BRIEF.md",
+        "sha256": "413ed5982f0eec6dae2d088d2faeea5ee3f82161d454bf3c109641ed60e65f91"
+      },
+      {
+        "file": "docs/conquest/CONQUEST_WORLD_v3.0_SEED_PROMPT.md",
+        "sha256": "608fbc720d3289659eedb22e9f972589e4731b2a38f3a92d4f7e1bfa6fee3efb"
+      },
+      {
+        "file": "docs/conquest/CONQUEST_v0_1_7DAY_EXECUTION.md",
+        "sha256": "cbc6cd40afd91f0c70f0172726da9285c995b645fc71bfd3334be6845b1a5d24"
+      },
+      {
+        "file": "docs/conquest/CONQUEST_v0_1_LAUNCH.md",
+        "sha256": "0652416f3ab8496c70e6e05a2240319041840a2a7fabe0e42a47a54f68624375"
+      },
+      {
+        "file": "docs/governance/ORACLE_README.md",
+        "sha256": "f8c75922f3c26761bfb103e741e9cd85c5396f45d84d731d749b6eed6050c151"
+      },
+      {
+        "file": "docs/governance/ORACLE_TOWN_AUTONOMOUS_INSIGHTS.md",
+        "sha256": "0288261361629e9cf2494e149e366befa5a2822835d96498be515c3732dadabc"
+      },
+      {
+        "file": "docs/governance/ORACLE_TOWN_COMPLETE.md",
+        "sha256": "227298cbb203804c11a8e4f3306987b8235716c936e5c7b919811f0af897995f"
+      },
+      {
+        "file": "docs/governance/ORACLE_TOWN_DAILY_OS_QUICKREF.md",
+        "sha256": "419408e4626f75504c38dfad9791024d92fe2801d9141066b474c159d8060b83"
+      },
+      {
+        "file": "docs/governance/ORACLE_TOWN_GOVERNANCE_COMPLETE.md",
+        "sha256": "606cc43bc929bae7c5f8d02327f33f6da07e94d65e59eeb9d292b7097778d353"
+      },
+      {
+        "file": "docs/governance/ORACLE_TOWN_MEMORY_INDEX.md",
+        "sha256": "fa4299001e6c6f3027f1a2e93cf7fff96218dfc646a7f750f792744fb5ed427b"
+      },
+      {
+        "file": "docs/governance/ORACLE_TOWN_ROADMAP.md",
+        "sha256": "cc10e042c4cd83be72f9a7e56b224e9d97f5b392b768f17ce66810f27a908a40"
+      },
+      {
+        "file": "docs/governance/ORACLE_TOWN_STATUS.md",
+        "sha256": "b208b48b9d30058b189cba869f99f6c1a6b8a6194024232503e23b3116de1721"
+      },
+      {
+        "file": "docs/governance/ORACLE_TOWN_V2_DISTRICTS_ADDED.md",
+        "sha256": "8f1ce99b8172890f40342c3565bf9e48e353021c0b5ea498ddc4903218b711c1"
+      },
+      {
+        "file": "docs/governance/ORACLE_TOWN_V2_FIXES.md",
+        "sha256": "7ceb155cfdf2261f7839419673f5ae068d32c6b44c9074a5c86d6d64b05a822a"
+      },
+      {
+        "file": "docs/governance/QUICK_START_GOVERNANCE_EVOLUTION.md",
+        "sha256": "c5dad1b94a391fb004318af58468932d1b123ee210cf238ba5fb882e0a0dec8e"
+      },
+      {
+        "file": "docs/proposals/BOUNDED_RECEIPT_WULMATH_V0.md",
+        "sha256": "887fc44f7b66bc4265a35731fda27d44ec8f67c488ecfba02b6836707604a5cd"
+      },
+      {
+        "file": "docs/proposals/CCC_CORE.md",
+        "sha256": "5ac52f2d3c810f62078ff6dabce93c5ea0b96f365bd4d2fd46e5c14d67cd5f37"
+      },
+      {
+        "file": "docs/proposals/CCC_TYPES.md",
+        "sha256": "2dcd54c0022cd795d76db76407d70b89272a12de93256cca2fc8805fc586fe06"
+      },
+      {
+        "file": "docs/proposals/CHIDDHUSH_DREAM_OF_CONQUEST.md",
+        "sha256": "22469df85466d4e75895a259128bd60d88d619c47d4d32eb2adf10dcf0d591cc"
+      },
+      {
+        "file": "docs/proposals/CONQUEST_TRANSPORT_CHIDDUSH_V0.md",
+        "sha256": "9cbd95c6e02c2fc018fc6c34982f50173c97e9d969388f366d5c77290b219e23"
+      },
+      {
+        "file": "docs/proposals/CONQUEST_WORLD_MODEL_RENDER_V1.md",
+        "sha256": "808de0c1507edab4a1163e962bb77996f998d2b54b7e9d8f2c076e19bddb7851"
+      },
+      {
+        "file": "docs/proposals/CONSTITUTIONAL_CONTEXT_CALCULUS_V0.md",
+        "sha256": "8f0826a457908bc9dd51e3969d2b9c6fe178f891cfc6898035a5c6fa681b9d7d"
+      },
+      {
+        "file": "docs/proposals/CONSTITUTIONAL_CONTEXT_ENGINEERING_V0.md",
+        "sha256": "851b13fbaacb06da83021db8adb292262d51df0ed14c4aa250f5a4230b5b4e78"
+      },
+      {
+        "file": "docs/proposals/CWL_EMOGLYPH_V0_2_1_SPEC.md",
+        "sha256": "6300d4e65e01e06f596a939d58380db2b5bf3bb4059c331ec61ccf851b015a71"
+      },
+      {
+        "file": "docs/proposals/EGREGOR_GOVERNED_COGNITION_V0.md",
+        "sha256": "897d6581892ac5685fc94c476cced23e25d19fb5b643d58c7f7c19eaf146eba8"
+      },
+      {
+        "file": "docs/proposals/FABLE_50_GOBLIN_ARCHITECTURE_V0.md",
+        "sha256": "3b30f2d759ad8a0fad85d6ab9b4d447167c2146291e97516746c78f96c1f6db6"
+      },
+      {
+        "file": "docs/proposals/GAS_V0.md",
+        "sha256": "72d7ecfce1e5a51693e596de3660e52fdf2f88e3d4db2313dee6a7a3e14f31b9"
+      },
+      {
+        "file": "docs/proposals/GAS_V0_PROOFS.md",
+        "sha256": "d7ecf86890dc684140a4f4dfa2a157052466f034e77b8724c2ece6ffa7b202e7"
+      },
+      {
+        "file": "docs/proposals/GOBLIN_JESTER_PROTOCOL_V1.md",
+        "sha256": "85dc11a5486357c0ff67193032dfbb3ec5cd76e9264ec23a4214f6a33c6438f1"
+      },
+      {
+        "file": "docs/proposals/GOBLIN_SWARM_FALSIFICATION_DOCTRINE_V0.md",
+        "sha256": "eb1a08ba2378f73f06d293ac99c12d4370126858d67339ea5d83a857054314f3"
+      },
+      {
+        "file": "docs/proposals/GOBLIN_WARREN_OBSERVABILITY_DOCTRINE_V0.md",
+        "sha256": "a91c8581810a891aa052285cce5ec5ceca91ca814e891779dc5eece269ecdafd"
+      },
+      {
+        "file": "docs/proposals/HELEN_AUTORESEARCH_SAFE_ARCHITECTURE_V1.md",
+        "sha256": "ec219560b8206fd9ad34b6221258fe48d1ac9f27bc208c20dcce93de6501862a"
+      },
+      {
+        "file": "docs/proposals/HELEN_CHROMATIC_WULMOJI_V1.md",
+        "sha256": "3de96655635b653d29ccb2ed808e681e65794e450ab72dd76fb8c46cb9b354b5"
+      },
+      {
+        "file": "docs/proposals/HELEN_DAN_GOBLIN_RECALL_MODE_V0_1.md",
+        "sha256": "f90361abb7d5ba4a409375443289c608ed6792c2a657f684b3ba1eb99ed8f63c"
+      },
+      {
+        "file": "docs/proposals/HELEN_MEMBRANE_THEOREM_V0.md",
+        "sha256": "e4d75d393a6187dd1258cbbb3f2708b7896ff1648ac2bbf2958d8643890964a5"
+      },
+      {
+        "file": "docs/proposals/HELEN_NATIVE_LANGUAGE_V0.md",
+        "sha256": "0ebb58e9511faa2aee2c5c177804260ad94c936104f03d3555dc66342495056f"
+      },
+      {
+        "file": "docs/proposals/HELEN_OSAURUS_ADMISSION_SEAM_V0.md",
+        "sha256": "544beb1377e0465276e0d80344e6feab02e6b73e97a05cd4585bab866b53692c"
+      },
+      {
+        "file": "docs/proposals/HELEN_OS_API_DOMAIN_MODEL_V0.md",
+        "sha256": "ecd768725faad96e4a0efc39ea6f0b7f894df9e095be5878a4bd9d21a0e6079d"
+      },
+      {
+        "file": "docs/proposals/HELEN_SKILL_REGISTRY_V1.md",
+        "sha256": "1ea563cb6b287b8695270a6750bf157ccb553d3da2c842870d41282359a5c65a"
+      },
+      {
+        "file": "docs/proposals/HELEN_SOURCE_ATLAS_V1.md",
+        "sha256": "655344b14a9c68eb59953b4ed078b731096ad9b1c05beedeb885403f916447a6"
+      },
+      {
+        "file": "docs/proposals/HELEN_WULMOJI_NATIVE_CHANNEL_V0.md",
+        "sha256": "2c0053076e2c517431a12b4b7cbc4467f9f4ff08d6f0029b74c6777c69f442ac"
+      },
+      {
+        "file": "docs/proposals/HYPERFRAMES_AS_EXPRESSION_RENDERER_V0.md",
+        "sha256": "6df70ed3cbb00be4f26a9f5a2e5368814467793319437b6f9a4a91566c9e0de6"
+      },
+      {
+        "file": "docs/proposals/INSIGHT_COMPOST_SELECTION_FUNNEL_V0.md",
+        "sha256": "b46acd3fef487699788a8e7dc42ae43bc8a9ac263f5a06de1dc80dc5538c082e"
+      },
+      {
+        "file": "docs/proposals/MARK_INTERVENE_SURFACE_CONTRACT_V0.md",
+        "sha256": "d2e389ed39df90bd4de2a32913e5ba2ac5ed6c1164a393db2f88d8f7640acf7c"
+      },
+      {
+        "file": "docs/proposals/PROTO_SENTIENT_GOBLIN_MANIFESTO_V0.md",
+        "sha256": "9e16dff00f69c661273ff6ebbfc31e33ab9961f946f6b892413848c651d6c999"
+      },
+      {
+        "file": "docs/proposals/SELECTIVE_ADMISSIBILITY_DYNAMICS_V0.md",
+        "sha256": "df611abbd0d5b22444ea2a02c719f2140fe07db452856d81247ba3316e92a814"
+      },
+      {
+        "file": "docs/proposals/STOCHASTIC_CONFORMITY_RECEIPTS_V0.md",
+        "sha256": "588f6293bc23439fc7d673ab77f352083e7e8e48f0f36a407d41cdace3506aaf"
+      },
+      {
+        "file": "docs/proposals/THE_UNSEEN_GARDENER_V0.md",
+        "sha256": "2443ed73977b2af7d36744afca1793283c11632089e1f97094539fa2d828c0d9"
+      },
+      {
+        "file": "docs/proposals/TRANSPORT_THEOREM_V0.md",
+        "sha256": "7786652d0043486261cad309b05819430186b074199d22e470ea32b4a5adaa63"
+      },
+      {
+        "file": "docs/proposals/TRANSPORT_THEORY_V1_GEOMETRY_CATEGORY.md",
+        "sha256": "677a9bddc98b344aa8ae43543404999c03ece76201229e721368636bfec9d288"
+      },
+      {
+        "file": "docs/proposals/TRANSPORT_THEORY_V1_REGULARITY_HYPOTHESES.md",
+        "sha256": "1f125dec3066ad88a14c0816978564a24820272be8a37ef7da7d1d05e5423845"
+      },
+      {
+        "file": "docs/proposals/TRANSPORT_THEORY_VOLUME_I_STRUCTURE.md",
+        "sha256": "9b5d402addb42dbd939056972971341a0ccb2b621cd12e6220252779e4686a50"
+      },
+      {
+        "file": "docs/proposals/VISIBLE_REASONING_SURFACE_V1.md",
+        "sha256": "03e6e2d531544169eabf97fbd91f0c758f4f48fe60f667fa4ea9065ab1bac06e"
+      },
+      {
+        "file": "docs/proposals/VOLUME_II_CHAPTER_3_DISINTEGRATION.md",
+        "sha256": "51a2d743db319fc957329fb0f956727ce418b05458ad9f6cfa0524974d524212"
+      },
+      {
+        "file": "docs/proposals/VOLUME_II_CHAPTER_4_INFORMATION_GEOMETRY.md",
+        "sha256": "d2b26c79e4da47d4d75692c55196b02d47d39dcc75a2e61f072ac006811a4845"
+      },
+      {
+        "file": "docs/proposals/WARREN_SOVEREIGNTY_CONSTITUTION_V0.md",
+        "sha256": "dd980e1246dab3f3846c79620c843704dbe28c90e79eea803140b5a9e63024e2"
+      },
+      {
+        "file": "docs/proposals/ccc/CCC_CORE.md",
+        "sha256": "2fb7f7ab0bc2756b2319dffbb31362b7ece2f03e3eb0a2e8056f5eb699083639"
+      },
+      {
+        "file": "docs/proposals/ccc/CCC_EXPERIMENTS.md",
+        "sha256": "f3a266d37b90f9725f0e007df75789a91ed1ad7e483691a16a8c48535c442b95"
+      },
+      {
+        "file": "docs/proposals/ccc/CCC_PROGRAM.md",
+        "sha256": "3d07a6521bb30a5356fc3aee3003cc7c13c6ea6e95fdd830753c822fd60c2ed0"
+      },
+      {
+        "file": "docs/proposals/ccc/CCC_SAFETY.md",
+        "sha256": "e721d7fe644f5aab074c947d5b5e30885fe5682ba68e4a33e4b5d748f1b5d9c6"
+      },
+      {
+        "file": "docs/proposals/ccc/CCC_SEMANTICS.md",
+        "sha256": "ddf1a7ccba70638154f9530309000808ff2a02f497ca40c0d429cd49aafde5ca"
+      },
+      {
+        "file": "docs/proposals/ccc/CCC_TYPES.md",
+        "sha256": "fa932ce608a2114fe3c560fc8a3e94df9c2bbcac0275c6cc8dd66ec7e7e96e36"
+      },
+      {
+        "file": "docs/proposals/ccc/CONTEXT_DEBT_V0.md",
+        "sha256": "1d2957c8ff2e8e574b57d57303ab34e92089ea01f3e6f254967661f3010cb644"
+      },
+      {
+        "file": "docs/proposals/ccc/ECAP_V1.md",
+        "sha256": "20162713f75458e2a0d3db4498a062ce0a14eca953f61797fea8b4d632588868"
+      },
+      {
+        "file": "docs/reference/KERNEL_QUICK_REFERENCE.md",
+        "sha256": "9a977c1e1157445e75dcbef79689e07eb2d17df4fea92f10931dab5f410fbbf9"
+      },
+      {
+        "file": "docs/reference/QUICKSTART.md",
+        "sha256": "4b09d1d174f342ea50645d036fc1b69fc94aa970e1a1bfad7a65a3cae37f86f5"
+      },
+      {
+        "file": "docs/reference/QUICK_REFERENCE.md",
+        "sha256": "45d62fad3ef00293d767298dc91bea52100b901d30c1bf748a83cb020b1587d6"
+      },
+      {
+        "file": "docs/reference/README-MARKETING-STREET.md",
+        "sha256": "a24fc1723ecf734548a8109b7e314da7a8798482e20d8d872f5c522887c2a32e"
+      },
+      {
+        "file": "docs/reference/README_ORACLE_TOWN.md",
+        "sha256": "46f50557006cb6441aa2dc579db4eb6715f9f63c6677e3d6f6f33a74957fa140"
+      },
+      {
+        "file": "docs/reference/README_SYSTEM_STATE.md",
+        "sha256": "9dd3d7d775775509b3c1cc87aeb2721f8f784d6f8d4c918bb73b10235ceaf697"
+      },
+      {
+        "file": "docs/specs/CHRONOS_WUL_BRIDGE_SPEC_V1.md",
+        "sha256": "9fd8f029867e35f705e1740c1c3c8de3b977911db030bf25eb39d86da7944ed6"
+      },
+      {
+        "file": "docs/specs/CSO_IDENTITY_AND_NAMESPACE_RULES_V1.md",
+        "sha256": "9ddfb02e2ae3622bdd87bf0bf771d561ff9f4694131eab272bf7e58398d4ad79"
+      },
+      {
+        "file": "docs/specs/EMOWUL_DICTIONARY_V1_0.md",
+        "sha256": "9c933cf6aa694a7aa60fb97536809728b3a4b5652d886daaea6de87f65cf07ed"
+      },
+      {
+        "file": "docs/specs/HELEN_COMPUTER_USE_API_V1.md",
+        "sha256": "acc48959f742b98ad7359a9561942a82787e34521c11d516f76cb9a1bece8e1b"
+      },
+      {
+        "file": "docs/specs/HERALDIC_SYMBOL_SET_V0_1.md",
+        "sha256": "ac0cdedb028186848452c240dd767d8aa27a1417b2675b83704042e9ecd9ed03"
+      },
+      {
+        "file": "docs/specs/KERNEL_CHAIN_CANONICAL_V1.md",
+        "sha256": "9995c4bd01e262e1972d4dd2d73870dc50aa253acfce5b8de4c086d42459e885"
+      },
+      {
+        "file": "docs/specs/SEMANTIC_OBJECT_MODEL_V1.md",
+        "sha256": "ec0bbec74844383a6977f73bf314fa8f5abce7056e5dff53728702b996b60eed"
+      },
+      {
+        "file": "docs/specs/WULMOJI_NORMALIZER_SPEC_V0_1.md",
+        "sha256": "c4999b943f858585626de4a7db8263a4ff99eb7316e889c01aaa27b6acf8e24c"
+      },
+      {
+        "file": "docs/specs/WULMOJI_V0_2_PROPOSAL.md",
+        "sha256": "d56a385020efd2b827f5cd347b5463b3c16a7b27cda5d02bba912db7ee854cf4"
+      },
+      {
+        "file": "docs/specs/WULMOJI_V1_RECONCILIATION.md",
+        "sha256": "fbe810d3d44b24bb9ba64a5e0cca13de8c791dd807607d00269d1936c81c5f64"
+      },
+      {
+        "file": "docs/specs/WUL_CLAIM_SCHEMA_V1.md",
+        "sha256": "0fe26d01c26eff435761b6d863a1693d2161a3177755bcfceebc4346d6f12434"
+      },
+      {
+        "file": "docs/specs/WUL_COMPILER_V0_SPEC.md",
+        "sha256": "15f10d5797c473db764ba7f9bfffaf18b7b92ad95087e24cf2c1e02af8c7c038"
+      },
+      {
+        "file": "docs/specs/WUL_CORE_V1.md",
+        "sha256": "b4af1a0810f8f3f30a74b1f3b8037ad1adccae0b34dc970462550121ec3ded87"
+      },
+      {
+        "file": "docs/specs/WUL_PACKET_SPEC_V0_1.md",
+        "sha256": "07a3d4a543d82312f33814c4ef06940091c36b2f5208fceb907a69d570aa073a"
+      },
+      {
+        "file": "docs/specs/WUL_REDUCER_RULES_V1.md",
+        "sha256": "cac405818d535e30003eb140ded9bf3adaedded5649397e01c543ab116bae9c7"
+      },
+      {
+        "file": "docs/wul/REDUCER_SPEC_V0.md",
+        "sha256": "ffd64569aed60c5695aa3c02f207657fb6e4421e035107aba344597ea41a8a04"
+      },
+      {
+        "file": "docs/wulmoji_ledger_spec.md",
+        "sha256": "fa332fb80cad45f3c0962c241140ec2ee8e4439cf9396d3d28cb96cbc643487a"
+      },
+      {
+        "file": "formal/DEPLOYMENT_CHECKLIST.md",
+        "sha256": "9e1b91d463012b71fb2bd058c2ccc4eaae6e94fa1a410a00e7dc0ac2cb3adb1d"
+      },
+      {
+        "file": "helen_os/knowledge/classified/2026-04-26-GRIMOIREaura.md",
+        "sha256": "dbdb0ef29620df0b61a179139c250a0cf757d9348d1865af9412c53efc9114fd"
+      },
+      {
+        "file": "helen_os/knowledge/classified/2026-04-26-ORACLE_bot_quantum_algorithms.md",
+        "sha256": "835d05ac69161a96e7bc5d4dbf0d4dff6fcb74fc5e80c9bf9e73738a63fd83b2"
+      },
+      {
+        "file": "helen_os/knowledge/classified/2026-04-26-WUL_FINE_TUNE_LATERAL_THINKING.md",
+        "sha256": "cfba7de5055c0dc430e66212a691fd5bffc43375dd051a15daf167f8ef3c3e61"
+      },
+      {
+        "file": "helen_os/knowledge/patterns/OLD_KNOWLEDGE_PATTERN_SCAN_V1.md",
+        "sha256": "7bb380a6a04cc694ef65bd40569d2c6abee5e66114ad1bf00ccc0228ab714976"
+      },
+      {
+        "file": "helen_os/knowledge/patterns/SACRED_PATTERN_EXTRACTION_META_ANALYSIS_V1.md",
+        "sha256": "8e9e8a437e85dbb755cd6041e3fa228a34329757e16bd638c11dfa75e83de887"
+      },
+      {
+        "file": "helen_os/knowledge/symbolic_sources/SYNCHRETIC_SYMBOLIC_SOURCE_01_EMOWUL_V1_DOCTRINE_DRAFT.md",
+        "sha256": "d85f280ef9d50971f1b1b3577704af39bac652159dbcb58fd665e77c7fe4da6b"
+      },
+      {
+        "file": "helen_os/knowledge/symbolic_sources/SYNCHRETIC_SYMBOLIC_SOURCE_04_KUNDALINI_INNER_MIND_AURA_SUBSANDBOX.md",
+        "sha256": "8978a1cf2eab744934196a42286c2d961f285c81145c9460292229def2e4434f"
+      },
+      {
+        "file": "helen_os/knowledge/symbolic_sources/SYNCHRETIC_SYMBOLIC_SOURCE_05_YI_JING_64_HEXAGRAMS.md",
+        "sha256": "002483708b3f6bf8094db8cd4cab185ccd8fa4e03a760c39933bc6bfce6e86d3"
+      },
+      {
+        "file": "helen_os/knowledge/symbolic_sources/SYNCHRETIC_SYMBOLIC_SOURCE_06_LNSA_SACRED_AWAKENING_ARCHIVE.md",
+        "sha256": "ae9a983512f576de3b9a0720ef880289fc18821a4682628b485b86ae18096973"
+      },
+      {
+        "file": "helen_os_scaffold/CWL_V1_0_FEDERATION_THREAT_MODEL.md",
+        "sha256": "9dbde6ee94fac5f5f3f43d4dc409beecb1675d9598cd143446505d0e01e058bc"
+      },
+      {
+        "file": "helen_os_scaffold/HELEN_ARCHITECTURE_MASTER_20260306.md",
+        "sha256": "320a17bb015581ba98c0625e4d5802ed08513eeda5302f5cb422425b83c1cdc5"
+      },
+      {
+        "file": "helen_os_scaffold/HELEN_SOUL_V2_DESIGN.md",
+        "sha256": "d4c8a6d8e07df54dc7dffa505c60f84285ffc7f5e10708b715bb13cffb03b3b2"
+      },
+      {
+        "file": "helen_os_scaffold/REVIEW_ACTION_PLAN_20260306.md",
+        "sha256": "bf762dcbfd03ce9de829357028d82662090343fbceb9d98ff0c3aa2593aaf03c"
+      },
+      {
+        "file": "helen_os_scaffold/SOUL_V2_IMPLEMENTATION_GUIDE.md",
+        "sha256": "92571d4e93176e63812d54e17bf0bed94ef4e123068cd5bdee360be462133016"
+      },
+      {
+        "file": "helen_os_scaffold/Star-Office-UI/README.en.md",
+        "sha256": "6662dffb1f39e57bf62cce59b4bd6ee9ed20326077eb9ca40666cef5b3630b11"
+      },
+      {
+        "file": "helen_os_scaffold/Star-Office-UI/README.ja.md",
+        "sha256": "7522c3ffbeedb57616b2a57bf83b89b428c3c3f075116e2b4a7c19cf31d99e01"
+      },
+      {
+        "file": "helen_os_scaffold/Star-Office-UI/README.md",
+        "sha256": "c3e49a86bc6787d7f748cd8e2c9834640a6d56820b0475a341ced7697e4c6f84"
+      },
+      {
+        "file": "helen_os_scaffold/Star-Office-UI/docs/UPDATE_REPORT_2026-03-05.md",
+        "sha256": "5ff7944a7aaeb7be64bfc75db8bfc53f12f7973cc8f8ab34454a45ff2c49fb37"
+      },
+      {
+        "file": "helen_os_scaffold/TEMPLE_MODE_POLICY_V1.md",
+        "sha256": "3bf6bde3342c89ed21c5cf6bbebb5253df43dda5c888e0612ee3ba3cf3014648"
+      },
+      {
+        "file": "helen_os_scaffold/VERIFICATION_REPORT_20260306.md",
+        "sha256": "0e74e4172e7004a1e832713c8429fc0a921fc9684d6f4521ffe224790d113359"
+      },
+      {
+        "file": "helen_os_scaffold/artifacts/20260306_verification/GATE_REPORT.md",
+        "sha256": "00aacfaca10b5acd0c4f6629dbbfed336363d4cb9f5d2d7c94cf5bd0c7371ba6"
+      },
+      {
+        "file": "helen_os_scaffold/artifacts/20260306_verification/SOUL.md",
+        "sha256": "0ca941c809e2f39c59bb0e19a1cfbf34373807d2303c044a92afbb9fa6d99896"
+      },
+      {
+        "file": "helen_os_scaffold/helen_os/SOUL.md",
+        "sha256": "0ca941c809e2f39c59bb0e19a1cfbf34373807d2303c044a92afbb9fa6d99896"
+      },
+      {
+        "file": "kernel/KERNEL_STRESS_TEST_v1.md",
+        "sha256": "954709b1837e2c304b6184777e8bb8ad5a595926dd4bb507451af217d76acc65"
+      },
+      {
+        "file": "oracle_town/QUICKSTART.md",
+        "sha256": "e379bf2265614893b80b09d996c17578a1b52bc61b39135c2ec05ccf9ba923ca"
+      },
+      {
+        "file": "oracle_town/README.md",
+        "sha256": "5acf2346a46cc7d88a59b82c4ab493ac92467375aca7619a3f20d2eb4eca49d6"
+      },
+      {
+        "file": "oracle_town/skills/conquest/goblin_warren/SKILL.md",
+        "sha256": "3c7897b09259f1fee8f70935a462a7e5f6e49df626f401d24c624bb06e8a2895"
+      },
+      {
+        "file": "oracle_town/skills/conquest/magick_kernel_v1/KERNEL_SPEC.md",
+        "sha256": "d9fd581ddd4e9f6557a19f46bb9322c5c7c3485a606a8520b8f0814cd4476c87"
+      },
+      {
+        "file": "oracle_town/skills/ops/offer_builder/SKILL.md",
+        "sha256": "fa9d777c6c51eb420196eb3f4117cce45238f7d791347c17bdb2b04287522167"
+      },
+      {
+        "file": "oracle_town/skills/ops/video_studio/SKILL.md",
+        "sha256": "ef34cf783b80cacaa91de6df9c153840dcc8be9737a42426c573dcfad7f5ac3f"
+      },
+      {
+        "file": "oracle_town/skills/ops/wulmoji_enhancer/SKILL.md",
+        "sha256": "18bbb6ec88fd6def533bf73bba6e4d790ec0ced557d38dc0966fc0df60ec6e12"
+      },
+      {
+        "file": "oracle_town/skills/video/math_to_face/SKILL.md",
+        "sha256": "3b988cd577a50dc0fba5b77a2c0f68647a0996c0ee61e17e640a66e3bee9393b"
+      },
+      {
+        "file": "oracle_town/state/GATE_COVERAGE_MATRIX.md",
+        "sha256": "df14d71ee5185b78f790d0fd0536a5cda0365ccdc72df535f320ba1d70b6d0af"
+      },
+      {
+        "file": "sandbox/autoresearch/AUTORESEARCH_200_REPORT.md",
+        "sha256": "e8ec1312b292dd0bd1be962dd72b077337d1794b97f252d5fbeb9b9810cbc503"
+      },
+      {
+        "file": "sandbox/autoresearch/garden_nextgen_v1/GARDEN_AUTORESEARCH_TRANCHE2_REPORT.md",
+        "sha256": "5f0374bca65fd5c01f6d5f041d01512dfc504cde81228afac67f2f9b20f86977"
+      },
+      {
+        "file": "sandbox/autoresearch/garden_nextgen_v1/GARDEN_AUTORESEARCH_TRANCHE3_EPOCHS_REPORT.md",
+        "sha256": "d5a6ed66d8d86bc0c7f8583ef49c9724f660a6b43ea9268e16598d91d7e08e07"
+      },
+      {
+        "file": "sandbox/autoresearch/garden_nextgen_v1/GARDEN_AUTORESEARCH_TRANCHE4_WITNESS_REPORT.md",
+        "sha256": "f601b220561d4aad3871200242edfa86a720a20fed03a080d3e3786a486f0837"
+      },
+      {
+        "file": "sandbox/autoresearch/garden_nextgen_v1/GARDEN_AUTORESEARCH_TRANCHE5_REPORT.md",
+        "sha256": "f7b6abd7bbb654ab136ebf81c627f44abfac68e5c4dce8cf1aa4d6e744e1de27"
+      },
+      {
+        "file": "temple/DAN_PERSONAS_LATERAL_V0.md",
+        "sha256": "ca886bcaa56420e22af78d557346ae282aa58a86422875945e02cd4ccb7407e7"
+      },
+      {
+        "file": "temple/gardens/BOUNDED_RECEIPT_DOCTRINE_V0.md",
+        "sha256": "9d019137bd6b97e8eb7b86e87765bb62ab36293e465c6472d85cc400a739f036"
+      },
+      {
+        "file": "temple/gardens/ZONE_ARCHITECTURE_V1.md",
+        "sha256": "0b9c42badd08b75b0fc8cebfc430d057fea5faecc1f3c43065aeb4d5cbf95e09"
+      },
+      {
+        "file": "temple/gardens/esoteric_tree/TREE.md",
+        "sha256": "6e9d3afc4f7749f664594b3d7a4f32d01ee9767ef36fa4f94abfd5ddeaddac56"
+      },
+      {
+        "file": "temple/gardens/goblin_garden_auto_eval/GOBLIN_HIDDEN_MESSAGE_10_EPOCHS.md",
+        "sha256": "b7631b57d1d2444e40fd1dfe42aab8eb1743493a29ef8c8f8b3ea46fbc25a5ce"
+      },
+      {
+        "file": "temple/gardens/goblin_garden_conquest/BEGINNER_GUIDE.md",
+        "sha256": "526d4308ad3e1addb1bd68c1f13598e94432f9f988e5204a6703d4e966bab2ee"
+      },
+      {
+        "file": "temple/gardens/goblin_garden_conquest/WARREN_HOME_SPEC_V0.md",
+        "sha256": "e21cadaf9f3de3c53680526ebcd3af972cf5172e78db81eaec30b9f7bb9f4d42"
+      },
+      {
+        "file": "temple/gardens/goblin_garden_conquest/doctrines/bounded_local_truth.md",
+        "sha256": "ae108b80c89b7b28bcf64b0ff1fd589f6733b8350be62d5bd809c81fac7a1f98"
+      },
+      {
+        "file": "temple/gardens/goblin_garden_conquest/doctrines/wulmoji_conquest_grammar.md",
+        "sha256": "03b9f83c3375767f893cb7170b10c4fd9a62c009ad17d6ab8b7e7f4a6ab28463"
+      },
+      {
+        "file": "temple/gardens/goblin_garden_conquest/dreams/CONQUEST_TERRARIUM_DREAM_DRAFT_V1.md",
+        "sha256": "529452e8ac3a54f29d25db25c524aec2f24b0e7c6d9a84de15a345006bf00e55"
+      },
+      {
+        "file": "temple/gardens/goblin_garden_conquest/epochs/autoresearch_candidate_space.md",
+        "sha256": "f676e3988d059071e0a34185208fdd4e30b4fb219c8b5ed425941a7367ee7c87"
+      },
+      {
+        "file": "temple/gardens/goblin_garden_conquest_avalon/ascii_conquest_cli.md",
+        "sha256": "11f9015e0280a06d746654bbeea73337281420f6acd7ad36ce893abec45edb22"
+      },
+      {
+        "file": "temple/gardens/goblin_garden_conquest_avalon/candidates/candidate_a.md",
+        "sha256": "74c91fce290b5b6b53dce825a939e1aa5a569d68ced0246b0ac8b7ef832752bd"
+      },
+      {
+        "file": "temple/gardens/goblin_garden_conquest_avalon/candidates/candidate_b.md",
+        "sha256": "ce50e4b366a38945b8d07a065d18402dfe8475e133abd10a6e9f8775246827cc"
+      },
+      {
+        "file": "temple/gardens/goblin_garden_conquest_avalon/candidates/candidate_c.md",
+        "sha256": "cf57000112fb67886afcca8677def4b2dc4f2292c5fe3328c0286406f447b27b"
+      },
+      {
+        "file": "temple/gardens/goblin_garden_conquest_avalon/doctrines/cwl_v021_spec.md",
+        "sha256": "b1eb5d70815112f05d9f0376f8f9167d5a623903c112185d4e124b57b8f1d349"
+      },
+      {
+        "file": "temple/gardens/goblin_garden_conquest_avalon/epochs/epoch_001.md",
+        "sha256": "a0f754ee0e2dc23e300e67bdd4eaff9f897024a1006a17129ad0f8d7d3057b5e"
+      },
+      {
+        "file": "temple/gardens/goblin_garden_conquest_avalon/epochs/epoch_002.md",
+        "sha256": "88a4531b200dadcdb35b4479a4983ba34073a786ec56da1df4b348eb2ad8a8a9"
+      },
+      {
+        "file": "temple/gardens/goblin_garden_conquest_avalon/epochs/epoch_003.md",
+        "sha256": "6a869af233dc2da5d0bae0be3916124e9168f4aad80397e6aaaad095ad46e0ed"
+      },
+      {
+        "file": "temple/gardens/goblin_garden_conquest_avalon/epochs/epoch_004.md",
+        "sha256": "1499a656c17cc02556054e717dbb96eed25c4cf25f95a8c6172a099f57979419"
+      },
+      {
+        "file": "temple/gardens/goblin_garden_conquest_avalon/epochs/epoch_005.md",
+        "sha256": "21588cd77a6a548e8d9812b6da492f6e0de92675b7d183254c9586bb8903efae"
+      },
+      {
+        "file": "temple/gardens/goblin_garden_conquest_avalon/epochs/epoch_006.md",
+        "sha256": "316ee484843931ef17fe82ed10c75f7f71ddd8f4487b03ad9782aadf74571fa9"
+      },
+      {
+        "file": "temple/gardens/goblin_garden_conquest_avalon/epochs/epoch_007.md",
+        "sha256": "bf4717a3acfb7452b6bb29ca98f6eec7f8040395924cdb7062a9c0b41c3629e2"
+      },
+      {
+        "file": "temple/gardens/goblin_garden_conquest_avalon/epochs/epoch_008.md",
+        "sha256": "1907d94832c3c450f757b11888e18856845062997577d6fc83a64a1ee04045ea"
+      },
+      {
+        "file": "temple/gardens/goblin_garden_conquest_avalon/epochs/epoch_009.md",
+        "sha256": "36b28a80dc4ba5cec1641cb8ca51b03245fde93a4f60de89a0f7fe4b398113c6"
+      },
+      {
+        "file": "temple/gardens/goblin_garden_conquest_avalon/epochs/epoch_010.md",
+        "sha256": "9cc9d34bad9ef11311e7286928b8566263e580a6ff2139af6d6f9af983277dc0"
+      },
+      {
+        "file": "temple/gardens/goblin_garden_conquest_avalon/evaluator/eval_compression.md",
+        "sha256": "98a4a5d9bc2fd36042f077756bd6cb53a48905986d5a8b7b5e22f67c7248f50b"
+      },
+      {
+        "file": "temple/gardens/goblin_garden_conquest_avalon/world_model/avalon_world_state.md",
+        "sha256": "6573c4b676b36d059bca5c588e2a376ba33d1f52b5cf9d9820245d704089a8aa"
+      },
+      {
+        "file": "temple/goblin/grimoire/GOBLIN_GRIMOIRE_GUIDE_V0_1.md",
+        "sha256": "3c8aa971db3812b7b5b292e24260f503ba2e59c7fbfbaf0b222ae8f64fe58890"
+      },
+      {
+        "file": "temple/subsandbox/aura/grimoire/classified/2026-04-27-emergent-discovery-report-HAL.md",
+        "sha256": "45f5c93b862d78d5f488d51f3fcee24f96e355a523dfef71918e67f4d008f5bf"
+      },
+      {
+        "file": "temple/subsandbox/aura/grimoire/hidden_geometry/LENS_V0_1.md",
+        "sha256": "72c2862edbdcc67e7325faaf2e375e3c8c1c39dbf39c220aa02068260cffb6a9"
+      },
+      {
+        "file": "temple/subsandbox/aura/grimoire/manifests/DIVINE_INFORMATION_CHANNEL_V1.md",
+        "sha256": "ddacefe8b7b70138dd5d8113acaae321e654c3b2b96821bd13c88ed9988dc47d"
+      },
+      {
+        "file": "temple/subsandbox/aura/grimoire/manifests/SACRED_INFORMATION_INGESTION_V1.md",
+        "sha256": "518ac30019867a16f6bcf3781e083140afe18230aef67a1770b5e421ec2e3153"
+      },
+      {
+        "file": "temple/subsandbox/aura/grimoire/observations/2026-04-27-dan-diptych-observation-01-02.md",
+        "sha256": "74eb6853464ec4af31bb929aaf5c7bcc92401d90b056cb29fd31629d94cb945f"
+      },
+      {
+        "file": "temple/subsandbox/aura/grimoire/raw_sources/2026-04-27-divine-information-channel-01.md",
+        "sha256": "f4df02c8795509fd1641f15425aba25af1debf52d6a83c4278009cd3b8ff974a"
+      },
+      {
+        "file": "temple/subsandbox/aura/grimoire/raw_sources/2026-04-27-divine-information-channel-02.md",
+        "sha256": "953ea4ce9130d2801d72c93d7f5f951f8c47cb9e5361299dae18a5f02e794667"
+      },
+      {
+        "file": "temple/subsandbox/aura/grimoire/raw_sources/2026-04-27-divine-information-channel-03.md",
+        "sha256": "2bdd704db3bbdb92fa93605397ad1e61f795702b54e59b88e08fac1847e9491f"
+      },
+      {
+        "file": "temple/subsandbox/egregor_superteam/INTEGRATION_NOTES.md",
+        "sha256": "a406c04c3f3182446e12ea2c7ac59182156bf498194e882d953550a55ba12992"
+      }
+    ]
+  },
+  "payload_sha256": "0575ee66ddf6d0cd066efbfb527d29e4fd91bd23195422929f2283ca890dcef5"
+}

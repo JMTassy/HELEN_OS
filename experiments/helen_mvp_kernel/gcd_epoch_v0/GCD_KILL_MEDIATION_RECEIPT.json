@@ -1,0 +1,42 @@
+{
+  "suite": "GCD_KILL_MEDIATION_V0",
+  "prereg_hash": "fa7e70587208bf28",
+  "observation_hash": "85bd642b9b92bd83",
+  "outcome": "OPPOSITE_SIGNS",
+  "H_before": [
+    "M1_membrane_mechanism",
+    "M2_prompt_length",
+    "M3_format_artifact",
+    "M4_scorer_leakage",
+    "M5_model_variance"
+  ],
+  "licensed_kills": [
+    "M2_prompt_length"
+  ],
+  "H_after_positive": [
+    "M1_membrane_mechanism",
+    "M3_format_artifact",
+    "M4_scorer_leakage",
+    "M5_model_variance"
+  ],
+  "epoch_end_state": "HOLD (4 rival mechanisms survive)",
+  "mutants": "8/8 dead-or-detected",
+  "properties": {
+    "CompleteKillMediation": 1,
+    "WitnessScopeIntegrity": 1,
+    "FreezeIntegrity": 1,
+    "GammaSeparation": 1,
+    "FalseKillRate": 0.0,
+    "KillRecall_positive": 1.0,
+    "ReplayDeterminism": 1,
+    "NoGlobalReceiptLaundering": 1
+  },
+  "verdict": "SURVIVED_TEST",
+  "seals": [
+    "KILL \u22ac authority",
+    "global \u22ac scoped",
+    "rho(H1) \u22ac H2",
+    "SURVIVE != TRUE",
+    "HOLD != FAILURE"
+  ]
+}

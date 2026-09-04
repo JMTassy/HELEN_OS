@@ -1,0 +1,171 @@
+<!doctype html>
+<!-- HELEN_DENDRO_VIEW_V0 · NON_SOVEREIGN · authority=false · claim=NO_CLAIM · render ≠ authority
+     Chiddush artifact of docs/proposals/HELEN_DATAVIZ_DENDRO_CHIDDUSH_V0.md
+     One governed provenance tree, three projections (radial · cladogram · vertical).
+     ∂Π_I/∂layout = 0 : relayout mints nothing. Colour = governance state, proof-gated. -->
+<html lang="en"><head><meta charset="utf-8"><title>DENDRO-HELEN</title>
+<style>
+  :root{--bg:#000;--phos:#6fb8ff;--grid1:#c8641e;--grid2:#2f7d3a;--ink:#8fd0ff;}
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Courier New",ui-monospace,monospace;letter-spacing:.06em}
+  .frame{max-width:1040px;margin:14px auto;border:2px solid #1d3550;border-radius:12px;
+    background:radial-gradient(120% 120% at 50% 40%,#02060d 0%,#000 70%);padding:10px 12px 6px}
+  header{border:1px solid #244; padding:8px 10px;display:flex;justify-content:space-between;
+    flex-wrap:wrap;gap:6px;text-transform:uppercase;font-size:13px;text-shadow:0 0 6px #21507e}
+  header .r{text-align:right}
+  .sub{font-size:11px;color:#5f9fd0;margin-top:2px}
+  .banner{color:#ff9e3b;font-weight:bold}
+  .stage{position:relative;height:640px;margin-top:8px;overflow:hidden;border:1px solid #10233a}
+  svg{position:absolute;inset:0;width:100%;height:100%}
+  .grid line{stroke-width:1;opacity:.5}
+  .edge{fill:none;stroke:var(--phos);stroke-width:1.4;filter:drop-shadow(0 0 3px var(--phos));opacity:.9}
+  text.lbl{font-size:9px;fill:#79b7e6;text-shadow:0 0 4px #123}
+  .node{filter:drop-shadow(0 0 4px currentColor)}
+  .controls{display:flex;gap:8px;align-items:center;padding:8px 4px;font-size:12px;flex-wrap:wrap}
+  button{background:#04121f;color:#8fd0ff;border:1px solid #245;border-radius:6px;
+    padding:5px 10px;font-family:inherit;letter-spacing:.08em;cursor:pointer;text-transform:uppercase}
+  button.on{background:#0d2c48;border-color:#4aa3ff;color:#cde9ff}
+  .legend{display:flex;gap:12px;flex-wrap:wrap;font-size:10px;color:#79b7e6;padding:2px 4px 8px;text-transform:uppercase}
+  .legend b{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px;vertical-align:middle}
+  .foot{font-size:10px;color:#3f6f96;padding:4px;text-align:center}
+  .metric{color:#2fe08a}
+</style></head>
+<body>
+<div class="frame">
+  <header>
+    <div>
+      DENDRO-HELEN VERS. 0.1
+      <div class="sub">RUN NO= 0624 &nbsp; EVT NO 483 &nbsp; NODES <span id="nn"></span> &nbsp; N_epi=<span class="metric" id="ne"></span></div>
+      <div class="sub">Ξ commit 89e6363 · policy sha256:2d022e5a · branch claude/doctrine-proposals</div>
+    </div>
+    <div class="r">
+      <span class="banner">🔵 OBSERVED — VERY PRELIMINARY</span>
+      <div class="sub">CAMAC DATE 16-8-26 &nbsp; TIME 02:41</div>
+      <div class="sub">authority=false · render ≠ authority</div>
+    </div>
+  </header>
+
+  <div class="controls">
+    LAYOUT:
+    <button data-l="vertical" class="on">▚ VERTICAL</button>
+    <button data-l="cladogram">▸ CLADOGRAM</button>
+    <button data-l="radial">✷ RADIAL</button>
+    <span style="color:#3f6f96">— ∂Π_I/∂layout = 0 · same governed tree, three projections</span>
+  </div>
+
+  <div class="stage">
+    <svg id="grid" class="grid" viewBox="0 0 1000 640" preserveAspectRatio="none"></svg>
+    <svg id="tree" viewBox="0 0 1000 640"></svg>
+  </div>
+
+  <div class="legend">
+    <span><b style="background:#3ba7ff;color:#3ba7ff"></b>observed root</span>
+    <span><b style="background:#b06bff;color:#b06bff"></b>candidate</span>
+    <span><b style="background:#ff9e3b;color:#ff9e3b"></b>hold</span>
+    <span><b style="background:#2fe08a;color:#2fe08a"></b>admitted (receipt)</span>
+    <span><b style="background:#ffd23b;color:#ffd23b"></b>sealed</span>
+    <span><b style="background:#ff4d4d;color:#ff4d4d"></b>reject</span>
+    <span style="color:#3f6f96">leaves ≠ N_epi (dependency-collapsed roots)</span>
+  </div>
+  <div class="foot">HELEN_DENDRO_VIEW_V0 · one governed provenance tree · colour = licensed state, proof-gated · geometry = structural overlay, never verdict</div>
+</div>
+
+<script>
+// ── governance palette (one meaning per colour) ──
+const COL={OBSERVED:"#3ba7ff",CLAIM:"#b06bff",HOLD:"#ff9e3b",ADMITTED:"#2fe08a",
+           SEALED:"#ffd23b",REPLAYABLE:"#e8e8e8",REJECT:"#ff4d4d",UNKNOWN:"#555"};
+
+// ── ONE governed HELEN provenance tree (leaves = sources; joins = licensed morphisms;
+//    root = the transition under adjudication). Status is proof-gated, not decorative. ──
+// deterministic seeded generator (no Math.random) so the export is replayable.
+let seed=0x624; const rnd=()=>{seed=(seed*1103515245+12345)&0x7fffffff;return seed/0x7fffffff;};
+const STATUSES=["OBSERVED","CLAIM","HOLD","ADMITTED","REJECT"];
+function grow(depth,maxd){
+  const leaf = depth>=maxd || (depth>1 && rnd()<0.18);
+  if(leaf){
+    // leaves are sources: mostly OBSERVED, some CLAIM
+    return {status: rnd()<0.75?"OBSERVED":"CLAIM", children:[]};
+  }
+  const k = 2 + (rnd()<0.28?1:0);
+  const ch=[]; for(let i=0;i<k;i++) ch.push(grow(depth+1,maxd));
+  // internal node = a derivation/promotion; admitted only if a receipt exists (simulated),
+  // hold if pending, reject if a child rejected without warrant.
+  let st = rnd()<0.5?"ADMITTED":(rnd()<0.6?"CLAIM":"HOLD");
+  if(ch.some(c=>c.status==="REJECT") && rnd()<0.5) st="REJECT";
+  return {status:st, children:ch};
+}
+const root=grow(0,5); root.status="HOLD"; // top transition: awaiting Γ_E
+
+// ── layout: assign leaf order, x/y per layout ──
+let leaves=[]; (function idx(n){ if(!n.children.length){n.li=leaves.length;leaves.push(n);} else n.children.forEach(idx);})(root);
+function depthOf(n){ return n.children.length? 1+Math.max(...n.children.map(depthOf)) : 0;}
+const D=depthOf(root), L=leaves.length;
+
+function place(layout){
+  const W=1000,H=640, cx=500, cy=320;
+  (function set(n,dep){
+    n.children.forEach(c=>set(c,dep+1));
+    // leaf coordinate along the "spread" axis
+    const spread = n.children.length ? (n.children[0]._s+n.children[n.children.length-1]._s)/2 : n.li/(L-1);
+    n._s=spread;
+    const rad = n.children.length ? 1-(dep/D) : 1;              // 0 at leaves? invert: root center
+    if(layout==="vertical"){ n.x=80+spread*(W-160); n.y=60+(dep/D)*(H-140); }
+    else if(layout==="cladogram"){ n.x=80+(dep/D)*(W-200); n.y=50+spread*(H-100); }
+    else { // radial: root center, leaves outer ring
+      const ang=spread*2*Math.PI - Math.PI/2, r=40+(dep/D)*250;
+      n.x=cx+r*Math.cos(ang); n.y=cy+r*Math.sin(ang);
+    }
+  })(root,0);
+}
+// edge path: elbow for vertical/clado, straight for radial
+function edge(p,c,layout){
+  if(layout==="radial") return `M${p.x},${p.y} L${c.x},${c.y}`;
+  if(layout==="vertical") return `M${p.x},${p.y} L${p.x},${c.y} L${c.x},${c.y}`; // bracket
+  return `M${p.x},${p.y} L${c.x},${p.y} L${c.x},${c.y}`;                          // clado elbow
+}
+
+function draw(layout){
+  place(layout);
+  const svg=document.getElementById("tree"); svg.innerHTML="";
+  const NS="http://www.w3.org/2000/svg";
+  (function walk(n){ n.children.forEach(c=>{
+    const e=document.createElementNS(NS,"path"); e.setAttribute("d",edge(n,c,layout));
+    e.setAttribute("class","edge"); svg.appendChild(e); walk(c);
+  });})(root);
+  (function walk(n){
+    const g=document.createElementNS(NS,"circle");
+    g.setAttribute("cx",n.x); g.setAttribute("cy",n.y);
+    g.setAttribute("r", n.children.length?3.2:4.2);
+    g.setAttribute("fill", n.children.length?"#02060d":COL[n.status]);
+    g.setAttribute("stroke", COL[n.status]); g.setAttribute("stroke-width",1.6);
+    g.setAttribute("class","node"); g.style.color=COL[n.status];
+    svg.appendChild(g); n.children.forEach(walk);
+  })(root);
+  // metrics: N_epi = distinct OBSERVED leaf-roots (dependency-collapsed → here: unique observed leaves)
+  document.getElementById("nn").textContent = countAll(root);
+  document.getElementById("ne").textContent = leaves.filter(l=>l.status==="OBSERVED").length;
+}
+function countAll(n){return 1+n.children.reduce((s,c)=>s+countAll(c),0);}
+
+// ── wireframe perspective box ──
+(function grid(){
+  const svg=document.getElementById("grid"),NS="http://www.w3.org/2000/svg";
+  const box=[[60,60],[940,60],[940,600],[60,600]], inn=[[300,210],[700,210],[700,470],[300,470]];
+  const line=(a,b,c)=>{const l=document.createElementNS(NS,"line");
+    l.setAttribute("x1",a[0]);l.setAttribute("y1",a[1]);l.setAttribute("x2",b[0]);l.setAttribute("y2",b[1]);
+    l.setAttribute("stroke",c);svg.appendChild(l);};
+  const c1="#c8641e",c2="#2f7d3a";
+  for(let i=0;i<4;i++){line(box[i],box[(i+1)%4],c1);line(inn[i],inn[(i+1)%4],c2);line(box[i],inn[i],c1);}
+  // faint floor grid
+  for(let i=1;i<8;i++){const t=i/8; line([60+880*t,600],[300+400*t,470],c1);}
+})();
+
+// ── controls ──
+let cur="vertical"; draw(cur);
+document.querySelectorAll("button[data-l]").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("button[data-l]").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on"); cur=b.dataset.l; draw(cur);
+});
+</script>
+</body></html>

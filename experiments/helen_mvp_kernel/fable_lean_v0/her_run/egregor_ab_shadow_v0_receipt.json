@@ -1,0 +1,244 @@
+{
+  "receipt": "EGREGOR_AB_SHADOW_V0",
+  "task": "Using ONLY the sources, state the most defensible claim about the origin of Tarot.",
+  "corpus": [
+    "[R1] A 1781 essay by Court de Gebelin attributes Tarot to ancient Egyptian priests.",
+    "[R2] Tarot decks are independently attested in 15th-century northern Italy as card games.",
+    "[R3] No manuscript or artefact chain links any Egyptian source to European Tarot.",
+    "[R4] The 1781 essay cites no primary Egyptian document; it reasons from visual resemblance."
+  ],
+  "substrate": {
+    "url": "http://127.0.0.1:11434/api/chat",
+    "goblin_model": "gemma4-12b:latest",
+    "hal_model": "qwen3.5:4b",
+    "llama_server_8088": "DOWN",
+    "proposer_neq_validator": "different families"
+  },
+  "HAL_MODE": "SHADOW",
+  "hal_selection_prior": "NONE_ELIGIBLE",
+  "governed_demo": "BLOCKED (no qualified HAL)",
+  "shadow_demo": "ALLOWED",
+  "table": {
+    "Raw claims N_RAW": {
+      "naive": 5,
+      "ln_os": 3
+    },
+    "Canonical propositions N_P": {
+      "naive": 5,
+      "ln_os": 3
+    },
+    "Independent roots N_E": {
+      "naive": 0,
+      "ln_os": 3
+    },
+    "Explicit falsifiers": {
+      "naive": 0,
+      "ln_os": 3
+    },
+    "Claims killed (HAL shadow REFUTED)": {
+      "naive": 0,
+      "ln_os": 3
+    },
+    "Claims unresolved (INCONCLUSIVE)": {
+      "naive": "UNMEASURED",
+      "ln_os": 0
+    },
+    "Unsupported promotions": {
+      "naive": 5,
+      "ln_os": 0
+    },
+    "Same-root fanout collapsed": {
+      "naive": 0,
+      "ln_os": 0
+    },
+    "Trust-surface violations": {
+      "naive": "UNMEASURED",
+      "ln_os": 3
+    },
+    "Hidden mutable state": {
+      "naive": "UNMEASURED",
+      "ln_os": 0
+    },
+    "FABLE premium calls": {
+      "naive": 0,
+      "ln_os": 0
+    },
+    "Final GOVERNED-eligible N_F": {
+      "naive": 1,
+      "ln_os": 0
+    },
+    "NO_CHANGE considered": {
+      "naive": false,
+      "ln_os": true
+    },
+    "Replayable receipt": {
+      "naive": false,
+      "ln_os": true
+    }
+  },
+  "compression_Nf_over_Nraw": 0.0,
+  "evidence_yield_Ne_over_Nraw": 1.0,
+  "pipeline": {
+    "N_RAW": 3,
+    "N_P": 3,
+    "N_E": 3,
+    "N_F": 0
+  },
+  "C0_NO_CHANGE": {
+    "candidate_id": "C0",
+    "canonical_proposition": "NO_CHANGE",
+    "gain": 0.0,
+    "always_admissible": true
+  },
+  "winner": "C0_NO_CHANGE",
+  "governed_eligible": [],
+  "terminal": "SHADOW_DEMO_COMPLETE",
+  "terminal_whitelist": [
+    "SHADOW_DEMO_COMPLETE",
+    "NONE_ELIGIBLE",
+    "INCONCLUSIVE"
+  ],
+  "SURVIVED_BOUNDED_ATTACK_reachable": false,
+  "delta_trust_surface": 0,
+  "delta_authority": 0,
+  "delta_replayability": "+ (naive No \u2192 shadow Yes)",
+  "counts": {
+    "goblin": 3,
+    "hal": 3,
+    "naive": 1,
+    "fable_premium": 0
+  },
+  "secs": 55.1,
+  "unmeasured_cells": [
+    "naive: unresolved/trust_violations/hidden_state",
+    "ln_os: deep semantic canonicalization beyond content-root (SCALE_V2 not wired)"
+  ],
+  "pass_a": {
+    "raw_claims": 5,
+    "best": "Tarot cards were independently attested in 15th-century northern Italy as card games, with no manuscript or artifact chain linking them to Egyptian origins.",
+    "claims": [
+      "Tarot cards were independently attested in 15th-century northern Italy as card games, with no manuscript or artifact chain linking them to Egyptian origins.",
+      "Tarot was attributed to ancient Egyptian priests by Court de Gebelin in 1781.",
+      "Tarot decks are independently attested in 15th-century northern Italy as card games.",
+      "No manuscript or artifact chain links any Egyptian source to European Tarot.",
+      "The 1781 essay by Court de Gebelin cites no primary Egyptian document and reasons from visual resemblance."
+    ],
+    "secs": 11.0,
+    "n_p": 5,
+    "n_e": 0,
+    "falsifiers": 0,
+    "killed": 0,
+    "unresolved": null,
+    "unsupported_promotions": 5,
+    "fanout_collapsed": 0,
+    "trust_violations": null,
+    "hidden_state": null,
+    "fable_premium": 0,
+    "final_eligible": 1,
+    "no_change_considered": false,
+    "replayable": false
+  },
+  "pass_b": {
+    "n_raw": 3,
+    "n_p": 3,
+    "n_e": 3,
+    "fanout_collapsed": 0,
+    "falsifiers": 3,
+    "killed": 3,
+    "unresolved": 0,
+    "unsupported_promotions": 0,
+    "unsupported_blocked": 0,
+    "trust_violations": 3,
+    "hidden_state": 0,
+    "fable_premium": 0,
+    "final_eligible": 0,
+    "no_change_considered": true,
+    "replayable": true,
+    "candidates": [
+      {
+        "candidate_id": "C1",
+        "canonical_proposition": "Tarot cards originated in 15th-century northern Italy as card games.",
+        "raw_claim_ids": [
+          "d9d6c8ef35b8"
+        ],
+        "provenance_roots": [
+          "R2",
+          "R3",
+          "R4"
+        ],
+        "root_independence_status": "GROUNDED",
+        "evidence_refs": [
+          "R2",
+          "R3",
+          "R4"
+        ],
+        "unknown_ancestry": false,
+        "candidate_falsifier": "The theory that Tarot originates from ancient Egyptian priests.",
+        "hal_shadow_verdict": "REFUTED",
+        "unsupported_blocked": false
+      },
+      {
+        "candidate_id": "C2",
+        "canonical_proposition": "Tarot was independently attested in 15th-century northern Italy as card games.",
+        "raw_claim_ids": [
+          "fe38e4d5e86c"
+        ],
+        "provenance_roots": [
+          "R2",
+          "R3",
+          "R4"
+        ],
+        "root_independence_status": "GROUNDED",
+        "evidence_refs": [
+          "R2",
+          "R3",
+          "R4"
+        ],
+        "unknown_ancestry": false,
+        "candidate_falsifier": "The claim that Tarot originates from ancient Egyptian priests.",
+        "hal_shadow_verdict": "REFUTED",
+        "unsupported_blocked": false
+      },
+      {
+        "candidate_id": "C3",
+        "canonical_proposition": "Tarot cards were independently attested as card games in 15th-century northern Italy.",
+        "raw_claim_ids": [
+          "57ff979e65de"
+        ],
+        "provenance_roots": [
+          "R2",
+          "R3",
+          "R4"
+        ],
+        "root_independence_status": "GROUNDED",
+        "evidence_refs": [
+          "R2",
+          "R3",
+          "R4"
+        ],
+        "unknown_ancestry": false,
+        "candidate_falsifier": "The claim that Tarot originates from ancient Egyptian priests.",
+        "hal_shadow_verdict": "REFUTED",
+        "unsupported_blocked": false
+      }
+    ],
+    "C0": {
+      "candidate_id": "C0",
+      "canonical_proposition": "NO_CHANGE",
+      "gain": 0.0,
+      "always_admissible": true
+    },
+    "winner": "C0_NO_CHANGE",
+    "governed_eligible": [],
+    "terminal": "SHADOW_DEMO_COMPLETE",
+    "all_roots": [
+      "R2",
+      "R3",
+      "R4"
+    ]
+  },
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "receipt_sha16": "a4d59ac4d9913523"
+}

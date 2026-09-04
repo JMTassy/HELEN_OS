@@ -1,0 +1,10 @@
+# FROZEN COMPLETE_EPISTEMIC_MEDIATION_V0 (extended: ExperimentalBasis B_E + writer census) — audit-green
+# 11 canonical mutants + 4 hardening (dup-warrant, basis scorer/model/threshold drift) all KILLED
+# ExperimentalBasis basis_hash binds H_t,D_pre,O_schema,Scorer,UpdateRule,Thresholds,ModelConfig,DatasetSlice,PolicyVersion
+# writer_census: direct_H_writer_paths=1 authorized={reduce_hypotheses} H_after_source=REDUCER_ONLY
+# gold_source=STATIC_PREREG_FIXTURE gold_runtime_shared=false · targeted=20 repository=83 · HEAD: 0bdbf06c270ef4cb5fac128507be06bb40449572
+# LICENSED CLAIM ONLY: within this implementation + mutation suite, tested contractions are mediated by
+#   independently-validated KillReceipts and reducer-derived replay. NOT: complete mediation proven globally
+#   (that needs a repo-wide writer census beyond this module).
+bbd65a91d1073686e080adc387a16fdac7655e3c33bbc6bbd3bce0a08048ee8a  helen_os/kernel/complete_epistemic_mediation_v0.py
+e9bfff8e2c683531b5a8a1cd88f6def27bb5f98e4ad0431d1e00f8687d9b9f5e  helen_os/tests/test_complete_epistemic_mediation_v0.py

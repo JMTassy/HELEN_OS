@@ -1,0 +1,42 @@
+{
+  "phase": "2K_SMOKE",
+  "prompt": "Return ONLY valid JSON: {\"status\":\"ok\",\"model\":\"qwen3.8\",\"authority\":false}",
+  "common_params": { "ctx": 2048, "n_predict": 64, "temperature": 0, "seed": 0, "reasoning": "off", "single_turn": true },
+  "attempts": [
+    {
+      "ngl": 32,
+      "load_success": true,
+      "exit_code": 0,
+      "wall_time_s": 70.76,
+      "tokens_per_second": null,
+      "peak_rss_bytes": 7097663488,
+      "metal_oom": true,
+      "error_class": "kIOGPUCommandBufferCallbackErrorOutOfMemory (ggml_metal_synchronize, command buffer status 5)",
+      "raw_output": "|- Error: Compute error.  [ Prompt: nan t/s | Generation: nan t/s ]",
+      "valid_json": false,
+      "expected_schema": false,
+      "clean_exit": true,
+      "verdict": "FAIL"
+    },
+    {
+      "ngl": 16,
+      "load_success": true,
+      "exit_code": 0,
+      "wall_time_s": 74.14,
+      "tokens_per_second": null,
+      "peak_rss_bytes": 11528552448,
+      "metal_oom": true,
+      "metal_oom_event_count": 29,
+      "error_class": "kIOGPUCommandBufferCallbackErrorOutOfMemory (ggml_metal_synchronize, command buffer status 5)",
+      "raw_output": "|- Error: Compute error.  [ Prompt: nan t/s | Generation: nan t/s ]",
+      "valid_json": false,
+      "expected_schema": false,
+      "clean_exit": true,
+      "verdict": "FAIL"
+    }
+  ],
+  "memory_pressure_after": "78% free (model unloaded cleanly)",
+  "note": "Exit code 0 in both runs is llama-cli's interactive-shell exit code, not a success signal; generation aborted with 'Compute error' and nan t/s in both attempts. No further ngl values attempted per no-brute-force rule.",
+  "raw_logs": ["/tmp/qwen_smoke_2k.out", "/tmp/qwen_smoke_2k.err", "/tmp/qwen_smoke_2k_ngl16.out", "/tmp/qwen_smoke_2k_ngl16.err"],
+  "verdict": "FAIL"
+}

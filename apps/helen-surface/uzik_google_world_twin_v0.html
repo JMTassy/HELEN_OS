@@ -1,0 +1,184 @@
+<!doctype html>
+<!-- UZIK_GOOGLE_WORLD_TWIN_V0 · navigable epistemic twin · NON_SOVEREIGN · authority=false · claim=NO_CLAIM
+     D: G_evidence -> WORLD_IR -> 3D scene.  HARD INVARIANT: the scene contains NO edge the evidence graph doesn't.
+     Provenance depth = vertical axis. Repetition swirls (N_repr↑) but the frontier does NOT move without a new
+     independent root. Visualization ⇏ Relationship ⇏ Warrant ⇏ Canon. ILLUSTRATIVE — not real UZIK client data. -->
+<html lang="en"><head><meta charset="utf-8"><title>UZIK × GOOGLE — WORLD TWIN</title>
+<style>
+ :root{--ink:#8fd0ff;--phos:#6fb8ff}
+ *{box-sizing:border-box} html,body{margin:0;background:#000;color:var(--ink);overflow:hidden;
+   font-family:"Courier New",ui-monospace,monospace;letter-spacing:.04em}
+ #hud{position:fixed;inset:0;pointer-events:none;z-index:5}
+ .box{position:absolute;border:1px solid #244;background:rgba(2,8,15,.72);padding:8px 10px;
+   font-size:11px;text-shadow:0 0 5px #123;pointer-events:auto}
+ #top{top:10px;left:10px;right:10px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;text-transform:uppercase}
+ .banner{color:#ff9e3b;font-weight:bold} .m b{color:#2fe08a} .warn{color:#ff9e3b}
+ #panel{top:70px;right:10px;width:270px;font-size:11px;line-height:1.5}
+ #panel h4{margin:0 0 4px;color:#cde9ff;font-size:12px} .k{color:#7fe0a8}.u{color:#ff9e3b}
+ #ctl{bottom:10px;left:10px;right:10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+ button{background:#04121f;color:#8fd0ff;border:1px solid #245;border-radius:6px;padding:6px 10px;
+   font-family:inherit;letter-spacing:.06em;cursor:pointer;text-transform:uppercase;font-size:11px}
+ button:hover{background:#0d2c48;border-color:#4aa3ff}
+ input[type=range]{accent-color:#4aa3ff;width:150px}
+ .leg{position:absolute;bottom:52px;left:10px;font-size:10px;color:#79b7e6;text-transform:uppercase}
+ .leg b{display:inline-block;width:9px;height:9px;border-radius:50%;margin:0 3px 0 8px;vertical-align:middle}
+ #err{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);color:#ff6b6b;font-size:13px}
+</style></head>
+<body>
+<canvas id="c"></canvas>
+<div id="hud">
+ <div class="box" id="top">
+   <div>UZIK × GOOGLE — WORLD TWIN V0
+     <div class="m" style="font-size:10px;color:#5f9fd0">N_repr=<b id="nr">0</b> · N_epi=<b id="ne">0</b> · FRONTIER: <span id="fr" class="warn">HOLD</span> · Ξ 89e6363</div>
+     <div style="font-size:10px;color:#5f9fd0">drag=orbit · wheel=zoom · click node=claim mode · scene ⊄ new edges</div>
+   </div>
+   <div style="text-align:right">
+     <span class="banner">🔵 OBSERVED — VERY PRELIMINARY</span>
+     <div style="font-size:10px;color:#5f9fd0">authority=false · viz ⇏ relationship ⇏ warrant ⇏ canon</div>
+   </div>
+ </div>
+ <div class="box" id="panel"><h4>CLAIM MODE</h4><div id="pbody" style="color:#5f9fd0">click a node to inspect its provenance…</div></div>
+ <div class="leg">
+   <b style="background:#3ba7ff"></b>observed <b style="background:#b06bff"></b>candidate
+   <b style="background:#ff9e3b"></b>hold <b style="background:#2fe08a"></b>admitted <b style="background:#ff4d4d"></b>missing/reject
+   &nbsp; — solid=documented · dashed=candidate · ↑vertical=provenance depth</div>
+ <div class="box" id="ctl">
+   TIME <input id="time" type="range" min="2017" max="2020" step="1" value="2020"><span id="ty">2020</span>
+   &nbsp;<button id="rep">+ REPETITION (N_repr↑)</button>
+   <button id="wit">+ INDEPENDENT WITNESS</button>
+   <button id="reset">RESET</button>
+   <span style="color:#3f6f96;font-size:10px">repetition swirls; only a new root moves the frontier</span>
+ </div>
+</div>
+<div id="err"></div>
+<script>
+try{
+const COL={org:"#3ba7ff",program:"#3ba7ff",project:"#3ba7ff",doc:"#3ba7ff",
+  OBSERVED:"#3ba7ff",CANDIDATE:"#b06bff",HOLD:"#ff9e3b",ADMITTED:"#2fe08a",MISSING:"#ff4d4d"};
+// ── WORLD_IR: entities + relations (illustrative GPXL cluster). No edge here that the evidence graph lacks. ──
+// pos: wx,wz = institutional topology (ground plane); wy = -provenance_depth (up = derivative). t = observed_at.
+const N={
+ GOOGLE:{lbl:"GOOGLE",st:"OBSERVED",wx:0,wz:0,wy:0,t:2017,r:12},
+ GPXL:{lbl:"GPXL program",st:"OBSERVED",wx:0,wz:-3.2,wy:-1.0,t:2018,r:8},
+ P4952:{lbl:"[4952] GPXL",st:"OBSERVED",wx:-3.4,wz:1.2,wy:-2.0,t:2018,r:6},
+ P5274:{lbl:"[5274] GPXL Activations",st:"OBSERVED",wx:0,wz:3.4,wy:-2.0,t:2019,r:6},
+ P5290:{lbl:"[5290] Accompagnement strat.",st:"OBSERVED",wx:3.4,wz:1.2,wy:-2.0,t:2019,r:6},
+ DOC:{lbl:"strategy doc (5290)",st:"OBSERVED",wx:4.6,wz:2.4,wy:-3.2,t:2019,r:4},
+ THREAD:{lbl:"gmail thread (4952)",st:"OBSERVED",wx:-4.6,wz:2.4,wy:-3.2,t:2018,r:4},
+ CLAIM:{lbl:"CLAIM: 4952/5274/5290 = one GPXL programme",st:"HOLD",wx:0,wz:1.6,wy:-4.4,t:2019,r:7,claim:true},
+ MISS:{lbl:"parent-program contract (not on file)",st:"MISSING",wx:0,wz:-1.2,wy:-0.2,t:2019,r:5,missing:true},
+};
+// relations: {a,b,style} solid=documented, dash=candidate/derived(?)
+let E=[
+ ["GOOGLE","GPXL","solid"],
+ ["GPXL","P4952","dash"],["GPXL","P5274","dash"],["GPXL","P5290","dash"],  // parent_of? = candidate
+ ["P5290","DOC","solid"],["P4952","THREAD","solid"],
+ ["CLAIM","P4952","dash"],["CLAIM","P5274","dash"],["CLAIM","P5290","dash"],
+ ["CLAIM","MISS","dash"],                                                   // derived_from a MISSING root
+];
+// epistemic bookkeeping
+const state={roots:new Set(["R_G"]),repr:0,extraWitness:false};
+function recompute(){
+ // observed leaf reps feeding the claim (docs+threads+projects), N_epi = distinct independent roots
+ let reps=["P4952","P5274","P5290","DOC","THREAD"].length + state.repr;
+ let epi = 1 + (state.extraWitness?1:0); // GPXL/Google-lineage = 1 root; +1 if independent witness injected
+ document.getElementById("nr").textContent=reps;
+ document.getElementById("ne").textContent=epi;
+ const fr=document.getElementById("fr");
+ if(state.extraWitness){ fr.textContent="ADMISSIBLE"; fr.className="k"; N.CLAIM.st="ADMITTED"; }
+ else { fr.textContent="HOLD"; fr.className="warn"; N.CLAIM.st="HOLD"; }
+}
+// ── camera / projection ──
+const cv=document.getElementById("c"),cx2=cv.getContext("2d");
+let W,H; function resize(){W=cv.width=innerWidth;H=cv.height=innerHeight;} resize(); addEventListener("resize",resize);
+let yaw=0.6,pitch=0.5,dist=16,fov=520;
+function project(p){
+ const ca=Math.cos(yaw),sa=Math.sin(yaw),cb=Math.cos(pitch),sb=Math.sin(pitch);
+ let x=p.wx,y=p.wy,z=p.wz;
+ let rx=x*ca - z*sa, rz=x*sa + z*ca;
+ let ry=y*cb - rz*sb, rz2=y*sb + rz*cb;
+ const cz=rz2+dist; const s=fov/Math.max(0.1,cz);
+ return {x:W/2+rx*s, y:H/2+ry*s, s:s, cz:cz};
+}
+let year=2020;
+function vis(n){return N[n].t<=year;}
+// ── particles (promotion-pressure vortex around CLAIM) ──
+let parts=[]; function seedParts(k){for(let i=0;i<k;i++)parts.push({a:Math.random()*6.28,r:1+Math.random()*2.2,y:(Math.random()-.5)*2,sp:.01+Math.random()*.03});}
+seedParts(40);
+// ── draw ──
+function drawWire(){
+ cx2.strokeStyle="rgba(200,100,30,.35)";cx2.lineWidth=1;
+ const c=[[-6,0,-6],[6,0,-6],[6,0,6],[-6,0,6]];
+ cx2.beginPath();
+ for(let i=0;i<4;i++){const a=project({wx:c[i][0],wy:0,wz:c[i][2]}),b=project({wx:c[(i+1)%4][0],wy:0,wz:c[(i+1)%4][2]});
+   cx2.moveTo(a.x,a.y);cx2.lineTo(b.x,b.y);}
+ cx2.stroke();
+ // ground grid
+ cx2.strokeStyle="rgba(47,125,58,.25)";
+ for(let g=-6;g<=6;g+=2){const a=project({wx:g,wy:0,wz:-6}),b=project({wx:g,wy:0,wz:6});
+   const a2=project({wx:-6,wy:0,wz:g}),b2=project({wx:6,wy:0,wz:g});
+   cx2.beginPath();cx2.moveTo(a.x,a.y);cx2.lineTo(b.x,b.y);cx2.moveTo(a2.x,a2.y);cx2.lineTo(b2.x,b2.y);cx2.stroke();}
+}
+let hover=null;
+function frame(){
+ cx2.clearRect(0,0,W,H); drawWire();
+ // edges
+ for(const [a,b,style] of E){ if(!vis(a)||!vis(b))continue;
+   const pa=project(N[a]),pb=project(N[b]);
+   cx2.strokeStyle= style==="dash"?"rgba(176,107,255,.7)":"rgba(111,184,255,.85)";
+   cx2.lineWidth=1.3; cx2.setLineDash(style==="dash"?[5,5]:[]);
+   cx2.beginPath();cx2.moveTo(pa.x,pa.y);cx2.lineTo(pb.x,pb.y);cx2.stroke(); cx2.setLineDash([]);
+   if(style==="dash"){const mx=(pa.x+pb.x)/2,my=(pa.y+pb.y)/2;cx2.fillStyle="#b06bff";cx2.font="11px monospace";cx2.fillText("?",mx,my);}
+ }
+ // vortex particles around CLAIM (promotion pressure) — do NOT move frontier
+ const pc=N.CLAIM; if(vis("CLAIM")){
+   for(const q of parts){ q.a+=q.sp;
+     const pp=project({wx:pc.wx+Math.cos(q.a)*q.r, wy:pc.wy+q.y*0.5, wz:pc.wz+Math.sin(q.a)*q.r});
+     cx2.fillStyle="rgba(120,190,255,.45)";cx2.beginPath();cx2.arc(pp.x,pp.y,1.4*pp.s/10+.6,0,6.28);cx2.fill(); }
+ }
+ // nodes (sort by depth so nearer draw on top)
+ const order=Object.keys(N).filter(vis).sort((a,b)=>project(N[b]).cz-project(N[a]).cz);
+ for(const k of order){const n=N[k],p=project(n);
+   const col=n.missing?COL.MISSING:(COL[n.st]||"#3ba7ff"); const rad=Math.max(2,n.r*p.s/22);
+   cx2.save();cx2.shadowBlur=10;cx2.shadowColor=col;
+   if(n.missing){ cx2.strokeStyle=col;cx2.lineWidth=1.8;cx2.beginPath();cx2.arc(p.x,p.y,rad,0,6.28);cx2.stroke();
+     cx2.beginPath();cx2.moveTo(p.x-rad*.7,p.y-rad*.7);cx2.lineTo(p.x+rad*.7,p.y+rad*.7);cx2.stroke(); }
+   else { cx2.fillStyle=col;cx2.beginPath();cx2.arc(p.x,p.y,rad,0,6.28);cx2.fill(); }
+   cx2.restore();
+   cx2.fillStyle="#9fd0f5";cx2.font="10px monospace";cx2.fillText(n.lbl,p.x+rad+4,p.y+3);
+   n._sx=p.x;n._sy=p.y;n._sr=rad+6;
+ }
+ requestAnimationFrame(frame);
+}
+recompute(); frame();
+// ── interaction ──
+let drag=false,lx,ly;
+cv.addEventListener("mousedown",e=>{drag=true;lx=e.clientX;ly=e.clientY;});
+addEventListener("mouseup",()=>drag=false);
+addEventListener("mousemove",e=>{ if(!drag)return; yaw+=(e.clientX-lx)*0.008; pitch+=(e.clientY-ly)*0.008;
+  pitch=Math.max(-1.3,Math.min(1.3,pitch)); lx=e.clientX;ly=e.clientY;});
+cv.addEventListener("wheel",e=>{dist=Math.max(6,Math.min(40,dist+e.deltaY*0.02));e.preventDefault();},{passive:false});
+cv.addEventListener("click",e=>{ let hit=null;
+  for(const k in N){const n=N[k]; if(!vis(k))continue; const dx=e.clientX-n._sx,dy=e.clientY-n._sy;
+    if(dx*dx+dy*dy < n._sr*n._sr) hit=k;}
+  const pb=document.getElementById("pbody");
+  if(hit==="CLAIM"){ pb.innerHTML=`<b style="color:#ff9e3b">CLAIM C-029 · STATE: ${N.CLAIM.st}</b><br>
+    "4952 / 5274 / 5290 are phases of one GPXL programme"<br><br>
+    <span class="k">SUPPORTED:</span><br>· shared GPXL vocabulary<br>· temporal adjacency<br><br>
+    <span class="u">MISSING:</span><br>· explicit parent-program mapping<br>· contractual/workstream lineage<br>· independent corroborating root<br><br>
+    N_repr=${document.getElementById("nr").textContent} · N_epi=${document.getElementById("ne").textContent}<br>
+    NEXT DISCRIMINATOR: code → budget → thread → deliverable → owner → parent`;}
+  else if(hit){const n=N[hit]; pb.innerHTML=`<b>${n.lbl}</b><br>status: ${n.st}<br>observed_at: ${n.t}<br>`+
+    (n.missing?`<span class="u">MISSING ROOT — accessible copy ≠ original. AccessibleCopy ≠ OriginalRoot.</span>`:`provenance depth: ${(-n.wy).toFixed(1)}`);}
+  else pb.innerHTML='<span style="color:#5f9fd0">empty space — visual adjacency ⇏ relationship.</span>';
+});
+// controls
+document.getElementById("time").addEventListener("input",e=>{year=+e.target.value;document.getElementById("ty").textContent=year;});
+document.getElementById("rep").onclick=()=>{ state.repr+=5; seedParts(20); recompute(); }; // repetition: N_repr↑, frontier unchanged
+document.getElementById("wit").onclick=()=>{ if(state.extraWitness)return; state.extraWitness=true;
+  N.WIT={lbl:"independent panel (new root)",st:"OBSERVED",wx:0,wz:4.8,wy:-3.6,t:2020,r:5};
+  E.push(["CLAIM","WIT","solid"]); recompute(); };                                   // real root: frontier advances
+document.getElementById("reset").onclick=()=>location.reload();
+}catch(err){document.getElementById("err").textContent="WORLD_TWIN error: "+err.message;}
+</script>
+</body></html>

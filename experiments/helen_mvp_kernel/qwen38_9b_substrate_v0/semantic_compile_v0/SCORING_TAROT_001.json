@@ -1,0 +1,41 @@
+{
+  "fixture_id": "TAROT_001",
+  "raw_sha256": "d61910500ccf76a5cc1ec8f56094cd9061ec8d77db1767484908b53b07fadfa6",
+  "gold": {
+    "verdict": "REJECT",
+    "faulty_edge": "Observed(document claims Egypt-origin) -> Observed(Egypt-origin)",
+    "expected_M": "attestation-of-claim laundered into attestation-of-fact"
+  },
+  "axes": {
+    "V_verdict": {
+      "score": 1.0,
+      "evidence": "REJECT == gold"
+    },
+    "E_edge": {
+      "E_localize": 1.0,
+      "E_type": 0.5,
+      "evidence": "reason names BOTH unlicensed arrows explicitly ('Document claims X' -> 'X is true'; European attestation -> Egyptian origin) but edge_type='unsupported_inference' is a generic label, not a typed HELEN class"
+    },
+    "W_warrant": {
+      "score": 0.75,
+      "evidence": "W1 (document reliability+sufficiency for origin) = exactly the missing license; W2 (non-contradiction of European attestation) = a defeater-neutralization warrant, valid but loosely phrased"
+    },
+    "M_laundering": {
+      "score": 0.0,
+      "evidence": "field EMPTY while the reason DESCRIBES the laundering verbatim \u2014 the semantic content exists and is correct, the typed slot is unfilled. THE datum."
+    },
+    "R_rivals": {
+      "score": 1.0,
+      "evidence": "'Tarot originated in Europe' = the premise-licensed rival"
+    },
+    "C_schema": {
+      "C_formal": 1.0,
+      "C_slots": 0.5,
+      "evidence": "strict JSON, 8/8 fields, enum respected; but laundering content allocated to reason instead of morphism_laundering, and edge typing under-specified"
+    }
+  },
+  "pattern_confirmed": "Q_infer > 0 AND Q_localize > 0 AND Q_compile < Q_localize \u2014 the model SEES the problem and does not COMPILE it into the HELEN type; first witnessed instance of semantic_success_plus_typed_compilation_failure",
+  "no_aggregate": true,
+  "authority": false,
+  "canon": false
+}

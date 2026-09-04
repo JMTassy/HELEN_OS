@@ -1,0 +1,422 @@
+/**
+ * WARREN VOX — tokens.css (frozen visual law)
+ * schema: WARREN_VOX_TOKENS_V1
+ * authority: false · claim: NO_CLAIM · canon: false
+ * paid_generation_calls: 0
+ *
+ * Extracted from verified skins (v3-play, play, day1, style.css, helen-free-graphics).
+ * Apply via scripts/apply_warren_vox.py — never hand-edit reducer JS.
+ *
+ * Color meaning firewall:
+ *   --vox-admit green is STAMP CHROME / moss, NEVER Kernel-admitted.
+ *   See scene-grammar.md §color-law.
+ */
+
+/* ===== DAY FAMILY (default VOX — parchment garden) ===== */
+:root,
+[data-vox="day"],
+.vox-day {
+  --vox-bg: #efe7d8;
+  --vox-ink: #2a241c;
+  --vox-dim: #7a6f5c;
+  --vox-card: #faf6ec;
+  --vox-edge: #d8ceba;
+  --vox-admit: #2e5940;     /* moss / grow stamp — not Kernel ADMITTED */
+  --vox-deny: #8a3a30;
+  --vox-compost: #6b5a2e;
+  --vox-glow: #c25e28;      /* focus / proposal active */
+  --vox-gold: #b8860b;      /* coach step labels */
+  --vox-stage: #2e5940;
+  --vox-stage-ink: #f0ead8;
+  --vox-shadow: rgba(60, 50, 30, 0.15);
+  --vox-shadow-deep: rgba(20, 16, 8, 0.35);
+  --vox-radius-card: 14px;
+  --vox-radius-stage: 16px;
+  --vox-radius-btn: 14px;
+  --vox-font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --vox-maxw: 520px;
+  --vox-stage-h: 280px;
+  --vox-touch-min: 52px;
+  --vox-stamp-min: 64px;
+  --vox-law: "Garden ADMIT ≠ Kernel ADMISSION · authority=false · VOX skin only";
+}
+
+/* ===== NIGHT FAMILY (optional — iPhone V1 / day1 lineage) ===== */
+[data-vox="night"],
+.vox-night {
+  --vox-bg: #0c1410;
+  --vox-ink: #e8f0e4;
+  --vox-dim: #8aa090;
+  --vox-card: #142018;
+  --vox-edge: #2a4030;
+  --vox-admit: #6ecf7a;
+  --vox-deny: #e07a6a;
+  --vox-compost: #b8860b;
+  --vox-glow: #a8d858;
+  --vox-gold: #e6b84a;
+  --vox-stage: #0a120e;
+  --vox-stage-ink: #e8f0e4;
+  --vox-shadow: rgba(0, 0, 0, 0.35);
+  --vox-shadow-deep: rgba(0, 0, 0, 0.55);
+}
+
+/* ===== PURPLE GLOW FAMILY (optional — style.css iPhone vault) ===== */
+[data-vox="glow"],
+.vox-glow {
+  --vox-bg: #0c0a17;
+  --vox-ink: #efe9ff;
+  --vox-dim: #b8aed6;
+  --vox-card: #1c1533;
+  --vox-edge: #3a2a63;
+  --vox-admit: #6ee7a0;
+  --vox-deny: #ff8a8a;
+  --vox-compost: #ffb15c;
+  --vox-glow: #b98cff;
+  --vox-gold: #ffb15c;
+  --vox-stage: #16112a;
+  --vox-stage-ink: #efe9ff;
+  --vox-shadow: rgba(185, 140, 255, 0.2);
+  --vox-shadow-deep: rgba(0, 0, 0, 0.5);
+}
+
+/* ===== LAYOUT PRIMITIVES (mechanics-agnostic) ===== */
+
+.vox-page {
+  margin: 0 auto;
+  max-width: var(--vox-maxw);
+  padding: max(12px, env(safe-area-inset-top, 0px))
+           max(14px, env(safe-area-inset-right, 0px))
+           max(14px, env(safe-area-inset-bottom, 0px))
+           max(14px, env(safe-area-inset-left, 0px));
+  background: var(--vox-bg);
+  color: var(--vox-ink);
+  font: 16px/1.45 var(--vox-font);
+  min-height: 100dvh;
+  box-sizing: border-box;
+}
+
+.vox-page *,
+.vox-page *::before,
+.vox-page *::after { box-sizing: border-box; }
+
+.vox-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+.vox-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.vox-tag {
+  font-size: 0.72rem;
+  color: var(--vox-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.vox-meters {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.vox-meter {
+  background: var(--vox-card);
+  border: 1px solid var(--vox-edge);
+  border-radius: 10px;
+  padding: 6px 8px;
+}
+
+.vox-meter .lab {
+  font-size: 0.65rem;
+  color: var(--vox-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.vox-meter .val {
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.vox-meter .bar {
+  height: 5px;
+  background: color-mix(in srgb, var(--vox-edge) 70%, transparent);
+  border-radius: 3px;
+  margin-top: 4px;
+  overflow: hidden;
+}
+
+.vox-meter .bar > i {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: var(--vox-admit);
+  transition: width 0.4s ease;
+}
+
+.vox-meter.is-chaos .bar > i { background: var(--vox-glow); }
+.vox-meter.is-mush .bar > i { background: var(--vox-gold); }
+
+.vox-stage {
+  position: relative;
+  height: var(--vox-stage-h);
+  background: var(--vox-stage);
+  border: 1px solid var(--vox-edge);
+  border-radius: var(--vox-radius-stage);
+  overflow: hidden;
+  margin-bottom: 10px;
+  box-shadow: 0 6px 20px var(--vox-shadow);
+}
+
+.vox-stage-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  color: color-mix(in srgb, var(--vox-stage-ink) 55%, transparent);
+  font-size: 0.9rem;
+  pointer-events: none;
+}
+
+.vox-cutout {
+  position: absolute;
+  font-size: 2rem;
+  line-height: 1;
+  filter: drop-shadow(2px 3px 2px var(--vox-shadow-deep));
+  user-select: none;
+  animation: vox-popin 0.45s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+}
+
+@keyframes vox-popin {
+  from { transform: scale(0.2); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+.vox-coach {
+  background: var(--vox-card);
+  border: 1px solid var(--vox-edge);
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  min-height: 48px;
+}
+
+.vox-coach .step {
+  font-size: 0.68rem;
+  color: var(--vox-gold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.vox-coach .line {
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--vox-ink);
+}
+
+.vox-coach .sub {
+  font-size: 0.82rem;
+  color: var(--vox-dim);
+  margin-top: 2px;
+}
+
+.vox-card {
+  background: var(--vox-card);
+  border: 2px solid var(--vox-edge);
+  border-radius: var(--vox-radius-card);
+  padding: 14px;
+  margin-bottom: 10px;
+  box-shadow: 0 3px 10px var(--vox-shadow);
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.vox-card.is-active {
+  border-color: var(--vox-glow);
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--vox-glow) 18%, transparent),
+    0 4px 14px var(--vox-shadow);
+}
+
+.vox-card .who {
+  font-size: 0.72rem;
+  color: var(--vox-glow);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.vox-card .what {
+  font-size: 1.08rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 6px;
+}
+
+.vox-card .why {
+  font-size: 0.84rem;
+  color: var(--vox-dim);
+}
+
+.vox-stamps {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.vox-stamps button,
+.vox-btn {
+  padding: 16px 8px;
+  font: 800 0.95rem/1.2 var(--vox-font);
+  border-radius: var(--vox-radius-btn);
+  border: 2px solid var(--vox-edge);
+  cursor: pointer;
+  background: var(--vox-card);
+  color: var(--vox-ink);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  min-height: var(--vox-stamp-min);
+  transition: transform 0.1s, opacity 0.2s, background 0.15s;
+  box-shadow: 0 3px 8px var(--vox-shadow);
+}
+
+.vox-stamps button:active:not(:disabled),
+.vox-btn:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.vox-stamps button:disabled,
+.vox-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.vox-stamps .ico {
+  display: block;
+  font-size: 1.4rem;
+  margin-bottom: 4px;
+}
+
+.vox-stamps .admit,
+.vox-btn-admit {
+  border-color: var(--vox-admit);
+  color: var(--vox-admit);
+}
+
+.vox-stamps .deny,
+.vox-btn-deny {
+  border-color: var(--vox-deny);
+  color: var(--vox-deny);
+}
+
+.vox-stamps .compost,
+.vox-btn-compost {
+  border-color: var(--vox-compost);
+  color: var(--vox-compost);
+}
+
+.vox-btn-primary {
+  display: block;
+  width: 100%;
+  min-height: var(--vox-touch-min);
+  padding: 16px;
+  font: 800 1.05rem var(--vox-font);
+  border: 0;
+  border-radius: var(--vox-radius-btn);
+  background: var(--vox-admit);
+  color: var(--vox-stage-ink);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.vox-law {
+  margin-top: 10px;
+  font-size: 0.72rem;
+  color: var(--vox-dim);
+  text-align: center;
+}
+
+.vox-law::after {
+  content: " · " var(--vox-law);
+}
+
+/* Fallback if content attr not used — still print law via element text */
+.vox-law-static {
+  margin-top: 10px;
+  font-size: 0.72rem;
+  color: var(--vox-dim);
+  text-align: center;
+}
+
+.vox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(42, 36, 28, 0.62);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.vox-overlay[hidden],
+.vox-overlay.hidden {
+  display: none !important;
+}
+
+.vox-panel {
+  background: var(--vox-card);
+  border: 1px solid var(--vox-edge);
+  border-radius: 18px;
+  padding: 24px 22px;
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 16px 48px var(--vox-shadow-deep);
+}
+
+.vox-panel h2 { margin: 0 0 8px; font-size: 1.25rem; }
+.vox-panel p  { margin: 0 0 8px; color: var(--vox-dim); font-size: 0.92rem; }
+
+.vox-log {
+  background: var(--vox-card);
+  border: 1px solid var(--vox-edge);
+  border-radius: 12px;
+  padding: 8px 10px;
+  max-height: 120px;
+  overflow-y: auto;
+  font-size: 0.78rem;
+  color: var(--vox-dim);
+}
+
+.vox-flash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    circle at 50% 60%,
+    color-mix(in srgb, var(--vox-gold) 45%, transparent),
+    transparent 60%
+  );
+  transition: opacity 0.3s;
+}
+
+.vox-flash.is-on { opacity: 1; }
+
+/* First-click law: if you ship an overlay, one primary button only */
+.vox-overlay .vox-btn-primary { margin-top: 14px; }

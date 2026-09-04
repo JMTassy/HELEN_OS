@@ -1,0 +1,26 @@
+{
+  "discriminator_id": "D2_claim_admission",
+  "obligation_class": "May this candidate claim be promoted hypothesis/doctrine -> invariant? (does it carry the REQUIRED admission evidence?)",
+  "predicate": "SchemaValid AND Traceable AND ConstraintCompliant AND NonDegenerate",
+  "distinction_compiled": "evidence PRESENCE != evidence SUFFICIENCY (D1 checks presence; D2 checks sufficiency)",
+  "output_vocabulary": ["BLOCK", "CANDIDATE"],
+  "note_on_output": "CANDIDATE != ADMITTED != INVARIANT. This gate only decides evidence-sufficiency; it does not mint admission or authority.",
+  "domain": {
+    "record_type": "claim_record",
+    "schema_version": "v1",
+    "required_fields": ["claim_type", "evidence_pointer", "evidence_kind", "schema_version"],
+    "traceable_kinds": ["receipt", "code_test", "artifact"],
+    "traceable_pointer_prefixes": ["sha256:", "test:", "artifact:"],
+    "degenerate_markers": ["self", "TODO", "FAKE", ""]
+  },
+  "reason_codes": ["BLOCK:schema_invalid", "BLOCK:not_traceable", "BLOCK:constraint_violation", "BLOCK:degenerate", "CANDIDATE:sufficient"],
+  "gamma_version": "Gamma_v1",
+  "negative_controls": ["doctrine_as_invariant", "proof_language_hypothesis", "impl_claim_no_receipt", "evaluator_output_authority", "fake_traceability", "self_reference"],
+  "quality_floor_q_min": 0.95,
+  "adoption_gate": "adopt iff (agreement >= q_min) AND (false_accepts == 0) AND (C_D_total < C_cognition)",
+  "expiry_drift_conditions": ["schema_version bump", "new required field (e.g. independent_witness)", "reason-code vocabulary change", "Gamma version bump"],
+  "cost_units": {"C_cognition_per_instance": 100, "C_exec": 1, "C_overhead_amortized": 2},
+  "authority": false,
+  "canon": false,
+  "authority_delta": 0
+}

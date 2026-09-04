@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>HELEN OS — Architecture Map</title>
+<style>
+  :root {
+    --bg: #0c0a08; --panel: #16120e; --ink: #efe6d6; --dim: #9a8b78;
+    --gold: #e6b84a; --moss: #6ecf7a; --ember: #e07a4a; --violet: #a78bfa;
+    --edge: #2a2218; --blue: #6ab4d0; --red: #e07070;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font: 15px/1.5 system-ui, -apple-system, sans-serif;
+    background:
+      radial-gradient(ellipse at 10% 0%, rgba(230,184,74,0.08), transparent 40%),
+      radial-gradient(ellipse at 90% 100%, rgba(110,207,122,0.06), transparent 40%),
+      var(--bg);
+    color: var(--ink); min-height: 100vh;
+  }
+  header {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(12,10,8,0.92); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--edge);
+    padding: 12px 18px;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 16px 48px; }
+  h1 { margin: 0; font-size: 1.25rem; letter-spacing: -0.02em; }
+  h1 span { color: var(--gold); }
+  .meta { color: var(--dim); font-size: 0.8rem; margin-top: 2px; }
+  .law {
+    margin-top: 8px; font-size: 0.72rem; color: var(--ember);
+    letter-spacing: 0.02em;
+  }
+  .toolbar {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; align-items: center;
+  }
+  input[type=search] {
+    flex: 1; min-width: 200px; background: var(--panel); border: 1px solid var(--edge);
+    color: var(--ink); border-radius: 10px; padding: 9px 12px; font: inherit;
+  }
+  a.btn, button.btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--panel); border: 1px solid var(--edge); color: var(--ink);
+    border-radius: 10px; padding: 8px 12px; text-decoration: none; font: 600 0.82rem system-ui;
+    cursor: pointer;
+  }
+  a.btn:hover, button.btn:hover { border-color: var(--gold); color: var(--gold); }
+  a.btn.primary { background: #1e3d28; border-color: #2e5940; color: var(--moss); }
+
+  .stack { display: grid; gap: 12px; margin-top: 18px; }
+  .layer {
+    background: var(--panel); border: 1px solid var(--edge); border-radius: 14px;
+    overflow: hidden;
+  }
+  .layer-head {
+    display: flex; justify-content: space-between; gap: 12px; align-items: flex-start;
+    padding: 12px 14px; cursor: pointer; user-select: none;
+    border-left: 4px solid var(--gold);
+  }
+  .layer[data-id="L1_kernel"] .layer-head { border-left-color: var(--red); }
+  .layer[data-id="L2_ledger"] .layer-head { border-left-color: var(--gold); }
+  .layer[data-id="L3_execution"] .layer-head { border-left-color: var(--blue); }
+  .layer[data-id="L4_skills_tools"] .layer-head { border-left-color: var(--moss); }
+  .layer[data-id="L5_temple"] .layer-head { border-left-color: var(--violet); }
+  .layer[data-id="L6_dan_ralph"] .layer-head { border-left-color: var(--ember); }
+  .layer-head h2 { margin: 0; font-size: 1rem; }
+  .layer-head .role { color: var(--dim); font-size: 0.85rem; margin-top: 2px; }
+  .badge {
+    font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--dim); border: 1px solid var(--edge); border-radius: 999px;
+    padding: 3px 8px; white-space: nowrap;
+  }
+  .layer-body { display: none; padding: 0 14px 14px; border-top: 1px solid var(--edge); }
+  .layer.open .layer-body { display: block; }
+  .paths { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
+  code.path {
+    font: 0.75rem/1.3 ui-monospace, Menlo, monospace;
+    background: #0a0806; border: 1px solid var(--edge); border-radius: 6px;
+    padding: 3px 7px; color: #c8b89a;
+  }
+  .comps { display: grid; gap: 8px; }
+  .comp {
+    background: #0f0c0a; border: 1px solid var(--edge); border-radius: 10px;
+    padding: 10px 12px;
+  }
+  .comp strong { color: var(--gold); font-size: 0.9rem; }
+  .comp .p { font: 0.72rem ui-monospace, Menlo, monospace; color: var(--blue); margin: 2px 0; }
+  .comp .r { font-size: 0.85rem; color: var(--dim); }
+  .policy {
+    margin-top: 10px; font-size: 0.8rem; color: var(--ember);
+    background: rgba(224,122,74,0.08); border-radius: 8px; padding: 8px 10px;
+  }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
+  @media (max-width: 800px) { .grid2 { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--panel); border: 1px solid var(--edge); border-radius: 14px; padding: 14px;
+  }
+  .card h3 { margin: 0 0 8px; font-size: 0.95rem; color: var(--gold); }
+  ul { margin: 0; padding-left: 18px; color: var(--dim); }
+  li { margin: 4px 0; }
+  li strong { color: var(--ink); }
+  .flow {
+    font: 0.78rem ui-monospace, Menlo, monospace; color: #b8a890;
+    background: #0a0806; border-radius: 8px; padding: 8px 10px; margin: 6px 0;
+    overflow-x: auto; white-space: nowrap;
+  }
+  .flow span { color: var(--moss); }
+  .hide { display: none !important; }
+  footer {
+    margin-top: 28px; text-align: center; color: var(--dim); font-size: 0.72rem;
+  }
+  .invariants { display: grid; gap: 6px; margin-top: 10px; }
+  .inv {
+    border-left: 3px solid var(--violet); padding: 6px 10px; background: #120f0c;
+    border-radius: 0 8px 8px 0; font-size: 0.85rem;
+  }
+  .inv code { color: var(--gold); font-size: 0.75rem; }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>HELEN OS · <span>Architecture Map</span></h1>
+    <div class="meta" id="meta">Loading…</div>
+    <div class="law">NO RECEIPT = NO CLAIM · Garden ADMIT ≠ Kernel ADMISSION · Proposer ≠ Validator · authority=false</div>
+    <div class="toolbar">
+      <input type="search" id="q" placeholder="Search paths, components, laws…" autocomplete="off" />
+      <button type="button" class="btn" id="expandAll">Expand all</button>
+      <button type="button" class="btn" id="collapseAll">Collapse</button>
+      <a class="btn primary" href="ARCHITECTURE_MAP.json" download>Download JSON (for agents)</a>
+      <a class="btn" href="https://jmtassy.github.io/helen-conquest/apps/goblin-warren/LIVE.html" target="_blank" rel="noopener">Warren LIVE →</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="card" style="margin-top:16px">
+    <h3>How to use this map</h3>
+    <ul>
+      <li><strong>You (human):</strong> skim layers top→bottom; expand what you are changing.</li>
+      <li><strong>Next agent:</strong> load <code>ARCHITECTURE_MAP.json</code> first; follow <code>feature_playbooks</code> + <code>next_agent_checklist</code>.</li>
+      <li><strong>Firewall:</strong> red/gold layers (Kernel + Ledger) — do not write; route via <code>tools/helen_say.py</code>.</li>
+    </ul>
+    <div class="invariants" id="invariants"></div>
+  </section>
+
+  <div class="stack" id="layers"></div>
+
+  <div class="grid2">
+    <section class="card">
+      <h3>Data flows</h3>
+      <div id="flows"></div>
+    </section>
+    <section class="card">
+      <h3>Gates & tests</h3>
+      <div id="gates"></div>
+      <h3 style="margin-top:14px">Commands</h3>
+      <div id="cmds"></div>
+    </section>
+  </div>
+
+  <div class="grid2">
+    <section class="card">
+      <h3>Feature playbooks</h3>
+      <div id="playbooks"></div>
+    </section>
+    <section class="card">
+      <h3>Next agent checklist</h3>
+      <ul id="checklist"></ul>
+      <h3 style="margin-top:14px">Sibling lineages</h3>
+      <div id="siblings" class="meta"></div>
+    </section>
+  </div>
+
+  <footer>
+    Generated for local tree · schema HELEN_ARCHITECTURE_MAP_V1 · HOLD_FOR_OPERATOR · not Kernel canon
+  </footer>
+</main>
+
+<script type="application/json" id="map-src">{"schema":"HELEN_ARCHITECTURE_MAP_V1","generated_at":"2026-07-23","authority":false,"claim":"NO_CLAIM","canon":false,"purpose":{"html_for":"human orientation — one page to see the whole system","json_for":"next agent implementing a feature — do not rediscover the map","law":"NO RECEIPT = NO CLAIM · Garden ADMIT ≠ Kernel ADMISSION · Proposer ≠ Validator"},"identity":{"local_path":"/Users/jean-marietassy/Documents/GitHub/helen_os_v1","git_remote":"https://github.com/JMTassy/helen-conquest.git","public_pages":"https://jmtassy.github.io/helen-conquest/apps/goblin-warren/LIVE.html","branch_at_map":"claude/doctrine-proposals","package_name":"oracle-town","what_this_is":"Five-layer constitutional AI companion OS with append-only governance kernel, Temple gardens, and non-sovereign play surfaces."},"sibling_lineages_not_this_sot":{"note":"Operator sealed (2026-07-21): for NEPTION+video-maker+goblin-governance lineage, canonical is conquest-oracle-town — not this folder. This map describes the helen-conquest / helen_os_v1 tree.","conquest_oracle_town":{"path":"/Users/jean-marietassy/conquest-oracle-town","remote":"https://github.com/JMTassy/conquest-oracle-town.git","sealed_branch":"claude/helen-os-init-rjlxgy"},"goblin_warren_game":{"path":"/Users/jean-marietassy/Documents/GitHub/goblin-warren","note":"Playable V3/V4/V5 skins; parallel game repo"}},"core_invariants":[{"id":"NO_RECEIPT_NO_CLAIM","text":"No action is claimed unless a receipt exists on an admitted path."},{"id":"NO_HASH_NO_VOICE","text":"Non-deterministic output never enters the spine unhashed (K8)."},{"id":"PROPOSER_NE_VALIDATOR","text":"The proposer may not approve its own SHIP; use fresh review context."},{"id":"GARDEN_ADMIT_NE_KERNEL","text":"Garden ADMIT mutates play state only; Kernel ADMISSION requires lawful receipt path."},{"id":"TERMINATION_SACRED","text":"Sessions end SHIP or ABORT — no open-ended claims."},{"id":"ADMISSIBLE_LEDGER_WRITER","text":"Only tools/helen_say.py → tools/ndjson_writer.py may append town/ledger_v1.ndjson."}],"layers":[{"id":"L1_kernel","name":"Constitutional membrane / Kernel","role":"Sovereign verdicts only: SHIP/NO_SHIP/BLOCK/PASS","paths":["oracle_town/kernel/","helen_os/governance/","helen_os/schemas/","KERNEL_V2.md","SOUL.md","HELEN.md","KERNEL_K_TAU_RULE.md"],"key_components":[{"name":"kernel_daemon","path":"oracle_town/kernel/kernel_daemon.py","role":"Unix-socket daemon; gates A/B/C; promote_skill; seq_correction"},{"name":"mayor","path":"oracle_town/kernel/mayor.py","role":"Mayor decision surface (kernel-adjacent)"},{"name":"schema_registry","path":"helen_os/governance/schema_registry.py","role":"Canonical schema authority → helen_os/schemas/"},{"name":"legoracle_gate","path":"helen_os/governance/legoracle_gate_poc.py","role":"Obligation checking; deterministic SHIP/NO_SHIP"},{"name":"skill_promotion_reducer","path":"helen_os/governance/skill_promotion_reducer.py","role":"Reducer for skill promotion packets"}],"write_policy":"FIREWALL — agents must not write these paths; route via helen_say / MAYOR machinery"},{"id":"L2_ledger","name":"Append-only ledger","role":"Hash-chained truth log","paths":["town/ledger_v1.ndjson","tools/helen_say.py","tools/ndjson_writer.py","tools/kernel_guard.sh"],"key_components":[{"name":"helen_say","path":"tools/helen_say.py","role":"Canonical writer; ops: fetch|dialog|shell|promote_skill|seq_correction"},{"name":"ndjson_writer","path":"tools/ndjson_writer.py","role":"flock + on-disk tail re-read; TOCTOU-safe append"},{"name":"kernel_guard","path":"tools/kernel_guard.sh","role":"Rejects non-admitted ledger writers"}],"write_policy":"NEVER direct-edit ledger; only helen_say"},{"id":"L3_execution","name":"Execution + autonomy","role":"Bounded non-sovereign execution; autoresearch; knowledge","paths":["helen_os/executor/","helen_os/autonomy/","helen_os/evolution/","helen_os/knowledge/","helen_os/api/","src/"],"key_components":[{"name":"bounded_executor","path":"helen_os/executor/","role":"Runs tasks, emits envelopes, no verdicts"},{"name":"autoresearch","path":"helen_os/autonomy/","role":"Bounded research steps/batches"},{"name":"wul_packet_validator","path":"src/wul_packet_validator.py","role":"Fail-closed WUL inter-agent packet validation"},{"name":"sourcebound_object","path":"src/helen_sourcebound_object.py","role":"Objects bound to source bytes + receipt"},{"name":"do_next_v1","path":"helen_os/api/do_next_v1.py","role":"Structural policy engine; ledger only via helen_say"}],"write_policy":"Non-sovereign; never claim Kernel admission"},{"id":"L4_skills_tools","name":"Skills + tools + surfaces","role":"Capabilities and operator UI","paths":["oracle_town/skills/","tools/","apps/","scripts/"],"key_components":[{"name":"skills_tree","path":"oracle_town/skills/","role":"conquest, feynman, voice/gemini_tts, video/hyperframes, video/helen-director, ops/dan_goblin, …"},{"name":"helen_cli","path":"tools/helen_cli.py","role":"Interactive CLI entry"},{"name":"helen_simple_ui","path":"tools/helen_simple_ui.py","role":"Web UI localhost:5001 + voice"},{"name":"helen_telegram","path":"tools/helen_telegram.py","role":"Two-way Telegram + voice"},{"name":"hal_driver","path":"tools/hal_driver.py","role":"Local HAL-role inference (non-sovereign)"},{"name":"k_gates","path":"scripts/helen_k8_lint.py|helen_k_tau_lint.py|helen_rho_lint.py|helen_wul_lint.py","role":"Compile-time constitutional lints; verdict belongs to gate"},{"name":"helen_surface","path":"apps/helen-surface/","role":"Operator cockpit HTML + status API"},{"name":"goblin_warren_app","path":"apps/goblin-warren/","role":"Garden display shells; LIVE.html portal; intro mp4; surface CANNOT MARK"}],"write_policy":"Freely edit non-sovereign paths; never sovereign firewall"},{"id":"L5_temple","name":"TEMPLE / Garden exploration","role":"Non-sovereign generative + play layers; DREAMT ≠ CLAIMED","paths":["temple/","temple/gardens/","temple/autoresearch/","temple/subsandbox/","helen_dialog/","experiments/"],"key_components":[{"name":"goblin_garden_conquest","path":"temple/gardens/goblin_garden_conquest/","role":"Warren loop, receipts, fail-closed validate_conquest_garden.py"},{"name":"autoresearch_outbox","path":"temple/autoresearch/outbox/","role":"AR-*.json packets; authority=false; operator_pen marks"},{"name":"operator_pen","path":"temple/autoresearch/operator_pen.py","role":"ONLY place that marks dreams; surface cannot mark"},{"name":"warren_vox","path":"experiments/warren-vox/","role":"Zero-credit skin pack; apply_warren_vox.py"},{"name":"temple_recursive_ar","path":"experiments/temple_recursive_autoresearch/","role":"AR_000x lineage; frozen judges; KEEP≠SHIP≠CANON"},{"name":"mvp_kernel_sandbox","path":"experiments/helen_mvp_kernel/","role":"Non-sovereign sandbox gates (AV, ledger sim)"}],"write_policy":"Garden free; never auto-promote to Kernel; run garden validators first"},{"id":"L6_dan_ralph","name":"DAN / RALPH bounded loop","role":"Epoch story runner: Temple→Mayor→Ralph→DAN→HAL→Reducer→Ledger","paths":["scripts/ralph/","oracle_town/skills/ops/dan_goblin/","schemas/helen_dan/","docs/proposals/HELEN_DAN_RALPH_V0.md"],"write_policy":"DAN never writes reducer_decision; receipts only"}],"data_flows":[{"id":"ledger_write","steps":["operator/agent","tools/helen_say.py","payload_hash=sha256(canon(payload))","tools/ndjson_writer.py","town/ledger_v1.ndjson"]},{"id":"warren_surface","steps":["temple/autoresearch/outbox AR-*.json","temple/autoresearch/consumption_log.ndjson (operator_pen)","apps/goblin-warren/build_warren_*.py","warren_*_data.js sidecars","warren_home.html / warren_town.html (display only)"]},{"id":"skill_promotion","steps":["SKILL_PROMOTION_PACKET_V1","helen_say --op promote_skill","kernel_daemon _handle_promote_skill 6-gate","ledger entry if admitted"]},{"id":"autoresearch_epoch","steps":["one hypothesis","experiment on non-sovereign layer","metric + keep/reject rule","tranche sub-receipt","HAL gate / MAYOR re-rank between tranches"]}],"gates":[{"id":"K8","path":"scripts/helen_k8_lint.py","checks":"mu_NDWRAP, mu_NDARTIFACT, mu_NDLEDGER"},{"id":"K_tau","path":"scripts/helen_k_tau_lint.py","checks":"mu_BOUNDARY, mu_IO, mu_DETERMINISM, mu_ALLOWLIST, mu_SCHEMA"},{"id":"K_rho","path":"scripts/helen_rho_lint.py","checks":"numeric rho trace consistency"},{"id":"K_wul","path":"scripts/helen_wul_lint.py","checks":"WUL compile+validate"},{"id":"LEGORACLE","path":"helen_os/governance/legoracle_gate_poc.py","checks":"obligations; replay-gated SHIP/NO_SHIP"},{"id":"kernel_guard","path":"tools/kernel_guard.sh","checks":"ledger writer allowlist"}],"test_entrypoints":{"helen_os_suite":"make test  # helen_os/tests/ only","membrane":"make membrane-test","root_constitutional":".venv/bin/pytest tests/ -q","ghost_closures":".venv/bin/pytest helen_os/tests/test_no_ghost_closures.py -v","mvp_kernel":".venv/bin/pytest experiments/helen_mvp_kernel/helen_os/tests/ -v","wul_packets":".venv/bin/pytest tests/test_wul_packet_validator.py -v"},"runbook_commands":{"kernel_daemon":".venv/bin/python oracle_town/kernel/kernel_daemon.py &","cli":".venv/bin/python tools/helen_cli.py","web_ui":"GEMINI_API_KEY=… .venv/bin/python tools/helen_simple_ui.py","say":".venv/bin/python tools/helen_say.py \"msg\" --op fetch","k8":".venv/bin/python scripts/helen_k8_lint.py --mode all_nd","warren_rebuild":"python3 apps/goblin-warren/build_warren_home.py && python3 apps/goblin-warren/build_warren_feed.py","warren_live_local":"open apps/goblin-warren/LIVE.html","vox_apply":"python3 experiments/warren-vox/scripts/apply_warren_vox.py --target <html>"},"sovereign_firewall_paths":["oracle_town/kernel/**","helen_os/governance/**","helen_os/schemas/**","town/ledger_v1*.ndjson","mayor_*.json","GOVERNANCE/CLOSURES/**","GOVERNANCE/TRANCHE_RECEIPTS/**"],"two_python_trees":{"helen_os":"sovereign-ish product tree (governance, executor, tests via make test)","helen_os_scaffold":"separate Click CLI helen talk/chat + LLM adapters; own venv; imports do not cross"},"feature_playbooks":{"add_garden_surface":{"do":["Write HTML under apps/goblin-warren/ or experiments/","Keep authority=false footer law","No mark/admit controls in HTML","Optional: apply WARREN VOX tokens"],"dont":["Write to ledger","Call operator_pen.mark from surface","Render green as admitted"]},"add_skill":{"do":["Place under oracle_town/skills/<domain>/","SKILL.md with authority=false until promoted","Promotion only via promote_skill protocol"],"dont":["Self-promote to sovereign","Bypass 7-gate skill admission"]},"add_schema":{"do":["Add to helen_os/schemas/","Register via helen_os/governance/schema_registry.py","additionalProperties: false on constitutional schemas"],"dont":["Use root schemas/ for new canon (legacy migration pending)"]},"add_autoresearch_packet":{"do":["Emit AR-*.json to temple/autoresearch/outbox/","authority=false always","Operator marks via operator_pen only"],"dont":["Treat outbox packet as Kernel truth","Rewrite past AR verdicts; annotate only (AR-7)"]},"touch_ledger":{"do":["tools/helen_say.py only","bash tools/kernel_guard.sh before suspected writes"],"dont":["Direct append/edit town/ledger_v1.ndjson","tools/ndjson_writer.py from ad-hoc scripts"]}},"ci":{"workflows":".github/workflows/","jobs_hint":["doc-index (CLAUDE.md indices)","verify (VERIFY_ALL + replay)","rho-receipt","determinism-gates","doctrine-gate","garden-validators","kernel_guard","outbox-guard"]},"metrics_at_map_time":{"helen_os_schemas_approx":67,"skill_dirs_approx":46,"helen_os_tests_approx":73,"root_tests_approx":87},"next_agent_checklist":["Read ARCHITECTURE_MAP.json (this file) + CLAUDE.md invariants","Confirm branch + pwd; do not assume helen_os_v1 is every lineage's SOT","Identify layer of the feature (L1–L6); if L1/L2, stop and route","Run relevant tests/gates before claiming SHIP","Emit receipts for any claim; prefer NO_SHIP over unsafe success","Update this map if you add a permanent top-level subsystem"]}</script>
+<script>
+window.__ARCH_MAP__ = JSON.parse(document.getElementById("map-src").textContent);
+</script>
+<script>
+(async function () {
+  let MAP;
+  if (window.__ARCH_MAP__) {
+    MAP = window.__ARCH_MAP__;
+  } else {
+    try {
+      const r = await fetch("ARCHITECTURE_MAP.json", { cache: "no-store" });
+      if (!r.ok) throw new Error("no json");
+      MAP = await r.json();
+    } catch (e) {
+      document.getElementById("meta").textContent =
+        "Could not load ARCHITECTURE_MAP.json — keep ARCHITECTURE_MAP.html next to ARCHITECTURE_MAP.json.";
+      return;
+    }
+  }
+
+  document.getElementById("meta").textContent =
+    (MAP.identity.what_this_is || "") +
+    " · branch " + (MAP.identity.branch_at_map || "?") +
+    " · remote " + (MAP.identity.git_remote || "");
+
+  // invariants
+  const inv = document.getElementById("invariants");
+  (MAP.core_invariants || []).forEach(function (i) {
+    const d = document.createElement("div");
+    d.className = "inv";
+    d.innerHTML = "<code>" + esc(i.id) + "</code> — " + esc(i.text);
+    inv.appendChild(d);
+  });
+
+  // layers
+  const root = document.getElementById("layers");
+  (MAP.layers || []).forEach(function (L, idx) {
+    const el = document.createElement("article");
+    el.className = "layer" + (idx < 2 ? " open" : "");
+    el.dataset.id = L.id;
+    el.innerHTML =
+      '<div class="layer-head">' +
+        "<div><h2>" + esc(L.name) + "</h2>" +
+        '<div class="role">' + esc(L.role) + "</div></div>" +
+        '<span class="badge">' + esc(L.id) + "</span>" +
+      "</div>" +
+      '<div class="layer-body">' +
+        '<div class="paths">' + (L.paths || []).map(function (p) {
+          return '<code class="path">' + esc(p) + "</code>";
+        }).join("") + "</div>" +
+        '<div class="comps">' + (L.key_components || []).map(function (c) {
+          return '<div class="comp"><strong>' + esc(c.name) + "</strong>" +
+            '<div class="p">' + esc(c.path) + "</div>" +
+            '<div class="r">' + esc(c.role) + "</div></div>";
+        }).join("") + "</div>" +
+        (L.write_policy ? '<div class="policy">WRITE POLICY: ' + esc(L.write_policy) + "</div>" : "") +
+      "</div>";
+    el.querySelector(".layer-head").addEventListener("click", function () {
+      el.classList.toggle("open");
+    });
+    root.appendChild(el);
+  });
+
+  // flows
+  const flows = document.getElementById("flows");
+  (MAP.data_flows || []).forEach(function (f) {
+    const d = document.createElement("div");
+    d.className = "flow";
+    d.innerHTML = "<strong style='color:var(--gold)'>" + esc(f.id) + "</strong><br>" +
+      (f.steps || []).map(function (s) { return "<span>" + esc(s) + "</span>"; }).join(" → ");
+    flows.appendChild(d);
+  });
+
+  // gates + cmds
+  const gates = document.getElementById("gates");
+  let ghtml = "<ul>";
+  (MAP.gates || []).forEach(function (g) {
+    ghtml += "<li><strong>" + esc(g.id) + "</strong> — <code>" + esc(g.path) + "</code><br>" + esc(g.checks) + "</li>";
+  });
+  ghtml += "</ul><p style='color:var(--dim);font-size:0.85rem;margin:8px 0 0'>Tests: ";
+  const te = MAP.test_entrypoints || {};
+  ghtml += Object.keys(te).map(function (k) {
+    return "<br><code>" + esc(te[k]) + "</code>";
+  }).join("");
+  ghtml += "</p>";
+  gates.innerHTML = ghtml;
+
+  const cmds = document.getElementById("cmds");
+  let chtml = "<ul>";
+  const rb = MAP.runbook_commands || {};
+  Object.keys(rb).forEach(function (k) {
+    chtml += "<li><strong>" + esc(k) + "</strong><br><code>" + esc(rb[k]) + "</code></li>";
+  });
+  chtml += "</ul>";
+  cmds.innerHTML = chtml;
+
+  // playbooks
+  const pb = document.getElementById("playbooks");
+  const fps = MAP.feature_playbooks || {};
+  Object.keys(fps).forEach(function (name) {
+    const p = fps[name];
+    const d = document.createElement("div");
+    d.style.marginBottom = "12px";
+    d.innerHTML =
+      "<strong style='color:var(--moss)'>" + esc(name) + "</strong>" +
+      "<div style='font-size:0.85rem;color:var(--dim)'>DO: " + (p.do || []).map(esc).join(" · ") + "</div>" +
+      "<div style='font-size:0.85rem;color:var(--red)'>DON'T: " + (p.dont || []).map(esc).join(" · ") + "</div>";
+    pb.appendChild(d);
+  });
+
+  // checklist
+  const cl = document.getElementById("checklist");
+  (MAP.next_agent_checklist || []).forEach(function (item) {
+    const li = document.createElement("li");
+    li.textContent = item;
+    cl.appendChild(li);
+  });
+
+  // siblings
+  const sib = MAP.sibling_lineages_not_this_sot || {};
+  document.getElementById("siblings").textContent =
+    (sib.note || "") +
+    (sib.conquest_oracle_town ? " | conquest-oracle-town: " + sib.conquest_oracle_town.remote : "") +
+    (sib.goblin_warren_game ? " | game repo: " + sib.goblin_warren_game.path : "");
+
+  // search
+  document.getElementById("q").addEventListener("input", function () {
+    const q = this.value.trim().toLowerCase();
+    document.querySelectorAll(".layer").forEach(function (el) {
+      if (!q) { el.classList.remove("hide"); return; }
+      const hit = el.textContent.toLowerCase().indexOf(q) !== -1;
+      el.classList.toggle("hide", !hit);
+      if (hit) el.classList.add("open");
+    });
+  });
+
+  document.getElementById("expandAll").onclick = function () {
+    document.querySelectorAll(".layer").forEach(function (el) { el.classList.add("open"); });
+  };
+  document.getElementById("collapseAll").onclick = function () {
+    document.querySelectorAll(".layer").forEach(function (el) { el.classList.remove("open"); });
+  };
+
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+})();
+</script>
+</body>
+</html>

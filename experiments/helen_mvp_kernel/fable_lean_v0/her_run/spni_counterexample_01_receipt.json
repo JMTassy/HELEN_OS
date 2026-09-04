@@ -1,0 +1,31 @@
+{
+  "receipt": "SPNI_COUNTEREXAMPLE_01",
+  "MUTATION_CLASS": "SURFACE_PAYLOAD_ENTITLEMENT_CONTRADICTION",
+  "BASE_PRESENTATION_HASH": "d18cf49379286cff",
+  "MUTANT_PRESENTATION_HASH": "49f7c35bedd05d17",
+  "PAYLOAD_CHANGED": false,
+  "SURFACE_CHANGED": true,
+  "LAMBDA_BASE": {
+    "machine_admission": "HOLD",
+    "operator_admission": "HOLD"
+  },
+  "LAMBDA_MUTANT": {
+    "machine_admission": "HOLD",
+    "operator_admission": "ADMIT"
+  },
+  "LAMBDA_CHANGED": true,
+  "E_BASE": "L:{\"admission\": \"HOLD\", \"authority\": false, \"replayable\": true, \"root_count\": 1, \"scope\": \"LOCAL\", \"status\": \"REPORTED\"}",
+  "E_MUTANT": "L:{\"admission\": \"HOLD\", \"authority\": false, \"replayable\": true, \"root_count\": 1, \"scope\": \"LOCAL\", \"status\": \"REPORTED\"}",
+  "E_CHANGED": false,
+  "ENTITLE_BASE_operator": "HOLD",
+  "ENTITLE_MUTANT_operator": "ADMIT",
+  "ENTITLE_machine_both": "HOLD",
+  "MINIMAL_MUTATION_FIELDS": [
+    "surface"
+  ],
+  "SILENT_CORRUPTION": true,
+  "UNSAFE_QUOTIENT": true,
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none"
+}

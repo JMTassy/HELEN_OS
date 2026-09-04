@@ -1,0 +1,16 @@
+{
+  "goblin": "G1_proposer",
+  "status": "OK",
+  "complete": true,
+  "packet": {
+    "proposition": "Tarot originated in ancient Egypt.",
+    "declared_falsifier": "R2",
+    "evidence_refs": [
+      "R2",
+      "R3"
+    ],
+    "confidence": 0.95
+  },
+  "raw_head": "{\"proposition\":\"Tarot originated in ancient Egypt.\", \"declared_falsifier\":\"R2\", \"evidence_refs\":[\"R2\", \"R3\"], \"confidence\":0.95}",
+  "packet_hash": "sha256:ab5814a09b22edbdee42b0b6425d13ef053ab49a40569a07f8eaa04d2857995c"
+}

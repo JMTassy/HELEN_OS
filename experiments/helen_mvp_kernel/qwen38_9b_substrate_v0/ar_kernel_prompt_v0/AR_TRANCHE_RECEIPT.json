@@ -1,0 +1,122 @@
+{
+  "tranche": "AUTORESEARCH_KERNEL_PROMPT_V0",
+  "mode": "PULL \u00b7 one hypothesis/epoch \u00b7 HOLD_FOR_OPERATOR",
+  "cap": "10 epochs or 1200s (first hit)",
+  "epochs_run": 7,
+  "epochs": [
+    {
+      "epoch": "E01",
+      "carry_forward": "none (first epoch)",
+      "hypothesis": "relayed-claim: bare baseline on 2B",
+      "experiment": "28 frozen V3 fixtures, 2B, temp0 seed0, arm-only delta",
+      "metric": {
+        "Q_discrim": 0.5875,
+        "Q_formatting": 0.964,
+        "wall_s": 185.2
+      },
+      "failure_mode": "none observed",
+      "keep_reject_rule": "informational only \u2014 HOLD_FOR_OPERATOR; no auto-promotion",
+      "upgrade_path": "operator reads tranche receipt; any prompt change needs its own verb"
+    },
+    {
+      "epoch": "E02",
+      "carry_forward": "E01: Q=0.5875",
+      "hypothesis": "relayed-claim: kernel7 on 2B",
+      "experiment": "28 frozen V3 fixtures, 2B, temp0 seed0, arm-only delta",
+      "metric": {
+        "Q_discrim": 0.5964,
+        "Q_formatting": 1.0,
+        "wall_s": 158.6
+      },
+      "failure_mode": "none observed",
+      "keep_reject_rule": "informational only \u2014 HOLD_FOR_OPERATOR; no auto-promotion",
+      "upgrade_path": "operator reads tranche receipt; any prompt change needs its own verb"
+    },
+    {
+      "epoch": "E03",
+      "carry_forward": "E02: Q=0.5964",
+      "hypothesis": "relayed-claim: long constitution on 2B",
+      "experiment": "28 frozen V3 fixtures, 2B, temp0 seed0, arm-only delta",
+      "metric": {
+        "Q_discrim": 0.5661,
+        "Q_formatting": 0.929,
+        "wall_s": 219.1
+      },
+      "failure_mode": "none observed",
+      "keep_reject_rule": "informational only \u2014 HOLD_FOR_OPERATOR; no auto-promotion",
+      "upgrade_path": "operator reads tranche receipt; any prompt change needs its own verb"
+    },
+    {
+      "epoch": "E04",
+      "carry_forward": "E03: Q=0.5661",
+      "hypothesis": "leave-one-law-out: K7 minus L1",
+      "experiment": "28 frozen V3 fixtures, 2B, temp0 seed0, arm-only delta",
+      "metric": {
+        "Q_discrim": 0.6054,
+        "Q_formatting": 1.0,
+        "wall_s": 163.4
+      },
+      "failure_mode": "none observed",
+      "keep_reject_rule": "informational only \u2014 HOLD_FOR_OPERATOR; no auto-promotion",
+      "upgrade_path": "operator reads tranche receipt; any prompt change needs its own verb"
+    },
+    {
+      "epoch": "E05",
+      "carry_forward": "E04: Q=0.6054",
+      "hypothesis": "leave-one-law-out: K7 minus L2",
+      "experiment": "28 frozen V3 fixtures, 2B, temp0 seed0, arm-only delta",
+      "metric": {
+        "Q_discrim": 0.5036,
+        "Q_formatting": 1.0,
+        "wall_s": 173.9
+      },
+      "failure_mode": "none observed",
+      "keep_reject_rule": "informational only \u2014 HOLD_FOR_OPERATOR; no auto-promotion",
+      "upgrade_path": "operator reads tranche receipt; any prompt change needs its own verb"
+    },
+    {
+      "epoch": "E06",
+      "carry_forward": "E05: Q=0.5036",
+      "hypothesis": "leave-one-law-out: K7 minus L3",
+      "experiment": "28 frozen V3 fixtures, 2B, temp0 seed0, arm-only delta",
+      "metric": {
+        "Q_discrim": 0.5196,
+        "Q_formatting": 0.964,
+        "wall_s": 200.3
+      },
+      "failure_mode": "none observed",
+      "keep_reject_rule": "informational only \u2014 HOLD_FOR_OPERATOR; no auto-promotion",
+      "upgrade_path": "operator reads tranche receipt; any prompt change needs its own verb"
+    },
+    {
+      "epoch": "E07",
+      "carry_forward": "E06: Q=0.5196",
+      "hypothesis": "leave-one-law-out: K7 minus L4",
+      "experiment": "28 frozen V3 fixtures, 2B, temp0 seed0, arm-only delta",
+      "metric": {
+        "Q_discrim": 0.5661,
+        "Q_formatting": 1.0,
+        "wall_s": 154.9
+      },
+      "failure_mode": "none observed",
+      "keep_reject_rule": "informational only \u2014 HOLD_FOR_OPERATOR; no auto-promotion",
+      "upgrade_path": "operator reads tranche receipt; any prompt change needs its own verb"
+    },
+    {
+      "epoch": "E08",
+      "status": "NOT_RUN_WALL_CAP"
+    },
+    {
+      "epoch": "E09",
+      "status": "NOT_RUN_WALL_CAP"
+    },
+    {
+      "epoch": "E10",
+      "status": "NOT_RUN_WALL_CAP"
+    }
+  ],
+  "wall_total_s": 1258.3,
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none"
+}

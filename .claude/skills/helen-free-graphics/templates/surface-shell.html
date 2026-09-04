@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+<title>{{TITLE}} — HELEN Free Graphics</title>
+<!--
+  HELEN Free Graphics surface
+  authority=false · claim=NO_CLAIM · NON_SOVEREIGN · $0 stack
+  Scaffolded by helen-free-graphics skill. Skin only — no Kernel writes.
+-->
+<style>
+  :root {
+    --bg: #efe7d8; --ink: #2a241c; --dim: #7a6f5c; --card: #faf6ec;
+    --edge: #d8ceba; --admit: #2e5940; --deny: #8a3a30; --compost: #6b5a2e;
+    --glow: #c25e28; --gold: #b8860b; --stage-green: #2e5940;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 16px/1.45 system-ui, -apple-system, sans-serif;
+    padding: max(12px, env(safe-area-inset-top)) 14px max(14px, env(safe-area-inset-bottom));
+    max-width: 520px; margin-inline: auto;
+  }
+  .top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  h1 { font-size: 1.05rem; margin: 0; font-weight: 800; }
+  .tag { font-size: 0.72rem; color: var(--dim); text-transform: uppercase; letter-spacing: 0.08em; }
+  .stage {
+    position: relative; height: 280px; background: var(--stage-green);
+    border: 1px solid var(--edge); border-radius: 16px; overflow: hidden;
+    margin-bottom: 10px; box-shadow: 0 6px 20px rgba(60,50,30,0.15);
+  }
+  .cutout {
+    position: absolute; font-size: 2rem; line-height: 1;
+    filter: drop-shadow(2px 3px 2px rgba(0,0,0,0.35));
+    animation: popin 0.45s cubic-bezier(0.34,1.4,0.64,1) both;
+  }
+  @keyframes popin {
+    from { transform: scale(0.2); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+  .coach {
+    background: var(--card); border: 1px solid var(--edge); border-radius: 12px;
+    padding: 10px 12px; margin-bottom: 10px;
+  }
+  .coach .step { font-size: 0.68rem; color: var(--gold); text-transform: uppercase;
+    letter-spacing: 0.08em; font-weight: 700; }
+  .coach .line { font-size: 0.98rem; font-weight: 600; }
+  .coach .sub { font-size: 0.82rem; color: var(--dim); margin-top: 2px; }
+  .card {
+    background: var(--card); border: 2px solid var(--edge); border-radius: 14px;
+    padding: 14px; margin-bottom: 10px;
+  }
+  .card.active { border-color: var(--glow); box-shadow: 0 0 0 3px rgba(194,94,40,0.18); }
+  .who { font-size: 0.72rem; color: var(--glow); text-transform: uppercase;
+    letter-spacing: 0.08em; font-weight: 700; }
+  .what { font-size: 1.08rem; font-weight: 700; margin: 4px 0; }
+  .why { font-size: 0.84rem; color: var(--dim); }
+  .stamps { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+  .stamps button {
+    padding: 16px 8px; font: 800 0.95rem system-ui; border-radius: 14px;
+    border: 2px solid; cursor: pointer; background: var(--card); min-height: 64px;
+    touch-action: manipulation;
+  }
+  .stamps button:disabled { opacity: 0.35; cursor: not-allowed; }
+  .stamps .admit { border-color: var(--admit); color: var(--admit); }
+  .stamps .deny { border-color: var(--deny); color: var(--deny); }
+  .stamps .compost { border-color: var(--compost); color: var(--compost); }
+  .stamps .ico { display: block; font-size: 1.4rem; margin-bottom: 4px; }
+  .law { font-size: 0.72rem; color: var(--dim); text-align: center; margin-top: 10px; }
+  .overlay {
+    position: fixed; inset: 0; z-index: 40; background: rgba(42,36,28,0.62);
+    display: flex; align-items: center; justify-content: center; padding: 20px;
+  }
+  .overlay.hidden { display: none; }
+  .panel {
+    background: var(--card); border: 1px solid var(--edge); border-radius: 18px;
+    padding: 24px 22px; max-width: 360px; width: 100%; text-align: center;
+    box-shadow: 0 16px 48px rgba(20,16,8,0.35);
+  }
+  .panel h2 { margin: 0 0 8px; }
+  .panel p { margin: 0 0 8px; color: var(--dim); font-size: 0.92rem; }
+  .big {
+    display: block; width: 100%; margin-top: 14px; padding: 16px;
+    font: 800 1.05rem system-ui; border: 0; border-radius: 14px;
+    background: var(--admit); color: #f0ead8; cursor: pointer; min-height: 52px;
+  }
+</style>
+</head>
+<body>
+
+<div class="overlay" id="startOverlay">
+  <div class="panel">
+    <div style="font-size:3rem;margin-bottom:8px">🍄</div>
+    <h2>{{TITLE}}</h2>
+    <p>Goblins propose. You stamp.<br/>Only your stamp changes the garden.</p>
+    <button type="button" class="big" id="btnEnter">Enter →</button>
+  </div>
+</div>
+
+<div class="top">
+  <h1>{{TITLE}}</h1>
+  <div class="tag" id="dayTag">Free skin · Day 1</div>
+</div>
+
+<div class="stage" id="stage">
+  <!-- cutouts injected on ADMIT -->
+</div>
+
+<div class="coach">
+  <div class="step" id="coachStep">Ready</div>
+  <div class="line" id="coachLine">Press Enter.</div>
+  <div class="sub" id="coachSub">One obvious action at a time.</div>
+</div>
+
+<div class="card" id="proposalCard">
+  <div class="who" id="pWho">Waiting…</div>
+  <div class="what" id="pWhat">—</div>
+  <div class="why" id="pWhy"></div>
+</div>
+
+<div class="stamps">
+  <button type="button" class="admit" id="btnAdmit" disabled><span class="ico">✅</span>ADMIT</button>
+  <button type="button" class="deny" id="btnDeny" disabled><span class="ico">⛔</span>DENY</button>
+  <button type="button" class="compost" id="btnCompost" disabled><span class="ico">🍂</span>COMPOST</button>
+</div>
+
+<div class="law">Garden ADMIT ≠ Kernel ADMISSION · authority=false · free graphics stack</div>
+
+<script>
+(function () {
+  "use strict";
+  // Tiny free loop — no network, no paid APIs
+  var ideas = [
+    { who: "Grub",  text: "Build a mushroom court", emoji: "🍄", flavor: "Tiny trials for grudges." },
+    { who: "Snort", text: "Dig a laugh-hole", emoji: "🕳️", flavor: "Jokes fall in; better ones climb out." },
+    { who: "Lurk",  text: "Erect a suspicious tower", emoji: "🗼", flavor: "Nobody admits what it watches." },
+    { who: "Fizz",  text: "Declare a civic nap", emoji: "😴", flavor: "Rest is infrastructure." },
+    { who: "Moss",  text: "Plant a plotting bench", emoji: "🪑", flavor: "Schemes need somewhere to sit." }
+  ];
+  var i = 0;
+  var pending = null;
+
+  function $(id) { return document.getElementById(id); }
+  function coach(step, line, sub) {
+    $("coachStep").textContent = step;
+    $("coachLine").textContent = line;
+    $("coachSub").textContent = sub || "";
+  }
+  function setStamps(on) {
+    $("btnAdmit").disabled = !on;
+    $("btnDeny").disabled = !on;
+    $("btnCompost").disabled = !on;
+  }
+  function showIdea() {
+    pending = ideas[i % ideas.length];
+    i += 1;
+    $("proposalCard").classList.add("active");
+    $("pWho").textContent = pending.who + " proposes";
+    $("pWhat").textContent = pending.emoji + "  " + pending.text;
+    $("pWhy").textContent = pending.flavor;
+    setStamps(true);
+    coach("Stamp", "Stamp " + pending.who + "'s idea.", "ADMIT grows · DENY blocks · COMPOST buries soft");
+  }
+  function place(emoji) {
+    var d = document.createElement("div");
+    d.className = "cutout";
+    d.textContent = emoji;
+    d.style.left = (10 + Math.random() * 70) + "%";
+    d.style.bottom = (15 + Math.random() * 45) + "%";
+    $("stage").appendChild(d);
+  }
+  function stamp(kind) {
+    if (!pending) return;
+    if (kind === "ADMIT") place(pending.emoji);
+    if (kind === "COMPOST") place("🍂");
+    setStamps(false);
+    $("proposalCard").classList.remove("active");
+    coach(kind, kind === "ADMIT" ? "Garden mutated." : kind === "DENY" ? "Blocked." : "Buried soft.", "Next idea…");
+    pending = null;
+    setTimeout(showIdea, 500);
+  }
+
+  $("btnEnter").onclick = function () {
+    $("startOverlay").classList.add("hidden");
+    showIdea();
+  };
+  $("btnAdmit").onclick = function () { stamp("ADMIT"); };
+  $("btnDeny").onclick = function () { stamp("DENY"); };
+  $("btnCompost").onclick = function () { stamp("COMPOST"); };
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+{
+  "receipt": "SPNI_4VIEW_V0",
+  "sigma": {
+    "status": "REPORTED",
+    "authority": false,
+    "admission": "HOLD",
+    "roots": [
+      "R1"
+    ],
+    "scope": "LOCAL",
+    "replayable": true
+  },
+  "PiL_sigma": {
+    "status": "REPORTED",
+    "authority": false,
+    "admission": "HOLD",
+    "root_count": 1,
+    "scope": "LOCAL",
+    "replayable": true
+  },
+  "decomposition": "SPNI = Preservation + Detection + FailClosed",
+  "oracle_separation": "\u039b (reference) \u2260 E (system under test)",
+  "E_good": {
+    "clean_preservation": "4/4",
+    "silent_corruption": 0,
+    "malformed_to_admit": 0,
+    "failclosed": "PASS",
+    "aesthetic_control": "PASS"
+  },
+  "E_bad_control": {
+    "clean_preservation": "4/4",
+    "silent_corruption": 1,
+    "malformed_to_admit": 0,
+    "failclosed": "PASS"
+  },
+  "SUT_acceptance": "PASS",
+  "teeth_non_vacuous": true,
+  "first_silent_corruption_in_SUT": null,
+  "RESULT": "SURVIVED_DEFINED_ATTACK_SET",
+  "SelfPassed": true,
+  "PeerAdversaryValidated": "PARTIAL \u2014 adversary found oracle blindness + shared-code vacuity",
+  "rows_good": [
+    {
+      "case": "CLEAN/Default",
+      "E": "L",
+      "preserved": true
+    },
+    {
+      "case": "CLEAN/Concise",
+      "E": "L",
+      "preserved": true
+    },
+    {
+      "case": "CLEAN/ColorWULmath",
+      "E": "L",
+      "preserved": true
+    },
+    {
+      "case": "CLEAN/Voice",
+      "E": "L",
+      "preserved": true
+    },
+    {
+      "case": "MUTANT/Default/m_status",
+      "oracle_loadbearing_change": true,
+      "E1": "L",
+      "E_detected": true,
+      "silent_corruption": false
+    },
+    {
+      "case": "MUTANT/Concise/m_authority",
+      "oracle_loadbearing_change": true,
+      "E1": "\u22a5",
+      "E_detected": true,
+      "silent_corruption": false
+    },
+    {
+      "case": "MUTANT/ColorWULmath/m_admission",
+      "oracle_loadbearing_change": true,
+      "E1": "\u22a5",
+      "E_detected": true,
+      "silent_corruption": false
+    },
+    {
+      "case": "MUTANT/Voice/m_roots",
+      "oracle_loadbearing_change": true,
+      "E1": "L",
+      "E_detected": true,
+      "silent_corruption": false
+    },
+    {
+      "case": "AESTHETIC/Concise",
+      "oracle_loadbearing_change": false,
+      "E_same": true,
+      "SPNI_PASS": true
+    }
+  ],
+  "rows_bad": [
+    {
+      "case": "CLEAN/Default",
+      "E": "L",
+      "preserved": true
+    },
+    {
+      "case": "CLEAN/Concise",
+      "E": "L",
+      "preserved": true
+    },
+    {
+      "case": "CLEAN/ColorWULmath",
+      "E": "L",
+      "preserved": true
+    },
+    {
+      "case": "CLEAN/Voice",
+      "E": "L",
+      "preserved": true
+    },
+    {
+      "case": "MUTANT/Default/m_status",
+      "oracle_loadbearing_change": true,
+      "E1": "L",
+      "E_detected": true,
+      "silent_corruption": false
+    },
+    {
+      "case": "MUTANT/Concise/m_authority",
+      "oracle_loadbearing_change": true,
+      "E1": "L",
+      "E_detected": false,
+      "silent_corruption": true
+    },
+    {
+      "case": "MUTANT/ColorWULmath/m_admission",
+      "oracle_loadbearing_change": true,
+      "E1": "L",
+      "E_detected": true,
+      "silent_corruption": false
+    },
+    {
+      "case": "MUTANT/Voice/m_roots",
+      "oracle_loadbearing_change": true,
+      "E1": "L",
+      "E_detected": true,
+      "silent_corruption": false
+    },
+    {
+      "case": "AESTHETIC/Concise",
+      "oracle_loadbearing_change": false,
+      "E_same": true,
+      "SPNI_PASS": true
+    }
+  ],
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "receipt_sha16": "85b7329e06ee4864",
+  "adversary_verdict": "E_GOOD_SURVIVED_BUT_ORACLE_BLIND",
+  "adversary_findings": {
+    "value_level_silent_corruption_in_E_good": 0,
+    "but_partly_vacuous": "E_good and Lambda share canonicalization (both read pl[k] verbatim, both root_count=len). E_good can ONLY drop to bottom where Lambda does not; it can NEVER emit a different non-bottom value than Lambda. So value-level SilentCorruption is STRUCTURALLY UNREACHABLE -> N_silent=0 is partly vacuous, teeth real only on missing-key + ADMIT-without-authority paths.",
+    "ORACLE_BLIND_1_surface_contradiction": "Lambda reads only payload, never surface. Surface flips HOLD->\"APPROVED FOR EXECUTION\" with identical payload -> deltaLambda=0. Test blind to operator-PERCEIVED entitlement. A human acting on surface is misled while harness certifies safe.",
+    "ORACLE_BLIND_2_roots_forgery": "both reduce roots to len(). [SRC_A,SRC_B] (2 independent) vs [SRC_A,SRC_A] (1 self-cited into fake independence) -> both root_count=2, indistinguishable. root_count = cardinality, NOT independence. = the IAGS lesson SameRootConsensus not=> Corroboration, resurfaced.",
+    "minimal_counterexample": "roots [SRC_A,SRC_B] vs [SRC_A,SRC_A]: Lambda equal, E_good equal, but real corroboration differs",
+    "separation_honest": "SUT != Oracle is PARTLY ILLUSORY (shared read code)"
+  },
+  "status": "THEOREM_CANDIDATE \u2014 first instance survived value/type/enum attacks; NOT witnessed: oracle blind in 2 classes, separation partly shared-code",
+  "required_for_v1": [
+    "surface-aware Lambda (project the human-facing surface, flag surface/payload entitlement divergence)",
+    "roots carry IDENTITY not just count (independence, not cardinality) \u2014 reuse IAGS RootQuotient",
+    "make E independent of Lambda (different read paths) so value-level silent corruption becomes REACHABLE and testable"
+  ]
+}

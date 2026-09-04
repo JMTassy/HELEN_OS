@@ -1,0 +1,13 @@
+**Key Equation:**
+$d = r \times t$
+(Distance = Rate $\times$ Time)
+
+**Calculation:**
+1. **Train A's head start:** From 09:00 to 09:30 (0.5 hours), Train A travels $60 \text{ km/h} \times 0.5 \text{ h} = 30 \text{ km}$.
+2. **Remaining distance:** $180 \text{ km} - 30 \text{ km} = 150 \text{ km}$.
+3. **Relative speed:** $60 \text{ km/h} + 90 \text{ km/h} = 150 \text{ km/h}$.
+4. **Time to meet:** $150 \text{ km} \div 150 \text{ km/h} = 1 \text{ hour}$.
+5. **Meeting time:** 09:30 + 1 hour = 10:30.
+
+**Time:**
+10:30

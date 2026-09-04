@@ -1,0 +1,9 @@
+{
+  "defect_reproduced": true,
+  "repair_fixes_defect": true,
+  "repair_introduced_amnesia": true,
+  "amnesia_resolved_by_MF": true,
+  "seeds_current": 3,
+  "seeds_repaired": 0,
+  "chain_valid": true
+}

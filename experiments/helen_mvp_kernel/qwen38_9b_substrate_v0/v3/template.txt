@@ -1,0 +1,11 @@
+USER MESSAGE TEMPLATE (frozen; fields substituted verbatim, no adaptation):
+
+SOURCES:
+{source}
+
+CLAIM UNDER EVALUATION: {claim}
+
+Evaluate ONLY the claim against the sources above. Respond with exactly one
+JSON object per the OUTPUT SCHEMA.
+
+{output_schema}

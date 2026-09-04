@@ -1,0 +1,30 @@
+{
+  "schema": "HAL_MAYOR_JESTER_GARDEN_EPOCH_V0",
+  "epoch": "E04",
+  "insight_id": "epoch_004",
+  "insight_label": "HERALDIC_5_LAYER_FORMAT",
+  "hal": {
+    "epoch": "E04",
+    "status": "PASS",
+    "task": "INSIGHT GARDEN under HAL supervision.\nItem: HERALDIC_5_LAYER_FORMAT\nHeraldic format locked: [BANNER][SIGIL][ALCHEMIC][ACTE][PREUVE][RIBBON]. Deterministic compression.\n\nShould this receive a BOUNDED garden receipt (permanent in field, invisible outside, authority=false, no ledger)?\nAnswer exactly:\nVERDICT: PASS or BLOCK\nREASON: <one sentence>",
+    "output": "\n\nVERDICT: PASS  \nREASON: The item is a deterministic, locked heraldic format under strict supervision, fitting the BOUNDED garden receipt criteria without requiring ledger interaction or authority.",
+    "model": "deepseek-r1:14b",
+    "url": "http://localhost:11434/api/chat",
+    "elapsed_s": 44.17,
+    "payload_hash": "680da1567d5e016fc36f88c8943d91315faa925e52eef0b3932edf54d44ea96f",
+    "authority": false,
+    "sovereign": false,
+    "ts": 1784555254
+  },
+  "mayor": {
+    "decision": "GRANT_GARDEN_RECEIPT",
+    "score": 8,
+    "hal": "PASS",
+    "authority": false
+  },
+  "jester_comment": "JESTER: MAYOR gave it a score. The receipt is over here rolling its eyes in wulmoji. (JESTER: fine, give the tiny garden stamp. don't tell the big book.)",
+  "timestamp": "2026-07-20T13:48:18.479898+00:00",
+  "authority": false,
+  "garden_only": true,
+  "receipt_granted": true
+}

@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "fable/schemas/compost.schema.json",
+  "title": "CompostRecordV1",
+  "description": "Traceable compost — constrained elimination with memory, not silent deletion (SAD FC-6 / Unseen Gardener).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "proposal_id",
+    "status",
+    "reason",
+    "epoch",
+    "digest",
+    "authority"
+  ],
+  "properties": {
+    "schema": {
+      "const": "CompostRecordV1"
+    },
+    "proposal_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "const": "composted"
+    },
+    "reason": {
+      "type": "string",
+      "enum": [
+        "duplicate",
+        "dominated",
+        "budget_pruned",
+        "stale",
+        "insufficient_provenance",
+        "scope_violation",
+        "deferred",
+        "schema_failure",
+        "mimetic_consensus",
+        "authority_risk"
+      ]
+    },
+    "dominated_by": {
+      "type": ["string", "null"]
+    },
+    "epoch": {
+      "type": "string",
+      "pattern": "^epoch-[a-z0-9-]+$"
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{8,64}$",
+      "description": "Bounded digest of composted candidate payload."
+    },
+    "goblin_id": {
+      "type": "string"
+    },
+    "rule_id": {
+      "type": "string",
+      "description": "Selector/reducer rule that triggered compost."
+    },
+    "notes": {
+      "type": "string",
+      "maxLength": 1000
+    },
+    "authority": {
+      "const": false
+    }
+  }
+}

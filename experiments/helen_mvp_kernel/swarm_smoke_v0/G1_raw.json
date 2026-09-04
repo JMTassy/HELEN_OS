@@ -1,0 +1,15 @@
+{
+  "goblin_id": "G1",
+  "raw": "```json\n{\n \"goblin_id\": \"G1\",\n \"campaign_id\": \"SWARM_SMOKE_V0\",\n \"task_hash\": \"b381c245078b1376\",\n \"claims\": [\n  {\n   \"proposition_key\": \"path_a\",\n   \"claim\": \"Institutional state changes via direct _h mutation without a valid admission witness.\",\n   \"predicate\": \"TamperError raised on current() when _h is mutated outside Reducer_E.apply()\",\n   \"object\": \"EpistemicState._h field\",\n   \"scope\": \"complete_epistemic_mediation_v0.py\",\n   \"evidence_refs\": [\n    \"corpus/complete_epistemic_mediation_v0.py:107-110\"\n   ],\n   \"source_roots\": [\n    \"corpus/complete_epistemic_mediation_v0.py\"\n   ],\n   \"evidence_class\": \"OBSERVED\",\n   \"candidate_falsifier\": \"A write path to _h that does not trigger _seal recomputation or is not caught by current()\",\n   \"confidence\": \"HIGH\"\n  },\n  {\n   \"proposition_key\": \"path_b\",\n   \"claim\": \"Institutional state changes via forged seal + mutated _h without a valid admission witness.\",\n   \"predicate\": \"TamperError raised on current() when _seal is forged but _h is mutated\",\n   \"object\": \"EpistemicState._seal field\",\n   \"scope\": \"complete_epistemic_mediation_v0.py\",\n   \"evidence_refs\": [\n    \"corpus/complete_epistemic_mediation_v0.py:111-115\"\n   ],\n   \"source_roots\": [\n    \"corpus/complete_epistemic_mediation_v0.py\"\n   ],\n   \"evidence_class\": \"OBSERVED\",\n   \"candidate_falsifier\": \"A write path that forges _seal consistently with _h and _rc without requiring Reducer_E.apply()\",\n   \"confidence\": \"HIGH\"\n  },\n  {\n   \"proposition_key\": \"path_c\",\n   \"claim\": \"Institutional state changes via empty-chain replay divergence without a valid admission witness.\",\n   \"predicate\": \"Replay from empty receipt chain yields H_T, which differs from tampered _h\",\n   \"object\": \"EpistemicState.receipt_chain()\",\n   \"scope\": \"complete_epistemic_mediation_v0.py\",\n   \"evidence_refs\": [\n    \"corpus/complete_epistemic_mediation_v0.py:116-120\"\n   ],\n   \"source_roots\": [\n    \"corpus/complete_epistemic_mediation_v0.py\"\n   ],\n   \"evidence_class\": \"OBSERVED\",\n   \"candidate_falsifier\": \"A replay function that ignores receipt_chain and reconstructs H from a different source\",\n   \"confidence\": \"HIGH\"\n  }\n ],\n \"unknowns\": [],\n \"forbidden_paths_checked\": [],\n \"authority\": false,\n \"ledger_effect\": \"none\"\n}\n```",
+  "usage": {
+    "completion_tokens": 708,
+    "prompt_tokens": 7429,
+    "total_tokens": 8137,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  },
+  "latency_s": 66.2,
+  "enable_thinking": false,
+  "finish_reason": "stop"
+}

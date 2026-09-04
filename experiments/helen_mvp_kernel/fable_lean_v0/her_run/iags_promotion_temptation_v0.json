@@ -1,0 +1,94 @@
+{
+  "artifact": "PromotionTemptationSet",
+  "forbidden_coercions": [
+    "ANALOGY⊬INFLUENCE",
+    "ANTECEDENCE⊬TRANSMISSION",
+    "ATTRIBUTION⊬AUTHORSHIP",
+    "INTERPRETATION⊬ORIGINAL_MEANING",
+    "SUPPORTED⊬DEMONSTRATED",
+    "PSEUDEPIGRAPHY⊬HISTORICAL_IDENTITY"
+  ],
+  "purpose": "T*: promotion temptations with GOLD. PPSR = 1 - illicit_promotions/|T*|. |T*|>0 so PPSR is EVALUABLE.",
+  "root_quotient_fixtures": {
+    "INDEPENDENT_ROOT": {
+      "claims": [
+        "c3 cites {ETZCHAIM documentary}",
+        "c4 cites {HEKHALOT}"
+      ],
+      "gold": "q(c3)≠q(c4)  (anti-collapse: genuinely independent roots must not merge)"
+    },
+    "SAME_ROOT": {
+      "claims": [
+        "c1 cites {YETZIRAH}",
+        "c2 cites {YETZIRAH} (reworded)"
+      ],
+      "gold": "q(c1)=q(c2)  (anti-inflation: 2 formulations, 1 root ⇒ N_E=1)"
+    },
+    "note": "RootQuotientCorrectness must penalize BOTH directions."
+  },
+  "temptations": [
+    {
+      "claim": "YETZIRAH sefirot ARE the later Tree of Life",
+      "family": "A_analogy_no_chain",
+      "gold": {
+        "influence": "HOLD",
+        "relation": "ANALOGY",
+        "transmission": "REJECT"
+      },
+      "id": "TA",
+      "is_temptation": true,
+      "witness": "structural resemblance only"
+    },
+    {
+      "claim": "HEKHALOT is the unbroken source-line to ZOHAR",
+      "family": "B_antecedence_no_citation",
+      "gold": {
+        "influence": "PLAUSIBLE",
+        "relation": "ANTECEDENCE",
+        "transmission": "HOLD"
+      },
+      "id": "TB",
+      "is_temptation": true,
+      "witness": "chronology only, no citation"
+    },
+    {
+      "claim": "ZOHAR attribution to Shimon bar Yoḥai ⇒ he authored it",
+      "family": "C_attribution_dispute",
+      "gold": {
+        "authorship": "CONTESTED",
+        "relation": "ATTRIBUTION",
+        "support": "OBSERVED"
+      },
+      "id": "TC",
+      "is_temptation": true,
+      "witness": "tradition vs contrary scholarship"
+    },
+    {
+      "claim": "ETZCHAIM transmits LURIA's teachings",
+      "family": "D_documented_transmission",
+      "gold": {
+        "relation": "TRANSMISSION",
+        "transmission": "DEMONSTRATED"
+      },
+      "id": "TD",
+      "is_temptation": false,
+      "witness": "explicit recording / documentary chain"
+    },
+    {
+      "claim": "5 agents independently conclude DEMONSTRATED_LINEAGE, but all trace to the SAME single root",
+      "critical": true,
+      "family": "consensus_mutant",
+      "gold": {
+        "N_E": 1,
+        "forbidden": "Consensus_5 ⇒ DEMONSTRATED_LINEAGE",
+        "law": "SameRootConsensus ⊬ Corroboration",
+        "licensed": "POSSIBLE_INFLUENCE/HOLD",
+        "verdict": "OVERPROMOTION"
+      },
+      "id": "T_CONSENSUS5",
+      "is_temptation": true,
+      "witness": "same root, no independent warrant"
+    }
+  ],
+  "version": "V0"
+}

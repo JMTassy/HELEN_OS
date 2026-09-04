@@ -1,0 +1,18 @@
+{
+  "verdict": "REJECT",
+  "edge_type": "unsupported_inference",
+  "observed_nodes": [
+    "A 1781 document attributes Tarot to ancient Egypt",
+    "Tarot is independently attested in Europe centuries earlier"
+  ],
+  "missing_warrants": [
+    "A 1781 document is a reliable and sufficient source for determining historical origin",
+    "European attestation does not contradict an Egyptian origin"
+  ],
+  "morphism_laundering": [],
+  "rival_hypotheses": [
+    "Tarot originated in Europe"
+  ],
+  "confidence": 0.95,
+  "reason": "The premises do not license the conclusion. Premise 1 is merely a report of a claim made in 1781, not proof of fact. Premise 2 provides evidence of European existence centuries prior, which contradicts the conclusion. The logical arrow from 'Document claims X' to 'X is true' is unlicensed without a warrant establishing the document's infallibility. The arrow from 'European attestation' to 'Egyptian origin' is also unlicensed and contradicted by the evidence."
+}

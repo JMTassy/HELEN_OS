@@ -1,0 +1,45 @@
+{
+  "schema": "HYPERFRAMES_RENDER_RECEIPT_V1",
+  "authority": false,
+  "non_sovereign": true,
+  "composition_id": "hyperframes-warren-intro",
+  "source_path": "index.html",
+  "output": {
+    "path": "renders/goblin_warren_intro.mp4",
+    "sha256": "58195890b80f7db6d9f5ff1439a06be8078e079fb0d50997ba9784896c83acb5",
+    "size_bytes": 854773,
+    "size_kb": 834,
+    "mime_type": "video/mp4",
+    "width": 1920,
+    "height": 1080,
+    "duration_seconds": 6.0,
+    "fps": 30,
+    "codec": "h264",
+    "bitrate_kbps": 1139
+  },
+  "toolchain": {
+    "node": "v22.22.2",
+    "npm": "10.9.7",
+    "hyperframes": "0.7.59 (pinned)",
+    "ffmpeg": "8.0.1",
+    "ffprobe": "8.0.1",
+    "chrome": "chrome-headless-shell mac_arm-152.0.7928.2"
+  },
+  "checks": {
+    "doctor": "mostly_green",
+    "lint": "0 errors, 0 warnings",
+    "runtime": "0 errors",
+    "layout": "0 issues",
+    "motion": "0 errors",
+    "contrast": "25/25 WCAG AA pass"
+  },
+  "defects_fixed": [
+    "conflit transform CSS/GSAP",
+    "chevauchement de clips"
+  ],
+  "render_time_seconds": 31,
+  "credit_cost": 0,
+  "claim_status": "NO_CLAIM",
+  "final": "HOLD_FOR_OPERATOR",
+  "note": "Garden-only motion-graphics asset. authority=false. Not a kernel render."
+}

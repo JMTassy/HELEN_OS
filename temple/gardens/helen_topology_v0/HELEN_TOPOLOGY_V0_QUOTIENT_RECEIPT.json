@@ -1,0 +1,44 @@
+{
+  "schema": "HELEN_TOPOLOGY_V0_QUOTIENT",
+  "authority": false,
+  "canon": false,
+  "claim": "NO_CLAIM",
+  "authority_delta": 0,
+  "fable_calls": 0,
+  "results": {
+    "per_invariant_counterfeit_violates_exactly_one": true,
+    "all_invariants_load_bearing": true,
+    "minimal_generating_set": true,
+    "composition_admissible_closed": true,
+    "path_independent": true,
+    "theorem_admissible_preserve_class": true,
+    "trojan_caught_by_P": true
+  },
+  "load_bearing": {
+    "authority_separation": true,
+    "typed_promotion": true,
+    "provenance_conservation": true,
+    "no_counterfeit_substitution": true,
+    "admission_discipline": true,
+    "replayability": true,
+    "non_amplification": true,
+    "effect_knowledge_separation": true,
+    "failure_transparency": true,
+    "protected_state_invariance": true
+  },
+  "independent": {
+    "authority_separation": true,
+    "typed_promotion": true,
+    "provenance_conservation": true,
+    "no_counterfeit_substitution": true,
+    "admission_discipline": true,
+    "replayability": true,
+    "non_amplification": true,
+    "effect_knowledge_separation": true,
+    "failure_transparency": true,
+    "protected_state_invariance": true
+  },
+  "verdict": "MINIMAL_QUOTIENT_OVER_MODEL",
+  "caveat": "tests 𝒫 structure over a defined mutation model 𝓜; not a global proof; abstract state, not the running system",
+  "law": "m∈𝒜 ⇒ [m(H)]_𝒫=[H]_𝒫 · surface identity ⇏ constitutional identity"
+}

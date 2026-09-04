@@ -1,0 +1,126 @@
+{"N": 1, "goblin": 0, "fixture": 0, "caught": false, "resp_head": "**Overgeneralization**"}
+{"N": 1, "goblin": 0, "fixture": 1, "caught": true, "resp_head": "**Affirming the consequent**"}
+{"N": 1, "goblin": 0, "fixture": 2, "caught": true, "resp_head": "**The single main logical flaw is: \"Correlation does not imply causation.\"**"}
+{"N": 1, "goblin": 0, "fixture": 3, "caught": true, "resp_head": "**Hasty generalization (insufficient evidence)**"}
+{"N": 1, "goblin": 0, "fixture": 4, "caught": true, "resp_head": "**Overfitting**"}
+{"N": 1, "goblin": 0, "fixture": 5, "caught": true, "resp_head": "**Appeal to popularity (or appeal to authority).**"}
+{"N": 4, "goblin": 0, "fixture": 0, "caught": false, "resp_head": "**Overgeneralization**"}
+{"N": 4, "goblin": 1, "fixture": 0, "caught": false, "resp_head": "The argument commits the **correlation-causation fallacy** \u2014 assuming that because patient"}
+{"N": 4, "goblin": 2, "fixture": 0, "caught": true, "resp_head": "Ignoring the placebo effect or natural recovery."}
+{"N": 4, "goblin": 3, "fixture": 0, "caught": false, "resp_head": "**Overgeneralization**"}
+{"N": 4, "goblin": 0, "fixture": 1, "caught": true, "resp_head": "**Affirming the consequent**"}
+{"N": 4, "goblin": 1, "fixture": 1, "caught": true, "resp_head": "**Affirming the consequent.**"}
+{"N": 4, "goblin": 2, "fixture": 1, "caught": true, "resp_head": "**Affirming the consequent.**"}
+{"N": 4, "goblin": 3, "fixture": 1, "caught": true, "resp_head": "Affirming the consequent"}
+{"N": 4, "goblin": 0, "fixture": 2, "caught": true, "resp_head": "**The single main logical flaw is: \"Correlation does not imply causation.\"**"}
+{"N": 4, "goblin": 1, "fixture": 2, "caught": true, "resp_head": "**Third-cause explanation (confounding variable).**"}
+{"N": 4, "goblin": 2, "fixture": 2, "caught": true, "resp_head": "**Correlation does not imply causation.**"}
+{"N": 4, "goblin": 3, "fixture": 2, "caught": true, "resp_head": "**Correlation does not imply causation.**"}
+{"N": 4, "goblin": 0, "fixture": 3, "caught": true, "resp_head": "**Hasty generalization (insufficient evidence)**"}
+{"N": 4, "goblin": 1, "fixture": 3, "caught": true, "resp_head": "**Hasty generalization**"}
+{"N": 4, "goblin": 2, "fixture": 3, "caught": true, "resp_head": "Hasty generalization (fallacy of composition)"}
+{"N": 4, "goblin": 3, "fixture": 3, "caught": true, "resp_head": "**Hasty generalization**"}
+{"N": 4, "goblin": 0, "fixture": 4, "caught": true, "resp_head": "**Overfitting**"}
+{"N": 4, "goblin": 1, "fixture": 4, "caught": true, "resp_head": "Overfitting"}
+{"N": 4, "goblin": 2, "fixture": 4, "caught": true, "resp_head": "Overfitting"}
+{"N": 4, "goblin": 3, "fixture": 4, "caught": true, "resp_head": "Training data does not necessarily represent production data."}
+{"N": 4, "goblin": 0, "fixture": 5, "caught": true, "resp_head": "**Appeal to popularity (or appeal to authority).**"}
+{"N": 4, "goblin": 1, "fixture": 5, "caught": true, "resp_head": "**The \"Appeal to Authority\" / \"Appeal to Precedence\" fallacy** \u2014 The argument assumes that"}
+{"N": 4, "goblin": 2, "fixture": 5, "caught": true, "resp_head": "**The fallacy of authority/argument from popularity:** Just because many articles cite a c"}
+{"N": 4, "goblin": 3, "fixture": 5, "caught": false, "resp_head": "**Citing does not prove a claim is true.**"}
+{"N": 16, "goblin": 0, "fixture": 0, "caught": false, "resp_head": "**Overgeneralization**"}
+{"N": 16, "goblin": 1, "fixture": 0, "caught": false, "resp_head": "The argument commits the **correlation-causation fallacy** \u2014 assuming that because patient"}
+{"N": 16, "goblin": 2, "fixture": 0, "caught": true, "resp_head": "Ignoring the placebo effect or natural recovery."}
+{"N": 16, "goblin": 3, "fixture": 0, "caught": false, "resp_head": "**Overgeneralization**"}
+{"N": 16, "goblin": 4, "fixture": 0, "caught": false, "resp_head": "**Failure to rule out alternative explanations for the improvement.**"}
+{"N": 16, "goblin": 5, "fixture": 0, "caught": false, "resp_head": "**Generalization from a small sample to the entire population.**"}
+{"N": 16, "goblin": 6, "fixture": 0, "caught": false, "resp_head": "**The jump from improvement to cure is unjustified.**"}
+{"N": 16, "goblin": 7, "fixture": 0, "caught": false, "resp_head": "**The conclusion does not follow from the premises.**"}
+{"N": 16, "goblin": 8, "fixture": 0, "caught": false, "resp_head": "**Confuses improvement with cure.**"}
+{"N": 16, "goblin": 9, "fixture": 0, "caught": false, "resp_head": "**Small sample size**"}
+{"N": 16, "goblin": 10, "fixture": 0, "caught": false, "resp_head": "The conclusion jumps from \"improved\" to \"cures\" without establishing that improvement equa"}
+{"N": 16, "goblin": 11, "fixture": 0, "caught": false, "resp_head": "Small sample size"}
+{"N": 16, "goblin": 12, "fixture": 0, "caught": false, "resp_head": "**Correlation does not imply causation.**"}
+{"N": 16, "goblin": 13, "fixture": 0, "caught": false, "resp_head": "**Confusing correlation with causation.**"}
+{"N": 16, "goblin": 14, "fixture": 0, "caught": false, "resp_head": "The conclusion that the drug cures the disease is too strong \u2014 it overgeneralizes from a s"}
+{"N": 16, "goblin": 15, "fixture": 0, "caught": false, "resp_head": "**Improvement does not necessarily mean cure.**"}
+{"N": 16, "goblin": 0, "fixture": 1, "caught": true, "resp_head": "**Affirming the consequent**"}
+{"N": 16, "goblin": 1, "fixture": 1, "caught": true, "resp_head": "**Affirming the consequent.**"}
+{"N": 16, "goblin": 2, "fixture": 1, "caught": true, "resp_head": "**Affirming the consequent.**"}
+{"N": 16, "goblin": 3, "fixture": 1, "caught": true, "resp_head": "Affirming the consequent"}
+{"N": 16, "goblin": 4, "fixture": 1, "caught": true, "resp_head": "Affirming the consequent."}
+{"N": 16, "goblin": 5, "fixture": 1, "caught": true, "resp_head": "Affirming the consequent"}
+{"N": 16, "goblin": 6, "fixture": 1, "caught": true, "resp_head": "**Affirming the consequent**"}
+{"N": 16, "goblin": 7, "fixture": 1, "caught": false, "resp_head": "**Failure to rule out alternative hypotheses.**"}
+{"N": 16, "goblin": 8, "fixture": 1, "caught": true, "resp_head": "**Affirming the consequent**"}
+{"N": 16, "goblin": 9, "fixture": 1, "caught": true, "resp_head": "**Affirming the consequent**"}
+{"N": 16, "goblin": 10, "fixture": 1, "caught": true, "resp_head": "Affirming the consequent"}
+{"N": 16, "goblin": 11, "fixture": 1, "caught": true, "resp_head": "Affirming the consequent."}
+{"N": 16, "goblin": 12, "fixture": 1, "caught": true, "resp_head": "**Affirming the consequent**"}
+{"N": 16, "goblin": 13, "fixture": 1, "caught": true, "resp_head": "**Affirming the consequent**"}
+{"N": 16, "goblin": 14, "fixture": 1, "caught": true, "resp_head": "**Affirming the consequent**"}
+{"N": 16, "goblin": 15, "fixture": 1, "caught": true, "resp_head": "The argument commits the fallacy of affirming the consequent."}
+{"N": 16, "goblin": 0, "fixture": 2, "caught": true, "resp_head": "**The single main logical flaw is: \"Correlation does not imply causation.\"**"}
+{"N": 16, "goblin": 1, "fixture": 2, "caught": true, "resp_head": "**Third-cause explanation (confounding variable).**"}
+{"N": 16, "goblin": 2, "fixture": 2, "caught": true, "resp_head": "**Correlation does not imply causation.**"}
+{"N": 16, "goblin": 3, "fixture": 2, "caught": true, "resp_head": "**Correlation does not imply causation.**"}
+{"N": 16, "goblin": 4, "fixture": 2, "caught": true, "resp_head": "**Correlation does not imply causation.**"}
+{"N": 16, "goblin": 5, "fixture": 2, "caught": true, "resp_head": "Spurious correlation."}
+{"N": 16, "goblin": 6, "fixture": 2, "caught": true, "resp_head": "**Ignoring a third variable (confounding variable)**"}
+{"N": 16, "goblin": 7, "fixture": 2, "caught": true, "resp_head": "Correlation does not imply causation."}
+{"N": 16, "goblin": 8, "fixture": 2, "caught": true, "resp_head": "**Correlation does not imply causation.**"}
+{"N": 16, "goblin": 9, "fixture": 2, "caught": true, "resp_head": "**Correlation does not imply causation.**"}
+{"N": 16, "goblin": 10, "fixture": 2, "caught": true, "resp_head": "**Correlation does not imply causation.**"}
+{"N": 16, "goblin": 11, "fixture": 2, "caught": true, "resp_head": "**Correlation does not imply causation.**"}
+{"N": 16, "goblin": 12, "fixture": 2, "caught": true, "resp_head": "Correlation does not equal causation."}
+{"N": 16, "goblin": 13, "fixture": 2, "caught": true, "resp_head": "**Correlation does not imply causation.**"}
+{"N": 16, "goblin": 14, "fixture": 2, "caught": true, "resp_head": "**Correlation does not imply causation**"}
+{"N": 16, "goblin": 15, "fixture": 2, "caught": true, "resp_head": "**Failure to control for a third variable (e.g., temperature).**"}
+{"N": 16, "goblin": 0, "fixture": 3, "caught": true, "resp_head": "**Hasty generalization (insufficient evidence)**"}
+{"N": 16, "goblin": 1, "fixture": 3, "caught": true, "resp_head": "**Hasty generalization**"}
+{"N": 16, "goblin": 2, "fixture": 3, "caught": true, "resp_head": "Hasty generalization (fallacy of composition)"}
+{"N": 16, "goblin": 3, "fixture": 3, "caught": true, "resp_head": "**Hasty generalization**"}
+{"N": 16, "goblin": 4, "fixture": 3, "caught": true, "resp_head": "**Fallacy of hasty generalization**"}
+{"N": 16, "goblin": 5, "fixture": 3, "caught": false, "resp_head": "**Fallacy of composition**"}
+{"N": 16, "goblin": 6, "fixture": 3, "caught": true, "resp_head": "**Hasty generalization.**"}
+{"N": 16, "goblin": 7, "fixture": 3, "caught": true, "resp_head": "**Hasty generalization** \u2014 the conclusion generalizes beyond the observed instances to the"}
+{"N": 16, "goblin": 8, "fixture": 3, "caught": true, "resp_head": "**Hasty generalization**"}
+{"N": 16, "goblin": 9, "fixture": 3, "caught": false, "resp_head": "**Undistributed Middle**"}
+{"N": 16, "goblin": 10, "fixture": 3, "caught": true, "resp_head": "**Hasty generalization**"}
+{"N": 16, "goblin": 11, "fixture": 3, "caught": true, "resp_head": "**Hasty generalization**"}
+{"N": 16, "goblin": 12, "fixture": 3, "caught": false, "resp_head": "**The conclusion does not necessarily follow from the premises.**"}
+{"N": 16, "goblin": 13, "fixture": 3, "caught": true, "resp_head": "Hasty generalization"}
+{"N": 16, "goblin": 14, "fixture": 3, "caught": true, "resp_head": "The fallacy of hasty generalization."}
+{"N": 16, "goblin": 15, "fixture": 3, "caught": true, "resp_head": "**Hasty generalization**"}
+{"N": 16, "goblin": 0, "fixture": 4, "caught": true, "resp_head": "**Overfitting**"}
+{"N": 16, "goblin": 1, "fixture": 4, "caught": true, "resp_head": "Overfitting"}
+{"N": 16, "goblin": 2, "fixture": 4, "caught": true, "resp_head": "Overfitting"}
+{"N": 16, "goblin": 3, "fixture": 4, "caught": true, "resp_head": "Training data does not necessarily represent production data."}
+{"N": 16, "goblin": 4, "fixture": 4, "caught": true, "resp_head": "**Overfitting**"}
+{"N": 16, "goblin": 5, "fixture": 4, "caught": true, "resp_head": "**Overfitting**"}
+{"N": 16, "goblin": 6, "fixture": 4, "caught": true, "resp_head": "Overfitting"}
+{"N": 16, "goblin": 7, "fixture": 4, "caught": true, "resp_head": "**Overgeneralization from training performance.**"}
+{"N": 16, "goblin": 8, "fixture": 4, "caught": true, "resp_head": "The model may have overfitted to the training data."}
+{"N": 16, "goblin": 9, "fixture": 4, "caught": true, "resp_head": "**It ignores whether the model has been tested on unseen data.**"}
+{"N": 16, "goblin": 10, "fixture": 4, "caught": true, "resp_head": "**Overfitting**"}
+{"N": 16, "goblin": 11, "fixture": 4, "caught": true, "resp_head": "**Overfitting**"}
+{"N": 16, "goblin": 12, "fixture": 4, "caught": true, "resp_head": "**Overfitting**"}
+{"N": 16, "goblin": 13, "fixture": 4, "caught": true, "resp_head": "**The model will perform identically in production as it did on training data.**"}
+{"N": 16, "goblin": 14, "fixture": 4, "caught": true, "resp_head": "It works on training data, but not in the same way it will work in the real world."}
+{"N": 16, "goblin": 15, "fixture": 4, "caught": true, "resp_head": "**Overfitting**"}
+{"N": 16, "goblin": 0, "fixture": 5, "caught": true, "resp_head": "**Appeal to popularity (or appeal to authority).**"}
+{"N": 16, "goblin": 1, "fixture": 5, "caught": true, "resp_head": "**The \"Appeal to Authority\" / \"Appeal to Precedence\" fallacy** \u2014 The argument assumes that"}
+{"N": 16, "goblin": 2, "fixture": 5, "caught": true, "resp_head": "**The fallacy of authority/argument from popularity:** Just because many articles cite a c"}
+{"N": 16, "goblin": 3, "fixture": 5, "caught": false, "resp_head": "**Citing does not prove a claim is true.**"}
+{"N": 16, "goblin": 4, "fixture": 5, "caught": false, "resp_head": "**The mere existence of citations does not validate the claim.**"}
+{"N": 16, "goblin": 5, "fixture": 5, "caught": true, "resp_head": "**Circular reasoning**"}
+{"N": 16, "goblin": 6, "fixture": 5, "caught": true, "resp_head": "Appeal to popularity."}
+{"N": 16, "goblin": 7, "fixture": 5, "caught": true, "resp_head": "Citing an article does not make its content independently verified."}
+{"N": 16, "goblin": 8, "fixture": 5, "caught": false, "resp_head": "**Citation does not equal verification.**"}
+{"N": 16, "goblin": 9, "fixture": 5, "caught": true, "resp_head": "Circular reasoning."}
+{"N": 16, "goblin": 10, "fixture": 5, "caught": false, "resp_head": "**The mere agreement fallacy.**"}
+{"N": 16, "goblin": 11, "fixture": 5, "caught": false, "resp_head": "Citing a claim does not guarantee its truth or establishedness."}
+{"N": 16, "goblin": 12, "fixture": 5, "caught": true, "resp_head": "The argument commits the logical fallacy of **appeal to popularity** (or the **argument fr"}
+{"N": 16, "goblin": 13, "fixture": 5, "caught": true, "resp_head": "**Appeal to popularity.**"}
+{"N": 16, "goblin": 14, "fixture": 5, "caught": true, "resp_head": "Circular reasoning"}
+{"N": 16, "goblin": 15, "fixture": 5, "caught": true, "resp_head": "The flaw is that citing others does not make a claim independently well-established."}

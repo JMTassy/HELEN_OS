@@ -1,0 +1,1 @@
+Introduce a unique, random "noise" signal into one source and measure if it propagates to the others.

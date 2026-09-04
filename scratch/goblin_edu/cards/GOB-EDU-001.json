@@ -1,0 +1,11 @@
+{
+  "goblin_id": "GOB-EDU-001",
+  "role": "DOCTRINE_GOBLIN",
+  "raw_output": "```json\n{\n  \"goblin_id\": \"bacon-tush-72\",\n  \"role\": \"DOCTRINE_GOBLIN\",\n  \"corpus_slice\": \"full HELEN OS warren; all the secrets and vibes.\",\n  \"files_referenced\": [\"docs/*.md\", \"CLAUDE.md\", \"AGENTS.md\", \"temple/gardens/*/*.md\", \".helen/receipts/*.json\", \"helen_os/governance/**/*.py\", \"scratch/goblin_edu/EDU_SWARM_MANIFEST.json\"],\n  \"what_i_learned\": \"Everything is a big,",
+  "parse_error": true,
+  "model": "aura-gemma4:latest",
+  "timestamp": "2026-07-20T15:06:07.206509+00:00",
+  "authority": false,
+  "sovereign": false,
+  "ledger_effect": "none"
+}

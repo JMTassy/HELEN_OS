@@ -1,0 +1,6 @@
+# FROZEN HELEN_VERTICAL_SLICE_V0 — executable separation, audit-green
+# 6/6 properties · 7/7 bypass mutants killed · absolute test PASS · pytest 31 passed (slice+NIM regression)
+# NON-SOVEREIGN prototype · touches no real ledger/kernel/policy · unforgeability HMAC-modeled (not OS isolation)
+# frozen_at_git_HEAD: 9df543d6e0ac7e61b821fb941e1842bc2c7a07b6
+3b0e1e68bb957125fd8d497a0350c8ffd6a230c1a9aa5d76e4ad057be634d7e8  helen_os/kernel/vertical_slice_v0.py
+55bb8261b34211d67acce430de19f7edaf8039c65100e17992fb7d61f67692be  helen_os/tests/test_vertical_slice_v0.py

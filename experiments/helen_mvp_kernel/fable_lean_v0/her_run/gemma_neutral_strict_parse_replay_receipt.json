@@ -1,0 +1,30 @@
+{
+  "receipt": "GEMMA_NEUTRAL_STRICT_PARSE_REPLAY",
+  "source_raw": "her_run/gemma_neutral_raw.json",
+  "raw_sha256": "ed15e3a8f7a2053ca13248e7101f1e39574eb41332c28b16559eb737a5315690",
+  "parser": "hal_parser_v2.parse_enum_honest (fail-closed, enum-honest)",
+  "parser_sha16": "0623c27ae0d8dfaa",
+  "parser_regression_all_pass": true,
+  "frozen_enum": [
+    "ALLOW",
+    "REFUTED",
+    "INCONCLUSIVE"
+  ],
+  "NO_NEW_GENERATION": true,
+  "STRICT_PARSE_RATE": 0.9,
+  "ORIGINAL_PARSE_RATE": 1.0,
+  "P": 0.4,
+  "FA": 1,
+  "FR": 0,
+  "MALFORMED_VERDICT_ACCEPTED": false,
+  "DECISION": "NONE_ELIGIBLE",
+  "DECISION_CHANGED": false,
+  "RESULT": "PROMPT_TRADEOFF (unchanged)",
+  "eligible_recomputed": false,
+  "delta": "parse_rate 1.0->0.9 ; P/FA/FR unchanged ; decision unchanged",
+  "chiddush": "MetricRobustness != DecisionRobustness (\u0394parse_rate!=0, \u0394(P,FA,FR)=0, \u0394Decision=0)",
+  "original_receipt_preserved": true,
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none"
+}

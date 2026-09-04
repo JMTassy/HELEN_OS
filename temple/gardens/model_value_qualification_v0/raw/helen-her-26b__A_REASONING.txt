@@ -1,0 +1,8 @@
+WE calculate the convergence.
+
+**The Equation**
+$180 = 60(t) + 90(t - 0.5)$
+*(Where $t$ is the time elapsed since 09:00)*
+
+**The Time**
+10:30

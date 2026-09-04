@@ -1,0 +1,28 @@
+FABLE_LEAN_V0 — QUALITY LANE : CLOSED-AS-VACUOUS
+authority=false · canon=false · ledger_effect=none · NON-SOVEREIGN
+
+REFERENCES (immutable, independently verified):
+  report   savings_report.json      sha256 874aac4acef895ddad9f677ce0aa181c29dfba5a818072d2fb69dae12657e101
+  receipt  MEASUREMENT_RECEIPT.txt  sha256 adeae7e13d8ea01d762b1fd3de830fc61cb78a38d4f2e9146ca2ab216e18f4dd
+  state    MEASUREMENT_STATE.txt    sha256 0906bcbb79ea3ab8ea02ad6de883c4419bc763776f765559600af27eb6fdc491
+  verify   peer-review (proposer!=validator) 9/9 PASS
+
+QUALITY_COMPARISON     = VACUOUS
+GROUND (re-derived from raw report): on all 3 tasks skipped=[] and lean role-set == baseline role-set
+  == {A,B,C,D,E}. lean and baseline are the SAME per-task role executions ⇒ byte-identical outputs.
+  Therefore ΔQuality = 0 TRIVIALLY (comparison is degenerate, not informative).
+  ALL_TASKS_VACUOUS = True
+
+CRITICAL DISTINCTION (do not launder):
+  VacuousQuality (ΔQuality=0 from identical outputs)  ⇏  QualityPreserved.
+  Nothing was skipped, so "does dropping C/D/E cost quality?" was NEVER TESTED.
+  QUALITY_PRESERVED   = NOT_CLAIMED
+  EFFICIENCY_IMPROVED = HOLD   (needs BOTH a real cost saving AND a real quality-preservation; neither established)
+
+FABLE_LEAN_V0 EFFICIENCY VERDICT (this sample, n=3):
+  UNPROVEN. Cost advantage = 0 (gate never skipped). Quality preservation = untested (vacuous).
+  The null is retained as evidence: SpawnRate=100% ⇒ NoCostAdvantage. Lazy spawning neither confirmed nor refuted.
+  A real cost+quality test requires a run with >=1 production skip — deferred; spawn gate NOT tuned (operator directive).
+
+LANE:  MEASURE ✓  →  VERIFY ✓ (9/9)  →  QUALITY ✓ (CLOSED-AS-VACUOUS)  →  SCALE_V1 (frozen, untouched)
+SCALE_V1 = UNTOUCHED · AUTHORITY=false · CANON=false · LEDGER_EFFECT=none · COMMIT=none · PUSH=none

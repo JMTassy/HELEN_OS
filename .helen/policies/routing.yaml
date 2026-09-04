@@ -1,0 +1,25 @@
+# HELEN routing law V0.
+# Selection minimizes cost subject to critical-distinction coverage.
+# V0 has one worker; the table exists so adding providers changes DATA, not code.
+routes:
+  readonly_observation:
+    preferred: readonly_observer
+    fallback: none
+  extraction_and_formatting:
+    preferred: local_gemma        # not yet wired
+    fallback: local_qwen
+  long_context_comparison:
+    preferred: kimi               # not yet wired
+    fallback: claude
+  architecture_specification:
+    preferred: claude             # not yet wired
+    fallback: gpt
+  repository_implementation:
+    preferred: codex              # not yet wired — requires isolated worktree
+    fallback: claude_code
+  adversarial_review:
+    preferred: grok               # not yet wired
+    fallback: claude
+  admission:
+    provider: none
+    human_required: true          # Law 7. Not configurable.

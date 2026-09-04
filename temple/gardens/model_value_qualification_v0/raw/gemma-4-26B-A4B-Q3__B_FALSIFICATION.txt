@@ -1,0 +1,1 @@
+The API returned a 200 OK status because the request was successfully received and validated, but the downstream transaction with the bank subsequently failed due to insufficient funds. This falsifies the implication that a successful HTTP response code guarantees the successful completion of the underlying business logic.

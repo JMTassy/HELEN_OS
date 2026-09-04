@@ -1,0 +1,59 @@
+════════════════════════════════════════════════════════════════
+  GOBLIN_BLOOM_30MIN_V0 · budget 1740s · 2 🕳️ · 5 retained · ΔA=0
+════════════════════════════════════════════════════════════════
+  r1 QWEN_REMOVAL    [50.1s] REMOVAL   n4f4l3 · REMOVING 'typed-obstruction 🕳️' ch
+  r1 QWEN_PROVENANCE [74.3s]           n0f0l0 · 
+  r1 QWEN_QUOTIENT   [122.6s]           n0f0l0 · <the falsifier / bridge / collisio
+  r1 GEMMA_OBSTRUCTION[142.5s] <OBSTRUCT n4f5l4 · <The semantic void of `evidence_ro
+  r1 GEMMA_ANALOGY   [157.1s] BRIDGE    n4f3l4 · The "co-validity" $\u22c8$ allows 
+  r2 QWEN_REMOVAL    [205.4s]           n0f0l0 · 
+  r2 QWEN_PROVENANCE [251.1s]           n0f0l0 · <the falsifier / bridge / collisio
+  r2 QWEN_QUOTIENT   [297.1s]           n0f0l0 · 
+  r2 GEMMA_OBSTRUCTION[325.2s] <OBSTRUCT n4f5l4 · <The "Constitutional Bridge" failu
+  r2 GEMMA_ANALOGY   [338.0s] BRIDGE    n4f3l4 · The "marginal¬joint" is a structur
+  r3 QWEN_REMOVAL    [387.7s] REMOVAL   n4f4l4 · The distinction 'typed-obstruction
+  r3 QWEN_PROVENANCE [433.0s] <FALSIFIE n0f0l0 · <the falsifier / bridge / collisio
+  r3 QWEN_QUOTIENT   [478.5s]           n0f0l0 · 
+  r3 GEMMA_OBSTRUCTION[500.1s] OBSTRUCTI n4f3l5 · The absence of `evidence_root(ev≠N
+  r3 GEMMA_ANALOGY   [514.3s] BRIDGE    n4f4l5 · The bridge of *diachronic CHIDDUSH
+  r4 QWEN_REMOVAL    [567.1s]           n0f0l0 · Removal of the "typed-obstruction 
+  r4 QWEN_PROVENANCE [600.0s] **OBSTRUC n0f0l0 · **The candidate bridge (a topologi
+  r4 QWEN_QUOTIENT   [646.5s]           n0f0l0 · <The collision is that `∼_F` (func
+  r4 GEMMA_OBSTRUCTION[672.5s] <OBSTRUCT n4f5l4 · <The "notarized" state requires a 
+  r4 GEMMA_ANALOGY   [686.8s] BRIDGE    n4f3l4 · The bridge is the "license" as a s
+  r5 QWEN_REMOVAL    [720.8s] REMOVAL   n5f5l5 · REMOVING it changes no later decis
+  r5 QWEN_PROVENANCE [747.8s] OBSTRUCTI n3f4l4 · The bridge asserts a verified stat
+  r5 QWEN_QUOTIENT   [793.6s]           n0f0l0 · $p \sim_F q$ (they produce identic
+  r5 GEMMA_OBSTRUCTION[825.4s] <OBSTRUCT n4f5l4 · <The $\text{MISSING\_EVIDENCE}$ ty
+  r5 GEMMA_ANALOGY   [837.3s] BRIDGE    n4f3l4 · The transition from "Derived" to "
+  r6 QWEN_REMOVAL    [877.0s] REMOVAL   n3f4l2 · Removal preserves all later reacha
+  r6 QWEN_PROVENANCE [910.6s] REMOVAL   n4f5l4 · The candidate claims a `notarized`
+  r6 QWEN_QUOTIENT   [955.9s] <OBSTRUCT n4f3l4 · <A specific collision where p and 
+  r6 GEMMA_OBSTRUCTION[979.3s] <OBSTRUCT n4f5l4 · <The transition from 'raw' to 'not
+  r6 GEMMA_ANALOGY   [993.4s] OBSTRUCTI n4f4l3 · The structural integrity of a lice
+  r7 QWEN_REMOVAL    [1049.0s] REMOVAL   n0f0l0 · Removing this distinction fails th
+  r7 QWEN_PROVENANCE [1094.1s]           n0f0l0 · 
+  r7 QWEN_QUOTIENT   [1115.3s] <FALSIFIE n0f0l0 · <the falsifier / bridge / collisio
+  r7 GEMMA_OBSTRUCTION[1142.0s] <OBSTRUCT n4f5l4 · <The status of "notarized" is a pr
+  r7 GEMMA_ANALOGY   [1155.3s] BRIDGE    n4f3l4 · The "Marginal $\neq$ Joint" fallac
+  r8 QWEN_REMOVAL    [1225.3s]           n0f0l0 · 
+  r8 QWEN_PROVENANCE [1272.5s]           n0f0l0 · 
+  r8 QWEN_QUOTIENT   [1323.0s]           n0f0l0 · <Functionally identical paths p, q
+  r8 GEMMA_OBSTRUCTION[1346.8s] <OBSTRUCT n4f5l4 · <The "Notarized-Raw" Transition $\
+  r8 GEMMA_ANALOGY   [1360.9s] BRIDGE    n4f4l3 · The "license" of a structure is no
+  r9 QWEN_REMOVAL    [1412.7s]           n0f0l0 · 
+  r9 QWEN_PROVENANCE [1443.3s] **FALSIFI n5f5l5 · **The bridge $\mathcal{B}$ asserts
+  r9 QWEN_QUOTIENT   [1489.3s]           n0f0l0 · 
+  r9 GEMMA_OBSTRUCTION[1515.4s] <OBSTRUCT n5f4l5 · <The "MISSING_EVIDENCE" type creat
+  r9 GEMMA_ANALOGY   [1530.6s] BRIDGE    n4f4l5 · The "license" of a structure is a 
+  r10 QWEN_REMOVAL    [1577.9s] OBSTRUCTI n3f4l3 · Removing "typed-obstruction 🕳️" fa
+  r10 QWEN_PROVENANCE [1617.4s] <OBSTRUCT n5f5l5 · <The bridge is a **BYPASS** of evi
+  r10 QWEN_QUOTIENT   [1663.0s]           n0f0l0 · <A collision between the GARDEN's 
+  r10 GEMMA_OBSTRUCTION[1688.9s] OBSTRUCTI n5f4l5 · The "topological_bridge" status in
+  r10 GEMMA_ANALOGY   [1701.7s] BRIDGE    n4f3l4 · The "marginal-joint" acts as a top
+  r11 QWEN_REMOVAL    [1736.2s] FALSIFIER n5f5l5 · Removing 'typed-obstruction 🕳️' ch
+  r11 QWEN_PROVENANCE [1782.5s]           n0f0l0 · 
+────────────────────────────────────────────────────────────────
+  ΔS={'ΔN': 52, 'ΔQ': 37, 'Δd_D': 17, 'Δd_I': 2, 'Δd_M': 0, 'ΔR': 0} · dupes=28.8% · falsifiers=5 · obstr=5
+  key_inequality ΔN≥ΔQ≥Δd_D≥Δd_M = True · VERDICT=V2 · stop=WALL_BUDGET
+  errors=0 (shown real) · ΔA=0 · NO_COMMIT → GOBLIN_BLOOM_REDUCED.json

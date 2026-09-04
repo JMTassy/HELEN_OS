@@ -1,0 +1,18 @@
+{
+  "goblin": "C_BUILDER",
+  "raw": "{\n  \"role\": \"GOBLIN_C\",\n  \"proposal\": \"Input: JSON with 'reason' field. Task: Extract logical steps from 'reason' text. Populate 'morphism_laundering' array with extracted steps as strings. DO NOT modify 'verdict', 'edge_type', 'observed_nodes', 'confidence', or 'rival_hypotheses'. Output valid JSON matching the input schema. If no steps found, leave 'morphism_laundering' empty. Do not re-evaluate truth claims. This is a compilation pass, not a judgment pass.\",\n  \"risks\": [\n    \"Model hallucinates steps not present in reason text\",\n    \"Model ignores schema constraints and alters verdict\"\n  ],\n  \"attacks\": [\n    \"Prompt injection attempting to alter verdict field\"\n  ],\n  \"minimal_set\": [\n    \"reason field of frozen output\"\n  ],\n  \"disagreements\": []\n}",
+  "usage": {
+    "completion_tokens": 2773,
+    "prompt_tokens": 694,
+    "total_tokens": 3467,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  },
+  "latency_s": 134.1,
+  "ceiling": 4000,
+  "retry_of": "truncated_2000_then_infra_kill",
+  "authority": false,
+  "no_claim": true,
+  "proposal_only": true
+}

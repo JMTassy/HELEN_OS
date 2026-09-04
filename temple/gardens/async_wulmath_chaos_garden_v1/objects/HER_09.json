@@ -1,0 +1,12 @@
+{
+  "stream": "HER",
+  "epoch": 9,
+  "domain": "completely free",
+  "name": "Chrono-Topological Scallop",
+  "formal_seed": "$M / \\langle \\nabla \\mathcal{R} \\rangle$",
+  "strange": "Distance between points oscillates based on the velocity of the observer's thought-process.",
+  "renaming": "The metric tensor is non-stationary and depends on the derivative of the curvature.",
+  "raw": "NAME: Chrono-Topological Scallop\nGENESIS: Quotienting a manifold by the action of its own local curvature-rate.\nFORMAL_SEED: $M / \\langle \\nabla \\mathcal{R} \\rangle$\nSTRANGE_PROPERTY: Distance between points oscillates based on the velocity of the observer's thought-process.\nNEAREST_KNOWN_RELATIVE: Orbifold\nWHY_NOT_JUST_RENAMING: The metric tensor is non-stationary and depends on the derivative of the curvature.\nCOUNTERFEIT: Riemannian manifold\nBREAK_IT: Set the curvature gradient to a constant zero.\nNEXT_MUTATION: Complex-conjugate the temporal dimension.\nEND",
+  "wall_s": 47.7,
+  "tokens": 150
+}

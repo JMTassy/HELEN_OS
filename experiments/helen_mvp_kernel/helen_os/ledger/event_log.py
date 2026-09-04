@@ -7,8 +7,22 @@ from pathlib import Path
 
 from helen_os.ledger.hash_chain import canonical_json
 
+# Optional capability guard for the append sink (χ_med). When installed, every
+# append must present a capability the guard accepts; without a guard the sink
+# behaves as before (legacy tests unaffected). Install/reset via set_capability_guard.
+_capability_guard = None
 
-def append_event(path: str | os.PathLike, event: dict) -> None:
+
+def set_capability_guard(guard) -> None:
+    """guard: callable(event: dict, capability) -> None, raising PermissionError
+    to deny. Pass None to uninstall."""
+    global _capability_guard
+    _capability_guard = guard
+
+
+def append_event(path: str | os.PathLike, event: dict, capability=None) -> None:
+    if _capability_guard is not None:
+        _capability_guard(event, capability)
     p = Path(path)
     p.parent.mkdir(parents=True, exist_ok=True)
     with p.open("a", encoding="utf-8") as f:

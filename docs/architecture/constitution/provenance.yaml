@@ -1,0 +1,26 @@
+# HELEN.PROVENANCE — DRAFT · authority: false · claim: NO_CLAIM
+# Citations from claim graph, not decorative end-paste.
+
+schema: HELEN_CONSTITUTION_PROVENANCE_V0
+status: DRAFT
+authority: false
+claim: NO_CLAIM
+
+claim_object:
+  text: string
+  source_ids: list
+  support_strength: direct | inferred | contextual
+  transformed: boolean
+  quote_used: boolean
+  freshness: current | stable | uncertain
+
+pipeline:
+  - source_evidence
+  - normalized_proposition
+  - assistant_claim
+  - visible_citation
+
+invariants:
+  - every_externally_derived_claim_retains_provenance
+  - citations_generated_from_claim_graph
+  - no_mismatched_decorative_citations

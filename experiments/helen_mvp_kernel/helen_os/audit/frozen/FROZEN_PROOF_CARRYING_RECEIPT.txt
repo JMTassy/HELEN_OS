@@ -1,0 +1,6 @@
+# FROZEN PROOF_CARRYING_RECEIPT — research epoch that carries its own claim boundary, audit-green
+# validator: authority-leak/no-boundary/overclaim/undisclaimed-unresolved all REJECT; HOLD=knowledge; AuthorityGain=0
+# dogfood: AR leave-one-law-out ablation → ADMIT_RECEIPT/PROGRESS, surviving edges L2+L3
+# pytest 45 passed (7 pcr + 7 wul_seam + 11 slice + 11 nim_v0_1 + 9 nim_v0_2) · frozen_at_git_HEAD: 9df543d6e0ac7e61b821fb941e1842bc2c7a07b6
+f64612e3c5d6e106517c62dfd1d5e9aaf6b0c377f300017e5d53632cfde95ad5  helen_os/kernel/proof_carrying_receipt.py
+0f01cf67a0083cd7acb3761f3e7629e5afec1b1e832859cbaf6e759ec638d53c  helen_os/tests/test_proof_carrying_receipt.py

@@ -1,0 +1,21 @@
+{
+  "suite": "COMPLETE_EPISTEMIC_MEDIATION_V0",
+  "gold_source": "STATIC_PREREG_FIXTURE",
+  "gold_runtime_shared": false,
+  "gold_fixture_hash": "d0698cfb2a2c93a9",
+  "basis_hash_B_E": "d8694d6940e86ad1",
+  "mutants_total": 11,
+  "mutants_killed": 11,
+  "authorized_H_writers": [
+    "Reducer_E"
+  ],
+  "basis_binding": "PASS",
+  "target_binding": "PASS",
+  "witness_binding": "PASS",
+  "replay": "PASS",
+  "gamma_separation": "PASS",
+  "H_after_source": "REDUCER_ONLY",
+  "verdict": "SURVIVED_TEST",
+  "earned_claim": "Within the tested implementation and mutation suite, hypothesis contractions are mediated by independently validated KillReceipts and reducer-derived replay.",
+  "NOT_claimed": "complete epistemic mediation proven globally \u2014 requires program-wide writer census (next tranche)."
+}

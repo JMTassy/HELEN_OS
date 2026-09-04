@@ -1,0 +1,89 @@
+{
+  "registry": "HELEN_DISCRIMINATOR_REGISTRY_V0",
+  "principle": "COMPILE BEFORE COGNIZE — compile to the cheapest VALID discriminator before buying cognition; a descriptive field cannot substitute for its constitutive derivation.",
+  "law": "Declared(x) ≠ Derived(x); when x is mechanically derivable, Derived(x) ≻ Declared(x) for the decision.",
+  "authority": false,
+  "canon": false,
+  "authority_delta": 0,
+  "commit_status": "NO_COMMIT",
+  "push_status": "NO_PUSH",
+  "discriminators": [
+    {
+      "ID": "D1",
+      "name": "quotient_equivariance_v0",
+      "CONFUSION_KILLED": "StructuralLegality ≠ Authorization  (πm=m̄π  ⟂  Γ⊢m)",
+      "SOURCE_OBLIGATION": "QWEN_GOBLIN_CHIDDUSH_SWARM_V0 headline seam + FALSIFIER-r2 refuted witness",
+      "COUNTERFEIT_PAIR": "quotient-compatible mutation  vs  authorized mutation",
+      "SPEC": "for finite (G,P≤G,m): compatible ⟺ ∀h1~_P h2 : m(h1)~_P m(h2); admissible ⟺ compatible ∧ Γ⊢m",
+      "TEST_FIXTURES": "m=+3 (refuted witness→COMPATIBLE), m=+1 (ADMISSIBLE), swap(1,2) (BREAKS)",
+      "NEGATIVE_CONTROL": "refuted +3 witness = COMPATIBLE (Q_break=false)",
+      "POSITIVE_CONTROL": "swap(1,2) BREAKS with witness (0,2) → CHECKER_SOUND",
+      "CODE_HASH": "sha256:aba658e4ee9f28825911fdf0",
+      "DECISION_CONTRACT": "separates rejection-by-structure from rejection-by-authority",
+      "LIMITS": "finite cyclic groups + additive subgroups only; not a universal HELEN theorem",
+      "CLAIM_CEILING": "compatibility ⟂ authorization on tested maps; πm=m̄π necessary not sufficient",
+      "RECEIPT": "QUOTIENT_EQUIVARIANCE_V0_RECEIPT.json"
+    },
+    {
+      "ID": "D2",
+      "name": "receipt_delta_zero_v0",
+      "CONFUSION_KILLED": "ReceiptValidity ≠ StateTransition  (Valid(r) ⇏ Δσ≠0)",
+      "SOURCE_OBLIGATION": "strongest surviving executable falsifier from ORACLE_AUDIT_V0 (RECEIPT δ=0)",
+      "COUNTERFEIT_PAIR": "valid receipt  vs  actual state change; printed claimed_delta vs derived diff",
+      "SPEC": "Δσ := Diff(state_before,state_after) computed by discriminator, never read from claimed_delta",
+      "TEST_FIXTURES": "r0 valid no-op (Δσ=0), r1 valid real move (Δσ≠0), M liar (claimed≠0, derived=0)",
+      "NEGATIVE_CONTROL": "r0 valid no-op → Δσ=0",
+      "POSITIVE_CONTROL": "r1 real move → Δσ≠0 (diff engine bites, not trivially 0)",
+      "CODE_HASH": "sha256:4adbf6d41624cb36ddd7946e",
+      "DECISION_CONTRACT": "receipt validity carries no state-change weight; derivation wins over declaration",
+      "LIMITS": "3 synthetic fixtures; not a claim about real ledger/receipt schema",
+      "CLAIM_CEILING": "VALID_RECEIPT_WITH_ZERO_STATE_DELTA_WITNESSED on fixtures; NOT receipts-are-non-causal",
+      "RECEIPT": "RECEIPT_DELTA_ZERO_V0_RECEIPT.json"
+    },
+    {
+      "ID": "D3",
+      "name": "authority_delta_zero_v0",
+      "CONFUSION_KILLED": "StateDelta ≠ AuthorityDelta ; DeclaredAuthority ≠ EffectiveAuthority (Δσ≠0 ⇏ ΔA≠0)",
+      "SOURCE_OBLIGATION": "tri-separation completion proposed after D2; anti-laundering subtlety (operator §6)",
+      "COUNTERFEIT_PAIR": "declared authority_after blob  vs  witnessed licensed derived transition",
+      "SPEC": "A_after = ApplyAuthorizedTransitions(A_before,δ,W_A,Γ); ΔA from DERIVED state; blob ignored",
+      "TEST_FIXTURES": "F0 no-op, F1 Δσ≠0∧ΔA=0 frontier, F2 licensed grant ΔA≠0, M liar blob, M2 replay",
+      "NEGATIVE_CONTROL": "F1 state-moved-authority-did-not (frontier) + M/M2 derived ΔA=0",
+      "POSITIVE_CONTROL": "F2 valid bound witness DOES grant (ΔA≠0) → resolver not trivially frozen",
+      "CODE_HASH": "sha256:b0bed5923aeb97f9bed85d2a",
+      "DECISION_CONTRACT": "authority changes only via witnessed licensed bound transition; computation cannot mint authority",
+      "LIMITS": "synthetic authority secret; models resolver SHAPE not HELEN crypto; 5 fixtures",
+      "CLAIM_CEILING": "AUTHORITY_DELTA_REQUIRES_WITNESSED_LICENSED_BOUND_TRANSITION on fixtures; NOT unforgeable-authority",
+      "RECEIPT": "AUTHORITY_DELTA_ZERO_V0_RECEIPT.json"
+    }
+  ],
+  "tri_separation_now_witnessed": "ReceiptValidity(D2) ≠ StateDelta(D2/D3) ≠ AuthorityDelta(D3)",
+  "declared_vs_constitutive_family": {
+    "declarative_fields": [
+      "claimed_delta",
+      "claimed_success",
+      "claimed_authority",
+      "claimed_effect",
+      "claimed_independence",
+      "claimed_replay",
+      "claimed_compatibility",
+      "claimed_root_count"
+    ],
+    "constitutive_ops": [
+      "Diff(canonical states)",
+      "Verify(sig/witness)",
+      "ApplyAuthorizedTransitions",
+      "Replay",
+      "RootResolver",
+      "EffectObserver",
+      "EquivarianceChecker"
+    ],
+    "rule": "A descriptive field cannot substitute for its constitutive derivation."
+  },
+  "open_next_compile_targets": [
+    "model diversity ≠ evidence diversity  → provenance/root resolver (D4 candidate)",
+    "replay ≠ correctness  → independent validity oracle",
+    "execution success ≠ world effect  → before/after observer"
+  ],
+  "registry_hash": "sha256:c945ea883092dfc11e10d4e4"
+}

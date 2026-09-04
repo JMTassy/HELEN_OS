@@ -1,0 +1,26 @@
+{
+  "schema": "CONSUME_RECEIPT_V0",
+  "consume_id": "CONSUME-4ea5b3912811",
+  "from_triage": "TRIAGE-7c6d152893c5",
+  "timestamp": "2026-07-20T13:21:26.268012+00:00",
+  "packet_count_consumed": 38,
+  "actions": [
+    {
+      "action": "ROUTE_TO_BOUNDED_TRANCHE",
+      "detail": "Review the decision queue and --mark each packet",
+      "status": "candidate"
+    },
+    {
+      "action": "ROUTE_TO_BOUNDED_TRANCHE",
+      "detail": "Route BUILD_TASK survivors to bounded tranches",
+      "status": "candidate"
+    }
+  ],
+  "summary": "Consumed triage TRIAGE-7c6d152893c5 into 2 routed actions. No sovereign mutation.",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "source": "temple/autoresearch/outbox_consume.py"
+}

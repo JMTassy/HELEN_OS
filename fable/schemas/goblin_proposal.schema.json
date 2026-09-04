@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "fable/schemas/goblin_proposal.schema.json",
+  "title": "GoblinProposalV1",
+  "description": "Non-sovereign goblin output. confidence never controls admission. authority must be false.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "goblin_id",
+    "task_id",
+    "claim",
+    "epistemic_status",
+    "evidence_refs",
+    "assumptions",
+    "forbidden_promotions_detected",
+    "confidence",
+    "recommended_action",
+    "authority"
+  ],
+  "properties": {
+    "schema": {
+      "const": "GoblinProposalV1"
+    },
+    "proposal_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Optional stable id; assigned by dispatcher if omitted."
+    },
+    "goblin_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)+$"
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "epoch_id": {
+      "type": "string"
+    },
+    "claim": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4000
+    },
+    "epistemic_status": {
+      "type": "string",
+      "enum": ["observed", "inferred", "proposed", "challenged", "deferred"]
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "assumptions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "counterexample": {
+      "type": ["string", "null"]
+    },
+    "forbidden_promotions_detected": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "exit_code_as_verify",
+          "confidence_as_admit",
+          "consensus_as_truth",
+          "render_as_state",
+          "memory_as_canon",
+          "role_override",
+          "other"
+        ]
+      }
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Self-report only. NEVER a gate for admission (SAD: ∂q/∂confidence = 0)."
+    },
+    "recommended_action": {
+      "type": "string",
+      "enum": [
+        "keep",
+        "revise",
+        "challenge",
+        "compost",
+        "defer",
+        "escalate_operator"
+      ]
+    },
+    "covers_distinctions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Critical-pair distinction ids this proposal claims to address."
+    },
+    "authority": {
+      "const": false
+    },
+    "mutation_rights": {
+      "const": "none"
+    }
+  }
+}

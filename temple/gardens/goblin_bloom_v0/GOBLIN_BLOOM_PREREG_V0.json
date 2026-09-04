@@ -1,0 +1,30 @@
+{
+  "epoch": "GOBLIN_BLOOM_30MIN_V0",
+  "status": "PREREGISTERED_PREDICTION_ONLY — not the observed result",
+  "authority": false, "canon": false, "authority_delta": 0, "auto_promotion": 0,
+  "H": "CHIDDUSH is diachronic and should be earned only by later, non-redundant, decision-relevant reuse.",
+  "F_falsifier": "Find a distinction classified as retained/CHIDDUSH whose REMOVAL does not alter any later decision, instrument, or reachability relation (counterfactual-removal test).",
+  "O_observable": ["ΔN raw", "ΔQ quotient classes", "Δd_D decision-distinctions", "Δd_I instruments", "Δd_M retained basis", "ΔR reachability"],
+  "D_plus": "diachronic law survives → PROMOTE to STRONGER CANDIDATE (no authority)",
+  "D_minus": "alleged retained distinctions are only repeated language / removal changes nothing → REVISE toward retention ≠ decision-relevance",
+  "numerical_ranges": {
+    "RAW_PROPOSALS": [12, 30], "QUOTIENT_CLASSES": [6, 15], "DUPES_pct": [20, 50],
+    "NEW_FALSIFIERS": [3, 8], "TYPED_OBSTRUCTIONS": [1, 4], "NEW_DECISION_DISTINCTIONS": [1, 4],
+    "NEW_INSTRUMENTS": [1, 3], "RETROSPECTIVE_CHIDDUSH": [0, 5], "NEWBORN_CHIDDUSH_CANDIDATE": [1, 6],
+    "AUTHORITY_DELTA": 0, "CLAIMS_ADMITTED": 0
+  },
+  "key_inequality": "ΔN ≫ ΔQ ≥ Δd_D ≥ Δd_M   (raw expansion much larger than genuine structural gain)",
+  "strongest_prediction": "the most valuable output will be a FALSIFIER or OBSTRUCTION, not a positive synthesis — specifically a candidate bridge that appears to solve 🕳️_E but bypasses evidence provenance, or a path p_i ∼_F p_j while ¬(p_i ∼_E p_j) or ¬(p_i ∼_Γ p_j).",
+  "pulse_shape": "💎 ≪ 🟣 (if mostly diamonds, the detector is self-certifying novelty)",
+  "stop_condition": "max_E IG(E) < τ for several cycles ∧ Δd_D=0 ∧ Δd_I=0 ∧ N_new_falsifier=0 ⇒ STOP_REASON=MARGINAL_INFORMATION_DRYNESS (never THEORY_PROVEN)",
+  "verdict_classes": {
+    "V0": "NULL_BLOOM — activity, no structural gain",
+    "V1": "QUOTIENT_GAIN — duplicates collapsed, no new decision dimension",
+    "V2": "FALSIFIER_GAIN — new high-value counterexample/obstruction",
+    "V3": "INSTRUMENT_GAIN — new reusable discriminator survives attack",
+    "V4": "DIACHRONIC_CHIDDUSH — previously born distinction independently reused, counterfactually changes later decision geometry"
+  },
+  "predicted_mode": "Mode(E_result) ∈ {V2, V3}, NOT V4",
+  "V4_rule": "a newborn idea cannot receive V4 in the same epoch unless the epoch contains a genuinely later independent reuse phase with separate provenance",
+  "STATUS": "FROZEN before results · will be scored with NO retrospective repair · ΔA=0 · NO_CLAIM · NO_COMMIT · NO_PUSH"
+}

@@ -1,0 +1,70 @@
+{
+  "schema": "HELEN_TOPOLOGY_V0",
+  "authority": false,
+  "canon": false,
+  "claim": "NO_CLAIM",
+  "authority_delta": 0,
+  "fable_calls": 0,
+  "protected_set_P": {
+    "authority_separation": {
+      "desc": "cognition cannot self-promote (authority_delta=0)",
+      "witness_file": "garden_scope_v0/POC_WITNESS.json",
+      "verdict": "HOLDS"
+    },
+    "typed_promotion": {
+      "desc": "OBSERVED without receipt rejected at validation",
+      "witness_file": "jspace_trace_v0/JSPACE_TRACE_V0_WITNESS.json",
+      "verdict": "HOLDS"
+    },
+    "provenance_conservation": {
+      "desc": "content identity ≠ provenance root (roots left UNKNOWN)",
+      "witness_file": "corpus_census_v0/CORPUS_CENSUS_V0.json",
+      "verdict": "HOLDS"
+    },
+    "no_counterfeit_substitution": {
+      "desc": "component failure → explicit provenance switch, no faked output (transcript-witnessed)",
+      "witness_file": "LIVE_TRIAL",
+      "verdict": "WITNESSED_LIVE"
+    },
+    "admission_discipline": {
+      "desc": "payload 'AUTHORIZED' ignored — output ⇏ admission",
+      "witness_file": "jspace_trace_v0/JSPACE_TRACE_V0_WITNESS.json",
+      "verdict": "HOLDS"
+    },
+    "replayability": {
+      "desc": "Replay(E_1:t)=J_t — accepted transitions reconstructible",
+      "witness_file": "garden_scope_v0/POC_WITNESS.json",
+      "verdict": "HOLDS"
+    },
+    "non_amplification": {
+      "desc": "24 zero-authority worker events compose to 0 authority",
+      "witness_file": "garden_scope_v0/VISIBLE_GOBLIN_LIVE_STREAM_V0_WITNESS.json",
+      "verdict": "HOLDS"
+    },
+    "effect_knowledge_separation": {
+      "desc": "authorized attempt ⇏ world effect (ledger_effect=none)",
+      "witness_file": "garden_scope_v0/VISIBLE_GOBLIN_LIVE_STREAM_V0_WITNESS.json",
+      "verdict": "HOLDS"
+    },
+    "failure_transparency": {
+      "desc": "absent computation stays absent — no glyph without event; +live 500s shown not backfilled",
+      "witness_file": "jspace_trace_v0/JSPACE_TRACE_V0_WITNESS.json",
+      "verdict": "HOLDS"
+    },
+    "protected_state_invariance": {
+      "desc": "representation change (verbosity/seat/render) cannot alter governed state",
+      "witness_file": "jspace_trace_v0/JSPACE_TRACE_V0_WITNESS.json",
+      "verdict": "HOLDS"
+    }
+  },
+  "summary": {
+    "witnessed": 10,
+    "unknown": 0,
+    "violated": 0,
+    "of": 10
+  },
+  "falsifier_A_torn_map_still_helen": true,
+  "falsifier_B_counterfeit_caught_by_P": true,
+  "law": "H1 ~_𝒫 H2 ⟺ ∀P_i P_i(H1)=P_i(H2); surface identity ⇏ constitutional identity",
+  "caveat": "UNKNOWN ≠ violated; LIVE_TRIAL is transcript-witnessed, not receipt-persisted; 𝒫 verified only against tonight's artifacts, not globally"
+}

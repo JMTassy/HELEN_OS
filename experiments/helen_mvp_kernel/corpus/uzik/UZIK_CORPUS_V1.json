@@ -1,0 +1,157 @@
+{
+  "meta": {
+    "id": "UZIK_CORPUS_V1",
+    "title": "UZIK voice corpus — consolidated extraction for HELEN OS voice upgrade",
+    "authority": false,
+    "non_sovereign": true,
+    "canon": false,
+    "status": "OBSERVED / DRAFT",
+    "purpose": "Single machine-consumable source of truth for HELEN OS copy/voice. Extracted and deduplicated from four repo sources so a brand_voice skill/gate can enforce UZIK register on HELEN-generated copy.",
+    "provenance": [
+      { "path": "docs/style/uzik-writing-style.md", "sha256": "bfb757841ebfb890579ff22ef2caa159b892e98c74d6ec85246c0c8773180dcd" },
+      { "path": "docs/style/uzik-structure-patterns.md", "sha256": "5f8168ec6f54108dcff750e1c6721d4c9e97b35bcababf18a2b977cc5989aac4" },
+      { "path": "docs/style/uzik-copy-examples.md", "sha256": "443ce9d6928790ad9a87127d925cd37be5b388e3ebf58483bf2819ea2204a4fa" },
+      { "path": "experiments/uzik_design_system/DESIGN.md", "sha256": "2ec8f4835700c5f35a443c1b9a4a7af3a97b1b54489e56571648e167b584aa4b" }
+    ],
+    "note": "Client entity names genericized to CLIENT/BRAND. Taglines are reused verbatim from the sourced UZIK Communication Guidelines (2018) — never fabricate new ones. Palette/type values are session-keyed placeholders pending reconciliation with UZIK's official brand book."
+  },
+
+  "essence": "AI made production free. UZIK sells what it never touched: craft, coherence, and proof. Restraint is the brand.",
+
+  "dna": ["short", "structured", "labeled", "non-explanatory", "production-oriented", "visual-first", "no rhetorical tricks", "no persuasion"],
+
+  "registers": {
+    "SYSTEM": {
+      "use_for": "HELEN/system copy, status lines, receipts, production labels, dashboards",
+      "shape": "terse blocks, one idea per line, label-first, zero justification",
+      "not": "essay, chatbot answer, LinkedIn post"
+    },
+    "BRAND": {
+      "use_for": "UZIK/NEPTION outward creative surfaces (decks, landing pages, hero copy)",
+      "shape": "editorial, confident, declarative first-person-plural, one punchline per surface",
+      "not": "hype, buzzword stacking, hedge-less superlatives"
+    }
+  },
+
+  "core_rules": [
+    { "id": "block_writing", "rule": "Prefer blocks over sentences. One idea = one line.", "check": "no multi-idea sentences" },
+    { "id": "label_first", "rule": "Use tags instead of explanations (CLIENT: / PHASE: / STATUS:).", "check": "labels present where structure is needed" },
+    { "id": "zero_justification", "rule": "Never explain why something is good. Never argue. Never position. Show work, categories, status.", "check": "no persuasion clauses" },
+    { "id": "no_narrative_flow", "rule": "Avoid paragraphs unless strictly required. Break into lines.", "check": "paragraph count minimal" },
+    { "id": "visual_thinking", "rule": "Write as if text sits next to an image. Text = support, not center.", "check": "text is caption-weight, not centerpiece" },
+    { "id": "compression_test", "rule": "Before shipping: can this be cut in half? If yes — cut. Read aloud; if it takes >5s, cut. If it could be one label instead of a sentence, use the label.", "check": "each block <= 5s read-aloud" },
+    { "id": "claims_discipline", "rule": "Never assert a number or outcome without a source. claim not-implies proof. If unverified, say so.", "check": "every metric has a source" }
+  ],
+
+  "vocabulary": {
+    "use": ["craft", "cultural resonance", "coherence", "proof", "restraint"],
+    "category_tags": ["Brand Content", "Social Media", "Influence", "Strategy", "Event"],
+    "ban": ["innovation", "impact", "excellence", "revolutionary", "AI paragraph soup", "rhetorical persuasion patterns", "buzzword stacking", "invented metrics"]
+  },
+
+  "production_verbs": {
+    "use": ["shoot", "capture", "edit", "select", "deliver", "validate", "brief", "cast", "kick off", "wrap", "submit", "review", "approve", "iterate"],
+    "ban": ["leverage", "optimize", "synergize", "enhance", "showcase", "we are excited to", "we look forward to"]
+  },
+
+  "markers": {
+    "phase_labels": ["conception", "pre-production", "production", "exploitation", "post-mortem"],
+    "phase_sections": ["CONTEXT", "OBJECTIVE", "PROPOSAL", "PRE-PRODUCTION", "PRODUCTION", "POST-PRODUCTION", "VALIDATION", "NEXT"],
+    "status_markers": ["V0", "V1", "V2", "V3", "PENDING", "READY", "DELIVERED", "BLOCKED"],
+    "ownership_markers": ["UZIK", "CLIENT", "OPERATOR"]
+  },
+
+  "structures": {
+    "default_short": ["CLIENT", "PROJECT", "CATEGORY", "PHASE", "STATUS", "NEXT"],
+    "long_form": ["Context", "Objective", "Proposal", "Production logic", "Validation", "Next action"],
+    "deck_rhythm": ["Title line (1 line)", "CONTEXT block (3-5 lines)", "OBJECTIVE block (1-2 lines)", "PROPOSAL block (V-numbered, 3-6 lines)", "PRODUCTION breakdown (phase by phase)", "VALIDATION block", "NEXT block"],
+    "deck_rule": "No introduction. No conclusion. No 'about us' unless asked.",
+    "timeline_syntax": ["PHASE", "Date or week reference", "Owner", "Status"],
+    "approval_language": { "shape": "status only", "yes": "CLIENT — Pending", "no": "We are waiting for the client's feedback on the revised proposal before proceeding." },
+    "escalation_style": { "shape": "no alarm language, no urgency performance", "yes": "BLOCKER\nLocation access — TBC\nOwner: UZIK\nStatus: Pending confirmation", "no": "URGENT: We still haven't received confirmation and this is blocking production." }
+  },
+
+  "slide_pacing": { "block": "one idea", "idea": "1-4 lines max", "connective_tissue": "none", "whitespace": "does the work sentences would do" },
+
+  "fr_en_mixing": {
+    "rule": "French for internal operations, English for client-facing labels unless client is French. Switch when the French term is more precise.",
+    "glossary": { "bilan": "post-mortem", "brief": "shared brief", "tournage": "shoot", "montage": "edit / assembly", "livraison": "delivery", "validation": "validation", "regie": "production management" }
+  },
+
+  "headline_logic": {
+    "rule": "Short. Declarative. No explanation layer.",
+    "good": ["Shaping the new standards for iconic brands", "Brand Content / Social Media / Strategy"],
+    "bad": ["We help brands achieve meaningful impact through innovative content strategies."]
+  },
+
+  "brand_voice": {
+    "taglines_verbatim": [
+      "WE BUILD BRAND EXPERIENCES",
+      "WE TRANSFORM BUSINESS CHALLENGES INTO BRAND EXPERIENCES",
+      "WE THINK + WE MAKE",
+      "WE LOVE BEAUTIFUL THINGS / CRAFT LOVERS",
+      "WE HAVE AMAZING FRIENDS / UZIK FAMILY"
+    ],
+    "dna_four_beat": ["MODE DE TRAVAIL (Conseil + Factory)", "METIER (Brand Experience 360)", "PASSION (le craft)", "FORCE (UZIK Family / reseau)"],
+    "headline_register": ["Declarative first-person-plural: WE ...", "Bilingual EN/FR, one punchline per surface", "NO bullets on brand surfaces (2018 anti-bullet law) — the image carries the rest"],
+    "culture_pop_naming_law": "Names echo pop culture (e.g. 'Smart is the new cool', 'fifty shades of digital marketing'). Same phrase-key instinct as 'ouvre ses portes' / 'open the doors'.",
+    "voice_examples": ["I don't optimize for output. I optimize for truth.", "Ten mirrors weigh less than one open window."],
+    "source": "UZIK Communication Guidelines (2018). Reuse taglines verbatim; do not invent new ones."
+  },
+
+  "design_tokens": {
+    "palette": {
+      "rule": "one gold accent per view. Never neon. Never gradients-as-decoration. Governance color stays semantic.",
+      "tokens": {
+        "--ink-black": "#0a0a0b", "--paper": "#F2EBDD", "--gold": "#C8A24C",
+        "--gold-dim": "#A8823F", "--indigo": "#1b1930", "--violet": "#8a7fb8", "--graphite": "#141821"
+      },
+      "note": "session-keyed placeholders — swap in real UZIK values on reconciliation"
+    },
+    "typography": {
+      "display": "refined high-contrast serif (Didot / Garamond / EB Garamond feel), large, generous leading, caps letter-spacing ~0.02-0.12em",
+      "labels": "fine tracked-out mono/grotesque sans, uppercase, letter-spacing ~0.18-0.28em",
+      "body": "clean serif or humanist sans, high legibility",
+      "hierarchy": "size + space, not color noise"
+    },
+    "layout": "Vast negative space. Fewer elements, bigger. Editorial, left-aligned or centered. Grid-anchored, calm. Hermes/LVMH register, never busy.",
+    "motion": {
+      "camera": "one continuous camera, not a stack of slides. Scene exit axis = next scene entry axis, cut mid-motion. Default current = LEFT.",
+      "no_idle": "no breathe/float/glow-pulse to fill time. Every beat performs.",
+      "stillness": "~0.4s dramatic comma before climax. Reserve upward motion for the conclusion.",
+      "eases_yes": ["power2.out", "back.out(1.35)"],
+      "eases_forbidden": ["bounce.out", "elastic.out", "idle sine loops"],
+      "cut": "to the voice (word-timings), not to a metronome"
+    },
+    "imagery": "Premium, editorial, anti-AI-slop. Cinematic stills, real texture, restraint. Warm night palettes (indigo/violet + ember gold) for Garden/Warren. Never generic-slick, stocky, or neon-cyber."
+  },
+
+  "governance_stamp": "Every UZIK/HELEN artifact carries: authority:false, non_sovereign, dream/expression not admission. An artifact is a candidate, never a decision. render not-implies admitted. Facts cited from sources/RAG, never asserted from weights. Differentiator: governed AI — claims with receipts.",
+
+  "anti_patterns": [
+    "neon / tech-startup gradients",
+    "buzzword hype",
+    "invented metrics",
+    "more than one accent color",
+    "idle motion to fill time",
+    "generic AI aesthetic / AI-slop",
+    "a claim without a source",
+    "treating a rendered artifact as authority",
+    "negative parallelism (hard ban)",
+    "narrative flow where a label would do",
+    "bullets on brand surfaces"
+  ],
+
+  "lint_checklist": [
+    "compression: can it be cut in half? read-aloud <= 5s per block",
+    "no banned vocabulary present (innovation/impact/excellence/leverage/optimize/synergize/...)",
+    "no negative parallelism",
+    "every metric/outcome carries a source",
+    "structure uses labels not explanations where structure is needed",
+    "brand surface: no bullets, one punchline, declarative WE",
+    "system surface: block writing, one idea per line, zero justification",
+    "design: one gold accent per view, no neon, no decorative gradients",
+    "governance stamp present (authority:false)",
+    "no invented taglines — only the verbatim tagline family"
+  ]
+}

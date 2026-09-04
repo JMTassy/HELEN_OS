@@ -1,0 +1,53 @@
+{
+  "schema_id": "SCALE_V2_PROVENANCE",
+  "version": 0,
+  "authority": false, "canon": false, "ledger_effect": "none",
+  "principle": "Independence is decided by ANCESTRY, not by document count. Two URLs are not two roots. Unknown ancestry is UNKNOWN, never Independent.",
+  "SOURCE": {
+    "source_id": "stable id for a cited artifact (file, url, transcript, filing, interview)",
+    "kind": "PRIMARY_DOCUMENT | PRESS_RELEASE | ARTICLE | TRANSCRIPT | SUMMARY | FILING | INTERVIEW | DATASET | LLM_OUTPUT | UNKNOWN",
+    "publisher": "who published it (org/person)",
+    "derives_from": ["source_id ... — KNOWN provenance ancestors (edges of the ancestry graph); [] if none known"]
+  },
+  "ANCESTRY_GRAPH": {
+    "type": "G_E = (V, E) directed: V=sources, E=derives_from edges (child -> ancestor)",
+    "note": "Built from declared/known derivation only. Missing edge != absence of ancestry; it is UNKNOWN."
+  },
+  "PROVENANCE_ROOT": {
+    "root_id": "id of an independent source root (a maximal set of sources joined by known ancestry)",
+    "members": ["source_id ... that share a known ancestry path"],
+    "rule": "sources a,b are the SAME root iff a known ancestry path joins them (a derives_from* b, b derives_from* a, or common ancestor)."
+  },
+  "INDEPENDENCE_STATUS": {
+    "values": ["INDEPENDENT", "SHARED_ANCESTRY", "UNKNOWN"],
+    "INDEPENDENT": "no known ancestry relation joins the two roots within the observed corpus",
+    "SHARED_ANCESTRY": "a known ancestry path joins them -> collapse to ONE root",
+    "UNKNOWN": "ancestry not established -> DO NOT count as independent; hold as UNKNOWN (fail-closed on independence)"
+  },
+  "IndependentRoot_predicate": "IndependentRoot(a,b) <=> no known provenance-ancestor relation joins a and b within the observed corpus. If ancestry is unestablished => UNKNOWN, NOT Independent.",
+  "worked_examples": [
+    {"case": "company press release + article quoting that release", "roots": 1, "why": "SHARED_ANCESTRY (article derives_from release)"},
+    {"case": "transcript + summary of that transcript", "roots": 1, "why": "SHARED_ANCESTRY"},
+    {"case": "two agents citing the same source", "roots": 1, "why": "same source_id -> same root"},
+    {"case": "Wikipedia + blog quoting Wikipedia + LLM summary of that blog", "roots": 1, "why": "chain of derives_from -> one root, NOT 3"},
+    {"case": "independent interview + independent regulatory filing", "roots": 2, "why": "no known ancestry link -> potentially INDEPENDENT (2)"},
+    {"case": "two sources, ancestry not investigated", "roots": "UNKNOWN", "why": "must NOT be auto-counted as 2 independent roots"}
+  ],
+  "N_E_rule": "N_E counts INDEPENDENT provenance roots only. SHARED_ANCESTRY collapses. UNKNOWN is reported separately (UNKNOWN_ANCESTRY bucket) and NOT added to N_E.",
+  "ROOT_TYPE": {
+    "values": ["OPERATING", "STRATEGY", "COMMERCIAL", "EXTERNAL"],
+    "OPERATING": "a meeting/CR/transcript by the entity itself — witnesses 'entity DISCUSSED/ASSERTED X on date Y' (a self-report)",
+    "STRATEGY": "a plan/business-plan/positioning doc by the entity — witnesses 'entity INTENDS/PLANS X'",
+    "COMMERCIAL": "the entity's own commercial material about its offering",
+    "EXTERNAL": "a source NOT authored by the entity (third-party filing, independent interview, customer/partner record)"
+  },
+  "ROOT_TYPE_LICENSING": {
+    "law": "A root's TYPE bounds the claim TYPE it can license. DifferentFiles != IndependentEvidence, and SelfAuthoredRoot |- 'entity said X'  but  |/- 'X is externally true'.",
+    "OPERATING  |-": "SELF_REPORT: 'entity asserted/discussed X on date Y' — NEVER external truth or market fact",
+    "STRATEGY   |-": "INTENT: 'entity plans X' — NEVER 'X is validated/operating'",
+    "COMMERCIAL |-": "OFFER: claims about the entity's own offering — NEVER independent market demand",
+    "EXTERNAL   |-": "the ONLY root type that can license externally-corroborated / SOURCE-BACKED status",
+    "status_ceiling": "self-authored roots (OPERATING/STRATEGY/COMMERCIAL) cap a claim at BUILDING/INTENDED/CLAIMED. SOURCE-BACKED / externally-corroborated REQUIRES >=1 EXTERNAL root. This ceiling is what a downstream website's status label must obey.",
+    "temporal": "claims carry (date, version); the graph is temporal G=(V,E,tau,pi,s) so a proposition's evolution and contradictions across dates are visible, not flattened."
+  }
+}

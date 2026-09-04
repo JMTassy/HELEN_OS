@@ -1,0 +1,18 @@
+{
+  "goblin": "A_ARCHITECT",
+  "raw": "",
+  "usage": {
+    "completion_tokens": 4000,
+    "prompt_tokens": 678,
+    "total_tokens": 4678,
+    "prompt_tokens_details": {
+      "cached_tokens": 178
+    }
+  },
+  "latency_s": 200.7,
+  "ceiling": 4000,
+  "retry_of": "truncated_2000_then_infra_kill",
+  "authority": false,
+  "no_claim": true,
+  "proposal_only": true
+}

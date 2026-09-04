@@ -1,0 +1,64 @@
+HAL-MAYOR-JESTER DUO — INSIGHT GARDEN (10+ epochs)
+HAL (supervision) + MAYOR (garden decision) + JESTER (lateral, one .txt per epoch)
+All artifacts: authority=false | garden_only=true | no ledger | receipt only if HAL+MAYOR agree
+
+=== E01 | epoch_001 ===
+HAL:    ERROR
+MAYOR:  DEFER (score=4)
+JESTER: JESTER: HAL is the auditor. MAYOR is the spreadsheet. I'm the one who spilled ink on purpose.
+RECEIPT GRANTED: False
+
+=== E02 | epoch_002 ===
+HAL:    PASS
+MAYOR:  GRANT_GARDEN_RECEIPT (score=8)
+JESTER: JESTER: 'iff any' — the smallest condition just became a whole philosophy. (JESTER: fine, give the tiny garden stamp. don't tell the big book.)
+RECEIPT GRANTED: True
+
+=== E03 | epoch_003 ===
+HAL:    ERROR
+MAYOR:  DEFER (score=4)
+JESTER: JESTER: Bounded receipts are like garden parties that only the plants know about.
+RECEIPT GRANTED: False
+
+=== E04 | epoch_004 ===
+HAL:    PASS
+MAYOR:  GRANT_GARDEN_RECEIPT (score=8)
+JESTER: JESTER: MAYOR gave it a score. The receipt is over here rolling its eyes in wulmoji. (JESTER: fine, give the tiny garden stamp. don't tell the big book.)
+RECEIPT GRANTED: True
+
+=== E05 | epoch_005 ===
+HAL:    ERROR
+MAYOR:  DEFER (score=4)
+JESTER: JESTER: The duo is very serious. The garden receipt is over here wearing a party hat made of leaves.
+RECEIPT GRANTED: False
+
+=== E06 | epoch_006 ===
+HAL:    ERROR
+MAYOR:  DEFER (score=4)
+JESTER: JESTER: The duo is very serious. The garden receipt is over here wearing a party hat made of leaves.
+RECEIPT GRANTED: False
+
+=== E07 | epoch_007 ===
+HAL:    ERROR
+MAYOR:  DEFER (score=4)
+JESTER: JESTER: Bounded receipts are like love letters the sovereign ledger is not allowed to read.
+RECEIPT GRANTED: False
+
+=== E08 | epoch_008 ===
+HAL:    ERROR
+MAYOR:  DEFER (score=4)
+JESTER: JESTER: HAL is the stern parent. MAYOR is the spreadsheet. I'm the one who drew flowers on the form.
+RECEIPT GRANTED: False
+
+=== E09 | epoch_009 ===
+HAL:    ERROR
+MAYOR:  DEFER (score=4)
+JESTER: JESTER: Bounded receipts are like love letters the sovereign ledger is not allowed to read.
+RECEIPT GRANTED: False
+
+=== E10 | epoch_010 ===
+HAL:    ERROR
+MAYOR:  DEFER (score=4)
+JESTER: JESTER: 'iff any' — the tiniest condition just became a whole secret society.
+RECEIPT GRANTED: False
+

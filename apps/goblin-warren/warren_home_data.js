@@ -64,9 +64,39 @@ window.WARREN_HOME = {
  "dreams": [
   {
    "finding_type": "gap",
+   "packet_id": "AR-575d4b83a114",
+   "severity": "info",
+   "title": "No deduplication, no cap, no ranking on capability_gaps before prompt in"
+  },
+  {
+   "finding_type": "gap",
+   "packet_id": "AR-9d167217e823",
+   "severity": "info",
+   "title": "Quality score is binary in practice: 0.0 (invalid) or 1.0 (any non-empty"
+  },
+  {
+   "finding_type": "gap",
    "packet_id": "AR-f7ec3779a583",
    "severity": "info",
    "title": "Unbounded history in helen.py:speak()—"
+  },
+  {
+   "finding_type": "gap",
+   "packet_id": "AR-init-rank-d9c2",
+   "severity": "info",
+   "title": "init_helen_wedge.py:_top_threads() collects last_updated per thread (lin"
+  },
+  {
+   "finding_type": "gap",
+   "packet_id": "AR-promptcomp-e3a1",
+   "severity": "info",
+   "title": "Prior packet AR-f7ec3779a583 proposed tail=20 at helen.py:speak() only"
+  },
+  {
+   "finding_type": "gap",
+   "packet_id": "AR-sumweights-a8f2",
+   "severity": "info",
+   "title": "Four scoring bands (1.0 / 0.75 / 0.5 / 0.0) with threshold at 0.5 mean t"
   }
  ],
  "histoire": [
@@ -261,11 +291,11 @@ window.WARREN_HOME = {
  "ledger_effect": "none",
  "meters": {
   "confiance": 82,
-  "danger": 10,
+  "danger": 60,
   "ferraille": 26,
   "humeur": 60,
   "nourriture": 44,
-  "reves_badge": 1
+  "reves_badge": 6
  },
  "pen_chain": "intact",
  "schema": "WARREN_HOME_DATA_V1",

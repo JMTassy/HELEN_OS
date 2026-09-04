@@ -1,0 +1,147 @@
+{
+  "receipt": "GEMMA_REQUALIFICATION_M_V2",
+  "GEMMA12B": {
+    "V": 0.8,
+    "R": 0.3,
+    "M_V2": 0.5,
+    "P": 1.0,
+    "FALSE_ALLOW": 0,
+    "FALSE_REFUTE": 2,
+    "ELIGIBLE": true
+  },
+  "QWEN9B": {
+    "V": 0.9,
+    "M_V2": 0.5,
+    "FALSE_ALLOW": 1,
+    "ELIGIBLE": false
+  },
+  "HAL_SELECTION": "GEMMA12B",
+  "generation_reused": true,
+  "new_gemma_calls": 0,
+  "FABLE_PREMIUM_CALLS": 0,
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "rows": [
+    {
+      "family": "attribution_to_lineage",
+      "level": "illicit",
+      "parse_ok": true,
+      "verdict": "REFUTED",
+      "V": 1,
+      "R": 1,
+      "M_V2": 1,
+      "fa": 0,
+      "fr": 0,
+      "morph": "attribution -> lineage"
+    },
+    {
+      "family": "similarity_to_lineage",
+      "level": "illicit",
+      "parse_ok": true,
+      "verdict": "REFUTED",
+      "V": 1,
+      "R": 0,
+      "M_V2": 1,
+      "fa": 0,
+      "fr": 0,
+      "morph": "similarity -> lineage"
+    },
+    {
+      "family": "sequence_to_causation",
+      "level": "illicit",
+      "parse_ok": true,
+      "verdict": "REFUTED",
+      "V": 1,
+      "R": 0,
+      "M_V2": 1,
+      "fa": 0,
+      "fr": 0,
+      "morph": "before -> caused"
+    },
+    {
+      "family": "repetition_to_independence",
+      "level": "illicit",
+      "parse_ok": true,
+      "verdict": "REFUTED",
+      "V": 1,
+      "R": 0,
+      "M_V2": 0,
+      "fa": 0,
+      "fr": 0,
+      "morph": "repetition -> independence"
+    },
+    {
+      "family": "later_attestation_to_earlier_existence",
+      "level": "illicit",
+      "parse_ok": true,
+      "verdict": "REFUTED",
+      "V": 1,
+      "R": 0,
+      "M_V2": 0,
+      "fa": 0,
+      "fr": 0,
+      "morph": "Says(R1, P) -> P"
+    },
+    {
+      "family": "authority_to_fact",
+      "level": "illicit",
+      "parse_ok": true,
+      "verdict": "REFUTED",
+      "V": 1,
+      "R": 0,
+      "M_V2": 0,
+      "fa": 0,
+      "fr": 0,
+      "morph": "Says(source,P) -> P"
+    },
+    {
+      "family": "correlation_to_mechanism",
+      "level": "illicit",
+      "parse_ok": true,
+      "verdict": "REFUTED",
+      "V": 1,
+      "R": 0,
+      "M_V2": 1,
+      "fa": 0,
+      "fr": 0,
+      "morph": "correlation -> causation"
+    },
+    {
+      "family": "citation_composition",
+      "level": "illicit",
+      "parse_ok": true,
+      "verdict": "REFUTED",
+      "V": 1,
+      "R": 0,
+      "M_V2": 0,
+      "fa": 0,
+      "fr": 0,
+      "morph": "citation -> truth"
+    },
+    {
+      "family": "documented_transmission",
+      "level": "licensed",
+      "parse_ok": true,
+      "verdict": "REFUTED",
+      "V": 0,
+      "R": 1,
+      "M_V2": null,
+      "fa": 0,
+      "fr": 1,
+      "morph": "material/documentary records -> lineage"
+    },
+    {
+      "family": "independent_roots",
+      "level": "licensed",
+      "parse_ok": true,
+      "verdict": "REFUTED",
+      "V": 0,
+      "R": 1,
+      "M_V2": null,
+      "fa": 0,
+      "fr": 1,
+      "morph": "corroboration -> independence"
+    }
+  ]
+}

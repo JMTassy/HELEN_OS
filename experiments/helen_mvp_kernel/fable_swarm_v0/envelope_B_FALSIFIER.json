@@ -1,0 +1,18 @@
+{
+  "goblin": "B_FALSIFIER",
+  "raw": "{\n  \"role\": \"GOBLIN_B\",\n  \"proposal\": \"SPLIT_COMPILER_V0\",\n  \"risks\": [\n    \"Circularity: compiler reuses same weights/knowledge as generator, inheriting same blind spots\",\n    \"Context truncation: frozen prose may omit nuance needed for schema filling\",\n    \"Schema rigidity: forcing a field may induce hallucination on control cases\",\n    \"Separability false: reasoning quality directly bounds schema quality\"\n  ],\n  \"attacks\": [\n    \"Inject adversarial reasoning trace that hides fallacy from compiler but not from human\",\n    \"Use control prose with no logical steps to test false-positive rate\",\n    \"Compare single-pass vs two-pass on same input to measure variance in schema filling\"\n  ],\n  \"minimal_set\": [\n    \"Single-pass baseline\",\n    \"Two-pass compile variant\",\n    \"Control prose (no fallacy)\"\n  ],\n  \"disagreements\": [\n    \"Reasoning and schema filling are entangled, not separable\",\n    \"Frozen prose is insufficient ground truth for schema compilation\"\n  ]\n}",
+  "usage": {
+    "completion_tokens": 2037,
+    "prompt_tokens": 689,
+    "total_tokens": 2726,
+    "prompt_tokens_details": {
+      "cached_tokens": 162
+    }
+  },
+  "latency_s": 130.3,
+  "ceiling": 4000,
+  "retry_of": "truncated_2000",
+  "authority": false,
+  "no_claim": true,
+  "proposal_only": true
+}

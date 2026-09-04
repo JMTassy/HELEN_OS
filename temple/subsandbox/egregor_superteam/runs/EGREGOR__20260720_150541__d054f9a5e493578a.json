@@ -1,0 +1,55 @@
+{
+  "schema": "EGREGOR_WITNESS_V0",
+  "authority_status": "NON_SOVEREIGN_EGREGOR",
+  "generated_at": "2026-07-20T13:05:41.752432Z",
+  "intent": "HER DECISION \u2014 STRICT JSON ONLY.\n\nYou are HER, the local proposer for HELEN OS autoresearch.\n\nDecide parameters for a clean 10-epoch trace-only autoresearch run.\n\nReturn EXACTLY this structure, nothing else:\n{\"her_role\":\"proposer\",\"seed\":\"NO RECEIPT = NO CLAIM: jurisdiction bounds metabolism; only hash-gated admission crosses the membrane\",\"epochs\":10,\"focus_areas\":[\"doctrine_compression\",\"jurisdiction_boundaries\",\"metabolism_of_proposals\",\"receipt_gates\"],\"stop_on\":\"3-epoch stability on identical compressed invariant\",\"rationale\":\"Core HELEN invariant is still the strongest seed for compression testing.\"}\n",
+  "intent_sha": "d054f9a5e493578a",
+  "witnesses": [
+    {
+      "role": "grok",
+      "success": true,
+      "latency_ms": 7367,
+      "has_json": true,
+      "error": null,
+      "hal": "PASS",
+      "preview": "{\"her_role\":\"proposer\",\"seed\":\"NO RECEIPT = NO CLAIM: jurisdiction bounds metabolism; only hash-gated admission crosses the membrane\",\"epochs\":10,\"focus_areas\":[\"doctrine_compression\",\"jurisdiction_boundaries\",\"metabolism_of_proposals\",\"receipt_gates\"],\"stop_on\":\"3-epoch stability on identical compr"
+    },
+    {
+      "role": "claude",
+      "success": false,
+      "latency_ms": 30024,
+      "has_json": false,
+      "error": "timeout after 30s",
+      "hal": "ERROR",
+      "preview": "timeout after 30s"
+    },
+    {
+      "role": "codex",
+      "success": false,
+      "latency_ms": 30009,
+      "has_json": false,
+      "error": "timeout after 30s",
+      "hal": "ERROR",
+      "preview": "timeout after 30s"
+    }
+  ],
+  "aggregation": {
+    "num_witnesses": 3,
+    "num_success": 1,
+    "num_blocked": 0,
+    "num_errored": 2,
+    "roles_responded": [
+      "grok"
+    ],
+    "consensus_hint": "SINGLE_WITNESS"
+  },
+  "hal_summary": {
+    "overall": "PASS",
+    "blocked_roles": [],
+    "errored_roles": [
+      "claude",
+      "codex"
+    ]
+  },
+  "notes": "NON_SOVEREIGN_EGREGOR. Output is witness only. Never ledgered."
+}

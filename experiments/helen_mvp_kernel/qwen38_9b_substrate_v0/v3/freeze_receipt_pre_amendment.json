@@ -1,0 +1,13 @@
+{
+  "hashes": {
+    "SYSTEM_HASH": "12151315d6d58afc",
+    "SCHEMA_HASH": "bac3b02cca2f9c6d",
+    "FIXTURE_HASH": "7cb3bca5e7ffa64f",
+    "RUBRIC_HASH": "4f2d59e0db40c4c1",
+    "RUNTIME_HASH": "158a5fda7b79aaed",
+    "PREREGISTRATION_HASH": "30514544ea7ee0f8",
+    "EXPERIMENT_HASH": "d2f5e153a8c2d3af"
+  },
+  "control_worst_Q": 0.496,
+  "verdict": "INSTRUMENT_ADEQUATE"
+}

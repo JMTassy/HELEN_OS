@@ -1,0 +1,38 @@
+{
+  "schema": "MAYOR_HANDOFF_V0",
+  "handoff_id": "MH-HER-30EPOCH-202607201528",
+  "source": "autoresearch.doctrine_compression",
+  "source_packet": "AR-HER-30EPOCH-FUSED-20260720",
+  "source_sha256": "01e3b95b097d3dff",
+  "proposal_type": "doctrine_compression",
+  "summary": "After 30 trace-only epochs (3 runs), the two strongest verified invariants are: No test \u2192 no gate; No replay \u2192 no admission. Location form never verified.",
+  "fused_invariant": "No test \u2192 no gate; no replay \u2192 no admission. DREAMT is proposal-only until both a runnable test and a replayable receipt bind it at a jurisdiction boundary.",
+  "evidence": {
+    "epochs_run": 30,
+    "runs": 3,
+    "dominant_verified": [
+      "No test \u2192 no gate.",
+      "No replay \u2192 no admission."
+    ],
+    "never_verified": "No location \u2192 no doctrine.",
+    "behavior": "stable cycle between the two membrane laws"
+  },
+  "risk_flags": [
+    "convergence_not_reached",
+    "location_form_unverified"
+  ],
+  "origin": {
+    "trace_epochs": 30,
+    "runs": 3,
+    "generated_by": "HER (trace_only_autoresearch_loop)"
+  },
+  "status": "PROPOSAL_PRESSURE",
+  "authority": false,
+  "sovereign": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "operator_mark": "acted (via operator_pen.py)",
+  "timestamp": "2026-07-20T13:28:06.261983+00:00",
+  "notes": "HER 30-epoch trace fused two dominant membrane laws. Location form unverified. Route to MAYOR for disposition as proposal pressure only. No claim."
+}

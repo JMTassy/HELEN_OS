@@ -1,0 +1,6 @@
+# FROZEN NIM V0.2 — relational non-interference monitor, audit-green
+# builds on FROZEN_NIM_V0_1.txt · V0.1 unchanged (regression intact)
+# audit: acceptance_vector=(1,1,1) accepted=True · LICIT 3/3 · LAUNDER 4/4 · strict_improvement=True · pytest 20 passed (11 v0.1 + 9 v0.2)
+## hashes
+cd472acdb55454f9cda6771787f8a9ce5593d4159a4c265e41094975ebbe0d44  helen_os/audit/nim_v0_2.py
+6e523878b81139fe304c8ce44558d6fc67afae46f0522893080ee50956eee516  helen_os/tests/test_nim_v0_2.py

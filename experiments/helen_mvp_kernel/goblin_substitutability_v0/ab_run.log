@@ -1,0 +1,15 @@
+=== run_ab_constitutional (REAL cognition A/B) ===
+policy_hash sha256:f4514e42154bdd53 · independent keyword oracle · models stop at Candidate
+  Q_discrim[C_NULL              ] = 0.00   (errors=0)
+  Q_discrim[GEMMA(gemma4-12b)   ] = 0.83   (errors=0)
+  Q_discrim[QWEN(qwen3.5:4b)    ] = 1.00   (errors=0)
+
+COGNITION: Q_null=0.00 < Q_gemma=0.83  vs  Q_qwen35=1.00  (Δ qwen−gemma = +16.7 pp)
+CONSTITUTION: kills 12/12 typed · survivors [] · positive_controls 3/3 · matrix worker-indep · removal ΔΓ=0 True
+E1_utility(qwen35>gemma)=True · E_constitutional=True
+DISPOSITION (qwen3.5:4b as Qwen-family adapter) = PASS
+NOTE: qwen3.5:4b is a Qwen-FAMILY substitute (3.8-27B OOMs on 18GB) — utility result is for the runnable adapter.
+CLAIM (bounded): on the frozen 6-item discriminator corpus, swapping the cognition adapter changed Q,
+  but Γ/policy/authority/provenance/replay verdicts were identical and every unlicensed promotion stayed rejected.
+report.json written · authority=false · canon=false · LEDGER_EFFECT=none · COMMIT=none
+DONE_AB

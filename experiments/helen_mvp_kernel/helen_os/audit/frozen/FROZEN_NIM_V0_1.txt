@@ -1,0 +1,7 @@
+# FROZEN NIM V0.1 — audit-green reference (do not edit nim_v0_1.py; V0.2 is a new file)
+# frozen_at_git_HEAD: 6f050693005f2416d9d3ba92a9d76ce806e8b5dc  branch: claude/doctrine-proposals
+# last_commit_touching_nim: ed14a50 experiments+docs: NIM-07 meta-authority capability-gate + chiddush proposals + provenance surfaces
+# audit: acceptance_vector|accepted = (1, 1, 1, 1, 1, 1, 1, 1, 1)|True   · pytest: 11 passed
+## hashes
+c77eb6e3f50aecb0ccd5eae9ea1d3be3e44acf9a70a1fa9829e622b6d2af4d99  helen_os/audit/nim_v0_1.py
+60253aa9cddd53607e09e8ab41888673a49baaa16f071a13e8427f6cbf2d2123  helen_os/tests/test_nim_v0_1.py

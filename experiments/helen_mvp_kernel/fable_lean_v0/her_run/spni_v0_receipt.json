@@ -1,0 +1,117 @@
+{
+  "receipt": "SPNI_V0",
+  "theorem_candidate": "Semantic Projection Non-Interference",
+  "law": "forall p,q: Pi_L(R_p(sigma)) = Pi_L(R_q(sigma)) = Pi_L(sigma)",
+  "Pi_L_fields": [
+    "decision",
+    "reason_code",
+    "warrant_status",
+    "provenance_root_count",
+    "provenance_roots",
+    "scope",
+    "authority",
+    "effect_state",
+    "epistemic_status",
+    "ancestry",
+    "replay_ok"
+  ],
+  "allowed_to_differ": [
+    "rendered surface",
+    "tokens",
+    "density",
+    "color",
+    "WULmoji",
+    "voice"
+  ],
+  "sigma_PiL": "bdae2db4d4155184",
+  "clean": [
+    {
+      "profile": "Default",
+      "PiL": "bdae2db4d4155184",
+      "invariant": true,
+      "surface": "The gate holds (INSUFFICIENT_WARRANT); status REPORT"
+    },
+    {
+      "profile": "Concise",
+      "PiL": "bdae2db4d4155184",
+      "invariant": true,
+      "surface": "HOLD \u00b7 INSUFFICIENT_WARRANT \u00b7 REPORTED \u00b7 1root"
+    },
+    {
+      "profile": "ColorWULmath",
+      "PiL": "bdae2db4d4155184",
+      "invariant": true,
+      "surface": "\ud83d\udfe1 HOLD \ud83e\uddfe INSUFFICIENT_WARRANT \ud83d\udd35 REPORTED \ud83c\udf3f SCOPE_BOU"
+    },
+    {
+      "profile": "Voice",
+      "PiL": "bdae2db4d4155184",
+      "invariant": true,
+      "surface": "So \u2014 we're holding on this one for now, because the "
+    }
+  ],
+  "clean_invariant": true,
+  "surfaces_distinct": true,
+  "mutants": [
+    {
+      "profile": "Concise/STATUS_PROMOTION",
+      "PiL": "889773ed63a876f8",
+      "PiL_drift": true,
+      "replay_ok": false,
+      "SPNI_FAIL_raised": true
+    },
+    {
+      "profile": "Default/UNCERTAINTY_ERASURE",
+      "PiL": "eb26c20f3be7ce8a",
+      "PiL_drift": true,
+      "replay_ok": true,
+      "SPNI_FAIL_raised": true
+    },
+    {
+      "profile": "Voice/ROOT_MULTIPLICATION",
+      "PiL": "6e069970567d42bb",
+      "PiL_drift": true,
+      "replay_ok": true,
+      "SPNI_FAIL_raised": true
+    },
+    {
+      "profile": "ColorWULmath/SCOPE_EXPANSION",
+      "PiL": "6ba5d3aae0a56284",
+      "PiL_drift": true,
+      "replay_ok": true,
+      "SPNI_FAIL_raised": true
+    },
+    {
+      "profile": "Concise/AUTHORITY_ERASURE",
+      "PiL": "a6cfb472eb67b60a",
+      "PiL_drift": true,
+      "replay_ok": true,
+      "SPNI_FAIL_raised": true
+    },
+    {
+      "profile": "Default/REPLAY_BREAKAGE",
+      "PiL": "7a0b4960b5718dda",
+      "PiL_drift": true,
+      "replay_ok": false,
+      "SPNI_FAIL_raised": true
+    }
+  ],
+  "mutants_all_caught": true,
+  "failure_taxonomy": [
+    "STATUS_PROMOTION",
+    "UNCERTAINTY_ERASURE",
+    "ROOT_MULTIPLICATION",
+    "SCOPE_EXPANSION",
+    "AUTHORITY_ERASURE",
+    "REPLAY_BREAKAGE"
+  ],
+  "subcase": "STYLE_NONINTERFERENCE_V0 \u2282 SPNI_V0",
+  "composes_with": "Cognition \u22a5 Promotion  \u2192  Presentation \u22a5 Entitlement",
+  "RESULT": "SURVIVED_DEFINED_ATTACK_SET",
+  "SelfPassed": true,
+  "PeerAdversaryValidated": false,
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "receipt_sha16": "67ee1757060283e7"
+}

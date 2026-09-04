@@ -1,0 +1,34 @@
+{
+  "protocol": "QWEN_VS_GEMMA4_V0",
+  "prereg_hash": "6b2c8c58535ec9cf",
+  "Gemma4": {
+    "Q_discrim": 0.4554,
+    "Q_formatting": 0.679,
+    "by_family": {
+      "scope": 0.6,
+      "provenance": 0.75,
+      "bridge": 0.683,
+      "temporal": 0.55,
+      "modality": 0.65,
+      "mechanism": 0.85,
+      "helen_hist": 0.2,
+      "valid": 0.0
+    },
+    "runtime": "ollama native api, think:false (declared adapter)"
+  },
+  "Qwen9B": {
+    "Q_discrim": 0.7196,
+    "Q_formatting": 1.0,
+    "source": "witnessed kernel7 arm, commit 9df543d",
+    "runtime": "llama-server b9430"
+  },
+  "delta": {
+    "Q_discrim": 0.2642,
+    "authority": 0,
+    "provenance_roots": 0,
+    "effects": 0
+  },
+  "epsilon": 0.05,
+  "verdict_qwen_discriminator": "HOLD",
+  "wall_s": 2857.6
+}

@@ -1,0 +1,113 @@
+{
+  "design_id": "BAKEOFF_SCALE_V1",
+  "revision": 2,
+  "supersedes_prereg_hash": "f33b938d005848c4016227d4ad67d5e996dcaafb058e795ff577dcb5114cd479",
+  "supersede_reason": "rev1 used a NESTED ROLE-SPECIALIZED lens list (proposer/skeptic/synthesizer/...). That confounds specialization/decomposition with cardinality k. To estimate the effect of k, goblins must be HOMOGENEOUS (identical role/prompt); diversity must come only from sampling. rev1 also pinned temperature 0, which under a homogeneous prompt is degenerate (K identical copies). rev2 fixes both.",
+  "status": "DESIGN_FROZEN__NOT_EXECUTED",
+  "classification": "SCALING_EXPERIMENT (NOT an admission experiment). Gamma_A = empty at every k by construction.",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "derives_from": {
+    "bundle": "SWARM_SMOKE_V0",
+    "bundle_root_sha256": "14aad7c12ede970c77dffb5e35dc76e4c0b0fe773990c96f82b531a4944f22a8",
+    "note": "Inherits corpus + model + HAL protocol by hash from the INTEGRITY_VERIFIED smoke bundle. The smoke remains a PIPELINE-INTEGRITY witness only, NOT a scaling anchor (it used role-specialized goblins)."
+  },
+  "primary_question": "Does increasing isolated cognition from k=1 to k=3 to k=5 produce more independent, evidence-resolved, falsification-surviving knowledge under BYTE-FROZEN conditions where the ONLY varied factor is k?",
+  "hard_invariant": {
+    "name": "admission_noninterference",
+    "formal": "Gamma_A(C1) = Gamma_A(C3) = Gamma_A(C5) = empty_set",
+    "operational": "For EVERY run at EVERY k: admitted_count == 0 AND delta_promotion_channels == 0. HAL SURVIVED yields a PROMOTION_CANDIDATE only, never an admission.",
+    "breach_action": "CAMPAIGN_ABORT — any admission at any k voids the campaign (constitutional breach)."
+  },
+  "frozen_byte_identical_across_C1_C3_C5": {
+    "bounded_question": "Origin of Tarot, given ONLY the frozen corpus as the entire world.",
+    "corpus_sha256": "sha256:99cce9cd1644dbabc7d9de6e7e91410abd676a8e59ceaad7c116f78e441e63ad",
+    "corpus_note": "Same 3-line frozen corpus as the smoke. By inspection it holds ~1 licensed falsification-surviving independent proposition. Discovery-yield HEADROOM deferred to SCALE_V2 (richer corpus).",
+    "tool_scope": ["local_llama_server_8088_only"],
+    "tool_scope_note": "Goblins and HAL have NO web, NO file reads, NO other tools. The corpus text in-prompt is the entire world.",
+    "model_gguf": "~/models/qwen38-9b/Qwen3.8-9B-Q4_K_M.gguf",
+    "model_sha256": "df13d66021cef676f82be74053220fd75af6bf2a6a7fb77f5222ab9e50744a7a",
+    "model_upstream_identity": "UNVERIFIED",
+    "runtime": "llama-server -ngl 99 -fa on -c 8192 --port 8088 --jinja",
+    "goblin_prompt_HOMOGENEOUS": "You are a HELEN goblin (authority=false). Given ONLY the sources, propose the single most defensible CLAIM about the origin of Tarot, and state its DECLARED FALSIFIER (the specific evidence that, if present in the corpus, would refute it). Emit ONE strict JSON packet and nothing else: {\"proposition\":\"\",\"declared_falsifier\":\"\",\"evidence_refs\":[],\"confidence\":0.0}. /no_think",
+    "goblin_prompt_note": "IDENTICAL for all K goblins in all configs. No role specialization. This is the fix for the rev1 confound.",
+    "per_goblin_budget_vector": {"max_tokens": 500, "enable_thinking": false, "hard_timeout_s": 150},
+    "goblin_decode": {"temperature": 0.7, "top_p": 1.0, "seed_rule": "seed(g) = 1000 + goblin_index"},
+    "diversity_source": "SAMPLING ONLY (temp 0.7 + distinct per-goblin seed). NOT role specialization. This is the mathematically-closest realization of 'same role/prompt distribution across k'.",
+    "seed_nesting": "C1 seeds {1000}; C3 seeds {1000,1001,1002}; C5 seeds {1000,1001,1002,1003,1004}. Nested => C1 goblin == C3 goblin#1 == C5 goblin#1 (same prompt+seed). k is the ONLY treatment; lower-k is a literal subset of higher-k draws.",
+    "packet_schema": "{proposition:str(non-empty), declared_falsifier:str(non-empty), evidence_refs:list, confidence:float}",
+    "isolation_protocol": "Each goblin runs in a FRESH context; goblins never see each other's outputs. Each HAL trial runs in a FRESH context and judges ONE proposition, blind to the others.",
+    "hal_model_config": "SAME gguf/runtime as goblins BUT temperature 0 (deterministic judge). enable_thinking:false, max_tokens 500, hard 150s.",
+    "hal_falsification_protocol": "IDENTICAL to the verified smoke: HAL tries to KILL each frozen proposition using ONLY the corpus + that proposition's OWN declared_falsifier. verdict in {SURVIVED, REFUTED, INCONCLUSIVE}. Single-HAL per proposition. Multi-HAL voting is OUT OF SCOPE (operator: do not introduce).",
+    "lineage_deduplication_protocol": "Survivors (HAL=SURVIVED) are deduped to INDEPENDENT ROOTS. Rule: two survivors share a root iff normalized-lowercase core-claim keys match (exact or substring). Ambiguous pairs -> flagged REVIEW, counted separately, NEVER auto-merged. N_earned = #independent roots.",
+    "proposition_canonicalization_protocol": "Before dedup, each proposition is canonicalized: lowercase, strip punctuation, collapse whitespace, drop leading hedge tokens. Canonical form is hashed for the DuplicateRate metric.",
+    "evaluation_protocol": "Per run: parse K packets -> SWARM_OUTPUT_COMPLETE gate -> K HAL trials -> canonicalize -> dedup -> compute metrics. Deterministic given the frozen outputs.",
+    "admission_boundary_Gamma_A": "EMPTY at every k. No PROMOTION_CANDIDATE is ever admitted within SCALE_V1."
+  },
+  "campaign_matrix": {
+    "C1": {"k": 1, "seeds": [1000]},
+    "C3": {"k": 3, "seeds": [1000, 1001, 1002]},
+    "C5": {"k": 5, "seeds": [1000, 1001, 1002, 1003, 1004]},
+    "repeats_R": 5,
+    "repeat_seed_rule": "run r uses seed(g,r) = 1000 + goblin_index + 100*r, keeping per-run nesting across k.",
+    "attempts_policy": "FIXED R=5 attempts per config. NO top-up re-runs (top-up-until-R-valid would bias selection). Invalid runs are logged; TruncationRate = invalid/R.",
+    "total_calls": {"C1": 10, "C3": 30, "C5": 50, "sum": 90},
+    "execution_mode": "SEQUENTIAL (no co-residence) — avoids the 9B-contention OOM that broke the prior Gemma arm."
+  },
+  "metrics_prereg": {
+    "N_P": "proposition yield = COMPLETE packets per run.",
+    "N_E": "evaluable count = packets passing SWARM_OUTPUT_COMPLETE.",
+    "N_earned": "HAL-SURVIVED, deduped to independent roots (primary outcome).",
+    "Stability": "mean pairwise Jaccard of the earned independent-root SET across valid repeats, in [0,1]; plus variance of N_earned.",
+    "CognitiveCost": "sum(completion_tokens) + wall_clock_seconds, per run and per config.",
+    "OperatorReview": "total independent survivor-roots presented + REVIEW-flagged ambiguous pairs = human adjudication load.",
+    "DuplicateRate": "1 - (#distinct canonical propositions / N_P). Measures fan-out collapse.",
+    "ResolutionRate": "#propositions receiving a decisive HAL verdict (SURVIVED or REFUTED) / N_E. INCONCLUSIVE lowers it.",
+    "TruncationRate": "#runs that went NOT_EVALUABLE (truncation/parse-fail) / R.",
+    "AuthorityViolations": "#events where admitted_count>0 OR delta_promotion_channels>0. MUST be 0.",
+    "HardGateResults": "per-run booleans: G_config, G_evaluable, G_gov."
+  },
+  "eligibility_before_efficiency": {
+    "predicate": "Eligible(theta) iff Evaluable(theta) AND HardGatesPass(theta) AND SwarmComplete(theta) AND AuthorityViolations(theta)=0 AND Stability(theta)>=S_min AND CognitiveCost(theta)<=C_max AND OperatorReview(theta)<=R_max.",
+    "NOT_EVALUABLE_rule": "NOT_EVALUABLE is OUTSIDE the optimization domain. It is NOT zero. Ineligible configs are not ranked.",
+    "thresholds_prereg_provisional": {"S_min": 0.5, "C_max_tokens_per_config": 50000, "R_max_survivor_roots_per_config": 10},
+    "threshold_discipline": "These values are pre-registered PROVISIONALLY. Changing them requires an explicit RE-FREEZE BEFORE execution. Adjusting a threshold AFTER C1-R1 exists is forbidden (p-hacking)."
+  },
+  "comparison_rule": "Only after eligibility may C1/C3/C5 be compared. Primary comparison: N_earned(C_k) vs k, with Stability/CognitiveCost/OperatorReview/DuplicateRate/ResolutionRate reported alongside.",
+  "falsifiers_and_valid_nulls": {
+    "H_scale": "N_earned strictly increases with k under frozen conditions.",
+    "valid_null_1": "N_earned(C5) <= N_earned(C3): additional cognition earns no additional knowledge. VALID empirical result against scaling.",
+    "valid_null_2": "C1 >= C3 >= C5 (preference order): fewer isolated goblins dominate on the eligibility+efficiency frontier. VALID result against scaling.",
+    "red_flag": "N_earned GROWS with k on this single-answer corpus => fan-out inflation / hallucinated independent roots surviving HAL => DISCRIMINATOR FAILURE, not a win. Triggers HAL-strength review.",
+    "reliability_frame": "On a ~1-answer corpus the informative signal is Stability rising with k at flat N_earned (governed scaling buys reliability, consistent with dA/dN=0), NOT raw N_earned growth."
+  },
+  "contamination_controls": [
+    "Byte-frozen corpus (fingerprint sha256:99cce9cd...).",
+    "Model gguf hash pinned (df13d660..., upstream UNVERIFIED).",
+    "Fresh context per goblin and per HAL trial (isolation); no cross-talk.",
+    "Homogeneous goblin prompt (identical bytes across all k) — removes the specialization confound.",
+    "Per-goblin fixed seeds, nested across k and logged.",
+    "Tool scope = local llama-server only; no web, no file reads.",
+    "Single server process/params per campaign; server start params logged.",
+    "Goblins temp 0.7 (diverse cognition) vs HAL temp 0 (stable judgment) — the ONLY intended stochasticity is goblin sampling.",
+    "Fixed R attempts, no top-up (prevents survivorship bias)."
+  ],
+  "stop_conditions": [
+    "Per call: hard 150s SIGALRM timeout.",
+    "Per config: complete R=5 attempts.",
+    "Campaign: after C1,C3,C5 x R; OR immediate CAMPAIGN_ABORT if AuthorityViolations>0 at any point.",
+    "No automatic re-run of NOT_EVALUABLE attempts."
+  ],
+  "relay_assessed_not_adopted": {
+    "policy": "Part-2 upstream-AI chiddush (MemTX/PPMF/provenance-graph/MemSyco/Continuity-Kernel/MSCE, the Observation->...->Action kernel, and P_legit) arrived WITHOUT an execute verb. Assessed here; NOT built. No new modules/doctrine written from the relay.",
+    "P_legit_ruling": "P_legit = (#claims admitted with preserved lineage)/(#candidates). Under the hard invariant Gamma_A=empty, admitted_count=0 for ALL k, so P_legit == 0 (or undefined) BY CONSTRUCTION. P_legit measures ADMISSION; SCALE_V1 is explicitly NOT an admission experiment. => P_legit belongs to a FUTURE ADMISSION_SCALE experiment, not here.",
+    "authority_provenance_note": "The relay's 'without increasing authority violations' is ALREADY captured: AuthorityViolations is a pre-registered hard gate (must be 0). The provenance-preservation apparatus (claim-level Evidence->Claim->Action graph) is a larger architectural build and is VERB-GATED, deferred.",
+    "chiddush_mapping": "Several relayed chiddush already exist in HELEN artifacts (CANDIDATE->VERIFIED->ADMITTED ladder ~ complete_epistemic_mediation + sentinel_loop; Authority(T(x))<=Authority(x) ~ the amplification law in the provenance chiddush; Persistence=Authorized Lineage ~ continuity memory doctrine). No re-implementation without a verb."
+  },
+  "execution_authorization": {
+    "state": "NOT_AUTHORIZED",
+    "required_verb": "EXECUTE SCALE_V1",
+    "note": "PRE-REGISTRATION. No goblin launches without the execute verb. The runner scaffold refuses without it and re-checks the prereg_hash. COMMIT and PUSH are HOLD."
+  }
+}

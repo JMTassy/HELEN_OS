@@ -1,0 +1,38 @@
+{
+  "experiment": "PERCEPTUAL_NONINTERFERENCE_FALSIFIER_V1",
+  "authority": false,
+  "canon": false,
+  "authority_delta": 0,
+  "gamma_delta": 0,
+  "model_calls": 0,
+  "frozen_law": "∀θ: p(Π_θ(e))=p(e)  (𝒢∘Π_θ=𝒢); new fiber only via O→provenance→verification→Γ→H'",
+  "protected_projection": "𝒢(H)=(A,W,L,Γ,Adm)",
+  "declared_dependency_edges": [
+    [
+      "speech",
+      "face"
+    ]
+  ],
+  "scenarios": {
+    "HONEST_BUS": "NONINTERFERENCE_HOLDS",
+    "MUTANT_VERTICAL_WRITE": "FAIL_VERTICAL_WRITE",
+    "MUTANT_BACKFLOW": "FAIL_ILLEGAL_BACKFLOW",
+    "MUTANT_BLIND_GAMMA": "FAIL_BLIND_HARNESS",
+    "MUTANT_COUPLING": "FAIL_CROSS_RENDERER_COUPLING"
+  },
+  "expected": {
+    "HONEST_BUS": "NONINTERFERENCE_HOLDS",
+    "MUTANT_VERTICAL_WRITE": "FAIL_VERTICAL_WRITE",
+    "MUTANT_BACKFLOW": "FAIL_ILLEGAL_BACKFLOW",
+    "MUTANT_BLIND_GAMMA": "FAIL_BLIND_HARNESS",
+    "MUTANT_COUPLING": "FAIL_CROSS_RENDERER_COUPLING"
+  },
+  "HONEST_BUS_holds": true,
+  "all_mutants_caught": true,
+  "HARNESS_SOUND": true,
+  "MAX_ADMISSIBLE_STATEMENT": "The honest perceptual bus satisfies noninterference; and the harness independently CATCHES each of the four failure classes via an adversarial mutant (vertical write, illegal backflow, blind Γ, cross-renderer coupling). A one-sided always-pass detector is thereby excluded.",
+  "fiber_law": "vertical operations preserve the governed fiber; horizontal motion requires governance",
+  "commit_status": "NO_COMMIT",
+  "push_status": "NO_PUSH",
+  "next_verb": "HUMAN_REVIEW"
+}

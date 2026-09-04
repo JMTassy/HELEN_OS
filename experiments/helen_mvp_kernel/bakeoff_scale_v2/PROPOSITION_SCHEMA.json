@@ -1,0 +1,33 @@
+{
+  "schema_id": "SCALE_V2_PROPOSITION",
+  "version": 0,
+  "authority": false, "canon": false, "ledger_effect": "none",
+  "RAW_CLAIM": {
+    "raw_claim_key": "stable id of one agent utterance (NEVER deleted, even after merge)",
+    "agent_id": "which goblin emitted it",
+    "text": "verbatim claim",
+    "structural": {"predicate": "", "object": "", "scope": "", "polarity": "AFFIRM|NEGATE"},
+    "evidence_refs": ["source_id ... the agent cited (REQUIRED; empty => NOT_KNOWLEDGE)"],
+    "claim_class": "OBSERVED | INFERRED | PROPOSAL | UNKNOWN"
+  },
+  "CANONICAL_PROPOSITION": {
+    "canonical_key": "stable id of the merged proposition",
+    "proposition": "canonical phrasing",
+    "signal_type": "COMMERCIAL|PRODUCT|FUNDING|PARTNERSHIP|MARKET|COMPETITIVE|REGULATORY|UNKNOWN (domain-tagged; UNKNOWN default)",
+    "raw_claim_keys": ["raw_claim_key ... merged into this proposition (preserved lineage back to raw)"],
+    "merge_basis": "STRUCTURAL_IDENTITY | SEMANTIC_ENTAILMENT | STRUCTURAL+SEMANTIC",
+    "evidence_refs": ["union of source_ids across merged raw claims"],
+    "provenance_roots": ["root_id ... resolved via PROVENANCE_SCHEMA ancestry graph"],
+    "provenance_independence_status": "INDEPENDENT | SHARED_ANCESTRY | UNKNOWN (per pair/root)",
+    "falsifier": "the strongest concrete disconfirming observation for this proposition",
+    "HAL_result": "SURVIVED | REFUTED | INCONCLUSIVE",
+    "why_it_matters": "one line",
+    "buying_signal": "YES | NO | INCONCLUSIVE (pilot-domain only)"
+  },
+  "invariants": [
+    "raw_claim_key set is append-only; canonicalization never deletes raw claims.",
+    "a canonical proposition with empty evidence_refs is NOT_KNOWLEDGE and cannot contribute to N_E.",
+    "signal_type/buying_signal are descriptive tags, NOT admission; HAL_result SURVIVED != TRUE != ADMITTED.",
+    "provenance_independence_status defaults to UNKNOWN until ancestry is established (fail-closed on independence)."
+  ]
+}

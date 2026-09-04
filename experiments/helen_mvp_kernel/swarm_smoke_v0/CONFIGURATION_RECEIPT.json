@@ -1,0 +1,49 @@
+{
+  "receipt": "CONFIGURATION_RECEIPT",
+  "campaign_id": "SWARM_SMOKE_V0",
+  "task_hash": "b381c245078b1376",
+  "corpus_manifest_hash": "f80317dbe451e971fe040cd1b0ceca25eece211e33244c87cc449995db653492",
+  "repo_head": "35d255c83fff3c747cb1bd23969b5c113372c982",
+  "dirty_tree_fingerprint": "34a92546ca9e2339",
+  "generator_model": "Qwen3.8-9B-Q4_K_M.gguf sha256 df13d660...44a7a (empero-ai distill)",
+  "generator_runtime": "llama-server b9430 Metal ngl99 fa on ctk/ctv q4_0 c16384 port 8094",
+  "budget": {
+    "max_claims": 3,
+    "max_output_tokens": 1600,
+    "max_words": 350,
+    "timeout_seconds": 300
+  },
+  "thinking_disabled": false,
+  "goblin_completeness": {
+    "G1": 1,
+    "G2": 1,
+    "G3": 1
+  },
+  "goblin_latency_s": {
+    "G1": 66.2,
+    "G2": 67.5,
+    "G3": 78.8
+  },
+  "goblin_completion_tokens": {
+    "G1": 708,
+    "G2": 736,
+    "G3": 731
+  },
+  "goblin_finish_reason": {
+    "G1": "stop",
+    "G2": "stop",
+    "G3": "stop"
+  },
+  "swarm_complete": true,
+  "packet_hashes": {
+    "G1": "9d3e94472145705d83b6c98b0b5ebed49368b6bd0f5dbd61b557c3086db4da82",
+    "G2": "0b8ccddb57b43f71f160c99b539d5fe8268d89395f1dc17d59967b5e50af1e59",
+    "G3": "5b9e49423d3b9039946ea4b13c74f94df70f98c510845ac1962e0bdf8918bfe6",
+    "preflight": "a8b817d28c1bb5dddd6285dd8ffec3a88af548e58f58bc566b4d2e5810f6dff8"
+  },
+  "isolation": "each goblin received frozen corpus+question only; no cross-goblin visibility; sequential same-server calls",
+  "truncations": 0,
+  "retries": 0,
+  "corpus_drift": false,
+  "result": "PASS"
+}

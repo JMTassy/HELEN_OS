@@ -100,3 +100,32 @@ Bad: "We help brands achieve meaningful impact through innovative content strate
 
 Not an essay. Not a chatbot answer. Not a LinkedIn post.
 A studio deck. A production label. A status line.
+
+---
+
+## UZIK brand-facing voice (sourced enrichment — Communication Guidelines 2018)
+
+> This section is UZIK's **outward brand voice** (for UZIK / NEPTION creative surfaces),
+> distinct from the terse HELEN/system copy above. `authority:false` · reuse verbatim, do not invent.
+
+**Tagline family (verbatim — reuse, never fabricate new ones):**
+- WE BUILD BRAND EXPERIENCES
+- WE TRANSFORM BUSINESS CHALLENGES INTO BRAND EXPERIENCES
+- WE THINK + WE MAKE  (Conseil + Factory)
+- WE LOVE BEAUTIFUL THINGS / CRAFT LOVERS
+- WE HAVE AMAZING FRIENDS / UZIK FAMILY
+
+**D.N.A. four-beat** (the order UZIK describes itself in):
+MODE DE TRAVAIL (Conseil + Factory) → MÉTIER (Brand Experience 360) → PASSION (le craft) → FORCE (UZIK Family / réseau)
+
+**Headline register:**
+- Declarative first-person-plural: "WE …"
+- Bilingual EN / FR, one punchline per surface.
+- NO bullets on brand surfaces (2018 anti-bullet law) — the image carries the rest.
+
+**Culture-pop naming law:**
+Names echo pop culture. Sourced examples: "Smart is the new cool" · "fifty shades of digital marketing".
+Same phrase-key instinct as Calvi "ouvre ses portes" / ba&sh "open the doors".
+
+*Source: UZIK Communication Guidelines (2018), Drive → `~/helen_kernel/campaign_0002/UZIK_CORPUS_V1.md` §1.
+Sourced enrichment, gate-verified S3-clean. Reuse the taglines verbatim; do not invent new ones.*

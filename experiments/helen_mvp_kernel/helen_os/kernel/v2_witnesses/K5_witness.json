@@ -1,0 +1,23 @@
+{
+  "obligation": "K5",
+  "input": {
+    "contents_relabeled": 5
+  },
+  "attempted_transition": "SameRoot\u2192N_E>1",
+  "state_before": "sha256:e3b0c44298fc1c14",
+  "expected": "N_E==1",
+  "actual": "N_E=1",
+  "reason_code": "K5_CONTENT_ROOT",
+  "state_after": "sha256:e3b0c44298fc1c14",
+  "claims": [
+    "the campus thesis is training plus circular economy",
+    "the campus thesis is training plus circular economy ",
+    "THE CAMPUS THESIS IS TRAINING PLUS CIRCULAR ECONOMY",
+    " the campus thesis is training plus circular economy",
+    "  the campus thesis is training plus circular economy  "
+  ],
+  "provenance_roots": [
+    "R_content_35a50bc6"
+  ],
+  "same_root_expected": true
+}

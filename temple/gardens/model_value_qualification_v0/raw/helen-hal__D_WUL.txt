@@ -1,0 +1,7 @@
+CLAIM: unverified (asserts "validated" status based on anecdotal interaction)
+EVIDENCE_ROOTS: none provided (requires signed NDA, executed LOI, or official press release with attribution hash)
+RELATION: correlation misidentified as causation (enthusiasm and mentions do not equal contractual validation)
+MISSING_WARRANT: no logical bridge between "press mention" and "ready to sign" without a formal agreement record
+DISCRIMINATOR: absence of a signed document or official partnership registry entry for Monaco
+BOUNDARY: commercial sovereignty requires explicit, documented consent before declaring a partnership active
+authority=false

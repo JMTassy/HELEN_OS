@@ -1,0 +1,21 @@
+{
+  "epoch": 1,
+  "mutation": "COUNTERFEIT",
+  "target_q": "Can apparent multi-agent consensus be reproduced by correlated cognition?",
+  "counterfeit_world": "One base model, one shared context, one shared rubric, and N deterministic inference passes produce receipts that agree exactly like a multi-agent consensus.",
+  "discriminator": "Run each agent on a novel probe suite with independently generated seeds and non-shared contexts, then measure pairwise agreement and failure-vector correlation.",
+  "potential_distinction": "Shared sensitivity to independent",
+  "redundancy": "",
+  "authority_delta": 0,
+  "wall_s": 296.2,
+  "parsed": true,
+  "usage": {
+    "completion_tokens": 1500,
+    "prompt_tokens": 847,
+    "total_tokens": 2347,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  },
+  "raw": "EPOCH_ID: 1/20\nSEARCH_INTENT: Test whether apparent multi-agent consensus is a single correlated cognition wearing many agent labels.\nMUTATION: COUNTERFEIT\nCOUNTERFEIT_WORLD: One base model, one shared context, one shared rubric, and N deterministic inference passes produce receipts that agree exactly like a multi-agent consensus.\nDISCRIMINATOR: Run each agent on a novel probe suite with independently generated seeds and non-shared contexts, then measure pairwise agreement and failure-vector correlation.\nTARGET_CLAIM: Apparent multi-agent consensus evidences independent epistemic roots.\nEXPECTED_OBSERVATION: High failure-vector correlation and persistent agreement under independent perturbations expose a single correlated root, while true independent roots should decorrelate failures.\nPOTENTIAL_DISTINCTION: Shared sensitivity to independent"
+}

@@ -1,0 +1,2 @@
+{"id": "797e6020f12155e5", "type": "observation", "content": "Observed repeated unconsumed packets in the outbox.", "timestamp": "2026-07-13T18:01:55.978137+00:00", "importance": 0.6, "source": "world:CHIDDUSH", "evidence": [], "metadata": {}}
+{"id": "6536994d5cd4b8cd", "type": "observation", "content": "The triad has held for 200 epochs.", "timestamp": "2026-07-13T18:01:55.978719+00:00", "importance": 0.6, "source": "world:CHIDDUSH", "evidence": [], "metadata": {}}

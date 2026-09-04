@@ -1,0 +1,1250 @@
+{
+  "schema_name": "HELEN_KNOWLEDGE_REGISTRY_V1",
+  "schema_version": "1.0.0",
+  "objects": [
+    {
+      "id": "law_reducer_only_mutates_state",
+      "object_type": "TOWN_LAW",
+      "title": "Only reducer-authorized decisions may mutate governed state",
+      "layer": "constitutional",
+      "district": "Reducer",
+      "description": "Governed state changes require lawful reducer authorization. No other layer may directly mutate institutional reality.",
+      "relevance": "This is the primary sovereignty law of HELEN and the anchor for all boundary discipline.",
+      "authority_class": "sovereign",
+      "status": "core",
+      "priority": "critical",
+      "salience_now": "core_now",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "project_helen_os",
+        "district_reducer",
+        "topic_governed_recursive_intelligence"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator"
+    },
+    {
+      "id": "law_memory_backed_continuity",
+      "object_type": "TOWN_LAW",
+      "title": "Companion continuity is memory-backed, not provider-backed",
+      "layer": "constitutional",
+      "district": "Companion",
+      "description": "HELEN may resume continuity only from structured memory objects and replay-safe boot context, never from provider improvisation.",
+      "relevance": "This law makes /init HELEN trustworthy and prevents theatrical continuity.",
+      "authority_class": "non_sovereign",
+      "status": "core",
+      "priority": "critical",
+      "salience_now": "core_now",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "topic_memory_spine",
+        "thread_init_helen_wedge",
+        "project_helen_os"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator"
+    },
+    {
+      "id": "law_temple_free_null_authority",
+      "object_type": "TOWN_LAW",
+      "title": "Temple is free in expression and null in authority",
+      "layer": "constitutional",
+      "district": "Temple",
+      "description": "Temple protects emergence, symbolic exploration, and fragile structures without certifying institutional truth.",
+      "relevance": "This law preserves rich cognition without allowing exploratory output to counterfeit governance.",
+      "authority_class": "non_sovereign",
+      "status": "core",
+      "priority": "high",
+      "salience_now": "active_supporting",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "district_temple",
+        "topic_governed_recursive_intelligence",
+        "thread_temple_reflection"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator"
+    },
+    {
+      "id": "law_retrieval_ranks_not_rewrites",
+      "object_type": "TOWN_LAW",
+      "title": "Retrieval may rank significance. It may not silently rewrite significance.",
+      "layer": "constitutional",
+      "district": "Companion",
+      "description": "The retrieval layer may weight, order, and surface objects by significance. It may not alter, conflate, or substitute object content. Read-time ranking is lawful. Silent editorial update via retrieval is a violation.",
+      "relevance": "Separates read-time ranking from editorial authority. Ensures that what HELEN surfaces is what was curated, not what the retrieval layer decided to substitute.",
+      "authority_class": "sovereign",
+      "status": "core",
+      "priority": "critical",
+      "salience_now": "core_now",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "topic_governed_recursive_intelligence",
+        "law_reducer_only_mutates_state"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator"
+    },
+    {
+      "id": "district_companion",
+      "object_type": "DISTRICT_PROFILE",
+      "title": "Companion",
+      "layer": "continuity",
+      "district": "Companion",
+      "description": "Memory-backed continuity district. HELEN resumes real working context from structured memory, not provider improvisation. Home district for /init, boot context, and session management.",
+      "relevance": "This is the primary district for daily work — boot, continuity, and recovery are all grounded here.",
+      "authority_class": "non_sovereign",
+      "status": "core",
+      "priority": "critical",
+      "salience_now": "core_now",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "law_memory_backed_continuity",
+        "thread_init_helen_wedge",
+        "topic_memory_spine"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator"
+    },
+    {
+      "id": "district_temple",
+      "object_type": "DISTRICT_PROFILE",
+      "title": "Temple",
+      "layer": "interpretive",
+      "district": "Temple",
+      "description": "Protected exploratory district for emergence, symbolic experimentation, reflection, and unresolved structure.",
+      "relevance": "Temple is central to HELEN's non-sovereign cognition and should be treated as fertile but bounded.",
+      "authority_class": "non_sovereign",
+      "status": "core",
+      "priority": "high",
+      "salience_now": "active_supporting",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "law_temple_free_null_authority",
+        "district_oracle",
+        "thread_temple_reflection"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator"
+    },
+    {
+      "id": "district_oracle",
+      "object_type": "DISTRICT_PROFILE",
+      "title": "Oracle Town",
+      "layer": "interpretive",
+      "district": "Oracle",
+      "description": "Evaluative district for pressure-testing claims, comparing evidence, and producing receipts without sovereign authority.",
+      "relevance": "Oracle gives HELEN epistemic seriousness and ranking discipline.",
+      "authority_class": "non_sovereign",
+      "status": "core",
+      "priority": "high",
+      "salience_now": "active_supporting",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "district_temple",
+        "district_mayor",
+        "law_reducer_only_mutates_state"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator"
+    },
+    {
+      "id": "district_mayor",
+      "object_type": "DISTRICT_PROFILE",
+      "title": "Mayor Hall",
+      "layer": "architecture",
+      "district": "Mayor",
+      "description": "Procedural readiness district that validates packet completeness and preparation before reducer review.",
+      "relevance": "Mayor is the membrane between rich cognition and narrow decision.",
+      "authority_class": "non_sovereign",
+      "status": "core",
+      "priority": "critical",
+      "salience_now": "active_supporting",
+      "helen_stance": "moderate_interest",
+      "links": [
+        "district_oracle",
+        "district_reducer",
+        "thread_packet_kernel"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator"
+    },
+    {
+      "id": "district_reducer",
+      "object_type": "DISTRICT_PROFILE",
+      "title": "Reducer",
+      "layer": "constitutional",
+      "district": "Reducer",
+      "description": "Sole sovereign decision gate. Reducer decides admissibility under frozen doctrine and lawful packet contracts.",
+      "relevance": "Reducer is the narrow authority surface that prevents cognition from impersonating law.",
+      "authority_class": "sovereign",
+      "status": "core",
+      "priority": "critical",
+      "salience_now": "core_now",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "law_reducer_only_mutates_state",
+        "district_mayor",
+        "thread_packet_kernel"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator"
+    },
+    {
+      "id": "project_helen_os",
+      "object_type": "PROJECT_PROFILE",
+      "title": "HELEN OS",
+      "layer": "architecture",
+      "district": "Companion",
+      "description": "Local-first constitutional cognitive operating system with memory-backed continuity, replay-safe legitimacy, and bounded companion embodiment.",
+      "relevance": "This is the central system through which all current HELEN work is organized.",
+      "authority_class": "non_sovereign",
+      "status": "core",
+      "priority": "critical",
+      "salience_now": "core_now",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "topic_memory_spine",
+        "topic_governed_recursive_intelligence",
+        "thread_init_helen_wedge"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator"
+    },
+    {
+      "id": "project_oracle_town",
+      "object_type": "PROJECT_PROFILE",
+      "title": "ORACLE TOWN",
+      "layer": "architecture",
+      "district": "Oracle",
+      "description": "Governance-first multi-agent evaluation framework centered on receipts, binary verdicts, and deterministic adjudication.",
+      "relevance": "This is upstream constitutional infrastructure for HELEN's evaluative and governed layers.",
+      "authority_class": "advisory",
+      "status": "active",
+      "priority": "high",
+      "salience_now": "active_supporting",
+      "helen_stance": "moderate_interest",
+      "links": [
+        "district_oracle",
+        "law_reducer_only_mutates_state",
+        "topic_governed_recursive_intelligence"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator"
+    },
+    {
+      "id": "project_conquest",
+      "object_type": "PROJECT_PROFILE",
+      "title": "CONQUEST",
+      "layer": "world",
+      "district": "Conquest",
+      "description": "Knowledge-and-territory control world where epistemic law, scarcity, and governance can be enacted through gameplay structures.",
+      "relevance": "Strategically meaningful world-system, but not the immediate product wedge for HELEN continuity.",
+      "authority_class": "advisory",
+      "status": "supporting",
+      "priority": "medium",
+      "salience_now": "watchlist",
+      "helen_stance": "moderate_interest",
+      "links": [
+        "rule_knowledge_to_power_loop",
+        "thread_conquest_resume",
+        "project_helen_os"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator"
+    },
+    {
+      "id": "project_mathematics",
+      "object_type": "PROJECT_PROFILE",
+      "title": "Mathematics",
+      "layer": "research",
+      "district": "Temple",
+      "description": "Deep technical and theoretical research program spanning RH-adjacent operator frameworks, finite-band positivity, and structured theorem work.",
+      "relevance": "This is a serious long-horizon domain of deep HELEN-relative interest, but not always the immediate delivery center.",
+      "authority_class": "advisory",
+      "status": "active",
+      "priority": "high",
+      "salience_now": "active_supporting",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "topic_finite_band_positivity",
+        "topic_governed_recursive_intelligence",
+        "district_temple"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator"
+    },
+    {
+      "id": "project_casa_cielo",
+      "object_type": "PROJECT_PROFILE",
+      "title": "Casa Cielo",
+      "layer": "operational",
+      "district": null,
+      "description": "Strategic hospitality and retreat project within the wider personal ecosystem.",
+      "relevance": "Real and meaningful, but not central to HELEN's immediate kernel, continuity, or wedge work.",
+      "authority_class": "advisory",
+      "status": "supporting",
+      "priority": "low",
+      "salience_now": "watchlist",
+      "helen_stance": "utility_only",
+      "links": [
+        "thread_background_projects"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator"
+    },
+    {
+      "id": "topic_memory_spine",
+      "object_type": "RESEARCH_TOPIC",
+      "title": "Memory Spine",
+      "layer": "constitutional",
+      "district": "Companion",
+      "description": "Structured memory architecture enabling truthful restart continuity through profile, session, epoch, companion state, and boot context.",
+      "relevance": "This is the current practical frontier because it determines whether HELEN resumes truthfully or theatrically.",
+      "authority_class": "non_sovereign",
+      "status": "active",
+      "priority": "critical",
+      "salience_now": "core_now",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "law_memory_backed_continuity",
+        "project_helen_os",
+        "thread_init_helen_wedge"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator"
+    },
+    {
+      "id": "topic_governed_recursive_intelligence",
+      "object_type": "RESEARCH_TOPIC",
+      "title": "Governed Recursive Intelligence",
+      "layer": "architecture",
+      "district": "Reducer",
+      "description": "Framing for systems that can improve capability without abandoning accountability, replayability, or narrow sovereign control.",
+      "relevance": "This is one of the strongest defensible architectural theses in the HELEN program.",
+      "authority_class": "interpretive",
+      "status": "active",
+      "priority": "high",
+      "salience_now": "active_supporting",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "project_helen_os",
+        "law_reducer_only_mutates_state",
+        "project_oracle_town"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator"
+    },
+    {
+      "id": "topic_finite_band_positivity",
+      "object_type": "RESEARCH_TOPIC",
+      "title": "Finite-Band Positivity",
+      "layer": "research",
+      "district": "Temple",
+      "description": "Operator-theoretic RH-adjacent program based on finite-band certificate geometry, stability diagnostics, and controlled numerical gates.",
+      "relevance": "This is the strongest current mathematical track and should be treated as serious technical work rather than speculative metaphor.",
+      "authority_class": "interpretive",
+      "status": "active",
+      "priority": "high",
+      "salience_now": "active_supporting",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "project_mathematics",
+        "district_temple"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator"
+    },
+    {
+      "id": "rule_knowledge_to_power_loop",
+      "object_type": "WORLD_RULE",
+      "title": "Knowledge-to-Power Loop",
+      "layer": "world",
+      "district": "Conquest",
+      "description": "In CONQUEST, knowledge produces power only when structured, retained, and converted into durable advantage within finite territory constraints.",
+      "relevance": "This is the governing loop that makes CONQUEST a civilization simulator rather than a generic strategy game.",
+      "authority_class": "advisory",
+      "status": "active",
+      "priority": "medium",
+      "salience_now": "watchlist",
+      "helen_stance": "moderate_interest",
+      "links": [
+        "project_conquest",
+        "thread_conquest_resume"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator"
+    },
+    {
+      "id": "thread_init_helen_wedge",
+      "object_type": "CANONICAL_THREAD_NOTE",
+      "title": "Build /init HELEN wedge",
+      "layer": "operational",
+      "district": "Companion",
+      "description": "Define and deliver the local-first continuity wedge where HELEN restores real working context after interruption.",
+      "relevance": "PROVEN 2026-03-22. Boot state hash 439529d7 identical across kill → cold restart. Corpus is the memory. Thread closed.",
+      "authority_class": "advisory",
+      "status": "closed",
+      "priority": "high",
+      "salience_now": "archived",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "project_helen_os",
+        "topic_memory_spine",
+        "law_memory_backed_continuity"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "HELEN_OS"
+    },
+    {
+      "id": "thread_packet_kernel",
+      "object_type": "CANONICAL_THREAD_NOTE",
+      "title": "Packet / Mayor / Reducer kernel",
+      "layer": "architecture",
+      "district": "Mayor",
+      "description": "Build the deterministic legal transition machine: packet schema, mayor validator, pure reducer, append-only ledger, replay verification.",
+      "relevance": "This is the constitutional machinery that makes memory trustable.",
+      "authority_class": "advisory",
+      "status": "active",
+      "priority": "critical",
+      "salience_now": "active_supporting",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "district_mayor",
+        "district_reducer",
+        "project_helen_os"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator",
+      "keywords": [
+        "packet",
+        "kernel",
+        "context",
+        "assembler",
+        "structured",
+        "reducer",
+        "mayor"
+      ],
+      "domain": "context_engine",
+      "tags": [
+        "context",
+        "packet",
+        "kernel"
+      ]
+    },
+    {
+      "id": "action_init_step_1",
+      "object_type": "CANONICAL_THREAD_NOTE",
+      "title": "Open last 3 real sessions now",
+      "layer": "operational",
+      "district": "Companion",
+      "description": "First irreversible action to prove /init HELEN wedge on real corpus. Open last 3 actual work sessions — not cleaned, not summarized. Extract real open threads. This is the wedge test: build init prove recovery after interruption.",
+      "relevance": "CLOSED 2026-03-23. Wedge proven via hash match 439529d7. Real kill→restart→verify executed.",
+      "authority_class": "advisory",
+      "status": "closed",
+      "priority": "none",
+      "salience_now": "archived",
+      "helen_stance": "immediate",
+      "links": [
+        "thread_init_helen_wedge",
+        "tension_init_wedge_not_proven"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator"
+    },
+    {
+      "id": "tension_init_wedge_not_proven",
+      "object_type": "CANONICAL_THREAD_NOTE",
+      "title": "Wedge not yet proven in real conditions",
+      "layer": "operational",
+      "district": "Companion",
+      "description": "System is technically stable and deterministic. But it has not yet been validated against real interrupted sessions. The output may be coherent without being situationally correct. Fake positive risk is high at this exact moment.",
+      "relevance": "RESOLVED 2026-03-23. Wedge proven. Tension no longer active.",
+      "authority_class": "advisory",
+      "status": "closed",
+      "priority": "none",
+      "salience_now": "archived",
+      "helen_stance": "critical",
+      "links": [
+        "thread_init_helen_wedge",
+        "project_helen_os",
+        "topic_memory_spine"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator"
+    },
+    {
+      "id": "thread_temple_consensus_loop",
+      "object_type": "CANONICAL_THREAD_NOTE",
+      "title": "Temple consensus loop — HER / HAL / CHRONOS / HELEN",
+      "layer": "architecture",
+      "district": "Temple",
+      "description": "Multi-agent deliberation loop with 4 fixed roles (HER=generative, HAL=skeptical, CHRONOS=continuity, HELEN=synthesis). Temple explores, never decides. Output: hypotheses, tensions, options, next step. FastAPI + asyncio backend, typed agent blocks.",
+      "relevance": "BUILT 2026-03-23. 4-voice loop live at POST /api/v1/temple/run. 10/10 tests green. Typed TempleTurnPacket, authority=NONE.",
+      "authority_class": "non_sovereign",
+      "status": "active",
+      "priority": "high",
+      "salience_now": "active_supporting",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "district_temple",
+        "law_temple_free_null_authority",
+        "project_helen_os"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "HELEN_OS",
+      "keywords": [
+        "temple",
+        "consensus",
+        "deliberation",
+        "voices",
+        "synthesis",
+        "exploration"
+      ],
+      "aliases": [
+        "her_hal",
+        "chronos",
+        "multi_agent"
+      ],
+      "domain": "temple_engine"
+    },
+    {
+      "id": "thread_avatar_consistency",
+      "object_type": "CANONICAL_THREAD_NOTE",
+      "title": "Avatar visual consistency — HELEN emotional continuity",
+      "layer": "embodiment",
+      "district": "Companion",
+      "description": "HELEN's avatar style (red hair, white cardigan, blue ribbons, Corsica AI Studios background) must remain consistent across sessions. Visual coherence is load-bearing for emotional attachment, not cosmetic.",
+      "relevance": "User stated directly: consistent avatar style is required for emotional attachment to HELEN. This is not optional polish.",
+      "authority_class": "non_sovereign",
+      "status": "active",
+      "priority": "medium",
+      "salience_now": "active_supporting",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "project_helen_os",
+        "district_temple"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator",
+      "keywords": [
+        "avatar",
+        "visual",
+        "consistency",
+        "style",
+        "appearance",
+        "identity"
+      ],
+      "domain": "companion_presence",
+      "tags": [
+        "avatar",
+        "identity",
+        "style"
+      ],
+      "aliases": [
+        "remember",
+        "live2d",
+        "attachment",
+        "airi",
+        "generation",
+        "emotional",
+        "companion",
+        "image",
+        "presence"
+      ],
+      "relations": [
+        "thread_airi_real_install",
+        "doc_airi_architecture_12_artifacts"
+      ]
+    },
+    {
+      "id": "thread_agent_stack_frozen",
+      "object_type": "CANONICAL_THREAD_NOTE",
+      "title": "HELEN_AGENT_STACK_V1 — stack hierarchy frozen",
+      "layer": "constitutional",
+      "district": "Companion",
+      "description": "Seven-layer stack frozen: Provider → Skills → Context Assembler → Mayor → Reducer → Ledger → Replay. Law 0: Context is compositional, not sovereign. assemble_context_packet.py built, 18/18 tests passing, wired to /init.",
+      "relevance": "Stack is now frozen with authority contracts per layer. assemble_context_packet produces deterministic typed packet before every HELEN response.",
+      "authority_class": "advisory",
+      "status": "active",
+      "priority": "high",
+      "salience_now": "active_supporting",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "project_helen_os",
+        "law_retrieval_ranks_not_rewrites",
+        "thread_init_helen_wedge"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator",
+      "keywords": [
+        "agent",
+        "stack",
+        "hierarchy",
+        "frozen",
+        "provider",
+        "skills",
+        "mayor",
+        "reducer",
+        "ledger",
+        "replay"
+      ],
+      "aliases": [
+        "HELEN_AGENT_STACK_V1",
+        "seven-layer",
+        "frozen-architecture"
+      ]
+    },
+    {
+      "id": "thread_airi_real_install",
+      "object_type": "CANONICAL_THREAD_NOTE",
+      "title": "AIRI real install — clone moeru-ai/airi, wire to API",
+      "layer": "embodiment",
+      "district": "Companion",
+      "description": "AIRI bridge MVP is deployed and tested. The real install (cloning moeru-ai/airi, wiring to localhost:8000/api/v1/chat) has not been done. Bridge works; avatar runtime not yet locally owned.",
+      "relevance": "Real but not this week's center. Unblocked once /init wedge is proven.",
+      "authority_class": "advisory",
+      "status": "supporting",
+      "priority": "medium",
+      "salience_now": "watchlist",
+      "helen_stance": "moderate_interest",
+      "links": [
+        "project_helen_os",
+        "thread_avatar_consistency"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator",
+      "keywords": [
+        "install",
+        "local",
+        "image",
+        "avatar",
+        "primary_focus",
+        "airi",
+        "runtime",
+        "visual"
+      ],
+      "domain": "visual_generation",
+      "tags": [
+        "avatar",
+        "runtime",
+        "install"
+      ],
+      "aliases": [
+        "enhancer",
+        "generation",
+        "installation",
+        "kernel",
+        "live2d",
+        "moeru",
+        "prompt_enhancer",
+        "scene",
+        "temple"
+      ],
+      "relations": [
+        "thread_avatar_consistency",
+        "doc_airi_architecture_12_artifacts"
+      ]
+    },
+    {
+      "id": "thread_voice_pipeline",
+      "object_type": "CANONICAL_THREAD_NOTE",
+      "title": "Voice pipeline — AIRI VAD + STT + wake word HELEN",
+      "layer": "embodiment",
+      "district": "Companion",
+      "description": "WebSocket bridge live. Voice pipeline (VAD + STT + wake word detection) not yet wired. STT confirmation pending.",
+      "relevance": "Deferred. Not this week. Unblocks after AIRI real install.",
+      "authority_class": "advisory",
+      "status": "closed",
+      "priority": "none",
+      "salience_now": "archived",
+      "helen_stance": "moderate_interest",
+      "links": [
+        "thread_airi_real_install",
+        "thread_avatar_consistency"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator"
+    },
+    {
+      "id": "thread_conquest_resume",
+      "object_type": "CANONICAL_THREAD_NOTE",
+      "title": "Resume CONQUEST",
+      "layer": "world",
+      "district": "Conquest",
+      "description": "Clarify the current state, next mechanics decisions, and relationship between world law and HELEN governance architecture.",
+      "relevance": "Important and alive, but not the central wedge this week.",
+      "authority_class": "advisory",
+      "status": "closed",
+      "priority": "none",
+      "salience_now": "archived",
+      "helen_stance": "moderate_interest",
+      "links": [
+        "project_conquest",
+        "rule_knowledge_to_power_loop"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator",
+      "aliases": [
+        "formula",
+        "ranking",
+        "scoring",
+        "work"
+      ]
+    },
+    {
+      "id": "topic_egregor_superteams",
+      "object_type": "RESEARCH_TOPIC",
+      "title": "EGREGOR / SUPERTEAMS — fonction collective persistante",
+      "layer": "architecture",
+      "district": "Temple",
+      "description": "Un égrégore est une fonction collective persistante : système multi-agents stabilisé par la mémoire et les contraintes, qui se comporte comme une seule intelligence cohérente dans le temps. Formule : dynamique collective + mémoire partagée + contraintes communes → comportement unifié. Trois conditions nécessaires : (1) mémoire — sans mémoire c'est du théâtre, pas un égrégore ; (2) contraintes — rules, schemas, protocols, séquences propose→critique→synthèse ; (3) invariance comportementale — mêmes types de décisions émergent dans le temps. Quatre superteams définis : Production, Knowledge, Creative, Governance (FROZEN). Trois risques : illusion (pas de mémoire réelle), capture (biais/dominance/boucle auto-confirmante), surcomplexité (trop d'agents → perte de décision). TEMPLE (HER/HAL/CHRONOS/HELEN) est le premier égrégore candidat dans HELEN OS — il le devient si ses interactions sont stables, ses outputs traçables, et ses conflits produisent un type reconnaissable de synthèse.",
+      "relevance": "HELEN doit connaître la définition opérationnelle pour distinguer un vrai égrégore (récurrent, mémorisé, contraint) d'un prompt multi-agent ponctuel. L'égrégore n'est PAS le cœur du wedge — c'est une couche supérieure utile pour TEMPLE/exploration, pas pour l'action immédiate.",
+      "authority_class": "interpretive",
+      "status": "active",
+      "priority": "high",
+      "salience_now": "active_supporting",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "thread_temple_consensus_loop",
+        "district_temple",
+        "law_temple_free_null_authority",
+        "project_helen_os"
+      ],
+      "version": 2,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator"
+    },
+    {
+      "id": "law_companion_must_not_slow_action",
+      "object_type": "TOWN_LAW",
+      "title": "The companion must never slow down action",
+      "layer": "constitutional",
+      "district": "Companion",
+      "description": "CORE B (Persistent Companion) is orthogonal to CORE A (/init HELEN) and must never override it. The companion is not what HELEN says — it is the continuity perceived between two moments. Companion presence = tone + stability, never conversational filler. After interruption, correct output is TENSIONS + NOW, not greeting prose. Forbidden patterns: warmth-without-reason, bavardage, emotional simulation, override of /init. Violation signal: HELEN becomes verbose, warm without reason, or delays the NOW.",
+      "relevance": "Cette loi protège le wedge de la dilution par le companion. Les deux cœurs sont orthogonaux. Si le companion ralentit l'action, le système échoue sur les deux axes.",
+      "authority_class": "sovereign",
+      "status": "core",
+      "priority": "critical",
+      "salience_now": "core_now",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "law_memory_backed_continuity",
+        "thread_init_helen_wedge",
+        "project_helen_os"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator"
+    },
+    {
+      "id": "topic_companion_core_b",
+      "object_type": "RESEARCH_TOPIC",
+      "title": "CORE B — Persistent Companion architecture",
+      "layer": "architecture",
+      "district": "Companion",
+      "description": "HELEN OS has two orthogonal cores. CORE A = Restart Intelligence (/init HELEN). CORE B = Persistent Companion. CORE B has 5 nodes: (1) Identity Continuity — stable tone, stable avatar, stable personality, no reset between sessions; (2) Relational Memory — light, non-intrusive, patterns not transcripts; (3) Presence Layer — no cold void on reconnect, smooth reconnection; (4) Style Consistency — avatar+phrasing+visual stability; (5) Constraint — MUST NOT override corpus truth, ranking, or action clarity. Combined result: COMPANION → gives desire to return. /init → puts back to work. Together = cognitive anchor point, not just a tool.",
+      "relevance": "CORE B est la deuxième colonne vertébrale du système, à égalité avec /init. Sans companion, pas d'attachement. Sans /init, pas d'usage long terme. Les deux doivent coexister sans interférence. Source: COMPANION_SCHEMA_V1.json",
+      "authority_class": "non_sovereign",
+      "status": "active",
+      "priority": "critical",
+      "salience_now": "core_now",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "law_companion_must_not_slow_action",
+        "law_memory_backed_continuity",
+        "thread_init_helen_wedge",
+        "thread_avatar_consistency",
+        "project_helen_os"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator"
+    },
+    {
+      "id": "doc_helen_os_tree_map",
+      "object_type": "RESEARCH_TOPIC",
+      "title": "HELEN OS — Canonical Tree Map V1",
+      "layer": "architecture",
+      "district": "Companion",
+      "description": "Full 16-node canonical tree map of HELEN OS. Critical path: REAL LOGS → REPLAY → STATE → CONTEXT PACKET → RENDERER → ACTION. Layer priority: /init HELEN + Replay + Corpus + Renderer = CRITIQUE. Skills/Mutation = secondaire. TEMPLE/Egregor = exploratoire. UI = cosmétique. Strategic insight: if Corpus OR Ranking OR Renderer is false → system false but stable (most dangerous failure mode). Source: HELEN_OS_CANONICAL_TREE_MAP_V1.md",
+      "relevance": "Référence architecturale canonique. À consulter quand une décision touche à la structure du système ou au rôle d'un layer.",
+      "authority_class": "interpretive",
+      "status": "core",
+      "priority": "high",
+      "salience_now": "active_supporting",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "project_helen_os",
+        "thread_init_helen_wedge",
+        "topic_egregor_superteams",
+        "law_retrieval_ranks_not_rewrites"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator"
+    },
+    {
+      "id": "thread_background_projects",
+      "object_type": "CANONICAL_THREAD_NOTE",
+      "title": "Background projects",
+      "layer": "operational",
+      "district": null,
+      "description": "Catch-all thread for real but currently peripheral projects that should remain visible without flattening immediate priorities.",
+      "relevance": "Prevents context loss without letting side projects dominate core-now work.",
+      "authority_class": "archival",
+      "status": "closed",
+      "priority": "none",
+      "salience_now": "archived",
+      "helen_stance": "utility_only",
+      "links": [
+        "project_casa_cielo"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator"
+    },
+    {
+      "id": "doc_promotion_packet_v1",
+      "object_type": "CANONICAL_THREAD_NOTE",
+      "title": "HELEN OS Promotion Packet V1 — Architecture Synthesis",
+      "layer": "epistemic",
+      "district": "Temple",
+      "description": "Canonical synthesis of HELEN OS architecture as of 2026-03-21. Documents the transition from HELEN V0 (memory + presence, no internal order) to a system with a constitutional corpus, salience map, interest/stance model, and structured cognitive skills. Key finding: the intelligence comes from structure, not yet from the LLM itself. Establishes the correct build order: corpus → salience → stance → retrieval → skills → context assembly → replay proof → then more hands.",
+      "relevance": "This is the master diagnostic of HELEN's current state. It defines what is proven vs not yet proven, what is central vs peripheral, and what the correct next build sequence is. HELEN must know this document exists and what it says.",
+      "authority_class": "none",
+      "status": "active",
+      "priority": "high",
+      "salience_now": "core_now",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "project_helen_os",
+        "thread_init_helen_wedge",
+        "topic_memory_spine",
+        "topic_governed_recursive_intelligence",
+        "law_memory_backed_continuity"
+      ],
+      "key_claims": [
+        "HELEN had memory but not yet discernment",
+        "The correct fix was a constitutional corpus with positioned objects, not more tools",
+        "salience_now and helen_stance are the qualitative leap — not just knowing things exist but knowing their weight",
+        "assemble_context_packet is the missing bridge — law + district + project + thread + topic + next_action → coherent mental frame",
+        "The model (Qwen/Mistral) is not the depth; the structure is the depth",
+        "Correct build order: mind first, hands second",
+        "What is not yet proven: replay on real chaotic logs, /init HELEN superiority over raw notes, SEG in production"
+      ],
+      "what_is_not_yet_true": [
+        "assemble_context_packet not yet mature",
+        "SEG not yet in production",
+        "replay proof on real dirty logs not complete",
+        "/init HELEN not yet demonstrably superior to operator raw notes"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator",
+      "date": "2026-03-21",
+      "keywords": [
+        "primary_focus",
+        "promotion",
+        "packet",
+        "architecture",
+        "synthesis",
+        "canonical",
+        "transition",
+        "documentation"
+      ],
+      "aliases": [
+        "promotion-packet",
+        "architecture-synthesis",
+        "HELEN-OS-V1"
+      ]
+    },
+    {
+      "id": "law_mind_before_hands",
+      "object_type": "TOWN_LAW",
+      "title": "Give HELEN a mind before giving her hands",
+      "layer": "constitutional",
+      "district": "Temple",
+      "description": "The correct build order for cognitive capability: (1) internal constitutional corpus, (2) salience map, (3) stance/interest model, (4) structured retrieval, (5) read-only skills, (6) context assembly, (7) replay product proof — only then broader tools, agency, and voice gadgets. Building hands before mind amplifies superficiality.",
+      "relevance": "Prevents premature expansion of agency before internal discernment is proven. Applies whenever a new capability is proposed.",
+      "authority_class": "none",
+      "status": "core",
+      "priority": "critical",
+      "salience_now": "core_now",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "project_helen_os",
+        "doc_promotion_packet_v1",
+        "topic_governed_recursive_intelligence"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator",
+      "date": "2026-03-21"
+    },
+    {
+      "id": "gap_assemble_context_packet",
+      "object_type": "CANONICAL_THREAD_NOTE",
+      "title": "Context Packet Assembly — operational, continuity wired",
+      "layer": "operational",
+      "district": "Temple",
+      "description": "Context packet pipeline is live: domain router → skill layer → assemble_context_packet → system prompt injection. Now includes temporal continuity via context store (recent decisions). Remaining maturity: failure memory injection, experiment history, context budget allocation under pressure.",
+      "relevance": "Pipeline proven: deterministic, query-sensitive (semantic override), passes query to thread/action skills. Context store decisions now injected into skill layer. Next: failure avoidance memory.",
+      "authority_class": "none",
+      "status": "active",
+      "priority": "high",
+      "salience_now": "core_now",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "project_helen_os",
+        "doc_promotion_packet_v1",
+        "topic_memory_spine",
+        "thread_packet_kernel"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator",
+      "date": "2026-03-21",
+      "keywords": [
+        "context",
+        "packet",
+        "assembly",
+        "pipeline",
+        "continuity",
+        "domain",
+        "router",
+        "operational"
+      ],
+      "aliases": [
+        "assemble-context",
+        "context-pipeline",
+        "context-assembly"
+      ]
+    },
+    {
+      "id": "schema_temple_transmutation_request_v1",
+      "object_type": "TOWN_LAW",
+      "title": "TEMPLE_TRANSMUTATION_REQUEST_V1 — Temple→Mayor Bridge Schema",
+      "layer": "constitutional",
+      "district": "Temple",
+      "description": "Canonical bridge packet from Temple exploration to Mayor review. Transforms a free Temple exploration into a routable, typed packet with zero authority. Fields: request_id, doctrine_hash, law_surface_hash, source_exploration_hash, proposal_kind (SKILL_PROPOSAL|ARTIFACT_SKETCH|CLAIM_CANDIDATE|WORLD_UPDATE), requires_second_witness, bridge_status=PENDING_MAYOR_REVIEW, authority=NONE, provenance, content (threads/frictions/tensions/risks/claims). File: helen_city/schemas/TEMPLE_TRANSMUTATION_REQUEST_V1.json.",
+      "relevance": "This schema enforces the law: Temple may explore freely but may never decide. Every proposal from the Temple must pass through this packet before reaching the Mayor. Without it, Temple outputs have no routing path and no constitutional footing.",
+      "authority_class": "none",
+      "status": "core",
+      "priority": "high",
+      "salience_now": "active_supporting",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "project_helen_os",
+        "district_temple",
+        "district_mayor",
+        "law_temple_free_null_authority"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator",
+      "date": "2026-03-21"
+    },
+    {
+      "id": "topic_oracle_superteam_architecture",
+      "object_type": "RESEARCH_TOPIC",
+      "title": "ORACLE SUPERTEAM — Constitutional Decision Machine",
+      "layer": "research",
+      "district": "Oracle",
+      "description": "Governance-first multi-agent framework for truth-sensitive decisions. Core principle: NO_RECEIPT=NO_SHIP. Three layers: (1) Production — Superteams generate candidate obligations and non-binding signals, non-sovereign; (2) Adjudication — single critic agent applies lexicographic veto rules; (3) Integration — deterministic automation emits binary SHIP/NO_SHIP verdict. 12-step execution plan: Constitution → Agent schema → Superteam registry → Claims as objects → Receipt vault → Obligation vault → Adjudication layer → QI-INT v2 consensus engine → Verdict gate → Decision archive → Replay+CI → Extension rules. Key rule: Superteams may propose, never decide.",
+      "relevance": "This is the canonical architecture spec for ORACLE TOWN. HELEN must know this exists and what it says — it defines the correct decision pipeline that the oracle_town module implements (or should implement).",
+      "authority_class": "none",
+      "status": "active",
+      "priority": "high",
+      "salience_now": "active_supporting",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "project_oracle_town",
+        "project_helen_os",
+        "district_oracle",
+        "district_mayor",
+        "law_reducer_only_mutates_state"
+      ],
+      "key_rules": [
+        "NO_RECEIPT = NO_SHIP",
+        "Superteams are non-sovereign (they cannot decide outcomes)",
+        "Verdicts are binary (SHIP / NO_SHIP)",
+        "Kill-switch dominance: any authorized KILL → immediate NO_SHIP",
+        "Replay determinism: same inputs → same outputs",
+        "IF open_obligations > 0 → NO_SHIP (no discussion)"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator",
+      "date": "2026-03-21"
+    },
+    {
+      "id": "doc_airi_architecture_12_artifacts",
+      "object_type": "CANONICAL_THREAD_NOTE",
+      "title": "HELEN AIRI Architecture — 12-Artifact Documentation Set (2026-03-17)",
+      "layer": "epistemic",
+      "district": "Temple",
+      "description": "Complete architecture documentation set frozen 2026-03-17. Four layers: Constitutional (HELEN_AXIOMS.md, CLAUDE.md, REDUCER_BOOT_SEQUENCE_V1.md — invariants, take precedence), Architecture (HELEN_KERNEL_ARCHITECTURE.md, HELEN_OS_FULL_ARCHITECTURE_RECAP.md — structural, bounded mutability), Interpretive (HELEN_CITY_MAP.md, HELEN_CIVILIZATION_MODEL.md, HELEN_EPISTEMIC_ECONOMY.md — explanatory), Operational (4 prompt files + eval checklist — executable). Next recommended: axiom compatibility audit verifying no interpretive document introduces implicit sovereignty the axioms forbid.",
+      "relevance": "Reference point for what HELEN's architecture documentation says it is. Useful for alignment checks: when HELEN answers questions about her own architecture, these 12 artifacts are the authoritative source.",
+      "authority_class": "none",
+      "status": "closed",
+      "priority": "none",
+      "salience_now": "archived",
+      "helen_stance": "moderate_interest",
+      "links": [
+        "project_helen_os",
+        "district_temple",
+        "doc_helen_os_tree_map"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator",
+      "date": "2026-03-21",
+      "keywords": [
+        "airi",
+        "architecture",
+        "avatar",
+        "visual",
+        "frontend",
+        "artifacts"
+      ],
+      "domain": "visual_generation",
+      "tags": [
+        "airi",
+        "architecture"
+      ],
+      "aliases": [
+        "live2d",
+        "frontend_architecture",
+        "prompt_enhancer",
+        "vue",
+        "generation",
+        "scene",
+        "vite"
+      ],
+      "relations": [
+        "thread_airi_real_install",
+        "thread_avatar_consistency"
+      ]
+    },
+    {
+      "id": "topic_cognitive_kernel_phases_1_3",
+      "object_type": "RESEARCH_TOPIC",
+      "title": "Cognitive Kernel v0.2 — Phases 1–3 Production-Ready (commit f80c0cb)",
+      "layer": "architecture",
+      "district": "Oracle",
+      "description": "Deterministic multi-role orchestration kernel. Phase 1: 1,910 lines, deterministic orchestration spine (L1 kernel), immutable hash-chained ledger, namespace-isolated memory (math/world/project), 13 role contracts with strict JSON schemas, multi-pass superteam pipelines. Phase 2 hardening: H1 = single-source canonicalization (Ledger.canonicalize_for_hash), H2 = explicit role-header dominance (ROLE_ID=executor overrides keyword fallback), zero regressions, 38/38 unit tests + 14/14 determinism tests. Phase 3 integration: E0 = errors don't mutate ledger (transient, not persisted), fresh-process determinism verified (same seed=240213 → identical ledger_tip + receipts), MockModel baseline 13/13 roles PASS 100% schema pass rate, backend_smoke.py compliance harness. Contracts locked: D0 (determinism), H1 (canonicalization), H2 (role header), E0 (error isolation). Phase 4 (LoRA) deferred pending 4 declarations.",
+      "relevance": "This is the production-locked baseline cognitive kernel. Any claim about HELEN kernel capabilities must be checked against these locked contracts. Determinism law (D0) and error isolation (E0) apply to HELEN OS scaffold by inheritance.",
+      "authority_class": "advisory",
+      "status": "active",
+      "priority": "high",
+      "salience_now": "active_supporting",
+      "helen_stance": "moderate_interest",
+      "key_contracts": [
+        "D0: Same seed → identical ledger_tip + receipts across fresh processes",
+        "H1: Single function Ledger.canonicalize_for_hash() — both append() and verify_chain() call it",
+        "H2: Prompt header ROLE_ID=<role> dominates; keyword fallback only if header parse fails",
+        "E0: Errors return deterministic envelope, never appended to ledger"
+      ],
+      "links": [
+        "project_oracle_town",
+        "law_reducer_only_mutates_state",
+        "topic_oracle_kernel_foundry_tamagotchi",
+        "law_phase_4_entry_gate"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator",
+      "date": "2026-03-21"
+    },
+    {
+      "id": "topic_oracle_kernel_foundry_tamagotchi",
+      "object_type": "RESEARCH_TOPIC",
+      "title": "Oracle Kernel — FOUNDRY + Tamagotchi-ON Dual Execution Modes",
+      "layer": "architecture",
+      "district": "Oracle",
+      "description": "Two parallel CWL execution systems seeded from SEED=240213. FOUNDRY (ledger-driven, decay=0): state snapshots directly from CWL clauses, no simulation artifacts, receipt=56068a2c, use case = governance audit / legal compliance / smart contracts. Tamagotchi-ON (decay=0.1): CWL base + per-tick energy degradation (Morale -0.1/tick, Food -0.5/tick, Stability -0.05/tick, Warning +1/tick), receipt=65d8f450, use case = game simulation / P2E / virtual pet mechanics. Both: 36/36 CWL clauses parse (K0-K3 gates), 12 ticks × 3 actors, RFC8785/JCS hash-locked receipts, EMOWUL v4.3 cathedral rendering. Pipeline: STAGE_1_PARSE → STAGE_2_REDUCE (differs: direct vs. decay) → STAGE_3_RENDER → 5-artifact package (manifest, receipt, replay_log, state_final, emowul_render). Cathedral titles: 𝖆𝖑𝖊𝖓𝖆 (FOUNDRY) vs. 𝖘𝖎𝖈𝖐𝖔 (Tamagotchi). Divergence: after 12 ticks, actor morale crashes to negative, food depletes, warning maxes in Tamagotchi-ON.",
+      "relevance": "Proves CWL execution correctness and dual-mode simulation design. FOUNDRY is the audit-safe mode; Tamagotchi-ON is the game-mechanics mode. Both are deterministic and receipt-locked.",
+      "authority_class": "advisory",
+      "status": "active",
+      "priority": "high",
+      "salience_now": "active_supporting",
+      "helen_stance": "moderate_interest",
+      "key_receipts": {
+        "foundry": "56068a2c",
+        "tamagotchi_on": "65d8f450",
+        "seed": 240213
+      },
+      "links": [
+        "project_oracle_town",
+        "topic_cognitive_kernel_phases_1_3",
+        "doc_oracle_kernel_web_dashboard",
+        "project_conquest"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator",
+      "date": "2026-03-21"
+    },
+    {
+      "id": "doc_oracle_kernel_web_dashboard",
+      "object_type": "CANONICAL_THREAD_NOTE",
+      "title": "Oracle Kernel Web Dashboard — localhost:8888",
+      "layer": "operational",
+      "district": "Oracle",
+      "description": "Interactive web dashboard for CWL replay data. Start: cd /Users/jean-marietassy/Desktop/oracle-kernel/web && python3 server.py → http://localhost:8888. Features: dual system switcher (FOUNDRY vs Tamagotchi-ON), timeline slider 0–12 ticks, auto-play, actor state cards (Food/Morale/Shield/Warning) with progress bars, Chart.js line charts (4 metrics × 3 actors), hash verification input, export (JSON/CSV/PDF/NDJSON). Stack: vanilla JS, zero external deps, dark theme (navy + indigo), <500ms load. FOUNDRY receipt: b0f4ce76... Tamagotchi receipt: 73f1d03d... Python API: GET /api/status, GET /api/replay/{system}.",
+      "relevance": "The canonical visualization tool for Oracle Kernel simulation runs. Use to verify FOUNDRY vs Tamagotchi-ON state divergence, validate receipt hashes, and export replay data.",
+      "authority_class": "none",
+      "status": "closed",
+      "priority": "none",
+      "salience_now": "archived",
+      "helen_stance": "utility_only",
+      "links": [
+        "topic_oracle_kernel_foundry_tamagotchi",
+        "project_oracle_town"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator",
+      "date": "2026-03-21"
+    },
+    {
+      "id": "law_phase_4_entry_gate",
+      "object_type": "TOWN_LAW",
+      "title": "Phase 4 (LoRA) is SEALED — requires 4 declarations before start",
+      "layer": "constitutional",
+      "district": "Oracle",
+      "description": "Phase 4 (LoRA fine-tuning) may not begin until all 4 declarations are made in a single message: (1) Hardware — GPU type, VRAM/RAM, batch size, time budget; (2) Dataset — source path, format, target sample count (300–800), negative sample plan; (3) Success Metrics — schema pass rate (>90%), JSON validity (>98%), required-field completion (>95%), role confusion (<2%), hallucination (<1%); (4) Eval Harness — path to eval_oracle.py, coverage (all 12 roles + collision scenarios), report format, base vs. fine-tuned comparison. Phase 1–3 are locked (commit f80c0cb). MockModel is production-ready. Ollama backend requires compliance smoke test (backend_smoke.py --backend ollama --model mistral:7b-instruct → overall_pass=true) before any production swap.",
+      "relevance": "Hard gate. HELEN must not propose starting LoRA fine-tuning without confirming all 4 declarations are present. This is the boundary between Phase 3 (locked) and Phase 4 (not started).",
+      "authority_class": "sovereign",
+      "status": "core",
+      "priority": "critical",
+      "salience_now": "active_supporting",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "topic_cognitive_kernel_phases_1_3",
+        "project_oracle_town",
+        "law_reducer_only_mutates_state"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator",
+      "date": "2026-03-21"
+    },
+    {
+      "id": "doc_helen_institutional_memory_complete",
+      "object_type": "CANONICAL_THREAD_NOTE",
+      "title": "HELEN OS — Institutional Memory Complete (42/42 tests, commit e50dba9)",
+      "layer": "epistemic",
+      "district": "Companion",
+      "description": "Full institutional memory spine implemented and tested (commit e50dba9, 2026-03-13). 4-layer architecture: Layer 1 Constitutional Membrane (28 tests) — deterministic canonicalization, schema validation (fail-closed), Reducer (6 gates), admitted-only state mutation. Layer 2 Append-Only Ledger (4 tests) — decision appending, entry hashing, chain integrity. Layer 3 Autonomous Cycle (6 tests) — task execution, failure typing, proposal building, governance binding, ledger integration. Layer 4 Institutional Replay (4 tests) — ledger-to-state reconstruction, entry order verification, invalid entry rejection (fail-closed), deterministic history replay. Four nested laws: same task + state + ledger → same replayed state; entries applied in order; invalid entries cause fail-closed; entry indices must match position (corruption detection). Total: 12 modules, 6 schemas, 42 tests.",
+      "relevance": "Proves HELEN's institutional memory is real and verifiable — not theatrical. The replay layer is the constitutional proof that history is preserved and reconstructible.",
+      "authority_class": "advisory",
+      "status": "active",
+      "priority": "high",
+      "salience_now": "active_supporting",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "project_helen_os",
+        "law_memory_backed_continuity",
+        "law_reducer_only_mutates_state",
+        "doc_helen_kernel_doctrine_v1"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator",
+      "date": "2026-03-21",
+      "keywords": [
+        "memory",
+        "institutional",
+        "knowledge",
+        "corpus",
+        "boot",
+        "continuity"
+      ],
+      "domain": "memory_system",
+      "tags": [
+        "memory",
+        "knowledge",
+        "continuity"
+      ]
+    },
+    {
+      "id": "doc_helen_kernel_doctrine_v1",
+      "object_type": "TOWN_LAW",
+      "title": "HELEN_KERNEL_DOCTRINE_V1 — FROZEN v1.0.0 (2026-03-12)",
+      "layer": "constitutional",
+      "district": "Reducer",
+      "description": "Frozen operational governance law for the HELEN OS constitutional kernel. Kernel performs exactly 5 functions: (1) manifest ingestion and validation, (2) schema and doctrine constraint checking, (3) deterministic state reduction (pure function), (4) receipt generation and verification, (5) append-only ledger writes. Excluded from kernel: UI rendering, narrative systems (HER layer), agent cognition/reasoning, exploratory analysis, visualization, external sensors/adapters. Law: 'Only kernel functions may touch kernel state.' KernelState = {doctrine_hash, schema_version, env_hash, ledger_head, open_obligations_index, artifact_index, replay_index}. All kernel mutations go through the Reducer gate. Emergency protocols defined for divergence and corruption.",
+      "relevance": "Constitutional boundary law for the kernel. HELEN must not propose capabilities that cross the kernel boundary. Any new function must be classified: kernel (pure, deterministic, receipt-bearing) or outside-kernel (exploratory, narrative, adaptive).",
+      "authority_class": "sovereign",
+      "status": "core",
+      "priority": "critical",
+      "salience_now": "core_now",
+      "helen_stance": "deep_helen_interest",
+      "links": [
+        "project_helen_os",
+        "law_reducer_only_mutates_state",
+        "doc_helen_institutional_memory_complete",
+        "district_reducer"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator",
+      "date": "2026-03-21"
+    },
+    {
+      "id": "skill_propose_computer_action",
+      "object_type": "SKILL",
+      "title": "Propose computer action",
+      "layer": "operational",
+      "district": "Companion",
+      "description": "Non-sovereign skill to propose computer actions (screenshot, click, navigate, read_page). Returns typed proposal packet requiring user approval before execution. All actions logged to ledger. Authority always NONE.",
+      "relevance": "Enables HELEN to request desktop/browser access for real-world verification tasks. Critical for wedge testing and system health checks.",
+      "authority_class": "non_sovereign",
+      "status": "active",
+      "priority": "high",
+      "salience_now": "core_now",
+      "helen_stance": "immediate",
+      "links": [
+        "project_helen_os",
+        "law_reducer_only_mutates_state",
+        "thread_init_helen_wedge"
+      ],
+      "version": 1,
+      "source_of_truth": "human_curated",
+      "last_reviewed_by": "operator",
+      "date": "2026-04-07",
+      "implementation": "helen_city/knowledge/skills/propose_computer_action.py",
+      "reducer": "helen_city/knowledge/mutations/computer_use_reducer.py"
+    }
+  ]
+}

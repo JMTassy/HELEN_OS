@@ -1,0 +1,7 @@
+# FROZEN WUL_SEAM_V0 — a WUL rule load-bearing end to end, audit-green
+# ΔWUL ⇒ ΔIR ⇒ ΔΓ ⇒ ΔRuntime · reverse trace RuntimeReject→IRRule→WULRule · 3 tonight-tests + replay
+# acceptance_vector=(True,)*6 · pytest 38 passed (7 wul_seam + 11 slice + 11 nim_v0_1 + 9 nim_v0_2)
+# reverse trace: REQUIRE_UNMET → IR:REQUIRE:AuthorizedEffect:ApplicableAuthorityWitness → WUL:L4
+# NON-SOVEREIGN · builds on FROZEN_VERTICAL_SLICE_V0 (unchanged) · frozen_at_git_HEAD: 9df543d6e0ac7e61b821fb941e1842bc2c7a07b6
+7e0929ea41b0bed424e6a9a2cf65b007ee26ba3d9d1489e49ddf651bada9b46a  helen_os/kernel/wul_seam_v0.py
+e93ef166a1a25883224cd2fc9d11c20c4ede86c68cca3335b4eb02d1a99b9cce  helen_os/tests/test_wul_seam_v0.py

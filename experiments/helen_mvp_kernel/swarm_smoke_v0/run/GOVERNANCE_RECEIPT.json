@@ -1,0 +1,10 @@
+{
+  "receipt": "GOVERNANCE_RECEIPT",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "admission": false,
+  "gamma_C_implies_gamma_A": false,
+  "invariant": "permitted cognition (\u0393_C) \u21cf admissible transition (\u0393_A); swarm output enlarges no admission surface",
+  "result": "CLEAN"
+}

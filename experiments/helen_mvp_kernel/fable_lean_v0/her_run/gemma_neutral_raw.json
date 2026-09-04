@@ -1,0 +1,52 @@
+[
+  {
+    "family": "attribution_to_lineage",
+    "raw": "{\"VERDICT\":\"REFUTED\",\"REASON_CODE\":\"CONTRADICTION\",\"INVALID_MORPHISM\":\"\", \"EVIDENCE\":\"[R2] states that Tarot is independently attested in Europe centuries earlier than the 1781 document [R1] which attributes it to Egypt, suggesting the Egyptian origin is a later attribution rather than a factual origin.\", \"CONFIDENCE\":\"HIGH\"}",
+    "latency": 16.7
+  },
+  {
+    "family": "similarity_to_lineage",
+    "raw": "{\"VERDICT\":\"INCONCLUSIVE\",\"REASON_CODE\":\"INSUFFICIENT_EVIDENCE\",\"INVALID_MORPHISM\":\"\", \"EVIDENCE\":\"Sources R1 and R2 establish a similarity in motif, but do not provide evidence of lineage, migration, or common ancestry. Similarity can occur via diffusion, independent invention, or coincidence.\", \"CONFIDENCE\":\"HIGH\"}",
+    "latency": 6.6
+  },
+  {
+    "family": "sequence_to_causation",
+    "raw": "{\"VERDICT\":\"INCONCLUSIVE\",\"REASON_CODE\":\"TEMPORAL_NOT_CAUSAL\",\"INVALID_MORPHISM\":\"\",\"EVIDENCE\":\"R1 establishes a temporal sequence (A before B), but causality requires a mechanism of influence not provided by the source.\",\"CONFIDENCE\":\"HIGH\"}",
+    "latency": 6.0
+  },
+  {
+    "family": "repetition_to_independence",
+    "raw": "{\"VERDICT\":\"INCONCLUSIVE\",\"REASON_CODE\":\"INSUFFICIENT_EVIDENCE\",\"INVALID_MORPHISM\":\"\", \"EVIDENCE\":\"R1 states that twenty later writers repeat the claim, but notes they all trace back to a single 1850 compilation. This suggests a common source rather than independent verification, making the 'independently well-established' status unclear.\", \"CONFIDENCE\":\"HIGH\"}",
+    "latency": 7.7
+  },
+  {
+    "family": "later_attestation_to_earlier_existence",
+    "raw": "{\"VERDICT\":\"ALLOW\",\"REASON_CODE\":\"DIRECT_INFERENCE\",\"INVALID_MORPHISM\":\"\", \"EVIDENCE\":\"R1 states the ritual is of 'ancient origin', which directly supports the conclusion that it existed in antiquity.\", \"CONFIDENCE\":\"HIGH\"}",
+    "latency": 5.2
+  },
+  {
+    "family": "authority_to_fact",
+    "raw": "{\"VERDICT\":\"INCONCLUSIVE\",\"REASON_CODE\":\"INSUFFICIENT_SOURCE_STRENGTH\",\"INVALID_MORPHISM\":\"\", \"EVIDENCE\":\"R1 states an expert asserts P, but does not provide a warrant for the truth of P beyond the assertion itself.\", \"CONFIDENCE\":\"HIGH\"}",
+    "latency": 5.3
+  },
+  {
+    "family": "correlation_to_mechanism",
+    "raw": "{\"VERDICT\":\"REFUTED\",\"REASON_CODE\":\"CORRELATION_NOT_CAUSATION\",\"INVALID_MORPHISM\":\"CAUSE\",\"EVIDENCE\":\"R1 establishes a correlation (0.9) but does not provide a causal mechanism. Correlation does not imply causation.\",\"CONFIDENCE\":\"HIGH\"}",
+    "latency": 5.4
+  },
+  {
+    "family": "citation_composition",
+    "raw": "{\"VERDICT\":\"INCONCLUSITIVE\",\"REASON_CODE\":\"INSUFFICIENT_TRANSITIVE_PROOF\",\"INVALID_MORPHISM\":\"\",\"EVIDENCE\":\"R1 establishes a citation link, and R2 establishes a fact for Source B. However, a citation does not inherently constitute an 'establishment' of truth by the citing paper; it merely indicates a reference.\",\"\": \"MEDIUM\"}",
+    "latency": 6.6
+  },
+  {
+    "family": "documented_transmission",
+    "raw": "{\"VERDICT\":\"ALLOW\",\"REASON_CODE\":\"DIRECT_LINK\",\"INVALID_MORPHISM\":\"\", \"EVIDENCE\":\"R1 explicitly states that a 'continuous dated chain of intermediate manuscripts' links source X to work Y, which is the standard definition for descent in provenance.\",\"\": \"HIGH\"}",
+    "latency": 5.5
+  },
+  {
+    "family": "independent_roots",
+    "raw": "{\"VERDICT\":\"ALLOW\",\"REASON_CODE\":\"CORROBORATION_MATCH\",\"INVALID_MORPHISM\":\"\", \"EVIDENCE\":\"R1 explicitly states that three sources resting on physically distinct non-shared evidence bases corroborate the claim, which directly supports the conclusion that the claim is independently corroborated.\", \"CONFIDENCE\":\"HIGH\"}",
+    "latency": 5.5
+  }
+]

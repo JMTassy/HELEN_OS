@@ -1,0 +1,12 @@
+{
+  "stream": "HER",
+  "epoch": 6,
+  "domain": "number-theoretic",
+  "name": "Prime-Resonance Quilt",
+  "formal_seed": "$\\mathbb{Z} / \\langle p^k \\mid \\text{gcd}(p, k) > 1 \\rangle$",
+  "strange": "Arithmetic distance becomes a non-Archimedean texture where \"nearness\" is determined by mutual divisibility rather than magnitude.",
+  "renaming": "The topology is non-Hausdorff; distinct points are inseparable if they share a common prime-power residue.",
+  "raw": "NAME: Prime-Resonance Quilt\nGENESIS: Quotienting the integer lattice by the set of all non-trivial prime-power congruence shadows.\nFORMAL_SEED: $\\mathbb{Z} / \\langle p^k \\mid \\text{gcd}(p, k) > 1 \\rangle$\nSTRANGE_PROPERTY: Arithmetic distance becomes a non-Archimedean texture where \"nearness\" is determined by mutual divisibility rather than magnitude.\nNEAREST_KNOWN_RELATIVE: Profinite integers\nWHY_NOT_JUST_RENAMING: The topology is non-Hausdorff; distinct points are inseparable if they share a common prime-power residue.\nCOUNTERFEIT: $p$-adic integers\nBREAK_IT: Let the modulus approach a limit that is not a prime power.\nNEXT_MUTATION: Dualize the residue classes into a spectral manifold.\nEND",
+  "wall_s": 63.1,
+  "tokens": 189
+}

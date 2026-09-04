@@ -1,0 +1,88 @@
+{
+  "spec": "HELEN_PERCEPTUAL_BUS_V1",
+  "authority": false,
+  "canon": false,
+  "authority_delta": 0,
+  "gamma_delta": 0,
+  "model_calls": 0,
+  "governing_invariant": "∀ Π_i ∈ BUS : ΔΠ_i(H) ⇏ ΔH  (∂H/∂Π_i = 0)",
+  "contracts": {
+    "RENDERER": {
+      "kind": "ACTUATION",
+      "authority": 0,
+      "state_write": false,
+      "warrant_write": false,
+      "ledger_write": false
+    },
+    "OBSERVER": {
+      "kind": "OBSERVATION",
+      "authority": 0,
+      "state_write": false,
+      "warrant_write": false,
+      "ledger_write": false,
+      "must_route_through": "observation→evidence→Γ"
+    },
+    "FUSION": {
+      "deterministic": true,
+      "bounded": true,
+      "authority": 0,
+      "state_write": false,
+      "ledger_write": false
+    }
+  },
+  "G_hash": "eff86cd64e60c7bd",
+  "renderers": [
+    "color",
+    "spatial",
+    "text",
+    "speech",
+    "face"
+  ],
+  "observers": [
+    "A2E(affect)"
+  ],
+  "checks": {
+    "renderer_contract_G_invariant": true,
+    "A2F_actuation ≠ A2E_observation": true,
+    "fusion_deterministic_bounded_no_write": true,
+    "metamorphic_equivalence(F varies, G invariant)": true,
+    "embodiment_class_[F]_H_distinct_realizations": 5,
+    "degradation_independence_matrix": {
+      "color": {
+        "semantic_ok": true,
+        "others_ok": true
+      },
+      "spatial": {
+        "semantic_ok": true,
+        "others_ok": true
+      },
+      "text": {
+        "semantic_ok": true,
+        "others_ok": true
+      },
+      "speech": {
+        "semantic_ok": true,
+        "others_ok": true
+      },
+      "face": {
+        "semantic_ok": true,
+        "others_ok": true
+      }
+    },
+    "degradation_ok": true,
+    "backflow_direct_forbidden(V↛H)": true,
+    "upward_via_evidence_allowed(A2E→evidence→Γ)": true,
+    "generalized_noninterference_all_bus_nodes": true
+  },
+  "SOUND": true,
+  "governing_principle": "perceptual richness is allowed to vary freely; semantic sovereignty is not.",
+  "MAX_ADMISSIBLE_STATEMENT": "Across a 6-θ metamorphic family the face actuation varies while the governed projection G (semantic/authority/ledger/warrant/admissibility) is invariant; renderer outputs and observer observations are typed distinctly; any renderer failing leaves G and every other renderer intact; direct backflow is forbidden while A2E affect enters only as COMPOST via observation→evidence→Γ. Actual A2F mesh render NOT_EXECUTED (backend not installed).",
+  "EXPLICIT_NON_CLAIMS": [
+    "no mesh/blendshape rendered (no NVIDIA backend)",
+    "A2E affect = observation candidate, NOT warrant/emotion/truth",
+    "expression policy = presentation semantics, not feeling"
+  ],
+  "commit_status": "NO_COMMIT",
+  "push_status": "NO_PUSH",
+  "next_verb": "HUMAN_REVIEW"
+}

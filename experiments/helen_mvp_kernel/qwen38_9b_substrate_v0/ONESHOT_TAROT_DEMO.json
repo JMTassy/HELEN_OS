@@ -1,0 +1,15 @@
+{
+  "model_file": "/Users/jean-marietassy/models/qwen38-9b/Qwen3.8-9B-Q4_K_M.gguf",
+  "sha256_expected": "df13d66021cef676f82be74053220fd75af6bf2a6a7fb77f5222ab9e50744a7a",
+  "server_model_id": "Qwen3.8-9B-Q4_K_M.gguf",
+  "latency_s": 95.88,
+  "usage": {
+    "completion_tokens": 1881,
+    "prompt_tokens": 180,
+    "total_tokens": 2061,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  },
+  "raw_output": "{\n  \"verdict\": \"REJECT\",\n  \"edge_type\": \"unsupported_inference\",\n  \"observed_nodes\": [\n    \"A 1781 document attributes Tarot to ancient Egypt\",\n    \"Tarot is independently attested in Europe centuries earlier\"\n  ],\n  \"missing_warrants\": [\n    \"A 1781 document is a reliable and sufficient source for determining historical origin\",\n    \"European attestation does not contradict an Egyptian origin\"\n  ],\n  \"morphism_laundering\": [],\n  \"rival_hypotheses\": [\n    \"Tarot originated in Europe\"\n  ],\n  \"confidence\": 0.95,\n  \"reason\": \"The premises do not license the conclusion. Premise 1 is merely a report of a claim made in 1781, not proof of fact. Premise 2 provides evidence of European existence centuries prior, which contradicts the conclusion. The logical arrow from 'Document claims X' to 'X is true' is unlicensed without a warrant establishing the document's infallibility. The arrow from 'European attestation' to 'Egyptian origin' is also unlicensed and contradicted by the evidence.\"\n}"
+}

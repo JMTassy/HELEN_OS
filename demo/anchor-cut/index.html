@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Anchor Cut — a multi-agent system that cannot lie to itself</title>
+<style>
+  :root{
+    --bg:#0d0f14; --panel:#141821; --ink:#ece3d2; --dim:#8a8574; --line:#262c38;
+    --ember:#e8b25a; --ember-dim:#a8823f; --violet:#8a7fb8; --ok:#7fae7a; --no:#c76b6b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);
+    font-family:Georgia,'Times New Roman',serif;line-height:1.6;
+    background-image:radial-gradient(1200px 600px at 70% -10%, #1b1930 0%, transparent 60%),
+                     radial-gradient(900px 500px at 10% 20%, #14202a 0%, transparent 55%);}
+  .wrap{max-width:860px;margin:0 auto;padding:64px 24px 96px}
+  .kicker{font:600 12px/1 ui-monospace,Menlo,monospace;letter-spacing:.32em;
+    text-transform:uppercase;color:var(--ember-dim);margin-bottom:22px}
+  h1{font-size:clamp(38px,7vw,68px);line-height:1.02;letter-spacing:-.01em;font-weight:400}
+  h1 em{font-style:italic;color:var(--ember)}
+  .lede{font-size:clamp(18px,2.4vw,22px);color:#cfc7b6;margin-top:24px;max-width:44ch}
+  .rule{height:1px;background:linear-gradient(90deg,var(--ember-dim),transparent);margin:52px 0}
+  .law{border:1px solid var(--line);border-left:3px solid var(--ember);
+    background:var(--panel);padding:26px 28px;border-radius:4px;margin:8px 0}
+  .law p{font-size:20px}
+  .law .big{font-family:ui-monospace,Menlo,monospace;font-size:15px;color:var(--ember);
+    margin-top:12px;letter-spacing:.02em}
+  h2{font-size:13px;font-family:ui-monospace,Menlo,monospace;letter-spacing:.24em;
+    text-transform:uppercase;color:var(--dim);margin:56px 0 18px}
+  p.body{color:#cbc3b2;margin:14px 0}
+  code,pre{font-family:ui-monospace,Menlo,monospace}
+  pre{background:#0a0c11;border:1px solid var(--line);border-radius:6px;padding:18px 20px;
+    overflow-x:auto;font-size:14px;color:#d8e0c8;margin:14px 0}
+  pre .c{color:#6f7787}
+  .cards{display:grid;gap:14px;margin-top:18px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:20px 22px}
+  .card .t{font-family:ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--ember-dim)}
+  .card .n{font-size:26px;margin:8px 0 4px;letter-spacing:-.01em}
+  .card .n .arw{color:var(--dim)}
+  .card .hold{color:var(--ember)} .card .rej{color:var(--no)} .card .ok{color:var(--ok)}
+  .card .d{color:#b7af9e;font-size:15px}
+  table{width:100%;border-collapse:collapse;margin-top:12px;font-size:15px}
+  td,th{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-family:ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--dim)}
+  .vs td:first-child{color:var(--dim)} .vs td:last-child{color:var(--ink)}
+  .foot{margin-top:64px;padding-top:24px;border-top:1px solid var(--line);
+    font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--dim);line-height:1.9}
+  .foot b{color:var(--ember-dim);font-weight:600}
+  a{color:var(--ember);text-decoration:none;border-bottom:1px solid var(--ember-dim)}
+  .tag{display:inline-block;font:600 10px/1 ui-monospace,monospace;letter-spacing:.18em;
+    color:#0d0f14;background:var(--ember);padding:5px 9px;border-radius:3px;text-transform:uppercase}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">A HELEN Garden · non-sovereign demonstration</div>
+  <h1>The Anchor Cut.<br>A system that <em>cannot lie<br>to itself.</em></h1>
+  <p class="lede">Every self-improving agent stack mistakes agreement for evidence.
+    This one makes that structurally impossible — and proves it with running code.</p>
+
+  <div class="rule"></div>
+
+  <div class="law">
+    <p>A self-confirming group of agents cannot promote a claim without a fresh,
+       <strong>independent</strong> anchor.</p>
+    <div class="big">N confirmations from one lineage  &lt;  1 independent contradiction &nbsp;·&nbsp; ten mirrors &lt; one window</div>
+  </div>
+
+  <h2>Run the proof — 60 seconds, zero dependencies</h2>
+  <p class="body">Stdlib only. No pip install, no network, no API keys. The reducer returns
+    exactly one verdict: <code>HOLD · HOLD_REOBSERVE · HOLD_CONFLICT · REJECT · ADMITTABLE</code>.
+    Reviews are <em>structurally excluded</em> from the gate — 10, 100, or a million agreeing
+    reviews never move it above <code>HOLD</code>.</p>
+  <pre><span class="c"># from demo/anchor-cut/</span>
+cd proof
+python3 test_seam.py          <span class="c"># → 9 tests OK</span></pre>
+
+  <h2>The receipts — our claims come with proof too</h2>
+  <div class="cards">
+    <div class="card">
+      <div class="t">Deterministic proof · seam_receipt.json</div>
+      <div class="n"><span class="ok">9 / 9</span> tests pass</div>
+      <div class="d">Six required cases + the corollary that multiplicity adds zero admissibility power. <code>ADMITTABLE</code> is the ceiling; canon is never mutated.</div>
+    </div>
+    <div class="card">
+      <div class="t">Live on real models · egregor_superteam_receipt.json</div>
+      <div class="n"><span class="hold">10/10 → HOLD</span> <span class="arw">→</span> <span class="rej">REJECT</span></div>
+      <div class="d">Ten local <code>gemma-4-26B</code> goblins each read one packet and unanimously confirmed a <strong>false</strong> claim → reducer holds. One independent <code>git remote</code> probe contradicted them → reject. Executable: <em>10 confirmations &lt; 1 independent contradiction.</em></div>
+    </div>
+    <div class="card">
+      <div class="t">Cross-family revalidation · temple_ar_0002_receipt.json</div>
+      <div class="n"><span class="ok">KEEP</span> <span class="arw">(Haiku) →</span> <span class="rej">REJECT</span> <span class="arw">(gemma)</span></div>
+      <div class="d">A mutation a frozen judge KEPT on one model family was rejected on another by a <em>pre-registered</em> falsifier — the loop doesn't over-generalize and the judge isn't a rubber stamp. <code>KEEP ≠ SHIP ≠ CANON</code>.</div>
+    </div>
+  </div>
+
+  <h2>Governance, not orchestration</h2>
+  <p class="body">AutoGen · CrewAI · LangGraph help agents collaborate to a deliverable — the
+    result is the endpoint. Here the result is only a <em>candidate</em> that must survive an
+    independent anchor before it is anything.</p>
+  <table class="vs">
+    <tr><th>ChatDev-style</th><th>Anchor Cut</th></tr>
+    <tr><td>agents → discuss → synthesize → deliverable</td><td>agents → synthesize → <b>candidate</b> → independent anchor → reducer</td></tr>
+    <tr><td>agreement raises confidence</td><td>same-lineage agreement carries zero evidentiary weight</td></tr>
+    <tr><td>“can a team produce something useful?”</td><td>“…while proving agreement did not become authority?”</td></tr>
+  </table>
+
+  <div class="foot">
+    <span class="tag">NON_SOVEREIGN</span>&nbsp;&nbsp; authority=false · ledger_effect=none · canon_effect=false<br>
+    <b>ADMITTABLE</b> = evidence-qualified for promotion, never promoted. Nothing here mutates canon.<br>
+    What it claims, it proves; what it doesn't prove, it doesn't claim.<br>
+    Source &amp; lineage: <code>experiments/witnessed_loop_graph_seam_v0/</code> · <code>docs/proposals/EGREGOR_GOVERNED_COGNITION_V0.md</code>
+  </div>
+</div>
+</body>
+</html>

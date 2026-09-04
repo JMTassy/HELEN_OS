@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "helen.task-manifest.v0",
+  "title": "HELEN Task Manifest V0",
+  "description": "Typed intake artifact. A task does not exist for HELEN until it is expressed in this schema. Chat instructions carry no authority.",
+  "type": "object",
+  "required": [
+    "task_id",
+    "objective",
+    "authority",
+    "canon",
+    "ledger_effect",
+    "inputs",
+    "critical_distinctions",
+    "roles",
+    "mutation_policy",
+    "completion_conditions",
+    "admission"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "pattern": "^[A-Z0-9_\\-]+$"
+    },
+    "objective": { "type": "string", "minLength": 10 },
+    "authority": { "const": "none" },
+    "canon": { "const": false },
+    "ledger_effect": { "const": "none" },
+    "inputs": {
+      "type": "object",
+      "required": ["commit", "files"],
+      "additionalProperties": false,
+      "properties": {
+        "commit": { "type": "string", "minLength": 7 },
+        "files": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        }
+      }
+    },
+    "critical_distinctions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "roles": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": { "type": "string" }
+    },
+    "mutation_policy": {
+      "type": "object",
+      "required": ["main_checkout", "all_other_workers"],
+      "properties": {
+        "main_checkout": { "const": "forbidden" },
+        "builder_worktree": { "enum": ["allowed", "forbidden"] },
+        "all_other_workers": { "const": "read_only" }
+      }
+    },
+    "forbidden_paths": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "budget": {
+      "type": "object",
+      "properties": {
+        "max_provider_calls": { "type": "integer", "minimum": 0 },
+        "max_turns_per_call": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "completion_conditions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "admission": {
+      "type": "object",
+      "required": ["automatic", "human_seal_required"],
+      "properties": {
+        "automatic": { "const": false },
+        "human_seal_required": { "const": true }
+      }
+    }
+  }
+}

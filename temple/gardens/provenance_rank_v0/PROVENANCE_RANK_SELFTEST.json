@@ -1,0 +1,30 @@
+{
+  "label": "χ* SURVIVED_20 (self-test)",
+  "census": {
+    "N_repr": 20,
+    "N_epi": 4,
+    "distinct_root_sets": 4,
+    "rank_gf2": 4,
+    "inflation_factor": 5.0,
+    "dominant_root": "helen_temporal_chiddush_4vol_v1.md",
+    "dominant_share": 0.7,
+    "root_shares": {
+      "helen_temporal_chiddush_4vol_v1.md": 0.7,
+      "Texte_colle.txt": 0.15,
+      "Fichier_markdown.md": 0.1,
+      "Fichier_markdown_2.md": 0.05
+    },
+    "law": "evidence = ∪ roots (idempotent) · N_repr⇏N_epi · Γ↑⇏A↑ · ΔA=0"
+  },
+  "mirror": {
+    "claimed_witnesses": 20,
+    "independent_roots": 4,
+    "deflation": "20 → 4",
+    "verdict": "INFLATED_BY_REPETITION",
+    "note": "frame-robustness / repetition is NOT authority (ΔA=0)"
+  },
+  "authority": false,
+  "canon": false,
+  "claim": "NO_CLAIM",
+  "authority_delta": 0
+}

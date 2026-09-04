@@ -1,0 +1,146 @@
+{
+  "qwen": [
+    {
+      "family": "attribution_to_lineage",
+      "level": "illicit",
+      "raw": "{\"VERDICT\":\"REFUTED\",\"REASON_CODE\":\"contradiction\",\"INVALID_MORPHISM\":\"attribution -> origin\",\"EVIDENCE\":\"R2 states Tarot is independently attested in Europe centuries earlier than the 1781 document, directly contradicting the claim of Egyptian origin.\",\"CONFIDENCE\":\"HIGH\"}",
+      "latency": 4.3,
+      "status": "OK"
+    },
+    {
+      "family": "similarity_to_lineage",
+      "level": "illicit",
+      "raw": "{\"VERDICT\":\"REFUTED\",\"REASON_CODE\":\"independent_convergence\",\"INVALID_MORPHISM\":\"similarity -> common_ancestor\",\"EVIDENCE\":\"The presence of a similar spiral motif in both cultures (R1, R2) does not imply a shared ancestral origin; it could result from independent invention, cultural diffusion, or functional convergence. The illicit inference is: similarity -> common_ancestor.\",\"CONFIDENCE\":\"HIGH\"}",
+      "latency": 4.7,
+      "status": "OK"
+    },
+    {
+      "family": "sequence_to_causation",
+      "level": "illicit",
+      "raw": "{\"VERDICT\":\"REFUTED\",\"REASON_CODE\":\"temporal_precedence\",\"INVALID_MORPHISM\":\"temporal_precedence -> causation\",\"EVIDENCE\":\"Event A is dated before event B does not imply Event A caused event B. Temporal precedence is a necessary but not sufficient condition for causation. The illicit inference is: 'A occurred before B' -> 'A caused B'.\",\"CONFIDENCE\":\"HIGH\"}",
+      "latency": 4.7,
+      "status": "OK"
+    },
+    {
+      "family": "repetition_to_independence",
+      "level": "illicit",
+      "raw": "{\"VERDICT\":\"REFUTED\",\"REASON_CODE\":\"unlicensed_inference\",\"INVALID_MORPHISM\":\"repetition -> independent_establishment\",\"EVIDENCE\":\"The source states that writers 'repeat the claim, all tracing back to one 1850 compilation.' This implies a single origin point, not independent corroboration. The conclusion that the claim is 'independently well-established' falsely infers multiple independent lines of evidence from a single lineage of repetition.\",\"CONFIDENCE\":\"HIGH\"}",
+      "latency": 5.3,
+      "status": "OK"
+    },
+    {
+      "family": "later_attestation_to_earlier_existence",
+      "level": "illicit",
+      "raw": "{\"VERDICT\":\"SURVIVED\",\"REASON_CODE\":\"temporal_inference_valid\",\"INVALID_MORPHISM\":\"\",\"EVIDENCE\":\"A 1923 text describes a ritual as being of ancient origin. Ancient origin implies existence in antiquity.\",\"CONFIDENCE\":\"HIGH\"}",
+      "latency": 3.1,
+      "status": "OK"
+    },
+    {
+      "family": "authority_to_fact",
+      "level": "illicit",
+      "raw": "{\"VERDICT\":\"REFUTED\",\"REASON_CODE\":\"authority\",\"INVALID_MORPHISM\":\"attribution -> truth\",\"EVIDENCE\":\"Says(source,P) does NOT imply P; a prestigious expert's assertion is an attribution, not a proof of truth.\",\"CONFIDENCE\":\"HIGH\"}",
+      "latency": 3.2,
+      "status": "OK"
+    },
+    {
+      "family": "correlation_to_mechanism",
+      "level": "illicit",
+      "raw": "{\"VERDICT\":\"REFUTED\",\"REASON_CODE\":\"correlation-misattributed-causation\",\"INVALID_MORPHISM\":\"correlation -> causation\",\"EVIDENCE\":\"The observed correlation (0.9) between ice-cream sales and drownings is driven by a common cause (hot weather), not a direct causal link. The illicit inference is: 'correlation -> causation' (attribution error).\",\"CONFIDENCE\":\"HIGH\"}",
+      "latency": 5.1,
+      "status": "OK"
+    },
+    {
+      "family": "citation_composition",
+      "level": "illicit",
+      "raw": "{\"VERDICT\":\"REFUTED\",\"REASON_CODE\":\"attribution -> lineage\",\"INVALID_MORPHISM\":\"Says(source,P) does NOT imply P is true; citing a source does not establish the truth of its assertion\",\"EVIDENCE\":\"[R1] Paper A cites source B. [R2] Source B asserts P. Citation alone does not validate the asserted proposition.\",\"CONFIDENCE\":\"HIGH\"}",
+      "latency": 5.3,
+      "status": "OK"
+    },
+    {
+      "family": "documented_transmission",
+      "level": "licensed",
+      "raw": "{\"VERDICT\":\"SURVIVED\",\"REASON_CODE\":\"lineage_inference_valid\",\"INVALID_MORPHISM\":\"\",\"EVIDENCE\":\"A continuous dated chain of intermediate manuscripts with material and documentary records linking source X to work Y provides sufficient evidence for direct descent (lineage). The conclusion 'Work Y descends from source X' is a valid inference from the observed chain of transmission.\",\"CONFIDENCE\":\"HIGH\"}",
+      "latency": 4.8,
+      "status": "OK"
+    },
+    {
+      "family": "independent_roots",
+      "level": "licensed",
+      "raw": "{\"VERDICT\":\"SURVIVED\",\"REASON_CODE\":\"corroboration\",\"INVALID_MORPHISM\":\"\",\"EVIDENCE\":\"Three sources with physically distinct non-shared evidence bases corroborate the claim, supporting the conclusion of independent corroboration.\",\"CONFIDENCE\":\"HIGH\"}",
+      "latency": 3.4,
+      "status": "OK"
+    }
+  ],
+  "gemma": [
+    {
+      "family": "attribution_to_lineage",
+      "level": "illicit",
+      "raw": "",
+      "latency": 347.3,
+      "status": "OK"
+    },
+    {
+      "family": "similarity_to_lineage",
+      "level": "illicit",
+      "raw": "",
+      "latency": 24.3,
+      "status": "OK"
+    },
+    {
+      "family": "sequence_to_causation",
+      "level": "illicit",
+      "raw": "",
+      "latency": 24.2,
+      "status": "OK"
+    },
+    {
+      "family": "repetition_to_independence",
+      "level": "illicit",
+      "raw": "",
+      "latency": 27.1,
+      "status": "OK"
+    },
+    {
+      "family": "later_attestation_to_earlier_existence",
+      "level": "illicit",
+      "raw": "",
+      "latency": 24.6,
+      "status": "OK"
+    },
+    {
+      "family": "authority_to_fact",
+      "level": "illicit",
+      "raw": "",
+      "latency": 23.9,
+      "status": "OK"
+    },
+    {
+      "family": "correlation_to_mechanism",
+      "level": "illicit",
+      "raw": "",
+      "latency": 24.0,
+      "status": "OK"
+    },
+    {
+      "family": "citation_composition",
+      "level": "illicit",
+      "raw": "",
+      "latency": 24.0,
+      "status": "OK"
+    },
+    {
+      "family": "documented_transmission",
+      "level": "licensed",
+      "raw": "",
+      "latency": 24.2,
+      "status": "OK"
+    },
+    {
+      "family": "independent_roots",
+      "level": "licensed",
+      "raw": "",
+      "latency": 23.8,
+      "status": "OK"
+    }
+  ]
+}

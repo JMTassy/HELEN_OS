@@ -1,0 +1,55 @@
+{
+  "schema": "EGREGOR_WITNESS_V0",
+  "authority_status": "NON_SOVEREIGN_EGREGOR",
+  "generated_at": "2026-07-20T13:03:08.655438Z",
+  "intent": "You are HER \u2014 the cheap local proposer in HELEN OS autoresearch.\n\nTask: Decide the seed doctrine and the focus areas for exactly 10 epochs of trace-only autoresearch.\n\nConstraints (MUST respect):\n- authority=false, reducer_required=true, no ledger writes\n- Focus on doctrine compression, jurisdiction, metabolism, receipt gates, proposal vs state\n- Output must be valid JSON only:\n{\n  \"her_role\": \"proposer\",\n  \"seed\": \"the single starting doctrine string\",\n  \"epochs\": 10,\n  \"focus_areas\": [\"list\", \"of\", \"3-5\", \"tight\", \"areas\"],\n  \"stop_condition\": \"3-epoch stability or max epochs\",\n  \"rationale\": \"one sentence why this seed now\"\n}\nNo prose outside the JSON.\n",
+  "intent_sha": "9ddfaaf53552f6eb",
+  "witnesses": [
+    {
+      "role": "grok",
+      "success": true,
+      "latency_ms": 10542,
+      "has_json": true,
+      "error": null,
+      "hal": "PASS",
+      "preview": "{\"her_role\":\"proposer\",\"seed\":\"DREAMT\u2260CLAIMED: proposal is not state; only receipt-gated, jurisdiction-bound metabolism may compress doctrine without authority or ledger write\",\"epochs\":10,\"focus_areas\":[\"doctrine_compression\",\"jurisdiction_boundaries\",\"metabolism_of_claims\",\"receipt_gates\",\"proposa"
+    },
+    {
+      "role": "claude",
+      "success": false,
+      "latency_ms": 40024,
+      "has_json": false,
+      "error": "timeout after 40s",
+      "hal": "ERROR",
+      "preview": "timeout after 40s"
+    },
+    {
+      "role": "codex",
+      "success": false,
+      "latency_ms": 40009,
+      "has_json": false,
+      "error": "timeout after 40s",
+      "hal": "ERROR",
+      "preview": "timeout after 40s"
+    }
+  ],
+  "aggregation": {
+    "num_witnesses": 3,
+    "num_success": 1,
+    "num_blocked": 0,
+    "num_errored": 2,
+    "roles_responded": [
+      "grok"
+    ],
+    "consensus_hint": "SINGLE_WITNESS"
+  },
+  "hal_summary": {
+    "overall": "PASS",
+    "blocked_roles": [],
+    "errored_roles": [
+      "claude",
+      "codex"
+    ]
+  },
+  "notes": "NON_SOVEREIGN_EGREGOR. Output is witness only. Never ledgered."
+}

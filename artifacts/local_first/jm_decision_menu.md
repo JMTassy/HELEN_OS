@@ -1,21 +1,17 @@
 # JM Decision Menu — Local-First Autoresearch
-Topic: HELEN OS build acceleration: wiring Qwen into the CHIDDUSH compressor, testing the sandbox agent adapter, and consuming the 26-packet autoresearch outbox
-Date: 2026-07-03T04:03:00.309666+00:00
+Topic: Extract reusable BEST-PRACTICE classes for MINIMAL website design, inferred from a curated gallery (minimal.gallery, since 2013, tagline 'beautiful & functional') whose recent picks are high-end editorial studio/portfolio/agency sites (Porto Rocha, Base Design, Cecilie Bahnsen, Graham McDonnell). Categories: portfolio, personal, agency, one-page, startup, e-commerce. For each proposal name ONE concrete, implementable web-design best practice (typography, whitespace, grid, color, motion, hierarchy, imagery, navigation, performance) with a crisp rule a developer can apply. Output ONLY a JSON array of {"idea":"..."}.
+Date: 2026-08-14T21:35:06.504002+00:00
 
-## Top CHIDDUSH Survivor (FABLE gated)
+## Top CHIDDUSH Survivor (FABLE gate: see verdict below — PENDING until gated)
 {
   "schema": "CHIDDUSH_RECEIPT_V0",
-  "chiddush_id": "CHID-20260703-040300-4cc15986",
-  "invariant": "Sandbox agent adapter as a literal frictionless membrane for latent space\u001b[5D\u001b[K 26-packet outbox as a high-frequency pulse for real-time heuristic update\u001b[6D\u001b[K CHIDDUSH compresso",
+  "chiddush_id": "CHID-M3K9P2R6T8W5",
+  "invariant": "Color palettes must be strictly limited to three tones (Primary, Neutral, Accent) for editorial consistency.",
   "source_refs": [
-    "gemma_proposals"
+    "minimal.gallery"
   ],
-  "category_hints": [],
-  "confidence": "medium",
   "authority": false,
-  "claim": "NO_CLAIM",
-  "notes": "Compressed from HELEN Mac Local lateral garden. Not yet collapsed.",
-  "metabolism_stage": "\ud83d\udd0d CHIDDUSH (Compression)"
+  "claim": "NO_CLAIM"
 }
 
 ## FABLE Min-Gate Result

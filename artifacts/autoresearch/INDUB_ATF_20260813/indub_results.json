@@ -1,0 +1,985 @@
+{
+ "manifests": [
+  {
+   "worker": "W01-12b",
+   "model": "gemma4-12b:latest",
+   "epoch": 1,
+   "seed": 4201,
+   "prompt_sha256": "6b6494aa6bd39d76",
+   "output_sha256": "000b69c6ca5e9fd2",
+   "secs": 55.1,
+   "error": null
+  },
+  {
+   "worker": "W02-26b",
+   "model": "hf.co/unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q3_K_XL",
+   "epoch": 2,
+   "seed": 4202,
+   "prompt_sha256": "4c1e8f7959603dcf",
+   "output_sha256": "6182408a2d66d603",
+   "secs": 240.8,
+   "error": null
+  },
+  {
+   "worker": "W03-12b",
+   "model": "gemma4-12b:latest",
+   "epoch": 3,
+   "seed": 4203,
+   "prompt_sha256": "a8c4fea0b9a3c089",
+   "output_sha256": "8d153a90f0e50fe6",
+   "secs": 53.3,
+   "error": null
+  },
+  {
+   "worker": "W04-26b",
+   "model": "hf.co/unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q3_K_XL",
+   "epoch": 4,
+   "seed": 4204,
+   "prompt_sha256": "7cf7eafa0c51391a",
+   "output_sha256": "2f4100c8a2fc2fc2",
+   "secs": 238.8,
+   "error": null
+  },
+  {
+   "worker": "W05-12b",
+   "model": "gemma4-12b:latest",
+   "epoch": 5,
+   "seed": 4205,
+   "prompt_sha256": "3e81f186d6d03e92",
+   "output_sha256": "f88efb1c3838186b",
+   "secs": 45.6,
+   "error": null
+  },
+  {
+   "worker": "W06-26b",
+   "model": "hf.co/unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q3_K_XL",
+   "epoch": 6,
+   "seed": 4206,
+   "prompt_sha256": "16b65e1dc35af392",
+   "output_sha256": "47bfc7fe1b706958",
+   "secs": 187.4,
+   "error": null
+  },
+  {
+   "worker": "W07-12b",
+   "model": "gemma4-12b:latest",
+   "epoch": 7,
+   "seed": 4207,
+   "prompt_sha256": "54bb2a3b1b02febd",
+   "output_sha256": "811bb2a200ea9ff5",
+   "secs": 32.0,
+   "error": null
+  },
+  {
+   "worker": "W08-26b",
+   "model": "hf.co/unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q3_K_XL",
+   "epoch": 8,
+   "seed": 4208,
+   "prompt_sha256": "1a5c13a5ed74bf71",
+   "output_sha256": "607a1455c8f80135",
+   "secs": 118.7,
+   "error": null
+  },
+  {
+   "worker": "W09-12b",
+   "model": "gemma4-12b:latest",
+   "epoch": 9,
+   "seed": 4209,
+   "prompt_sha256": "cf0f2fcf39fc3ed5",
+   "output_sha256": "4df6e7e3aaeb7660",
+   "secs": 33.7,
+   "error": null
+  },
+  {
+   "worker": "W10-26b",
+   "model": "hf.co/unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q3_K_XL",
+   "epoch": 10,
+   "seed": 4210,
+   "prompt_sha256": "d9de44e4dc852547",
+   "output_sha256": "433b15dfadebf9ba",
+   "secs": 124.2,
+   "error": null
+  },
+  {
+   "worker": "W11-12b",
+   "model": "gemma4-12b:latest",
+   "epoch": 11,
+   "seed": 4211,
+   "prompt_sha256": "3e55f12baa059c59",
+   "output_sha256": "1b15a318e3443b3f",
+   "secs": 42.6,
+   "error": null
+  },
+  {
+   "worker": "W12-26b",
+   "model": "hf.co/unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q3_K_XL",
+   "epoch": 12,
+   "seed": 4212,
+   "prompt_sha256": "27b96f536987d826",
+   "output_sha256": "62e809ea7b7085e3",
+   "secs": 116.6,
+   "error": null
+  },
+  {
+   "worker": "W13-12b",
+   "model": "gemma4-12b:latest",
+   "epoch": 13,
+   "seed": 4213,
+   "prompt_sha256": "152476635833b2b8",
+   "output_sha256": "be4b3609c3584191",
+   "secs": 40.0,
+   "error": null
+  },
+  {
+   "worker": "W14-26b",
+   "model": "hf.co/unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q3_K_XL",
+   "epoch": 14,
+   "seed": 4214,
+   "prompt_sha256": "ea4a303c7dbb4037",
+   "output_sha256": "c9b311ecd587949c",
+   "secs": 109.0,
+   "error": null
+  },
+  {
+   "worker": "W15-12b",
+   "model": "gemma4-12b:latest",
+   "epoch": 15,
+   "seed": 4215,
+   "prompt_sha256": "3809c6bbb5883a2a",
+   "output_sha256": "9d634ea1c53b1aa3",
+   "secs": 42.0,
+   "error": null
+  },
+  {
+   "worker": "W16-26b",
+   "model": "hf.co/unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q3_K_XL",
+   "epoch": 16,
+   "seed": 4216,
+   "prompt_sha256": "b2320aa3ed5980c2",
+   "output_sha256": "a23a6a139c4fb212",
+   "secs": 130.6,
+   "error": null
+  },
+  {
+   "worker": "W17-12b",
+   "model": "gemma4-12b:latest",
+   "epoch": 17,
+   "seed": 4217,
+   "prompt_sha256": "a339a7ec0362680e",
+   "output_sha256": "b98919524fc76124",
+   "secs": 30.5,
+   "error": null
+  },
+  {
+   "worker": "W18-26b",
+   "model": "hf.co/unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q3_K_XL",
+   "epoch": 18,
+   "seed": 4218,
+   "prompt_sha256": "59712f976f234fbb",
+   "output_sha256": "ef1944ff6c20e91b",
+   "secs": 118.0,
+   "error": null
+  },
+  {
+   "worker": "W19-12b",
+   "model": "gemma4-12b:latest",
+   "epoch": 19,
+   "seed": 4219,
+   "prompt_sha256": "795d79223904aa78",
+   "output_sha256": "8d1d9b56b745ca5d",
+   "secs": 40.1,
+   "error": null
+  },
+  {
+   "worker": "W20-26b",
+   "model": "hf.co/unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q3_K_XL",
+   "epoch": 20,
+   "seed": 4220,
+   "prompt_sha256": "b126d13ead856b7d",
+   "output_sha256": "efd2ee60a0535b03",
+   "secs": 120.4,
+   "error": null
+  }
+ ],
+ "log": [
+  "epoch 01 W01-12b 55.1s rules+4 book=4 err=None",
+  "epoch 02 W02-26b 240.8s rules+0 book=4 err=parse: Expecting ',' delimiter: line 1 column 795 (char 794)",
+  "epoch 03 W03-12b 53.3s rules+4 book=8 err=None",
+  "epoch 04 W04-26b 238.8s rules+4 book=11 err=None",
+  "epoch 05 W05-12b 45.6s rules+4 book=15 err=None",
+  "epoch 06 W06-26b 187.4s rules+4 book=16 err=None",
+  "epoch 07 W07-12b 32.0s rules+0 book=16 err=parse: Expecting value: line 1 column 312 (char 311)",
+  "epoch 08 W08-26b 118.7s rules+4 book=18 err=None",
+  "epoch 09 W09-12b 33.7s rules+0 book=18 err=parse: Expecting ',' delimiter: line 1 column 127 (char 126)",
+  "epoch 10 W10-26b 124.2s rules+3 book=20 err=None",
+  "epoch 11 W11-12b 42.6s rules+4 book=24 err=None",
+  "epoch 12 W12-26b 116.6s rules+4 book=27 err=None",
+  "epoch 13 W13-12b 40.0s rules+0 book=27 err=parse: Expecting value: line 32 column 20 (char 878)",
+  "epoch 14 W14-26b 109.0s rules+3 book=29 err=None",
+  "epoch 15 W15-12b 42.0s rules+4 book=33 err=None",
+  "epoch 16 W16-26b 130.6s rules+4 book=36 err=None",
+  "epoch 17 W17-12b 30.5s rules+4 book=40 err=None",
+  "epoch 18 W18-26b 118.0s rules+4 book=42 err=None",
+  "epoch 19 W19-12b 40.1s rules+4 book=43 err=None",
+  "epoch 20 W20-26b 120.4s rules+0 book=43 err=parse: Expecting value: line 1 column 292 (char 291)"
+ ],
+ "n_rules": 43,
+ "results": [
+  {
+   "rule": {
+    "type": "PRICE_MONOTONE_SIZE",
+    "params": {},
+    "statement": "Generally, larger lengths correlate with higher prices or specific premium thresholds (e.g., 72IN at 250c-300c)."
+   },
+   "by": "W01-12b",
+   "train_support": 1.0,
+   "heldout_support": 1.0,
+   "heldout_n": 8,
+   "verdict": "SUPPORTED"
+  },
+  {
+   "rule": {
+    "type": "PRICE_MONOTONE_SIZE",
+    "params": {
+     "base_price": 100,
+     "threshold_inches": 24,
+     "step_increment": 50
+    },
+    "statement": "Prices above 24 inches increase by roughly 50 cents per size step."
+   },
+   "by": "W19-12b",
+   "train_support": 1.0,
+   "heldout_support": 1.0,
+   "heldout_n": 8,
+   "verdict": "SUPPORTED"
+  },
+  {
+   "rule": {
+    "type": "PRICE_MONOTONE_SIZE",
+    "params": {
+     "base_price": 150,
+     "threshold_inches": 20,
+     "step_increment": 0
+    },
+    "statement": "Standard items \u2265 20IN are 150c unless specific exceptions apply."
+   },
+   "by": "W12-26b",
+   "train_support": 1.0,
+   "heldout_support": 1.0,
+   "heldout_n": 8,
+   "verdict": "SUPPORTED"
+  },
+  {
+   "rule": {
+    "type": "FAMILY_POINTS",
+    "params": {
+     "family": "ART BORDERS",
+     "points": [
+      1,
+      12,
+      18,
+      24
+     ]
+    },
+    "statement": "Art Borders utilize specific point sizes including 1pt and 24pt."
+   },
+   "by": "W10-26b",
+   "train_support": 1.0,
+   "heldout_support": 1.0,
+   "heldout_n": 6,
+   "verdict": "SUPPORTED"
+  },
+  {
+   "rule": {
+    "type": "PRICE_MONOTONE_SIZE",
+    "params": {
+     "base_price": 150,
+     "threshold_inches": 30,
+     "step_increment": 0
+    },
+    "statement": "Standardized pricing of 150c for medium-length borders regardless of specific length."
+   },
+   "by": "W19-12b",
+   "train_support": 1.0,
+   "heldout_support": 1.0,
+   "heldout_n": 8,
+   "verdict": "SUPPORTED"
+  },
+  {
+   "rule": {
+    "type": "PRICE_MONOTONE_SIZE",
+    "params": {
+     "base_price": 100,
+     "threshold_inches": 24,
+     "step_increment": 0
+    },
+    "statement": "Newspaper borders are fixed at 100c for standard sizes."
+   },
+   "by": "W15-12b",
+   "train_support": 1.0,
+   "heldout_support": 1.0,
+   "heldout_n": 8,
+   "verdict": "SUPPORTED"
+  },
+  {
+   "rule": {
+    "type": "PRICE_PER_UNIT_RANGE",
+    " params": {
+     "Unit": "INCHES",
+     "min": 2.5,
+     "max": 4.2
+    },
+    "statement": "Price per inch maintains a narrow band for most categories excluding specialized items."
+   },
+   "by": "W19-12b",
+   "train_support": 1.0,
+   "heldout_support": 1.0,
+   "heldout_n": 39,
+   "verdict": "SUPPORTED"
+  },
+  {
+   "rule": {
+    "type": "PRICE_MONOTONE_SIZE",
+    "params": {
+     "base_price": 150,
+     "size_floor_inches": 20,
+     "step_increment": 50
+    },
+    "statement": "Standard base price is 150c for lengths >= 20IN, with increments occurring at specific length thresholds."
+   },
+   "by": "W16-26b",
+   "train_support": 1.0,
+   "heldout_support": 1.0,
+   "heldout_n": 8,
+   "verdict": "SUPPORTED"
+  },
+  {
+   "rule": {
+    "type": "FAMILY_POINTS",
+    "params": {
+     "family": "NEWSPAPER BORDERS",
+     "points": [
+      6,
+      18
+     ]
+    },
+    "statement": "Newspaper borders are restricted to 6pt and 18pt configurations."
+   },
+   "by": "W16-26b",
+   "train_support": 1.0,
+   "heldout_support": 1.0,
+   "heldout_n": 3,
+   "verdict": "HOLD"
+  },
+  {
+   "rule": {
+    "type": "PRICE_MONOTONE_SIZE",
+    "params": {
+     "base_price": 150,
+     "threshold_inches": 36,
+     "step_increment": 0
+    },
+    "statement": "Price is 150c unless length exceeds 36IN, then it scales."
+   },
+   "by": "W17-12b",
+   "train_support": 1.0,
+   "heldout_support": 1.0,
+   "heldout_n": 8,
+   "verdict": "SUPPORTED"
+  },
+  {
+   "rule": {
+    "type": "PRICE_MONOTONE_SIZE",
+    "params": {
+     "base_price": 150,
+     "size_threshold": 36,
+     "premium_above_threshold": 50
+    },
+    "statement": "Base price 150c for lengths <= 36IN; increments to 200c or more for larger specimens."
+   },
+   "by": "W18-26b",
+   "train_support": 1.0,
+   "heldout_support": 1.0,
+   "heldout_n": 8,
+   "verdict": "SUPPORTED"
+  },
+  {
+   "rule": {
+    "type": "PRICE_PER_UNIT_RANGE",
+    "params": {
+     "Unit": "INCHES",
+     "min": 2.5,
+     "max": 15.0
+    },
+    "statement": "Pricing generally fluctuates between 2.5c and 15c per inch of length."
+   },
+   "by": "W11-12b",
+   "train_support": 1.0,
+   "heldout_support": 0.9743589743589743,
+   "heldout_n": 39,
+   "verdict": "SUPPORTED"
+  },
+  {
+   "rule": {
+    "type": "PRICE_PER_UNIT_RANGE",
+    "params": {
+     "unit": "INCHES",
+     "min": 2,
+     "max": 5
+    },
+    "statement": "Price per inch typically ranges between 2c and 5c for standard borders."
+   },
+   "by": "W01-12b",
+   "train_support": 0.8739495798319328,
+   "heldout_support": 0.8461538461538461,
+   "heldout_n": 39,
+   "verdict": "HOLD"
+  },
+  {
+   "rule": {
+    "type": "PRICE_PER_UNIT_RANGE",
+    "params": {
+     "Unit": "INCHES",
+     "min": 2.5,
+     "max": 5.8
+    },
+    "statement": " Price per inch scales with complexity/family type."
+   },
+   "by": "W17-12b",
+   "train_support": 0.8823529411764706,
+   "heldout_support": 0.8461538461538461,
+   "heldout_n": 39,
+   "verdict": "HOLD"
+  },
+  {
+   "rule": {
+    "type": "FAMILY_POINTS",
+    "params": {
+     "family": "FLORENTINE BORDERS",
+     "points": [
+      6,
+      8,
+      12,
+      14,
+      24
+     ]
+    },
+    "statement": "Florentine borders utilize a specific set of point sizes including 6, 8, 12, 14, and 24."
+   },
+   "by": "W16-26b",
+   "train_support": 0.7857142857142857,
+   "heldout_support": 0.7272727272727273,
+   "heldout_n": 11,
+   "verdict": "REFUTED"
+  },
+  {
+   "rule": {
+    "type": "FAMILY_POINTS",
+    "params": {
+     "family": "NEWSPAPER BORDERS",
+     "points": [
+      6
+     ]
+    },
+    "statement": "NEWSPAPER BORDERS are constrained to 6pt specimens."
+   },
+   "by": "W12-26b",
+   "train_support": 0.42857142857142855,
+   "heldout_support": 0.6666666666666666,
+   "heldout_n": 3,
+   "verdict": "REFUTED"
+  },
+  {
+   "rule": {
+    "type": "FAMILY_POINTS",
+    "params": {
+     "family": "ART BORDERS",
+     "points": [
+      1,
+      18,
+      24
+     ]
+    },
+    "statement": "Art borders typically utilize 1, 18, or 24 point sizes."
+   },
+   "by": "W18-26b",
+   "train_support": 0.7894736842105263,
+   "heldout_support": 0.6666666666666666,
+   "heldout_n": 6,
+   "verdict": "REFUTED"
+  },
+  {
+   "rule": {
+    "type": "FAMILY_POINTS",
+    "params": {
+     "family": "FLORENTINE BORDERS",
+     "points": [
+      6,
+      8,
+      12,
+      18
+     ]
+    },
+    "statement": "Florence range covers pts 6-18."
+   },
+   "by": "W17-12b",
+   "train_support": 0.8571428571428571,
+   "heldout_support": 0.6363636363636364,
+   "heldout_n": 11,
+   "verdict": "REFUTED"
+  },
+  {
+   "rule": {
+    "type": "PRICE_PER_UNIT_RANGE",
+    "params": {
+     "unit": "INCHES",
+     "min": 3.3,
+     "max": 5.0
+    },
+    "statement": "Price per inch generally falls between 3.3 and 5.0 cents/inch."
+   },
+   "by": "W04-26b",
+   "train_support": 0.5966386554621849,
+   "heldout_support": 0.5641025641025641,
+   "heldout_n": 39,
+   "verdict": "REFUTED"
+  },
+  {
+   "rule": {
+    "type": "FAMILY_POINTS",
+    "params": {
+     "family": "ART BORDERS",
+     "points": [
+      12,
+      18
+     ]
+    },
+    "statement": "Art Borders specifically utilize 12pt or 18pt sizing with phase modifiers."
+   },
+   "by": "W08-26b",
+   "train_support": 0.631578947368421,
+   "heldout_support": 0.5,
+   "heldout_n": 6,
+   "verdict": "REFUTED"
+  },
+  {
+   "rule": {
+    "type": "SIZE_LADDER",
+    "params": {
+     "sizes": [
+      24,
+      36,
+      48,
+      60,
+      72
+     ]
+    },
+    "statement": "Catalogue lengths predominantly follow specific inch increments."
+   },
+   "by": "W12-26b",
+   "train_support": 0.16417910447761194,
+   "heldout_support": 0.2692307692307692,
+   "heldout_n": 26,
+   "verdict": "REFUTED"
+  },
+  {
+   "rule": {
+    "type": "PRICE_PER_UNIT_RANGE",
+    "params": {
+     "unit": "INCHES",
+     "min": 3.5,
+     "max": 4.2
+    },
+    "statement": " Standard pricing for most standard borders ranges between 3.5 and 4.2 cents per inch."
+   },
+   "by": "W03-12b",
+   "train_support": 0.25210084033613445,
+   "heldout_support": 0.23076923076923078,
+   "heldout_n": 39,
+   "verdict": "REFUTED"
+  },
+  {
+   "rule": {
+    "type": "PRICE_PER_UNIT_RANGE",
+    "params": {
+     "unit": "INCHES",
+     "min": 5,
+     "max": 7
+    },
+    "statement": "Price per inch typically ranges between 5 and 7 cents for standard borders."
+   },
+   "by": "W08-26b",
+   "train_support": 0.20168067226890757,
+   "heldout_support": 0.20512820512820512,
+   "heldout_n": 39,
+   "verdict": "REFUTED"
+  },
+  {
+   "rule": {
+    "type": "PRICE_PER_UNIT_RANGE",
+    "params": {
+     "unit": "INCHES",
+     "min": 2.3,
+     "max": 2.8
+    },
+    "statement": "Price per inch for high-complexity art borders fluctuates between 2.3 and 2.8 cents."
+   },
+   "by": "W05-12b",
+   "train_support": 0.17647058823529413,
+   "heldout_support": 0.1282051282051282,
+   "heldout_n": 39,
+   "verdict": "REFUTED"
+  },
+  {
+   "rule": {
+    "type": "FAMILY_POINTS",
+    "params": {
+     "family": "FLORENTINE BORDERS",
+     "points": [
+      "None",
+      "18",
+      "12",
+      "8",
+      "6",
+      "24"
+     ]
+    },
+    "statement": "Florentine borders exhibit high variability in point counts but maintain a price floor."
+   },
+   "by": "W01-12b",
+   "train_support": 0.0,
+   "heldout_support": 0.0,
+   "heldout_n": 11,
+   "verdict": "REFUTED"
+  },
+  {
+   "rule": {
+    "type": "FREEFORM",
+    "params": {},
+    "statement": "Price is largely invariant to 'no' (item number) or 'pt' (point size) unless length exceeds 36IN or specific family premiums apply."
+   },
+   "by": "W18-26b",
+   "train_support": null,
+   "heldout_support": null,
+   "heldout_n": 0,
+   "verdict": "UNCHECKABLE"
+  },
+  {
+   "rule": {
+    "type": "LENGTH_QUANTA",
+    "params": {
+     "lengths": [
+      "24IN",
+      "30IN",
+      "36IN",
+      "40IN",
+      "48IN",
+      "50IN",
+      "54IN",
+      "60IN",
+      "72IN"
+     ]
+    },
+    "statement": "Lengths are standardized to specific typographical manufacturing increments."
+   },
+   "by": "W04-26b",
+   "train_support": 0.0,
+   "heldout_support": 0.0,
+   "heldout_n": 40,
+   "verdict": "REFUTED"
+  },
+  {
+   "rule": {
+    "type": "FAMILY_POINTS",
+    "params": {
+     "family": "FLORENTINE BORDERS",
+     "points": [
+      "None",
+      "6",
+      "8",
+      "12"
+     ]
+    },
+    "statement": " Valid point configurations for Florentine style items."
+   },
+   "by": "W03-12b",
+   "train_support": 0.0,
+   "heldout_support": 0.0,
+   "heldout_n": 11,
+   "verdict": "REFUTED"
+  },
+  {
+   "rule": {
+    "type": "PRICE_MONOTOE_SIZE",
+    " params": {},
+    "statement": " Price scales positively with length within specific family blocks."
+   },
+   "by": "W03-12b",
+   "train_support": null,
+   "heldout_support": null,
+   "heldout_n": 0,
+   "verdict": "UNCHECKABLE"
+  },
+  {
+   "rule": {
+    "type": "FREEFORM",
+    "params": {
+     "observation": "PHASE_INFLUENCE"
+    },
+    "statement": "Presence of 'OPEN' or 'TINT' phases acts as a modifier that can decouple price from the standard size-based ladder (e.g., 60IN/OPEN at 160c vs 60IN/- at 200c)."
+   },
+   "by": "W04-26b",
+   "train_support": null,
+   "heldout_support": null,
+   "heldout_n": 0,
+   "verdict": "UNCHECKABLE"
+  },
+  {
+   "rule": {
+    "type": "PHASE_PAIR_EQUAL_PRICE",
+    "params": {
+     "phase_a": "OPEN",
+     "phase_b": "TINT"
+    },
+    "statement": "Items with OPEN or TINT phases within the ART BORDERS family share identical pricing structures relative to their points/length."
+   },
+   "by": "W06-26b",
+   "train_support": 1.0,
+   "heldout_support": null,
+   "heldout_n": 0,
+   "verdict": "UNCHECKABLE"
+  },
+  {
+   "rule": {
+    "type": "LENGTH_QUANTA",
+    "params": {
+     "lengths": [
+      "20",
+      "30",
+      "36",
+      "50",
+      "54"
+     ]
+    },
+    "statement": "Pricing is discretized into standard production lengths; prices remain static across these quanta for most families."
+   },
+   "by": "W05-12b",
+   "train_support": 0.0,
+   "heldout_support": 0.0,
+   "heldout_n": 40,
+   "verdict": "REFUTED"
+  },
+  {
+   "rule": {
+    "type": "FAMILY_POINTS",
+    "params": {
+     "family": "COLLINS BORDERS",
+     "points": [
+      8,
+      12,
+      18,
+      24
+     ]
+    },
+    "statement": "Collins borders follow a standard progression of 8, 12, 18, and 24 points."
+   },
+   "by": "W18-26b",
+   "train_support": 1.0,
+   "heldout_support": null,
+   "heldout_n": 0,
+   "verdict": "UNCHECKABLE"
+  },
+  {
+   "rule": {
+    "type": "FREEFORM",
+    "params": {
+     "statement": "Price floor for non-Newspaper/non-small items is 150c regardless of length or points."
+    },
+    "statement": "Base price for most catalog entries is 150c, serving as a price floor for standard borders."
+   },
+   "by": "W10-26b",
+   "train_support": null,
+   "heldout_support": null,
+   "heldout_n": 0,
+   "verdict": "UNCHECKABLE"
+  },
+  {
+   "rule": {
+    "type": "PRICE_MONOTOE_SIZE",
+    "params": {
+     "threshold_inches": 24,
+     "base_price": 100,
+     "step_increment": 50
+    },
+    "statement": "Price starts at 100c for items <= 24IN and increases by 50c for every step above."
+   },
+   "by": "W11-12b",
+   "train_support": null,
+   "heldout_support": null,
+   "heldout_n": 0,
+   "verdict": "UNCHECKABLE"
+  },
+  {
+   "rule": {
+    "type": "LENGTH_QUANTA",
+    "params": {
+     "lengths": [
+      "20IN",
+      "30IN",
+      "36IN",
+      "40IN",
+      "50IN",
+      "54IN",
+      "60IN",
+      "72IN"
+     ]
+    },
+    "statement": "Standardized lengths observed in the foundry catalogue."
+   },
+   "by": "W11-12b",
+   "train_support": 0.0,
+   "heldout_support": 0.0,
+   "heldout_n": 40,
+   "verdict": "REFUTED"
+  },
+  {
+   "rule": {
+    "type": "FAMILY_POINTS",
+    " params": {
+     "family": "FLORENTINE BORDERS",
+     "points": [
+      6,
+      8,
+      12,
+      14,
+      18
+     ]
+    },
+    "statement": "Points observed for the Florentine family."
+   },
+   "by": "W11-12b",
+   "train_support": 0.0,
+   "heldout_support": 0.0,
+   "heldout_n": 26,
+   "verdict": "REFUTED"
+  },
+  {
+   "rule": {
+    "type": "PHASE_MODIFIER",
+    "params": {
+     "phase": "OPEN",
+     "premium": 50
+    },
+    "statement": "ART BORDERS with phase OPEN or TINT incur a 50c premium over base."
+   },
+   "by": "W12-26b",
+   "train_support": null,
+   "heldout_support": null,
+   "heldout_n": 0,
+   "verdict": "UNCHECKABLE"
+  },
+  {
+   "rule": {
+    "type": "FAMILY_POINTS",
+    "params": {
+     "family": "ART BORDERS",
+     "points": [
+      1,
+      3,
+      4,
+      5,
+      7,
+      10
+     ]
+    },
+    "statement": "Art Borders use specific point sizes (1, 3, 4, 5, 7, 10, 12, 18, 24)."
+   },
+   "by": "W14-26b",
+   "train_support": 0.05263157894736842,
+   "heldout_support": 0.0,
+   "heldout_n": 6,
+   "verdict": "REFUTED"
+  },
+  {
+   "rule": {
+    "type": "FREEFORM",
+    "params": {
+     "statement": "Price is primarily driven by length and family tier rather than point size or phase."
+    },
+    "statement": "Point size (pt) does not scale price; phase (OPEN/TINT) preserves price for specific families like INCLOSED BY BORDERS."
+   },
+   "by": "W14-26b",
+   "train_support": null,
+   "heldout_support": null,
+   "heldout_n": 0,
+   "verdict": "UNCHECKABLE"
+  },
+  {
+   "rule": {
+    "type": "SIZE_LADDER",
+    " params": {
+     "sizes": [
+      "20IN",
+      "30IN",
+      "36IN",
+      "40IN",
+      "50IN",
+      "54IN",
+      "60IN",
+      "72IN"
+     ]
+    },
+    "statement": "Standardized inventory size increments for price brackets."
+   },
+   "by": "W15-12b",
+   "train_support": 0.0,
+   "heldout_support": 0.0,
+   "heldout_n": 26,
+   "verdict": "REFUTED"
+  },
+  {
+   "rule": {
+    "type": "SIZE_LADDER",
+    "params": {
+     "sizes": [
+      "20IN",
+      "30IN",
+      "36IN",
+      "50IN",
+      "54IN",
+      "60IN",
+      "72IN"
+     ]
+    },
+    "statement": " Standardized catalog sizes for border products."
+   },
+   "by": "W17-12b",
+   "train_support": 0.0,
+   "heldout_support": 0.0,
+   "heldout_n": 26,
+   "verdict": "REFUTED"
+  },
+  {
+   "rule": {
+    "type": "LENGTH_QUANTA",
+    "params": {
+     "lengths": [
+      "24IN",
+      "30IN",
+      "36IN",
+      "50IN",
+      "54IN",
+      "60IN",
+      "72IN"
+     ]
+    },
+    "statement": "Standardized length intervals observed in foundry catalogue."
+   },
+   "by": "W19-12b",
+   "train_support": 0.0,
+   "heldout_support": 0.0,
+   "heldout_n": 40,
+   "verdict": "REFUTED"
+  }
+ ]
+}

@@ -1,0 +1,29 @@
+{
+  "schema": "HER_AUTORESEARCH_DECISION_V0",
+  "her_role": "proposer",
+  "after": "30 trace-only epochs (3 runs of 10)",
+  "result": {
+    "converged": false,
+    "dominant": [
+      {
+        "form": "No test \u2192 no gate.",
+        "verified_count": 4
+      },
+      {
+        "form": "No replay \u2192 no admission.",
+        "verified_count": 3
+      }
+    ],
+    "unverified": "No location \u2192 no doctrine.",
+    "observed": "cycles stably between the two membrane laws"
+  },
+  "decision": "STOP_TRACE_LOOP",
+  "rationale": "Two strongest invariants surfaced and cycling. Third form never verified. Further epochs will not compress more.",
+  "operator_action": "Create AUTORESEARCH_PACKET_V1 fusing the two forms. Place in temple/autoresearch/outbox/. Then: python temple/autoresearch/outbox_triage.py --emit && python temple/autoresearch/outbox_consume.py. Feed to MAYOR as proposal pressure only.",
+  "fused_candidate": "No test \u2192 no gate; no replay \u2192 no admission. DREAMT is proposal-only until both bind the receipt at a jurisdiction boundary.",
+  "authority": false,
+  "admission": "FORBIDDEN",
+  "ledger_effect": "none",
+  "reducer_required": true,
+  "timestamp": "2026-07-20T13:19:10.638782+00:00"
+}

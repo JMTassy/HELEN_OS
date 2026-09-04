@@ -12,9 +12,19 @@ import json
 import os
 import pathlib
 import subprocess
+import sys
 import time
 from dataclasses import dataclass
 from typing import Any
+
+# K_TAU pre-dispatch jurisdiction gate. Mediation must be loadable from every
+# import context (package or flat) — a guard that vanishes on ImportError is a
+# bypass, so fail closed by forcing the repo root onto sys.path if needed.
+try:
+    from helen_kernel.gates.claim_type_policy import pre_dispatch_guard
+except ImportError:
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
+    from helen_kernel.gates.claim_type_policy import pre_dispatch_guard
 
 
 def sha256_bytes(data: bytes) -> str:
@@ -91,6 +101,21 @@ def run_executor_manifest(manifest: dict[str, Any]) -> dict[str, Any]:
     """
     if manifest.get("schema_version") != "EXECUTOR_MANIFEST_V1":
         raise ExecutorViolation("Invalid schema_version")
+
+    # Jurisdiction before effect: BLOCKED is terminal — no mkdir, no subprocess,
+    # no filesystem mutation may precede this check.
+    block = pre_dispatch_guard(
+        {
+            "family": "executor",
+            "op": "task",
+            "claim_type": manifest.get("claim_type", "RECEIPT"),
+        }
+    )
+    if block is not None:
+        raise ExecutorViolation(
+            f"K_TAU_BLOCKED:{block['reason']}:{block['operation']}:"
+            f"requested={block['requested_claim_type']}"
+        )
 
     working_dir = pathlib.Path(manifest["working_dir"]).resolve()
     working_dir.mkdir(parents=True, exist_ok=True)

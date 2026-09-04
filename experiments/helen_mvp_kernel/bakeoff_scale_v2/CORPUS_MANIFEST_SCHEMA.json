@@ -1,0 +1,36 @@
+{
+  "schema_id": "SCALE_V2_CORPUS_MANIFEST",
+  "version": 0,
+  "authority": false, "canon": false, "ledger_effect": "none",
+  "seam": "DISCOVERED_FILES != AUTHORIZED_FROZEN_CORPUS",
+  "principle": "A filename search (discovery) does NOT establish that the discovered material is the corpus you intend to measure. The corpus must be an OPERATOR-AUTHORIZED, fingerprinted, in-scope manifest — frozen BEFORE any swarm runs. No manifest => no run (NO CORPUS = NO CLAIM).",
+  "MANIFEST": {
+    "CORPUS_ID": "stable id for this frozen corpus",
+    "AUTHORIZED_BY": "operator (required; discovery alone is not authorization)",
+    "FROZEN_AT_PATH": "LOCAL NON-GIT path (e.g. ~/helen_kernel/...). For client/entity corpora this MUST be outside the git-tracked SOT and never pushed.",
+    "DATE_RANGE": "coverage window of the material",
+    "FILES": [
+      {
+        "path": "absolute path",
+        "sha256": "content hash of the file",
+        "source_type": "PRIMARY_DOCUMENT|PRESS_RELEASE|ARTICLE|TRANSCRIPT|SUMMARY|FILING|INTERVIEW|DECK|MOCKUP|MEDIA|SELF_AUTHORED|UNKNOWN",
+        "in_scope": "true|false — operator-declared; only in_scope=true files are read by the swarm",
+        "derived_from": ["path/source_id ... KNOWN ancestry (feeds PROVENANCE_SCHEMA ancestry graph)"]
+      }
+    ],
+    "MANIFEST_HASH": "sha256 over the sorted in_scope file hashes + CORPUS_ID (the freeze seal)"
+  },
+  "gates_before_swarm": [
+    "every FILES[] entry has a sha256 and an explicit in_scope flag (operator-set)",
+    "AUTHORIZED_BY present (discovery != authorization)",
+    "FROZEN_AT_PATH is non-git for any client/entity corpus (firewall)",
+    "MANIFEST_HASH computed and frozen; the swarm binds to this hash",
+    "self_authored ratio reported: if most in_scope files are SELF_AUTHORED, warn that independent-root headroom is low BY CONSTRUCTION (N_E likely ~1)"
+  ],
+  "run_binding": "The swarm records MANIFEST_HASH in its receipts; a run whose corpus hash != frozen MANIFEST_HASH is CONTAMINATED and void.",
+  "downstream_membrane": {
+    "note": "SCALE_V2 evidence != website mutation. Surviving claims may later feed a SEPARATE website-claim lane, which is itself BLOCKED here.",
+    "CONCEPT_RENDER_rule": "Any generated (e.g. Higgsfield) maritime/data-center imagery is tagged CONCEPT_RENDER — 'makes the future visible, not true' — and is NEVER evidence of an existing installation.",
+    "blocked_here": ["WEBSITE_WRITE", "GIT_COMMIT", "PUSH", "ADMISSION", "SENTINEL/ACCOUNT_STATE_UPDATE", "DRIVE/GMAIL/SLACK_WRITE", "WEB/X/LIVE_MONITORING"]
+  }
+}
