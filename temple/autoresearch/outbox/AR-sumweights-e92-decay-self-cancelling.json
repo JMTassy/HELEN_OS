@@ -1,0 +1,30 @@
+{
+  "packet_type": "AUTORESEARCH_OBSERVATION_V1",
+  "epoch": "E92",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "claim_status": "NO_CLAIM",
+  "target": "summarization_weights",
+  "surface": "summarization_weights",
+  "file": "helen_os_scaffold/helen_os/temporal_decay.py",
+  "lines": [60, 62, 63, 87, 405, 406, 407, 439],
+  "hypothesis": "If EPHEMERAL decay age is computed from cycle_added instead of cycle_last_used (L405, one token), then age accumulates across cycles instead of resetting to 1 on every injection, TD07 monotonic and TD09 pruning go green without breaking TD14, and DECAY_LAMBDA becomes an observable parameter for the first time.",
+  "evidence": {
+    "self_cancelling_decay": "temporal_decay.py:405 age = cycle_number - item.cycle_last_used; L439 sets item.cycle_last_used = cycle_number for every injected item; every EPHEMERAL above threshold is injected (L430-435), so age == 1 on every pass after the first → weight is constant base*exp(-lambda), never accumulates",
+    "tests_red_on_main": "helen_os_scaffold/tests/test_temporal_decay_v1.py at 427eaa0: 3 failed / 40 passed — TD07 monotonic (0.999000 → 0.999000, non-monotonic at index 0), TD07 anchor-expiry (0.89910 > 0.89641), TD09 prune-permanent (E1 still in pool at cycle 100, weight 0.3679 = exp(-1.0*1))",
+    "prune_impossible": "pruning requires base*exp(-lambda*1) < 0.10 → lambda > ln(10) ≈ 2.303; frozen DECAY_LAMBDA=0.001 can never prune, and TD09's lambda=1.0 cannot either (exp(-1) = 0.368)",
+    "spec_contradiction": "TD14 (test L442-450) asserts cycle_last_used == cycle_number after injection; TD07/TD09 assert age accumulates. With age derived from cycle_last_used both cannot hold. Trial A (delete stamp loop L437-439): 1 failed / 42 passed — TD14 breaks. Trial B (L405 cycle_last_used → cycle_added): 43 passed. File restored after each trial, git diff empty.",
+    "lambda_horizon_if_fixed": "cycles_until_prune() = 2303 at lambda=0.001; 231 at lambda=0.01; compute_decay_weight(1.0, 50) = 0.9512 at 0.001, 0.6065 at 0.01 — bounded autoresearch runs are 10-50 cycles",
+    "weight_inversion": "L62-63: ANCHOR_WEIGHT=0.90 < INITIAL_WEIGHT=1.00 — a freshly anchored item ranks below a freshly added ephemeral item in the ANCHORED-desc / EPHEMERAL-desc sort",
+    "engine_not_wired": "repo-wide grep: TemporalDecayEngine / decay_and_select_context imported only by tests/test_temporal_decay_v1.py; zero call sites in autoresearch_loop.py, helen.py, memory.py",
+    "ci_blind": "no reference to helen_os_scaffold in .github/workflows/, ci_run_checks.py, oracle_town/VERIFY_ALL.sh — the 3 red tests are invisible to CI; last touch of both files: c187c8a 2026-08-11 (E44)",
+    "g6_vacuous": "G6 'temporal_decay_outperforms_or_matches_baselines' is satisfied by inaction: with age pinned to 1, nothing is ever pruned, so 'matches baseline' holds trivially",
+    "prior_art": "scan of AR-*.json outbox: no prior summarization_weights / decay packet"
+  },
+  "proposed_patch": "temporal_decay.py:405 — age = cycle_number - item.cycle_added (was item.cycle_last_used). Keep L439 injection stamp (TD14 bookkeeping). Docstring L29 'exp(-lambda * (t - t_last_use))' → '(t - t_added)'. Caveat for operator: an anchor that expires (L396-398) then decays from its original cycle_added, not from expiry — slightly steeper than the docstring implies; if undesired, E93 adds a decay_anchor_cycle field reset at add/expiry/re-anchor. Do NOT touch DECAY_LAMBDA / ANCHOR_WEIGHT in this epoch — calibration is E94, after liveness receipt.",
+  "reversibility": "one-token change; OPERATOR_APPLY only; no schema, ledger, or governance surface touched",
+  "metric": "pytest helen_os_scaffold/tests/test_temporal_decay_v1.py: 3 failed / 40 passed → 0 failed / 43 passed (trial B measured); TD09 E1 with lambda=1.0: retained at weight 0.3679 → pruned by cycle 3",
+  "rule": "KEEP if all 43 tests green including TD03 (SEALED never pruned), TD04 (ANCHORED never pruned before expiry), TD14 (injection stamp); REJECT if any SEALED or ANCHORED item is ever pruned or reordered",
+  "next": "E93 — wire decay_and_select_context() into AutoresearchLoop.run_iteration() EXPLORATION phase (autoresearch_loop.py:107) and count TEMPORAL_DECAY_RECEIPT_V1 in trace 0→N; only then E94 lambda calibration 0.001→0.01 and ANCHOR_WEIGHT 0.90→1.00"
+}
