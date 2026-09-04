@@ -5,6 +5,13 @@ Persistent command-line dialogue with HELEN.
 Supports modes: fetch (default), meteo, wulmoji, shell
 """
 import os, sys, json, subprocess, readline, datetime
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from src.helen_readonly_executor import ReadOnlyExecutionRejected, run_readonly
 
 # ANSI colors
 CYAN = "\x1b[36m"
@@ -78,6 +85,10 @@ class HeldenCLI:
         """Send message to HELEN via helen_say.py"""
         if not msg.strip():
             return
+
+        if self.mode == "shell" and msg.strip().startswith("run:"):
+            self.run_readonly_shell_command(msg.strip()[4:].strip())
+            return
         
         # Add context based on mode
         if self.mode == "meteo":
@@ -137,6 +148,65 @@ class HeldenCLI:
         except Exception as e:
             print(f"{RED}Error: {e}{RESET}")
     
+    def run_readonly_shell_command(self, command: str):
+        """Run a bounded read-only command through HELEN's executor."""
+        if not command:
+            print(f"{RED}Rejected: empty read-only command{RESET}")
+            print()
+            return
+
+        proposal = (
+            "COMPUTER_USE_READONLY_EXECUTION — "
+            f"ACTION: {command}. "
+            "SCOPE: ~/helen-conquest. MUTATION: forbidden. RECEIPT_REQUIRED: yes."
+        )
+
+        print()
+        print(f"{YELLOW}[PROPOSAL]{RESET} {proposal}")
+
+        try:
+            receipt = subprocess.run(
+                ["python3", HELEN_SAY_SCRIPT, proposal, "--op", "shell", "--ledger", LEDGER_PATH],
+                capture_output=True,
+                text=True,
+                timeout=10,
+            )
+            receipt_output = receipt.stdout + receipt.stderr
+            print(f"{CYAN}[RECEIPT]{RESET}")
+            print(receipt_output.strip())
+            print()
+
+            if "[HAL] BLOCK" in receipt_output:
+                print(f"{RED}[EXECUTION BLOCKED BY HAL]{RESET}")
+                print()
+                return
+
+            result = run_readonly(command, cwd=os.getcwd())
+
+            print(f"{GREEN}[READONLY EXECUTION]{RESET} {' '.join(result.command)}")
+            print(f"{DIM}returncode={result.returncode}{RESET}")
+
+            if result.stdout:
+                print(f"{CYAN}[STDOUT]{RESET}")
+                print(result.stdout.rstrip())
+
+            if result.stderr:
+                print(f"{YELLOW}[STDERR]{RESET}")
+                print(result.stderr.rstrip())
+
+            print()
+
+        except ReadOnlyExecutionRejected as exc:
+            print(f"{RED}[REJECTED]{RESET} {exc}")
+            print()
+        except subprocess.TimeoutExpired:
+            print(f"{RED}Error: receipt timeout{RESET}")
+            print()
+        except Exception as exc:
+            print(f"{RED}Error: {exc}{RESET}")
+            print()
+
+
     def run(self):
         """Main CLI loop"""
         while True:
