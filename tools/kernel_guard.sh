@@ -66,38 +66,22 @@ done
 # -----------------------------------------------------------------------
 echo "RULE 1: Checking for direct ledger open() calls..."
 
-while IFS= read -r -d '' pyfile; do
-  # Skip allowed writers
-  IS_ALLOWED=0
-  for writer in "${ALLOWED_WRITERS[@]}"; do
-    if [[ "$pyfile" == "${REPO_ROOT}/${writer}" ]]; then
-      IS_ALLOWED=1; break
-    fi
-  done
-  [[ $IS_ALLOWED -eq 1 ]] && log "ALLOWED: ${pyfile#$REPO_ROOT/}" && continue
+# AST-precise detection (tools/kernel_guard_rule1.py). This replaces the legacy
+# single-line text-regex, which false-positived on the forbidden pattern when it
+# appeared inside a string literal / comment / docstring (e.g. spec and scanner
+# test fixtures that quote the pattern). The AST pass flags only real
+# open(<ledger .ndjson literal>, "a"/"w"/...) call sites — same path/mode
+# heuristic as before, strictly more precise, never more permissive (it also
+# catches multi-line and io.open(...) forms the regex missed).
+RULE1_OUT="$(python3 "${REPO_ROOT}/tools/kernel_guard_rule1.py" \
+              "$REPO_ROOT" "${ALLOWED_WRITERS[@]}")" || true
+# Echo the violation lines (everything except the trailing count marker).
+printf '%s\n' "$RULE1_OUT" | grep -v '^RULE1_VIOLATIONS=' || true
+RULE1_N="$(printf '%s\n' "$RULE1_OUT" | sed -n 's/^RULE1_VIOLATIONS=//p' | tail -1)"
+RULE1_N="${RULE1_N:-0}"
+VIOLATIONS=$((VIOLATIONS + RULE1_N))
 
-  log "${pyfile#$REPO_ROOT/}"
-  CHECKED=$((CHECKED + 1))
-
-  # Check for direct open() with append/write mode on .ndjson files only.
-  # .json files are configuration; .ndjson is the append-only ledger format.
-  # Narrows to ledger-related path names to avoid false positives.
-  if grep -n 'open(' "$pyfile" 2>/dev/null | \
-     grep -iE '\.ndjson' | \
-     grep -E '"a"|"w"|"a\+"|"w\+"' | \
-     grep -qiE '(ledger|events|wisdom|dialogue|town)'; then
-    echo "  [VIOLATION] RULE 1: ${pyfile#$REPO_ROOT/}"
-    grep -n 'open(' "$pyfile" 2>/dev/null | \
-      grep -iE '\.ndjson' | \
-      grep -E '"a"|"w"|"a\+"|"w\+"' | \
-      grep -iE '(ledger|events|wisdom|dialogue|town)' | \
-      while IFS= read -r line; do echo "    $line"; done
-    VIOLATIONS=$((VIOLATIONS + 1))
-  fi
-done < <(find "$REPO_ROOT" -name "*.py" -not -path "*/\.*" \
-              -not -path "*/__pycache__/*" -print0)
-
-echo "  Checked $CHECKED Python files, RULE 1 done."
+echo "  RULE 1 done (AST scan, $RULE1_N violation(s))."
 
 # -----------------------------------------------------------------------
 # RULE 2: NDJSONWriter import only from allowed consumers
