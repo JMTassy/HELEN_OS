@@ -1,0 +1,114 @@
+{
+  "schema": "PROVENANCE_REPAIR_V0",
+  "at": "2026-09-04T14:51:10.206623+00:00",
+  "authority": false,
+  "canon": false,
+  "ledger_effect": "none",
+  "applied": true,
+  "repairs": [
+    {
+      "epoch": "E88",
+      "packet_id": "AR-sandbox-vgrammar-e88-count-verify",
+      "field": "parent_epoch",
+      "before": null,
+      "after": "E87",
+      "rule": "R2",
+      "source": "summary refs ['E87'] ⊆ declared chain(E87)=['E87']",
+      "path": "temple/autoresearch/outbox/AR-sandbox-vgrammar-e88-count-verify.json",
+      "pre_sha256": "cf097bd6e15448601ff1b686aad52c999557152df5d311cd07e097db9f03e07d",
+      "post_sha256": "cf025143e7cca1fe2ae2092d84ab628099376a7228d7051cdf47e048ea3a6d6c"
+    }
+  ],
+  "unrecoverable": [
+    {
+      "epoch": "E9",
+      "packet_id": "AR-promptcomp-fieldmismatch-e9",
+      "reason": "summary names no earlier epoch"
+    },
+    {
+      "epoch": "E10",
+      "packet_id": "AR-skill-route-d1f7",
+      "reason": "summary names no earlier epoch"
+    },
+    {
+      "epoch": "E11",
+      "packet_id": "AR-ctx-rank-stab-e11",
+      "reason": "summary names no earlier epoch"
+    },
+    {
+      "epoch": "E13",
+      "packet_id": "AR-skillroute-rule2b-dead-f3c7",
+      "reason": "summary names no earlier epoch"
+    },
+    {
+      "epoch": "E14",
+      "packet_id": "AR-context-rank-companion-drop-e14",
+      "reason": "summary names no earlier epoch"
+    },
+    {
+      "epoch": "E29",
+      "packet_id": "AR-summ-weights-e29-fallback-bias",
+      "reason": "summary names no earlier epoch"
+    },
+    {
+      "epoch": "E30",
+      "packet_id": "AR-halctx-e30-6c84165362c2",
+      "reason": "summary names no earlier epoch"
+    },
+    {
+      "epoch": "E38",
+      "packet_id": "AR-summ-weights-e38-register-divergence",
+      "reason": "summary names no earlier epoch"
+    },
+    {
+      "epoch": "E77",
+      "packet_id": "AR-sandbox-vgrammar-e77-skill-active-pur-collapse",
+      "reason": "empty summary: nothing declared"
+    },
+    {
+      "epoch": "E78",
+      "packet_id": "AR-sandbox-vgrammar-e78-memory-canon-cy-dual-use",
+      "reason": "empty summary: nothing declared"
+    },
+    {
+      "epoch": "E79",
+      "packet_id": "AR-sandbox-vgrammar-e79-skill-active-pur-css-confirmed",
+      "reason": "empty summary: nothing declared"
+    },
+    {
+      "epoch": "E80",
+      "packet_id": "AR-sandbox-vgrammar-e80-task-waiting-amber-triple",
+      "reason": "empty summary: nothing declared"
+    },
+    {
+      "epoch": "E86",
+      "packet_id": "AR-sandbox-vgrammar-e86-wh-compound-verification",
+      "reason": "summary names ['E76'] not present in outbox (refs ['E74', 'E76', 'E84', 'E85'])"
+    },
+    {
+      "epoch": "E87",
+      "packet_id": "AR-sandbox-vgrammar-e87-live-reclassification",
+      "reason": "summary refs ['E84', 'E85', 'E86'] span more than one declared chain: ['E84', 'E85'] ∉ chain(E86)=['E86']"
+    },
+    {
+      "epoch": "E89",
+      "packet_id": "AR-skillroute-e89-hal-model-forbidden",
+      "reason": "summary names no earlier epoch"
+    },
+    {
+      "epoch": "E90",
+      "packet_id": "AR-contextrank-e90-history-format-void",
+      "reason": "summary names no earlier epoch"
+    },
+    {
+      "epoch": "E91",
+      "packet_id": "AR-promptcomp-e91-weather-unconditional-fetch",
+      "reason": "empty summary: nothing declared"
+    },
+    {
+      "epoch": "E92",
+      "packet_id": "AR-sumweights-e92-decay-self-cancelling",
+      "reason": "R1 refused: AR-promptcomp-e91-weather-unconditional-fetch.next names E92 but surfaces differ ('prompt_compression' vs 'summarization_weights') — a plan, not lineage"
+    }
+  ]
+}

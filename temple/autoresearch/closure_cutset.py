@@ -232,6 +232,45 @@ def diagnostics(graph: Dict[str, Any]) -> Dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
+# duplicate discriminator  (fails closed)
+#
+#   Duplicate(a,b) = 1  iff  Closure(D_a) = Closure(D_b)   (declared discriminators)
+#                       and  every other unit's scheduler trace is unchanged when a
+#                            and b are merged into one head (protected bisimulation)
+#   Undeclared discriminators on either side → UNDECIDABLE, never DUPLICATE.
+# ---------------------------------------------------------------------------
+
+def duplicate_test(a: str, b: str, open_packets: List[Dict[str, Any]], threshold: int = DEFAULT_THRESHOLD) -> Dict[str, Any]:
+    by_id = {p["packet_id"]: p for p in open_packets}
+    if a not in by_id or b not in by_id:
+        return {"a": a, "b": b, "verdict": "UNDECIDABLE", "reasons": ["packet not in unconsumed set"]}
+    reasons: List[str] = []
+    da, db = by_id[a].get("discriminators"), by_id[b].get("discriminators")
+    if not (isinstance(da, list) and da) or not (isinstance(db, list) and db):
+        reasons.append("undeclared discriminators on " + ", ".join(x for x, d in ((a, da), (b, db)) if not (isinstance(d, list) and d)))
+        return {"a": a, "b": b, "verdict": "UNDECIDABLE", "reasons": reasons}
+    if set(da) != set(db):
+        return {"a": a, "b": b, "verdict": "DISTINCT", "reasons": [f"Closure(D_a) ≠ Closure(D_b): {sorted(set(da) ^ set(db))} separate them"]}
+    # protected bisimulation: merge b into a and compare every other unit's trace
+    def trace(packets):
+        g = build_graph(packets); cl = heads_and_closures(g)
+        units = decision_units(g, cl, bundle_by_file=False)
+        cut = exact_cutset(units, len(packets), threshold)
+        return {u["unit_id"]: (u["closes"], u["confidence"], u["cost"]) for u in units}, cut["residual"]
+    t0, r0 = trace(open_packets)
+    merged = [dict(p, duplicate_of=a) if p["packet_id"] == b else p for p in open_packets]
+    t1, r1 = trace(merged)
+    others0 = {k: v for k, v in t0.items() if k not in (a, b)}
+    others1 = {k: v for k, v in t1.items() if k not in (a, b)}
+    if others0 != others1:
+        changed = sorted(k for k in set(others0) | set(others1) if others0.get(k) != others1.get(k))
+        return {"a": a, "b": b, "verdict": "DISTINCT", "reasons": [f"merging changes other units' traces: {changed}"]}
+    if r0 != r1:
+        return {"a": a, "b": b, "verdict": "DISTINCT", "reasons": [f"merging changes residual {r0} → {r1}"]}
+    return {"a": a, "b": b, "verdict": "DUPLICATE", "reasons": ["Closure(D_a) = Closure(D_b)", "protected bisimulation holds", f"residual invariant {r0}"]}
+
+
+# ---------------------------------------------------------------------------
 # report
 # ---------------------------------------------------------------------------
 
@@ -293,7 +332,16 @@ def main(argv: Optional[List[str]] = None) -> int:
     ap.add_argument("--bundle-by-file", action="store_true", help="one unit per top source_ref file")
     ap.add_argument("--out", type=Path, default=Path("artifacts/closure_cutset.json"))
     ap.add_argument("--no-write", action="store_true")
+    ap.add_argument("--duplicate", nargs=2, metavar=("A", "B"), action="append", help="run the duplicate discriminator on a pair (repeatable)")
     a = ap.parse_args(argv)
+    if a.duplicate:
+        packets = pen.load_packets(a.outbox)
+        eff = pen.effective_decisions(pen.read_log(a.log))
+        open_ = pen.unconsumed(packets, eff)
+        for x, y in a.duplicate:
+            v = duplicate_test(x, y, open_, a.threshold)
+            print(f"{v['verdict']:11} {x} ~ {y}\n" + "".join(f"             · {r}\n" for r in v["reasons"]), end="")
+        return 0
     rep = compute(a.outbox, a.log, a.threshold, a.bundle_by_file)
     print(render(rep))
     if not a.no_write:

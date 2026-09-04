@@ -38,5 +38,17 @@
   "keep_rule": "KEEP: E88 pre-apply verification complete. 8-op patch is arithmetic-correct and all sites confirmed present. Operator-apply is the only remaining step.",
   "next_iteration": "E89: Operator applies E87 compound patch. Post-apply grep confirms --grn=2 --wh=6. If confirmed, sandbox_visual_grammar series is endpoint-reached.",
   "git_stage": "no",
-  "git_commit": "no"
+  "git_commit": "no",
+  "parent_epoch": "E87",
+  "provenance_repairs": [
+    {
+      "field": "parent_epoch",
+      "before": null,
+      "after": "E87",
+      "rule": "R2",
+      "source": "summary refs ['E87'] ⊆ declared chain(E87)=['E87']",
+      "at": "2026-09-04T14:51:10.206623+00:00",
+      "repair": "PROVENANCE_REPAIR_V0"
+    }
+  ]
 }
