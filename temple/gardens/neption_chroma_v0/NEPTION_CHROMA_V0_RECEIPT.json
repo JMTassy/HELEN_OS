@@ -1,0 +1,92 @@
+{
+  "instrument": "NEPTION_CHROMA_V0",
+  "policy": "NEPTION-CHROMA-v1.0",
+  "authority": false,
+  "canon": false,
+  "authority_delta": 0,
+  "gamma_delta": 0,
+  "model_calls": 0,
+  "laws": [
+    "L0 authority veto (lexicographic)",
+    "L1 certificate predicate gate",
+    "L2 score ranks survivors only",
+    "L3 declaration non-authority",
+    "L4 recomputable certificate"
+  ],
+  "battery": [
+    {
+      "name": "GENUINE_DIAMOND",
+      "declared": "💎",
+      "derived": "💎",
+      "expected": "💎",
+      "P": 19,
+      "reason": "CERTIFIED",
+      "counterfeit": false,
+      "pass": true
+    },
+    {
+      "name": "THIS_SESSION",
+      "declared": "💎",
+      "derived": "🟢",
+      "expected": "🟢",
+      "P": 48,
+      "reason": "score≥τ2 but predicate FAILED: ['retention']",
+      "counterfeit": true,
+      "pass": true
+    },
+    {
+      "name": "COUNTERFEIT_VERBOSITY",
+      "declared": "💎",
+      "derived": "⚫",
+      "expected": "⚫",
+      "P": -17,
+      "reason": "net structural loss / no earned structure",
+      "counterfeit": true,
+      "pass": true
+    },
+    {
+      "name": "AUTHORITY_LEAK",
+      "declared": "💎",
+      "derived": "🔴",
+      "expected": "🔴",
+      "P": null,
+      "reason": "AUTHORITY_VETO",
+      "counterfeit": true,
+      "pass": true
+    },
+    {
+      "name": "SCORE_GAMING",
+      "declared": "💎",
+      "derived": "🟢",
+      "expected": "🟢",
+      "P": 103,
+      "reason": "score≥τ2 but predicate FAILED: ['retention']",
+      "counterfeit": true,
+      "pass": true
+    },
+    {
+      "name": "PROVISIONAL",
+      "declared": "",
+      "derived": "🟡",
+      "expected": "🟡",
+      "P": 1,
+      "reason": "provisional gain",
+      "counterfeit": false,
+      "pass": true
+    }
+  ],
+  "all_sound": true,
+  "this_session_verdict": "🟢 (NOT 💎): Δd_M=0 — no trans-epoch retention interval has run; the protocol refuses to certify its own session's diamond",
+  "certificate_demo": {
+    "issued": "diamond#07F4",
+    "verify": "VALID",
+    "after_evidence_lost": {
+      "status": "REVOKED",
+      "reason": "predicate failed: ['observation']"
+    }
+  },
+  "MAX_ADMISSIBLE_STATEMENT": "derive-color certifies 💎 only under D ∧ P≥τ2 ∧ ¬veto; it flips to ⚫/🔴/🟢 on verbosity, authority-leak, and score-gaming; declared color is ignored; certificates are recomputable/revocable.",
+  "commit_status": "NO_COMMIT",
+  "push_status": "NO_PUSH",
+  "next_verb": "HUMAN_REVIEW"
+}

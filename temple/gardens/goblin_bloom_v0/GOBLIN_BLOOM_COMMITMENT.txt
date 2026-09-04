@@ -1,0 +1,6 @@
+PREREG_HASH=f5f9225649fe64588f6a0eba04735e41b299f5c45ff624d8a37dddca69bf08b5
+SCORER_HASH=f85a11c3ee90c9df7b5c63510d90cebddd731bbd4e27a3f44c2f7795f2d63f1f
+SCORER_VERSION=V2
+KAPPA=2
+sealed_before_results
+results_exist=False

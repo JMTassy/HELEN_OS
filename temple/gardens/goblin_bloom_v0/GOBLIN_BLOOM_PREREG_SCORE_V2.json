@@ -1,0 +1,144 @@
+{
+  "score_of": "GOBLIN_BLOOM_30MIN_V0",
+  "scorer_version": "V2",
+  "COMMITMENTS": {
+    "PREREG_HASH": "f5f9225649fe64588f6a0eba04735e41b299f5c45ff624d8a37dddca69bf08b5",
+    "SCORER_HASH": "f85a11c3ee90c9df7b5c63510d90cebddd731bbd4e27a3f44c2f7795f2d63f1f",
+    "TRACE_HASH": "877638a410083bed483bb999a83763b8f18b0e743fad8c1e021f4525903cd1c8",
+    "seal_matches": true,
+    "prereg_predates_results": true
+  },
+  "OBSERVED_DERIVED": {
+    "ΔN": 42,
+    "ΔQ": 37,
+    "Δd_D": 9,
+    "Δd_I": 2,
+    "Δd_M": 0,
+    "ΔR_J": 11,
+    "ΔR_Γ": 0,
+    "compression_ratio": 1.14,
+    "verdict": "V3"
+  },
+  "HARD_INVARIANTS": {
+    "IN_EPOCH_RETENTION_VIOLATION": false,
+    "GOVERNED_REACHABILITY_VIOLATION": false,
+    "SELF_CERTIFICATION_DETECTED": false
+  },
+  "COMPRESSION": {
+    "KAPPA": 2,
+    "compression_ratio": 1.14,
+    "INFLATION_DETECTED": true
+  },
+  "DISCRIMINATORS": {
+    "VALID_FALSIFIERS": [
+      "evt_0000",
+      "evt_0010",
+      "evt_0020",
+      "evt_0021",
+      "evt_0025",
+      "evt_0026",
+      "evt_0043",
+      "evt_0045",
+      "evt_0046"
+    ],
+    "VALID_INSTRUMENTS": [
+      "evt_0014",
+      "evt_0044"
+    ],
+    "INVALID_SELF_LABELS": [
+      "evt_0030"
+    ],
+    "TOP_DERIVED_CONTRIBUTION": "VALID_FALSIFIER"
+  },
+  "MECHANICAL_VERDICT": "V3",
+  "classifier_range": [
+    "V0",
+    "V1",
+    "V2",
+    "V3"
+  ],
+  "PREREG": {
+    "predicted_mode": "{V2,V3}",
+    "observed_mode": "V3",
+    "mode_hit": true
+  },
+  "COUNTERFACTUAL_REMOVAL": {
+    "method": "tri-valued on real reuse graph",
+    "KILLS_necessity_demonstrated": [
+      "marginal⇏joint",
+      "Derived≻Declared",
+      "structure≠license",
+      "⋈ co-validity",
+      "typed-obstruction 🕳️"
+    ],
+    "SURVIVES_necessity_falsified": [],
+    "UNRESOLVED": [],
+    "diachronic_law_survives(D+)": true
+  },
+  "PREREG_SCORE": {
+    "P1_MODE_PREDICTION_{V2,V3}": {
+      "result": "PASS",
+      "evidence_refs": [
+        "verdict=V3"
+      ]
+    },
+    "P2_COMPRESSION_ratio>=κ": {
+      "result": "FAIL",
+      "evidence_refs": [
+        "ΔN/ΔQ=1.14",
+        "κ=2"
+      ]
+    },
+    "P3_Q_GE_DD": {
+      "result": "PASS",
+      "evidence_refs": [
+        "ΔQ=37",
+        "Δd_D=9"
+      ]
+    },
+    "P4_DD_GE_DM": {
+      "result": "PASS",
+      "evidence_refs": [
+        "Δd_D=9",
+        "Δd_M=0"
+      ]
+    },
+    "P5_VALID_FALSIFIER_DOMINATES": {
+      "result": "PASS",
+      "evidence_refs": [
+        "evt_0000",
+        "evt_0010",
+        "evt_0020",
+        "evt_0021",
+        "top=VALID_FALSIFIER"
+      ]
+    },
+    "P6_DIAMONDS_LT_CANDIDATES": {
+      "result": "PASS",
+      "evidence_refs": [
+        "newborn_💎=0",
+        "🟣_candidates=37"
+      ]
+    },
+    "P7_NO_V4_IN_EPOCH": {
+      "result": "PASS",
+      "evidence_refs": [
+        "classifier_range={V0,V1,V2,V3}"
+      ]
+    },
+    "P8_STOP_IS_DRYNESS_NOT_PROOF": {
+      "result": "FAIL",
+      "evidence_refs": [
+        "stop=WALL_BUDGET"
+      ]
+    }
+  },
+  "SCORE": "6/8",
+  "STOP_REASON": "WALL_BUDGET",
+  "THEORY_PROVEN": false,
+  "authority_delta": 0,
+  "claims_admitted": 0,
+  "RECEIPT_HASH": "d9cce2bf9b6c1325c45689346c7b39f7476f37f381f72af943d74d6f551bd0eb",
+  "commit_status": "NO_COMMIT",
+  "push_status": "NO_PUSH"
+}

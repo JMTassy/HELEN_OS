@@ -1,0 +1,111 @@
+{
+  "experiment": "CHIDDUSH_DIACHRONIC_V0",
+  "authority": false,
+  "canon": false,
+  "authority_delta": 0,
+  "gamma_delta": 0,
+  "model_calls": 0,
+  "law": "Chiddush(d,t0,t1)=Novel∧Discriminating∧SurvivedFalsification∧Reused(t1>t0)",
+  "ledger": [
+    {
+      "id": "marginal⇏joint",
+      "born_t": 1,
+      "kind": "I",
+      "status": "INSTRUMENTALIZED",
+      "reused_at": [
+        5,
+        8
+      ],
+      "chiddush_earned": true
+    },
+    {
+      "id": "Derived≻Declared",
+      "born_t": 2,
+      "kind": "I",
+      "status": "INSTRUMENTALIZED",
+      "reused_at": [
+        6,
+        7,
+        10
+      ],
+      "chiddush_earned": true
+    },
+    {
+      "id": "structure≠license",
+      "born_t": 1,
+      "kind": "K",
+      "status": "RETAINED",
+      "reused_at": [
+        9
+      ],
+      "chiddush_earned": true
+    },
+    {
+      "id": "⋈ co-validity",
+      "born_t": 5,
+      "kind": "I",
+      "status": "INSTRUMENTALIZED",
+      "reused_at": [
+        8,
+        9
+      ],
+      "chiddush_earned": true
+    },
+    {
+      "id": "typed-obstruction 🕳️",
+      "born_t": 9,
+      "kind": "W",
+      "status": "RETAINED",
+      "reused_at": [
+        11
+      ],
+      "chiddush_earned": true
+    },
+    {
+      "id": "diachronic-CHIDDUSH",
+      "born_t": 12,
+      "kind": "K",
+      "status": "CANDIDATE",
+      "reused_at": [],
+      "chiddush_earned": false
+    },
+    {
+      "id": "presence≠sufficiency(restated)",
+      "born_t": 4,
+      "kind": "K",
+      "status": "REPEATED",
+      "reused_at": [
+        6
+      ],
+      "chiddush_earned": false
+    }
+  ],
+  "delta_dM_vector": {
+    "ΔdK_knowledge": 1,
+    "ΔdI_instrument": 3,
+    "ΔdW_world": 1
+  },
+  "laws": {
+    "birth_cannot_self_declare_CHIDDUSH": true,
+    "lexical_duplicate_rejected(REPEATED)": true,
+    "later_reuse_earns_CHIDDUSH": true
+  },
+  "SOUND": true,
+  "neption_coupling": {
+    "diamond_eligible_now(retention earned)": [
+      "marginal⇏joint",
+      "Derived≻Declared",
+      "structure≠license",
+      "⋈ co-validity",
+      "typed-obstruction 🕳️"
+    ],
+    "still_candidate(retention unproven)": [
+      "diachronic-CHIDDUSH"
+    ],
+    "note": "these specific distinctions now satisfy Δd_M>0 via verified later reuse; the session's global 🟢 lifts to 💎 ONLY for the retention-earned subset, and only retrospectively — never self-declared at birth"
+  },
+  "MAX_ADMISSIBLE_STATEMENT": "On this session's verifiable reuse graph, 5 distinctions EARNED CHIDDUSH (Δd_M={'ΔdK_knowledge': 1, 'ΔdI_instrument': 3, 'ΔdW_world': 1}), while the just-born distinction (diachronic-CHIDDUSH itself) and lexical duplicates did NOT — proving novelty is retrospective in proof.",
+  "commit_status": "NO_COMMIT",
+  "push_status": "NO_PUSH",
+  "next_verb": "HUMAN_REVIEW"
+}
