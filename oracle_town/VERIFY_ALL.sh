@@ -51,7 +51,11 @@ echo "3. ADVERSARIAL RUN CREATION (3 runs)"
 echo "======================================================================"
 echo ""
 
-python3 oracle_town/runs/create_adversarial_runs.py | grep -E "(RUN [ABC]|complete|Decision)"
+if [ -f oracle_town/runs/create_adversarial_runs.py ]; then
+  python3 oracle_town/runs/create_adversarial_runs.py | grep -E "(RUN [ABC]|complete|Decision)"
+else
+  echo "[SKIP] oracle_town/runs/create_adversarial_runs.py absent (referenced but never committed)"
+fi
 echo ""
 
 # 4. Replay Verification

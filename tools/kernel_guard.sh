@@ -47,6 +47,17 @@ ALLOWED_WRITERS=(
   "tools/accept_payload_meta.sh"
 )
 
+# -----------------------------------------------------------------------
+# Doc-fixture allowlist: files that MENTION forbidden patterns inside
+# quoted fixtures/documentation only (mention != use). The scanner-crossing
+# test feeds the exact forbidden string to the scanner UNDER TEST; the
+# string never executes. Grep cannot tell mention from use — we can.
+# -----------------------------------------------------------------------
+DOC_FIXTURE_ALLOWLIST=(
+  "tests/test_scanner_crossing.py"
+)
+ALLOWED_WRITERS+=("${DOC_FIXTURE_ALLOWLIST[@]}")
+
 VIOLATIONS=0
 CHECKED=0
 

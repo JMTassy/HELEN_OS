@@ -114,7 +114,7 @@ Lemma EventType_beq_iff : forall (x y : EventType),
 Proof.
   intros x y. split.
   - apply internal_EventType_dec_bl.
-  - intros ->. destruct x; reflexivity.
+  - intros ->. destruct y; reflexivity.
 Qed.
 
 Record Event := {
