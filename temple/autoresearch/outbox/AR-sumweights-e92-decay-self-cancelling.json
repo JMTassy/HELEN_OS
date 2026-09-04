@@ -20,7 +20,7 @@
     "engine_not_wired": "repo-wide grep: TemporalDecayEngine / decay_and_select_context imported only by tests/test_temporal_decay_v1.py; zero call sites in autoresearch_loop.py, helen.py, memory.py",
     "ci_blind": "no reference to helen_os_scaffold in .github/workflows/, ci_run_checks.py, oracle_town/VERIFY_ALL.sh — the 3 red tests are invisible to CI; last touch of both files: c187c8a 2026-08-11 (E44)",
     "g6_vacuous": "G6 'temporal_decay_outperforms_or_matches_baselines' is satisfied by inaction: with age pinned to 1, nothing is ever pruned, so 'matches baseline' holds trivially",
-    "prior_art": "scan of AR-*.json outbox: no prior summarization_weights / decay packet"
+    "prior_art": "CORRECTED: 7 prior summarization_weights packets exist in the outbox (E10, E21, E29, E38, E43, AR-sumweights-a8f2, AR-9d167217e823) — all target self_improve_loop_v1 proposal scoring or the knowledge engine SOURCE_WEIGHT registry. None touches temporal_decay.py or the decay engine; E92 is the first decay packet, not the first summarization_weights packet"
   },
   "proposed_patch": "temporal_decay.py:405 — age = cycle_number - item.cycle_added (was item.cycle_last_used). Keep L439 injection stamp (TD14 bookkeeping). Docstring L29 'exp(-lambda * (t - t_last_use))' → '(t - t_added)'. Caveat for operator: an anchor that expires (L396-398) then decays from its original cycle_added, not from expiry — slightly steeper than the docstring implies; if undesired, E93 adds a decay_anchor_cycle field reset at add/expiry/re-anchor. Do NOT touch DECAY_LAMBDA / ANCHOR_WEIGHT in this epoch — calibration is E94, after liveness receipt.",
   "reversibility": "one-token change; OPERATOR_APPLY only; no schema, ledger, or governance surface touched",
