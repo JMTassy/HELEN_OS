@@ -14,109 +14,109 @@ CLAUDE.md — AUTO-GENERATED LINE INDEX
     Lines 18–29 | Anchor: #source-scope
 
     - ### experiments/helen_mvp_kernel/ (active work surface)
-      Lines 30–44 | Anchor: #experimentshelenmvpkernel-active-work-surface
+      Lines 30–48 | Anchor: #experimentshelenmvpkernel-active-work-surface
 
   - ## Repository Identity
-    Lines 45–49 | Anchor: #repository-identity
+    Lines 49–53 | Anchor: #repository-identity
 
   - ## Architecture Layers
-    Lines 50–51 | Anchor: #architecture-layers
+    Lines 54–55 | Anchor: #architecture-layers
 
     - ### Layer 1: Constitutional Membrane
-      Lines 52–56 | Anchor: #layer-1-constitutional-membrane
+      Lines 56–60 | Anchor: #layer-1-constitutional-membrane
 
     - ### Layer 2: Append-Only Ledger
-      Lines 57–62 | Anchor: #layer-2-append-only-ledger
+      Lines 61–66 | Anchor: #layer-2-append-only-ledger
 
     - ### Layer 3: Execution + Autonomy
-      Lines 63–68 | Anchor: #layer-3-execution-autonomy
+      Lines 67–72 | Anchor: #layer-3-execution-autonomy
 
     - ### Layer 4: Skills + Tools
-      Lines 69–81 | Anchor: #layer-4-skills-tools
+      Lines 73–85 | Anchor: #layer-4-skills-tools
 
     - ### Layer 5: TEMPLE Exploration
-      Lines 82–86 | Anchor: #layer-5-temple-exploration
+      Lines 86–90 | Anchor: #layer-5-temple-exploration
 
     - ### Layer 6: HELEN_DAN_RALPH_V0 (Bounded Execution Loop)
-      Lines 87–97 | Anchor: #layer-6-helendanralphv0-bounded-execution-loop
+      Lines 91–101 | Anchor: #layer-6-helendanralphv0-bounded-execution-loop
 
     - ### Operator Surface Layer (`apps/helen-surface/`)
-      Lines 98–106 | Anchor: #operator-surface-layer-appshelen-surface
+      Lines 102–110 | Anchor: #operator-surface-layer-appshelen-surface
 
     - ### SOURCEBOUND OBJECT OS (`src/helen_sourcebound_object.py`)
-      Lines 107–109 | Anchor: #sourcebound-object-os-srchelensourceboundobjectpy
+      Lines 111–113 | Anchor: #sourcebound-object-os-srchelensourceboundobjectpy
 
     - ### Non-sovereign HAL inference (`tools/hal_driver.py`, `tools/run_hal_epoch.py`)
-      Lines 110–112 | Anchor: #non-sovereign-hal-inference-toolshaldriverpy-toolsrunhalepochpy
+      Lines 114–116 | Anchor: #non-sovereign-hal-inference-toolshaldriverpy-toolsrunhalepochpy
 
     - ### WUL Packet Validator (P1 compile-time)
-      Lines 113–122 | Anchor: #wul-packet-validator-p1-compile-time
+      Lines 117–126 | Anchor: #wul-packet-validator-p1-compile-time
 
   - ## Governance Artifacts
-    Lines 123–124 | Anchor: #governance-artifacts
+    Lines 127–128 | Anchor: #governance-artifacts
 
     - ### `GOVERNANCE/CLOSURES/`
-      Lines 125–129 | Anchor: #governanceclosures
+      Lines 129–133 | Anchor: #governanceclosures
 
     - ### `GOVERNANCE/TRANCHE_RECEIPTS/`
-      Lines 130–133 | Anchor: #governancetranchereceipts
+      Lines 134–137 | Anchor: #governancetranchereceipts
 
     - ### `oracle_town/protocols/`
-      Lines 134–139 | Anchor: #oracletownprotocols
+      Lines 138–143 | Anchor: #oracletownprotocols
 
     - ### `oracle_town/audits/`
-      Lines 140–145 | Anchor: #oracletownaudits
+      Lines 144–149 | Anchor: #oracletownaudits
 
   - ## Gates
-    Lines 146–157 | Anchor: #gates
+    Lines 150–164 | Anchor: #gates
 
   - ## PULL-Mode Tranche Discipline
-    Lines 158–166 | Anchor: #pull-mode-tranche-discipline
+    Lines 165–173 | Anchor: #pull-mode-tranche-discipline
 
   - ## Schema Authority
-    Lines 167–173 | Anchor: #schema-authority
+    Lines 174–180 | Anchor: #schema-authority
 
   - ## Key Invariants
-    Lines 174–181 | Anchor: #key-invariants
+    Lines 181–188 | Anchor: #key-invariants
 
   - ## Test Suite
-    Lines 182–212 | Anchor: #test-suite
+    Lines 189–223 | Anchor: #test-suite
 
   - ## CI Pipeline
-    Lines 213–227 | Anchor: #ci-pipeline
+    Lines 224–249 | Anchor: #ci-pipeline
 
   - ## AGENTS.md — Subagent Role
-    Lines 228–236 | Anchor: #agentsmd-subagent-role
+    Lines 250–260 | Anchor: #agentsmd-subagent-role
 
   - ## Setup
-    Lines 237–249 | Anchor: #setup
+    Lines 261–279 | Anchor: #setup
 
   - ## Running HELEN
-    Lines 250–302 | Anchor: #running-helen
+    Lines 280–332 | Anchor: #running-helen
 
     - ### Packaging note
-      Lines 303–305 | Anchor: #packaging-note
+      Lines 333–335 | Anchor: #packaging-note
 
   - ## Chat Surfaces
-    Lines 306–320 | Anchor: #chat-surfaces
+    Lines 336–350 | Anchor: #chat-surfaces
 
   - ## Operational Notes
-    Lines 321–328 | Anchor: #operational-notes
+    Lines 351–360 | Anchor: #operational-notes
 
   - ## Key Reference
-    Lines 329–332 | Anchor: #key-reference
+    Lines 361–364 | Anchor: #key-reference
 
   - ## Current State
-    Lines 333–341 | Anchor: #current-state
+    Lines 365–374 | Anchor: #current-state
 
   - ## HELEN OS Look & Feel — Source Atlas Doctrine
-    Lines 342–366 | Anchor: #helen-os-look-feel-source-atlas-doctrine
+    Lines 375–399 | Anchor: #helen-os-look-feel-source-atlas-doctrine
 
   - ## WULMOJI Status Rendering Rule
-    Lines 367–377 | Anchor: #wulmoji-status-rendering-rule
+    Lines 400–410 | Anchor: #wulmoji-status-rendering-rule
 
   - ## Open Frontiers
-    Lines 378–382 | Anchor: #open-frontiers
+    Lines 411–415 | Anchor: #open-frontiers
 
 ================================================================================
 

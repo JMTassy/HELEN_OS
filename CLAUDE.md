@@ -39,7 +39,11 @@ Non-sovereign sandbox. Status: NON_SOVEREIGN / NO_SHIP. Structure:
 - `helen_os/ledger/` — hash-chain, receipts, event log, schemas
 - `helen_os/runtime/` — session, state observer, ralph observer, SSE server
 - `helen_os/kernel/` — core kernel logic (non-sovereign sandbox)
-- `helen_os/tests/` — 8 constitutional test files (hash-chain break, replay determinism, no-receipt-no-mutation, firewall, policy, etc.)
+- `helen_os/authority/`, `helen_os/certificates/`, `helen_os/cli/`, `helen_os/skills/`, `helen_os/tools/` — sandbox-local authority/cert/CLI/skill surfaces
+- `helen_os/tests/` — constitutional test files (hash-chain break, replay determinism, no-receipt-no-mutation, firewall, policy, surface grammar, state/ralph observers)
+- `policy/` — `forbidden_desires.json`, `forbidden_tokens.json`, `permissions.json` (policy fixtures the tests deny against)
+- `focus_cli/` — FOCUS CLI; `ledger/events.ndjson` — sandbox event log
+- `conftest.py` inserts `experiments/helen_mvp_kernel/` on `sys.path`, so run its tests from the repo root by path (see Test Suite)
 - `.venv-gates/` — isolated venv for gate tests
 
 ## Repository Identity
@@ -74,7 +78,7 @@ Non-sovereign sandbox. Status: NON_SOVEREIGN / NO_SHIP. Structure:
   - `templates/meditation/` — HELEN TEMPLE HER meditation video pipeline (commit `8bda100`): reads `meditation.config.json`, injects `{{DATE}}` / `{{MEDITATION_TEXT}}` / `{{RUN_HASH}}` / `{{COMMIT_SHA}}` tokens into 4 HTML compositions, calls Zephyr TTS, renders via `npx hyperframes render`, writes `provenance.json` (authority: NONE). Usage: `python3 generate_meditation.py [--preview|--dry-run|--config path|--output path]`
 - `oracle_town/skills/video/helen-director/` — Montage Engine + STORYBOARD_V1 + ASSET_ENGINE_V1 + 30s candidate runner; parallel Seedance pipeline
 - `oracle_town/skills/video/library/` — curated frame asset pool (refs/canonical/, era axis)
-- `helen_os/render/math_to_face.py` + `math_to_face/SKILL.md` — sovereign white-box render pipeline (φ-SDE + H/G/E/H⁻¹ bidirectional compiler math ↔ latent ↔ image), parallel to `helen-director` rental; **SCAFFOLD** status, Phase 0–9 roadmap in `math_to_face/SKILL.md` §6
+- `helen_os/render/math_to_face.py` + `oracle_town/skills/video/math_to_face/SKILL.md` — sovereign white-box render pipeline (φ-SDE + H/G/E/H⁻¹ bidirectional compiler math ↔ latent ↔ image), parallel to `helen-director` rental; **SCAFFOLD** status, Phase 0–9 roadmap in that SKILL.md §6. The rest of `helen_os/render/` (director, montage, storyboard, asset_engine, receipts, renderer) is the helen-director Python side.
 - `helen_os/render/math_to_face_starter/refs/canonical/` — canonical identity-lock frame reference pool (eras: real, twin, metaverse, none). Scan gaps reported to `artifacts/scan_gap_notes.md` by the KB manifest audit tool. Promotion candidates require explicit GO PROMOTE — authority: false, ledger_mutation: false.
 - `tools/helen_telegram.py` — two-way Telegram bot with voice
 - `tools/helen_simple_ui.py` — web UI at localhost:5001 with voice
@@ -153,7 +157,10 @@ Local HAL-role inference driver and epoch runner. Per-agent model assignment is 
 | K-wul | `scripts/helen_wul_lint.py` | Canonical WUL compile+validate (oracle_town compiler) |
 | LEGORACLE | `helen_os/governance/legoracle_gate_poc.py` | Obligation checking, deterministic SHIP/NO_SHIP, replay-gated (E12) |
 | Kernel Guard | `tools/kernel_guard.sh` | Only allowed writers may touch ledger |
-| Doctrine Admission (DRAFT) | `DOCTRINE_ADMISSION_PROTOCOL_V1` + fixtures | §4 gate for doctrine-class artifacts; fixtures landed, gate not yet active |
+| Doctrine Admission | `tools/validators/doctrine_gate.py` + `tests/test_claim_classification.py` / `test_doctrine_gate.py` | §4 claim-strata harness + pointer-resolving scan of ```claim blocks in `docs/proposals/`; enforced by the `doctrine-gate` workflow on `docs/proposals/**` changes. Gate PASS ⊬ admission — the protocol itself stays UNADMITTED until the §6 ceremony |
+| Outbox Guard | `scripts/outbox_guard.py` | Autoresearch outbox: BAD_JSON packets, broken consumption-log chain, packet bytes changed after decision, unconsumed > `OUTBOX_MAX_UNCONSUMED` (30) |
+| Garden Validators | `scripts/ci_garden_validators.sh` | Runs every `temple/gardens/*/validate_*.py --json`, fails closed on `ok:false` (validators themselves exit 0 even on failure) |
+| Authority Language | `tools/validators/authority_language_linter.py` | Detects authority laundering — admission/reducer/canon phrasing with no attached reducer receipt; fails closed (`--text` / `--file` / `--stdin`, exit 1 = BLOCK) |
 
 ## PULL-Mode Tranche Discipline
 
@@ -194,11 +201,15 @@ Commands:
 - Single test: `.venv/bin/pytest helen_os/tests/test_foo.py::test_bar -v`
 - Root constitutional invariants (not covered by `make test`): `.venv/bin/pytest tests/ -q`
 - Ghost closure detector: `.venv/bin/pytest helen_os/tests/test_no_ghost_closures.py -v`
-- MVP kernel sandbox (non-sovereign): `.venv/bin/pytest experiments/helen_mvp_kernel/helen_os/tests/ -v`
+- MVP kernel sandbox (non-sovereign): `.venv/bin/pytest experiments/helen_mvp_kernel/helen_os/tests/ -v` (or with `experiments/helen_mvp_kernel/.venv-gates/bin/pytest`)
+- Autoresearch consumption loop (garden-only): `python3 temple/autoresearch/outbox_triage.py --emit` → `outbox_consume.py` → `python3 scripts/outbox_guard.py`
+- Garden validators (fail closed): `bash scripts/ci_garden_validators.sh`
 - K8 target: PASS (k8=+1.000)
 - LEGORACLE replay gate: fixture integrity + determinism + frozen output + mutation detection
 
 **PYTHONPATH**: `Makefile` sets `PYTHONPATH := $(CURDIR)` (commit `5b98a3d`, repo-relative). No operator-specific path — `make test` is portable.
+
+**No venv is committed.** `.venv/`, `helen_os_scaffold/.venv/` and `.venv-gates/` are gitignored; a fresh clone has no `pytest` until you run Setup. CI uses Python 3.10 (`ci.yml`) and 3.11 (all other workflows).
 
 **Demo targets** (NON_SOVEREIGN, authority=NONE, no ledger writes):
 
@@ -212,18 +223,29 @@ make demo-airlock      # init airlock only
 
 ## CI Pipeline
 
-CI runs on every push/PR to `main` via `.github/workflows/`. Three jobs in sequence:
+Seven workflows in `.github/workflows/`. Two run on **every branch**, so they gate feature-branch pushes too:
 
-1. **doc-index** — verifies `scratchpad/CLAUDE_MD_LINE_INDEX.txt` and `scratchpad/CLAUDE_MD_SECTIONS_BY_LENGTH.txt` are up-to-date. **After any CLAUDE.md edit, regenerate before committing:**
-   ```bash
-   python3 scratchpad/generate_claude_index.py
-   git add scratchpad/CLAUDE_MD_LINE_INDEX.txt scratchpad/CLAUDE_MD_SECTIONS_BY_LENGTH.txt
-   ```
-   Skipping this step will fail CI with "CLAUDE.md indices are stale!"
+| Workflow | Trigger | What it runs |
+|---|---|---|
+| `kernel_guard.yml` | every push/PR, all branches | `tools/kernel_guard.sh --verbose` (RULE 1–3 write boundary), `tools/test_kernel_properties.py --fuzz 100` (P1–P7), `tools/validate_hash_chain.py` on **every committed `*.ndjson`**, Coq typecheck of `formal/LedgerKernel.v` |
+| `payload_meta.yml` | every push/PR | `tools/accept_payload_meta.sh town/ledger.ndjson` + float ban in payloads |
+| `ci.yml` | push/PR to `main` | 1. **doc-index** (see below) → 2. **verify** (`python3 ci_run_checks.py`: `oracle_town/VERIFY_ALL.sh` + 200-iteration replay determinism via `oracle_town.core.replay`) → 3. **rho-receipt** (K-rho lint, skipped if `artifacts/rho_*` absent) |
+| `doctrine-gate.yml` | `main`, path-filtered on `docs/proposals/**`, `DOCTRINE_ADMISSION_PROTOCOL_V1.md`, doctrine tests/validator | `pytest tests/test_claim_classification.py tests/test_doctrine_gate.py` + `tools/validators/doctrine_gate.py --scan docs/proposals` |
+| `garden-validators.yml` | `main`, path-filtered on `temple/gardens/**` | `scripts/ci_garden_validators.sh` |
+| `outbox-guard.yml` | `main`, path-filtered on `temple/autoresearch/outbox/**` + consumption log | `scripts/outbox_guard.py` with `OUTBOX_MAX_UNCONSUMED=30` |
+| `determinism-gates.yml` | path-filtered on `marketing_street.cjs`, `coupling_gate.ts`, `conformance_runner.ts` | Node 18: preflight nondeterminism check, marketing-street determinism, CouplingGate conformance vectors |
 
-2. **verify** — runs `python3 ci_run_checks.py`, which calls `oracle_town/VERIFY_ALL.sh` then a 200-iteration replay determinism check via `oracle_town.core.replay`.
+Consequences for any commit:
+- Any new or edited `*.ndjson` anywhere in the tree must have a valid hash chain, or `kernel_guard` fails.
+- Any Python file that opens a ledger for append/write, or imports `NDJSONWriter`, outside `ALLOWED_WRITERS` in `tools/kernel_guard.sh` fails RULE 1/2.
+- Adding a packet to `temple/autoresearch/outbox/` without consuming older ones can trip the unconsumed ceiling.
 
-3. **rho-receipt** — K-rho viability receipt lint (requires `jsonschema`; installed via `requirements-ci.txt`).
+**doc-index** verifies `scratchpad/CLAUDE_MD_LINE_INDEX.txt` and `scratchpad/CLAUDE_MD_SECTIONS_BY_LENGTH.txt` are up-to-date. **After any CLAUDE.md edit, regenerate before committing:**
+```bash
+python3 scratchpad/generate_claude_index.py
+git add scratchpad/CLAUDE_MD_LINE_INDEX.txt scratchpad/CLAUDE_MD_SECTIONS_BY_LENGTH.txt
+```
+Skipping this step will fail CI with "CLAUDE.md indices are stale!"
 
 ## AGENTS.md — Subagent Role
 
@@ -234,11 +256,19 @@ CI runs on every push/PR to `main` via `.github/workflows/`. Three jobs in seque
 - Current coding lane: HELEN Director / render pipeline (receipt sidecars, operator rating enforcement, heuristic filtering, seed selection).
 - Forbidden without explicit approval: scaling render generation, memory mutation, canon promotion, ledger writes, broad refactors.
 
+`.claude/agents/` holds two subagent cards: `CLAUDE_HAL_CODEX.md` (NON_SOVEREIGN_CODER — "builders propose; HAL verifies"; if tests fail, report and stop) and `CLAUDE_MAYOR_CODEX.md` (NON_SOVEREIGN_PACKETIZER — assembles `MAYOR_PACKET_V1` / READY_FOR_REDUCER packages; "MAYOR prepares the case. REDUCER decides the verdict."). Neither may emit SHIP/NO_SHIP, append the ledger, or promote canon.
+
 ## Setup
 
 ```bash
 python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
+```
+
+The scaffold tree is a separate `helen-os` package (Click CLI, console script `helen = helen_os.cli:main`, deps `click pyyaml pydantic requests openai`):
+```bash
+cd helen_os_scaffold && python3 -m venv .venv && source .venv/bin/activate && pip install -e '.[dev]'
+helen talk "hello" --ledger :memory:
 ```
 
 `experiments/helen_mvp_kernel/.venv-gates/` is a separate venv used by MVP kernel gate tests — bootstrap it independently if needed:
@@ -324,6 +354,8 @@ Multiple chat entry points exist; they are **not interchangeable**.
 - `artifacts/k8_*.json`, `artifacts/k8_trace.ndjson`, `artifacts/k_tau_*.json` are live gate-trace outputs and routinely show dirty after lint runs. They are not stash-eligible; let the gate scripts manage them.
 - `artifacts/audio/` and `artifacts/media/` are TTS and rendered video outputs (used by the meditation generator and director pipelines). Not stash-eligible; not committed without explicit operator decision.
 - `artifacts/scan_gap_notes.md` is the KB manifest audit output (era-gap and naming-issue report against `math_to_face_starter/refs/canonical/`). DRAFT — never auto-promoted.
+- **Root-level `*.md` sprawl is historical.** The ~100 `CONQUEST_*`, `EPOCH*`, `*_COMPLETE.md`, `*_SUMMARY_*.md` files at the repo root are dated session artifacts; `DOCUMENTATION_MAP.md` indexes an older four-layer (L0–L3) framing. Orient from this file and `docs/HELEN_OS_CTO_GUIDE_V1_1.md`, not from root-level status documents.
+- `.claude/launch.json` starts `node helen_ui_server.js` on port 3333 — the `ui/` Receipt Console (live tail of events/summary/wisdom files). Separate from `apps/helen-surface/` and from `tools/helen_simple_ui.py` (5001).
 - **K-tau `datetime.utcnow()` is a mu_DETERMINISM violation.** Use `datetime.now(timezone.utc)` throughout. This is the most common recurring lint failure — check all new files before committing.
 
 ## Key Reference
@@ -334,6 +366,7 @@ Multiple chat entry points exist; they are **not interchangeable**.
 
 **Do not trust dated state — run `git log` and `make test`.** Architecture details live in the sections above; the strata below keep only facts stated nowhere else. Constitutional invariants, gates, and the firewall are unchanged across all strata.
 
+- **2026-08-24** (`735f821`): GOBLIN/JESTER wordless-brainstorm protocol (`docs/proposals/GOBLIN_JESTER_PROTOCOL_V1.md`, grimoire `temple/goblin/grimoire/HELEN_JESTER_GOBLIN_RECALL_V0.md` — underwarren search operator contract frozen; PROPOSAL, NO_CLAIM) · autoresearch trace epochs now run to **E91** — nearly every commit since July is `trace(autoresearch): E<n> <target> — … PROPOSAL ONLY`, each adding exactly one `temple/autoresearch/outbox/AR-<target>-e<n>-<slug>.json` packet (fields: `epoch`, `target`, `authority:false`, `canon:false`, `ledger_effect:"none"`, `claim_status:"NO_CLAIM"`, `git_stage:"no"`, `git_commit:"no"`, `final:"HOLD_FOR_OPERATOR"`, `summary`, `hypothesis`, `evidence`, `proposed_tweak`, `metric`, `keep_rule`, `next_epoch`). Packets propose; **no code edit is applied in a trace commit**. Consumption trio: `outbox_triage.py` (lens, TRIAGE_RECEIPT_V0) → `outbox_consume.py` (pen, CONSUME_RECEIPT_V0) → `scripts/outbox_guard.py` (gate); law in `docs/proposals/HELEN_DIGITAL_METABOLISM_V0.md` §"Consumption Organ".
 - **2026-07-03** (`12ec35a`): `transport/` math program (Vols I–II, `tests/test_transport*.py`, `docs/proposals/TRANSPORT_THEOREM_V0.md`) · AUTORESEARCH safe architecture V1 (`temple/autoresearch/` — `autoresearch_policy.py` packet validator, `outbox/` AR-*.json packets, always `authority=false`, reducer_required; spec `docs/proposals/HELEN_AUTORESEARCH_SAFE_ARCHITECTURE_V1.md`) · authority-language linter (`tools/validators/authority_language_linter.py`) · `do_next_v1` structural policy engine (`helen_os/api/do_next_v1.py`; executor receipts reach the ledger only via `helen_say`) · `temple/gardens/` layer — core law **DREAMT ≠ CLAIMED**; every garden ships a fail-closed validator — run it before editing garden content.
 - **2026-06-15** (`4d1e185`): skill-promotion admission LIVE — 6-gate `_handle_promote_skill()` + `_handle_seq_correction()` in the kernel daemon; NDJSONWriter `fcntl.flock` + on-disk tail re-read closes the TOCTOU race (seq=287 fork ANCHORED at seq=295, chain PASS); `hal_verdict_from_kernel()` now passes `mutations` through; EXPLORE mechanic E026 unlocked. Protocols in `oracle_town/protocols/`; coverage via `make test` (`test_ndjson_writer_atomic.py`, `test_handle_promote_skill.py`, …).
 - **2026-06-03**: operator surfaces (`apps/helen-surface/`) · SOURCEBOUND OBJECT OS · local HAL inference (`tools/hal_driver.py`, `docs/spec/MODEL_ROUTING_V1.md`) · `helen_awakening` / portrait video lanes + STORYBOARD_V1 · GOBLIN_TEMPLE inner memory rooms + Akashic interface · Telegram `/her` HER-presence command (Groq fallback).
@@ -379,4 +412,4 @@ Promotion to `🟢 ADMITTED` requires an explicit operator admission receipt. Pr
 
 - **Closure attestation gap**: ghost-closure detection is the next frontier. Blocked on Schema Authority seam materialization; needs `closure_receipt_v1` + CI ghost detection wired into the gate pipeline.
 - **AUTORESEARCH E11/E12 reconciliation**: hypothesis + experiment landed (see Current State). Awaiting peer-review → countersign → MAYOR ruling. E13 stays blocked until then.
-- **Doctrine Admission gate activation**: fixtures in place, gate not yet enforcing.
+- **Doctrine Admission §6 ceremony**: the `doctrine-gate` workflow now enforces the §4 harness and the `docs/proposals` claim-block scan in CI, but `DOCTRINE_ADMISSION_PROTOCOL_V1` itself remains UNADMITTED until the §6 ceremony (fresh-context classifier, vector authors ≠ classifier).
