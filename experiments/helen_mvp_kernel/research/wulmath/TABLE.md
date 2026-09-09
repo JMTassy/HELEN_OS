@@ -106,5 +106,5 @@
 | 104 | `C → C₀ · quality 0.92 → 0.0 · 10/10 structure held` | `business_semantics_survive_replacement_of_cognition` | 4 green_deep |
 | 105 | `Worker ⊢ execute · HELEN ⊢ admit` | `workers_execute_graphs_helen_admits_graphs` | 4 green_deep |
 | 106 | `D_NI = D_cross + D_local` | `no_coordinate_acquires_institutional_force_by_itself` | 4 green_deep |
-| 107 | `Retain ⊬ Admit ⊬ Authorize` | `an_alternative_may_survive_without_being_true_or_permitted` | 2 orange_earth |
+| 107 | `Retain ⊬ Admit · Retain ⊬ Authorize` | `an_alternative_may_survive_without_being_true_or_permitted` | 2 orange_earth |
 | 108 | `¬CanRise(c) ⇒ Info(c = 0) = 0` | `a_safety_counter_that_cannot_rise_reports_nothing` | 7 violet_white |

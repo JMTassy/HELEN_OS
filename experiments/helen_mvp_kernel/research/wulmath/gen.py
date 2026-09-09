@@ -412,8 +412,12 @@ h1 em {{ font-style: italic; color: var(--ink-2); }}
         <span class="ax-v">□(¬illegal mutation) ∧ ◇(critical reachable obligation ⇒ resolution)</span>
       </div>
       <div class="ax">
+        <span class="ax-k">Chain rule</span>
+        <span class="ax-v">⊬ is NOT transitive · a ⊬ b ⊬ c means (a⊬b) ∧ (b⊬c) and never (a⊬c) · ⊊ and ⊋ chains ARE transitive</span>
+      </div>
+      <div class="ax">
         <span class="ax-k">Separation</span>
-        <span class="ax-v">Retain <span class="no">⊬</span> Admit <span class="no">⊬</span> Authorize &nbsp;·&nbsp; three predicates, never one</span>
+        <span class="ax-v">Retain <span class="no">⊬</span> Admit &nbsp;·&nbsp; Retain <span class="no">⊬</span> Authorize &nbsp;·&nbsp; three predicates, never one</span>
       </div>
     </div>
 

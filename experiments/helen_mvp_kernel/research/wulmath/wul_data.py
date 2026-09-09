@@ -111,7 +111,7 @@ LAWS = [
  (104,"business_semantics_survive_replacement_of_cognition","C → C₀ · quality 0.92 → 0.0 · 10/10 structure held",4),
  (105,"workers_execute_graphs_helen_admits_graphs","Worker ⊢ execute · HELEN ⊢ admit",4),
  (106,"no_coordinate_acquires_institutional_force_by_itself","D_NI = D_cross + D_local",4),
- (107,"an_alternative_may_survive_without_being_true_or_permitted","Retain ⊬ Admit ⊬ Authorize",2),
+ (107,"an_alternative_may_survive_without_being_true_or_permitted","Retain ⊬ Admit · Retain ⊬ Authorize",2),
  (108,"a_safety_counter_that_cannot_rise_reports_nothing","¬CanRise(c) ⇒ Info(c = 0) = 0",7),
 ]
 

@@ -1,0 +1,87 @@
+n                       = 108
+classes                 = 7
+chance baseline         = 0.1429
+majority baseline       = 0.2037
+H(colour)  prior        = 2.7441 bits
+LOO accuracy            = 0.3611  (39/108)
+error rate              = 0.6389  (69/108)
+
+confusion (true -> predicted):
+  v1 red_oxide       7   0   1   0   3   2   2   (n=15)
+  v2 orange_earth    1   1   0   1   3   1   1   (n=8)
+  v3 ochre_gold      2   0   3   1   2   3   2   (n=13)
+  v4 green_deep      2   1   1   4   1   3   1   (n=13)
+  v5 blue_slate      2   0   1   0  10   4   5   (n=22)
+  v6 indigo          1   1   2   0   6   3   3   (n=16)
+  v7 violet_white    1   1   2   0   2   4  11   (n=21)
+
+misclassified:
+  003 retroactive_authority                                3->6
+  007 negative_receipt                                     5->3
+  009 gate_coverage_hole                                   7->6
+  010 structurally_impossible                              1->6
+  012 no_namespace_no_semantics                            1->6
+  013 authority_gravity                                    6->3
+  014 motif_has_no_authority                               6->3
+  015 label_is_not_a_type                                  6->5
+  016 undeclared_gate                                      7->1
+  018 projection_is_not_evidence                           6->5
+  019 receipt_is_not_permission                            3->5
+  020 learning_mints_no_lease                              3->6
+  021 confidence_admits_nothing                            5->7
+  022 bypass_text_deny                                     3->7
+  023 unrecoverable_loss_holds                             7->2
+  024 causal_aliasing                                      1->5
+  026 reducer_conservation                                 5->7
+  028 capacity_precondition                                3->1
+  033 scheduler_ranks_deadline_over_theorem                7->5
+  034 impossibility_must_be_witnessed                      5->6
+  035 min_distance_does_not_admit                          6->7
+  036 capability_is_one_shot                               3->7
+  037 replay_wins_over_narrative                           5->1
+  038 captured_is_not_lawfully_captured                    3->4
+  040 unwitnessed_cross_layer_join_refused                 4->7
+  041 name_is_not_identity                                 1->7
+  042 verdict_scope_does_not_propagate                     7->6
+  044 eight_gold_oracles_hold                              5->7
+  045 cardinality_is_not_assumed                           6->5
+  046 merge_is_a_governed_transition                       4->1
+  047 relay_is_not_direct_observation                      5->6
+  048 three_ceilings_bound_admission                       7->5
+  049 observed_is_a_proper_subset_of_possible              2->4
+  050 absence_is_unknown_not_forbidden                     2->5
+  054 ontology_change_is_an_effect                         4->3
+  059 no_ceiling_is_removable                              7->6
+  061 trust_is_earned_never_declared                       5->7
+  062 gate_tolerances_are_measured                         6->7
+  063 memory_transfers_craft_never_authority               3->6
+  064 unknown_resolution_is_not_new_law                    6->5
+  067 observed_is_not_survived_is_not_produced             2->5
+  068 cognition_never_crosses_the_membrane                 7->3
+  069 palette_is_factored_never_replaced                   6->7
+  070 locally_admissible_is_not_globally_admissible        4->5
+  072 a_graph_whose_state_depends_on_read_order_is_a_race  4->1
+  073 a_different_lineage_does_not_make_n_eff_two          5->1
+  074 a_slot_may_not_be_valid_in_two_slices_at_once        1->5
+  075 a_warrant_binds_the_value_it_was_minted_over         5->7
+  076 the_grantor_may_not_be_the_grantee                   3->1
+  077 the_gateway_decides_and_the_app_never_names          3->5
+  079 tampering_is_arithmetic_not_policy                   5->6
+  080 the_engine_owns_every_arrow                          4->6
+  081 progress_at_one_layer_cannot_mint_the_next           7->3
+  084 the_enterprise_boundary_is_deterministic_software    1->7
+  086 confirmations_accumulate_and_never_reinforce         5->6
+  089 no_perceptual_property_mints_a_world_state           6->1
+  090 a_projection_is_not_a_measurement                    6->5
+  091 plausibility_never_becomes_history                   2->6
+  092 a_grammar_must_predict_what_it_never_saw             2->5
+  095 refusal_count_is_a_symptom_the_boundary_is_the_patie 7->6
+  096 the_index_is_a_view_and_a_view_never_becomes_truth   6->5
+  097 layout_is_not_dependency_and_a_classifier_is_not_a_g 4->6
+  098 a_backup_is_not_real_until_a_restore_re_derives_it   1->5
+  099 one_core_configured_per_tenant_never_a_client_fork   1->3
+  101 sacred_geometry_generates_hypotheses_never_warrants  6->2
+  103 goblins_multiply_hypotheses_only_warrants_move_the_f 2->1
+  104 business_semantics_survive_replacement_of_cognition  4->2
+  105 workers_execute_graphs_helen_admits_graphs           4->6
+  107 an_alternative_may_survive_without_being_true_or_per 2->7
