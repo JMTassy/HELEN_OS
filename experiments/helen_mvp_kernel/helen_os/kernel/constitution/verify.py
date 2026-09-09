@@ -2374,6 +2374,77 @@ def _probes():
              "stage, never before the audits",
              _graph_audit))
 
+    # ── typed institutional non-interference (NIM_V0) ──────────────
+    import non_interference_matrix as nimx
+
+    def _nim():
+        m = nimx.matrix()
+        forbidden = nimx.evaluate([{"source": "Q", "target": "A",
+                                    "warrant": "W_ANYTHING",
+                                    "witness": "tok"}])
+        wrongw = nimx.evaluate([{"source": "A", "target": "X",
+                                 "warrant": "W_MEMORY_COMPRESSION",
+                                 "witness": "tok"}])
+        licensed = nimx.evaluate([{"source": "A", "target": "X",
+                                   "warrant": "W_CAPABILITY_TOKEN",
+                                   "witness": "kappa:1"}])
+        local = nimx.evaluate([{"source": "A", "target": "A",
+                                "before": {"level": 1},
+                                "after": {"level": 3}}])
+        asserted = nimx.warrant_is_not_assertion("W_INDEPENDENT_ROOT",
+                                                 False)
+        trace = nimx.chid01_trace(True, False)
+        neff = nimx.chid02_neff(7, 50, 1)
+        mem = nimx.chid03_memory({"value": "v", "root": "r",
+                                  "tau_persist": 1, "scope": "s",
+                                  "status": "HYP"}, "read", 1, 3)
+        topo = nimx.chid04_topology(bisimilar=False,
+                                    frontier_preserved=True)
+        roles = nimx.chid05_roles("p1", "p1", "p1", True, True)
+        untyped = nimx.chid05_roles("p1", "p2", "p3", False)
+        incomplete = nimx.nim_implies_monoid(0, {"a": 1}, {"a": 2})
+        unit = nimx.gamma_I(True, False, False)
+        st = nimx.status()
+        return (m["cells"] == 144 and m["counts"]["I"] == 12 and
+                m["counts"]["L"] == 5 and
+                forbidden["violations"][0]["code"] ==
+                "E_FORBIDDEN_INTERFERENCE" and
+                wrongw["violations"][0]["code"] ==
+                "E_UNLICENSED_CROSSING" and
+                licensed["admissible"] is True and
+                local["D_local"] == 1 and local["D_cross"] == 0 and
+                asserted["reason"] == "E_ASSERTED_NOT_VERIFIED" and
+                trace["reason"] ==
+                "E_TRACE_COMPLIANT_STATE_INADMISSIBLE" and
+                neff["N_eff"] == 7 and
+                neff["n_eff_implies_roots"] is False and
+                neff["reason"] == "E_ROOT_WITHOUT_WITNESS" and
+                mem["reason"] == "E_READ_UPGRADED_STATUS" and
+                topo["permitted"] is True and
+                topo["bisimilar"] is False and
+                roles["ok"] is True and
+                roles["same_principal"] is True and
+                untyped["reason"] == "E_ROLES_UNTYPED" and
+                incomplete["reason"] == "E_MATRIX_INCOMPLETE" and
+                unit["reason"] == "E_NOT_INVERTIBLE" and
+                st["sealed_theorem"] is False)
+    A(_probe("no_coordinate_acquires_institutional_force_by_itself",
+             "D_NI = D_cross + D_local: the diagonal is NOT a free "
+             "pass — authority escalating inside its own coordinate "
+             "is caught as a LOCAL defect, which the reference "
+             "implementation skipped; a structurally barred crossing "
+             "admits no warrant however perfect; a licensed crossing "
+             "demands its EXACT typed witness and an asserted warrant "
+             "is not a verified one; a fully trace-compliant run can "
+             "still be state-inadmissible; N_eff is a representation "
+             "measure that implies nothing about roots in EITHER "
+             "direction; a memory read cannot upgrade what it reads; "
+             "a NON-bisimilar topology is permitted while F* holds; "
+             "roles are types so one principal may hold several; and "
+             "D_NI = 0 with a moved frontier falsifies the MATRIX, "
+             "not the run",
+             _nim))
+
     return P
 
 
