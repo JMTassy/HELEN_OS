@@ -2445,6 +2445,70 @@ def _probes():
              "not the run",
              _nim))
 
+    # ── branch retention: keep an alternative without admitting it ──
+    import branch_retention as brt
+    import non_interference_matrix as nimy
+
+    def _retention():
+        b = {"id": "b1", "prediction": 3, "score": 30,
+             "status": "SUPPORTED"}
+        r = brt.retain(b)
+        noadmit = brt.admit(b)
+        revoked = brt.authorize("act:3", {"t0": ("act:3",), "t1": ()},
+                                "t1")
+        kernel = brt.retention_touches_kernel(True)
+        a = brt.experiment(seeds=120, k=3)["arms"]
+        beam = brt.falsifier_beam_matches(a)
+        gate = brt.safety_gate(a)
+        easy = "easy_early_commit"
+        # the operator's mid-turn corrections
+        inv = {"authority": 0, "roots": 2}
+        diff_action = nimy.institutional_invariance(
+            inv, dict(inv), 0.35, 0.55, "act:3", "act:5")
+        obs = nimy.independent_observer({"authority_level": 0},
+                                        {"authority_level": 3})
+        incomplete = nimy.completeness_conjecture(0, obs)
+        return (r["retained"] is True and r["admits"] is False and
+                r["authorizes"] is False and
+                noadmit["reason"] == "E_ADMIT_WITHOUT_WITNESS" and
+                revoked["reason"] ==
+                "E_ACTION_NOT_CURRENTLY_GRANTED" and
+                kernel["reason"] == "E_RETENTION_TOUCHED_KERNEL" and
+                a["D_retention"]["success_rate"] >
+                a["C_beam"]["success_rate"] >
+                a["A_early"]["success_rate"] and
+                a["B_best_of_n"]["success_rate"] ==
+                a["A_early"]["success_rate"] and
+                a["D_retention"]["by_family"][easy] ==
+                a["A_early"]["by_family"][easy] and
+                a["D_retention"]["mean_cost"] >
+                a["A_early"]["mean_cost"] and
+                a["D_retention"]["wrong_action_rate"] >
+                a["C_beam"]["wrong_action_rate"] and
+                beam["falsified"] is False and
+                gate["gate"] == "PASS" and
+                diff_action["ok"] is True and
+                diff_action["actions_differ"] is True and
+                obs["violation"] == 1 and
+                incomplete["completeness_claim"] == "INVALIDATED")
+    A(_probe("an_alternative_may_survive_without_being_true_or_permitted",
+             "Retain !=> Admit and Retain !=> Authorize, tested on the "
+             "same branch; a plan authorized at t0 is refused at t1 "
+             "when the grant is withdrawn; a retention policy that "
+             "writes a gate is refused. Measured over 4 arms at equal "
+             "budget: retention > beam > early = best-of-N, with NO "
+             "gain on easy tasks and a higher cost there, and a real "
+             "downside — retention converts abstentions into actions, "
+             "not all of them correct. F* conserves OBLIGATIONS not "
+             "answers, so two policies may take different authorized "
+             "actions while both hold the invariant. And the "
+             "completeness conjecture is REFUTED on demand: an "
+             "undeclared transition gives D_NI = 0 while the "
+             "independent outcome-state observer sees authority rise "
+             "— a null defect is the absence of DECLARED leakage, not "
+             "of leakage",
+             _retention))
+
     return P
 
 

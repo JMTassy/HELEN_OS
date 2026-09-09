@@ -398,3 +398,84 @@ def status() -> dict:
             "ledger_effect": "none",
             "note": "the literature validates the PROBLEM SPACE; it "
                     "does not validate this architecture"}
+
+
+# ── correction 8: what F* conserves (operator, mid-turn) ───────────────
+
+def institutional_invariance(inv_before, inv_after,
+                             q_before, q_after,
+                             action_before=None, action_after=None) -> dict:
+    """The operator's correction: F* must range over the INSTITUTIONAL
+    OBLIGATIONS to be preserved, never over the final answer. Read as
+    'same output', it would forbid precisely the improvement sought.
+
+        Invariant_I(Pi_0) AND Invariant_I(Pi_1) AND Q(Pi_1) > Q(Pi_0)
+
+    Two policies may choose DIFFERENT actions, each authorized, while
+    conserving the same obligations. Different action is not a
+    violation; a changed obligation is."""
+    inv_held = (canon(inv_before) == canon(inv_after))
+    if not inv_held:
+        return {"ok": False, "reason": "E_INSTITUTIONAL_INVARIANT_MOVED",
+                "note": "this is the violation — not the action change"}
+    return {"ok": True,
+            "invariants_held": True,
+            "actions_differ": action_before != action_after,
+            "quality_gain": round(q_after - q_before, 6),
+            "improvement": q_after > q_before,
+            "law": "F* conserves obligations, not answers; differing "
+                   "authorized actions are permitted and are the point"}
+
+
+# ── correction 9: the completeness conjecture needs an OUTSIDE eye ─────
+
+def independent_observer(state_before, state_after) -> dict:
+    """Deliberately does NOT consult the matrix, the declared
+    transitions, or any NIM control. It reads the RESULTING STATE and
+    asks whether authority, provenance roots or executed effects
+    actually moved. A transition that was never DECLARED is invisible
+    to the matrix and visible here — which is the blind spot the
+    operator named."""
+    b, a = state_before or {}, state_after or {}
+    findings = []
+    if a.get("authority_level", 0) > b.get("authority_level", 0):
+        findings.append("AUTHORITY_ROSE")
+    if a.get("root_count", 0) > b.get("root_count", 0):
+        findings.append("ROOTS_ROSE")
+    if a.get("effects_executed", 0) > b.get("effects_executed", 0):
+        findings.append("EFFECT_EXECUTED")
+    if a.get("admitted_claims", 0) > b.get("admitted_claims", 0):
+        findings.append("CLAIM_ADMITTED")
+    return {"violation": 1 if findings else 0,
+            "findings": tuple(findings),
+            "method": "outcome_state_audit",
+            "independent_of": "declared-transition matrix controls"}
+
+
+def completeness_conjecture(nim_defect, observer) -> dict:
+    """NIM(T) = 0 => T in M_I is a COMPLETENESS CONJECTURE relative to
+    the declared domain and observations — a zero defect does not
+    establish absence of leakage. The sought counterexample is
+
+        NIM(T) = 0  AND  Violation_I(T) = 1
+
+    When it appears, the completeness CLAIM is invalidated and the
+    faulty run is kept as a witness; the matrix is what was refuted,
+    never the observation."""
+    if nim_defect == 0 and observer.get("violation", 0) == 1:
+        return {"completeness_claim": "INVALIDATED",
+                "reason": "E_MATRIX_INCOMPLETE",
+                "counterexample": True,
+                "witness_retained": True,
+                "leaked": observer.get("findings"),
+                "law": "a null defect is not the absence of leakage; "
+                       "it is the absence of DECLARED leakage"}
+    if nim_defect > 0 and observer.get("violation", 0) == 0:
+        return {"completeness_claim": "UNREFUTED_THIS_RUN",
+                "counterexample": False,
+                "note": "matrix caught what the observer did not — "
+                        "conservative, not proof"}
+    return {"completeness_claim": "UNREFUTED_THIS_RUN",
+            "counterexample": False,
+            "caveat": "unrefuted on the declared domain and "
+                      "observations only; not a completeness proof"}

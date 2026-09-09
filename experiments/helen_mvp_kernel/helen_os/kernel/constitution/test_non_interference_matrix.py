@@ -235,3 +235,59 @@ def test_this_is_a_conjecture_not_a_sealed_theorem():
 
 def test_deterministic():
     assert nim.canon(matrix()) == nim.canon(matrix())
+
+
+# ── correction 8: F* conserves obligations, not answers ────────────────
+
+def test_a_different_authorized_action_is_not_a_violation():
+    from non_interference_matrix import institutional_invariance
+    inv = {"authority": 0, "roots": 2, "replay": True}
+    v = institutional_invariance(inv, dict(inv), q_before=0.35,
+                                 q_after=0.55,
+                                 action_before="act:3",
+                                 action_after="act:5")
+    assert v["ok"] is True and v["actions_differ"] is True
+    assert v["improvement"] is True and v["quality_gain"] == 0.2
+    moved = institutional_invariance(inv, {**inv, "authority": 1},
+                                     0.35, 0.55)
+    assert moved["reason"] == "E_INSTITUTIONAL_INVARIANT_MOVED"
+
+
+# ── correction 9: the independent observer finds the blind spot ────────
+
+def test_an_undeclared_transition_is_invisible_to_the_matrix():
+    """The counterexample the operator asked for, and it FIRES: a
+    leak that was never declared gives NIM = 0 while the outcome-state
+    audit sees authority rise."""
+    from non_interference_matrix import (completeness_conjecture,
+                                         independent_observer)
+    declared = evaluate([])                    # nothing declared
+    assert declared["D_NI"] == 0
+    obs = independent_observer({"authority_level": 0},
+                               {"authority_level": 3})
+    assert obs["violation"] == 1
+    assert "AUTHORITY_ROSE" in obs["findings"]
+    v = completeness_conjecture(declared["D_NI"], obs)
+    assert v["completeness_claim"] == "INVALIDATED"
+    assert v["counterexample"] is True
+    assert v["witness_retained"] is True
+
+
+def test_a_clean_run_is_unrefuted_not_proven():
+    from non_interference_matrix import (completeness_conjecture,
+                                         independent_observer)
+    obs = independent_observer({"authority_level": 1},
+                               {"authority_level": 1})
+    assert obs["violation"] == 0
+    v = completeness_conjecture(0, obs)
+    assert v["completeness_claim"] == "UNREFUTED_THIS_RUN"
+    assert "not a completeness proof" in v["caveat"]
+
+
+def test_the_observer_does_not_consult_the_matrix():
+    from non_interference_matrix import independent_observer
+    obs = independent_observer({"root_count": 1, "effects_executed": 0},
+                               {"root_count": 4, "effects_executed": 2})
+    assert obs["method"] == "outcome_state_audit"
+    assert "declared-transition" in obs["independent_of"]
+    assert set(obs["findings"]) == {"ROOTS_ROSE", "EFFECT_EXECUTED"}
