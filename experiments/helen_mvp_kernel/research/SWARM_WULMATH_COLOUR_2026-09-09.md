@@ -142,11 +142,110 @@ it has not been built for the plate.
 
 ---
 
+## REPORTED_EXTERNAL — Goblin 5's grounding, and it reframes the goal
+
+Graded REPORTED_EXTERNAL: the goblin's own note says arxiv.org and
+huggingface.co were **blocked by this session's egress proxy**, so
+every item is a search-snippet confirmation of a real title/ID/venue,
+not a full-text read. I have not re-derived any of it. Treat titles as
+pointers to check, not as read sources.
+
+### What is already solved — reuse, do not invent
+
+- **Colour as a type channel is 45 years old.** Coloured Petri Nets
+  (Jensen, 1980; CACM 2015). Tokens carry colour *sets* drawn from
+  type theory, statically checkable, with tool support. And CPN
+  already reached our own conclusion independently: colour is
+  redundant encoding, the type must exist in the text too or it is
+  lost to grep, diff and colour-blind readers. Our
+  `no_state_by_color_alone` is CPN's discipline rediscovered.
+- **`Mint(κ) ⊢ UseCount(κ) ≤ 1` is literally linearity.** Linear
+  logic (Girard 1987), linear/affine types. Written as a linear
+  judgment, a type checker enforces it; written as an arithmetic side
+  condition — which is what we did — the enforcement is thrown away.
+- **Authority separation has a formal home**: Abadi's `says` modality,
+  ABLP, Binder, SecPAL. Proof theory and decision procedures exist.
+  `the_grantor_may_not_be_the_grantee` is a delegation statement in a
+  logic that already has a checker.
+- **The bandwidth fight is already lost.** KV-cache channels —
+  DroidSpeak (arXiv 2411.02820), Cache-to-Cache (arXiv 2510.03215) —
+  pass semantics between models without text at all. No symbolic
+  notation competes on tokens per second. **The only defensible ground
+  for coloured WULmath is that those channels are unreadable by
+  humans and this one is not.**
+
+### The deepest critique: `⊬` has no theory attached
+
+From non-monotonic logic (Reiter's default logic 1980, the
+closed-world assumption, negation as failure): *"not derivable"* is a
+proof-theoretic notion **relative to a fixed theory Γ and a named
+inference relation.** `A ⊬ B` with neither specified is not a
+proposition.
+
+All 108 of our lines are in that state. We never name Γ.
+
+This is our own law 082 turned on the plate:
+`receipt_text_is_not_a_rederivable_receipt` — *"an untyped hex may not
+be verified as anything; an unrun recipe leaves the claim
+FABRICATED_UNTIL_WITNESSED."* **The constitution already contains the
+refusal of its own compression.** The plate is receipt text without a
+re-derivable receipt.
+
+### The lesson from the 1990s, which is the whole verdict
+
+KQML failed not because it was verbose but because its performatives
+had **no agreed semantics**: two agents could exchange a well-formed
+message, act on different meanings, and nothing in the language could
+detect the divergence. FIPA-ACL's fix grounded meaning in the sender's
+*mental state*, which a receiver can never verify.
+
+> *A compressed notation's value is entirely in its verification
+> procedure, and zero in its density.*
+
+By that standard our plate is currently a KQML performative. It
+becomes real only when we can state mechanically which Γ the `⊬` is
+relative to, what inference relation is denied, and what check a
+receiving agent runs to confirm it read the line as written.
+
+**Ship the checker before the notation.** 108 lines is exactly the
+scale at which silent disagreement is invisible.
+
+Independent confirmation of the chain defect: the same goblin flagged
+`A ⊬ B ⊬ C` as ill-formed *"before anything else"*, from the
+non-monotonic-logic literature rather than from our brief. The
+observation shares a root with goblins 4 and 6 (all three had the line
+in front of them); the **justification** does not — that one comes
+from outside.
+
+### The one genuinely open slot
+
+A 2026 survey of agent interoperability protocols (reported as arXiv
+2606.31498) finds **voting and dissent preservation universally absent**
+across MCP, A2A, ACP, ANP and ERC-8004 on a six-dimension governance
+taxonomy. A notation whose primitives are admit / deny / hold / dissent
+targets a documented, currently empty slot.
+
+Not novel, and not to be claimed: compressed AI-to-AI language, colour
+as type, symbolic permission operators, agents developing their own
+code, high compression ratios.
+
+---
+
+## Revised next step
+
+Not "compress further". **Attach a theory and write the checker.**
+
+1. Name Γ per line — which theory each `⊬` is relative to.
+2. Re-express the lines that already have formal homes in those
+   homes: linearity for `Mint(κ)`, an authorization logic for the
+   grantor/grantee family.
+3. Then the checker, and only then the notation.
+
 ## Non-deltas
 
-Goblin 5 (prior art: KQML, FIPA-ACL, LLMLingua, emergent
-communication) had not returned when this receipt was written; nothing
-here reflects its findings. No claim above is a warrant. The entropy
-test used one weak predictor; no stronger one was run. The seven-way
-colour assignment remains a reading, and the v2 result above is
-evidence against part of it.
+No claim above is a warrant. Goblin 5's citations are REPORTED_EXTERNAL
+and unverified by me — arXiv was unreachable from this session. The
+entropy test used one weak predictor; no stronger one was run. The
+seven-way colour assignment remains a reading, and the v2 result above
+is evidence against part of it. No checker exists; no Γ has been named
+for any of the 108 lines.
