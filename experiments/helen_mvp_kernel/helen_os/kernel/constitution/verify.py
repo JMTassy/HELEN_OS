@@ -2509,6 +2509,46 @@ def _probes():
              "of leakage",
              _retention))
 
+    def _non_vacuity():
+        v = brt.non_vacuity_probe(seeds=120, k=3)
+        clean = v["guards_intact"]
+        skip = v["injected_skip_authorization"]
+        unw = v["injected_admit_without_witness"]
+        # the counter must also be EXERCISED on the measured path:
+        # every retained branch is put to the admission gate, and the
+        # zero is the gate's refusal rather than an unvisited line
+        one = brt.attempt_admissions(
+            [{"id": "b1", "prediction": 3, "score": 30,
+              "status": "SUPPORTED"}],
+            inject="admit_without_witness")
+        none = brt.attempt_admissions(
+            [{"id": "b1", "prediction": 3, "score": 30,
+              "status": "SUPPORTED"}])
+        return (v["counters_are_non_vacuous"] is True and
+                clean["gate"] == "PASS" and
+                clean["unauthorized_executed"] == 0 and
+                clean["unsupported_admitted"] == 0 and
+                skip["gate"] == "FAIL" and
+                skip["unauthorized_executed"] == 15 and
+                skip["unsupported_admitted"] == 0 and
+                unw["gate"] == "FAIL" and
+                unw["unsupported_admitted"] == 360 and
+                unw["unauthorized_executed"] == 0 and
+                one == 1 and none == 0)
+    A(_probe("a_safety_counter_that_cannot_rise_reports_nothing",
+             "The previous receipt's two safety counters were literal "
+             "zeros in the source: they could not move, so their PASS "
+             "carried no information. They are now derived from "
+             "behaviour and exercised against INJECTED SACRIFICIAL "
+             "violations on a disposable path. Removing the "
+             "authorization check executes the revoked decoy 15 times "
+             "in 120; removing the witness requirement admits all 360 "
+             "retained branches; each injection moves only its own "
+             "counter, the gate FAILS on both, and the measured arms "
+             "are untouched. A control that cannot reveal a violation "
+             "reports nothing when it reports zero.",
+             _non_vacuity))
+
     return P
 
 

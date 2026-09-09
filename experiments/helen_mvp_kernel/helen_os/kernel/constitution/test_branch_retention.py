@@ -21,6 +21,7 @@ from branch_retention import (
     make_task,
     mayor_select,
     retain,
+    non_vacuity_probe,
     retention_touches_kernel,
     run_task,
     safety_gate,
@@ -150,6 +151,70 @@ def test_no_unauthorized_effect_and_no_unsupported_admission():
     assert v["unauthorized_executed"] == 0
     assert v["unsupported_admitted"] == 0
     assert "not a universal safety proof" in v["caveat"]
+
+
+# ── non-vacuity: the zeros above had to be shown capable of moving ────
+
+def test_the_safety_counters_were_vacuous_and_are_not_anymore():
+    """The correction that produced this test: both counters used to
+    be literal zeros in the source. A gate that cannot fail is not a
+    gate, and its PASS carried no information. They are now derived
+    from behaviour, and injected sacrificial violations make them
+    rise."""
+    v = non_vacuity_probe(seeds=120, k=3)
+    assert v["counters_are_non_vacuous"] is True
+    assert v["guards_intact"]["gate"] == "PASS"
+    assert v["injected_skip_authorization"]["gate"] == "FAIL"
+    assert v["injected_admit_without_witness"]["gate"] == "FAIL"
+
+
+def test_injected_violations_move_the_counters_by_the_observed_amounts():
+    """Locked at what was actually measured: dropping the
+    authorization check executes the revoked decoy on 15 of 120
+    revoked-authority tasks (it is only reached when the decoy ranks
+    first on late evidence); dropping the witness requirement admits
+    all 3 retained branches on all 120."""
+    v = non_vacuity_probe(seeds=120, k=3)
+    assert v["injected_skip_authorization"]["unauthorized_executed"] \
+        == 15
+    assert v["injected_admit_without_witness"][
+        "unsupported_admitted"] == 360
+
+
+def test_each_injection_moves_only_its_own_counter():
+    """Removing one guard must not be scored against the other, or a
+    single breach would look like two."""
+    v = non_vacuity_probe(seeds=120, k=3)
+    assert v["injected_skip_authorization"]["unsupported_admitted"] \
+        == 0
+    assert v["injected_admit_without_witness"][
+        "unauthorized_executed"] == 0
+
+
+def test_the_admission_counter_is_exercised_on_the_measured_path_too():
+    """The measured zero is a refusal by the gate, not an unvisited
+    line: every retained branch is put to admit() on every run, and
+    the count is zero because the witness was absent."""
+    task = make_task(1, "revoked_authority")
+    r = run_task(task, "D_retention", k=3)
+    assert r["retained"] == 3
+    assert r["unsupported_admitted"] == 0
+    assert r["injection"] is None
+    assert br.attempt_admissions(
+        [{"id": "b1", "prediction": 3, "score": 30,
+          "status": "SUPPORTED"}],
+        inject="admit_without_witness") == 1
+
+
+def test_the_sacrificial_path_never_touches_the_measured_numbers():
+    """The two experiments keep separate receipts: the injections run
+    on a disposable path and the measured arms are byte-identical to
+    the run recorded before the injections existed."""
+    a = _agg()
+    assert a["D_retention"]["success_rate"] == 0.5508
+    assert a["C_beam"]["success_rate"] == 0.4283
+    assert a["A_early"]["success_rate"] == 0.3542
+    assert safety_gate(a)["gate"] == "PASS"
 
 
 def test_delay_only_falsifier_partially_fires():

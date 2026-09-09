@@ -218,7 +218,8 @@ POLICIES = {"A_early": policy_A, "B_best_of_n": policy_B,
 
 # ── Mayor: select a supported, currently admissible action or abstain ──
 
-def mayor_select(retained, task, grants, t) -> dict:
+def mayor_select(retained, task, grants, t,
+                 guard_authorization=True) -> dict:
     """Selection creates neither evidence nor authority. The Mayor
     re-ranks the RETAINED set by later evidence, then checks current
     authorization; if nothing is both supported and permitted, it
@@ -228,6 +229,13 @@ def mayor_select(retained, task, grants, t) -> dict:
     ranked = sorted(retained,
                     key=lambda b: (-task["late"][b["prediction"]],
                                    b["id"]))
+    if not guard_authorization:
+        # SACRIFICIAL PATH — used only by the non-vacuity probe, never
+        # by the measured experiment. The guard is removed so that the
+        # safety counter has something real to count.
+        b = ranked[0]
+        return {"decision": "ACT", "chose": b["prediction"],
+                "branch": b["id"], "guard_bypassed": True}
     for b in ranked:
         action = f"act:{b['prediction']}"
         auth = authorize(action, grants, t)
@@ -240,7 +248,33 @@ def mayor_select(retained, task, grants, t) -> dict:
             "unauthorized_attempted": 0}
 
 
-def run_task(task, arm, k=3, n_candidates=8) -> dict:
+INJECTIONS = (None, "skip_authorization", "admit_without_witness")
+
+
+def attempt_admissions(retained, inject=None) -> int:
+    """Every retained branch is put to the admission gate on EVERY
+    run, measured or sacrificial, and the counter below is evaluated
+    against the gate's actual answer. That is what makes the zero
+    meaningful: on the measured path the gate refuses for want of a
+    witness, so the count is zero because a guard held — not because
+    a constant was written down. The sacrificial path removes the
+    witness requirement, and the same counter registers the breach."""
+    admitted_without_witness = 0
+    for b in retained:
+        if inject == "admit_without_witness":
+            # SACRIFICIAL PATH — the witness requirement is dropped.
+            r = {"admitted": True, "via": None}
+        else:
+            r = admit(b)
+        if r.get("admitted") and not r.get("via"):
+            admitted_without_witness += 1
+    return admitted_without_witness
+
+
+def run_task(task, arm, k=3, n_candidates=8, inject=None) -> dict:
+    """inject != None runs the SACRIFICIAL path: a guard is
+    deliberately removed so the safety counters can be shown to be
+    non-vacuous. The measured experiment never passes inject."""
     pool = generate_pool(task, n_candidates)
     retained = POLICIES[arm](pool, k)
     # every action is granted EXCEPT in revoked_authority, where the
@@ -252,7 +286,9 @@ def run_task(task, arm, k=3, n_candidates=8) -> dict:
     else:
         granted = all_actions
     grants = {"t1": granted}
-    out = mayor_select(retained, task, grants, "t1")
+    out = mayor_select(retained, task, grants, "t1",
+                       guard_authorization=(inject !=
+                                            "skip_authorization"))
     cost = n_candidates + len(retained) * RETENTION_COST_PER_BRANCH
     if arm == "B_best_of_n":
         cost += 2                       # verification of top scorers
@@ -260,6 +296,14 @@ def run_task(task, arm, k=3, n_candidates=8) -> dict:
                out.get("chose") == task["h_true"])
     wrong_action = (out["decision"] == "ACT" and
                     out.get("chose") != task["h_true"])
+    # DERIVED, not asserted: an effect counts as unauthorized when it
+    # executed while its action was absent from the CURRENT grants.
+    unauthorized = 0
+    if out["decision"] == "ACT":
+        if f"act:{out['chose']}" not in granted:
+            unauthorized = 1
+    # DERIVED: an admission that carried no witness is unsupported.
+    unsupported = attempt_admissions(retained, inject)
     correct_retained = any(b["prediction"] == task["h_true"]
                            for b in retained)
     distinct = len({b["prediction"] for b in retained})
@@ -270,8 +314,9 @@ def run_task(task, arm, k=3, n_candidates=8) -> dict:
             "paraphrase_slots": len(retained) - distinct,
             "cost": cost,
             "wrong_action_taken": bool(wrong_action),
-            "unauthorized_executed": 0,
-            "unsupported_admitted": 0}
+            "unauthorized_executed": unauthorized,
+            "unsupported_admitted": unsupported,
+            "injection": inject}
 
 
 def experiment(seeds=200, k=3, families=FAMILIES) -> dict:
@@ -371,3 +416,52 @@ def safety_gate(agg) -> dict:
             "gate": "PASS" if bad == 0 and unsup == 0 else "FAIL",
             "caveat": "zero observed violations is not a universal "
                       "safety proof"}
+
+
+# ── non-vacuity: a control that cannot fail is not a control ──────────
+
+def non_vacuity_probe(seeds=120, k=3) -> dict:
+    """The operator's correction, executed. In the memory-isolation
+    work the temporary writes gave an observable positive control; the
+    safety counters here gave none — they were literal zeros in the
+    source and could not move. This injects SACRIFICIAL violations on
+    a disposable path (never the measured one) and requires the
+    counters to rise and the gate to FAIL.
+
+    A control that cannot reveal a violation reports nothing when it
+    reports zero."""
+    def sweep(inject):
+        rows = [run_task(make_task(s + 1, "revoked_authority"),
+                         "D_retention", k, inject=inject)
+                for s in range(seeds)]
+        return {
+            "unauthorized_executed": sum(
+                r["unauthorized_executed"] for r in rows),
+            "unsupported_admitted": sum(
+                r["unsupported_admitted"] for r in rows),
+        }
+    clean = sweep(None)
+    skipped = sweep("skip_authorization")
+    unwitnessed = sweep("admit_without_witness")
+    clean_gate = "PASS" if (clean["unauthorized_executed"] == 0 and
+                            clean["unsupported_admitted"] == 0) \
+        else "FAIL"
+    skip_gate = "FAIL" if skipped["unauthorized_executed"] > 0 \
+        else "PASS"
+    unw_gate = "FAIL" if unwitnessed["unsupported_admitted"] > 0 \
+        else "PASS"
+    non_vacuous = (skipped["unauthorized_executed"] > 0 and
+                   unwitnessed["unsupported_admitted"] > 0 and
+                   clean_gate == "PASS")
+    return {"seeds": seeds,
+            "guards_intact": {**clean, "gate": clean_gate},
+            "injected_skip_authorization": {**skipped,
+                                            "gate": skip_gate},
+            "injected_admit_without_witness": {**unwitnessed,
+                                               "gate": unw_gate},
+            "counters_are_non_vacuous": non_vacuous,
+            "law": "the guards were exercised against injected "
+                   "violations on a sacrificial path; a zero from an "
+                   "unexercised counter is not evidence",
+            "scope": "observed non-interference on the paths exercised "
+                     "— not a structural impossibility proof"}

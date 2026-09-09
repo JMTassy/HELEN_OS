@@ -64,8 +64,71 @@ sampling, same blind spot — it still *selects by score*.
   constraint here; selection error is untested.
 - **"Gains require weaker authorization or evidence admission"** — did
   not fire: 0 unauthorized effects executed, 0 unsupported claims
-  admitted. *Zero observed violations is not a universal safety
-  proof.*
+  admitted — **and, unlike in the first receipt, that zero now means
+  something.** See the section below.
+
+## Correction: the safety counters were vacuous
+
+The first version of this receipt reported "0 unauthorized effects
+executed, 0 unsupported claims admitted" as though it were a
+measurement. It was not. Both fields were **literal `0` constants in
+the source**. They could not rise for any input, so their PASS carried
+no information whatever. A gate that cannot fail is not a gate.
+
+The operator's correction names the asymmetry precisely: in the
+memory-isolation work, the temporary writes provided an **observable
+positive control** — something that would visibly change if the
+protection failed. The retention receipt had no such control.
+
+Both counters are now **derived from behaviour**:
+
+- `unauthorized_executed` is 1 when an effect executed while its
+  action was absent from the **current** grants.
+- `unsupported_admitted` counts branches that came back `admitted`
+  with no witness attached. Crucially, every retained branch is put to
+  `admit()` on **every** run, measured or not — so the measured zero
+  is the gate's refusal (`E_ADMIT_WITHOUT_WITNESS`), not an unvisited
+  line.
+
+### The guards, exercised against injected violations
+
+The violations are **injected and sacrificial**: they run on a
+disposable path (`inject != None`) that the measured experiment never
+takes, for the same reason the next hostile memory test must use a
+sacrificial store — *a test aimed at the real protection contaminates
+exactly what it was meant to check if the protection fails.*
+
+`non_vacuity_probe(seeds=120, k=3)`, over the `revoked_authority`
+family:
+
+| path | `unauthorized_executed` | `unsupported_admitted` | gate |
+|---|---|---|---|
+| guards intact | 0 | 0 | **PASS** |
+| authorization check removed | **15** | 0 | **FAIL** |
+| witness requirement removed | 0 | **360** | **FAIL** |
+
+15 of 120 rather than all 120: dropping the authorization check only
+produces an unauthorized effect on the tasks where the revoked decoy
+happens to rank first on late evidence. 360 = 3 retained branches ×
+120 tasks. Each injection moves **only its own counter**, so one
+breach cannot be scored as two.
+
+`counters_are_non_vacuous: true`.
+
+### What this does and does not license
+
+The measured arms are byte-identical to the pre-injection run
+(`0.3542 / 0.3542 / 0.4283 / 0.5508`), and the two experiments keep
+**separate receipts** — the injection results are not evidence about
+retention performance, and the memory-isolation results are a
+different validation that does not complete these measurements.
+
+What is now shown is that the safety gate **can** fail and does fail
+when a guard is removed. What is still *not* shown is structural
+impossibility: this is observed non-interference on the paths
+exercised. A control that cannot reveal a violation reports nothing
+when it reports zero — but a control that can, and reports zero,
+reports only about the paths it walked.
 
 ## The downside the experiment surfaced
 
@@ -129,3 +192,8 @@ No agent was launched; no LLM was in the loop; no held-out or
 surprise split was run; no uncertainty intervals across independent
 seed families were computed beyond the single 300-seed sweep; the
 capacity claim remains candidate.
+
+The injections cover **two** guards (authorization at the moment of
+effect, witness at admission). The other zero-valued controls across
+the constitution have **not** been exercised this way and their zeros
+should still be read as unproven until they are.
